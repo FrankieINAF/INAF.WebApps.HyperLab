@@ -45,6 +45,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Libraries\NetStandard\INAF.Libraries.NetStandard.Extensions\INAF.Libraries.NetStandard.Extensions\INAF.Libraries.NetStandard.Extensions.csproj" />
+    <ProjectReference Include="..\..\..\Libraries\NetStandard\INAF.Libraries.NetStandard.HyperLabCommonHelpers\INAF.Libraries.NetStandard.HyperLabCommonHelpers\INAF.Libraries.NetStandard.HyperLabCommonHelpers.csproj" />
+    <ProjectReference Include="..\..\..\Libraries\NetStandard\INAF.Libraries.NetStandard.HyperLabCommonModels\INAF.Libraries.NetStandard.HyperLabCommonModels\INAF.Libraries.NetStandard.HyperLabCommonModels.csproj" />
+    <ProjectReference Include="..\..\..\Libraries\NetStandard\INAF.Libraries.NetStandard.Math\INAF.Libraries.NetStandard.Math\INAF.Libraries.NetStandard.Math.csproj" />
+    <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.SLabDbLibrary\INAF.Libraries.Net.SLabDbLibrary\INAF.Libraries.Net.SLabDbLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Resources\Charms.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

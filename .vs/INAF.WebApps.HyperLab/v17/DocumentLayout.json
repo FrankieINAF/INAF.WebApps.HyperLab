@@ -3,6 +3,39 @@
   "WorkspaceRootPath": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{D8003CCF-F8AE-406A-B6E6-7FC75D53A8E7}|..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.Math\\INAF.Libraries.NetStandard.Math\\INAF.Libraries.NetStandard.Math.csproj|g:\\projects\\inaf\\libraries\\netstandard\\inaf.libraries.netstandard.math\\inaf.libraries.netstandard.math\\models\\segmentfitmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B958FD6-538F-4A47-9368-F4C3785A0869}|..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary.csproj|g:\\projects\\inaf\\libraries\\net\\inaf.libraries.net.slabdblibrary\\inaf.libraries.net.slabdblibrary\\dbhandlersearchessimple.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B958FD6-538F-4A47-9368-F4C3785A0869}|..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary.csproj|g:\\projects\\inaf\\libraries\\net\\inaf.libraries.net.slabdblibrary\\inaf.libraries.net.slabdblibrary\\dbhandlerdatacontinuumfit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B958FD6-538F-4A47-9368-F4C3785A0869}|..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary.csproj|g:\\projects\\inaf\\libraries\\net\\inaf.libraries.net.slabdblibrary\\inaf.libraries.net.slabdblibrary\\dbhandlercharts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6997498-AE80-4933-8540-2B20D182DED5}|..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels.csproj|g:\\projects\\inaf\\libraries\\netstandard\\inaf.libraries.netstandard.hyperlabcommonmodels\\inaf.libraries.netstandard.hyperlabcommonmodels\\models\\spectrum\\spectrumoftypeprocessedmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6997498-AE80-4933-8540-2B20D182DED5}|..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels.csproj|g:\\projects\\inaf\\libraries\\netstandard\\inaf.libraries.netstandard.hyperlabcommonmodels\\inaf.libraries.netstandard.hyperlabcommonmodels\\extensions\\xmlextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{223EE05E-C7E2-41CF-82AB-865103F06E3E}|..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.Extensions\\INAF.Libraries.NetStandard.Extensions\\INAF.Libraries.NetStandard.Extensions.csproj|g:\\projects\\inaf\\libraries\\netstandard\\inaf.libraries.netstandard.extensions\\inaf.libraries.netstandard.extensions\\extensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6997498-AE80-4933-8540-2B20D182DED5}|..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels.csproj|g:\\projects\\inaf\\libraries\\netstandard\\inaf.libraries.netstandard.hyperlabcommonmodels\\inaf.libraries.netstandard.hyperlabcommonmodels\\extensions\\extensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B958FD6-538F-4A47-9368-F4C3785A0869}|..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary.csproj|g:\\projects\\inaf\\libraries\\net\\inaf.libraries.net.slabdblibrary\\inaf.libraries.net.slabdblibrary\\dbhandleruserslogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B958FD6-538F-4A47-9368-F4C3785A0869}|..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary.csproj|g:\\projects\\inaf\\libraries\\net\\inaf.libraries.net.slabdblibrary\\inaf.libraries.net.slabdblibrary\\dbhandlerusers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4726D5B6-CE26-4E04-8A02-17F17D2BA696}|..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonHelpers\\INAF.Libraries.NetStandard.HyperLabCommonHelpers\\INAF.Libraries.NetStandard.HyperLabCommonHelpers.csproj|g:\\projects\\inaf\\libraries\\netstandard\\inaf.libraries.netstandard.hyperlabcommonhelpers\\inaf.libraries.netstandard.hyperlabcommonhelpers\\missingpointhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
@@ -53,8 +86,86 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 11,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SegmentFitModel.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.Math\\INAF.Libraries.NetStandard.Math\\Models\\SegmentFitModel.cs",
+              "RelativeDocumentMoniker": "..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.Math\\INAF.Libraries.NetStandard.Math\\Models\\SegmentFitModel.cs",
+              "ToolTip": "G:\\Projects\\INAF\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.Math\\INAF.Libraries.NetStandard.Math\\Models\\SegmentFitModel.cs",
+              "RelativeToolTip": "..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.Math\\INAF.Libraries.NetStandard.Math\\Models\\SegmentFitModel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAtAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-12T09:30:13.138Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DbHandlerSearchesSimple.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerSearchesSimple.cs",
+              "RelativeDocumentMoniker": "..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerSearchesSimple.cs",
+              "ToolTip": "G:\\Projects\\INAF\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerSearchesSimple.cs",
+              "RelativeToolTip": "..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerSearchesSimple.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-12T09:30:08.124Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DbHandlerDataContinuumFit.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerDataContinuumFit.cs",
+              "RelativeDocumentMoniker": "..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerDataContinuumFit.cs",
+              "ToolTip": "G:\\Projects\\INAF\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerDataContinuumFit.cs",
+              "RelativeToolTip": "..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerDataContinuumFit.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAhAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-12T09:30:02.614Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DbHandlerCharts.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerCharts.cs",
+              "RelativeDocumentMoniker": "..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerCharts.cs",
+              "ToolTip": "G:\\Projects\\INAF\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerCharts.cs",
+              "RelativeToolTip": "..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerCharts.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAhAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-12T09:29:28.299Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "SpectrumOfTypeProcessedModel.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels\\Models\\Spectrum\\SpectrumOfTypeProcessedModel.cs",
+              "RelativeDocumentMoniker": "..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels\\Models\\Spectrum\\SpectrumOfTypeProcessedModel.cs",
+              "ToolTip": "G:\\Projects\\INAF\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels\\Models\\Spectrum\\SpectrumOfTypeProcessedModel.cs",
+              "RelativeToolTip": "..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels\\Models\\Spectrum\\SpectrumOfTypeProcessedModel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAxAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-12T09:29:04.424Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Extensions.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.Extensions\\INAF.Libraries.NetStandard.Extensions\\Extensions.cs",
+              "RelativeDocumentMoniker": "..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.Extensions\\INAF.Libraries.NetStandard.Extensions\\Extensions.cs",
+              "ToolTip": "G:\\Projects\\INAF\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.Extensions\\INAF.Libraries.NetStandard.Extensions\\Extensions.cs",
+              "RelativeToolTip": "..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.Extensions\\INAF.Libraries.NetStandard.Extensions\\Extensions.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAvAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-12T09:28:32.304Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:131:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
@@ -97,7 +208,72 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
+              "Title": "XmlExtensions.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels\\Extensions\\XmlExtensions.cs",
+              "RelativeDocumentMoniker": "..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels\\Extensions\\XmlExtensions.cs",
+              "ToolTip": "G:\\Projects\\INAF\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels\\Extensions\\XmlExtensions.cs",
+              "RelativeToolTip": "..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels\\Extensions\\XmlExtensions.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAFEAAABdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-12T09:28:12.504Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Extensions.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels\\Extensions\\Extensions.cs",
+              "RelativeDocumentMoniker": "..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels\\Extensions\\Extensions.cs",
+              "ToolTip": "G:\\Projects\\INAF\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels\\Extensions\\Extensions.cs",
+              "RelativeToolTip": "..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonModels\\INAF.Libraries.NetStandard.HyperLabCommonModels\\Extensions\\Extensions.cs",
+              "ViewState": "AQIAANEAAAAAAAAAAADgv+wAAABFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-12T09:27:58.724Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "DbHandlerUsersLogin.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerUsersLogin.cs",
+              "RelativeDocumentMoniker": "..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerUsersLogin.cs",
+              "ToolTip": "G:\\Projects\\INAF\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerUsersLogin.cs",
+              "RelativeToolTip": "..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerUsersLogin.cs",
+              "ViewState": "AQIAAJ8AAAAAAAAAAADgv7cAAAAYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-12T09:27:37.279Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "DbHandlerUsers.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerUsers.cs",
+              "RelativeDocumentMoniker": "..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerUsers.cs",
+              "ToolTip": "G:\\Projects\\INAF\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerUsers.cs",
+              "RelativeToolTip": "..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandlerUsers.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABgAAAAyAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-12T09:24:49.879Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "MissingPointHelper.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonHelpers\\INAF.Libraries.NetStandard.HyperLabCommonHelpers\\MissingPointHelper.cs",
+              "RelativeDocumentMoniker": "..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonHelpers\\INAF.Libraries.NetStandard.HyperLabCommonHelpers\\MissingPointHelper.cs",
+              "ToolTip": "G:\\Projects\\INAF\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonHelpers\\INAF.Libraries.NetStandard.HyperLabCommonHelpers\\MissingPointHelper.cs",
+              "RelativeToolTip": "..\\..\\Libraries\\NetStandard\\INAF.Libraries.NetStandard.HyperLabCommonHelpers\\INAF.Libraries.NetStandard.HyperLabCommonHelpers\\MissingPointHelper.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAtAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-12T09:24:25.214Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
               "Title": "appsettings.json",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\appsettings.json",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\appsettings.json",
@@ -105,25 +281,24 @@
               "RelativeToolTip": "INAF.WebApps.HyperLab\\appsettings.json",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABgAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-03-12T08:48:33.439Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-12T08:48:33.439Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 11,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\appsettings.Development.json",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\appsettings.Development.json",
               "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\appsettings.Development.json",
               "RelativeToolTip": "INAF.WebApps.HyperLab\\appsettings.Development.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAACPAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACEAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2024-03-12T08:48:16.66Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 13,
               "Title": "TokenValidationParametersFactory.cs",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Helpers\\Factories\\TokenValidationParametersFactory.cs",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Helpers\\Factories\\TokenValidationParametersFactory.cs",
@@ -131,23 +306,21 @@
               "RelativeToolTip": "INAF.WebApps.HyperLab\\Helpers\\Factories\\TokenValidationParametersFactory.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-12T08:47:51.964Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-12T08:47:51.964Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 14,
               "Title": "Convert.cs",
               "DocumentMoniker": "C:\\Users\\franc\\AppData\\Local\\SourceServer\\eb01d66de08ccce2e6c7b2a3fc319f21847d86e83e486aa84e8dc5ef019ccc2c\\src\\libraries\\System.Private.CoreLib\\src\\System\\Convert.cs",
               "ToolTip": "C:\\Users\\franc\\AppData\\Local\\SourceServer\\eb01d66de08ccce2e6c7b2a3fc319f21847d86e83e486aa84e8dc5ef019ccc2c\\src\\libraries\\System.Private.CoreLib\\src\\System\\Convert.cs",
               "ViewState": "AQIAAD4KAAAAAAAAAAAUwFYKAAAQAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-12T08:47:28.18Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-12T08:47:28.18Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 15,
               "Title": "SampleAndMeasurementController.cs",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Controllers\\SampleAndMeasurementController.cs",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Controllers\\SampleAndMeasurementController.cs",
@@ -155,12 +328,11 @@
               "RelativeToolTip": "INAF.WebApps.HyperLab\\Controllers\\SampleAndMeasurementController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAACEAAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-11T15:46:56.471Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-11T15:46:56.471Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 17,
               "Title": "SearchByMaterialHelper.cs",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Helpers\\SearchByMaterialHelper.cs",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Helpers\\SearchByMaterialHelper.cs",
@@ -172,7 +344,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 16,
               "Title": "_JsCommon.cshtml",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Views\\Shared\\Partials\\_JsCommon.cshtml",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Views\\Shared\\Partials\\_JsCommon.cshtml",
@@ -184,7 +356,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 18,
               "Title": "_SearchJsCommon.cshtml",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Views\\Searches\\Partials\\_SearchJsCommon.cshtml",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Views\\Searches\\Partials\\_SearchJsCommon.cshtml",
@@ -196,7 +368,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 19,
               "Title": "_UserDetails.cshtml",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Views\\Users\\Partials\\_UserDetails.cshtml",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Views\\Users\\Partials\\_UserDetails.cshtml",
@@ -208,7 +380,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 20,
               "Title": "Search.cshtml",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Views\\Searches\\Search.cshtml",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Views\\Searches\\Search.cshtml",
@@ -220,7 +392,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 21,
               "Title": "Program.cs",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Program.cs",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Program.cs",
