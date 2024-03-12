@@ -1,0 +1,468 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AlignedNoDownloadBecauseAlreadyPresentMessage" xml:space="preserve">
+    <value>An aligned spectrum is already available, remove it before downloading the one available on cloud</value>
+  </data>
+  <data name="AlignedNoProcessBecauseAlreadyPresentMessage" xml:space="preserve">
+    <value>An aligned spectrum is already available, remove it before creating the new one</value>
+  </data>
+  <data name="AlignedRemovalErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to delete the aligned spectrum</value>
+  </data>
+  <data name="AlignedRemovalSuccessMessage" xml:space="preserve">
+    <value>The aligned file has been successfully deleted on cloud</value>
+  </data>
+  <data name="AlignmentAutoAlignSelectedSpectrumLabel" xml:space="preserve">
+    <value>Auto-align spectrum automatically for selected RAW</value>
+  </data>
+  <data name="AlignmentAutoAlignSelectedSpectrumMessage" xml:space="preserve">
+    <value>Ok, I'm going to automatically align the RAW spectrum next time you select it</value>
+  </data>
+  <data name="AlignmentAutoDownloadAlignedSelectedSpectrumLabel" xml:space="preserve">
+    <value>Auto-download aligned spectrum for selected RAW</value>
+  </data>
+  <data name="AlignmentAutoDownloadAlignedSelectedSpectrumMessage" xml:space="preserve">
+    <value>Ok, I'm going to automatically download the aligned spectrum, if available, next time you select a RAW one</value>
+  </data>
+  <data name="AlignmentAutoHideNotSelectedRawSpectraMessage" xml:space="preserve">
+    <value>All charted spectra but the selected one have been hidden to improve selected spectrum visualization</value>
+  </data>
+  <data name="AlignmentAutoHideRefSpectraMessage" xml:space="preserve">
+    <value>'Ref' and 'Ref white' spectra have been hidden to improve selected spectrum visualization</value>
+  </data>
+  <data name="AlignmentButtonDisabledMessage" xml:space="preserve">
+    <value>Load white spectra to enable this button</value>
+  </data>
+  <data name="AlignmentButtonExecuteLabel" xml:space="preserve">
+    <value>Align spectrum sections</value>
+  </data>
+  <data name="AlignmentButtonRemoveLabel" xml:space="preserve">
+    <value>Remove aligned spectrum</value>
+  </data>
+  <data name="AlignmentButtonSaveLabel" xml:space="preserve">
+    <value>Save aligned spectrum</value>
+  </data>
+  <data name="AlignmentChartMiniatureLabel" xml:space="preserve">
+    <value>Select the ref segment by clicking a spectrum point in the chart below</value>
+  </data>
+  <data name="AlignmentChartMiniatureSelectedSegmentMessage" xml:space="preserve">
+    <value>Selected segment: [r_v1, r_v2]</value>
+  </data>
+  <data name="AlignmentCheckboxShowLinesLabel" xml:space="preserve">
+    <value>Show/hide ref wavelengths lines</value>
+  </data>
+  <data name="AlignmentDownloadAlignmentSettingsErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to download alignment settings for current aligned spectrum</value>
+  </data>
+  <data name="AlignmentExecutionErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to align selected spectrum</value>
+  </data>
+  <data name="AlignmentFixPointsErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to normalize points of spectrum to be aligned</value>
+  </data>
+  <data name="AlignmentLoadNumOfPointsErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to retrieve num of points for alignment</value>
+  </data>
+  <data name="AlignmentLoadSegmentsErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to retrieve alignment segments</value>
+  </data>
+  <data name="AlignmentLoadSelectedSegmentErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to retrieve selected alignment segment</value>
+  </data>
+  <data name="AlignmentLoadWhiteSpectraForAlignmentErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to retrieve white spectra for alignment</value>
+  </data>
+  <data name="AlignmentLoadWhiteSpectraForAlignmentLabel" xml:space="preserve">
+    <value>Load/remove white spectra for alignment</value>
+  </data>
+  <data name="AlignmentManagementTitle" xml:space="preserve">
+    <value>Alignment management</value>
+  </data>
+  <data name="AlignmentNumOfPointsLabel" xml:space="preserve">
+    <value>Num of points for alignment</value>
+  </data>
+  <data name="AlignmentRefreshSegmentsLabel" xml:space="preserve">
+    <value>Reload values</value>
+  </data>
+  <data name="AlignmentRefreshSegmentsQuestion" xml:space="preserve">
+    <value>By refreshing segments, all current values will be lost. Do you really want to reload them?</value>
+  </data>
+  <data name="AlignmentRemoveQuestion" xml:space="preserve">
+    <value>Do you really want to delete aligned spectrum?</value>
+  </data>
+  <data name="AlignmentSaveErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to save on cloud aligned spectrum</value>
+  </data>
+  <data name="AlignmentSaveSuccessMessage" xml:space="preserve">
+    <value>The aligned spectrum has been successfully saved on cloud!</value>
+  </data>
+  <data name="AlignmentSettingsLabel" xml:space="preserve">
+    <value>Alignment settings</value>
+  </data>
+  <data name="CharmsAlreadySavedOnCloudMessage" xml:space="preserve">
+    <value>A copy of this processing step is already saved on cloud</value>
+  </data>
+  <data name="CharmsCloseWarningMessage" xml:space="preserve">
+    <value>By closing this panel, each processing step is going to be cleared and processed spectra removed. If you want just hide this panel for a while, use the arrow button instead. Continue?</value>
+  </data>
+  <data name="CharmsCloudDownloadErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to download selected processed spectrum</value>
+  </data>
+  <data name="CharmsCloudDownloadLabel" xml:space="preserve">
+    <value>Click to download processed spectrum from cloud</value>
+  </data>
+  <data name="CharmsDeleteProcessedSpectraQuestion" xml:space="preserve">
+    <value>By changing selected raw spectrum, all processed spectra coming from the previous one will be removed. If you have not saved processed spectra, all work will be lost. Do you want to continue?</value>
+  </data>
+  <data name="CharmsHideAndResetLabel" xml:space="preserve">
+    <value>Close and reset this panel</value>
+  </data>
+  <data name="CharmsHideLabel" xml:space="preserve">
+    <value>Hide this panel</value>
+  </data>
+  <data name="CharmsRemoveOnCloudQuestion" xml:space="preserve">
+    <value>Do you also want to delete file saved on cloud?</value>
+  </data>
+  <data name="CharmsSpectraProcessingManagementLabel" xml:space="preserve">
+    <value>Spectra management</value>
+  </data>
+  <data name="CharmsStartingMessage" xml:space="preserve">
+    <value>The list of charted spectra is shown on top of this panel. Select a spectrum from the list to load panels and start processing it.</value>
+  </data>
+  <data name="CharmsUsingAlreadySavedOnCloudMessage" xml:space="preserve">
+    <value>You're currently using the copy of this processing step saved on cloud</value>
+  </data>
+  <data name="ContinuumRemovalExecutionErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to remove continuum from selected spectrum</value>
+  </data>
+  <data name="ContinuumRemovalManagementTitle" xml:space="preserve">
+    <value>Continuum removal management</value>
+  </data>
+  <data name="ContinuumRemovalRemoveQuestion" xml:space="preserve">
+    <value>Do you really want to delete continuum-removed spectrum?</value>
+  </data>
+  <data name="ContinuumRemovedNoDownloadBecauseAlreadyPresentMessage" xml:space="preserve">
+    <value>A continuum-removedspectrum is already available, remove it before downloading the one available on cloud</value>
+  </data>
+  <data name="ContinuumRemovedNoProcessBecauseAlreadyPresentMessage" xml:space="preserve">
+    <value>An continuum-removed spectrum is already available, remove it before creating the new one</value>
+  </data>
+  <data name="ContinuumRemovedRemovalErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to delete the continuum-removed spectrum</value>
+  </data>
+  <data name="ContinuumRemovedRemovalSuccessMessage" xml:space="preserve">
+    <value>The continuum-removed file has been successfully deleted on cloud</value>
+  </data>
+  <data name="FitAutoRecalculateContinuumRemovedLabel" xml:space="preserve">
+    <value>Auto recalculate on adding/removing any fit point</value>
+  </data>
+  <data name="FitBoundaryLabel" xml:space="preserve">
+    <value>Boundary</value>
+  </data>
+  <data name="FitButtonDisabledMessage" xml:space="preserve">
+    <value>Define at least 1 segment to enable this button</value>
+  </data>
+  <data name="FitButtonExecuteLabel" xml:space="preserve">
+    <value>Remove continuum</value>
+  </data>
+  <data name="FitButtonRemoveLabel" xml:space="preserve">
+    <value>Remove continuum-removed spectrum</value>
+  </data>
+  <data name="FitButtonSaveLabel" xml:space="preserve">
+    <value>Save continuum-removed spectrum</value>
+  </data>
+  <data name="FitContinuumRemovalErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to remove continuum</value>
+  </data>
+  <data name="FitCoreModelLabel" xml:space="preserve">
+    <value>Core</value>
+  </data>
+  <data name="FitDownloadContinuumRemovalSettingsErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to download continuum-removal settings for current continuum-removed spectrum</value>
+  </data>
+  <data name="FitLoadFitFunctionsErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to load functions for fitting spectrum segments</value>
+  </data>
+  <data name="FitLoadNumOfPointsForMissingPointsErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to load num of points for averaging continuum boundaries</value>
+  </data>
+  <data name="FitLoadPMinPMaxMaxValueFunctionsErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to load functions for fitting band shoulders segments</value>
+  </data>
+  <data name="FitNoPointsFoundForSegmentErrorMessage" xml:space="preserve">
+    <value>Sorry, no points found for selected segment</value>
+  </data>
+  <data name="FitNoSegmentsAvailableMessage" xml:space="preserve">
+    <value>No segments have been defined so far</value>
+  </data>
+  <data name="FitNumOfPointsForMissingPointsLabel" xml:space="preserve">
+    <value>Num of points for missing points average X</value>
+  </data>
+  <data name="FitProModeCenterLabel" xml:space="preserve">
+    <value>Max @</value>
+  </data>
+  <data name="FitProModeLabel" xml:space="preserve">
+    <value>Pro</value>
+  </data>
+  <data name="FitRangeLabel" xml:space="preserve">
+    <value>Range [rv_1, rv_2]</value>
+  </data>
+  <data name="FitSaveErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to save on cloud continuum-removed spectrum</value>
+  </data>
+  <data name="FitSaveSuccessMessage" xml:space="preserve">
+    <value>The continuum-removed spectrum has been successfully saved on cloud!</value>
+  </data>
+  <data name="FitSegmentFittingErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to fit current segment</value>
+  </data>
+  <data name="FitSegmentFunctionParameterLabel" xml:space="preserve">
+    <value>Parameter value</value>
+  </data>
+  <data name="FitSegmentFunctionsLabel" xml:space="preserve">
+    <value>Fit method for segment</value>
+  </data>
+  <data name="FitSegmentsListLabel" xml:space="preserve">
+    <value>List of user-defined segments for fit</value>
+  </data>
+  <data name="FitSetCoreOrProModeLabel" xml:space="preserve">
+    <value>Set Core/Pro mode</value>
+  </data>
+  <data name="FitSettingsLabel" xml:space="preserve">
+    <value>Fit settings</value>
+  </data>
+  <data name="FitShowHideBreaksOnValueAxisLabel" xml:space="preserve">
+    <value>Show/hide breaks on y axis</value>
+  </data>
+  <data name="FitShowHideVerticalLinesForFitPointsLabel" xml:space="preserve">
+    <value>Show/hide vertical lines for fit points</value>
+  </data>
+  <data name="FitStartingMessage1" xml:space="preserve">
+    <value>Start selecting points on aligned spectrum to load settings for fitting.</value>
+  </data>
+  <data name="FitStartingMessage2" xml:space="preserve">
+    <value>Selected points define segments that can be used to fit the aligned spectrum. The list of segments defined by selected points is shown here after at least 2 points are available.</value>
+  </data>
+  <data name="FitStartingMessageCloud" xml:space="preserve">
+    <value>Also, when a version of continuum-removed spectrum is available on cloud, you can skip previous steps and download the available version.</value>
+  </data>
+  <data name="OverwriteSavedSpectrumQuestion" xml:space="preserve">
+    <value>By saving this processing step, the one saved on cloud will be overwritten. Do you want to continue?</value>
+  </data>
+  <data name="SelectItemLabel" xml:space="preserve">
+    <value>Select item</value>
+  </data>
+  <data name="SmoothedRemovalErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to delete the smoothed spectrum</value>
+  </data>
+  <data name="SmoothedRemovalSuccessMessage" xml:space="preserve">
+    <value>The smoothed file has been successfully deleted on cloud</value>
+  </data>
+  <data name="SmoothedSaveErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to save on cloud smoothed spectrum</value>
+  </data>
+  <data name="SmoothedSaveSuccessMessage" xml:space="preserve">
+    <value>The smoothed spectrum has been successfully saved on cloud!</value>
+  </data>
+  <data name="SmoothingAddNewSegmentLabel" xml:space="preserve">
+    <value>Add new segment for smoothing next to this</value>
+  </data>
+  <data name="SmoothingApplySmoothingErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to apply smoothing to selected spectrum</value>
+  </data>
+  <data name="SmoothingAutoSaveSegmentsLabel" xml:space="preserve">
+    <value>Auto save settings when on value change</value>
+  </data>
+  <data name="SmoothingAutoSaveSegmentsMessage" xml:space="preserve">
+    <value>Ok, I'm going to automatically save smoothing settings each time a value is changed</value>
+  </data>
+  <data name="SmoothingButtonExecuteLabel" xml:space="preserve">
+    <value>Apply smoothing</value>
+  </data>
+  <data name="SmoothingButtonRemoveLabel" xml:space="preserve">
+    <value>Remove smoothed spectrum</value>
+  </data>
+  <data name="SmoothingButtonSaveLabel" xml:space="preserve">
+    <value>Save smoothed spectrum</value>
+  </data>
+  <data name="SmoothingBySegmentsTabTitle" xml:space="preserve">
+    <value>By segments</value>
+  </data>
+  <data name="SmoothingExecuteSmoothingErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to start smoothing procedure</value>
+  </data>
+  <data name="SmoothingExecutionErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to smooth selected spectrum</value>
+  </data>
+  <data name="SmoothingManagementTitle" xml:space="preserve">
+    <value>Smoothing management</value>
+  </data>
+  <data name="SmoothingRemoveQuestion" xml:space="preserve">
+    <value>Do you really want to delete smoothed spectrum?</value>
+  </data>
+  <data name="SmoothingRemoveSegmentLabel" xml:space="preserve">
+    <value>Remove current segment for smoothing</value>
+  </data>
+  <data name="SmoothingRemoveSegmentQuestion" xml:space="preserve">
+    <value>Do you really want to delete the selected segment?</value>
+  </data>
+  <data name="SmoothingRetrieveSettingsModelErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to retrieve settings model for smoothing by segments</value>
+  </data>
+  <data name="SmoothingSaveSegmentsLabel" xml:space="preserve">
+    <value>Save smoothing settings</value>
+  </data>
+  <data name="SmoothingSegmentBoundariesLabel" xml:space="preserve">
+    <value>Boundaries</value>
+  </data>
+  <data name="SmoothingSegmentPolynomialOrderLabel" xml:space="preserve">
+    <value>Polynomial order</value>
+  </data>
+  <data name="SmoothingSegmentWindowSizeLabel" xml:space="preserve">
+    <value>Window size</value>
+  </data>
+  <data name="SmoothingSettingsLabel" xml:space="preserve">
+    <value>Smoothing settings</value>
+  </data>
+  <data name="SmoothingSrcSpectrumTypeLabel" xml:space="preserve">
+    <value>Smoothing is applied on spectrum of type:</value>
+  </data>
+  <data name="SmoothingTabBySegmentsOptionsLabel" xml:space="preserve">
+    <value>List of defined segments and options for smoothing by segments</value>
+  </data>
+  <data name="SmoothingTabByWholeSpectrumOptionsLabel" xml:space="preserve">
+    <value>Parameters for smoothing the whole spectrum</value>
+  </data>
+  <data name="SmoothingWholeSpectrumTabTitle" xml:space="preserve">
+    <value>Whole spectrum</value>
+  </data>
+  <data name="SpectrumChildrenRemovalWarningMessage" xml:space="preserve">
+    <value>Removing this spectrum will also cause removal of all spectra derived from subsequent processing</value>
+  </data>
+  <data name="TabsAlignmentTitle" xml:space="preserve">
+    <value>Alignment options</value>
+  </data>
+  <data name="TabsFitTitle" xml:space="preserve">
+    <value>Fit options</value>
+  </data>
+  <data name="TabsSmoothingTitle" xml:space="preserve">
+    <value>Smoothing options</value>
+  </data>
+</root>

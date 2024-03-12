@@ -1,0 +1,158 @@
+﻿@model SimpleSearchResultsContainer
+
+@using INAF.Libraries.Net.CommonWebAppModels.Models.Searches;
+@using INAF.Libraries.Net.CommonWebAppModels.Models.SpectraFiles
+@using INAF.WebApps.HyperLab.Resources
+@using Microsoft.AspNetCore.Html;
+@using static INAF.Libraries.NetStandard.HyperLabCommonModels.Values.Enums;
+
+<div data-role="panel"
+     id="resultsPanel"
+     data-title-caption="<strong>@Search.ResultsPanelTitle</strong>"
+     data-cls-title-caption="margin-horizontal-4"
+     data-collapsed="false"
+     data-collapsible="false"
+     data-custom-buttons="customButtons"
+     data-on-panel-create="showSearchResults">
+    @{
+        if (Model?.Results?.Count > 0)
+        {
+            MineralType mineralType = Model.Results[0].MineralType;
+
+            int rowsNum = Model.Results.Count;
+
+            <table class="table compact striped row-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>#</th>
+                        <th>@Html.Raw(Search.SearchResultColNameLabel)</th>
+                        <th>@Html.Raw(Search.SearchResultColSpectraTypesNumLabel)</th>
+                        @switch (mineralType)
+                        {
+                            case MineralType.Monomineralic:
+                                <th>@Html.Raw(Search.SearchResultColMonomineralicLabel)</th>
+                                break;
+                            case MineralType.Mix:
+                                <th>@Html.Raw(Search.SearchResultColMixLabel)</th>
+                                break;
+                            case MineralType.Rock:
+                                <th>@Html.Raw(Search.SearchResultColRockLabel)</th>
+                                break;
+                            case MineralType.Extraterrestrial:
+                                <th>@Html.Raw(Search.SearchResultColMeteorClassLabel)</th>
+                                break;
+                            default:
+                                <th>&nbsp;</th>
+                                break;
+                        }
+                        <th>@Html.Raw(Search.SearchResultColSpectrumLevelLabel)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < rowsNum; i++)
+                    {
+                        int index = i;
+                        <tr>
+                            <td>
+                                <span id="groupItems@{@index;}IconExpand" class="mif-expand-more mif-2x pointer" onclick="searchGroupItems(@Model.Results[i].Id, @index)" title="@Html.Raw(Search.GroupItemsExpandTooltip)"></span>
+                                <span id="groupItems@{@index;}IconShrink" class="mif-expand-less mif-2x pointer d-none" onclick="clearGroupItems(@index)" title="@Html.Raw(Search.GroupItemsShrinkTooltip)"></span>
+                            </td>
+                            <td>@index</td>
+                            <td>@Html.Raw(Model.Results[i].SpectrumFilename)</td>
+                            <td>@Html.Raw(Model.Results[i].AvailableSpectraTypes?.Count())</td>
+                            @switch (mineralType)
+                            {
+                                case MineralType.Monomineralic:
+                                    var monomineralicItem = (SingleMaterialSpectraGroupInfoModel)Model.Results[i];
+                                    <td>@Html.Raw(monomineralicItem.Mineral.Name)</td>
+                                    break;
+                                case MineralType.Mix:
+                                    var mineralsItem = (MineralsSpectraGroupInfoModel)Model.Results[i];
+                                    <td>
+                                        @{
+                                            int mineralsNum = mineralsItem.Minerals.Count;
+                                            for (int j = 0; j < mineralsNum; j++)
+                                            {
+                                                <span>@Html.Raw(mineralsItem.Minerals[j].Name)</span>
+                                                if (j < mineralsNum - 1)
+                                                {
+                                                    <span>,</span>
+                                                }
+                                            }
+                                        }
+                                    </td>
+                                    break;
+                                case MineralType.Rock:
+                                    var rockItem = (SingleMaterialSpectraGroupInfoModel)Model.Results[i];
+                                    <td>@Html.Raw(rockItem.Mineral.Name)</td>
+                                    break;
+                                case MineralType.Extraterrestrial:
+                                    var meteorItem = (SingleMaterialSpectraGroupInfoModel)Model.Results[i];
+                                    <td>@Html.Raw(meteorItem.Mineral.Name)</td>
+                                    break;
+                                default:
+                                    <td>&nbsp;</td>
+                                    break;
+                            }
+                            <td>@Html.Raw(Model.Results[i].SpectrumLevel)</td>
+                        </tr>
+                        <tr id="tr@{@index;}">
+                            <td colspan="6">
+                                <div id="groupItems@{@index;}" style="background-color: white"></div>
+                            </td>
+                        </tr>
+                    }
+            </tbody>
+        </table>
+        }
+        else
+        {
+            <div class="row">
+                <div class="cell-fs-12 remark warning margin-horizontal-4">
+                    <span class="mif-cross margin-right-8"></span><span class="text-secondary margin-horizontal-8">@Html.Raw(Search.SearchNoResultsMessage)</span>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<script type="text/javascript">
+    var customButtons = [
+        {
+            html: "<span class='mif-bin' title='@Html.Raw(Search.SearchResultClearLabel)'></span>",
+            onclick: "clearSearchResults()"
+        }
+    ];
+
+    function clearSearchResults() {
+        if (!$('#searchResultsContainer').length)
+            return;
+
+        let callback = function() {
+            $('#searchResultsContainer').empty();
+            setOverflowYHidden();
+        };
+        animateCSS('searchResultsContainer', 'backOutDown', FAST, callback);
+    }
+
+    function showSearchResults() {
+        setOverflowYAuto(true);
+
+        if (isMobile())
+            $('#searchResultsContainer').removeClass('overflow-x-hidden').addClass('overflow-x-auto');
+
+        let callback;
+        @if (Model?.Results?.Count > 0)
+        {
+            <text>
+                    callback = function() {
+                        $('#panelSearch').parent().removeClass('h-vh-50');
+                        Metro.getPlugin('#panelSearch', 'panel').collapse();
+                    };
+            </text>
+        }
+        showByClass('searchResultsContainer');
+        animateCSS('searchResultsContainer', 'backInUp', FAST, callback);
+    }
+</script>

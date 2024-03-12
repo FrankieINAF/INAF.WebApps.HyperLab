@@ -1,0 +1,171 @@
+﻿using INAF.Libraries.Net.CommonWebAppHelpers;
+using INAF.Libraries.Net.SLabDbLibrary;
+using INAF.WebApps.HyperLab.Extensions;
+using INAF.WebApps.HyperLab.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using static INAF.WebApps.HyperLab.Values.Enums;
+using static Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary;
+
+namespace INAF.WebApps.HyperLab.Controllers.Base
+{
+    public class BaseController : Controller
+    {
+        protected readonly IConfiguration? configuration;
+        protected readonly IServiceProvider? serviceProvider;
+        protected readonly DbHandler? dbHandler;
+        protected readonly ILogger<BaseController> logger;
+
+        public BaseController(IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider;
+        }
+
+        public BaseController(ILogger<BaseController> logger)
+        {
+            this.logger = logger;
+        }
+
+        public BaseController(IConfiguration configuration,
+                              ILogger<BaseController> logger) : this(logger)
+        {
+            this.configuration = configuration;
+        }
+
+        public BaseController(DbHandler dbHandler,
+                              ILogger<BaseController> logger) : this(logger)
+        {
+            this.dbHandler = dbHandler;
+        }
+
+        public BaseController(IServiceProvider serviceProvider,
+                              DbHandler dbHandler,
+                              ILogger<BaseController> logger) : this(dbHandler, logger)
+        {
+            this.serviceProvider = serviceProvider;
+        }
+
+        public BaseController(IServiceProvider serviceProvider,
+                              IConfiguration configuration,
+                              DbHandler dbHandler,
+                              ILogger<BaseController> logger) : this(dbHandler, logger)
+        {
+            this.serviceProvider = serviceProvider;
+            this.configuration = configuration;
+        }
+
+        protected void clearErrorsForKey(string key)
+        {
+            try
+            {
+                ModelState[$"{key}"].Errors.Clear();
+            }
+            catch (Exception)
+            { }
+            try
+            {
+                ModelState[$"{key}"].ValidationState = ModelValidationState.Valid;
+            }
+            catch (Exception)
+            { }
+        }
+
+        protected Caller getCaller()
+        {
+            string token = HttpContext.GetToken();
+            if (string.IsNullOrEmpty(token))
+                return Caller.WebApp;
+            else
+                return Caller.App;
+        }
+
+        protected string getEncrypted(string text)
+        {
+            using (EncryptionHelper encryptionHelper = serviceProvider.GetRequiredService<EncryptionHelper>())
+                return encryptionHelper.encryptString(text);
+        }
+
+        protected string getErrorMessage(ValueEnumerable values)
+        {
+            string exMsg = string.Empty;
+            var errors = values.Where(x => x.Errors.Count > 0);
+            foreach (var error in errors)
+                exMsg += error.Errors.FirstOrDefault().ErrorMessage + ". ";
+
+            return exMsg;
+        }
+
+        protected int getUserId()
+        {
+            string token = HttpContext.GetToken();
+            if (string.IsNullOrEmpty(token))
+                return HttpContext.GetUserId();
+            else
+                return dbHandler.getUserIdFromToken(token);
+        }
+
+        protected bool isRemoteCheckInEditMode(string field1, string field2)
+        {
+            if (!string.IsNullOrEmpty(field1) && !string.IsNullOrEmpty(field2) && field1.Equals(field2))
+                return true;
+            else
+                return false;
+        }
+
+        protected (bool isEditMode, string exMsg) isRemoteCheckInEditMode(string[] fields)
+        {
+            bool isEditMode = false;
+            string exMsg = string.Empty;
+
+            /* error when an empty array is passed */
+            if (fields.Length == 0)
+                return (false, Resources.Users.CheckIsUserExistantFieldsEmptyErrorMessage);
+
+            /* error when an odd number of items in array passed */
+            if (fields.Length % 2 > 0)
+                return (false, Resources.Users.CheckIsUserExistantFieldsNumErrorMessage);
+
+            bool[] results = new bool[fields.Length / 2];
+            int counter = 0;
+            for (int i = 0; i < fields.Length; i += 2)
+            {
+                results[counter] = fields[i].Equals(fields[i + 1]);
+                counter++;
+            }
+
+            isEditMode = Array.TrueForAll(results, x => !x);
+
+            return (isEditMode, exMsg);
+        }
+
+        protected void logErrorMessage(ValueEnumerable values)
+        {
+            string modelError = getErrorMessage(values);
+            logger.LogError(modelError);
+        }
+
+        //#region operation user
+        //public static int GetUserId(HttpContext httpContext)
+        //{
+        //    return GenericHelper.GetUserId(httpContext);
+        //}
+
+        //public static string GetUserName(HttpContext httpContext)
+        //{
+        //    return GenericHelper.GetUserName(httpContext);
+        //}
+        //#endregion
+
+        #region response models
+        protected WebBaseModel getUpsertErrorStatusResponseModel()
+        {
+            return new WebBaseModel() { ControllerOperationStatus = ControllerOperationStatus.UpsertError };
+        }
+
+        protected WebBaseModel getOkStatusResponseModel()
+        {
+            return new WebBaseModel() { ControllerOperationStatus = ControllerOperationStatus.Ok };
+        }
+        #endregion
+    }
+}

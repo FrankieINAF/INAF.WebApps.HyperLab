@@ -1,0 +1,91 @@
+﻿@using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Resources
+
+@{
+    ViewBag.Title = @Html.Raw(Materials.UpsertMineralPageTitle);
+}
+
+<link rel="stylesheet" href="~/css/dist/materials/mineralsbundle.min.css" />
+<div class="container mywrapper" style="overflow-y: hidden; overflow-x: hidden">
+    <div class="row">
+        <div class="cell-fs-12">
+            <h3 class="text-center fg-black">@Html.Raw(Materials.UpsertMineralTitle)</h3>
+        </div>
+    </div>
+
+    <!-- ROW LIST/FORM -->
+    <!-- SEARCH -->
+    <div id="searchboxContainer" class="row rows-divider" style="display: none">
+        <div class="cell-fs-12 cell-sm-6">
+            <input id="searchbox"
+                   type="text"
+                   data-role="input"
+                   placeholder="@Html.Raw(Materials.SearchMineralsLabel)"
+                   data-search-button="true"
+                   data-search-button-click="custom"
+                   data-on-search-button-click="doSearchProcedure"
+                   data-on-clear-click="clearSearchboxProcedure">
+        </div>
+    </div>
+
+    <div id="listAndCardContainer" class="row rows-divider">
+        <!-- LIST-->
+        <div id="materialsCol" class="cell-fs-12 cell-sm-6 list-card-separator" style="height: 80vh; overflow-y: auto; overflow-x: hidden">
+            <!-- LOADING MESSAGE -->
+            <div id="remarkLoadingMinerals" class="row remark info">
+                @Html.Raw(Materials.MineralsLoadingMessage)
+            </div>
+            <!-- WARNING NO MINERALS FOUND -->
+            <div id="remarkWarningMinerals" class="row remark warning" style="display: none">
+                @Html.Raw(Materials.MineralsNotFoundWarningMessage)
+            </div>
+            <!-- MINERALS LIST -->
+            <div id="mineralsList" class="row" style="display: none"></div>
+        </div>
+
+        <!-- UPSERT CARD-->
+        <div id="upsertCardContainer" class="cell-fs-12 cell-sm-6 mineral-details" style="height: 80vh; display: none">
+            <div id="upsertMineralContainerBckGnd">
+                <div id="upsertMineralContainer"></div>
+            </div>
+        </div>
+
+        <!-- SHOW CARD-->
+        <div id="showCardContainer" class="cell-fs-12 cell-sm-6 mineral-details" style="height: 80vh">
+            <div id="selectedMineralContainerBckGnd">
+                <div id="selectedMineralContainer"></div>
+            </div>
+        </div>
+
+        <!-- LETTERS GRID -->
+        <div id="lettersGrid" class="row lettersGrid">
+            <div id="lettersList" class="cell-fs-12 cell-sm-6"></div>
+        </div>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+@await Html.PartialAsync("Partials/_JsCommon")
+
+<script type="text/javascript">
+    var UrlDeleteMineral = '/@GenericHelper.GetControllerName(nameof(MaterialsController))/@nameof(MaterialsController.DeleteMineral)';
+    var UrlGetMineralDetails = '/@GenericHelper.GetControllerName(nameof(MaterialsController))/@nameof(MaterialsController.GetMineralDetailsView)';
+    var UrlGetMineralsList = '/@GenericHelper.GetControllerName(nameof(MaterialsController))/@nameof(MaterialsController.GetMineralsList)';
+    var UrlUpsertMineral = '/@GenericHelper.GetControllerName(nameof(MaterialsController))/@nameof(MaterialsController.UpsertMineral)';
+
+    var AddMineralTitle = '@Materials.AddMineralTitle';
+    var DeleteMineralErrorMessage = '@Materials.DeleteMineralErrorMessage';
+    var MineralChangesDiscardQuestion = '@Materials.MineralChangesDiscardQuestion';
+    var MineralDeletionQuestion = '@Materials.MineralDeletionQuestion';
+    var MineralsManagementTitle = '@Materials.MineralsManagementTitle';
+    var NoMineralsFoundMessage = '@Materials.NoMineralsFoundMessage';
+    var UpsertMineralErrorMessage = '@Materials.UpsertMineralErrorMessage';
+</script>
+<environment names="Development">
+    <script type="text/javascript" src="~/js/dist/materials/mineralsbundle.js"></script>
+</environment>
+<environment names="Production">
+    <script type="text/javascript" src="~/js/dist/materials/mineralsbundle.min.js"></script>
+</environment>

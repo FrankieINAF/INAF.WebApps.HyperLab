@@ -1,0 +1,116 @@
+﻿@model MineralModel
+
+@using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Resources
+@using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.SampleData
+@using INAF.Libraries.Net.CommonWebAppModels.Models.Info
+
+<div class="container mywrapper" style="overflow-y: hidden">
+
+    <div class="row">
+        <div class="cell-fs-12">
+            <div class="d-flex flex-justify-center flex-align-center"><span class="form-label">@Html.Raw(Materials.MineralFormEditLabel)</span></div>
+            <span class="mif-cross-light" onclick="tryClosePartialView('upsertMineralContainer', 'upsertCardContainer')" style="float:right; margin-right: 8px; display:block; cursor:pointer;"></span>
+        </div>
+    </div>
+
+    <form id="formUpsertMineral"
+          method="post"
+          target="_self">
+
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="row">
+            <div class="cell-fs-12">
+                <div class="form-group">
+                    <!-- NAME -->
+                    @Html.LabelFor(model => model.Name, Materials.MaterialNameLabel, new Dictionary<string, object> { { "class", "control-label" } })
+                    @Html.TextBoxFor(model => model.Name,
+                                    new Dictionary<string, object> {
+                                    { "data-role", "input" },
+                                    { "placeholder", Html.Raw(Materials.MineralNamePlaceholder) },
+                                    { "onchange", "setDataChanged()" },
+                                    })
+                    @Html.Hidden(nameof(CheckIsMaterialExistantModel.NameForCheck), Model.Name)
+                    @Html.ValidationMessageFor(model => model.Name, "", new Dictionary<string, object> { { "class", "text-danger" } })
+                </div>
+            </div>
+        </div>
+
+         <div class="row">
+            <div class="cell-fs-12">
+                <div class="form-group">
+                    <!-- FORMULA -->
+                    @Html.LabelFor(model => model.Formula, Materials.MaterialFormulaLabel, new Dictionary<string, object> { { "class", "control-label" } })
+                    @Html.TextBoxFor(model => model.Formula,
+                                    new Dictionary<string, object> {
+                                    { "data-role", "input" },
+                                    { "placeholder", Html.Raw(Materials.MineralFormulaPlaceholder) },
+                                    { "onchange", "setDataChanged()" },
+                                    })
+                    @Html.Hidden(nameof(CheckIsMaterialExistantModel.FormulaForCheck), Model.Formula)
+                    @Html.ValidationMessageFor(model => model.Formula, "", new Dictionary<string, object> { { "class", "text-danger" } })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="cell-fs-12">
+                <!-- SUBMIT -->
+                <button id="submitButton" class="button primary center"><span class="mif-cloud-upload margin-right-8"></span> @Html.Raw(SharedResources.SubmitLabel)</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function resetForm() {
+        $(formUpsertMineral)[0].reset();
+        isDataChanged = false;
+    }
+
+    var formUpsertMineral = $('#formUpsertMineral');
+    /* ################################################################################ */
+    /* VALIDATION + SUBMIT */
+    /* ################################################################################ */
+    formUpsertMineral.data('validator', null);
+    $.validator.unobtrusive.parse(formUpsertMineral);
+
+    async function submitUpsertMineral() {
+        setLoadingCircleIsVisible(true);
+
+        var serializedform = $(formUpsertMineral).serialize();
+        let obj = await doSubmitFormWithAjaxAsync(UrlUpsertMineral, serializedform, null);
+        if (obj && obj.IsOk) {
+            /* reset the form and close it */
+            resetForm();
+            tryClosePartialView('upsertMineralContainer', 'upsertCardContainer');
+            /* add the newly inserted mineral into the list */
+            addNewMineralInList(obj.Id, obj.Value);
+            setLoadingCircleIsVisible(false);
+        } else {
+            setLoadingCircleIsVisible(false);
+            showInfoBox(ERROR_LABEL, UpsertMineralErrorMessage, ALERT);
+        }
+    }
+
+    
+
+/* ################################################################################ */
+    /* DOCUMENT READY */
+    /* ################################################################################ */
+    $(document).ready(function() {
+        $("#submitButton").click(function(e) {
+            submitUpsertMineral();
+            e.preventDefault(); // prevent submitting 2 times
+        });
+
+        /* uppercase the 1st char of the new mineral name */
+        $('#Name').change(function() {
+            var name = $(this).val();
+            name = name.charAt(0).toUpperCase() + name.slice(1);
+            $(this).val(name);
+        });
+    });    
+</script>

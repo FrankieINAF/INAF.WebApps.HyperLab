@@ -1,0 +1,315 @@
+﻿.border-color-error {
+    border: 2px solid darkred;
+}
+
+.charms-panel {
+    width: 500px !important;
+    background-color: rgba(0, 0, 0, 0.8) !important;
+    overflow-y: auto;
+}
+
+.charms-legend-panel {
+    width: 400px !important;
+    background-color: rgba(0, 0, 0, 0.9) !important;
+    overflow-y: auto;
+}
+
+.charms-color-selector-column {
+    height: 100% !important;
+    overflow-y: auto;
+}
+
+@media (max-width: 576px) {
+    .charms-color-selector-column {
+        height: 50% !important;
+        overflow-y: auto;
+    }
+}
+
+.charms-color-selector-panel {
+    height: 550px !important;
+    background-color: rgba(0, 0, 0, 0.9) !important;
+    overflow-y: auto;
+}
+
+@media (max-width: 576px) {
+    .charms-color-selector-panel {
+        height: 100% !important;
+        background-color: rgba(0, 0, 0, 0.8) !important;
+        overflow-y: auto;
+    }
+}
+
+.charms-color-select-list-item {
+    min-height: 30px !important;
+    margin: 4px 0px;
+    vertical-align: middle;
+}
+
+    .charms-color-select-list-item:hover {
+        min-height: 30px !important;
+        box-shadow: 0 0 5px rgba(27, 161, 226, 1);
+        border: 1px solid rgba(27, 161, 226, 1);
+        background-color: rgba(27, 161, 226, 0.5);
+        margin: 4px 0px;
+    }
+
+    .charms-color-select-list-item-selected {
+        min-height: 30px !important;
+        box-shadow: 0 0 5px rgba(27, 161, 226, 1);
+        border: 1px solid rgba(27, 161, 226, 1);
+        background-color: rgba(27, 161, 226, 0.5);
+        margin: 4px 0px;
+    }
+
+.complex-search-button {
+    height: 40px !important;
+    border: 1px solid #1ba1e2 !important;
+    padding-bottom: 8px !important;
+    padding-top: 8px !important;
+    margin-bottom: 8px;
+}
+
+@media (max-width: 576px) {
+    .complex-search-button {
+        height: 96px !important;
+        border: 1px solid #1ba1e2 !important;
+        padding-bottom: 8px !important;
+        padding-top: 8px !important;
+        margin-bottom: 8px;
+    }
+}
+
+.complex-search-list-item {
+    height: 40px !important;
+    border-bottom: 1px solid #1ba1e2 !important;
+    /*padding-bottom: 8px !important;
+    padding-top: 8px !important;*/
+    margin: 8px;
+}
+
+    .complex-search-list-item:hover {
+        box-shadow: 0 0 5px rgba(27, 161, 226, 1);
+        border: 1px solid rgba(27, 161, 226, 1);
+        background-color: rgba(27, 161, 226, 0.5);
+        padding: 4px;
+    }
+
+.complex-search-title {
+    border-top: 2px solid #1ba1e2 !important; /* ciano */
+    padding-bottom: 4px;
+    margin-left: 4px;
+}
+
+
+.conditions-group {
+    border-bottom: 1px solid #1ba1e2 !important; /* ciano */
+    border-top: 1px solid #1ba1e2 !important; /* ciano */
+    padding-bottom: 4px;
+    margin-left: 4px;
+}
+
+.field-validation-text {
+    margin-left: 68px;
+    margin-top: -12px;
+}
+
+.field-validation-text2 {
+    margin-left: 68px;
+    margin-top: -16px;
+}
+
+.group-radio {
+    height: 24px !important;
+    margin-top: 4px;
+}
+
+.group-in-use {
+    background-color: rgba(217, 213, 216, 0.5) !important;
+    cursor: default !important;
+}
+
+.height-40 {
+    height: 40px !important;
+}
+
+.height-24 {
+    height: 24px !important;
+}
+
+.material-row {
+    margin: 4px;
+    border-bottom: 1px solid #1ba1e2;
+    padding-bottom: 8px;
+}
+
+    .material-row:hover {
+        box-shadow: 0 0 5px rgba(27, 161, 226, 1);
+        border: 1px solid rgba(27, 161, 226, 1);
+        background-color: rgba(27, 161, 226, 0.5);
+    }
+
+
+.overflow-y-search {
+    overflow-y: hidden;
+}
+
+@media (max-width: 576px) {
+    .overflow-y-search {
+        overflow-y: auto;
+    }
+}
+
+.remove-button {
+    margin-left: 8px;
+    margin-top: 4px;
+    width: 28px !important;
+}
+
+.saved-complex-search-expanded {
+    background-color: white;
+    min-height: 60px;
+}
+
+.saved-complex-search-collapsed {
+    background-color: white;
+    height: 0px;
+}
+
+.search-info-container {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    background-color: #00000096 !important;
+    z-index: 100;
+}
+
+.search-info {
+    position: absolute;
+    top: 25%;
+    left: 10%;
+    width: 80%;
+    height: 50%;
+    background-color: #1ba1e299;
+    border: solid 1px white;
+    padding: 12px;
+}
+
+@media (max-width: 576px) {
+    .search-info {
+        position: absolute;
+        top: 10%;
+        left: 0%;
+        width: 100%;
+        height: 80%;
+        background-color: #1ba1e2cc;
+        border: solid 1px white;
+        padding: 12px;
+    }
+}
+
+.select-min-width {
+    min-width: 150px;
+}
+
+.width-28 {
+    width: 28px !important;
+}
+
+.search-name-width {
+    width: 300px !important;
+}
+
+@media (max-width: 576px) {
+    .search-name-width {
+        width: 150px !important;
+    }
+}
+
+.select-item-width {
+    width: 20vw !important;
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+    .select-item-width {
+        width: 30vw !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .select-item-width {
+        width: 50vw !important;
+    }
+}
+
+
+
+
+/* ANIMATION INSERT FIT POINT */
+.pulse-ring-add {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border: 1px solid #F00;
+    border-radius: 50%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    animation-name: pulsate-add;
+    animation-duration: 1s;
+}
+
+@-webkit-keyframes pulsate-add {
+    0% {
+        -webkit-transform: scale(1, 1);
+        opacity: 1;
+    }
+
+    100% {
+        -webkit-transform: scale(5, 5);
+        border: 6px solid #F00;
+        opacity: 0;
+    }
+}
+
+.pulse-ring-remove {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border: 6px solid #F00;
+    border-radius: 50%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    animation-name: pulsate-remove;
+    animation-duration: 1s;
+}
+
+@-webkit-keyframes pulsate-remove {
+    0% {
+        -webkit-transform: scale(5, 5);
+        opacity: 1;
+    }
+
+    100% {
+        -webkit-transform: scale(1, 1);
+        border: 6px solid #F00;
+        opacity: 0;
+    }
+}
+
+/* FIT-PRO */
+.width-130 {
+    width: 130px !important;
+}
+
+.width-140 {
+    width: 140px !important;
+}
+
+.selected-point {
+    background-color: #1aa3ff;
+}

@@ -1,0 +1,376 @@
+﻿@model SpectrumFileSampleDataValuesContainer
+
+@using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Resources
+@using INAF.Libraries.Net.CommonWebAppModels.Models.Info
+@using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.SampleData
+@using INAF.Libraries.NetStandard.HyperLabCommonModels.Values;
+
+@{
+    int grainSizeLowerValueId = Model.SampleDataSelectedValues.GrainSizeLowerValueId ?? 0;
+    int grainSizeUpperValueId = Model.SampleDataSelectedValues.GrainSizeUpperValueId ?? 0;
+
+    int mineralTypeId = Model.SampleDataSelectedValues.MineralTypeId;
+}
+
+<!-- name -->
+<div class="row">
+    <div class="cell-fs-12 d-flex flex-justify-center">
+        @Html.LabelFor(model => model.SampleDataSelectedValues.Name, new Dictionary<string, object> { { "class", "control-label d-flex flex-justify-center w-100-fs w-25-md" } })
+    </div>
+</div>
+<div class="row">
+    <div class="cell-fs-12 d-flex flex-justify-center">
+        @Html.TextBoxFor(model => model.SampleDataSelectedValues.Name, 
+                         new Dictionary<string, object> { { "placeholder", @Html.Raw(Info.InfoNamePlaceholder) }, 
+                                                          { "data-role", "input"} ,
+                                                          { "class", "w-100-fs w-25-md"} 
+                                                        } )
+    </div>
+</div>
+<!-- all values -->
+<div class="row">
+    <!-- LEFT -->
+    <div class="cell-fs-12 cell-md-4 border-tab">
+        <!-- SAMPLE TYPES -->
+        <div class="row cell-fs-12">
+            @Html.LabelFor(model => model.SampleDataSelectedValues.SampleTypeId, Info.SampleDataTypeLabel, new Dictionary<string, object> { { "class", "control-label" } })
+        </div>
+        <div class="row cell-fs-12">
+            @Html.DropDownListFor(model => model.SampleDataSelectedValues.SampleTypeId, new SelectList(Model.SampleDataAvailableValues.SampleDataValues, "Id", "Value"), 
+                                  new Dictionary<string, object> { 
+                                      { "data-role", "select" },
+                                      { "data-on-item-select", "onSampleDataTypeSelected"}
+                                  })
+        </div>
+
+        @{
+            string visibilityClass = "";
+            switch (Model.SampleDataSelectedValues.SampleTypeId)
+            {
+                case (int)Enums.SampleType.Slab:
+                case (int)Enums.SampleType.Chip:
+                    visibilityClass = "d-none";
+                    break;
+
+                case (int)Enums.SampleType.Pellet:
+                case (int)Enums.SampleType.Particulate:
+                    visibilityClass = "d-flex";
+                    break;
+            }
+        }
+
+        <!-- GRAIN SIZE TYPES -->
+         <div class="row cell-fs-12 margin-top-16 @visibilityClass" id="grainSizeTypesSelectLabel">
+            @Html.LabelFor(model => model.SampleDataSelectedValues.GrainSizeTypeId, Info.GrainSizeTypeLabel, new Dictionary<string, object> { { "class", "control-label" } })
+        </div>
+        <div class="row cell-fs-12 @visibilityClass" id="grainSizeTypesSelect">
+            @Html.DropDownListFor(model => model.SampleDataSelectedValues.GrainSizeTypeId, new SelectList(Model.SampleDataAvailableValues.GrainSizeTypeValues, "Id", "TypeValue"), 
+                                  new Dictionary<string, object> { 
+                                      { "data-role", "select" },
+                                      { "data-on-item-select", "onGrainSizeTypeSelected"}
+                                  })
+        </div>
+
+        <!-- GRAIN SIZE VALUES (LOWER LIMIT/RANGE/UPPER LIMIT)-->
+        <div class="row cell-fs-12 margin-top-16">
+            <span id="grainSizeValues" class="control-label"></span>
+        </div>
+
+        <div class="row @visibilityClass" id="grainSizeLowerLimitContainer">
+            <div class="cell-fs-6">
+                <label>@Html.Raw(Info.GrainSizeLowerLimitLabel)</label>
+            </div>
+            <div class="cell-fs-6" id="grainSizeLowerLimit"></div>
+        </div>
+
+        <div class="row margin-top-8 @visibilityClass" id="grainSizeUpperLimitContainer">
+            <div class="cell-fs-6">
+                <label>@Html.Raw(Info.GrainSizeUpperLimitLabel)</label>
+            </div>
+            <div class="cell-fs-6" id="grainSizeUpperLimit"></div>
+        </div>
+    </div>
+
+    <!-- CENTER -->
+    <div class="cell-fs-12 cell-md-4 border-tab">
+        <!-- ORIGIN TYPES -->
+        <div class="row cell-fs-12">
+            @Html.LabelFor(model => model.SampleDataSelectedValues.OriginTypeId, Info.SampleOriginTypeLabel, new Dictionary<string, object> { { "class", "control-label" } })
+        </div>
+        <div class="row cell-fs-12">
+            @Html.DropDownListFor(model => model.SampleDataSelectedValues.OriginTypeId, new SelectList(Model.SampleDataAvailableValues.OriginTypeValues, "Id", "Value"), new Dictionary<string, object> { { "data-role", "select" } })
+        </div>
+
+        <!-- MINERAL TYPES -->
+        <div class="row cell-fs-12 margin-top-16">
+            @Html.LabelFor(model => model.SampleDataSelectedValues.MineralTypeId, Info.SampleMineralTypeLabel, new Dictionary<string, object> { { "class", "control-label" } })
+        </div>
+        <div class="row cell-fs-12">
+            @Html.DropDownListFor(model => model.SampleDataSelectedValues.MineralTypeId, new SelectList(Model.SampleDataAvailableValues.MineralTypeValues, "Id", "Value"), 
+                                  new Dictionary<string, object> { 
+                                      { "data-role", "select" },
+                                      { "data-on-change", "setSelectedMineralType" },
+                                  })
+        </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="cell-fs-12 cell-md-4">
+        <!-- MINERALS SUGGESTION -->
+        <div class="row cell-fs-12" id="mineralsSuggestionsLabelContainer">
+            <label id="mineralsSuggestionLabel" for="mineralsSuggestion" class="control-label">@Html.Raw(Info.SuggestionsForMineralsLabel)</label>
+            <span class="mif-info"
+                  data-role="hint"
+                  data-hint-text="@Html.Raw(Info.SuggestionsInfo)"
+                  data-cls-hint="bg-cyan fg-white drop-shadow"
+                  data-on-hint-show="hintRoutines.showHint"
+                  data-on-hint-hide="hintRoutines.hideHint"></span>
+        </div>
+        <div class="row cell-fs-12" id="mineralsSuggestionsContainer">
+            <input id="mineralsSuggestions" type="text" data-role="input" data-search-button="false">
+        </div>
+
+        <div id="materialsManagement">
+            @await Html.PartialAsync("Partials/_SelectedMineralType", Model.SampleDataSelectedValues)
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var fileId = @Model.Id;
+    var sampleTypeSelect, grainSizeTypeSelect;
+
+    var grainSizeLowerValueId = @grainSizeLowerValueId;
+    var grainSizeUpperValueId = @grainSizeUpperValueId;
+
+    var mineralTypeId = @mineralTypeId;
+
+    var GrainSizeSelectLowerLimitLabel = "@Html.Raw(Info.GrainSizeSelectLowerLimitLabel)";
+    var GrainSizeSelectRangeLabel = "@Html.Raw(Info.GrainSizeSelectRangeLabel)";
+    var GrainSizeSelectUpperLimitLabel = "@Html.Raw(Info.GrainSizeSelectUpperLimitLabel)";
+    var InfoManagementTitle = "@Html.Raw(Info.InfoManagementTitle)";
+    var InfoNoMineralsSelectedYet = "@Html.Raw(Info.InfoNoMineralsSelectedYet)";
+    var MineralDeletionQuestion = "@Html.Raw(Info.MineralDeletionQuestion)";
+
+    var SuggestionsForMeteorsLabel = "@Html.Raw(Info.SuggestionsForMeteorsLabel)";
+    var SuggestionsForMineralsLabel = "@Html.Raw(Info.SuggestionsForMineralsLabel)";
+    var SuggestionsForRocksLabel = "@Html.Raw(Info.SuggestionsForRocksLabel)";
+
+    var UrlGetMeteorClasses = '/@GenericHelper.GetControllerName(nameof(ExtServicesController))/@nameof(ExtServicesController.GetMeteorClasses)';
+    var UrlGetMinerals = '/@GenericHelper.GetControllerName(nameof(MaterialsController))/@nameof(MaterialsController.GetMinerals)';
+    var UrlGetRocks = '/@GenericHelper.GetControllerName(nameof(MaterialsController))/@nameof(MaterialsController.GetRocks)';
+    var UrlGetSampleDataValues = '/@GenericHelper.GetControllerName(nameof(SampleAndMeasurementController))/@nameof(SampleAndMeasurementController.GetSampleDataValues)';
+    var UrlLoadSpectrumSampleSelectedValuesView = '/@GenericHelper.GetControllerName(nameof(SampleAndMeasurementController))/@nameof(SampleAndMeasurementController.LoadSpectrumSampleSelectedValuesView)';
+    
+    var hintRoutines = {
+    showHint: function (hint, element) {
+        $(hint).addClass("showHint");
+        setTimeout(function () { $(hint).removeClass("showHint"); }, 500)
+    },
+
+    hideHint: function (hint, element) {
+        $(hint).addClass("hideHint");
+    }
+}
+
+    /* ################################################################################ */
+    /* GRAIN SIZE MANAGEMENT */
+    /* ################################################################################ */
+    function buildCommon(values, id) {
+        var html = `<select id='${id}' data-role="select">`;
+        let valuesNum = values.length;
+        for (var i = 0; i < valuesNum; i++) {
+            html += `<option value='${values[i].Id}'>${values[i].Value}</option>`;
+        }
+        html += '</select>';
+
+        return html;
+    }
+
+    function buildLowerLimit(values) {
+        if (!$('#grainSizeLowerLimit').is(':empty'))
+            return;
+
+        $('#grainSizeLowerLimitSelector').ready(function () {
+            let grainSizeLowerLimitSelector = Metro.getPlugin('#grainSizeLowerLimitSelector', 'select');
+
+            if (grainSizeLowerValueId == 0)
+                grainSizeLowerValueId = getGrainSizeValueForSelectedSampleData(LOWER_LIMIT);
+            grainSizeLowerLimitSelector.val(grainSizeLowerValueId);
+
+            showByClass('grainSizeLowerLimitContainer');
+        });
+
+        let html = buildCommon(values, 'grainSizeLowerLimitSelector');
+        $('#grainSizeLowerLimit').html(html);
+    }
+
+    function buildUpperLimit(values) {
+        if (!$('#grainSizeUpperLimit').is(':empty'))
+            return;
+
+        $('#grainSizeUpperLimitSelector').ready(function () {
+            let grainSizeUpperLimitSelector = Metro.getPlugin('#grainSizeUpperLimitSelector', 'select');
+
+            if (grainSizeUpperValueId == 0)
+                grainSizeUpperValueId = getGrainSizeValueForSelectedSampleData(UPPER_LIMIT);
+            grainSizeUpperLimitSelector.val(grainSizeUpperValueId);
+
+            showByClass('grainSizeUpperLimitContainer');
+        });
+
+        let html = buildCommon(values, 'grainSizeUpperLimitSelector');
+        $('#grainSizeUpperLimit').html(html);
+    }
+
+    function clearLowerLimit() {
+        $('#grainSizeLowerLimit').empty();
+        hideByClass('grainSizeLowerLimitContainer');
+    }
+
+    function clearUpperLimit() {
+        $('#grainSizeUpperLimit').empty();
+        hideByClass('grainSizeUpperLimitContainer');
+    }
+
+    function tryBuildGrainSizeValuesSelect(grainSizeValues, grainSizeTypeVal) {
+        if (grainSizeValues && grainSizeValues.length > 0) {
+            switch (grainSizeTypeVal) {
+                case 1:
+                    buildLowerLimit(grainSizeValues);
+                    clearUpperLimit();
+                    break;
+
+                case 2:
+                    buildLowerLimit(grainSizeValues);
+                    buildUpperLimit(grainSizeValues);
+                    break;
+
+                case 3:
+                    clearLowerLimit();
+                    buildUpperLimit(grainSizeValues);
+                    break;
+            }
+        } else {
+            /* clear selectors and hide everything */
+            clearLowerLimit();
+            clearUpperLimit();
+        }
+    }
+
+    function onGrainSizeTypeSelected(val) {
+        //console.log(`onGrainSizeTypeSelected: ${val}`);
+
+        let grainSizeTypeVal = parseInt(val);
+
+        switch (grainSizeTypeVal) {
+            case 1: // lower limit
+                $('#grainSizeValues').text(GrainSizeSelectLowerLimitLabel);
+                break;
+
+            case 2: // range
+                $('#grainSizeValues').text(GrainSizeSelectRangeLabel);
+                break;
+
+            case 3: // upper limit
+                $('#grainSizeValues').text(GrainSizeSelectUpperLimitLabel);
+                break;
+        }
+
+        let selectedSampleData = samplesData.find(x => x.Id == getSampleTypeSelectedValue());
+        tryBuildGrainSizeValuesSelect(selectedSampleData.GrainSizeValues, grainSizeTypeVal);
+    }
+
+    function onSampleDataTypeSelected(val) {
+        //console.log(`onSampleDataTypeSelected: ${val}`);
+
+        let sampleDataTypeVal = parseInt(val);
+
+        switch (sampleDataTypeVal) {
+            case 1: // slab
+            case 2: // chip
+                hideByClass('grainSizeTypesSelectLabel');
+                hideByClass('grainSizeTypesSelect');
+                break;
+
+            case 3: // pellet
+            case 4: // particulate
+                showByClass('grainSizeTypesSelectLabel');
+                showByClass('grainSizeTypesSelect');
+                onGrainSizeTypeSelected(getGrainSizeTypeSelectedValue());
+                break;
+        }
+    }
+
+    function getGrainSizeValueForSelectedSampleData(lowerOrUpperLimit) {
+        let sampleType = getSampleTypeSelectedValue();
+
+        let grainSizeType = getGrainSizeTypeSelectedValue();
+
+        console.log(`sampleType: ${sampleType}, grainSizeType: ${grainSizeType}`);
+
+        let sampleData = samplesData.find(x => x.Id == getSampleTypeSelectedValue());
+        if (lowerOrUpperLimit == LOWER_LIMIT)
+            return sampleData.GrainSizeValues[0].Id;
+        else
+            return sampleData.GrainSizeValues[1].Id;
+    }
+
+    async function getSampleDataValues() {
+        let obj = await doAjaxGetNoModelAsync(UrlGetSampleDataValues);
+        if (obj) {
+            let itemsNum = obj.length;
+            for (var i = 0; i < itemsNum; i++) {
+                let sampleData = {
+                    Id: obj[i].Id,
+                    Value: obj[i].Value,
+                    GrainSizeValues: []
+                };
+                if (obj[i].GrainSizeValues && obj[i].GrainSizeValues.length > 0) {
+                    let grainSizeValuesNum = obj[i].GrainSizeValues.length
+                    for (var j = 0; j < grainSizeValuesNum; j++) {
+                        let grainSizeValue = {
+                            Id: obj[i].GrainSizeValues[j].Id,
+                            Value: obj[i].GrainSizeValues[j].Value
+                        };
+                        sampleData.GrainSizeValues.push(grainSizeValue);
+                    }
+                }
+
+                samplesData.push(sampleData)
+            }
+        }
+    }
+
+    async function initSamplesData() {
+        await getSampleDataValues();
+
+        switch (parseInt(getSampleTypeSelectedValue())) {
+            case 1: //Slab
+            case 2: //Chip
+                break;
+
+            case 3: //Pellet
+            case 4: //Particulate
+                onGrainSizeTypeSelected(getGrainSizeTypeSelectedValue());
+                break;
+        }
+    }
+
+    /* ################################################################################ */
+    /* DOCUMENT READY */
+    /* ################################################################################ */
+    $(document).ready(function() {
+        sampleTypeSelect = Metro.getPlugin($('#@nameof(SpectrumFileSampleDataValuesContainer.SampleDataSelectedValues)_@nameof(SampleDataSelectedValues.SampleTypeId)'), 'select');
+
+        grainSizeTypeSelect = Metro.getPlugin($('#@nameof(SpectrumFileSampleDataValuesContainer.SampleDataSelectedValues)_@nameof(SampleDataSelectedValues.GrainSizeTypeId)'), 'select');
+
+        initSamplesData();
+
+        setAutocomplete(UrlGetMinerals);
+
+        setMaterialForMixEventHandler();
+    });
+</script>

@@ -1,0 +1,87 @@
+﻿@model WebBaseModel
+
+@using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Resources
+
+@{
+    ViewBag.Title = Users.UsersListPageTitle;
+
+    var controllerOperationMessage = (!string.IsNullOrEmpty(Model.ControllerOperationMessage) ? Model.ControllerOperationMessage : "");
+}
+
+<link rel="stylesheet" href="~/css/dist/users/usersbundle.min.css" />
+<div id="wrapper" class="container mywrapper overflow-y-auto">
+    <!-- SEARCH -->
+    <div id="searchboxContainer" class="row rows-divider">
+        <div class="cell-fs-12 cell-sm-6">
+            <input id="searchbox"
+                   type="text"
+                   data-role="input"
+                   placeholder="@Html.Raw(Users.SearchContactsLabel)"
+                   data-search-button="true"
+                   data-search-button-click="custom"
+                   data-on-search-button-click="doSearchProcedure"
+                   data-on-clear-click="clearSearchboxProcedure">
+        </div>
+    </div>
+
+    <div id="listAndCardContainer" class="row rows-divider">
+        <!-- LIST-->
+        <div id="contactsCol" class="cell-fs-12 cell-sm-6 list-card-separator" style="height: 85vh; overflow-y: auto; overflow-x: hidden">
+            <!-- USERS LIST -->
+            <div id="usersList" class="row"></div>
+        </div>
+
+        <!-- CARD-->
+        <div id="cardContainer" class="cell-fs-12 cell-sm-6 user-details" style="height: 85vh;">
+            <div id="selectedPersonContainerBckGnd">
+                <div id="selectedUserContainer"></div>
+            </div>
+        </div>
+
+        <!-- LETTERS GRID -->
+        <div id="lettersGrid" class="row lettersGrid">
+            <div id="lettersList" class="cell-fs-12 cell-sm-6"></div>
+        </div>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+@await Html.PartialAsync("Partials/_JsCommon")
+@await Html.PartialAsync("Partials/_JsUsersCommon")
+
+<!-- FORM FOR EDITING PERSON -->
+@*@using (Html.BeginForm(nameof(UsersController.EditUser), GenericHelper.GetControllerName(nameof(UsersController)), FormMethod.Post, new Dictionary<string, object> { { "id", "editUserForm" } }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="EditUserId" name="Id" value="" />
+}*@
+
+<!-- FORM FOR ADDING NEW PERSON -->
+@using (Html.BeginForm(nameof(UsersController.UpsertUser), GenericHelper.GetControllerName(nameof(UsersController)), FormMethod.Get, new Dictionary<string, object> { { "id", "upsertUserForm" } }))
+{ }
+
+<script type="text/javascript">
+    var detail = $('#selectedDetailContainer');
+
+    var UrlDeleteUser = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.DeleteUser)';
+    var UrlEditUser = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.EditUser)';
+    var UrlGetUsersList = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.GetUsersList)';
+    var UrlGetUserDetails = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.GetUserDetailsView)';
+    var UrlUpsertUser = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.UpsertUser)';
+
+    var DeletePersonErrorMessage = '@Users.DeletePersonErrorMessage';
+    var PersonDeletionQuestion = '@Users.PersonDeletionQuestion';
+    var PersonManagementTitle = '@Users.PersonManagementTitle';
+
+    var controllerOperationStatus = @{@((int)Model.ControllerOperationStatus);};
+    var controllerOperationMessage = '@controllerOperationMessage';
+</script>
+<environment names="Development">
+    <script type="text/javascript" src="~/js/dist/users/userslistbundle.js"></script>
+</environment>
+<environment names="Production">
+    <script type="text/javascript" src="~/js/dist/users/userslistbundle.min.js"></script>
+</environment>

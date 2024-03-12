@@ -1,0 +1,480 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ButtonBackClearToSearchLabel" xml:space="preserve">
+    <value>Clear chart and go back to search</value>
+  </data>
+  <data name="ButtonBackToSearchLabel" xml:space="preserve">
+    <value>Back to search (charts are maintained)</value>
+  </data>
+  <data name="ButtonGraphSelectedSpectraLabel" xml:space="preserve">
+    <value>Graph selected spectra</value>
+  </data>
+  <data name="ButtonHelpLabel" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="ButtonOpenCharmsLabel" xml:space="preserve">
+    <value>Open panel for spectra processing</value>
+  </data>
+  <data name="ButtonSearchLabel" xml:space="preserve">
+    <value>Start searching</value>
+  </data>
+  <data name="ButtonShowCharmsColorSelectorLabel" xml:space="preserve">
+    <value>Show color settings panel</value>
+  </data>
+  <data name="ButtonShowCharmsLegendLabel" xml:space="preserve">
+    <value>Show/hide legend</value>
+  </data>
+  <data name="ButtonZoomOutLabel" xml:space="preserve">
+    <value>Reset zoom</value>
+  </data>
+  <data name="ChartOverwriteQuestion" xml:space="preserve">
+    <value>By proceeding, the current chart will be overwritten by a new one with selected spectra. Do you really want to continue?</value>
+  </data>
+  <data name="ComplexSearchListOfConditions" xml:space="preserve">
+    <value>List of available conditions</value>
+  </data>
+  <data name="ComplexSearchShowExplanation" xml:space="preserve">
+    <value>Show explanation</value>
+  </data>
+  <data name="GroupItemsExpandTooltip" xml:space="preserve">
+    <value>Show spectra belonging to current group</value>
+  </data>
+  <data name="GroupItemsShrinkTooltip" xml:space="preserve">
+    <value>Close current group</value>
+  </data>
+  <data name="MeteorClassesSuggestionsErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to retrieve meteor classes</value>
+  </data>
+  <data name="ResultsPanelTitle" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="RetrievedComplexSearchesNoItemsMessage1" xml:space="preserve">
+    <value>When creating a complex search, you have the chance of saving it by assigning it a name.</value>
+  </data>
+  <data name="RetrievedComplexSearchesNoItemsMessage2" xml:space="preserve">
+    <value>If saved searches are available they are shown here as a list to make it easy for you finding them.</value>
+  </data>
+  <data name="RetrievedComplexSearchesNoItemsMessage3" xml:space="preserve">
+    <value>By simply clicking on the &lt;i&gt;Apply&lt;/i&gt; button on any item, the related search is re-applied.</value>
+  </data>
+  <data name="RetrievedComplexSearchesNoItemsMessage4" xml:space="preserve">
+    <value>If you want to look at the conditions used in a complex search and the values of each parameter, just use the &lt;i&gt;Show more info&lt;/i&gt; button</value>
+  </data>
+  <data name="RetrievedComplexSearchesNoItemsTitle" xml:space="preserve">
+    <value>No saved searches available</value>
+  </data>
+  <data name="RetrievedComplexSearchesTitle" xml:space="preserve">
+    <value>List of your saved complex searches</value>
+  </data>
+  <data name="SaveComplexSearchAlreadyExistingMessage" xml:space="preserve">
+    <value>You're trying to save current search using an already existing name. Please, use a different name.</value>
+  </data>
+  <data name="SaveComplexSearchErrorMessage" xml:space="preserve">
+    <value>Sorry, an error occurred while trying to save the search. If problem persists, contact the system administrator</value>
+  </data>
+  <data name="SaveComplexSearchLabel" xml:space="preserve">
+    <value>Save search</value>
+  </data>
+  <data name="SaveComplexSearchNamePlaceholder" xml:space="preserve">
+    <value>Insert a name for current search</value>
+  </data>
+  <data name="SaveComplexSearchNoNameErrorMessage" xml:space="preserve">
+    <value>Insert a name for current search</value>
+  </data>
+  <data name="SaveComplexSearchSavedMessage" xml:space="preserve">
+    <value>The search has been successfully saved</value>
+  </data>
+  <data name="SaveComplexSearchUpdatedMessage" xml:space="preserve">
+    <value>The search has been successfully updated</value>
+  </data>
+  <data name="SavedComplexSearchesConditionsLabel" xml:space="preserve">
+    <value>Conditions</value>
+  </data>
+  <data name="SavedComplexSearchesDateLabel" xml:space="preserve">
+    <value>Saved on</value>
+  </data>
+  <data name="SavedComplexSearchesDeleteErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to delete selected search</value>
+  </data>
+  <data name="SavedComplexSearchesDeleteLabel" xml:space="preserve">
+    <value>Delete complex search</value>
+  </data>
+  <data name="SavedComplexSearchesDeleteQuestion" xml:space="preserve">
+    <value>Do you really want to delete selected search? By deleting it, the search will be removed from list and you will be not able to execute it anymore</value>
+  </data>
+  <data name="SavedComplexSearchesExecuteLabel" xml:space="preserve">
+    <value>Execute search</value>
+  </data>
+  <data name="SavedComplexSearchesHideDetailedInfoLabel" xml:space="preserve">
+    <value>Hide info</value>
+  </data>
+  <data name="SavedComplexSearchesInfoErrorMessage" xml:space="preserve">
+    <value>Sorry, couldn't show info about selected search</value>
+  </data>
+  <data name="SavedComplexSearchesInfoLabel" xml:space="preserve">
+    <value>More info</value>
+  </data>
+  <data name="SavedComplexSearchesNameLabel" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SavedComplexSearchesRetrieveInfoErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to retrieve info about selected complex search</value>
+  </data>
+  <data name="SavedComplexSearchesShowDetailedInfoLabel" xml:space="preserve">
+    <value>Show more info</value>
+  </data>
+  <data name="SavedComplexSearchInfoShowErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to show info on selected complex search</value>
+  </data>
+  <data name="SearchAndLabel" xml:space="preserve">
+    <value>and</value>
+  </data>
+  <data name="SearchByMaterialErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to search spectra by selected material</value>
+  </data>
+  <data name="SearchByMaterialPlaceholder" xml:space="preserve">
+    <value>Start typing material name...</value>
+  </data>
+  <data name="SearchBySampleNameEmptyErrorMessage" xml:space="preserve">
+    <value>Insert a name for starting search</value>
+  </data>
+  <data name="SearchBySampleNamePlaceholder" xml:space="preserve">
+    <value>Insert a name...</value>
+  </data>
+  <data name="SearchClearSuggestionsButtonTitle" xml:space="preserve">
+    <value>Clear suggestions</value>
+  </data>
+  <data name="SearchComplexByMaterialLabel" xml:space="preserve">
+    <value>Material</value>
+  </data>
+  <data name="SearchComplexByMineralTypeLabel" xml:space="preserve">
+    <value>Mineral type</value>
+  </data>
+  <data name="SearchComplexByOriginTypeLabel" xml:space="preserve">
+    <value>Origin type</value>
+  </data>
+  <data name="SearchComplexBySampleDataTypeLabel" xml:space="preserve">
+    <value>Sample type</value>
+  </data>
+  <data name="SearchComplexBySampleNameLabel" xml:space="preserve">
+    <value>Sample name</value>
+  </data>
+  <data name="SearchComplexClearLabel" xml:space="preserve">
+    <value>Clear search</value>
+  </data>
+  <data name="SearchComplexConditionsOnMaterialLabel" xml:space="preserve">
+    <value>Condition(s) on material</value>
+  </data>
+  <data name="SearchComplexConditionsOnMineralTypeLabel" xml:space="preserve">
+    <value>Condition(s) on mineral type</value>
+  </data>
+  <data name="SearchComplexConditionsOnOriginTypeLabel" xml:space="preserve">
+    <value>Condition(s) on origin type</value>
+  </data>
+  <data name="SearchComplexConditionsOnSampleDataTypeLabel" xml:space="preserve">
+    <value>Condition(s) on sample type</value>
+  </data>
+  <data name="SearchComplexConditionsOnSampleNameLabel" xml:space="preserve">
+    <value>Condition(s) on sample name</value>
+  </data>
+  <data name="SearchComplexEditTitle" xml:space="preserve">
+    <value>Set title for this search</value>
+  </data>
+  <data name="SearchComplexGroupAddItem" xml:space="preserve">
+    <value>Add condition for this group of conditions</value>
+  </data>
+  <data name="SearchComplexGroupAlreadyInUseLabel" xml:space="preserve">
+    <value>Group already in use</value>
+  </data>
+  <data name="SearchComplexGroupRemoveGroup" xml:space="preserve">
+    <value>Remove this group of conditions</value>
+  </data>
+  <data name="SearchComplexHideTitle" xml:space="preserve">
+    <value>Clear title for this search</value>
+  </data>
+  <data name="SearchComplexManagementLabel" xml:space="preserve">
+    <value>Searches management</value>
+  </data>
+  <data name="SearchComplexMaxNumOfConditionsReachedMessage" xml:space="preserve">
+    <value>The current field has r_v available options. You entered as many conditions as available options, so adding other conditions makes no sense.</value>
+  </data>
+  <data name="SearchComplexNoConditionsWarningMessage" xml:space="preserve">
+    <value>Couldn't start searching. No conditions set</value>
+  </data>
+  <data name="SearchComplexQueryConditionsManagement" xml:space="preserve">
+    <value>Query conditions management</value>
+  </data>
+  <data name="SearchComplexRemoveGroupQuestion" xml:space="preserve">
+    <value>Do you really want to remove selected group?</value>
+  </data>
+  <data name="SearchComplexRemoveQuestion" xml:space="preserve">
+    <value>Do you really want to remove current search?</value>
+  </data>
+  <data name="SearchComplexTitle" xml:space="preserve">
+    <value>New complex search</value>
+  </data>
+  <data name="SearchComplexValidationErrorsMessage" xml:space="preserve">
+    <value>Couldn't start searching. Please, fix error(s)</value>
+  </data>
+  <data name="SearchFieldTextRequiredMessage" xml:space="preserve">
+    <value>Missing value</value>
+  </data>
+  <data name="SearchGroupItemsColEditDateTimeLabel" xml:space="preserve">
+    <value>Edited on</value>
+  </data>
+  <data name="SearchGroupItemsColInsertDateTimeLabel" xml:space="preserve">
+    <value>Added on</value>
+  </data>
+  <data name="SearchGroupItemsColTypeLabel" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="SearchGroupItemsNoResultsMessage" xml:space="preserve">
+    <value>Sorry, no spectra found for selected result. Maybe an error occurred while querying the database.</value>
+  </data>
+  <data name="SearchHelpTitle" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="SearchHowToFinal" xml:space="preserve">
+    <value>Click on &lt;i&gt;search&lt;/i&gt; icon on top of page to start searching</value>
+  </data>
+  <data name="SearchNoResultsMessage" xml:space="preserve">
+    <value>Sorry, no results found for selected query</value>
+  </data>
+  <data name="SearchOrLabel" xml:space="preserve">
+    <value>or</value>
+  </data>
+  <data name="SearchPageTitle" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SearchPanelTitle" xml:space="preserve">
+    <value>Search for data</value>
+  </data>
+  <data name="SearchResultClearLabel" xml:space="preserve">
+    <value>Clear search results</value>
+  </data>
+  <data name="SearchResultColMeteorClassLabel" xml:space="preserve">
+    <value>Meteor class</value>
+  </data>
+  <data name="SearchResultColMixLabel" xml:space="preserve">
+    <value>Minerals</value>
+  </data>
+  <data name="SearchResultColMonomineralicLabel" xml:space="preserve">
+    <value>Mineral</value>
+  </data>
+  <data name="SearchResultColNameLabel" xml:space="preserve">
+    <value>Filename</value>
+  </data>
+  <data name="SearchResultColRockLabel" xml:space="preserve">
+    <value>Rock</value>
+  </data>
+  <data name="SearchResultColSpectraTypesNumLabel" xml:space="preserve">
+    <value>Available spectra types num</value>
+  </data>
+  <data name="SearchResultColSpectrumLevelLabel" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="SearchSimpleByMaterialLabel" xml:space="preserve">
+    <value>Search by material</value>
+  </data>
+  <data name="SearchSimpleByMineralTypeLabel" xml:space="preserve">
+    <value>Search by mineral type</value>
+  </data>
+  <data name="SearchSimpleByOriginTypeLabel" xml:space="preserve">
+    <value>Search by origin type</value>
+  </data>
+  <data name="SearchSimpleBySampleDataTypeLabel" xml:space="preserve">
+    <value>Search by sample type</value>
+  </data>
+  <data name="SearchSimpleBySampleNameLabel" xml:space="preserve">
+    <value>Search by sample name</value>
+  </data>
+  <data name="SearchSuggestionsNotRetrievedMessage" xml:space="preserve">
+    <value>Suggestion not selected, please press 'Enter' to retrieve suggestions</value>
+  </data>
+  <data name="SearchTypeComplexExplanation" xml:space="preserve">
+    <value>lets you using several parameters in order to build up complex queries. Suggested for refining searches obtaining accurate results.</value>
+  </data>
+  <data name="SearchTypeComplexHowTo11" xml:space="preserve">
+    <value>Tap items in the left-side list to add conditions:</value>
+  </data>
+  <data name="SearchTypeComplexHowTo12" xml:space="preserve">
+    <value>for each selected item an input field is added. A small &lt;i&gt;Add&lt;/i&gt; button is available to add more conditions about the same search type</value>
+  </data>
+  <data name="SearchTypeComplexHowTo21" xml:space="preserve">
+    <value>Add the required value for each field:</value>
+  </data>
+  <data name="SearchTypeComplexHowTo22" xml:space="preserve">
+    <value>most of fields let you select a value, a few ones require typing text</value>
+  </data>
+  <data name="SearchTypeComplexHowTo31" xml:space="preserve">
+    <value>Select the and/or operators:</value>
+  </data>
+  <data name="SearchTypeComplexHowTo32" xml:space="preserve">
+    <value>The query is built using selected operators to concatenate conditions</value>
+  </data>
+  <data name="SearchTypeComplexHowToTitle" xml:space="preserve">
+    <value>How to use complex search</value>
+  </data>
+  <data name="SearchTypeComplexLabel" xml:space="preserve">
+    <value>Complex search</value>
+  </data>
+  <data name="SearchTypeSimpleExplanation" xml:space="preserve">
+    <value>allows you to use only one parameter for querying the database. Suggested for starting searches by retrieving first rough results.</value>
+  </data>
+  <data name="SearchTypeSimpleHowTo1" xml:space="preserve">
+    <value>Click on a search type to set it as the search method. The bold title highlights the current one.</value>
+  </data>
+  <data name="SearchTypeSimpleHowTo2" xml:space="preserve">
+    <value>Select a value or type text to set the value for the search</value>
+  </data>
+  <data name="SearchTypeSimpleHowTo2Nb1" xml:space="preserve">
+    <value>type a text and press &lt;i&gt;Enter&lt;/i&gt; to search for materials (minerals, rocks, meteor classes) having name that contains the selected text.</value>
+  </data>
+  <data name="SearchTypeSimpleHowTo2Nb2" xml:space="preserve">
+    <value>A list of suggestions is retrieved.</value>
+  </data>
+  <data name="SearchTypeSimpleHowTo2Nb3" xml:space="preserve">
+    <value>Select a value from the suggested ones</value>
+  </data>
+  <data name="SearchTypeSimpleHowTo2NbTitle" xml:space="preserve">
+    <value>&lt;b&gt;N.B.&lt;/b&gt; &lt;i&gt;Search by material&lt;/i&gt;</value>
+  </data>
+  <data name="SearchTypeSimpleHowToTitle" xml:space="preserve">
+    <value>How to use simple search</value>
+  </data>
+  <data name="SearchTypeSimpleLabel" xml:space="preserve">
+    <value>Simple search</value>
+  </data>
+  <data name="SuggestionsNoTextWarningMessage" xml:space="preserve">
+    <value>Please, enter a value to retrieve suggestions</value>
+  </data>
+  <data name="SuggestionsRetrievingErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to retrieve suggestions</value>
+  </data>
+  <data name="SuggestionTypeMeteorClasses" xml:space="preserve">
+    <value>Meteor classes</value>
+  </data>
+  <data name="SuggestionTypeMinerals" xml:space="preserve">
+    <value>Minerals</value>
+  </data>
+  <data name="SuggestionTypeRocks" xml:space="preserve">
+    <value>Rocks</value>
+  </data>
+</root>

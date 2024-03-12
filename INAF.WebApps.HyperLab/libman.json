@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "metro@4.5.7",
+      "destination": "wwwroot/metro/metro/"
+    }
+  ]
+}

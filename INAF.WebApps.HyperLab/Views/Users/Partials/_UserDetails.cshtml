@@ -1,0 +1,146 @@
+﻿@model UserModel
+
+@using INAF.WebApps.HyperLab.Resources
+@using INAF.Libraries.Net.CommonWebAppModels.Models.Users
+@using INAF.Libraries.NetStandard.HyperLabCommonModels.Values
+@using INAF.Libraries.NetStandard.HyperLabCommonModels.Extensions
+@using INAF.Libraries.NetStandard.Extensions
+
+<div class="row">
+    <div class="cell-fs-12 margin-left-8">
+        <!-- PICTURE + BUTTONS -->
+        <div class="row rows-divider">
+            <div class="cell-fs-6 cell-sm-4">
+                <img id="personPicture" src="/images/userCard.png" width="128" height="128" />
+            </div>
+            <div class="cell-fs-6 cell-sm-8">
+                <div class="row">
+                    <div class="cell-fs-12">
+                        <span id="person-name" class="person-name">@Html.Raw(Model.getCompleteName())</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="cell-fs-12">
+                        <span class="mif-pencil" onclick="callEditUser()" style="margin: 0px 8px; cursor: pointer"></span>
+                        <span class="mif-bin" onclick="deletePersonProcedure(@Model.Id)" style="margin: 0px 8px; cursor: pointer"></span>
+                        <span class="mif-cross-light" onclick="closeUserDetails()" style="float:right; margin-right: 8px; display:block; cursor:pointer;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTACTS -->
+        @if (Model.Contacts?.Count > 0)
+        {
+                <!-- PHONES -->
+                <div class="row rows-divider3">
+                    <div class="cell-fs-12">
+                    @{
+                        try
+                        {
+                            int addedPhonesNum = 0;
+                            var phones = Model.Contacts.Where(x => x.ContactType == Enums.ContactType.Phone).ToList();
+                            if (phones?.Count > 0)
+                            {
+                                for (int i = 0; i < phones.Count; i++)
+                                {
+                                    if (!string.IsNullOrEmpty(phones[i].Value))
+                                    {
+                                                                <div class="row rows-divider">
+                                                                    <div class="cell-fs-12">
+                                                @{
+                                                    string phoneLabel = phones[i].ContactType.GetDescription();
+                                                }
+                                                                        <span class="mif-phone icon-margin"></span><label class="info-label">@phoneLabel</label>
+                                                                        <br />
+                                                                        <label class="contact-value">@phones[i].Value</label>
+                                                                    </div>
+                                            @{
+                                                addedPhonesNum++;
+                                            }
+                                                                </div>
+                                    }
+                                    if (addedPhonesNum == 0)
+                                    {
+                                                                <label class="contact-value">@Contacts.NoPhonesForUser</label>
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception)
+                        { }
+                    }
+                    </div>
+                </div>
+                <!-- EMAILS -->
+                <div class="row rows-divider">
+                    <div class="cell-fs-12">
+                    @{
+                        try
+                        {
+                            int addedEmailsNum = 0;
+                            var emails = Model.Contacts.Where(x => x.ContactType == Enums.ContactType.Email).ToList();
+                            if (emails?.Count > 0)
+                            {
+                                for (int i = 0; i < emails.Count; i++)
+                                {
+                                    if (!string.IsNullOrEmpty(emails[i].Value))
+                                    {
+                                                                <div class="row rows-divider">
+                                                                    <div class="cell-fs-12">
+                                                @{
+                                                    string emailLabel = emails[i].ContactType.GetDescription();
+                                                    string email = emails[i].Value;
+                                                }
+                                                                        <span class="mif-envelop icon-margin"></span><label class="info-label">@emailLabel</label>
+                                                                        <br />
+                                                                        <a href="mailto:@email">@email</a>
+                                                                    </div>
+                                            @{
+                                                addedEmailsNum++;
+                                            }
+                                                                </div>
+                                    }
+                                }
+                            }
+                            if (addedEmailsNum == 0)
+                            {
+                                                <label class="contact-value">@Contacts.NoEmailsForUser</label>
+                            }
+                        }
+                        catch (Exception)
+                        { }
+                    }
+                    </div>
+                </div>
+        }
+
+        <!-- ROLE -->
+        <div class="row rows-divider3">
+            <div class="cell-fs-3 cell-sm-2 text-right">
+                <span><strong>@Users.UserRole</strong></span>
+            </div>
+            <div class="cell-fs-9 cell-sm-10">
+                <span>@Model.Roles[0].Name</span>
+            </div>
+        </div>
+
+         <!-- PERMISSIONS -->
+        <div class="row rows-divider3">
+            <div class="cell-fs-3 cell-sm-2 text-right">
+                <span><strong>@Users.UserPermissions</strong></span>
+            </div>
+            <div class="cell-fs-9 cell-sm-10">
+                <ul class="unstyled-list">
+                    @{
+                        int permissionsNum = Model.Roles[0].Permissions.Count;
+                        for (int i = 0; i < permissionsNum; i++)
+                        {
+                            <li><span>@Model.Roles[0].Permissions[i].Label</span> (<span class="text-small">@Model.Roles[0].Permissions[i].Description</span>)</li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

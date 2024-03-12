@@ -1,0 +1,133 @@
+﻿@model LoginModel
+
+@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Helpers
+@using INAF.Libraries.Net.CommonWebAppModels.Models.Account
+@using INAF.WebApps.HyperLab.Resources
+@using INAF.Libraries.Net.CommonWebAppHelpers
+@using CommonResources = INAF.Libraries.Net.CommonWebAppModels.Resources
+
+@{
+    Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
+
+    ViewBag.Title = "Login";
+
+    var password = nameof(LoginModel.Password);
+}
+
+<link rel="stylesheet" href="~/css/slabwebapp/account/login.css" />
+<div class="h-vh-100 w-vw-100">
+    <div class="row h-vh-100">
+        <!-- TEXT/IMAGES -->
+        <div class="cell-fs-12 cell-lg-4 h-vh-25-fs h-vh-100-lg">
+            <div class="row cell-fs-12 text-center h-25">
+                <span class="fg-black h2">@Html.Raw(SharedResources.SlabLabel)</span>
+            </div>
+            <div class="row text-center h-75">
+                <div class="cell-fs-6 cell-lg-12 text-center h-50">
+                <img src="~/images/login/em_spectrum_400x400.png" class="spectrum-image"/>
+            </div>
+            <div class="cell-fs-6 cell-lg-12 text-center h-50">
+                <img src="~/images/login/iaps_marchio_full_colorinaf.svg" class="inaf-image"/>
+            </div>
+            </div>
+        </div>
+
+        <!-- FORM -->
+        <div class="cell-fs-12 cell-lg-8 form-cell-background h-vh-75-fs h-vh-100-lg">
+            <div class="login-form">
+                <form id="formLogin"
+                      method="post"
+                      action="/@GenericHelper.GetControllerName(nameof(AccountController))/@nameof(AccountController.Login)"
+                      target="_self"
+                      class="bg-white p-6 mx-auto border bd-default win-shadow">
+                    <h2 class="text-light fg-black">@Html.Raw(CommonResources.Login.LoginMessage)</h2>
+                    <hr class="thin mt-4 mb-4 bg-white">
+
+                            @Html.AntiForgeryToken()
+
+                    <div class="row loginRowsDivider">
+                        <div class="col-xs-12">
+                            <!-- USERNAME -->
+                            <div class="form-group">
+                                        @Html.TextBoxFor(m => m.UserName,
+                                new Dictionary<string, object> {
+                                { "data_role", "input" },
+                                { "data-prepend", "<span class='mif-user'>" },
+                                { "data-validate", "required" },
+                                { "placeholder", Html.Raw(CommonResources.Login.UsernamePlaceholder) },
+                                })
+                                        @Html.ValidationMessageFor(m => m.UserName)
+                            </div>
+                            <!-- PASSWORD -->
+                            <div class="form-group">
+                                        @Html.PasswordFor(m => m.Password,
+                                new Dictionary<string, object> {
+                                { "data_role", "input" },
+                                { "data-prepend", "<span class='mif-home'>" },
+                                { "data-validate", "required" },
+                                { "placeholder", Html.Raw(CommonResources.Login.PasswordPlaceholder) }
+                                })
+                                        @Html.ValidationMessageFor(m => m.Password)
+                            </div>
+                            <!-- SUBMIT + REMEMBER ME-->
+                            <div class="form-group mt-10">
+                                        @Html.CheckBoxFor(m => m.RememberMe, new Dictionary<string, object> { { "data-role", "checkbox" }, { "class", "place-right" }, { "data-caption", @Html.Raw(CommonResources.Login.RememberMeLabel) }, { "id", "checkboxRememberMe" } })
+                                <button id="submitButton" class="button">@Html.Raw(SharedResources.SubmitLabel)</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var formLogin = $('#formLogin');
+    var password = '@password';
+    var UrlLogin = '/@GenericHelper.GetControllerName(nameof(AccountController))/@nameof(AccountController.Login)';
+
+    /* ################################################################################ */
+    /* VALIDATION + SUBMIT */
+    /* ################################################################################ */
+    /* ################################################################################ */
+    /* VALIDATION + SUBMIT */
+    /* ################################################################################ */
+    formLogin.data('validator', null);
+    $.validator.unobtrusive.parse(formLogin);
+
+    $("#submitButton").click(function () {
+        if (!$(formLogin).valid())
+        {
+            formLogin.addClass("ani-ring");
+            setTimeout(function () {
+                formLogin.removeClass("ani-ring");
+
+                $('#submitButton').attr('disabled', false);
+            }, 1000);
+
+            var validator = $(formLogin).validate();
+
+            for (var i in validator.errorMap) {
+                console.log(i, ":", validator.errorMap[i]);
+            }
+
+            return false;
+        }
+
+        setLoadingCircleIsVisible(true);
+        $(formLogin).submit();
+    });
+
+
+    /* ################################################################################ */
+    /* DOCUMENT READY */
+    /* ################################################################################ */
+    $(document).ready(function () {
+        Metro.makePlugin("#UserName", "input");
+        Metro.makePlugin("#Password", "input");
+
+        $('.input').addClass('required');
+    });
+</script>

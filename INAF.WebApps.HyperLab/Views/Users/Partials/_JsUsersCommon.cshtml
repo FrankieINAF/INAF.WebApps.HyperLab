@@ -1,0 +1,13 @@
+﻿@using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Helpers
+@using INAF.WebApps.HyperLab.Resources
+
+<script type="text/javascript">
+    var UrlUsersList = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.UsersList)';
+    var UrlIsUpsertUserPermissionGranted = '/@GenericHelper.GetControllerName(nameof(PermissionsController))/@nameof(PermissionsController.IsUpsertUserPermissionGranted)';
+
+    var AddUserTitle = '@Users.AddUserTitle';
+
+    var PersonManagementTitle = '@Users.PersonManagementTitle';
+</script>
