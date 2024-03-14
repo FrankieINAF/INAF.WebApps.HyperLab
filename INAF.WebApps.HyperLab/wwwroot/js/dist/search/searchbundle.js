@@ -7983,8 +7983,10 @@ function setMissingPointsFromDownloadedContinuumRemoved() {
 
 async function startRemoveContinuumProcedureAsync() {
     /* if continuum removed spectrum is already present, doesn't start (check 1) */
-    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED))
+    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED)) {
+        showSimpleDialog(WARNING_LABEL, FitNoProcessBecauseAlreadyPresentMessage, WARNING);
         return;
+    }
 
     /* if continuum removed spectrum is already present, doesn't start (check 2) */
     if (isAnySpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED))
@@ -8603,6 +8605,9 @@ async function onSegmentFunctionSelectCoreAsync(val, option, item) {
 
     /* add/update continuum segment */
     await buildContinuumSegmentAsync(selectedFitFunction, segmentsForFitting[segmentIndex].P0.P, segmentsForFitting[segmentIndex].P1.P);
+
+    /* update the chart */
+    dxChartResetVisualRange(chartContainer);
 }
 
 function removeSegmentForFittingUICore(segment) {

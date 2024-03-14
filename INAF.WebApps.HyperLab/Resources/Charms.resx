@@ -309,6 +309,9 @@
   <data name="FitNoPointsFoundForSegmentErrorMessage" xml:space="preserve">
     <value>Sorry, no points found for selected segment</value>
   </data>
+  <data name="FitNoProcessBecauseAlreadyPresentMessage" xml:space="preserve">
+    <value>A continuum-removed spectrum is already available, remove it before creating the new one</value>
+  </data>
   <data name="FitNoSegmentsAvailableMessage" xml:space="preserve">
     <value>No segments have been defined so far</value>
   </data>

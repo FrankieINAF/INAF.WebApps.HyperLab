@@ -114,6 +114,9 @@ async function onSegmentFunctionSelectCoreAsync(val, option, item) {
 
     /* add/update continuum segment */
     await buildContinuumSegmentAsync(selectedFitFunction, segmentsForFitting[segmentIndex].P0.P, segmentsForFitting[segmentIndex].P1.P);
+
+    /* update the chart */
+    dxChartResetVisualRange(chartContainer);
 }
 
 function removeSegmentForFittingUICore(segment) {

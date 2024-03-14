@@ -637,6 +637,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A continuum-removed spectrum is already available, remove it before creating the new one.
+        /// </summary>
+        public static string FitNoProcessBecauseAlreadyPresentMessage {
+            get {
+                return ResourceManager.GetString("FitNoProcessBecauseAlreadyPresentMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No segments have been defined so far.
         /// </summary>
         public static string FitNoSegmentsAvailableMessage {
