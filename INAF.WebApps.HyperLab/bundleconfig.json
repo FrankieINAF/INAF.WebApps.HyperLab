@@ -1,0 +1,200 @@
+[
+  {
+    "outputFileName": "wwwroot/metro/js/dist/metrobundle.js",
+    "inputFiles": [
+      "wwwroot/metro/js/metro.js",
+      "wwwroot/metro/js/commonformetro.js",
+      "wwwroot/metro/js/index.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/search/blazorglobalbundle.js",
+    "inputFiles": [
+      "wwwroot/js/slabwebapp/search/blazorglobal.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/jquerybundle.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/jquery.min.js",
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+      "wwwroot/lib/jquery-validation/dist/additional-methods.min.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+      "wwwroot/lib/jquery-dateFormat/dist/jquery-dateFormat.js",
+      "wwwroot/lib/jquery-contextMenu/jquery.contextMenu.js",
+      "wwwroot/lib/jquery-contextMenu/jquery.ui.position.js",
+      "wwwroot/lib/jquery-scrollTo/jquery.scrollTo.min.js",
+      "wwwroot/lib/jqueryui/jquery-ui.min.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/commonbundle.js",
+    "inputFiles": [
+      "wwwroot/lib/luxon/luxon.min.js",
+      "wwwroot/js/slabwebapp/commonbuttons.js",
+      "wwwroot/js/slabwebapp/common.js",
+      "wwwroot/js/slabwebapp/layout.js",
+      "wwwroot/js/slabwebapp/queue.js",
+      "wwwroot/js/slabwebapp/commondxchart.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/users/userslistbundle.js",
+    "inputFiles": [
+      "wwwroot/js/slabwebapp/users/userslist.js",
+      "wwwroot/js/slabwebapp/commonlists.js",
+      "wwwroot/js/slabwebapp/commonsearch.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/users/upsertuserbundle.js",
+    "inputFiles": [
+      "wwwroot/js/slabwebapp/users/upsertuser.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/materials/mineralsbundle.js",
+    "inputFiles": [
+      "wwwroot/js/slabwebapp/materials/upsertminerals.js",
+      "wwwroot/js/slabwebapp/commonlists.js",
+      "wwwroot/js/slabwebapp/commonsearch.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/search/searchbundle.js",
+    "inputFiles": [
+      "wwwroot/js/slabwebapp/search/common.js",
+      "wwwroot/js/slabwebapp/search/charts.js",
+      "wwwroot/js/slabwebapp/search/chartsarrays.js",
+      "wwwroot/js/slabwebapp/search/search.js",
+      "wwwroot/js/slabwebapp/search/searchSimple.js",
+      "wwwroot/js/slabwebapp/search/searchComplex.js",
+      "wwwroot/js/slabwebapp/search/complexsearchesmanagement.js",
+      "wwwroot/js/slabwebapp/search/complexsearchesintro.js",
+      "wwwroot/js/slabwebapp/search/info.js",
+      "wwwroot/js/slabwebapp/search/charms/charms.js",
+      "wwwroot/js/slabwebapp/search/charms/charmslegend.js",
+      "wwwroot/js/slabwebapp/search/charms/charmscolorselector.js",
+      "wwwroot/js/slabwebapp/search/charms/charmsalignmentpanel.js",
+      "wwwroot/js/slabwebapp/search/charms/charmsfitpanel.js",
+      "wwwroot/js/slabwebapp/search/charms/charmsfitpanelcore.js",
+      "wwwroot/js/slabwebapp/search/charms/charmsfitpanelpro.js",
+      "wwwroot/js/slabwebapp/search/charms/charmsfitpanelcommon.js",
+      "wwwroot/js/slabwebapp/search/charms/charmssmoothingpanel.js",
+      "wwwroot/js/slabwebapp/search/charms/charmsbandanalysis.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/devextreme/devextremebundle.js",
+    "inputFiles": [
+      "wwwroot/lib/devextreme/js/dx.all.js",
+      "wwwroot/lib/devextreme/js/localization/devextreme-intl.min.js",
+      "wwwroot/lib/devextreme/js/localization/dx.messages.*.js",
+      "wwwroot/lib/devextreme/js/localization/supplemental.js",
+      "wwwroot/lib/devextreme/js/dx.aspnet.mvc.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  /* ################################################################################ */
+  /* CSS */
+  /* ################################################################################ */
+  {
+    "outputFileName": "wwwroot/metro/css/dist/metrobundle.css",
+    "inputFiles": [
+      "wwwroot/metro/css/index.css",
+      "wwwroot/metro/css/metro.css",
+      "wwwroot/metro/css/metro-colors.css",
+      "wwwroot/metro/css/metro-common.css",
+      "wwwroot/metro/css/metro-components.css",
+      "wwwroot/metro/css/metro-icons.css",
+      "wwwroot/metro/css/metro-reset.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/commonbundle.css",
+    "inputFiles": [
+      "wwwroot/css/slabwebapp/common.css",
+      "wwwroot/css/slabwebapp/commonvalidation.css",
+      "wwwroot/css/animate/animate.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/users/usersbundle.css",
+    "inputFiles": [
+      "wwwroot/css/slabwebapp/commonlists.css",
+      "wwwroot/css/slabwebapp/users/users.css",
+      "wwwroot/css/slabwebapp/users/userdata.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/materials/mineralsbundle.css",
+    "inputFiles": [
+      "wwwroot/css/slabwebapp/commonlists.css",
+      "wwwroot/css/slabwebapp/materials/minerals.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/search/searchbundle.min.css",
+    "inputFiles": [
+      "wwwroot/css/slabwebapp/search/search.css",
+      "wwwroot/css/slabwebapp/search/charms.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/devextreme/devextremebundle.css",
+    "inputFiles": [
+      "wwwroot/lib/devextreme/css/dx.common.css",
+      "wwwroot/lib/devextreme/css/dx.light.css",
+      "wwwroot/lib/devextreme/css/icons/*.ttf",
+      "wwwroot/lib/devextreme/css/icons/*.woff",
+      "wwwroot/lib/devextreme/css/icons/*.woff2"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/jqueryuibundle.css",
+    "inputFiles": [
+      "wwwroot/lib/jqueryui/themes/base/jquery-ui.min.css",
+      "wwwroot/lib/jqueryui/themes/base/theme.min.css",
+      "wwwroot/lib/jqueryui/themes/base/images/*.png"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/speechbubble.min.css",
+    "inputFiles": [
+      "wwwroot/css/speechbubble/speechbubble.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  }
+]

@@ -5210,6 +5210,11 @@ function getSpectrumPointsByRawIdAndSpectrumType(rawId, spectrumType) {
     return getSpectrumPointsById(spectrum.Id);
 }
 
+function getSpectrumPointsBySpectrumType(spectrumType) {
+    let spectrum = getSpectrumBySpectrumType(spectrumType);
+    return getSpectrumPointsById(spectrum.Id);
+}
+
 function isExistingPointByX(points, x) {
     let index = points.findIndex(p => p.X == x);
     return (index >= 0);
@@ -9978,9 +9983,9 @@ function getSrcSpectrumType() {
     let availableNum = getAvailableSrcSpectrumTypesNum();
 
     if (availableNum == 1) {
-        if (isAnySpectrumChildByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED))
+        if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED))
             srcSpectrumType = SPECTRUM_TYPE_ALIGNED;
-        else if (isAnySpectrumChildByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED))
+        else if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED))
             srcSpectrumType = SPECTRUM_TYPE_CONTINUUM_REMOVED;
     } else if (availableNum > 1) {
         srcSpectrumType = parseInt(Metro.getPlugin('#srcSpectrumTypeList', 'select').val());
@@ -10501,7 +10506,7 @@ async function applySmoothingAsync(smoothingType) {
     let srcSpectrumType = getSrcSpectrumType();
 
     /* retrieve points of continuum for removing it from aligned */
-    let toBeSmoothedPoints = getSpectrumPointsBySpectrumType(srcSpectrumType);
+    let toBeSmoothedPoints = getSpectrumPointsByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
     if (!toBeSmoothedPoints) {
         showSimpleDialog(ERROR_LABEL, SmoothingExecuteSmoothingErrorMessage, ALERT);
         return;

@@ -739,6 +739,11 @@ function getSpectrumPointsByRawIdAndSpectrumType(rawId, spectrumType) {
     return getSpectrumPointsById(spectrum.Id);
 }
 
+function getSpectrumPointsBySpectrumType(spectrumType) {
+    let spectrum = getSpectrumBySpectrumType(spectrumType);
+    return getSpectrumPointsById(spectrum.Id);
+}
+
 function isExistingPointByX(points, x) {
     let index = points.findIndex(p => p.X == x);
     return (index >= 0);
