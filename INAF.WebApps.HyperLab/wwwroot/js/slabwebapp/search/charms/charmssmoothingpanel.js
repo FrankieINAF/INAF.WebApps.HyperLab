@@ -649,7 +649,7 @@ async function applySmoothingAsync(smoothingType) {
     let srcSpectrumType = getSrcSpectrumType();
 
     /* retrieve points of continuum for removing it from aligned */
-    let toBeSmoothedPoints = getSpectrumPointsByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
+    let toBeSmoothedPoints = getSpectrumPointsBySpectrumType(srcSpectrumType);
     if (!toBeSmoothedPoints) {
         showSimpleDialog(ERROR_LABEL, SmoothingExecuteSmoothingErrorMessage, ALERT);
         return;

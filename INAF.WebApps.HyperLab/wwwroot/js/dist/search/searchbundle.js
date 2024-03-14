@@ -7220,7 +7220,7 @@ async function loadFitFunctionsAsync() {
             fitFunctions.push(objItems[i]);
         }
     } else
-        showSimpleDialog(ERROR_LABEL, FitLoadFitFunciontsErrorMessage, ALERT);
+        showSimpleDialog(ERROR_LABEL, FitLoadFitFunctionsErrorMessage, ALERT);
 }
 
 async function loadNumOfPointsForMissingPointsAsync() {
@@ -7245,7 +7245,7 @@ async function loadPXMinPXMaxMaxValueFunctionsAsync() {
             pXMinPXMaxMaxValueFunctions.push(objItems[i]);
         }
     } else
-        showSimpleDialog(ERROR_LABEL, FitLoadFitFunciontsErrorMessage, ALERT);
+        showSimpleDialog(ERROR_LABEL, FitLoadPMinPMaxMaxValueFunctionsErrorMessage, ALERT);
 }
 
 function onFitNumOfPointsForMissingPointsChange(curr, request, real) {
@@ -7925,6 +7925,9 @@ function buildContinuumRemovedSpectrumCompleted(filename) {
     /* mantain hidden all not necessary spectra */
     hideSpectraToBeHidden();
 
+    /* refresh chart */
+    executeAfter(dxChartResetVisualRange(chartContainer), 200);
+
     /* if available, showbuttons for starting band analysis */
     let bandAnalysisButtons = $(`[id$="${BandAnalysisButton}"]`);
     if (bandAnalysisButtons && bandAnalysisButtons.length > 0) {
@@ -8520,7 +8523,8 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
     html += `    <div><span id="${segmentId}RangeLabel">${rangeLabel}</span></div>`;
     html += `    <div class="d-flex flex-row">`;
     /*              rectangle for highlighting segment */
-    html += `       <div class="select-segment-rectangle pointer" onmouseover="${highlightSegmentForFitting.name}('${segmentId}')" onmouseout="${lowlightSegmentForFitting.name}('${segmentId}')">`;
+    //html += `       <div class="select-segment-rectangle pointer" onmouseover="${highlightSegmentForFitting.name}('${segmentId}')" onmouseout="${lowlightSegmentForFitting.name}('${segmentId}')">`;
+    html += `       <div class="select-segment-rectangle pointer">`;
     html += `       </div>`;
     /*               column for functions */
     html += `        <div class="d-flex flex-column margin-top-8" style="width: 50%">`;
@@ -8540,7 +8544,7 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
 
     $(`#${segmentId}`).ready(async function () {
         let parent = $(`#${segmentId}Select`).parent();
-        $(parent).css({ 'margin-top': '24px' });
+        $(parent).css({ 'margin-top': '8px' });
 
         await onSegmentFunctionSelectCoreAsync(Metro.getPlugin(`#${segmentId}Select`, 'select').val());
         //console.log(`${createSegmentFittingUICore.name} - ready - isBuildingUpContinuum: ${isBuildingUpContinuum}, isFromUserAction: ${isFromUserAction}, isLast: ${isLast}`);
@@ -8593,7 +8597,7 @@ async function onSegmentFunctionSelectCoreAsync(val, option, item) {
     let parameter = selectedFitFunction.ParameterConstraintValue;
     if (parameter) {
 
-        setParameterSpinner(`${FIT_SEGMENT_CORE_VALUE}${segmentIndex}`, segmentIndex, onFitMethodFunctionParameterChange.name);
+        setParameterSpinner(`${FIT_SEGMENT_CORE_VALUE}${segmentIndex}`, parameter, segmentIndex, onFitMethodFunctionParameterChange.name);
 
     }
 
@@ -9618,6 +9622,7 @@ function setParameterSpinner(id, parameter, segmentIndex, fitFunction, onFitMeth
     html += `data-max-value="${parameter.Maximum}" `;
     html += `data-step="${parameter.Step}" `;
     html += `data-fixed="4" `;
+    html += `data-cls-spinner="margin-top-8" `;
     html += `data-on-plus-click="${onFitMethodFunctionParameterChangeFunctionName}" `;
     html += `data-on-minus-click="${onFitMethodFunctionParameterChangeFunctionName}" `;
     html += `data-repeat-threshold="1000" `;
@@ -10506,7 +10511,7 @@ async function applySmoothingAsync(smoothingType) {
     let srcSpectrumType = getSrcSpectrumType();
 
     /* retrieve points of continuum for removing it from aligned */
-    let toBeSmoothedPoints = getSpectrumPointsByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
+    let toBeSmoothedPoints = getSpectrumPointsBySpectrumType(srcSpectrumType);
     if (!toBeSmoothedPoints) {
         showSimpleDialog(ERROR_LABEL, SmoothingExecuteSmoothingErrorMessage, ALERT);
         return;

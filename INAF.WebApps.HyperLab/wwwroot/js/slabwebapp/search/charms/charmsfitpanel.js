@@ -461,7 +461,7 @@ async function loadFitFunctionsAsync() {
             fitFunctions.push(objItems[i]);
         }
     } else
-        showSimpleDialog(ERROR_LABEL, FitLoadFitFunciontsErrorMessage, ALERT);
+        showSimpleDialog(ERROR_LABEL, FitLoadFitFunctionsErrorMessage, ALERT);
 }
 
 async function loadNumOfPointsForMissingPointsAsync() {
@@ -486,7 +486,7 @@ async function loadPXMinPXMaxMaxValueFunctionsAsync() {
             pXMinPXMaxMaxValueFunctions.push(objItems[i]);
         }
     } else
-        showSimpleDialog(ERROR_LABEL, FitLoadFitFunciontsErrorMessage, ALERT);
+        showSimpleDialog(ERROR_LABEL, FitLoadPMinPMaxMaxValueFunctionsErrorMessage, ALERT);
 }
 
 function onFitNumOfPointsForMissingPointsChange(curr, request, real) {
@@ -1165,6 +1165,9 @@ function buildContinuumRemovedSpectrumCompleted(filename) {
 
     /* mantain hidden all not necessary spectra */
     hideSpectraToBeHidden();
+
+    /* refresh chart */
+    executeAfter(dxChartResetVisualRange(chartContainer), 200);
 
     /* if available, showbuttons for starting band analysis */
     let bandAnalysisButtons = $(`[id$="${BandAnalysisButton}"]`);

@@ -34,7 +34,8 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
     html += `    <div><span id="${segmentId}RangeLabel">${rangeLabel}</span></div>`;
     html += `    <div class="d-flex flex-row">`;
     /*              rectangle for highlighting segment */
-    html += `       <div class="select-segment-rectangle pointer" onmouseover="${highlightSegmentForFitting.name}('${segmentId}')" onmouseout="${lowlightSegmentForFitting.name}('${segmentId}')">`;
+    //html += `       <div class="select-segment-rectangle pointer" onmouseover="${highlightSegmentForFitting.name}('${segmentId}')" onmouseout="${lowlightSegmentForFitting.name}('${segmentId}')">`;
+    html += `       <div class="select-segment-rectangle pointer">`;
     html += `       </div>`;
     /*               column for functions */
     html += `        <div class="d-flex flex-column margin-top-8" style="width: 50%">`;
@@ -54,7 +55,7 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
 
     $(`#${segmentId}`).ready(async function () {
         let parent = $(`#${segmentId}Select`).parent();
-        $(parent).css({ 'margin-top': '24px' });
+        $(parent).css({ 'margin-top': '8px' });
 
         await onSegmentFunctionSelectCoreAsync(Metro.getPlugin(`#${segmentId}Select`, 'select').val());
         //console.log(`${createSegmentFittingUICore.name} - ready - isBuildingUpContinuum: ${isBuildingUpContinuum}, isFromUserAction: ${isFromUserAction}, isLast: ${isLast}`);
@@ -107,7 +108,7 @@ async function onSegmentFunctionSelectCoreAsync(val, option, item) {
     let parameter = selectedFitFunction.ParameterConstraintValue;
     if (parameter) {
 
-        setParameterSpinner(`${FIT_SEGMENT_CORE_VALUE}${segmentIndex}`, segmentIndex, onFitMethodFunctionParameterChange.name);
+        setParameterSpinner(`${FIT_SEGMENT_CORE_VALUE}${segmentIndex}`, parameter, segmentIndex, onFitMethodFunctionParameterChange.name);
 
     }
 

@@ -1090,12 +1090,12 @@ function dxChartGetSeriesPoints(container, seriesName) {
 }
 
 function dxChartHideSeries(container, seriesName) {
-    //try {
+    try {
         if (container.dxChart("getSeriesByName", seriesName).isVisible())
             container.dxChart("getSeriesByName", seriesName).hide();
-    //} catch (e) {
-    //    console.log(`${dxChartHideSeries.name} - seriesName: ${seriesName} - ex: ${e}`);
-    //}
+    } catch (e) {
+        console.log(`${dxChartHideSeries.name} - seriesName: ${seriesName} - ex: ${e}`);
+    }
 }
 
 function dxChartSetSeriesVisible(container, seriesName) {
