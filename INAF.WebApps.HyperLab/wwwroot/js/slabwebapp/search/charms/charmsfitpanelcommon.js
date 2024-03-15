@@ -1,4 +1,8 @@
-﻿function getFirstSegmentId(currentFitMode) {
+﻿function clearSegmentsForFitting() {
+    segmentsForFitting = [];
+}
+
+function getFirstSegmentId(currentFitMode) {
     let suffix = 'Core';
     if (currentFitMode == FIT_PRO_MODE)
         suffix = 'Pro';
@@ -165,6 +169,10 @@ function addToPointsForFittingArray(point) {
     pointsForFitting.sort((p0, p1) => {
         return p0.P.X - p1.P.X;
     });
+}
+
+function clearPointsForFittingArray() {
+    pointsForFitting = [];
 }
 
 function createPointForFitting(point) {

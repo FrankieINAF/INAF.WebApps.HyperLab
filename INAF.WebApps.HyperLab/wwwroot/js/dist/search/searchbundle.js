@@ -7905,26 +7905,6 @@ function removeContinuum() {
     isRemovingContinuum = true;
 
     try {
-        /* define x coords of all points to be removed from chart */
-        let xValues = [];
-        /* iterate over all 'pointsForFitting' to remove them
-           and save x values for removing points from chart */
-        let pointsForFittingNum = pointsForFitting.length;
-        for (var i = pointsForFittingNum - 1; i >= 0; i--) {
-            /* save point x coord */
-            if (currentFitMode == FIT_CORE_MODE)
-                xValues.push(pointsForFitting[i].P.X);
-            else if (currentFitMode == FIT_PRO_MODE) {
-                xValues.push(pointsForFitting[i].PXMax.X);
-                xValues.push(pointsForFitting[i].PXMin.X);
-            }
-            /* remove from 'pointsForFitting' array */
-            removePointFromFitting(pointsForFitting[i]);
-        }
-
-        /* remove all points from chart */
-        removeFitPointsFromChart(xValues);
-
         let id = buildTempContinuumId();
 
         /* retrieve index of spectrum in spectraInfo */
@@ -7933,25 +7913,68 @@ function removeContinuum() {
         /* retrieve series name before removing it */
         let seriesname = getSpectrumSeriesNameFromIndex(index);
 
-        //console.log(`removeContinuum - id: ${id}, index: ${index}, seriesname: ${seriesname}`);
+        /* remove continuum spectrum from chart */
+        removeSpectrumFromChart(seriesname, id);
 
         /* remove from spectraInfo */
         if (index >= 0)
             removeSpectrumByIndex(index);
 
-        /* clean then panel with selected points */
-
-        /* remove fit points series and clean panel on charms with points/segments settings */
-        cleanPointsPanel();
-        tryRemoveFitPointsSeries();
-
-        /* remove continuum spectrum from chart */
-        removeSpectrumFromChart(seriesname, id);
+        /* remove fit points */
+        removeFitPointsSeriesPoints();
     } catch (e) {
         console.log(`${removeContinuum.name} - ex: ${e}`);
     }
 
     isRemovingContinuum = false;
+}
+
+function removeFitPointsSeriesPoints() {
+    dxChartBeginUpdate(chartContainer);
+
+    /* remove from chart points */
+    /* define x coords of all points to be removed from chart */
+    let xValues = [];
+    /* iterate over all 'pointsForFitting' to remove them
+       and save x values for removing points from chart */
+    let pointsForFittingNum = pointsForFitting.length;
+    for (var i = pointsForFittingNum - 1; i >= 0; i--) {
+        /* save point x coord */
+        if (currentFitMode == FIT_CORE_MODE)
+            xValues.push(pointsForFitting[i].P.X);
+        else if (currentFitMode == FIT_PRO_MODE) {
+            xValues.push(pointsForFitting[i].PXMax.X);
+            xValues.push(pointsForFitting[i].PXMin.X);
+        }
+    }
+
+    /* remove all points from chart */
+    removeFitPointsFromChart(xValues);
+
+    /* remove from series */
+    let seriesNum = chartSeries.length;
+    for (var i = 0; i < seriesNum; i++) {
+        if (chartSeries[i].name == SERIES_FIT_POINT) {
+            removeChartSeriesAt(i);
+            break;
+        }
+    }
+    dxChartUpdateSeries(chartContainer, chartSeries);
+
+    dxChartEndUpdate(chartContainer);
+
+    /* reset visual range to make ref whites appear in chart */
+    dxChartResetVisualRange(chartContainer);
+
+    /* clear 'pointsForFitting' array  */
+    clearPointsForFittingArray();
+
+    /* clear 'segmentsForFitting' array */
+    clearSegmentsForFitting();
+
+    /* remove fit points series and clean panel on charms with points/segments settings */
+    cleanPointsPanel();
+    tryRemoveFitPointsSeries();
 }
 
 /* ################################################################################ */
@@ -8748,12 +8771,12 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     let points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
 
     /* find spectrum boundaries for setting the 'boundary' label to the first and last segments */
-    let xmin;
-    let xmax;
-    if (!isFromUserAction) {
-        xmin = extractSpectrumXMin(points);
-        xmax = extractSpectrumXMax(points);
-    }
+    //let xmin;
+    //let xmax;
+    //if (!isFromUserAction) {
+    //    xmin = extractSpectrumXMin(points);
+    //    xmax = extractSpectrumXMax(points);
+    //}
 
     let html = ``;
 
@@ -9574,6 +9597,10 @@ async function updateBoundaryPointProAsync(oldPointForFitting, requestedX, PMinM
     let targetId = spinnerId.replace(PMinMax, spinnerId);
     $(`#${targetId}`).text(maxPoint.X);
 }
+function clearSegmentsForFitting() {
+    segmentsForFitting = [];
+}
+
 function getFirstSegmentId(currentFitMode) {
     let suffix = 'Core';
     if (currentFitMode == FIT_PRO_MODE)
@@ -9741,6 +9768,10 @@ function addToPointsForFittingArray(point) {
     pointsForFitting.sort((p0, p1) => {
         return p0.P.X - p1.P.X;
     });
+}
+
+function clearPointsForFittingArray() {
+    pointsForFitting = [];
 }
 
 function createPointForFitting(point) {

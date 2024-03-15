@@ -48,12 +48,12 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     let points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
 
     /* find spectrum boundaries for setting the 'boundary' label to the first and last segments */
-    let xmin;
-    let xmax;
-    if (!isFromUserAction) {
-        xmin = extractSpectrumXMin(points);
-        xmax = extractSpectrumXMax(points);
-    }
+    //let xmin;
+    //let xmax;
+    //if (!isFromUserAction) {
+    //    xmin = extractSpectrumXMin(points);
+    //    xmax = extractSpectrumXMax(points);
+    //}
 
     let html = ``;
 
