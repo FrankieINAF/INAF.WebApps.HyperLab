@@ -160,7 +160,7 @@ function setPointWithErrorBarOnChart(items, pX, pY, pMinY, pMaxY, argumentValue)
 /* ################################################################################ */
 /* POINTS FOR FITTING */
 /* ################################################################################ */
-function addPointForFitting(point) {
+function addToPointsForFittingArray(point) {
     pointsForFitting.push(point);
     pointsForFitting.sort((p0, p1) => {
         return p0.P.X - p1.P.X;
@@ -179,16 +179,25 @@ function createPointForFitting(point) {
     };
 }
 
-function findPointForFittingByPX(point) {
+function findInPointsForFittingArrayByP(point) {
     let index = pointsForFitting.findIndex(p => p.P.X >= (point.P.X - POINT_RADIUS) && (p.P.X <= (point.P.X + POINT_RADIUS)));
 
     if (index == -1)
         return null;
 
-    return pointsForFitting[index].X;
+    return pointsForFitting[index];
 }
 
-function findPointForFittingByPMinX(x) {
+function findInPointsForFittingArrayByPMax(point) {
+    let index = pointsForFitting.findIndex(p => p.PXMax.X >= (point.PXMax.X - POINT_RADIUS) && (p.PXMax.X <= (point.PXMax.X + POINT_RADIUS)));
+
+    if (index == -1)
+        return null;
+
+    return pointsForFitting[index];
+}
+
+function findInPointsForFittingArrayByPMinX(x) {
     let index = pointsForFitting.findIndex(p => p.PXMin.X >= (x - POINT_RADIUS) && (p.PXMin.X <= (x + POINT_RADIUS)));
 
     if (index == -1)
@@ -197,7 +206,7 @@ function findPointForFittingByPMinX(x) {
     return pointsForFitting[index];
 }
 
-function findPointForFittingByPMaxX(x) {
+function findInPointsForFittingArrayByPMaxX(x) {
     let index = pointsForFitting.findIndex(p => p.PXMax.X >= (x - POINT_RADIUS) && (p.PXMax.X <= (x + POINT_RADIUS)));
 
     if (index == -1)
@@ -206,7 +215,7 @@ function findPointForFittingByPMaxX(x) {
     return pointsForFitting[index];
 }
 
-function findPointForFittingByX(x) {
+function findInPointsForFittingArrayByX(x) {
     let index = pointsForFitting.findIndex(p => p.P.X >= (x - POINT_RADIUS) && (p.P.X <= (x + POINT_RADIUS)));
 
     if (index == -1)
@@ -215,48 +224,48 @@ function findPointForFittingByX(x) {
     return pointsForFitting[index];
 }
 
-function getPointForFittingAfter(point) {
+function getNextItemInPointsForFittingArray(point) {
     return pointsForFitting.find(p => p.P.X > point.P.X);
 }
 
-function getPointForFittingBefore(point) {
+function getPreviousItemInPointsForFittingArray(point) {
     let pointsBefore = pointsForFitting.filter(p => p.P.X < point.P.X);
     return pointsBefore[pointsBefore.length - 1];
 }
 
-function getPointsForFittingMaxX() {
+function getPointsForFittingArrayMaxX() {
     return Math.max(...pointsForFitting.map(p => p.P.X));
 }
 
-function getPointsForFittingMinX() {
+function getPointsForFittingArrayMinX() {
     return Math.min(...pointsForFitting.map(p => p.P.X));
 }
 
-function isFirstPointForFittingInList() {
+function isFirstItemInPointsForFittingArray() {
     return pointsForFitting.length == 1;
 }
 
-function isExistantPointForFitting(point) {
+function isExistantInPointsForFittingArray(point) {
     let index = pointsForFitting.findIndex(p => p.P.X == point.P.X && p.P.Y == point.P.Y);
     return (index > -1);
 }
 
-function isOnlyOnePointFotFittingAvailable() {
+function isOnlyOneItemInPointsForFittingArrayAvailable() {
     return (pointsForFitting.length == 1);
 }
 
-function isPointsForFittingEmpty() {
+function isPointsForFittingArrayEmpty() {
     return (pointsForFitting.length == 0);
 }
 
 function isPointForFittingInExistingSegment(point) {
     isInExistingSegment = true;
 
-    if (isPointsForFittingEmpty() || isFirstPointForFittingInList())
+    if (isPointsForFittingArrayEmpty() || isFirstItemInPointsForFittingArray())
         return false;
 
-    let minX = getPointsForFittingMinX();
-    let maxX = getPointsForFittingMaxX();
+    let minX = getPointsForFittingArrayMinX();
+    let maxX = getPointsForFittingArrayMaxX();
 
     if (point.P.X <= minX || point.P.X >= maxX)
         isInExistingSegment = false;
@@ -264,7 +273,7 @@ function isPointForFittingInExistingSegment(point) {
     return isInExistingSegment;
 }
 
-function removePointForFitting(point) {
+function removeFromPointsForFittingArray(point) {
     let index = pointsForFitting.findIndex(p => p.P.X >= (point.P.X - POINT_RADIUS) && (p.P.X <= (point.P.X + POINT_RADIUS)));
 
     if (index == -1)
@@ -273,7 +282,7 @@ function removePointForFitting(point) {
     pointsForFitting.splice(index, 1);
 }
 
-function updatePointForFitting(oldPoint, newPoint) {
+function updatePointsForFittingArray(oldPoint, newPoint) {
     let index = pointsForFitting.findIndex(p => p.P.X == oldPoint.P.X);
     if (index == -1)
         return;

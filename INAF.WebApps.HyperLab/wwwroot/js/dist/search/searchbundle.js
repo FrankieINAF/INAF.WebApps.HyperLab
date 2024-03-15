@@ -7304,7 +7304,7 @@ async function addFitPointToChartAsync(point, isFromUserAction = false) {
             maxPoint = point.P;
         //let maxPoint = point.PXMax;
 
-        updatePointForFitting(point, maxPoint);
+        updatePointsForFittingArray(point, maxPoint);
 
         setPointOnChart(items, maxPoint.X, maxPoint.Y, SERIES_FIT_POINT);
 
@@ -7324,12 +7324,12 @@ async function addFitPointToChartAsync(point, isFromUserAction = false) {
     }
 }
 
-function removeFitPointFromChart(point) {
+function removeFitPointFromChart(x) {
     let items = dxChartGetItems(chartContainer);
 
     dxChartBeginUpdate(chartContainer);
 
-    let index = items.findIndex(p => p.X == point.X);
+    let index = items.findIndex(p => p.X == x);
     if (items[index][SERIES_FIT_POINT])
         delete items[index][SERIES_FIT_POINT];
 
@@ -7375,16 +7375,16 @@ function addRemoveSelectedPointForFittingProcedure(seriesId, seriesName, point, 
 }
 
 async function addSelectedPointForFittingAsync(point, isFromUserAction = false, isLast = false) {
-    if (!isExistantPointForFitting(point)) {
+    if (!isExistantInPointsForFittingArray(point)) {
         let callback = async function () {
             /* save point in dedicated array */
-            addPointForFitting(point);
+            addToPointsForFittingArray(point);
             //console.log(`${addSelectedPointForFittingAsync.name} - point: ${point.P.Y}`);
             /* add point to fit series */
             await addFitPointToChartAsync(point, isFromUserAction);
 
             /* switch to 'FIT OPTIONS' tab and load fitting functions  */
-            if (isOnlyOnePointFotFittingAvailable())
+            if (isOnlyOneItemInPointsForFittingArrayAvailable())
                 preparePanelForFitPhase1Async();
 
             await manageNewPointAsync(point, isFromUserAction, isLast);
@@ -7407,13 +7407,16 @@ async function addSelectedPointForFittingAsync(point, isFromUserAction = false, 
     }
 }
 
+/* for removing user selected points on chart */
 function removeSelectedPointFromFitting(point, mousePosX = null, mousePosY = null) {
     /* remove point from dedicated array, return the right X coord of the point for fit */
-    let pointForFitting = findPointForFittingByX(point.X);
+    let pointForFitting = findInPointsForFittingArrayByX(point.X);
+
     if (!pointForFitting)
         return;
 
-    removePointForFitting(point);
+    /* remove from 'pointsForFitting' array */
+    removeFromPointsForFittingArray(point);
 
     if (mousePosX && mousePosY)
         insertPulse(mousePosX, mousePosY, 'pulse-ring-remove');
@@ -7422,16 +7425,16 @@ function removeSelectedPointFromFitting(point, mousePosX = null, mousePosY = nul
         let fixedPoint = createPointForFitting(createSimplePoint(pointForFitting.X, point.Y));
 
         /* remove point from chart */
-        removeFitPointFromChart(fixedPoint);
+        removeFitPointFromChart(fixedPoint.X);
 
         /* manage segments after point has been removed */
         manageRemovedPoint(fixedPoint);
 
         /* if only 1 point remains, remove segment */
-        if (isOnlyOnePointFotFittingAvailable()) { }
+        if (isOnlyOneItemInPointsForFittingArrayAvailable()) { }
 
         /* if no points for fitting exist, then remove series */
-        if (isPointsForFittingEmpty())
+        if (isPointsForFittingArrayEmpty())
             tryRemoveFitPointsSeries();
 
         /* if conditions are satisfied, then auto recalculate continuum-remved */
@@ -7440,6 +7443,30 @@ function removeSelectedPointFromFitting(point, mousePosX = null, mousePosY = nul
 
     /* execute callback after pulse animation completed */
     setTimeout(callback, 1000);
+}
+
+/* for removing points when removing the whole continuum */
+function removePointFromFitting(point) {
+    let pointForFitting;
+
+    if (currentFitMode == FIT_CORE_MODE)
+        pointForFitting = findInPointsForFittingArrayByP(point);
+    else if (currentFitMode == FIT_PRO_MODE)
+        pointForFitting = findInPointsForFittingArrayByPMax(point.PXMax.X);
+
+    if (!pointForFitting)
+        return;
+
+    /* remove from 'pointsForFitting' array */
+    removeFromPointsForFittingArray(point);
+
+    /* remove point from chart */
+    let x;
+    if (currentFitMode == FIT_CORE_MODE)
+        x = point.P.X;
+    else if (currentFitMode == FIT_PRO_MODE)
+        x = point.PXMax.X;
+    removeFitPointFromChart(x);
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -7453,7 +7480,6 @@ function insertPulse(left, top, className) {
 
     setTimeout(function () { $('#pulseRing').remove(); }, PULSE_TIMEOUT);
 }
-
 
 /* ################################################################################ */
 /* MANAGE ADDED/REMOVED POINT */
@@ -7472,17 +7498,17 @@ async function manageNewPointAsync(point, isFromUserAction = false, isLast = fal
         preparePanelForFitPhase2();
 
         /* no segments added for empty points list and for 1st point */
-        if (isPointsForFittingEmpty() || isFirstPointForFittingInList())
+        if (isPointsForFittingArrayEmpty() || isFirstItemInPointsForFittingArray())
             return;
 
-        let minX = getPointsForFittingMinX();
-        let maxX = getPointsForFittingMaxX();
+        let minX = getPointsForFittingArrayMinX();
+        let maxX = getPointsForFittingArrayMaxX();
 
         if (point.P.X <= minX) {
-            let pointAfter = getPointForFittingAfter(point);
+            let pointAfter = getNextItemInPointsForFittingArray(point);
             await addNewSegmentProcedureAsync(point, pointAfter, isFromUserAction, isLast); // add as 1st segment
         } else if (point.P.X >= maxX) {
-            let pointBefore = getPointForFittingBefore(point);
+            let pointBefore = getPreviousItemInPointsForFittingArray(point);
             await addNewSegmentProcedureAsync(pointBefore, point, isFromUserAction, isLast); // add as last segment
         }
     }
@@ -7492,8 +7518,8 @@ function manageRemovedPoint(point) {
     if (segmentsForFitting.length == 0)
         return;
 
-    let minX = getPointsForFittingMinX();
-    let maxX = getPointsForFittingMaxX();
+    let minX = getPointsForFittingArrayMinX();
+    let maxX = getPointsForFittingArrayMaxX();
 
     if (point.X <= minX) {
         /* remove 1st segment on UI */
@@ -7850,7 +7876,7 @@ function removeContinuum() {
     try {
         let pointsForFittingNum = pointsForFitting.length;
         for (var i = pointsForFittingNum - 1; i >= 0; i--) {
-            removeSelectedPointFromFitting(pointsForFitting[i]);
+            removePointFromFitting(pointsForFitting[i]);
         }
 
         let id = buildTempContinuumId();
@@ -7861,7 +7887,7 @@ function removeContinuum() {
 
         let seriesname = getSpectrumSeriesNameFromIndex(index);
 
-        console.log(`removeContinuum - id: ${id}, index: ${index}, seriesname: ${seriesname}`);
+        //console.log(`removeContinuum - id: ${id}, index: ${index}, seriesname: ${seriesname}`);
 
         /* remove from spectraInfo */
         if (index >= 0)
@@ -7869,6 +7895,9 @@ function removeContinuum() {
 
         /* remove continuum spectrum from chart */
         removeSpectrumFromChart(seriesname, id);
+
+        /* remove fit poits series */
+        tryRemoveFitPointsSeries();
     } catch (e) {
         console.log(`${removeContinuum.name} - ex: ${e}`);
     }
@@ -8183,8 +8212,8 @@ function resetMissingPoints() {
         return;
 
     /* remove saved missing points from 'pointsForFitting' array */
-    removePointForFitting(missingPoints[0]);
-    removePointForFitting(missingPoints[1]);
+    removeFromPointsForFittingArray(missingPoints[0]);
+    removeFromPointsForFittingArray(missingPoints[1]);
 
 
     /* reset array */
@@ -8928,9 +8957,9 @@ async function onBoundaryValueChangedProcedureAsync(id, spinnerId, curr, request
     let pointForFitting;
 
     if (id.includes(PXMin))
-        pointForFitting = findPointForFittingByPMinX(curr);
+        pointForFitting = findInPointsForFittingArrayByPMinX(curr);
     else if (id.includes(PXMax))
-        pointForFitting = findPointForFittingByPMaxX(curr);
+        pointForFitting = findInPointsForFittingArrayByPMaxX(curr);
 
     if (!pointForFitting)
         return;
@@ -9478,7 +9507,7 @@ async function updateBoundaryPointProAsync(oldPointForFitting, requestedX, PMinM
     }
     let maxPoint = await calculateMaximumInPointRangeAsync(xMin, xMax);
 
-    updatePointForFitting(oldPointForFitting, maxPoint);
+    updatePointsForFittingArray(oldPointForFitting, maxPoint);
 
     setPointOnChart(items, maxPoint.X, maxPoint.Y, SERIES_FIT_POINT);
 
@@ -9658,7 +9687,7 @@ function setPointWithErrorBarOnChart(items, pX, pY, pMinY, pMaxY, argumentValue)
 /* ################################################################################ */
 /* POINTS FOR FITTING */
 /* ################################################################################ */
-function addPointForFitting(point) {
+function addToPointsForFittingArray(point) {
     pointsForFitting.push(point);
     pointsForFitting.sort((p0, p1) => {
         return p0.P.X - p1.P.X;
@@ -9677,16 +9706,25 @@ function createPointForFitting(point) {
     };
 }
 
-function findPointForFittingByPX(point) {
+function findInPointsForFittingArrayByP(point) {
     let index = pointsForFitting.findIndex(p => p.P.X >= (point.P.X - POINT_RADIUS) && (p.P.X <= (point.P.X + POINT_RADIUS)));
 
     if (index == -1)
         return null;
 
-    return pointsForFitting[index].X;
+    return pointsForFitting[index];
 }
 
-function findPointForFittingByPMinX(x) {
+function findInPointsForFittingArrayByPMax(point) {
+    let index = pointsForFitting.findIndex(p => p.PXMax.X >= (point.PXMax.X - POINT_RADIUS) && (p.PXMax.X <= (point.PXMax.X + POINT_RADIUS)));
+
+    if (index == -1)
+        return null;
+
+    return pointsForFitting[index];
+}
+
+function findInPointsForFittingArrayByPMinX(x) {
     let index = pointsForFitting.findIndex(p => p.PXMin.X >= (x - POINT_RADIUS) && (p.PXMin.X <= (x + POINT_RADIUS)));
 
     if (index == -1)
@@ -9695,7 +9733,7 @@ function findPointForFittingByPMinX(x) {
     return pointsForFitting[index];
 }
 
-function findPointForFittingByPMaxX(x) {
+function findInPointsForFittingArrayByPMaxX(x) {
     let index = pointsForFitting.findIndex(p => p.PXMax.X >= (x - POINT_RADIUS) && (p.PXMax.X <= (x + POINT_RADIUS)));
 
     if (index == -1)
@@ -9704,7 +9742,7 @@ function findPointForFittingByPMaxX(x) {
     return pointsForFitting[index];
 }
 
-function findPointForFittingByX(x) {
+function findInPointsForFittingArrayByX(x) {
     let index = pointsForFitting.findIndex(p => p.P.X >= (x - POINT_RADIUS) && (p.P.X <= (x + POINT_RADIUS)));
 
     if (index == -1)
@@ -9713,48 +9751,48 @@ function findPointForFittingByX(x) {
     return pointsForFitting[index];
 }
 
-function getPointForFittingAfter(point) {
+function getNextItemInPointsForFittingArray(point) {
     return pointsForFitting.find(p => p.P.X > point.P.X);
 }
 
-function getPointForFittingBefore(point) {
+function getPreviousItemInPointsForFittingArray(point) {
     let pointsBefore = pointsForFitting.filter(p => p.P.X < point.P.X);
     return pointsBefore[pointsBefore.length - 1];
 }
 
-function getPointsForFittingMaxX() {
+function getPointsForFittingArrayMaxX() {
     return Math.max(...pointsForFitting.map(p => p.P.X));
 }
 
-function getPointsForFittingMinX() {
+function getPointsForFittingArrayMinX() {
     return Math.min(...pointsForFitting.map(p => p.P.X));
 }
 
-function isFirstPointForFittingInList() {
+function isFirstItemInPointsForFittingArray() {
     return pointsForFitting.length == 1;
 }
 
-function isExistantPointForFitting(point) {
+function isExistantInPointsForFittingArray(point) {
     let index = pointsForFitting.findIndex(p => p.P.X == point.P.X && p.P.Y == point.P.Y);
     return (index > -1);
 }
 
-function isOnlyOnePointFotFittingAvailable() {
+function isOnlyOneItemInPointsForFittingArrayAvailable() {
     return (pointsForFitting.length == 1);
 }
 
-function isPointsForFittingEmpty() {
+function isPointsForFittingArrayEmpty() {
     return (pointsForFitting.length == 0);
 }
 
 function isPointForFittingInExistingSegment(point) {
     isInExistingSegment = true;
 
-    if (isPointsForFittingEmpty() || isFirstPointForFittingInList())
+    if (isPointsForFittingArrayEmpty() || isFirstItemInPointsForFittingArray())
         return false;
 
-    let minX = getPointsForFittingMinX();
-    let maxX = getPointsForFittingMaxX();
+    let minX = getPointsForFittingArrayMinX();
+    let maxX = getPointsForFittingArrayMaxX();
 
     if (point.P.X <= minX || point.P.X >= maxX)
         isInExistingSegment = false;
@@ -9762,7 +9800,7 @@ function isPointForFittingInExistingSegment(point) {
     return isInExistingSegment;
 }
 
-function removePointForFitting(point) {
+function removeFromPointsForFittingArray(point) {
     let index = pointsForFitting.findIndex(p => p.P.X >= (point.P.X - POINT_RADIUS) && (p.P.X <= (point.P.X + POINT_RADIUS)));
 
     if (index == -1)
@@ -9771,7 +9809,7 @@ function removePointForFitting(point) {
     pointsForFitting.splice(index, 1);
 }
 
-function updatePointForFitting(oldPoint, newPoint) {
+function updatePointsForFittingArray(oldPoint, newPoint) {
     let index = pointsForFitting.findIndex(p => p.P.X == oldPoint.P.X);
     if (index == -1)
         return;

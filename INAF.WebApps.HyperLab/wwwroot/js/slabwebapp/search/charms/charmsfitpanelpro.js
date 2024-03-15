@@ -306,9 +306,9 @@ async function onBoundaryValueChangedProcedureAsync(id, spinnerId, curr, request
     let pointForFitting;
 
     if (id.includes(PXMin))
-        pointForFitting = findPointForFittingByPMinX(curr);
+        pointForFitting = findInPointsForFittingArrayByPMinX(curr);
     else if (id.includes(PXMax))
-        pointForFitting = findPointForFittingByPMaxX(curr);
+        pointForFitting = findInPointsForFittingArrayByPMaxX(curr);
 
     if (!pointForFitting)
         return;
@@ -856,7 +856,7 @@ async function updateBoundaryPointProAsync(oldPointForFitting, requestedX, PMinM
     }
     let maxPoint = await calculateMaximumInPointRangeAsync(xMin, xMax);
 
-    updatePointForFitting(oldPointForFitting, maxPoint);
+    updatePointsForFittingArray(oldPointForFitting, maxPoint);
 
     setPointOnChart(items, maxPoint.X, maxPoint.Y, SERIES_FIT_POINT);
 
