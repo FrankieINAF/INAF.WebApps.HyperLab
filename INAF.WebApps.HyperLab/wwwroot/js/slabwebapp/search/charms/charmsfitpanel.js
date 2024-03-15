@@ -144,7 +144,7 @@ async function initSwitchCoreProModeAsync() {
     $('#fitCheckboxCoreProMode').on('change', function () {
         let isChecked = isCheckboxChecked('fitCheckboxCoreProMode');
 
-        enqueSaveSetting(getQueueItem(FIT_SET_CORE_PRO_MODE, (isChecked ? FIT_PRO_MODE : FIT_CORE_MODE)));
+        enqueueSaveSetting(getQueueItem(FIT_SET_CORE_PRO_MODE, (isChecked ? FIT_PRO_MODE : FIT_CORE_MODE)));
 
         /* trick to let switch button changing status on UI, without wating for in-memory operations completion  */
         setTimeout(function () {
@@ -219,7 +219,7 @@ async function initSwitchShowHideVerticalLinesForFitPointsAsync() {
     $('#fitChechboxShowLines').on('change', async function () {
         let isChecked = isCheckboxChecked('fitChechboxShowLines');
 
-        enqueSaveSetting(getQueueItem(FIT_SHOW_HIDE_VERTICAL_LINES_FIT_POINTS, (isChecked ? '1' : '0')));
+        enqueueSaveSetting(getQueueItem(FIT_SHOW_HIDE_VERTICAL_LINES_FIT_POINTS, (isChecked ? '1' : '0')));
 
         isShowChartConstantLinesForFitPointsAllowed = isChecked;
 
@@ -258,7 +258,7 @@ async function initSwitchAutoRecalculateContinuumRemovedOnChangingFitPointsAsync
     $('#charmsAutoRecalculateContinuumRemovedOnChangingFitPoints').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsAutoRecalculateContinuumRemovedOnChangingFitPoints');
 
-        enqueSaveSetting(getQueueItem(FIT_AUTO_RECALCULATE_ON_CHANGING_FIT_POINTS, (isChecked ? '1' : '0')));
+        enqueueSaveSetting(getQueueItem(FIT_AUTO_RECALCULATE_ON_CHANGING_FIT_POINTS, (isChecked ? '1' : '0')));
 
         isAutoRecalculateContinuumRemovedAllowed = isChecked;
     });
@@ -289,7 +289,7 @@ async function initShowHideBreaksOnValueAxisAsync() {
     $('#charmsShowHideBreaksOnValueAxis').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsShowHideBreaksOnValueAxis');
 
-        enqueSaveSetting(getQueueItem(FIT_SHOW_HIDE_BREAKS_ON_VALUE_AXIS, (isChecked ? '1' : '0')));
+        enqueueSaveSetting(getQueueItem(FIT_SHOW_HIDE_BREAKS_ON_VALUE_AXIS, (isChecked ? '1' : '0')));
 
         isShowBreaksOnValueAxisForContinuumRemovedRequested = isChecked;
 
@@ -693,7 +693,7 @@ function removePointFromFitting(point) {
     if (currentFitMode == FIT_CORE_MODE)
         pointForFitting = findInPointsForFittingArrayByP(point);
     else if (currentFitMode == FIT_PRO_MODE)
-        pointForFitting = findInPointsForFittingArrayByPMax(point.PXMax.X);
+        pointForFitting = findInPointsForFittingArrayByPMax(point);
 
     if (!pointForFitting)
         return;
@@ -1134,7 +1134,7 @@ function removeContinuum() {
         if (index >= 0)
             removeSpectrumByIndex(index);
 
-        /* remove fit poits series */
+        /* remove fit points series */
         tryRemoveFitPointsSeries();
 
         /* remove continuum spectrum from chart */

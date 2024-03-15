@@ -144,7 +144,7 @@ function initCheckBoxForShowingLines() {
         /* append an item to queue of settings to be saved */
         if (isCheckboxForShowSegmentsValueToBeSavedOnCloud) {
             let value = (isChecked ? '1' : '0');
-            enqueSaveSetting(getQueueItem(ALIGNMENT_SHOW_LINES, value));
+            enqueueSaveSetting(getQueueItem(ALIGNMENT_SHOW_LINES, value));
         }
 
         /* reset variable to true to allow saving on cloud if checked manually */
@@ -325,7 +325,7 @@ async function initSwitchLoadAutoAlignSpectrumAsync() {
     $('#charmsSwitchAutoAlignSpectrum').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsSwitchAutoAlignSpectrum');
 
-        enqueSaveSetting(getQueueItem(ALIGNMENT_AUTO_ALIGN_SPECTRUM, (isChecked ? '1' : '0')));
+        enqueueSaveSetting(getQueueItem(ALIGNMENT_AUTO_ALIGN_SPECTRUM, (isChecked ? '1' : '0')));
 
         if (isChecked) {
             /* show message for saved settings */
@@ -333,7 +333,7 @@ async function initSwitchLoadAutoAlignSpectrumAsync() {
 
             /* if auto align is enabled, then disable auto download */
             setSwitchAutoDownloadAlignedSpectrumAsync(false);
-            enqueSaveSetting(getQueueItem(ALIGNMENT_AUTO_DOWNLOAD_ALIGNED_SPECTRUM, '0'));
+            enqueueSaveSetting(getQueueItem(ALIGNMENT_AUTO_DOWNLOAD_ALIGNED_SPECTRUM, '0'));
         }
     });
 }
@@ -364,7 +364,7 @@ async function initSwitchLoadAutoDownloadAlignedSpectrumAsync() {
     $('#charmsSwitchAutoDownloadAlignedSpectrum').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsSwitchAutoDownloadAlignedSpectrum');
 
-        enqueSaveSetting(getQueueItem(ALIGNMENT_AUTO_DOWNLOAD_ALIGNED_SPECTRUM, (isChecked ? '1' : '0')));
+        enqueueSaveSetting(getQueueItem(ALIGNMENT_AUTO_DOWNLOAD_ALIGNED_SPECTRUM, (isChecked ? '1' : '0')));
 
         if (isChecked) {
             /* show message for saved settings */
@@ -372,7 +372,7 @@ async function initSwitchLoadAutoDownloadAlignedSpectrumAsync() {
 
             /* if auto download is enabled, then disable auto align */
             setSwitchAutoAlignSpectrum(false);
-            enqueSaveSetting(getQueueItem(ALIGNMENT_AUTO_ALIGN_SPECTRUM, '0'));
+            enqueueSaveSetting(getQueueItem(ALIGNMENT_AUTO_ALIGN_SPECTRUM, '0'));
         }
     });
 }

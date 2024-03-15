@@ -54,7 +54,7 @@ async function initSwitchAutoSaveSmoothingSegmentsAsync() {
     $('#charmsSwitchAutoSaveSmoothingSegments').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsSwitchAutoSaveSmoothingSegments');
 
-        enqueSaveSetting(getQueueItem(SMOOTHING_AUTO_SAVE_SEGMENTS_SETTINGS, (isChecked ? '1' : '0')));
+        enqueueSaveSetting(getQueueItem(SMOOTHING_AUTO_SAVE_SEGMENTS_SETTINGS, (isChecked ? '1' : '0')));
 
         if (isChecked)
             /* show message for saved settings */

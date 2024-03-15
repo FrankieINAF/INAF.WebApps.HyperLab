@@ -30,26 +30,26 @@ var red = '#a8071e';
 /* SAVE USER SETTINGS */
 /* ################################################################################ */
 /* items for creating a queue for saving user settings */
-//var aQueue;
-//var _ = ({ ...data } = {}) => () => new Promise(async resolve => {
-//    await saveUserSettingAsync(data);
-//    resolve();
-//});
+var aQueue;
+var _ = ({ ...data } = {}) => () => new Promise(async resolve => {
+    await saveUserSettingAsync(data);
+    resolve();
+});
 
-//function getQueueItem(key, value) {
-//    return _({ url: UrlSetUserSetting, model: { Key: key, Value: value } });
-//}
+function getQueueItem(key, value) {
+    return _({ url: UrlSetUserSetting, model: { Key: key, Value: value } });
+}
 
-//function callEnqueueSaveSetting(timeout, key, value, jsDelay) {
-//    if (timeout)
-//        clearTimeout(timeout);
+function callEnqueueSaveSetting(timeout, key, value, jsDelay) {
+    if (timeout)
+        clearTimeout(timeout);
 
-//    timeout = setTimeout(function () { enqueSaveSetting(getQueueItem(key, value)); }, jsDelay);
-//}
+    timeout = setTimeout(function () { enqueueSaveSetting(getQueueItem(key, value)); }, jsDelay);
+}
 
-//function enqueSaveSetting(saveSettingData) {
-//    aQueue.enqueue(saveSettingData);
-//}
+function enqueueSaveSetting(saveSettingData) {
+    aQueue.enqueue(saveSettingData);
+}
 
 /* ################################################################################ */
 /* SHOW/HIDE WARNING IN DIALOG MESSAGE */

@@ -30,26 +30,26 @@ var red = '#a8071e';
 /* SAVE USER SETTINGS */
 /* ################################################################################ */
 /* items for creating a queue for saving user settings */
-//var aQueue;
-//var _ = ({ ...data } = {}) => () => new Promise(async resolve => {
-//    await saveUserSettingAsync(data);
-//    resolve();
-//});
+var aQueue;
+var _ = ({ ...data } = {}) => () => new Promise(async resolve => {
+    await saveUserSettingAsync(data);
+    resolve();
+});
 
-//function getQueueItem(key, value) {
-//    return _({ url: UrlSetUserSetting, model: { Key: key, Value: value } });
-//}
+function getQueueItem(key, value) {
+    return _({ url: UrlSetUserSetting, model: { Key: key, Value: value } });
+}
 
-//function callEnqueueSaveSetting(timeout, key, value, jsDelay) {
-//    if (timeout)
-//        clearTimeout(timeout);
+function callEnqueueSaveSetting(timeout, key, value, jsDelay) {
+    if (timeout)
+        clearTimeout(timeout);
 
-//    timeout = setTimeout(function () { enqueSaveSetting(getQueueItem(key, value)); }, jsDelay);
-//}
+    timeout = setTimeout(function () { enqueueSaveSetting(getQueueItem(key, value)); }, jsDelay);
+}
 
-//function enqueSaveSetting(saveSettingData) {
-//    aQueue.enqueue(saveSettingData);
-//}
+function enqueueSaveSetting(saveSettingData) {
+    aQueue.enqueue(saveSettingData);
+}
 
 /* ################################################################################ */
 /* SHOW/HIDE WARNING IN DIALOG MESSAGE */
@@ -5865,7 +5865,7 @@ function initCheckBoxForShowingLines() {
         /* append an item to queue of settings to be saved */
         if (isCheckboxForShowSegmentsValueToBeSavedOnCloud) {
             let value = (isChecked ? '1' : '0');
-            enqueSaveSetting(getQueueItem(ALIGNMENT_SHOW_LINES, value));
+            enqueueSaveSetting(getQueueItem(ALIGNMENT_SHOW_LINES, value));
         }
 
         /* reset variable to true to allow saving on cloud if checked manually */
@@ -6046,7 +6046,7 @@ async function initSwitchLoadAutoAlignSpectrumAsync() {
     $('#charmsSwitchAutoAlignSpectrum').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsSwitchAutoAlignSpectrum');
 
-        enqueSaveSetting(getQueueItem(ALIGNMENT_AUTO_ALIGN_SPECTRUM, (isChecked ? '1' : '0')));
+        enqueueSaveSetting(getQueueItem(ALIGNMENT_AUTO_ALIGN_SPECTRUM, (isChecked ? '1' : '0')));
 
         if (isChecked) {
             /* show message for saved settings */
@@ -6054,7 +6054,7 @@ async function initSwitchLoadAutoAlignSpectrumAsync() {
 
             /* if auto align is enabled, then disable auto download */
             setSwitchAutoDownloadAlignedSpectrumAsync(false);
-            enqueSaveSetting(getQueueItem(ALIGNMENT_AUTO_DOWNLOAD_ALIGNED_SPECTRUM, '0'));
+            enqueueSaveSetting(getQueueItem(ALIGNMENT_AUTO_DOWNLOAD_ALIGNED_SPECTRUM, '0'));
         }
     });
 }
@@ -6085,7 +6085,7 @@ async function initSwitchLoadAutoDownloadAlignedSpectrumAsync() {
     $('#charmsSwitchAutoDownloadAlignedSpectrum').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsSwitchAutoDownloadAlignedSpectrum');
 
-        enqueSaveSetting(getQueueItem(ALIGNMENT_AUTO_DOWNLOAD_ALIGNED_SPECTRUM, (isChecked ? '1' : '0')));
+        enqueueSaveSetting(getQueueItem(ALIGNMENT_AUTO_DOWNLOAD_ALIGNED_SPECTRUM, (isChecked ? '1' : '0')));
 
         if (isChecked) {
             /* show message for saved settings */
@@ -6093,7 +6093,7 @@ async function initSwitchLoadAutoDownloadAlignedSpectrumAsync() {
 
             /* if auto download is enabled, then disable auto align */
             setSwitchAutoAlignSpectrum(false);
-            enqueSaveSetting(getQueueItem(ALIGNMENT_AUTO_ALIGN_SPECTRUM, '0'));
+            enqueueSaveSetting(getQueueItem(ALIGNMENT_AUTO_ALIGN_SPECTRUM, '0'));
         }
     });
 }
@@ -6903,7 +6903,7 @@ async function initSwitchCoreProModeAsync() {
     $('#fitCheckboxCoreProMode').on('change', function () {
         let isChecked = isCheckboxChecked('fitCheckboxCoreProMode');
 
-        enqueSaveSetting(getQueueItem(FIT_SET_CORE_PRO_MODE, (isChecked ? FIT_PRO_MODE : FIT_CORE_MODE)));
+        enqueueSaveSetting(getQueueItem(FIT_SET_CORE_PRO_MODE, (isChecked ? FIT_PRO_MODE : FIT_CORE_MODE)));
 
         /* trick to let switch button changing status on UI, without wating for in-memory operations completion  */
         setTimeout(function () {
@@ -6978,7 +6978,7 @@ async function initSwitchShowHideVerticalLinesForFitPointsAsync() {
     $('#fitChechboxShowLines').on('change', async function () {
         let isChecked = isCheckboxChecked('fitChechboxShowLines');
 
-        enqueSaveSetting(getQueueItem(FIT_SHOW_HIDE_VERTICAL_LINES_FIT_POINTS, (isChecked ? '1' : '0')));
+        enqueueSaveSetting(getQueueItem(FIT_SHOW_HIDE_VERTICAL_LINES_FIT_POINTS, (isChecked ? '1' : '0')));
 
         isShowChartConstantLinesForFitPointsAllowed = isChecked;
 
@@ -7017,7 +7017,7 @@ async function initSwitchAutoRecalculateContinuumRemovedOnChangingFitPointsAsync
     $('#charmsAutoRecalculateContinuumRemovedOnChangingFitPoints').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsAutoRecalculateContinuumRemovedOnChangingFitPoints');
 
-        enqueSaveSetting(getQueueItem(FIT_AUTO_RECALCULATE_ON_CHANGING_FIT_POINTS, (isChecked ? '1' : '0')));
+        enqueueSaveSetting(getQueueItem(FIT_AUTO_RECALCULATE_ON_CHANGING_FIT_POINTS, (isChecked ? '1' : '0')));
 
         isAutoRecalculateContinuumRemovedAllowed = isChecked;
     });
@@ -7048,7 +7048,7 @@ async function initShowHideBreaksOnValueAxisAsync() {
     $('#charmsShowHideBreaksOnValueAxis').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsShowHideBreaksOnValueAxis');
 
-        enqueSaveSetting(getQueueItem(FIT_SHOW_HIDE_BREAKS_ON_VALUE_AXIS, (isChecked ? '1' : '0')));
+        enqueueSaveSetting(getQueueItem(FIT_SHOW_HIDE_BREAKS_ON_VALUE_AXIS, (isChecked ? '1' : '0')));
 
         isShowBreaksOnValueAxisForContinuumRemovedRequested = isChecked;
 
@@ -7452,7 +7452,7 @@ function removePointFromFitting(point) {
     if (currentFitMode == FIT_CORE_MODE)
         pointForFitting = findInPointsForFittingArrayByP(point);
     else if (currentFitMode == FIT_PRO_MODE)
-        pointForFitting = findInPointsForFittingArrayByPMax(point.PXMax.X);
+        pointForFitting = findInPointsForFittingArrayByPMax(point);
 
     if (!pointForFitting)
         return;
@@ -7893,11 +7893,11 @@ function removeContinuum() {
         if (index >= 0)
             removeSpectrumByIndex(index);
 
+        /* remove fit points series */
+        tryRemoveFitPointsSeries();
+
         /* remove continuum spectrum from chart */
         removeSpectrumFromChart(seriesname, id);
-
-        /* remove fit poits series */
-        tryRemoveFitPointsSeries();
     } catch (e) {
         console.log(`${removeContinuum.name} - ex: ${e}`);
     }
@@ -9959,7 +9959,7 @@ async function initSwitchAutoSaveSmoothingSegmentsAsync() {
     $('#charmsSwitchAutoSaveSmoothingSegments').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsSwitchAutoSaveSmoothingSegments');
 
-        enqueSaveSetting(getQueueItem(SMOOTHING_AUTO_SAVE_SEGMENTS_SETTINGS, (isChecked ? '1' : '0')));
+        enqueueSaveSetting(getQueueItem(SMOOTHING_AUTO_SAVE_SEGMENTS_SETTINGS, (isChecked ? '1' : '0')));
 
         if (isChecked)
             /* show message for saved settings */
