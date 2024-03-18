@@ -3,6 +3,27 @@
   "WorkspaceRootPath": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\franc\\AppData\\Roaming\\Microsoft\\UserSecrets\\6a746840-f061-46d0-88cd-07b7d304f64a\\secrets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FAB77DAF-51DE-4105-B56F-878F30C55C20}|..\\..\\Libraries\\Net\\INAF.Libraries.Net.CommonWebAppHelpers\\INAF.Libraries.Net.CommonWebAppHelpers\\INAF.Libraries.Net.CommonWebAppHelpers.csproj|g:\\projects\\inaf\\libraries\\net\\inaf.libraries.net.commonwebapphelpers\\inaf.libraries.net.commonwebapphelpers\\encryptionhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B958FD6-538F-4A47-9368-F4C3785A0869}|..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary.csproj|g:\\projects\\inaf\\libraries\\net\\inaf.libraries.net.slabdblibrary\\inaf.libraries.net.slabdblibrary\\dbhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\slabwebapp\\search\\common.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\slabwebapp\\search\\common.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsfitpanel.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsfitpanel.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
@@ -37,10 +58,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\slabwebapp\\search\\charts.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\slabwebapp\\search\\charts.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\slabwebapp\\search\\common.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\slabwebapp\\search\\common.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,19 +67,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 740,
-          "SelectedChildIndex": 12,
+          "SelectedChildIndex": 15,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "commondxchart.js",
-              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\commondxchart.js",
-              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\commondxchart.js",
-              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\commondxchart.js",
-              "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\commondxchart.js",
-              "ViewState": "AQIAAEUAAAAAAAAAAAAWwFsAAABWAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-03-15T14:10:51.491Z",
+              "Title": "EncryptionHelper.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\Net\\INAF.Libraries.Net.CommonWebAppHelpers\\INAF.Libraries.Net.CommonWebAppHelpers\\EncryptionHelper.cs",
+              "RelativeDocumentMoniker": "..\\..\\Libraries\\Net\\INAF.Libraries.Net.CommonWebAppHelpers\\INAF.Libraries.Net.CommonWebAppHelpers\\EncryptionHelper.cs",
+              "ToolTip": "G:\\Projects\\INAF\\Libraries\\Net\\INAF.Libraries.Net.CommonWebAppHelpers\\INAF.Libraries.Net.CommonWebAppHelpers\\EncryptionHelper.cs",
+              "RelativeToolTip": "..\\..\\Libraries\\Net\\INAF.Libraries.Net.CommonWebAppHelpers\\INAF.Libraries.Net.CommonWebAppHelpers\\EncryptionHelper.cs",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAABIAAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-18T09:22:49.51Z",
               "EditorCaption": ""
             },
             {
@@ -107,33 +124,109 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "common.js",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\common.js",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\common.js",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\common.js",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\common.js",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAWwCQAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-03-18T09:10:08.68Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DbHandler.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandler.cs",
+              "RelativeDocumentMoniker": "..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandler.cs",
+              "ToolTip": "G:\\Projects\\INAF\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandler.cs",
+              "RelativeToolTip": "..\\..\\Libraries\\Net\\INAF.Libraries.Net.SLabDbLibrary\\INAF.Libraries.Net.SLabDbLibrary\\DbHandler.cs",
+              "ViewState": "AQIAAA4AAAAAAAAAAAAAACMAAAAmAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-18T09:01:16.522Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Program.cs",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Program.cs",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Program.cs",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\Program.cs",
+              "ViewState": "AQIAAF0AAAAAAAAAAAAAAIEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-18T08:59:41.927Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "secrets.json",
+              "DocumentMoniker": "C:\\Users\\franc\\AppData\\Roaming\\Microsoft\\UserSecrets\\6a746840-f061-46d0-88cd-07b7d304f64a\\secrets.json",
+              "ToolTip": "C:\\Users\\franc\\AppData\\Roaming\\Microsoft\\UserSecrets\\6a746840-f061-46d0-88cd-07b7d304f64a\\secrets.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-03-18T08:50:55.437Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\appsettings.Development.json",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\appsettings.Development.json",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\appsettings.Development.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-03-18T08:48:25.009Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "commondxchart.js",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\commondxchart.js",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\commondxchart.js",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\commondxchart.js",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\commondxchart.js",
+              "ViewState": "AQIAAEUAAAAAAAAAAAAWwFsAAABWAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-03-15T14:10:51.491Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "charmsalignmentpanel.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsalignmentpanel.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsalignmentpanel.js",
               "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsalignmentpanel.js",
               "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsalignmentpanel.js",
-              "ViewState": "AQIAAGsDAAAAAAAAAAAuwNkDAAAYAAAA",
+              "ViewState": "AQIAAFQDAAAAAAAAAIBWwNkDAAAYAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-03-15T13:48:11.312Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 6,
               "Title": "charmsfitpanel.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsfitpanel.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsfitpanel.js",
               "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsfitpanel.js",
               "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsfitpanel.js",
-              "ViewState": "AQIAAIoEAAAAAAAAAAAmwL4EAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAKsEAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-03-14T09:36:23.032Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 14,
               "Title": "charts.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charts.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charts.js",
@@ -147,32 +240,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 9,
-              "Title": "common.js",
-              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\common.js",
-              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\common.js",
-              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\common.js",
-              "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\common.js",
-              "ViewState": "AQIAABIAAAAAAAAAAAAgwCYAAAAjAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-03-15T10:51:11.361Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "chartsarrays.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\chartsarrays.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\chartsarrays.js",
               "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\chartsarrays.js",
               "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\chartsarrays.js",
-              "ViewState": "AQIAAOUAAAAAAAAAAAA8wDYBAAAdAAAA",
+              "ViewState": "AQIAAOoAAAAAAAAAAAAqwDYBAAAdAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-03-15T10:13:52.011Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 10,
               "Title": "charmsfitpanelcommon.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsfitpanelcommon.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsfitpanelcommon.js",
@@ -185,33 +265,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 13,
               "Title": "charmsfitpanelpro.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsfitpanelpro.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsfitpanelpro.js",
               "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsfitpanelpro.js",
               "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsfitpanelpro.js",
-              "ViewState": "AQIAABoAAAAAAAAAAAAgwJcAAABIAAAA",
+              "ViewState": "AQIAABoAAAAAAAAAAAA3wJcAAABIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-03-14T10:17:19.997Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 12,
               "Title": "charmsfitpanelcore.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsfitpanelcore.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsfitpanelcore.js",
               "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsfitpanelcore.js",
               "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charmsfitpanelcore.js",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACoAAABFAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAuwCoAAABFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-03-14T10:01:22.92Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
               "Title": "charms.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charms.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\slabwebapp\\search\\charms\\charms.js",
