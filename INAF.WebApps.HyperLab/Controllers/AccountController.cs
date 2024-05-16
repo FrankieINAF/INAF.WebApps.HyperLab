@@ -82,7 +82,9 @@ namespace INAF.WebApps.HyperLab.Controllers
             clearErrorsForKey($"{nameof(LoginModel.ConfirmPassword)}");
             if (ModelState.IsValid)
             {
+                logger.LogInformation($"{nameof(Login)} - user: {model.UserName}");
                 (bool isAuthenticated, UserModel user) result = await tryAuthenticateForWebAsync(model.UserName, model.Password, model.RememberMe);
+                logger.LogInformation($"{nameof(Login)} - isAuthenticated: {result.isAuthenticated}");
                 if (result.isAuthenticated)
                     return RedirectToAction("Search", "Searches");
                 //return RedirectToHomeView(returnUrl);
@@ -185,16 +187,15 @@ namespace INAF.WebApps.HyperLab.Controllers
             return JwtTokenModel.GetEmptyToken();
         }
 
-        private async Task<(bool isAuthenticated, UserModel user)> tryAuthenticateForWebAsync(string userName,
+        private async Task<(bool isAuthenticated, UserModel? user)> tryAuthenticateForWebAsync(string userName,
                                                                                               string password,
                                                                                               bool rememberMe = false)
         {
             bool isAuthenticated = false;
-            UserModel user = null;
+            UserModel? user = null;
 
             string encryptedPwd = getEncrypted(password);
             user = dbHandler.tryLogin(userName, encryptedPwd);
-
             if (user != null)
             {
                 /* add cookie auth for web access */
