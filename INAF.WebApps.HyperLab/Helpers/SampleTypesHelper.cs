@@ -1,30 +1,30 @@
-﻿using INAF.Libraries.Net.CommonWebAppModels.Models.DbValues;
-using INAF.Libraries.Net.SLabDbLibrary;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.SampleData;
+﻿using INAF.Libraries.DB.Net.SLabData.Models.DbValues;
+using INAF.Libraries.Net.DB.SLabData;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Extensions;
+using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.SampleData;
 
 namespace INAF.WebApps.HyperLab.Helpers
 {
     public sealed class SampleTypesHelper
     {
-        private readonly DbHandler dbHandler;
+        private readonly DbHandlerSLabData dbHandlerSLabData;
 
-        public SampleTypesHelper(DbHandler dbHandler)
+        public SampleTypesHelper(DbHandlerSLabData dbHandlerSLabData)
         {
-            this.dbHandler = dbHandler;
+            this.dbHandlerSLabData = dbHandlerSLabData;
         }
 
         public SampleDataAvailableValues getSampleTypeValuesContainer()
         {
-            IEnumerable<DbStringValue> sampleTypeValues = dbHandler.getSampleTypeValues();
+            IEnumerable<DbStringValue> sampleTypeValues = dbHandlerSLabData.getSampleTypeValues();
 
-            List<DbIntDoubleValue> sampleTypeGrainSizeValues = dbHandler.getSampleTypeGrainSizeValues();
+            List<DbIntDoubleValue> sampleTypeGrainSizeValues = dbHandlerSLabData.getSampleTypeGrainSizeValues();
 
-            List<DbStringValue> sampleTypeGrainSizeTypeValues = dbHandler.getSampleTypeGrainSizeTypeValues();
+            List<DbStringValue> sampleTypeGrainSizeTypeValues = dbHandlerSLabData.getSampleTypeGrainSizeTypeValues();
 
-            List<DbStringValue> originTypeValues = dbHandler.getOriginTypeValues();
+            List<DbStringValue> originTypeValues = dbHandlerSLabData.getOriginTypeValues();
 
-            List<MineralTypeModel> mineralTypeValues = dbHandler.getMineralTypeValues();
+            List<MineralTypeModel> mineralTypeValues = dbHandlerSLabData.getMineralTypeValues();
 
             List<SampleTypeModel> sampleDataValues = new List<SampleTypeModel>(sampleTypeValues.Count());
             foreach (var sampleTypeValue in sampleTypeValues)

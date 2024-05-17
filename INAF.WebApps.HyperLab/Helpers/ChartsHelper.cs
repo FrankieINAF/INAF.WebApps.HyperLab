@@ -1,5 +1,5 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Searches;
-using INAF.Libraries.Net.SLabDbLibrary;
+using INAF.Libraries.Net.DB.SLabData;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Values;
 using INAF.WebApps.HyperLab.Extensions;
@@ -10,11 +10,11 @@ namespace INAF.WebApps.HyperLab.Helpers
 {
     public sealed class ChartsHelper
     {
-        private readonly DbHandler dbHandler;
+        private readonly DbHandlerSLabData dbHandlerSLabData;
 
-        public ChartsHelper(DbHandler dbHandler)
+        public ChartsHelper(DbHandlerSLabData dbHandlerSLabData)
         {
-            this.dbHandler = dbHandler;
+            this.dbHandlerSLabData = dbHandlerSLabData;
         }
 
         public ExpandoObject createMultipleSpectraJson(List<int> ids,
@@ -24,7 +24,7 @@ namespace INAF.WebApps.HyperLab.Helpers
 
             int idsNum = ids.Count;
 
-            List<ISpectrumModel> spectraModels = dbHandler.getSpectraByIdProcedure(ids,
+            List<ISpectrumModel> spectraModels = dbHandlerSLabData.getSpectraByIdProcedure(ids,
                                                                                     operationUserId);
 
             /* extract min,max for all series and then retrieve absolute min,max */
@@ -58,7 +58,7 @@ namespace INAF.WebApps.HyperLab.Helpers
                                                       SpectrumType spectrumType,
                                                       int operationUserId)
         {
-            ISpectrumModel spectrumModel = dbHandler.getSpectrumByParentIdAndSpectrumType(parentId,
+            ISpectrumModel spectrumModel = dbHandlerSLabData.getSpectrumByParentIdAndSpectrumType(parentId,
                                                                                           spectrumType, 
                                                                                           operationUserId);
 
@@ -96,7 +96,7 @@ namespace INAF.WebApps.HyperLab.Helpers
 
             int idsNum = ids.Count;
 
-            List<ISpectrumModel> spectraModels = dbHandler.getSpectraByIdProcedure(ids,
+            List<ISpectrumModel> spectraModels = dbHandlerSLabData.getSpectraByIdProcedure(ids,
                                                                                    operationUserId);
 
             /* extract min,max for all series and then retrieve absolute min,max */

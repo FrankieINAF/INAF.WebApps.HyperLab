@@ -1,4 +1,4 @@
-﻿using INAF.Libraries.Net.SLabDbLibrary;
+﻿using INAF.Libraries.DB.Net.HyperLabUsers;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Values;
@@ -11,15 +11,19 @@ namespace INAF.WebApps.HyperLab.Controllers
     [CheckIsLoginValid]
     public class PermissionsController : BaseController
     {
-        public PermissionsController(IServiceProvider serviceProvider, 
-                                     DbHandler dbHandler, 
-                                     ILogger<BaseController> logger) : base(serviceProvider, dbHandler, logger)
-        { }
+        private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
+
+        public PermissionsController(IServiceProvider serviceProvider,
+                                     ILogger<PermissionsController> logger,
+                                     DbHandlerHyperLabUsers dbHandlerHyperLabUsers) : base(serviceProvider, logger)
+        {
+            this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
+        }
 
         [HttpGet]
         public JsonResult IsUpsertUserPermissionGranted()
         {
-            bool isAllowed = dbHandler.isPermissionGranted((int)Enums.Permissions.UpsertUser,
+            bool isAllowed = dbHandlerHyperLabUsers.isPermissionGranted((int)Enums.Permissions.UpsertUser,
                                                            getUserId());
 
             return new JsonResult(isAllowed);
@@ -28,7 +32,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public JsonResult IsSaveOnCloudFromAppPermissionGranted()
         {
-            bool isAllowed = dbHandler.isPermissionGranted((int)Enums.Permissions.SaveOnCloudFromApp,
+            bool isAllowed = dbHandlerHyperLabUsers.isPermissionGranted((int)Enums.Permissions.SaveOnCloudFromApp,
                                                            getUserId());
 
             return new JsonResult(isAllowed);

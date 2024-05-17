@@ -1,5 +1,5 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
-using INAF.Libraries.Net.SLabDbLibrary;
+using INAF.Libraries.Net.DB.SLabData;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.SampleData;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Responses;
 using INAF.WebApps.HyperLab.Attributes;
@@ -14,16 +14,20 @@ namespace INAF.WebApps.HyperLab.Controllers
     [CheckIsLoginValid]
     public class MaterialsController : BaseController
     {
+        private readonly DbHandlerSLabData dbHandlerSLabData;
+
         public MaterialsController(IServiceProvider serviceProvider,
-                                  DbHandler dbHandler,
-                                  ILogger<BaseController> logger) : base(serviceProvider, dbHandler, logger)
-        { }
+                                   ILogger<MaterialsController> logger,
+                                   DbHandlerSLabData dbHandlerHyperLabUsers) : base(serviceProvider, logger)
+        {
+            this.dbHandlerSLabData = dbHandlerHyperLabUsers;
+        }
 
         #region VIEWS
         [HttpGet]
         public IActionResult GetMineralDetailsView(GenericRequestByIdModel model)
         {
-            var mineralModel = dbHandler.getMineralDetails(model.Id);
+            var mineralModel = dbHandlerSLabData.getMineralDetails(model.Id);
             if (mineralModel != null)
                 return PartialView("Partials/_MineralDetails", mineralModel);
             else
@@ -36,7 +40,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             var mineralModel = new MineralModel();
 
             if (model?.Id != null && model?.Id > 0)
-                mineralModel = dbHandler.getMineralDetails(model.Id);
+                mineralModel = dbHandlerSLabData.getMineralDetails(model.Id);
 
             return PartialView("Partials/_UpsertMineral", mineralModel);
         }
@@ -52,19 +56,19 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetMinerals(GenericRequestByTextModel model)
         {
-            return new JsonResult(dbHandler.getMinerals(model.Text));
+            return new JsonResult(dbHandlerSLabData.getMinerals(model.Text));
         }
 
         [HttpGet]
         public IActionResult GetMineralsList()
         {
-            return new JsonResult(dbHandler.getMineralsList());
+            return new JsonResult(dbHandlerSLabData.getMineralsList());
         }
 
         [HttpGet]
         public IActionResult GetRocks(string Text)
         {
-            return new JsonResult(dbHandler.getRocks(Text));
+            return new JsonResult(dbHandlerSLabData.getRocks(Text));
         }
 
         [HttpGet]
@@ -82,7 +86,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteMineral([FromBody] GenericRequestByIdModel model)
         {
-            bool isOk = await dbHandler.deleteMineralAsync(model.Id,
+            bool isOk = await dbHandlerSLabData.deleteMineralAsync(model.Id,
                                                            getUserId());
             return new JsonResult(new GenericValueStringResponseModel() { IsOk = isOk, Id = model.Id });
         }
@@ -93,7 +97,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             if (ModelState.IsValid)
             {
-                (bool isOk, int id) result = await dbHandler.upsertMineralDataSimpleAsync(materialModel.Id,
+                (bool isOk, int id) result = await dbHandlerSLabData.upsertMineralDataSimpleAsync(materialModel.Id,
                                                                                           materialModel.Name,
                                                                                           materialModel.Formula);
                 return new JsonResult(new GenericValueStringResponseModel() { IsOk = result.isOk, Id = result.id, Value = materialModel.Name });

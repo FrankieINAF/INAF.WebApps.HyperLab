@@ -1,16 +1,16 @@
-﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
-using INAF.Libraries.Net.SLabDbLibrary;
+﻿using INAF.Libraries.DB.Net.HyperLabUsers;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Values;
 
 namespace INAF.WebApps.HyperLab.Helpers.Factories
 {
     public sealed class UsersFactory
     {
-        private readonly DbHandler dbHandler;
+        private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
 
-        public UsersFactory(DbHandler dbHandler)
+        public UsersFactory(DbHandlerHyperLabUsers dbHandlerHyperLabUsers)
         {
-            this.dbHandler = dbHandler;
+            this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
         }
 
         public UserModel createUserForInsert()
@@ -25,23 +25,23 @@ namespace INAF.WebApps.HyperLab.Helpers.Factories
             return new UserModel()
             {
                 Contacts = contacts,
-                Roles = dbHandler.getRoles(),
+                Roles = dbHandlerHyperLabUsers.getRoles(),
                 OperationType = Libraries.Net.CommonWebAppModels.Values.Enums.OperationType.Insert
             };
         }
 
         public UserModel getUserForUpdate(int userId)
         {
-            var userDetails = dbHandler.getUserDetails(userId);
+            var userDetails = dbHandlerHyperLabUsers.getUserDetails(userId);
             return new UserModel()
             {
                 Id = userId,
                 Name = userDetails.Name,
                 LastName = userDetails.LastName,
                 Contacts = userDetails.Contacts,
-                Roles = dbHandler.getRoles(),
+                Roles = dbHandlerHyperLabUsers.getRoles(),
                 RoleId = userDetails.Roles[0].Id,
-                Login = dbHandler.getLogin(userId),
+                Login = dbHandlerHyperLabUsers.getLogin(userId),
                 OperationType = Libraries.Net.CommonWebAppModels.Values.Enums.OperationType.Update
             };
         }

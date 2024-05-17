@@ -1,5 +1,5 @@
-﻿using INAF.Libraries.Net.CommonWebAppHelpers;
-using INAF.Libraries.Net.SLabDbLibrary;
+﻿using INAF.Libraries.DB.Net.HyperLabUsers;
+using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.WebApps.HyperLab.Extensions;
 using INAF.WebApps.HyperLab.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -12,45 +12,20 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
     public class BaseController : Controller
     {
         protected readonly IConfiguration? configuration;
-        protected readonly IServiceProvider? serviceProvider;
-        protected readonly DbHandler? dbHandler;
+        protected readonly IServiceProvider serviceProvider;
         protected readonly ILogger<BaseController> logger;
 
-        public BaseController(IServiceProvider serviceProvider)
-        {
-            this.serviceProvider = serviceProvider;
-        }
-
-        public BaseController(ILogger<BaseController> logger)
-        {
-            this.logger = logger;
-        }
-
-        public BaseController(IConfiguration configuration,
-                              ILogger<BaseController> logger) : this(logger)
-        {
-            this.configuration = configuration;
-        }
-
-        public BaseController(DbHandler dbHandler,
-                              ILogger<BaseController> logger) : this(logger)
-        {
-            this.dbHandler = dbHandler;
-        }
-
         public BaseController(IServiceProvider serviceProvider,
-                              DbHandler dbHandler,
-                              ILogger<BaseController> logger) : this(dbHandler, logger)
+                              ILogger<BaseController> logger)
         {
             this.serviceProvider = serviceProvider;
+            this.logger = logger;
         }
 
         public BaseController(IServiceProvider serviceProvider,
                               IConfiguration configuration,
-                              DbHandler dbHandler,
-                              ILogger<BaseController> logger) : this(dbHandler, logger)
+                              ILogger<BaseController> logger) : this(serviceProvider, logger)
         {
-            this.serviceProvider = serviceProvider;
             this.configuration = configuration;
         }
 
@@ -101,7 +76,10 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
             if (string.IsNullOrEmpty(token))
                 return HttpContext.GetUserId();
             else
-                return dbHandler.getUserIdFromToken(token);
+            {
+                var dbHandlerHyperLabUsers = serviceProvider.GetRequiredService<DbHandlerHyperLabUsers>();
+                return dbHandlerHyperLabUsers.getUserIdFromToken(token);
+            }
         }
 
         protected bool isRemoteCheckInEditMode(string field1, string field2)

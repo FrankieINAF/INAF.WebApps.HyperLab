@@ -11,7 +11,8 @@ namespace INAF.WebApps.HyperLab.Controllers
     [CheckIsLoginValid]
     public class ExtServicesController : BaseController
     {
-        public ExtServicesController(IServiceProvider serviceProvider) : base(serviceProvider)
+        public ExtServicesController(IServiceProvider serviceProvider,
+                                     ILogger<ExtServicesController> logger) : base(serviceProvider, logger)
         { }
 
         [HttpGet]

@@ -1,5 +1,5 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
-using INAF.Libraries.Net.SLabDbLibrary;
+using INAF.Libraries.Net.DB.SLabData;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Helpers;
@@ -12,10 +12,14 @@ namespace INAF.WebApps.HyperLab.Controllers
     [CheckIsLoginValid]
     public class ChartsController : BaseController
     {
+        private readonly DbHandlerSLabData dbHandlerSLabData;
+
         public ChartsController(IServiceProvider serviceProvider, 
-                                DbHandler dbHandler, 
-                                ILogger<BaseController> logger) : base(serviceProvider, dbHandler, logger)
-        { }
+                                ILogger<ChartsController> logger,
+                                DbHandlerSLabData dbHandlerSLabData) : base(serviceProvider, logger)
+        {
+            this.dbHandlerSLabData = dbHandlerSLabData;
+        }
 
         [HttpPost]
         public IActionResult GetSpectra([FromBody] GenericRequestByIdsModel model)
@@ -37,7 +41,11 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetWhiteSpectraForAlignment()
         {
-            List<int> ids = dbHandler.getWhiteSpectraForAlignmentIds();
+            List<int>? ids = dbHandlerSLabData.getWhiteSpectraForAlignmentIds();
+
+            if (ids == null || ids.Count == 0)
+                return new JsonResult(null);
+
             var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
             return new JsonResult(chartsHelper.createRefWhitesJson(ids, 0)); // operationUserId = 0 for 'white' spectra available for everyone (not related to a specific insertUserId)
         }

@@ -1,7 +1,7 @@
-﻿using INAF.Libraries.Net.CommonWebAppHelpers;
+﻿using INAF.Libraries.DB.Net.HyperLabUsers;
+using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
-using INAF.Libraries.Net.SLabDbLibrary;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Authentication;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Extensions;
@@ -19,16 +19,19 @@ namespace INAF.WebApps.HyperLab.Controllers
 {
     public class AccountController : BaseController
     {
+        private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
+
         public AccountController(IServiceProvider serviceProvider,
-                                 IConfiguration configuration,
-                                 DbHandler dbHandler,
-                                 ILogger<BaseController> logger) : base(serviceProvider, configuration, dbHandler, logger)
-        { }
+                                 ILogger<AccountController> logger,
+                                 DbHandlerHyperLabUsers dbHandlerHyperLabUsers) : base(serviceProvider, logger)
+        {
+            this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
+        }
 
         [HttpGet]
         public JsonResult IsLoginValid()
         {
-            return new JsonResult(dbHandler.isLoginValid(getUserId()));
+            return new JsonResult(dbHandlerHyperLabUsers.isLoginValid(getUserId()));
         }
 
         [HttpGet]
@@ -40,7 +43,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 string token = HttpContext.GetToken();
 
-                if (!dbHandler.isTokenValid(token))
+                if (!dbHandlerHyperLabUsers.isTokenValid(token))
                     return new JsonResult(isValid);
 
                 TokenValidationParametersFactory tokenValidationParametersFactory = serviceProvider.GetRequiredService<TokenValidationParametersFactory>();
@@ -141,19 +144,19 @@ namespace INAF.WebApps.HyperLab.Controllers
             /* extract token string */
             string tokenstring = new JwtSecurityTokenHandler().WriteToken(token);
 
-            string oldtokenstring = dbHandler.getTokenFromUserId(user.Id);
+            string oldtokenstring = dbHandlerHyperLabUsers.getTokenFromUserId(user.Id);
 
             if (string.IsNullOrEmpty(oldtokenstring))
             {
                 /* save user-token relationship in DB */
-                await dbHandler.saveUserTokenAsync(user.Id,
+                await dbHandlerHyperLabUsers.saveUserTokenAsync(user.Id,
                                                    tokenstring,
                                                    user.Id);
             }
             else
             {
                 /* save user-token relationship in DB */
-                await dbHandler.updateUserTokenAsync(user.Id,
+                await dbHandlerHyperLabUsers.updateUserTokenAsync(user.Id,
                                                      tokenstring);
             }
 
@@ -169,7 +172,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             if (resultForWeb.isAuthenticated)
             {
-                string existingtokenstring = dbHandler.getTokenFromUserId(resultForWeb.user.Id);
+                string existingtokenstring = dbHandlerHyperLabUsers.getTokenFromUserId(resultForWeb.user.Id);
                 if (!string.IsNullOrEmpty(existingtokenstring))
                 {
                     var securityToken = new JwtSecurityToken(existingtokenstring);
@@ -195,7 +198,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             UserModel? user = null;
 
             string encryptedPwd = getEncrypted(password);
-            user = dbHandler.tryLogin(userName, encryptedPwd);
+            user = dbHandlerHyperLabUsers.tryLogin(userName, encryptedPwd);
             if (user != null)
             {
                 /* add cookie auth for web access */

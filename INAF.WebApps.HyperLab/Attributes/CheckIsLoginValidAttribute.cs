@@ -1,5 +1,5 @@
-﻿using INAF.Libraries.Net.CommonWebAppHelpers;
-using INAF.Libraries.Net.SLabDbLibrary;
+﻿using INAF.Libraries.DB.Net.HyperLabUsers;
+using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.WebApps.HyperLab.Controllers;
 using INAF.WebApps.HyperLab.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +13,7 @@ namespace INAF.WebApps.HyperLab.Attributes
         {
             int userId = int.MinValue;
 
-            var dbHandler = filterContext.HttpContext.RequestServices.GetRequiredService<DbHandler>();
+            var dbHandler = filterContext.HttpContext.RequestServices.GetRequiredService<DbHandlerHyperLabUsers>();
 
             /* retrieve userId from token or from context */
             string token = filterContext.HttpContext.GetToken();

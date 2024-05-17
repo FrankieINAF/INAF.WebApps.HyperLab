@@ -1,5 +1,6 @@
-﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
-using INAF.Libraries.Net.SLabDbLibrary;
+﻿using INAF.Libraries.DB.Net.HyperLabUsers;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
+using INAF.Libraries.Net.DB.SLabData;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.BandAnalysis;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment;
@@ -17,16 +18,23 @@ namespace INAF.WebApps.HyperLab.Controllers
     [CheckIsLoginValid]
     public class SpectraFilesController : BaseController
     {
+        private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
+        private readonly DbHandlerSLabData dbHandlerSLabData;
+
         public SpectraFilesController(IServiceProvider serviceProvider,
-                                      DbHandler dbHandler,
-                                      ILogger<BaseController> logger) : base(serviceProvider, dbHandler, logger)
-        { }
+                                      ILogger<SpectraFilesController> logger,
+                                      DbHandlerHyperLabUsers dbHandlerHyperLabUsers,
+                                      DbHandlerSLabData dbHandlerSLabData) : base(serviceProvider, logger)
+        {
+            this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
+            this.dbHandlerSLabData = dbHandlerSLabData;
+        }
 
         [HttpGet]
         public IActionResult GetAlignmentSettings(GenericRequestByIdModel model)
         {
-            AlignmentSettingsModel alignmentSettingsModel = dbHandler.getAlignmentSettings(model.Id,
-                                                                                           getUserId());
+            AlignmentSettingsModel? alignmentSettingsModel = dbHandlerSLabData.getAlignmentSettings(model.Id,
+                                                                                                   getUserId());
             if (alignmentSettingsModel != null)
                 return new JsonResult(new GenericResponseModel(alignmentSettingsModel));
             else
@@ -36,8 +44,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetContinuumRemovalSettings(GenericRequestByIdModel model)
         {
-            ContinuumRemovalSettingsModel continuumRemovalSettingsModel = dbHandler.getContinuumRemovalSettings(model.Id,
-                                                                                                                getUserId());
+            ContinuumRemovalSettingsModel? continuumRemovalSettingsModel = dbHandlerSLabData.getContinuumRemovalSettings(model.Id,
+                                                                                                                        getUserId());
             if (continuumRemovalSettingsModel != null)
                 return new JsonResult(new GenericResponseModel(continuumRemovalSettingsModel));
             else
@@ -47,9 +55,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetSpectrumByParentIdAndSpectrumType(GenericRequestByParentIdAndSpectrumTypeModel model)
         {
-            ISpectrumModel spectrumModel = dbHandler.getSpectrumByParentIdAndSpectrumType(model.ParentId,
-                                                                                          model.SpectrumType,
-                                                                                          getUserId());
+            ISpectrumModel? spectrumModel = dbHandlerSLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId,
+                                                                                                   model.SpectrumType,
+                                                                                                   getUserId());
             if (spectrumModel != null)
                 return new JsonResult(new GenericResponseModel(spectrumModel));
             else
@@ -59,9 +67,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetSpectrumIdByParentIdAndSpectrumType(IdAndSpectrumTypeRequestModel model)
         {
-            int id = dbHandler.getSpectrumIdByParentIdAndSpectrumType(model.Id,
-                                                                      model.SpectrumType,
-                                                                      getUserId());
+            int id = dbHandlerSLabData.getSpectrumIdByParentIdAndSpectrumType(model.Id,
+                                                                              model.SpectrumType,
+                                                                              getUserId());
             if (id != int.MinValue)
                 return new JsonResult(new GenericResponseModel() { IsOk = true, Id = id });
             else
@@ -71,7 +79,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetSpectrumFilename(GenericRequestByIdModel model)
         {
-            SpectrumModel spectrumModel = dbHandler.getSpectrumGeneralInfo(model.Id);
+            SpectrumModel? spectrumModel = dbHandlerSLabData.getSpectrumGeneralInfo(model.Id);
 
             return new JsonResult(spectrumModel);
         }
@@ -80,8 +88,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetBandAnalysisData(BandAnalysisModel model)
         {
-            var bandAnalysisModel = dbHandler.getBandAnalysisData(model.Id,
-                                                                  getUserId());
+            var bandAnalysisModel = dbHandlerSLabData.getBandAnalysisData(model.Id,
+                                                                          getUserId());
             if (bandAnalysisModel != null)
                 return new JsonResult(new GenericResponseModel() { IsOk = true, ResponseObject = bandAnalysisModel });
             else
@@ -91,8 +99,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetBandsAnalysisData(BandAnalysisModel model)
         {
-            var bandsAnalysisModel = dbHandler.getBandsAnalysisData(model.FileId,
-                                                                    getUserId());
+            var bandsAnalysisModel = dbHandlerSLabData.getBandsAnalysisData(model.FileId,
+                                                                            getUserId());
             if (bandsAnalysisModel != null)
                 return new JsonResult(new GenericResponseModel() { IsOk = true, ResponseObject = bandsAnalysisModel });
             else
@@ -102,26 +110,29 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpPost]
         public IActionResult IsBandOverlappingWithExistingOne([FromBody] BandAnalysisModel model)
         {
-            bool isOverlapping = dbHandler.isBandOverlappingWithExistingOne(model.FileId,
-                                                                            model.LeftBoundary,
-                                                                            model.RightBoundary,
-                                                                            getUserId());
+            int bandOverlapRange = dbHandlerHyperLabUsers.getUserSettingsBandOverlapRange(getUserId());
+
+            bool isOverlapping = dbHandlerSLabData.isBandOverlappingWithExistingOne(model.FileId,
+                                                                                    model.LeftBoundary,
+                                                                                    model.RightBoundary,
+                                                                                    bandOverlapRange,
+                                                                                    getUserId());
             return new JsonResult(new GenericResponseModel() { BoolValue = isOverlapping });
         }
 
         [HttpPost]
         public async Task<IActionResult> SaveBandAnalysisData([FromBody] BandAnalysisModel model)
         {
-            (bool isOk, int id) result = await dbHandler.upsertBandAnalysisDataAsync(model.FileId,
-                                                                                     model.Id,
-                                                                                     model.LeftBoundary,
-                                                                                     model.RightBoundary,
-                                                                                     model.BandCenterX,
-                                                                                     model.BandDepth,
-                                                                                     model.BandArea,
-                                                                                     model.FwhmLeftMargin,
-                                                                                     model.FwhmRightMargin,
-                                                                                     getUserId());
+            (bool isOk, int id) result = await dbHandlerSLabData.upsertBandAnalysisDataAsync(model.FileId,
+                                                                                             model.Id,
+                                                                                             model.LeftBoundary,
+                                                                                             model.RightBoundary,
+                                                                                             model.BandCenterX,
+                                                                                             model.BandDepth,
+                                                                                             model.BandArea,
+                                                                                             model.FwhmLeftMargin,
+                                                                                             model.FwhmRightMargin,
+                                                                                             getUserId());
             if (result.isOk)
                 return new JsonResult(new GenericResponseModel() { Id = result.id, IsOk = true });
             else

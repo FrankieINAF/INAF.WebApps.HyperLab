@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.NetStandard.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.NetStandard.Math", "..\..\Libraries\NetStandard\INAF.Libraries.NetStandard.Math\INAF.Libraries.NetStandard.Math\INAF.Libraries.NetStandard.Math.csproj", "{D8003CCF-F8AE-406A-B6E6-7FC75D53A8E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.Net.SLabDbLibrary", "..\..\Libraries\Net\INAF.Libraries.Net.SLabDbLibrary\INAF.Libraries.Net.SLabDbLibrary\INAF.Libraries.Net.SLabDbLibrary.csproj", "{1B958FD6-538F-4A47-9368-F4C3785A0869}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.Net.CommonWebAppHelpers", "..\..\Libraries\Net\INAF.Libraries.Net.CommonWebAppHelpers\INAF.Libraries.Net.CommonWebAppHelpers\INAF.Libraries.Net.CommonWebAppHelpers.csproj", "{FAB77DAF-51DE-4105-B56F-878F30C55C20}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.Net.CommonWebAppModels", "..\..\Libraries\Net\INAF.Libraries.Net.CommonWebAppModels\INAF.Libraries.Net.CommonWebAppModels\INAF.Libraries.Net.CommonWebAppModels.csproj", "{A22A16A9-D4BE-4B64-90F6-891A74A0BC19}"
@@ -18,6 +16,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.NetStandard.HyperLabCommonHelpers", "..\..\Libraries\NetStandard\INAF.Libraries.NetStandard.HyperLabCommonHelpers\INAF.Libraries.NetStandard.HyperLabCommonHelpers\INAF.Libraries.NetStandard.HyperLabCommonHelpers.csproj", "{97B702CE-3252-4CAE-BE0C-6A7F95CE4856}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.NetStandard.HyperLabCommonModels", "..\..\Libraries\NetStandard\INAF.Libraries.NetStandard.HyperLabCommonModels\INAF.Libraries.NetStandard.HyperLabCommonModels\INAF.Libraries.NetStandard.HyperLabCommonModels.csproj", "{0DE07DD7-163D-45AE-89C8-035F700EBB66}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.DB.Net.SLabData", "..\..\Libraries\Net\DB\INAF.Libraries.DB.Net.SLabData\INAF.Libraries.DB.Net.SLabData\INAF.Libraries.DB.Net.SLabData.csproj", "{535F3348-7F23-4886-8253-C905814FE277}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.DB.Net.HyperLabUsers", "..\..\Libraries\Net\DB\INAF.Libraries.DB.Net.HyperLabUsers\INAF.Libraries.DB.Net.HyperLabUsers\INAF.Libraries.DB.Net.HyperLabUsers.csproj", "{2D56D299-8A64-4F9F-89A5-BA1F83B72262}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.Net.Log", "..\..\Libraries\Net\INAF.Libraries.Net.Log\INAF.Libraries.Net.Log\INAF.Libraries.Net.Log.csproj", "{5BE22C29-4E88-4658-8A2F-BED8A39E1CEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +41,6 @@ Global
 		{D8003CCF-F8AE-406A-B6E6-7FC75D53A8E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8003CCF-F8AE-406A-B6E6-7FC75D53A8E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8003CCF-F8AE-406A-B6E6-7FC75D53A8E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1B958FD6-538F-4A47-9368-F4C3785A0869}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1B958FD6-538F-4A47-9368-F4C3785A0869}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1B958FD6-538F-4A47-9368-F4C3785A0869}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1B958FD6-538F-4A47-9368-F4C3785A0869}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FAB77DAF-51DE-4105-B56F-878F30C55C20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FAB77DAF-51DE-4105-B56F-878F30C55C20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAB77DAF-51DE-4105-B56F-878F30C55C20}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +57,18 @@ Global
 		{0DE07DD7-163D-45AE-89C8-035F700EBB66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DE07DD7-163D-45AE-89C8-035F700EBB66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DE07DD7-163D-45AE-89C8-035F700EBB66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{535F3348-7F23-4886-8253-C905814FE277}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{535F3348-7F23-4886-8253-C905814FE277}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{535F3348-7F23-4886-8253-C905814FE277}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{535F3348-7F23-4886-8253-C905814FE277}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D56D299-8A64-4F9F-89A5-BA1F83B72262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D56D299-8A64-4F9F-89A5-BA1F83B72262}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D56D299-8A64-4F9F-89A5-BA1F83B72262}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D56D299-8A64-4F9F-89A5-BA1F83B72262}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BE22C29-4E88-4658-8A2F-BED8A39E1CEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BE22C29-4E88-4658-8A2F-BED8A39E1CEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BE22C29-4E88-4658-8A2F-BED8A39E1CEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BE22C29-4E88-4658-8A2F-BED8A39E1CEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

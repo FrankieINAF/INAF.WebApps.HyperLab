@@ -1,24 +1,23 @@
-﻿using INAF.Libraries.Net.CommonWebAppHelpers;
+﻿using INAF.Libraries.DB.Net.HyperLabUsers;
+using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Menu;
-using INAF.Libraries.Net.SLabDbLibrary;
-using INAF.WebApps.HyperLab.Extensions;
 
 namespace INAF.WebApps.HyperLab.Helpers
 {
     public sealed class MenuHelper
     {
-        private readonly DbHandler dbHandler;
+        private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
 
-        public MenuHelper(DbHandler dbHandler)
+        public MenuHelper(DbHandlerHyperLabUsers dbHandlerHyperLabUsers)
         {
-            this.dbHandler = dbHandler;
+            this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
         }
 
         public Menu GetMenu(HttpContext httpContext)
         {
             var menu = new Menu();
 
-            List<MenuItem> menuItems = dbHandler.getMenu(httpContext.GetUserId());
+            List<MenuItem> menuItems = dbHandlerHyperLabUsers.getMenu(httpContext.GetUserId());
             foreach (var menuItem in menuItems)
             {
                 if (!string.IsNullOrEmpty(menuItem.LinkText))
@@ -36,7 +35,7 @@ namespace INAF.WebApps.HyperLab.Helpers
 
         public List<MenuItem> GetItemSubMenu(HttpContext httpContext, int parentId)
         {
-            List<MenuItem> subMenuItems = dbHandler.getItemSubMenu(httpContext.GetUserId(),
+            List<MenuItem> subMenuItems = dbHandlerHyperLabUsers.getItemSubMenu(httpContext.GetUserId(),
                                                                    parentId);
             foreach (var menuItem in subMenuItems)
             {

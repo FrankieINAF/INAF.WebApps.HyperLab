@@ -50,9 +50,10 @@
     <ProjectReference Include="..\..\..\Libraries\NetStandard\INAF.Libraries.NetStandard.HyperLabCommonHelpers\INAF.Libraries.NetStandard.HyperLabCommonHelpers\INAF.Libraries.NetStandard.HyperLabCommonHelpers.csproj" />
     <ProjectReference Include="..\..\..\Libraries\NetStandard\INAF.Libraries.NetStandard.HyperLabCommonModels\INAF.Libraries.NetStandard.HyperLabCommonModels\INAF.Libraries.NetStandard.HyperLabCommonModels.csproj" />
     <ProjectReference Include="..\..\..\Libraries\NetStandard\INAF.Libraries.NetStandard.Math\INAF.Libraries.NetStandard.Math\INAF.Libraries.NetStandard.Math.csproj" />
+    <ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.DB.Net.HyperLabUsers\INAF.Libraries.DB.Net.HyperLabUsers\INAF.Libraries.DB.Net.HyperLabUsers.csproj" />
+    <ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.DB.Net.SLabData\INAF.Libraries.DB.Net.SLabData\INAF.Libraries.DB.Net.SLabData.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.CommonWebAppHelpers\INAF.Libraries.Net.CommonWebAppHelpers\INAF.Libraries.Net.CommonWebAppHelpers.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.CommonWebAppModels\INAF.Libraries.Net.CommonWebAppModels\INAF.Libraries.Net.CommonWebAppModels.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.SLabDbLibrary\INAF.Libraries.Net.SLabDbLibrary\INAF.Libraries.Net.SLabDbLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using HtmlAgilityPack;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Searches.Interfaces;
-using INAF.Libraries.Net.SLabDbLibrary;
+using INAF.Libraries.Net.DB.SLabData;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Extensions;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.SampleData;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.SampleData.Containers;
@@ -11,15 +11,15 @@ namespace INAF.WebApps.HyperLab.Helpers
     public sealed class SearchByMaterialHelper
     {
         private readonly IConfiguration configuration;
-        private readonly DbHandler dbHandler;
+        private readonly DbHandlerSLabData dbHandlerSLabData;
         private readonly ILogger<SearchByMaterialHelper> logger;
 
         public SearchByMaterialHelper(IConfiguration configuration,
-                                      DbHandler dbHandler,
+                                      DbHandlerSLabData dbHandlerSLabData,
                                       ILogger<SearchByMaterialHelper> logger)
         {
             this.configuration = configuration;
-            this.dbHandler = dbHandler;
+            this.dbHandlerSLabData = dbHandlerSLabData;
             this.logger = logger;
         }
 
@@ -38,12 +38,12 @@ namespace INAF.WebApps.HyperLab.Helpers
                     break;
 
                 case MaterialType.Mineral:
-                    spectraGroupInfoModels = dbHandler.searchSimpleGroupsByMineral(id,
+                    spectraGroupInfoModels = dbHandlerSLabData.searchSimpleGroupsByMineral(id,
                                                                                    operationUserId);
                     break;
 
                 case MaterialType.Rock:
-                    spectraGroupInfoModels = dbHandler.searchSimpleGroupsByRock(id,
+                    spectraGroupInfoModels = dbHandlerSLabData.searchSimpleGroupsByRock(id,
                                                                                 operationUserId);
                     break;
             }

@@ -1,4 +1,5 @@
-﻿using INAF.Libraries.Net.SLabDbLibrary;
+﻿using INAF.Libraries.DB.Net.HyperLabUsers;
+using INAF.Libraries.Net.DB.SLabData;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Extensions;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Requests;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Responses;
@@ -13,9 +14,17 @@ namespace INAF.WebApps.HyperLab.Controllers
     [CheckIsLoginValid]
     public class UserSettingsController : BaseController
     {
-        public UserSettingsController(DbHandler dbHandler,
-                                      ILogger<BaseController> logger) : base(dbHandler, logger)
-        { }
+        private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
+        private readonly DbHandlerSLabData dbHandlerSLabData;
+
+        public UserSettingsController(IServiceProvider serviceProvider,
+                                      ILogger<UserSettingsController> logger,
+                                      DbHandlerHyperLabUsers dbHandlerHyperLabUsers,
+                                      DbHandlerSLabData dbHandlerSLabData) : base(serviceProvider, logger)
+        {
+            this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
+            this.dbHandlerSLabData = dbHandlerSLabData;
+        }
 
         [HttpGet]
         public IActionResult LoadAlignmentPanel()
@@ -39,8 +48,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetUserSetting(KeyRequestModel model)
         {
-            (bool isOk, string? value) result = dbHandler.getUserSettingsValue(getUserId(),
-                                                                               model.Key);
+            (bool isOk, string? value) result = dbHandlerHyperLabUsers.getUserSettingsValue(getUserId(),
+                                                                                            model.Key);
 
             if (result.isOk)
                 return new JsonResult(result.ToGenericValueStringResponse());
@@ -51,7 +60,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetUserSettingsByWildcard(KeyRequestModel model)
         {
-            (bool isOk, List<KeyValueResponseModel>? values) result = dbHandler.getUserSettingsValuesByWildcard(getUserId(),
+            (bool isOk, List<KeyValueResponseModel>? values) result = dbHandlerHyperLabUsers.getUserSettingsValuesByWildcard(getUserId(),
                                                                                                                 model.Key);
 
             if (result.isOk)
@@ -65,7 +74,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpPost]
         public async Task<IActionResult> SetUserSetting([FromBody] KeyValueRequestModel model)
         {
-            bool isOk = await dbHandler.setUserSettingsValueAsync(getUserId(),
+            bool isOk = await dbHandlerHyperLabUsers.setUserSettingsValueAsync(getUserId(),
                                                                   model.Key,
                                                                   model.Value);
             if (isOk)
@@ -79,7 +88,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetFitFunctions()
         {
-            var fitMethods = dbHandler.readFitMethodModels();
+            var fitMethods = dbHandlerSLabData.readFitMethodModels();
             return new JsonResult(fitMethods);
         }
         #endregion
@@ -88,7 +97,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetPXMinPXMaxMaxValueFunctions()
         {
-            var fitMethods = dbHandler.readPXMinPXMaxFitMethodModels();
+            var fitMethods = dbHandlerSLabData.readPXMinPXMaxFitMethodModels();
             return new JsonResult(fitMethods);
         }
         #endregion
@@ -97,7 +106,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetSpectraTypesParents()
         {
-            var keyValuePairs = dbHandler.getSpectraTypesParents();
+            var keyValuePairs = dbHandlerSLabData.getSpectraTypesParents();
             return new JsonResult(keyValuePairs);
         }
         #endregion

@@ -1,8 +1,8 @@
-﻿using INAF.Libraries.Net.CommonWebAppHelpers;
+﻿using INAF.Libraries.DB.Net.HyperLabUsers;
+using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
-using INAF.Libraries.Net.SLabDbLibrary;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Permissions;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Responses;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Users;
@@ -20,15 +20,16 @@ namespace INAF.WebApps.HyperLab.Controllers
     public partial class UsersController : BaseController
     {
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
         private readonly UsersFactory usersFactory;
 
         public UsersController(IServiceProvider serviceProvider,
-                               IConfiguration configuration,
+                               ILogger<UsersController> logger,
                                IWebHostEnvironment webHostEnvironment,
-                               DbHandler dbHandler,
-                               ILogger<BaseController> logger) : base(serviceProvider, configuration, dbHandler, logger)
+                               DbHandlerHyperLabUsers dbHandlerHyperLabUsers) : base(serviceProvider, logger)
         {
             this.webHostEnvironment = webHostEnvironment;
+            this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
             usersFactory = serviceProvider.GetRequiredService<UsersFactory>();
         }
 
@@ -36,7 +37,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetUserDetailsView(GenericRequestByIdModel model)
         {
-            var userModel = dbHandler.getUserDetails(model.Id);
+            var userModel = dbHandlerHyperLabUsers.getUserDetails(model.Id);
             if (userModel != null)
                 return PartialView("Partials/_UserDetails", userModel);
             else
@@ -62,7 +63,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetUserDetailsSimple()
         {
-            UserSimpleModel user = dbHandler.getUserDetailsSimple(getUserId());
+            UserSimpleModel user = dbHandlerHyperLabUsers.getUserDetailsSimple(getUserId());
             if (user != null)
                 return new JsonResult(user);
             else
@@ -72,7 +73,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetUserPermissions()
         {
-            List<PermissionModel> permissions = dbHandler.getUserPermissions(getUserId());
+            List<PermissionModel> permissions = dbHandlerHyperLabUsers.getUserPermissions(getUserId());
             if (permissions?.Count > 0)
                 return new JsonResult(permissions);
             else
@@ -82,7 +83,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetUsersList()
         {
-            var users = dbHandler.getUsers();
+            var users = dbHandlerHyperLabUsers.getUsers();
             if (users.Any())
                 return new JsonResult(users);
             else
@@ -102,7 +103,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             }
             else
             {
-                bool isOk = await dbHandler.deleteUserAsync(model.Id,
+                bool isOk = await dbHandlerHyperLabUsers.deleteUserAsync(model.Id,
                                                             operationUserId);
                 return new JsonResult(new GenericValueStringResponseModel() { IsOk = isOk });
             }
@@ -131,7 +132,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 var email = model.Contacts.FirstOrDefault(x => x.ContactType == Libraries.NetStandard.HyperLabCommonModels.Values.Enums.ContactType.Email);
 
-                if (await dbHandler.upsertUserProcedureAsync(model.Id,
+                if (await dbHandlerHyperLabUsers.upsertUserProcedureAsync(model.Id,
                                                              model.Name,
                                                              model.LastName,
                                                              model.Login.UserName,
@@ -169,7 +170,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new BadRequestObjectResult(Resources.Users.CheckIsUserExistantErrorMessage);
             }
 
-            if (!dbHandler.isUserExistant(model.Name, model.LastName, model.Email))
+            if (!dbHandlerHyperLabUsers.isUserExistant(model.Name, model.LastName, model.Email))
                 return Json(true);
             else
                 return Json(false);
