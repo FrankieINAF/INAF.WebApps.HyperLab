@@ -1,4 +1,4 @@
-﻿using INAF.Libraries.DB.Net.HyperLabUsers;
+﻿using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Values;
 

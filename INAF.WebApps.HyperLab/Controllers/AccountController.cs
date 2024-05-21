@@ -1,8 +1,10 @@
-﻿using INAF.Libraries.DB.Net.HyperLabUsers;
-using INAF.Libraries.Net.CommonWebAppHelpers;
+﻿using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
+using INAF.Libraries.Net.DB.HyperLabUsers;
+using INAF.Libraries.NetStandard.Extensions;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Authentication;
+using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Responses;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Extensions;
 using INAF.WebApps.HyperLab.Helpers.Factories;
@@ -22,8 +24,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
 
         public AccountController(IServiceProvider serviceProvider,
+                                 IConfiguration configuration,
                                  ILogger<AccountController> logger,
-                                 DbHandlerHyperLabUsers dbHandlerHyperLabUsers) : base(serviceProvider, logger)
+                                 DbHandlerHyperLabUsers dbHandlerHyperLabUsers) : base(serviceProvider, configuration, logger)
         {
             this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
         }
@@ -70,9 +73,31 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Login(string returnUrl)
+        public IActionResult Confirmation(IncomingLoginConfirmationModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(Login), GenericHelper.GetControllerName(nameof(AccountController)));
+            }
+
+            return RedirectToAction(nameof(ConfirmationError), GenericHelper.GetControllerName(nameof(AccountController)));
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ConfirmationError()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Login(string? returnUrl,
+                                   string? caller = null)
         {
             ViewBag.ReturnUrl = returnUrl;
+            if (!string.IsNullOrEmpty(caller))
+                ViewBag.Caller = caller;
             return View();
         }
 
@@ -86,10 +111,10 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (ModelState.IsValid)
             {
                 logger.LogInformation($"{nameof(Login)} - user: {model.UserName}");
-                (bool isAuthenticated, UserModel user) result = await tryAuthenticateForWebAsync(model.UserName, model.Password, model.RememberMe);
+                (bool isAuthenticated, UserModel? user) result = await tryAuthenticateForWebAsync(model.UserName!, model.Password!, model.RememberMe);
                 logger.LogInformation($"{nameof(Login)} - isAuthenticated: {result.isAuthenticated}");
                 if (result.isAuthenticated)
-                    return RedirectToAction("Search", "Searches");
+                    return RedirectToAction(nameof(SearchesController.Search), GenericHelper.GetControllerName(nameof(SearchesController)));
                 //return RedirectToHomeView(returnUrl);
             }
             else
@@ -113,6 +138,67 @@ namespace INAF.WebApps.HyperLab.Controllers
             }
 
             ModelState.Clear();
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Registration()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> Registration([FromForm] RegistrationModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (dbHandlerHyperLabUsers.isUserExistant(model.Email!))
+                    return new JsonResult(new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Users.UserAlreadyExistantMessage });
+
+                /* user-name is 1st part of email */
+                string[] temp = model.Email!.ToLowerInvariant().Split('@');
+                string userName = temp[0];
+
+                /* encrypt password */
+                string encryptedPassword = getEncrypted(model.Password!);
+
+                /* generate confirmation token */
+                string confirmationToken = Guid.NewGuid().ToString();
+
+                /* set token expiration date */
+                string tokenExpiration = configuration!.GetSection("AppSettings:ConfirmationToken:TokenTimeoutDays").Value ?? "1";
+                DateTime tokenExpirationDateTime = DateTime.UtcNow.AddDays(int.Parse(tokenExpiration));
+
+                /* save new user */
+                if (await dbHandlerHyperLabUsers.upsertUserProcedureAsync(model.Id,
+                                                                          model.Name!.ToLowerInvariant().FirstCharToUpperCase(),
+                                                                          model.LastName!.ToLowerInvariant().FirstCharToUpperCase(),
+                                                                          userName,
+                                                                          model.Email.ToLowerInvariant(),
+                                                                          encryptedPassword,
+                                                                          confirmationToken,
+                                                                          tokenExpirationDateTime,
+                                                                          (int)INAF.Libraries.NetStandard.HyperLabCommonModels.Values.Enums.RoleType.User,
+                                                                          getUserId()))
+                    return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
+                else
+                    return new BadRequestResult();
+            }
+            else
+            {
+                logErrorMessage(ModelState.Values);
+                ModelState.Clear();
+                return new BadRequestResult();
+            }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult RegistrationCompleted()
+        {
             return View();
         }
 

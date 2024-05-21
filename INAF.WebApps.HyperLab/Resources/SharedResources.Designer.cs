@@ -142,6 +142,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HyperLab.
+        /// </summary>
+        public static string HyperLabLabel {
+            get {
+                return ResourceManager.GetString("HyperLabLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Info.
         /// </summary>
         public static string InfoLabel {
@@ -210,15 +219,6 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SendEmailLabel {
             get {
                 return ResourceManager.GetString("SendEmailLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HyperLab.
-        /// </summary>
-        public static string SlabLabel {
-            get {
-                return ResourceManager.GetString("SlabLabel", resourceCulture);
             }
         }
         

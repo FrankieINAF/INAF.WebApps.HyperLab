@@ -144,6 +144,9 @@
   <data name="ErrorPageTitle" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="HyperLabLabel" xml:space="preserve">
+    <value>HyperLab</value>
+  </data>
   <data name="InfoLabel" xml:space="preserve">
     <value>Info</value>
   </data>
@@ -167,9 +170,6 @@
   </data>
   <data name="SendEmailLabel" xml:space="preserve">
     <value>Send an email</value>
-  </data>
-  <data name="SlabLabel" xml:space="preserve">
-    <value>HyperLab</value>
   </data>
   <data name="SubmitLabel" xml:space="preserve">
     <value>Submit</value>

@@ -241,6 +241,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An account with the same user-name already exists.
+        /// </summary>
+        public static string UserAlreadyExistantMessage {
+            get {
+                return ResourceManager.GetString("UserAlreadyExistantMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to close and discard changes?.
         /// </summary>
         public static string UserChangesDiscardQuestion {

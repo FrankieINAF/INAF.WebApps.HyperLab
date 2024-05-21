@@ -1,4 +1,4 @@
-﻿using INAF.Libraries.DB.Net.HyperLabUsers;
+﻿using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Values;

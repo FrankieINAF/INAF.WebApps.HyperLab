@@ -1,5 +1,5 @@
-﻿using INAF.Libraries.DB.Net.HyperLabUsers;
-using INAF.Libraries.Net.CommonWebAppHelpers;
+﻿using INAF.Libraries.Net.CommonWebAppHelpers;
+using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.WebApps.HyperLab.Controllers;
 using INAF.WebApps.HyperLab.Extensions;
 using Microsoft.AspNetCore.Mvc;

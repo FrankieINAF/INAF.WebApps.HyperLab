@@ -1,4 +1,4 @@
-﻿using INAF.Libraries.DB.Net.HyperLabUsers;
+﻿using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.DB.SLabData;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Extensions;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Requests;

@@ -107,7 +107,7 @@
                                     @Html.TextBoxFor(model => model.Login.UserName,
                                     new Dictionary<string, object> {
                                     { "data-role", "input" },
-                                    { "placeholder", Html.Raw(CommonResources.Login.UsernamePlaceholder) },
+                                    { "placeholder", Html.Raw(CommonResources.Login.LoginUsernamePlaceholder) },
                                     { "onchange", "setDataChanged()" },
                                     })
                                     @Html.ValidationMessageFor(model => model.Login.UserName, "", new Dictionary<string, object> { { "class", "text-danger" } })

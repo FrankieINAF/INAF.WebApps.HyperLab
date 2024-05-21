@@ -1,4 +1,4 @@
-﻿using INAF.Libraries.DB.Net.HyperLabUsers;
+﻿using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
@@ -118,6 +118,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpPost]
+        [Obsolete]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpsertUser([FromForm] UserModel model)
         {
@@ -132,13 +133,19 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 var email = model.Contacts.FirstOrDefault(x => x.ContactType == Libraries.NetStandard.HyperLabCommonModels.Values.Enums.ContactType.Email);
 
+                /* user-name overwritten by 1st part of email */
+                string[] temp = email.Value.Split('@');
+                string userName = temp[0];
+
                 if (await dbHandlerHyperLabUsers.upsertUserProcedureAsync(model.Id,
                                                              model.Name,
                                                              model.LastName,
-                                                             model.Login.UserName,
-                                                             getEncrypted(model.Login.Password),
-                                                             model.RoleId,
+                                                             userName,
                                                              email.Value,
+                                                             getEncrypted(model.Login.Password),
+                                                             string.Empty,
+                                                             DateTime.MaxValue,
+                                                             model.RoleId,
                                                              HttpContext.GetUserId()))
                 {
                     return new OkObjectResult(getOkStatusResponseModel());
