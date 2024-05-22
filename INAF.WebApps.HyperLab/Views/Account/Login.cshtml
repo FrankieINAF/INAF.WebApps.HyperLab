@@ -12,10 +12,10 @@
 
     ViewBag.Title = "Login";
 
-    var password = nameof(LoginModel.Password);
-    string caller = ViewBag?.Caller ?? "";
+    int confirmation = ViewBag?.Confirmation ?? 0;
 }
-
+<link rel="stylesheet" href="~/css/slabwebapp/common.css" />
+<link rel="stylesheet" href="~/css/slabwebapp/account/confirmationcompleted.css" />
 <link rel="stylesheet" href="~/css/slabwebapp/account/login.css" />
 <div class="h-vh-100 w-vw-100">
     <div class="row h-vh-100">
@@ -121,9 +121,24 @@
     </div>
 </div>
 
+<!-- CONFIRMATION COMPLETED MESSAGE -->
+<div id="confirmationCompletedMessage" class="row w-vw-100 h-vh-100 d-flex d-justify-center confirmation-completed-container display-none-important">
+    <div class="confirmation-completed-box padding-horizontal-16 padding-vertical-16">
+        <div>
+            <span class="text-normal text-just">@Html.Raw(Account.ConfirmationSuccessfullyCompleted)</span>
+        </div>
+
+        <div class="margin-top-32" style="float:right">
+            <button class="button primary cycle" onclick="setConfirmationCompletedMessageVisibility(false)">
+                <span class="mif-cross-light"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
     var formLogin = $('#formLogin');
-    var password = '@password';
+    var confirmation = '@confirmation';
 
     /* ################################################################################ */
     /* VALIDATION + SUBMIT */
@@ -154,6 +169,13 @@
     });
 
 
+    function setConfirmationCompletedMessageVisibility(isVisible) {
+        if (isVisible)
+            $('#confirmationCompletedMessage').removeClass('display-none-important');
+        else
+            $('#confirmationCompletedMessage').addClass('display-none-important');
+    }
+
     /* ################################################################################ */
     /* DOCUMENT READY */
     /* ################################################################################ */
@@ -162,5 +184,9 @@
         Metro.makePlugin("#Password", "input");
 
         $('.input').addClass('required');
+
+        if (confirmation === 1) {
+            setConfirmationCompletedMessageVisibility(true);
+        }
     });
 </script>

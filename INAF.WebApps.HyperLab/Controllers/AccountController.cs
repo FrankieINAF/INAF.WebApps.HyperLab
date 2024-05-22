@@ -73,11 +73,26 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Confirmation(IncomingLoginConfirmationModel model)
+        public async Task<IActionResult> Confirmation(IncomingLoginConfirmationModel model)
         {
             if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Login), GenericHelper.GetControllerName(nameof(AccountController)));
+                /* if login has already been confirmed, then send user to registration completed page */
+                if (dbHandlerHyperLabUsers.isLoginAlreadyConfirmed(model.Id))
+                    return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
+
+                (bool isOk, string exMsg) confirmationResult = await dbHandlerHyperLabUsers.tryConfirmLoginAsync(model.Id,
+                                                                                                                 model.Token!);
+
+                /* if confirmation is ok, then send user to registration completed page */
+                if (confirmationResult.isOk)
+                {
+                    ViewBag.Confirmation = 1;
+                    return RedirectToAction(nameof(Login), GenericHelper.GetControllerName(nameof(AccountController)));
+                }
+
+                /* if confirmation is not ok, then send user to confirmation error page */
+                return RedirectToAction(nameof(ConfirmationError), GenericHelper.GetControllerName(nameof(AccountController)));
             }
 
             return RedirectToAction(nameof(ConfirmationError), GenericHelper.GetControllerName(nameof(AccountController)));

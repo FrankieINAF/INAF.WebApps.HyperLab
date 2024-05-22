@@ -16,6 +16,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\slabwebapp\account\confirmationcompleted.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Attributes\" />
   </ItemGroup>

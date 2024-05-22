@@ -232,6 +232,11 @@ div.mandatory {
     padding-right: 4px;
 }
 
+.padding-horizontal-16 {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
 .padding-vertical-4 {
     padding-top: 4px;
     padding-bottom: 4px;
