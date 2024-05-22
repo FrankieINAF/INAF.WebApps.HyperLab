@@ -15,9 +15,11 @@ namespace INAF.WebApps.HyperLab.Helpers.Factories
 
         public RsaSecurityKey getRsaSecurityKey()
         {
+            var appPrefixForUserSecrets = configuration.GetSection("AppSettings:AppPrefixForUserSecrets").Value;
+
             RSA rsa = RSA.Create();
             rsa.ImportRSAPublicKey(
-                source: Convert.FromBase64String(configuration.GetSection("AppSettings:JwtToken:PublicKey").Value),
+                source: Convert.FromBase64String(configuration.GetSection($"{appPrefixForUserSecrets}:JwtToken:PublicKey").Value),
                 bytesRead: out int _
             );
             return new RsaSecurityKey(rsa);
@@ -25,8 +27,9 @@ namespace INAF.WebApps.HyperLab.Helpers.Factories
 
         public TokenValidationParameters getTokenValidationParameters()
         {
-            string validIssuer = configuration.GetSection("AppSettings:JwtToken:Issuer").Value;
-            string validAudience = configuration.GetSection("AppSettings:JwtToken:Audience").Value;
+            var appPrefixForUserSecrets = configuration.GetSection("AppSettings:AppPrefixForUserSecrets").Value;
+            string validIssuer = configuration.GetSection($"{appPrefixForUserSecrets}:JwtToken:Issuer").Value;
+            string validAudience = configuration.GetSection($"{appPrefixForUserSecrets}:JwtToken:Audience").Value;
 
             return new TokenValidationParameters
             {

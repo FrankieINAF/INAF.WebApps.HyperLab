@@ -54,6 +54,12 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
                 return Caller.App;
         }
 
+        protected string decryptString(string text)
+        {
+            using (EncryptionHelper encryptionHelper = serviceProvider.GetRequiredService<EncryptionHelper>())
+                return encryptionHelper.decryptString(text);
+        }
+
         protected string getEncrypted(string text)
         {
             using (EncryptionHelper encryptionHelper = serviceProvider.GetRequiredService<EncryptionHelper>())
