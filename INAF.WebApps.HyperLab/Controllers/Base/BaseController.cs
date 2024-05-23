@@ -27,8 +27,13 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
                               ILogger<BaseController> logger) : this(serviceProvider, logger)
         {
             this.configuration = configuration;
+
+            appPrefixForUserSecrets = configuration.GetSection("AppSettings:AppPrefixForUserSecrets").Value ?? string.Empty;
         }
 
+        protected string appPrefixForUserSecrets { get; set; }
+
+        #region METHODS
         protected void clearErrorsForKey(string key)
         {
             try
@@ -127,6 +132,7 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
             string modelError = getErrorMessage(values);
             logger.LogError(modelError);
         }
+        #endregion
 
         //#region operation user
         //public static int GetUserId(HttpContext httpContext)
@@ -140,7 +146,7 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
         //}
         //#endregion
 
-        #region response models
+        #region RESPONSE MODELS
         protected WebBaseModel getUpsertErrorStatusResponseModel()
         {
             return new WebBaseModel() { ControllerOperationStatus = ControllerOperationStatus.UpsertError };

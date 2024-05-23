@@ -36,10 +36,14 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddHttpContextAccessor(); // to access HttpContext from everywhere
 
 builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = "JWT_OR_COOKIE";
-    options.DefaultChallengeScheme = "JWT_OR_COOKIE";
-})
+    {
+        options.DefaultScheme = "JWT_OR_COOKIE";
+        options.DefaultChallengeScheme = "JWT_OR_COOKIE";
+    })
+    //.AddOpenIdConnect("OIDC", options =>
+    //{
+
+    //})
     .AddCookie(options =>
     {
         options.Cookie.Name = "SlabWebAppCookies";
