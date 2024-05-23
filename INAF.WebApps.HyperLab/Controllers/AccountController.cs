@@ -222,7 +222,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             using RSA rsa = RSA.Create();
             rsa.ImportRSAPrivateKey( // Convert the loaded key from base64 to bytes.
-                source: Convert.FromBase64String(configuration["AppSettings:JwtToken:PrivateKey"]), // Use the private key to sign tokens
+                source: Convert.FromBase64String(configuration[$"{appPrefixForUserSecrets}:JwtToken:PrivateKey"]), // Use the private key to sign tokens
                 bytesRead: out int _); // Discard the out variable 
 
             var signingCredentials = new SigningCredentials(
