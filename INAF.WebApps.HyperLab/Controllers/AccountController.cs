@@ -251,25 +251,28 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 /* save user-token relationship in DB */
                 await dbHandlerHyperLabUsers.saveUserTokenAsync(user.Id,
-                                                   tokenstring,
-                                                   user.Id);
+                                                                tokenstring,
+                                                                user.Id);
             }
             else
             {
                 /* save user-token relationship in DB */
                 await dbHandlerHyperLabUsers.updateUserTokenAsync(user.Id,
-                                                     tokenstring);
+                                                                  tokenstring);
             }
 
 
             /* return result */
-            return new JwtTokenModel(tokenstring, user.getCompleteName(), token.ValidTo);
+            return new JwtTokenModel(tokenstring, user.CompleteName, token.ValidTo);
         }
 
         private async Task<JwtTokenModel> tryAuthenticateForJwtAsync(JwtLoginModel model)
         {
             /* try to authenticate user by username/password */
-            (bool isAuthenticated, UserModel user) resultForWeb = await tryAuthenticateForWebAsync(model.UserName, model.Password);
+            (bool isAuthenticated, UserModel? user) resultForWeb = await tryAuthenticateForWebAsync(model.UserName, model.Password);
+
+            if (resultForWeb.user == null)
+                return JwtTokenModel.GetEmptyToken();
 
             if (resultForWeb.isAuthenticated)
             {
