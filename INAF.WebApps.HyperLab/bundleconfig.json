@@ -2,6 +2,7 @@
   {
     "outputFileName": "wwwroot/metro/js/dist/metrobundle.js",
     "inputFiles": [
+      "wwwroot/metro/js/metro.js",
       "wwwroot/metro/js/commonformetro.js",
       "wwwroot/metro/js/index.js"
     ],

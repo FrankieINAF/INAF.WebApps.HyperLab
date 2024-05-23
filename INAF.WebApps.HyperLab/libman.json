@@ -4,7 +4,7 @@
   "libraries": [
     {
       "library": "metro@4.5.7",
-      "destination": "wwwroot/metro/metro/"
+      "destination": "wwwroot/metro4/metro/"
     }
   ]
 }
