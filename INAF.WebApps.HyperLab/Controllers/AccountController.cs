@@ -107,6 +107,66 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallback(string? code = null)
+        {
+            //logger.LogInformation(returnUrl);
+
+            await getTokenAsync(code);
+
+
+            return View("Error");
+        }
+
+        private async Task getTokenAsync(string? code = null)
+        {
+            try
+            {
+                /* create request model for retrieving suggestions for current text */
+                var parameters = new Dictionary<string, string> {
+                    { "client_id", "APP-28MJC162XY2CSSCT" },
+                    { "client_secret", "77ae6944-8fe5-41fe-904c-17b6583f70d7" },
+                    { "grant_type", "authorization_code" },
+                    { "redirect_uri", "/Account/ExternalLoginAuth" },
+                    { "code", code! }
+                };
+
+                var encodedContent = new FormUrlEncodedContent(parameters);
+
+                /* retrieve url for querying web service */
+                var url = "https://orcid.org/oauth/token";
+
+                /* send request to web service */
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.PostAsync(new Uri(url), encodedContent))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string responseContent = await response.Content.ReadAsStringAsync();
+                            System.Diagnostics.Debug.WriteLine($"responseContent: {responseContent}");
+                        }
+                        else
+                        {
+                            string errorContent = await response.Content.ReadAsStringAsync();
+                            logger.LogError($"Error in {nameof(getTokenAsync)}: {errorContent}");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"{nameof(getTokenAsync)} - ex: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ExternalLoginAuth()
+        {
+            return RedirectToAction(nameof(Login), GenericHelper.GetControllerName(nameof(AccountController)));
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login(string? returnUrl,
                                    string? caller = null)
         {

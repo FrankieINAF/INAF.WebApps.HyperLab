@@ -10,6 +10,16 @@
     "includeInProject": true
   },
   {
+    "outputFileName": "wwwroot/js/dist/account/login.min.js",
+    "inputFiles": [
+      "wwwroot/js/slabwebapp/common.js",
+      "wwwroot/js/slabwebapp/account/login.js",
+      "wwwroot/js/slabwebapp/account/orcidauth.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
     "outputFileName": "wwwroot/js/dist/search/blazorglobalbundle.js",
     "inputFiles": [
       "wwwroot/js/slabwebapp/search/blazorglobal.js"

@@ -602,6 +602,29 @@ async function doAjaxGetNoModelAsync(url, failcallback) {
     return result;
 }
 
+async function doAjaxGetNoModelCorsAsync(url, failcallback) {
+    let result;
+
+    try {
+        result = $.ajax({
+            type: GET,
+            url: url,
+            async: true,
+            crossDomain: true,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+            }
+        });
+    } catch (e) {
+        console.log(`${url} - ex:` + e.message);
+        if (failcallback)
+            failcallback();
+    }
+
+    return result;
+}
+
 async function doAjaxGetAsync(url, model, failcallback) {
     let result;
 
