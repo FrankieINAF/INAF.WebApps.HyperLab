@@ -126,7 +126,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                     { "client_id", "APP-28MJC162XY2CSSCT" },
                     { "client_secret", "77ae6944-8fe5-41fe-904c-17b6583f70d7" },
                     { "grant_type", "authorization_code" },
-                    { "redirect_uri", "/Account/ExternalLoginAuth" },
+                    { "redirect_uri", "/Account/ExternalLoginCallback" },
                     { "code", code! }
                 };
 
