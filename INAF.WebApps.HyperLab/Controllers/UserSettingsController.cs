@@ -46,9 +46,10 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region GET
         [HttpGet]
-        public IActionResult GetDefaultColors()
+        public IActionResult GetDefaultColors(bool searchForDefaults)
         {
-            IEnumerable<KeyValueResponseModel> result = dbHandlerHyperLabUsers.getDefaultColors();
+            IEnumerable<KeyValueResponseModel> result = dbHandlerHyperLabUsers.getColors(getUserId(),
+                                                                                         searchForDefaults);
 
             if (result.Any())
                 return new JsonResult(result);
