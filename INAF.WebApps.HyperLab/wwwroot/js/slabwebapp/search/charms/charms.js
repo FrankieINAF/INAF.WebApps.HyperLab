@@ -449,7 +449,8 @@ function setCloudIconOnPanel(isSavedOnCloud, spectrumType) {
 /* REMOVE FILE COMMMON */
 /* ################################################################################ */
 async function removeSpectraProcedureAsync(spectrumType, dialogId, checkboxId) {
-    Metro.dialog.close(`#${dialogId}`);
+    if (dialogId)
+        Metro.dialog.close(`#${dialogId}`);
 
     /* retrieve all spectra, children of selected RAW spectrum, ordered in descending order */
     let spectra = buildFamilyTreeForSpectrum(selectedSpectrumForProcessingId);
@@ -460,11 +461,15 @@ async function removeSpectraProcedureAsync(spectrumType, dialogId, checkboxId) {
     /* filter only spectra with spectrumType greater than or equal to the selected one for being removed */
     let spectraToBeRemoved = spectra.filter(x => x.SpectrumType >= spectrumType);
 
-    if (spectraToBeRemoved.length == 0)
+    if (spectraToBeRemoved.length == 0) {
+        setLoadingCircleIsVisible(true);
         return;
+    }
 
     /* check whether removal on cloud is requested or not */
-    let isRemovalOnCloudRequested = isCheckboxChecked(checkboxId);
+    let isRemovalOnCloudRequested = false;
+    if (checkboxId)
+        isRemovalOnCloudRequested = isCheckboxChecked(checkboxId);
 
     setLoadingCircleIsVisible(true);
 
@@ -553,7 +558,7 @@ function getIsSpectrumSavedOnCloud(spectrumType) {
 }
 
 /* show dialog for asking user whether spectrum is to be deleted or not */
-function removeFileProcedure(spectrumType, checkBoxId, dialogId) {
+function askForRemovingSpectrum(spectrumType, checkBoxId, dialogId) {
     let isSpectrumSavedOnCloud = getIsSpectrumSavedOnCloud(spectrumType);
 
     /* if aligned spectrum has been saved on cloud, then show checkbox for removing it from cloud */

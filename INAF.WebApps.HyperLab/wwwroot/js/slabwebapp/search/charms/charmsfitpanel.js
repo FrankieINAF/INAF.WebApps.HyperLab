@@ -1699,7 +1699,7 @@ function removeContinuumRemovedSpectrumProcedure() {
         switchVisibilityOfChildrenSpectraRemovalMessage('continuumRemovedChildrenRemovalWarning', true);
 
     /* start removal procedure */
-    removeFileProcedure(SPECTRUM_TYPE_CONTINUUM_REMOVED, 'checkboxRemoveContinuumRemovedSpectrumOnCloud', 'continuumRemovedDialogRemove');
+    askForRemovingSpectrum(SPECTRUM_TYPE_CONTINUUM_REMOVED, 'checkboxRemoveContinuumRemovedSpectrumOnCloud', 'continuumRemovedDialogRemove');
 }
 
 async function removeContinuumRemovedSpectrumAsync(continuumRemovedSpectrum, isRemovalOnCloudRequested = false) {

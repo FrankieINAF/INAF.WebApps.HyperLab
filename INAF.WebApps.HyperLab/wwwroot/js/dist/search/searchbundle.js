@@ -5024,7 +5024,7 @@ function getIsSpectrumSavedOnCloud(spectrumType) {
 }
 
 /* show dialog for asking user whether spectrum is to be deleted or not */
-function removeFileProcedure(spectrumType, checkBoxId, dialogId) {
+function askForRemovingSpectrum(spectrumType, checkBoxId, dialogId) {
     let isSpectrumSavedOnCloud = getIsSpectrumSavedOnCloud(spectrumType);
 
     /* if aligned spectrum has been saved on cloud, then show checkbox for removing it from cloud */
@@ -6694,7 +6694,7 @@ function removeAlignedSpectrumProcedure() {
         switchVisibilityOfChildrenSpectraRemovalMessage('alignedChildrenRemovalWarning', true);
 
     /* start removal procedure */
-    removeFileProcedure(SPECTRUM_TYPE_ALIGNED, 'checkboxRemoveAlignedSpectrumOnCloud', 'alignedDialogRemove');
+    askForRemovingSpectrum(SPECTRUM_TYPE_ALIGNED, 'checkboxRemoveAlignedSpectrumOnCloud', 'alignedDialogRemove');
 }
 
 async function removeAlignedSpectrumAsync(alignedSpectrum, isRemovalOnCloudRequested = false) {
@@ -8458,7 +8458,7 @@ function removeContinuumRemovedSpectrumProcedure() {
         switchVisibilityOfChildrenSpectraRemovalMessage('continuumRemovedChildrenRemovalWarning', true);
 
     /* start removal procedure */
-    removeFileProcedure(SPECTRUM_TYPE_CONTINUUM_REMOVED, 'checkboxRemoveContinuumRemovedSpectrumOnCloud', 'continuumRemovedDialogRemove');
+    askForRemovingSpectrum(SPECTRUM_TYPE_CONTINUUM_REMOVED, 'checkboxRemoveContinuumRemovedSpectrumOnCloud', 'continuumRemovedDialogRemove');
 }
 
 async function removeContinuumRemovedSpectrumAsync(continuumRemovedSpectrum, isRemovalOnCloudRequested = false) {
@@ -10867,7 +10867,7 @@ async function removeSmoothedSpectrumProcedure(smoothingType) {
     /* retrieve spectrumType of processed spectrum */
     let destSpectrumType = await getDestSpectrumTypeAsync(smoothingType, getSrcSpectrumType());
 
-    removeFileProcedure(destSpectrumType, 'checkboxRemoveSmoothedSpectrumOnCloud', 'smoothedDialogRemove');
+    askForRemovingSpectrum(destSpectrumType, 'checkboxRemoveSmoothedSpectrumOnCloud', 'smoothedDialogRemove');
 }
 
 async function removeSmoothedSpectrumAsync(smoothedSpectrum, isRemovalOnCloudRequested = false) {
