@@ -1325,14 +1325,16 @@ function setMissingPointsFromDownloadedContinuumRemoved() {
 
 async function startRemoveContinuumProcedureAsync() {
     /* if continuum removed spectrum is already present, doesn't start (check 1) */
-    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED)) {
-        showSimpleDialog(WARNING_LABEL, FitNoProcessBecauseAlreadyPresentMessage, WARNING);
-        return;
-    }
+    //if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED)) {
+    //    showSimpleDialog(WARNING_LABEL, FitNoProcessBecauseAlreadyPresentMessage, WARNING);
+    //    return;
+    //}
+    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED)) 
+        await removeSpectraProcedureAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED);
 
     /* if continuum removed spectrum is already present, doesn't start (check 2) */
-    if (isAnySpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED))
-        return;
+    //if (isAnySpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED))
+    //    return;
 
     /* reset array to let re-calculate them */
     resetMissingPoints();

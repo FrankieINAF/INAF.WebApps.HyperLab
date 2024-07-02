@@ -4920,7 +4920,8 @@ function setCloudIconOnPanel(isSavedOnCloud, spectrumType) {
 /* REMOVE FILE COMMMON */
 /* ################################################################################ */
 async function removeSpectraProcedureAsync(spectrumType, dialogId, checkboxId) {
-    Metro.dialog.close(`#${dialogId}`);
+    if (dialogId)
+        Metro.dialog.close(`#${dialogId}`);
 
     /* retrieve all spectra, children of selected RAW spectrum, ordered in descending order */
     let spectra = buildFamilyTreeForSpectrum(selectedSpectrumForProcessingId);
@@ -4931,11 +4932,15 @@ async function removeSpectraProcedureAsync(spectrumType, dialogId, checkboxId) {
     /* filter only spectra with spectrumType greater than or equal to the selected one for being removed */
     let spectraToBeRemoved = spectra.filter(x => x.SpectrumType >= spectrumType);
 
-    if (spectraToBeRemoved.length == 0)
+    if (spectraToBeRemoved.length == 0) {
+        setLoadingCircleIsVisible(true);
         return;
+    }
 
     /* check whether removal on cloud is requested or not */
-    let isRemovalOnCloudRequested = isCheckboxChecked(checkboxId);
+    let isRemovalOnCloudRequested = false;
+    if (checkboxId)
+        isRemovalOnCloudRequested = isCheckboxChecked(checkboxId);
 
     setLoadingCircleIsVisible(true);
 
@@ -6426,10 +6431,13 @@ function disposeChartMiniature() {
 /* ALIGN SPECTRUM */
 /* ################################################################################ */
 async function alignSpectrumAsync() {
-    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED)) {
-        showSimpleDialog(WARNING_LABEL, AlignedNoProcessBecauseAlreadyPresentMessage, WARNING);
-        return;
-    }
+    //if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED)) {
+    //    showSimpleDialog(WARNING_LABEL, AlignedNoProcessBecauseAlreadyPresentMessage, WARNING);
+    //    return;
+    //}
+
+    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED))
+        await removeSpectraProcedureAsync(SPECTRUM_TYPE_ALIGNED);
 
     let points = getSpectrumPointsById(selectedSpectrumForProcessingId);
     if (!points)
@@ -8084,14 +8092,16 @@ function setMissingPointsFromDownloadedContinuumRemoved() {
 
 async function startRemoveContinuumProcedureAsync() {
     /* if continuum removed spectrum is already present, doesn't start (check 1) */
-    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED)) {
-        showSimpleDialog(WARNING_LABEL, FitNoProcessBecauseAlreadyPresentMessage, WARNING);
-        return;
-    }
+    //if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED)) {
+    //    showSimpleDialog(WARNING_LABEL, FitNoProcessBecauseAlreadyPresentMessage, WARNING);
+    //    return;
+    //}
+    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED)) 
+        await removeSpectraProcedureAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED);
 
     /* if continuum removed spectrum is already present, doesn't start (check 2) */
-    if (isAnySpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED))
-        return;
+    //if (isAnySpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED))
+    //    return;
 
     /* reset array to let re-calculate them */
     resetMissingPoints();
@@ -8699,9 +8709,7 @@ async function onSegmentFunctionSelectCoreAsync(val, option, item) {
     /* retrieve parameter, if existant, and build the spinner for parameter value */
     let parameter = selectedFitFunction.ParameterConstraintValue;
     if (parameter) {
-
-        setParameterSpinner(`${FIT_SEGMENT_CORE_VALUE}${segmentIndex}`, parameter, segmentIndex, onFitMethodFunctionParameterChange.name);
-
+        setParameterSpinner(`${FIT_SEGMENT_CORE_VALUE}${segmentIndex}`, parameter, segmentIndex, selectedFitFunction, onFitMethodFunctionParameterChange.name);
     }
 
     /* add/update continuum segment */
