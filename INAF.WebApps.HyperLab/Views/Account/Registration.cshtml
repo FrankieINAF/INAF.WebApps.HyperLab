@@ -1,0 +1,172 @@
+﻿@model RegistrationModel
+
+@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Helpers
+@using INAF.WebApps.HyperLab.Resources
+@using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.Libraries.Net.CommonWebAppModels.Models.Account
+@using CommonResources = INAF.Libraries.Net.CommonWebAppModels.Resources
+
+@{
+    Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
+
+    ViewBag.Title = "Registration";
+
+    var password = nameof(RegistrationModel.Password);
+}
+
+<link rel="stylesheet" href="~/css/slabwebapp/account/login.css" />
+<div class="h-vh-100 w-vw-100">
+    <div class="row h-vh-100">
+        <!-- TEXT/IMAGES -->
+        <div class="cell-fs-12 cell-xl-4 h-vh-25-fs h-vh-100-xl">
+            <div class="row cell-fs-12 text-center h-25">
+                <span class="fg-black display2">@Html.Raw(SharedResources.HyperLabLabel)</span>
+            </div>
+            <div class="row text-center h-75">
+                <div class="cell-fs-6 cell-lg-12 text-center h-50">
+                    <img src="~/images/login/em_spectrum_400x400.png" class="spectrum-image" />
+                </div>
+                <div class="cell-fs-6 cell-lg-12 text-center h-50">
+                    <img src="~/images/login/iaps_marchio_full_colorinaf.svg" class="inaf-image" />
+                </div>
+            </div>
+        </div>
+
+        <!-- FORM -->
+        <div class="cell-fs-12 cell-xl-8 form-cell-background h-vh-75-fs h-vh-100-xl">
+            <!-- LOGIN ROW -->
+            <div class="row">
+                <div class="cell-md-2">&nbsp;</div>
+                <div class="cell-fs-12 cell-md-8">
+                    <div class="registration-container bg-white p-6 mx-auto border bd-default win-shadow">
+                        <div class="row cell-fs-12">
+                            <div class="registration-form">
+                                <form id="formRegistration"
+                                      method="post"
+                                      action="/@GenericHelper.GetControllerName(nameof(AccountController))/@nameof(AccountController.Registration)"
+                                      target="_self">
+                                    <span class="text-medium text-center fg-black h6">@Html.Raw(CommonResources.Login.RegistrationMessage)</span>
+                                    <hr class="thin mt-4 mb-4 bg-white">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="row loginRowsDivider">
+                                        <div class="col-xs-12">
+                                            <!-- NAME -->
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(m => m.Name,
+                                                         new Dictionary<string, object> {
+                                                { "data_role", "input" },
+                                                { "data-prepend", "<span class='mif-pencil'>" },
+                                                { "data-validate", "required" },
+                                                { "placeholder", Html.Raw(CommonResources.Login.NamePlaceholder) },
+                                                })
+                                                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                            </div>
+                                            <!-- LASTNAME -->
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(m => m.LastName,
+                                                         new Dictionary<string, object> {
+                                                { "data_role", "input" },
+                                                { "data-prepend", "<span class='mif-pencil'>" },
+                                                { "data-validate", "required" },
+                                                { "placeholder", Html.Raw(CommonResources.Login.LastNamePlaceholder) },
+                                                })
+                                                @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                                            </div>
+                                            <!-- USERNAME -->
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(m => m.Email,
+                                                         new Dictionary<string, object> {
+                                                { "data_role", "input" },
+                                                { "data-prepend", "<span class='mif-envelop'>" },
+                                                { "data-validate", "required" },
+                                                { "placeholder", Html.Raw(CommonResources.Login.EmailPlaceholder) },
+                                                })
+                                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                            </div>
+                                            <!-- PASSWORD -->
+                                            <div class="form-group">
+                                                @Html.PasswordFor(m => m.Password,
+                                                         new Dictionary<string, object> {
+                                                { "data_role", "input" },
+                                                { "data-prepend", "<span class='mif-key'>" },
+                                                { "data-validate", "required" },
+                                                { "placeholder", Html.Raw(CommonResources.Login.PasswordPlaceholder) }
+                                                })
+                                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                            </div>
+                                            <!-- CONFIRM PASSWORD -->
+                                            <div class="form-group">
+                                                @Html.PasswordFor(m => m.ConfirmPassword,
+                                                         new Dictionary<string, object> {
+                                                { "data_role", "input" },
+                                                { "data-prepend", "<span class='mif-key'>" },
+                                                { "data-validate", "required" },
+                                                { "placeholder", Html.Raw(CommonResources.Login.ConfirmPasswordPlaceholder) }
+                                                })
+                                                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger"})
+                                            </div>
+                                            <!-- SUBMIT + REMEMBER ME-->
+                                            <div class="form-group mt-10">
+                                                <button id="submitButton" class="button">@Html.Raw(SharedResources.SubmitLabel)</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cell-md-2">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var formRegistration = $('#formRegistration');
+    var password = '@password';
+
+    /* ################################################################################ */
+    /* VALIDATION + SUBMIT */
+    /* ################################################################################ */
+    formRegistration.data('validator', null);
+    $.validator.unobtrusive.parse(formRegistration);
+
+    $("#submitButton").click(function () {
+        if (!$(formRegistration).valid()) {
+            formRegistration.addClass("ani-ring");
+            setTimeout(function () {
+                formRegistration.removeClass("ani-ring");
+
+                $('#submitButton').attr('disabled', false);
+            }, 1000);
+
+            var validator = $(formRegistration).validate();
+
+            for (var i in validator.errorMap) {
+                console.log(i, ":", validator.errorMap[i]);
+            }
+
+            return false;
+        }
+
+        setLoadingCircleIsVisible(true);
+        $(formRegistration).submit();
+    });
+
+    /* ################################################################################ */
+    /* DOCUMENT READY */
+    /* ################################################################################ */
+    $(document).ready(function () {
+        Metro.makePlugin("#Name", "input");
+        Metro.makePlugin("#LastName", "input");
+        Metro.makePlugin("#Email", "input");
+        Metro.makePlugin("#Password", "input");
+        Metro.makePlugin("#ConfirmPassword", "input");
+
+        $('.input').addClass('required');
+    });
+</script>
