@@ -1324,17 +1324,13 @@ function setMissingPointsFromDownloadedContinuumRemoved() {
 }
 
 async function startRemoveContinuumProcedureAsync() {
-    /* if continuum removed spectrum is already present, doesn't start (check 1) */
-    //if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED)) {
-    //    showSimpleDialog(WARNING_LABEL, FitNoProcessBecauseAlreadyPresentMessage, WARNING);
-    //    return;
-    //}
-    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED)) 
-        await removeSpectraProcedureAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    setLoadingCircleIsVisible(true);
 
-    /* if continuum removed spectrum is already present, doesn't start (check 2) */
-    //if (isAnySpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED))
-    //    return;
+    /* if continuum removed spectrum is already present, recalculate it and exit */
+    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED)) {
+        await tryAutoRecalculateContinuumRemovedAsync();
+        return;
+    }
 
     /* reset array to let re-calculate them */
     resetMissingPoints();
@@ -1342,8 +1338,10 @@ async function startRemoveContinuumProcedureAsync() {
     let missingPointBeginning = await calculateMissingPointAsync(MissingPointPositionBeginning);
     let missingPointEnd = await calculateMissingPointAsync(MissingPointPositionEnd);
 
-    if (missingPointBeginning == null && missingPointEnd == null)
+    if (missingPointBeginning == null && missingPointEnd == null) {
+        setLoadingCircleIsVisible(false);
         return;
+    }
 
     setLoadingCircleIsVisible(true);
 
