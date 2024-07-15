@@ -1,5 +1,5 @@
-using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.CommonWebAppHelpers;
+using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.DB.SLabData;
 using INAF.Libraries.NetStandard.HyperLabCommonHelpers;
 using INAF.Libraries.NetStandard.HyperLabCommonHelpers.ProcessingHelpers;
@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using System.Text.Json.Serialization;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 var builder = WebApplication.CreateBuilder(args);
 

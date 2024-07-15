@@ -1,10 +1,13 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.SLabData;
+using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum;
+using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.ContinuumRemoval;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static INAF.Libraries.NetStandard.HyperLabCommonModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -36,6 +39,18 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
             return new JsonResult(chartsHelper.createSingleSpectrumJson(model.ParentId, model.SpectrumType, getUserId()));
+        }
+
+        [HttpPost]
+        public IActionResult GetProcessedSpectrumForApp([FromBody] GenericRequestByParentIdAndSpectrumTypeModel model)
+        {
+            ISpectrumModel? spectrumModel = dbHandlerSLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId,
+                                                                                                   model.SpectrumType,
+                                                                                                   getUserId());
+            if (spectrumModel == null)
+                return new EmptyResult();
+
+            return new JsonResult(spectrumModel);
         }
 
         [HttpGet]

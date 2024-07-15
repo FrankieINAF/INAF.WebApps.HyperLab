@@ -59,8 +59,8 @@ namespace INAF.WebApps.HyperLab.Helpers
                                                       int operationUserId)
         {
             ISpectrumModel spectrumModel = dbHandlerSLabData.getSpectrumByParentIdAndSpectrumType(parentId,
-                                                                                          spectrumType, 
-                                                                                          operationUserId);
+                                                                                                  spectrumType, 
+                                                                                                  operationUserId);
 
             if (spectrumModel == null)
                 return null;
