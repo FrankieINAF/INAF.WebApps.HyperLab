@@ -138,8 +138,8 @@
                                             List<PointModel> continuumPoints)
     {
         var continuumRemovalHelper = serviceProvider.GetRequiredService<ContinuumRemovalHelper>();
-        return continuumRemovalHelper.executeContinuumRemoval(points,
-                                                              continuumPoints);
+        return continuumRemovalHelper.calculateContinuumRemoved(points,
+                                                                continuumPoints);
     }
     #endregion
 

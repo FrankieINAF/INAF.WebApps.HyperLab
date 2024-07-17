@@ -1,5 +1,8 @@
-﻿using INAF.Libraries.Net.DB.SLabData;
+﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
+using INAF.Libraries.Net.DB.SLabData;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Extensions;
+using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment;
+using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.ContinuumRemoval;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Requests;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Requests.SaveSpectrum;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Responses;
@@ -25,6 +28,17 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region GET
         [HttpGet]
+        public IActionResult GetAlignmentSettings(GenericRequestByIdModel model)
+        {
+            AlignmentSettingsModel? alignmentSettingsModel = dbHandlerSLabData.getAlignmentSettings(model.Id,
+                                                                                                   getUserId());
+            if (alignmentSettingsModel != null)
+                return new JsonResult(alignmentSettingsModel);
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
         public IActionResult GetChildrenSpectraTypes(int SpectrumTypeId)
         {
             var dbHandlerSLabData = serviceProvider.GetRequiredService<DbHandlerSLabData>();
@@ -34,6 +48,17 @@ namespace INAF.WebApps.HyperLab.Controllers
                 childrenSpectraTypes.Add(SpectrumTypeId.ToSpectrumType());
                 return new JsonResult(childrenSpectraTypes);
             }
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
+        public IActionResult GetContinuumRemovalSettings(GenericRequestByIdModel model)
+        {
+            ContinuumRemovalSettingsModel? continuumRemovalSettingsModel = dbHandlerSLabData.getContinuumRemovalSettings(model.Id,
+                                                                                                                         getUserId());
+            if (continuumRemovalSettingsModel != null)
+                return new JsonResult(continuumRemovalSettingsModel);
             else
                 return new EmptyResult();
         }
