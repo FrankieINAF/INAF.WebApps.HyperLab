@@ -136,6 +136,17 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                                                                                  getUserId());
             return new JsonResult(result.ToSegmentsProcessingResponseModel());
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> SaveAsCopySpectrumOfTypeSmoothed([FromBody] SaveSpectrumOfTypeSmoothedRequestModel model)
+        {
+            /* save file */
+            (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerSLabData.saveAsCopySpectrumFileOfTypeSmoothedProcedureAsync(model,
+                                                                                                                                                               getUserId());
+            return new JsonResult(result.ToSegmentsProcessingResponseModel());
+        }
+
         #endregion
         #endregion
     }
