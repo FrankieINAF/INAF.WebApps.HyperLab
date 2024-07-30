@@ -91,6 +91,13 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new JsonResult(result.ToGenericValueStringResponse());
         }
 
+        [HttpPost]
+        public IActionResult IsSpectrumTypeSavedWithCountOnCloud([FromBody] IsSpectrumTypeSavedOnCloudRequestModel model)
+        {
+            int count = dbHandlerSLabData.isSpectrumTypeSavedWithCount(model.Filename, model.SpectrumType, getUserId());
+            return new JsonResult(new GenericResponseModel(count));
+        }
+
         #region save spectrum of type
         [HttpPost]
         public async Task<IActionResult> SaveSpectrumOfTypeAligned([FromBody] SaveSpectrumOfTypeAlignedRequestModel model)
