@@ -1,6 +1,7 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.SLabData;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Extensions;
+using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.ContinuumRemoval;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Requests;
@@ -59,6 +60,18 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                                                          getUserId());
             if (continuumRemovalSettingsModel != null)
                 return new JsonResult(continuumRemovalSettingsModel);
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
+        public IActionResult GetSpectrumVersions(IsSpectrumTypeSavedOnCloudRequestModel model)
+        {
+            IEnumerable<SpectrumModel>? spectrumVersions = dbHandlerSLabData.getSpectrumVersions(model.Filename,
+                                                                                                 model.SpectrumType,
+                                                                                                 getUserId());
+            if (spectrumVersions != null && spectrumVersions.Any())
+                return new JsonResult(spectrumVersions);
             else
                 return new EmptyResult();
         }
