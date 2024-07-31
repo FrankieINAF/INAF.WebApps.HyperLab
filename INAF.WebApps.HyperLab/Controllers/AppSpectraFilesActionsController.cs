@@ -67,9 +67,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetSpectrumVersions(IsSpectrumTypeSavedOnCloudRequestModel model)
         {
-            IEnumerable<SpectrumModel>? spectrumVersions = dbHandlerSLabData.getSpectrumVersions(model.Filename,
-                                                                                                 model.SpectrumType,
-                                                                                                 getUserId());
+            IEnumerable<SpectrumModelVersion>? spectrumVersions = dbHandlerSLabData.getSpectrumVersions(model.Filename,
+                                                                                                        model.SpectrumType,
+                                                                                                        getUserId());
             if (spectrumVersions != null && spectrumVersions.Any())
                 return new JsonResult(spectrumVersions);
             else
