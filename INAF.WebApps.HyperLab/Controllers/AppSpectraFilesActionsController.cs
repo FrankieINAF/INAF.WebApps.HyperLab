@@ -75,6 +75,27 @@ namespace INAF.WebApps.HyperLab.Controllers
             else
                 return new EmptyResult();
         }
+
+        [HttpGet]
+        public IActionResult IsAnySpectrumTypeSavedOnCloud(IsAnySpectrumTypeSavedOnCloudRequestModel model)
+        {
+            (bool isSaved, int id) result = dbHandlerSLabData.isAnySpectrumTypeSaved(model.Filename, model.SpectrumTypes);
+            return new JsonResult(result.ToGenericValueStringResponse());
+        }
+
+        [HttpGet]
+        public IActionResult IsSpectrumTypeSavedOnCloud(IsSpectrumTypeSavedOnCloudRequestModel model)
+        {
+            (bool isSaved, int id) result = dbHandlerSLabData.isSpectrumTypeSaved(model.Filename, model.SpectrumType, getUserId());
+            return new JsonResult(result.ToGenericValueStringResponse());
+        }
+
+        [HttpGet]
+        public IActionResult IsSpectrumTypeSavedWithCountOnCloud(IsSpectrumTypeSavedOnCloudRequestModel model)
+        {
+            int count = dbHandlerSLabData.isSpectrumTypeSavedWithCount(model.Filename, model.SpectrumType, getUserId());
+            return new JsonResult(new GenericResponseModel(count));
+        }
         #endregion
 
         #region POST
@@ -90,28 +111,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new JsonResult(await dbHandlerSLabData.deleteSpectrumFileProcedureAsync(model.Id, getUserId()));
         }
 
-        [HttpPost]
-        public IActionResult IsAnySpectrumTypeSavedOnCloud([FromBody] IsAnySpectrumTypeSavedOnCloudRequestModel model)
-        {
-            (bool isSaved, int id) result = dbHandlerSLabData.isAnySpectrumTypeSaved(model.Filename, model.SpectrumTypes);
-            return new JsonResult(result.ToGenericValueStringResponse());
-        }
-
-        [HttpPost]
-        public IActionResult IsSpectrumTypeSavedOnCloud([FromBody] IsSpectrumTypeSavedOnCloudRequestModel model)
-        {
-            (bool isSaved, int id) result = dbHandlerSLabData.isSpectrumTypeSaved(model.Filename, model.SpectrumType, getUserId());
-            return new JsonResult(result.ToGenericValueStringResponse());
-        }
-
-        [HttpPost]
-        public IActionResult IsSpectrumTypeSavedWithCountOnCloud([FromBody] IsSpectrumTypeSavedOnCloudRequestModel model)
-        {
-            int count = dbHandlerSLabData.isSpectrumTypeSavedWithCount(model.Filename, model.SpectrumType, getUserId());
-            return new JsonResult(new GenericResponseModel(count));
-        }
-
-        #region save spectrum of type
+        #region SAVE SPECTRUM OF TYPE
         [HttpPost]
         public async Task<IActionResult> SaveSpectrumOfTypeAligned([FromBody] SaveSpectrumOfTypeAlignedRequestModel model)
         {
@@ -166,7 +166,6 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                                                                                                getUserId());
             return new JsonResult(result.ToSegmentsProcessingResponseModel());
         }
-
         #endregion
         #endregion
     }
