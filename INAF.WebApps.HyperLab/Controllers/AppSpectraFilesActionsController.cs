@@ -4,6 +4,7 @@ using INAF.Libraries.NetStandard.HyperLabCommonModels.Extensions;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.ContinuumRemoval;
+using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Smoothing;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Requests;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Requests.SaveSpectrum;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Responses;
@@ -56,10 +57,21 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetContinuumRemovalSettings(GenericRequestByIdModel model)
         {
-            ContinuumRemovalSettingsModel? continuumRemovalSettingsModel = dbHandlerSLabData.getContinuumRemovalSettings(model.Id,
-                                                                                                                         getUserId());
-            if (continuumRemovalSettingsModel != null)
-                return new JsonResult(continuumRemovalSettingsModel);
+            ContinuumRemovalSettingsModel? continuumRemovalSettings = dbHandlerSLabData.getContinuumRemovalSettings(model.Id,
+                                                                                                                    getUserId());
+            if (continuumRemovalSettings != null)
+                return new JsonResult(continuumRemovalSettings);
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
+        public IActionResult GetSmoothingSettings(GenericRequestByIdModel model)
+        {
+            SmoothingSettingsModel? smoothingSettings = dbHandlerSLabData.getSmoothingSettings(model.Id,
+                                                                                               getUserId());
+            if (smoothingSettings != null)
+                return new JsonResult(smoothingSettings);
             else
                 return new EmptyResult();
         }
@@ -156,7 +168,6 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                                                                                  getUserId());
             return new JsonResult(result.ToSegmentsProcessingResponseModel());
         }
-
 
         [HttpPost]
         public async Task<IActionResult> SaveAsCopySpectrumOfTypeSmoothed([FromBody] SaveSpectrumOfTypeSmoothedRequestModel model)
