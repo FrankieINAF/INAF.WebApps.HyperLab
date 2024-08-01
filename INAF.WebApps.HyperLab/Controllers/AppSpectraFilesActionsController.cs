@@ -1,10 +1,10 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.SLabData;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Extensions;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.ContinuumRemoval;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Smoothing;
+using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.SpectrumVersions;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Requests;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Requests.SaveSpectrum;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Responses;
@@ -79,9 +79,11 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetSpectrumVersions(IsSpectrumTypeSavedOnCloudRequestModel model)
         {
-            IEnumerable<SpectrumModelVersion>? spectrumVersions = dbHandlerSLabData.getSpectrumVersions(model.Filename,
+            int userId = getUserId();
+            IEnumerable<SpectrumVersionModel>? spectrumVersions = dbHandlerSLabData.getSpectrumVersions(model.Filename,
                                                                                                         model.SpectrumType,
-                                                                                                        getUserId());
+                                                                                                        userId);
+
             if (spectrumVersions != null && spectrumVersions.Any())
                 return new JsonResult(spectrumVersions);
             else
