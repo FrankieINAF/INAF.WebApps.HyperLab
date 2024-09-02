@@ -1,6 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace INAF.WebApps.HyperLab.Helpers.Factories
 {

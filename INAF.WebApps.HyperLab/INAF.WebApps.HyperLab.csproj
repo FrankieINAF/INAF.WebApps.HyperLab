@@ -22,6 +22,7 @@
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Attributes\" />
+    <Folder Include="wwwroot\js\dist\account\" />
   </ItemGroup>
 
   <ItemGroup>
