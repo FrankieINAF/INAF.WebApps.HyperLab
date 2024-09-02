@@ -42,13 +42,18 @@
                 <div class="cell-fs-12 cell-md-8">
                     <div class="login-container bg-white p-6 mx-auto border bd-default win-shadow">
                         <div class="row cell-fs-12">
+                            <h2 class="text-medium text-center fg-black">@Html.Raw(CommonResources.Login.LoginMessage)</h2>
+                            <hr class="thin mt-4 mb-4 bg-white">
+                            <!-- LOGIN MESSAGE ROW -->
+                            <div class="row cell-fs-12 d-flex flex-justify-left">
+                                <div><span class="text-secondary text-center fg-black">@Html.Raw(CommonResources.Login.LoginMessage)</span></div>
+                            </div>
                             <div class="login-form">
                                 <form id="formLogin"
                                       method="post"
                                       action="/@GenericHelper.GetControllerName(nameof(AccountController))/@nameof(AccountController.Login)"
                                       target="_self">
-                                    <h2 class="text-medium text-center fg-black">@Html.Raw(CommonResources.Login.LoginMessage)</h2>
-                                    <hr class="thin mt-4 mb-4 bg-white">
+                                   
 
                                     @Html.AntiForgeryToken()
 
@@ -86,9 +91,9 @@
                                 </form>
                             </div>
                         </div>
-                        <!-- SIGN IN ROW -->
+                        <!-- SIGN UP ROW -->
                         <div class="row cell-fs-12 d-flex flex-justify-center">
-                            <div><span class="text-secondary text-center fg-black">@Html.Raw(CommonResources.Login.SignInLabel)</span></div>
+                            <div><span class="text-secondary text-center fg-black">@Html.Raw(CommonResources.Login.RegistrationMessage)</span></div>
                         </div>
                         <!-- SIGN IN ROW-->
                         <div class="row">
@@ -136,7 +141,6 @@
 <environment names="Development">
     <script src="~/js/slabwebapp/common.js"></script>
     <script src="~/js/slabwebapp/account/login.js" asp-append-version="true"></script>
-    <script src="~/js/slabwebapp/account/orcidauth.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">
     <script src="~/js/dist/account/login.min.js" asp-append-version="true"></script>
