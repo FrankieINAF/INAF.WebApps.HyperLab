@@ -70,6 +70,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveSpectrumOfTypeAligned([FromBody] SaveSpectrumOfTypeAlignedRequestModel model)
         {
+            if (model == null)
+                return new EmptyResult();
+
             /* save file */
             (bool isOk, int id) result = await dbHandlerSLabData.saveSpectrumFileOfTypeAlignedProcedureAsync(model,
                                                                                                      getUserId());
@@ -79,6 +82,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveSpectrumOfTypeContinuumRemoved([FromBody] SaveSpectrumOfTypeContinuumRemovedRequestModel model)
         {
+            if (model == null)
+                return new EmptyResult();
+
             /* save file */
             (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerSLabData.upsertSpectrumFileOfTypeContinuumRemovedProcedureAsync(model,
                                                                                                                                                             getUserId());
@@ -88,6 +94,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveAsCopySpectrumOfTypeContinuumRemoved([FromBody] SaveSpectrumOfTypeContinuumRemovedRequestModel model)
         {
+            if (model == null)
+                return new EmptyResult();
+
             /* save file */
             (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerSLabData.saveAsCopySpectrumFileOfTypeContinuumRemovedProcedureAsync(model,
                                                                                                                                                                   getUserId());
@@ -97,6 +106,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveSpectrumOfTypeRaw([FromBody] SaveSpectrumOfTypeRawRequestModel model)
         {
+            if (model == null)
+                return new EmptyResult();
+
             /* save file */
             (bool isOk, int id) result = await dbHandlerSLabData.saveSpectrumFileOfTypeRawProcedureAsync(model,
                                                                                                  getUserId());
@@ -106,6 +118,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveSpectrumOfTypeSmoothed([FromBody] SaveSpectrumOfTypeSmoothedRequestModel model)
         {
+            if (model == null)
+                return new EmptyResult();
+
             /* save file */
             (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerSLabData.saveSpectrumFileOfTypeSmoothedProcedureAsync(model,
                                                                                                                                                  getUserId());
