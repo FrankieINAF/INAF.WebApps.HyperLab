@@ -1,5 +1,6 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.SLabData;
+using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Helpers;
@@ -21,6 +22,44 @@ namespace INAF.WebApps.HyperLab.Controllers
             this.dbHandlerSLabData = dbHandlerSLabData;
         }
 
+        #region GET
+        [HttpGet]
+        public IActionResult GetSpectrumByIdForApp(GenericRequestByIdModel model)
+        {
+            ISpectrumModel? spectrumModel = dbHandlerSLabData.getSpectrumById(model.Id,
+                                                                              getUserId());
+            if (spectrumModel == null)
+                return new EmptyResult();
+
+            return new JsonResult(spectrumModel);
+        }
+
+        [HttpGet]
+        public IActionResult GetSpectrumByParentIdAndSpectrumTypeForApp(GenericRequestByParentIdAndSpectrumTypeModel model)
+        {
+            ISpectrumModel? spectrumModel = dbHandlerSLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId,
+                                                                                                   model.SpectrumType,
+                                                                                                   getUserId());
+            if (spectrumModel == null)
+                return new EmptyResult();
+
+            return new JsonResult(spectrumModel);
+        }
+
+        [HttpGet]
+        public IActionResult GetWhiteSpectraForAlignment()
+        {
+            List<int>? ids = dbHandlerSLabData.getWhiteSpectraForAlignmentIds();
+
+            if (ids == null || ids.Count == 0)
+                return new JsonResult(null);
+
+            var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
+            return new JsonResult(chartsHelper.createRefWhitesJson(ids, 0)); // operationUserId = 0 for 'white' spectra available for everyone (not related to a specific insertUserId)
+        }
+        #endregion
+
+        #region POST
         [HttpPost]
         public IActionResult GetSpectra([FromBody] GenericRequestByIdsModel model)
         {
@@ -37,17 +76,6 @@ namespace INAF.WebApps.HyperLab.Controllers
             var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
             return new JsonResult(chartsHelper.createSingleSpectrumJson(model.ParentId, model.SpectrumType, getUserId()));
         }
-
-        [HttpGet]
-        public IActionResult GetWhiteSpectraForAlignment()
-        {
-            List<int>? ids = dbHandlerSLabData.getWhiteSpectraForAlignmentIds();
-
-            if (ids == null || ids.Count == 0)
-                return new JsonResult(null);
-
-            var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
-            return new JsonResult(chartsHelper.createRefWhitesJson(ids, 0)); // operationUserId = 0 for 'white' spectra available for everyone (not related to a specific insertUserId)
-        }
+        #endregion
     }
 }

@@ -4860,7 +4860,8 @@ async function checkIsSpectrumOfTypeSavedOnCloudAsync(name, spectrumType) {
         SpectrumType: spectrumType
     };
 
-    let obj = await doAjaxPostAsync(UrlIsSpectrumTypeSavedOnCloud, model);
+    let obj = await doAjaxGetAsync(UrlIsSpectrumTypeSavedOnCloud, model);
+    //let obj = await doAjaxPostAsync(UrlIsSpectrumTypeSavedOnCloud, model);
     if (obj) {
         /* save status of spectrum in 'spectraInfo' */
         saveSavedOnCloudStatus(obj.IsOk, spectrumType);
@@ -4920,7 +4921,8 @@ function setCloudIconOnPanel(isSavedOnCloud, spectrumType) {
 /* REMOVE FILE COMMMON */
 /* ################################################################################ */
 async function removeSpectraProcedureAsync(spectrumType, dialogId, checkboxId) {
-    Metro.dialog.close(`#${dialogId}`);
+    if (dialogId)
+        Metro.dialog.close(`#${dialogId}`);
 
     /* retrieve all spectra, children of selected RAW spectrum, ordered in descending order */
     let spectra = buildFamilyTreeForSpectrum(selectedSpectrumForProcessingId);
@@ -4931,11 +4933,15 @@ async function removeSpectraProcedureAsync(spectrumType, dialogId, checkboxId) {
     /* filter only spectra with spectrumType greater than or equal to the selected one for being removed */
     let spectraToBeRemoved = spectra.filter(x => x.SpectrumType >= spectrumType);
 
-    if (spectraToBeRemoved.length == 0)
+    if (spectraToBeRemoved.length == 0) {
+        setLoadingCircleIsVisible(true);
         return;
+    }
 
     /* check whether removal on cloud is requested or not */
-    let isRemovalOnCloudRequested = isCheckboxChecked(checkboxId);
+    let isRemovalOnCloudRequested = false;
+    if (checkboxId)
+        isRemovalOnCloudRequested = isCheckboxChecked(checkboxId);
 
     setLoadingCircleIsVisible(true);
 
@@ -5024,7 +5030,7 @@ function getIsSpectrumSavedOnCloud(spectrumType) {
 }
 
 /* show dialog for asking user whether spectrum is to be deleted or not */
-function removeFileProcedure(spectrumType, checkBoxId, dialogId) {
+function askForRemovingSpectrum(spectrumType, checkBoxId, dialogId) {
     let isSpectrumSavedOnCloud = getIsSpectrumSavedOnCloud(spectrumType);
 
     /* if aligned spectrum has been saved on cloud, then show checkbox for removing it from cloud */
@@ -6426,10 +6432,13 @@ function disposeChartMiniature() {
 /* ALIGN SPECTRUM */
 /* ################################################################################ */
 async function alignSpectrumAsync() {
-    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED)) {
-        showSimpleDialog(WARNING_LABEL, AlignedNoProcessBecauseAlreadyPresentMessage, WARNING);
-        return;
-    }
+    //if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED)) {
+    //    showSimpleDialog(WARNING_LABEL, AlignedNoProcessBecauseAlreadyPresentMessage, WARNING);
+    //    return;
+    //}
+
+    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED))
+        await removeSpectraProcedureAsync(SPECTRUM_TYPE_ALIGNED);
 
     let points = getSpectrumPointsById(selectedSpectrumForProcessingId);
     if (!points)
@@ -6694,7 +6703,7 @@ function removeAlignedSpectrumProcedure() {
         switchVisibilityOfChildrenSpectraRemovalMessage('alignedChildrenRemovalWarning', true);
 
     /* start removal procedure */
-    removeFileProcedure(SPECTRUM_TYPE_ALIGNED, 'checkboxRemoveAlignedSpectrumOnCloud', 'alignedDialogRemove');
+    askForRemovingSpectrum(SPECTRUM_TYPE_ALIGNED, 'checkboxRemoveAlignedSpectrumOnCloud', 'alignedDialogRemove');
 }
 
 async function removeAlignedSpectrumAsync(alignedSpectrum, isRemovalOnCloudRequested = false) {
@@ -8083,15 +8092,13 @@ function setMissingPointsFromDownloadedContinuumRemoved() {
 }
 
 async function startRemoveContinuumProcedureAsync() {
-    /* if continuum removed spectrum is already present, doesn't start (check 1) */
+    setLoadingCircleIsVisible(true);
+
+    /* if continuum removed spectrum is already present, recalculate it and exit */
     if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED)) {
-        showSimpleDialog(WARNING_LABEL, FitNoProcessBecauseAlreadyPresentMessage, WARNING);
+        await tryAutoRecalculateContinuumRemovedAsync();
         return;
     }
-
-    /* if continuum removed spectrum is already present, doesn't start (check 2) */
-    if (isAnySpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED))
-        return;
 
     /* reset array to let re-calculate them */
     resetMissingPoints();
@@ -8099,8 +8106,10 @@ async function startRemoveContinuumProcedureAsync() {
     let missingPointBeginning = await calculateMissingPointAsync(MissingPointPositionBeginning);
     let missingPointEnd = await calculateMissingPointAsync(MissingPointPositionEnd);
 
-    if (missingPointBeginning == null && missingPointEnd == null)
+    if (missingPointBeginning == null && missingPointEnd == null) {
+        setLoadingCircleIsVisible(false);
         return;
+    }
 
     setLoadingCircleIsVisible(true);
 
@@ -8458,7 +8467,7 @@ function removeContinuumRemovedSpectrumProcedure() {
         switchVisibilityOfChildrenSpectraRemovalMessage('continuumRemovedChildrenRemovalWarning', true);
 
     /* start removal procedure */
-    removeFileProcedure(SPECTRUM_TYPE_CONTINUUM_REMOVED, 'checkboxRemoveContinuumRemovedSpectrumOnCloud', 'continuumRemovedDialogRemove');
+    askForRemovingSpectrum(SPECTRUM_TYPE_CONTINUUM_REMOVED, 'checkboxRemoveContinuumRemovedSpectrumOnCloud', 'continuumRemovedDialogRemove');
 }
 
 async function removeContinuumRemovedSpectrumAsync(continuumRemovedSpectrum, isRemovalOnCloudRequested = false) {
@@ -8699,9 +8708,7 @@ async function onSegmentFunctionSelectCoreAsync(val, option, item) {
     /* retrieve parameter, if existant, and build the spinner for parameter value */
     let parameter = selectedFitFunction.ParameterConstraintValue;
     if (parameter) {
-
-        setParameterSpinner(`${FIT_SEGMENT_CORE_VALUE}${segmentIndex}`, parameter, segmentIndex, onFitMethodFunctionParameterChange.name);
-
+        setParameterSpinner(`${FIT_SEGMENT_CORE_VALUE}${segmentIndex}`, parameter, segmentIndex, selectedFitFunction, onFitMethodFunctionParameterChange.name);
     }
 
     /* add/update continuum segment */
@@ -10867,7 +10874,7 @@ async function removeSmoothedSpectrumProcedure(smoothingType) {
     /* retrieve spectrumType of processed spectrum */
     let destSpectrumType = await getDestSpectrumTypeAsync(smoothingType, getSrcSpectrumType());
 
-    removeFileProcedure(destSpectrumType, 'checkboxRemoveSmoothedSpectrumOnCloud', 'smoothedDialogRemove');
+    askForRemovingSpectrum(destSpectrumType, 'checkboxRemoveSmoothedSpectrumOnCloud', 'smoothedDialogRemove');
 }
 
 async function removeSmoothedSpectrumAsync(smoothedSpectrum, isRemovalOnCloudRequested = false) {

@@ -882,7 +882,7 @@ async function removeSmoothedSpectrumProcedure(smoothingType) {
     /* retrieve spectrumType of processed spectrum */
     let destSpectrumType = await getDestSpectrumTypeAsync(smoothingType, getSrcSpectrumType());
 
-    removeFileProcedure(destSpectrumType, 'checkboxRemoveSmoothedSpectrumOnCloud', 'smoothedDialogRemove');
+    askForRemovingSpectrum(destSpectrumType, 'checkboxRemoveSmoothedSpectrumOnCloud', 'smoothedDialogRemove');
 }
 
 async function removeSmoothedSpectrumAsync(smoothedSpectrum, isRemovalOnCloudRequested = false) {

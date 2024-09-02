@@ -11,6 +11,7 @@ using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -45,7 +46,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult GetContinuumRemovalSettings(GenericRequestByIdModel model)
         {
             ContinuumRemovalSettingsModel? continuumRemovalSettingsModel = dbHandlerSLabData.getContinuumRemovalSettings(model.Id,
-                                                                                                                        getUserId());
+                                                                                                                         getUserId());
             if (continuumRemovalSettingsModel != null)
                 return new JsonResult(new GenericResponseModel(continuumRemovalSettingsModel));
             else

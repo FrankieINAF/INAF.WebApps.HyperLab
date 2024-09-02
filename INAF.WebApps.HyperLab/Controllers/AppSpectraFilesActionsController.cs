@@ -1,5 +1,10 @@
-﻿using INAF.Libraries.Net.DB.SLabData;
+﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
+using INAF.Libraries.Net.DB.SLabData;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Extensions;
+using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment;
+using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.ContinuumRemoval;
+using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Smoothing;
+using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.SpectrumVersions;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Requests;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Requests.SaveSpectrum;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Responses;
@@ -25,6 +30,17 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region GET
         [HttpGet]
+        public IActionResult GetAlignmentSettings(GenericRequestByIdModel model)
+        {
+            AlignmentSettingsModel? alignmentSettingsModel = dbHandlerSLabData.getAlignmentSettings(model.Id,
+                                                                                                   getUserId());
+            if (alignmentSettingsModel != null)
+                return new JsonResult(alignmentSettingsModel);
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
         public IActionResult GetChildrenSpectraTypes(int SpectrumTypeId)
         {
             var dbHandlerSLabData = serviceProvider.GetRequiredService<DbHandlerSLabData>();
@@ -36,6 +52,63 @@ namespace INAF.WebApps.HyperLab.Controllers
             }
             else
                 return new EmptyResult();
+        }
+
+        [HttpGet]
+        public IActionResult GetContinuumRemovalSettings(GenericRequestByIdModel model)
+        {
+            ContinuumRemovalSettingsModel? continuumRemovalSettings = dbHandlerSLabData.getContinuumRemovalSettings(model.Id,
+                                                                                                                    getUserId());
+            if (continuumRemovalSettings != null)
+                return new JsonResult(continuumRemovalSettings);
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
+        public IActionResult GetSmoothingSettings(GenericRequestByIdModel model)
+        {
+            SmoothingSettingsModel? smoothingSettings = dbHandlerSLabData.getSmoothingSettings(model.Id,
+                                                                                               getUserId());
+            if (smoothingSettings != null)
+                return new JsonResult(smoothingSettings);
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
+        public IActionResult GetSpectrumVersions(IsSpectrumTypeSavedOnCloudRequestModel model)
+        {
+            int userId = getUserId();
+            IEnumerable<SpectrumVersionModel>? spectrumVersions = dbHandlerSLabData.getSpectrumVersions(model.Filename,
+                                                                                                        model.SpectrumType,
+                                                                                                        userId);
+
+            if (spectrumVersions != null && spectrumVersions.Any())
+                return new JsonResult(spectrumVersions);
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
+        public IActionResult IsAnySpectrumTypeSavedOnCloud(IsAnySpectrumTypeSavedOnCloudRequestModel model)
+        {
+            (bool isSaved, int id) result = dbHandlerSLabData.isAnySpectrumTypeSaved(model.Filename, model.SpectrumTypes);
+            return new JsonResult(result.ToGenericValueStringResponse());
+        }
+
+        [HttpGet]
+        public IActionResult IsSpectrumTypeSavedOnCloud(IsSpectrumTypeSavedOnCloudRequestModel model)
+        {
+            (bool isSaved, int id) result = dbHandlerSLabData.isSpectrumTypeSaved(model.Filename, model.SpectrumType, getUserId());
+            return new JsonResult(result.ToGenericValueStringResponse());
+        }
+
+        [HttpGet]
+        public IActionResult IsSpectrumTypeSavedWithCountOnCloud(IsSpectrumTypeSavedOnCloudRequestModel model)
+        {
+            int count = dbHandlerSLabData.isSpectrumTypeSavedWithCount(model.Filename, model.SpectrumType, getUserId());
+            return new JsonResult(new GenericResponseModel(count));
         }
         #endregion
 
@@ -52,21 +125,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new JsonResult(await dbHandlerSLabData.deleteSpectrumFileProcedureAsync(model.Id, getUserId()));
         }
 
-        [HttpPost]
-        public IActionResult IsAnySpectrumTypeSavedOnCloud([FromBody] IsAnySpectrumTypeSavedOnCloudRequestModel model)
-        {
-            (bool isSaved, int id) result = dbHandlerSLabData.isAnySpectrumTypeSaved(model.Filename, model.SpectrumTypes);
-            return new JsonResult(result.ToGenericValueStringResponse());
-        }
-
-        [HttpPost]
-        public IActionResult IsSpectrumTypeSavedOnCloud([FromBody] IsSpectrumTypeSavedOnCloudRequestModel model)
-        {
-            (bool isSaved, int id) result = dbHandlerSLabData.isSpectrumTypeSaved(model.Filename, model.SpectrumType, getUserId());
-            return new JsonResult(result.ToGenericValueStringResponse());
-        }
-
-        #region save spectrum of type
+        #region SAVE SPECTRUM OF TYPE
         [HttpPost]
         public async Task<IActionResult> SaveSpectrumOfTypeAligned([FromBody] SaveSpectrumOfTypeAlignedRequestModel model)
         {
@@ -124,6 +183,15 @@ namespace INAF.WebApps.HyperLab.Controllers
             /* save file */
             (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerSLabData.saveSpectrumFileOfTypeSmoothedProcedureAsync(model,
                                                                                                                                                  getUserId());
+            return new JsonResult(result.ToSegmentsProcessingResponseModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveAsCopySpectrumOfTypeSmoothed([FromBody] SaveSpectrumOfTypeSmoothedRequestModel model)
+        {
+            /* save file */
+            (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerSLabData.saveAsCopySpectrumFileOfTypeSmoothedProcedureAsync(model,
+                                                                                                                                                               getUserId());
             return new JsonResult(result.ToSegmentsProcessingResponseModel());
         }
         #endregion

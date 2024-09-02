@@ -46,6 +46,18 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region GET
         [HttpGet]
+        public IActionResult GetDefaultColors(bool searchForDefaults)
+        {
+            IEnumerable<KeyValueResponseModel> result = dbHandlerHyperLabUsers.getColors(getUserId(),
+                                                                                         searchForDefaults);
+
+            if (result.Any())
+                return new JsonResult(result);
+            else
+                return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
+        }
+
+        [HttpGet]
         public IActionResult GetUserSetting(KeyRequestModel model)
         {
             (bool isOk, string? value) result = dbHandlerHyperLabUsers.getUserSettingsValue(getUserId(),
@@ -61,7 +73,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult GetUserSettingsByWildcard(KeyRequestModel model)
         {
             (bool isOk, List<KeyValueResponseModel>? values) result = dbHandlerHyperLabUsers.getUserSettingsValuesByWildcard(getUserId(),
-                                                                                                                model.Key);
+                                                                                                                             model.Key);
 
             if (result.isOk)
                 return new JsonResult(new KeysValuesResponseModel() { Responses = result.values });

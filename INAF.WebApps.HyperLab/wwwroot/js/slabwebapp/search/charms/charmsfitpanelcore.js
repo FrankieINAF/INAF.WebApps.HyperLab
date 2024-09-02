@@ -107,9 +107,7 @@ async function onSegmentFunctionSelectCoreAsync(val, option, item) {
     /* retrieve parameter, if existant, and build the spinner for parameter value */
     let parameter = selectedFitFunction.ParameterConstraintValue;
     if (parameter) {
-
-        setParameterSpinner(`${FIT_SEGMENT_CORE_VALUE}${segmentIndex}`, parameter, segmentIndex, onFitMethodFunctionParameterChange.name);
-
+        setParameterSpinner(`${FIT_SEGMENT_CORE_VALUE}${segmentIndex}`, parameter, segmentIndex, selectedFitFunction, onFitMethodFunctionParameterChange.name);
     }
 
     /* add/update continuum segment */
