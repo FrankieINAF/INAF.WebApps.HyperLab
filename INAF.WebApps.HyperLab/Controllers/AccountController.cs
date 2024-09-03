@@ -90,7 +90,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 if (confirmationResult.isOk)
                 {
                     ViewBag.Confirmation = 1;
-                    return RedirectToAction(nameof(Login), GenericHelper.GetControllerName(nameof(AccountController)));
+                    return RedirectToAction(nameof(RegistrationConfirmed), GenericHelper.GetControllerName(nameof(AccountController)));
                 }
 
                 /* if confirmation is not ok, then send user to confirmation error page */
@@ -258,6 +258,13 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         [AllowAnonymous]
         public IActionResult RegistrationCompleted()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult RegistrationConfirmed()
         {
             return View();
         }

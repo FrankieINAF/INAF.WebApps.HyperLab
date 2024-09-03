@@ -19,6 +19,14 @@
     /*transition: background-image 0.2s ease-in;*/
 }
 
+
+.countdown-container {
+    width: 90%;
+    height: 100px;
+    -ms-transform: translateY(40%);
+    transform: translateY(60%);
+}
+
 .login-rows-divider {
     margin-top: 12px;
     margin-bottom: 12px
