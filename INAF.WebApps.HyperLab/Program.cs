@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using System.Text.Json.Serialization;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,24 +40,6 @@ builder.Services.AddAuthentication(options =>
         options.DefaultScheme = "JWT_OR_COOKIE";
         options.DefaultChallengeScheme = "JWT_OR_COOKIE";
     })
-    //.AddOpenIdConnect("OIDC", options =>
-    //{
-    //    options.ClientId = config.GetSection("HyperLab:ORCID:ClientId").Value;
-    //    options.ClientSecret = config.GetSection("HyperLab:ORCID:ClientSecret").Value;
-
-    //    options.Authority = "https://orcid.org/oauth/authorize";
-    //    options.CallbackPath = "/Account/ExternalLoginCallback";
-
-    //    options.ResponseType = OpenIdConnectResponseType.Code;
-    //    options.SaveTokens = true;
-    //    options.UseTokenLifetime = true;
-    //    options.GetClaimsFromUserInfoEndpoint = true;
-
-    //    // Specify the scopes you want to request
-    //    options.Scope.Clear();
-    //    options.Scope.Add("openid");
-    //    options.Scope.Add("profile");
-    //})
     .AddCookie(options =>
     {
         options.Cookie.Name = "SlabWebAppCookies";

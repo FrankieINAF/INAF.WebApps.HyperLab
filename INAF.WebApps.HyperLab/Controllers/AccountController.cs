@@ -77,6 +77,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             if (ModelState.IsValid)
             {
+                logger.LogInformation($"{nameof(Confirmation)} - IsValid - user: {model.Id}");
                 /* if login has already been confirmed, then send user to registration completed page */
                 if (dbHandlerHyperLabUsers.isLoginAlreadyConfirmed(model.Id))
                     return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
@@ -84,6 +85,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 (bool isOk, string exMsg) confirmationResult = await dbHandlerHyperLabUsers.tryConfirmLoginAsync(model.Id,
                                                                                                                  model.Token!);
 
+                logger.LogInformation($"{nameof(Confirmation)} - IsValid - confirmationResult: isOk:{confirmationResult.isOk}, exMsg: {confirmationResult.exMsg}");
                 /* if confirmation is ok, then send user to registration completed page */
                 if (confirmationResult.isOk)
                 {
@@ -95,6 +97,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return RedirectToAction(nameof(ConfirmationError), GenericHelper.GetControllerName(nameof(AccountController)));
             }
 
+            logger.LogInformation($"{nameof(Confirmation)} - NOT VALID - user: {model.Id}");
             return RedirectToAction(nameof(ConfirmationError), GenericHelper.GetControllerName(nameof(AccountController)));
         }
 
@@ -103,18 +106,6 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult ConfirmationError()
         {
             return View();
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> ExternalLoginCallback(string? code = null)
-        {
-            //logger.LogInformation(returnUrl);
-
-            await getTokenAsync(code);
-
-
-            return View("Error");
         }
 
         private async Task getTokenAsync(string? code = null)
@@ -157,12 +148,6 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 logger.LogError($"{nameof(getTokenAsync)} - ex: {ex.Message}");
             }
-        }
-
-        [HttpPost]
-        public IActionResult ExternalLoginAuth()
-        {
-            return RedirectToAction(nameof(Login), GenericHelper.GetControllerName(nameof(AccountController)));
         }
 
         [HttpGet]
