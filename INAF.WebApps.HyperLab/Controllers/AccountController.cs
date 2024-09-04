@@ -218,10 +218,6 @@ namespace INAF.WebApps.HyperLab.Controllers
                 if (dbHandlerHyperLabUsers.isUserExistant(model.Email!))
                     return new JsonResult(new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Users.UserAlreadyExistantMessage });
 
-                /* user-name is 1st part of email */
-                string[] temp = model.Email!.ToLowerInvariant().Split('@');
-                //string userName = temp[0];
-
                 /* encrypt password */
                 string encryptedPassword = getEncrypted(model.Password!);
 
