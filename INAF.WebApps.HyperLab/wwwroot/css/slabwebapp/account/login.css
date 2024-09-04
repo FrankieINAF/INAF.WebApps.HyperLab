@@ -41,6 +41,7 @@
 
 .registration-container {
     width: 90%;
+    height: 560px;
     -ms-transform: translateY(40%);
     transform: translateY(40%);
 }
@@ -77,16 +78,22 @@
     height: 100%;
 }
 
-@media screen and (max-height: 1200px) {
+@media screen and (max-width: 1024px) and (max-height: 1366px) {
     .login-container {
-        width: 100%;
+        width: 90%;
+        -ms-transform: translateY(10%);
+        transform: translateY(10%);
+    }
+
+    .registration-container {
+        width: 90%;
         -ms-transform: translateY(10%);
         transform: translateY(10%);
     }
 }
 
 /* iPad Pro */
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1024px) and (min-height: 1366px) {
     .login-container {
         width: 100%;
         -ms-transform: translateY(50%);
