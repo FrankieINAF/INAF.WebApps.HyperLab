@@ -1,0 +1,51 @@
+﻿.confirmation-completed-container {
+    background-color: rgba(0,0,0,0.8);
+    top: -100%
+}
+
+.confirmation-completed-box {
+    width: 40%;
+    height: 15%;
+    background-color: white;
+    top: 40%;
+    left: 30%;
+}
+/* iPad Mini /iPad Pro */
+@media screen and (max-width: 1024px) {
+    .confirmation-completed-box {
+        width: 60%;
+        height: 10%;
+        top: 40%;
+        left: 20%;
+    }
+}
+
+/* surface duo */
+@media screen and (max-width: 540px) {
+    .confirmation-completed-box {
+        width: 80%;
+        height: 20%;
+        top: 40%;
+        left: 10%;
+    }
+}
+
+/* phones */
+@media screen and (max-width: 480px) {
+    .confirmation-completed-box {
+        width: 80%;
+        height: 20%;
+        top: 40%;
+        left: 10%;
+    }
+}
+
+/* phones */
+@media screen and (max-width: 480px) {
+    .confirmation-completed-box {
+        width: 80%;
+        height: 25%;
+        top: 40%;
+        left: 10%;
+    }
+}

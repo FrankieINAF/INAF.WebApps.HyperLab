@@ -1,0 +1,17 @@
+﻿.error-box-container {
+    width: 90%;
+    -ms-transform: translateY(40%);
+    transform: translateY(40%);
+}
+
+.error-box {
+    width: 90%;
+    height: 400px;
+    top: 50%;
+    left: 5%;
+    margin: 0px;
+    /*position: absolute;*/
+    -ms-transform: translateY(0%);
+    transform: translateY(0%);
+    z-index: 10
+}
