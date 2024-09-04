@@ -220,7 +220,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
                 /* user-name is 1st part of email */
                 string[] temp = model.Email!.ToLowerInvariant().Split('@');
-                string userName = temp[0];
+                //string userName = temp[0];
 
                 /* encrypt password */
                 string encryptedPassword = getEncrypted(model.Password!);
@@ -233,16 +233,16 @@ namespace INAF.WebApps.HyperLab.Controllers
                 DateTime tokenExpirationDateTime = DateTime.UtcNow.AddDays(int.Parse(tokenExpiration));
 
                 /* save new user */
-                if (await dbHandlerHyperLabUsers.upsertUserProcedureAsync(model.Id,
-                                                                          model.Name!.ToLowerInvariant().FirstCharToUpperCase(),
-                                                                          model.LastName!.ToLowerInvariant().FirstCharToUpperCase(),
-                                                                          userName,
-                                                                          model.Email.ToLowerInvariant(),
-                                                                          encryptedPassword,
-                                                                          confirmationToken,
-                                                                          tokenExpirationDateTime,
-                                                                          (int)INAF.Libraries.NetStandard.HyperLabCommonModels.Values.Enums.RoleType.User,
-                                                                          getUserId()))
+                if (await dbHandlerHyperLabUsers.upsertUserProcedureAsync(id: model.Id,
+                                                                          name: model.Name!.ToLowerInvariant().FirstCharToUpperCase(),
+                                                                          lastName: model.LastName!.ToLowerInvariant().FirstCharToUpperCase(),
+                                                                          userName: model.Email.ToLowerInvariant(),
+                                                                          email: model.Email.ToLowerInvariant(),
+                                                                          encryptedPassword: encryptedPassword,
+                                                                          confirmationToken: confirmationToken,
+                                                                          tokenExpirationDateTime: tokenExpirationDateTime,
+                                                                          roleId: (int)INAF.Libraries.NetStandard.HyperLabCommonModels.Values.Enums.RoleType.User,
+                                                                          operationUserId: getUserId()))
                     return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
                 else
                     return new BadRequestResult();
@@ -347,8 +347,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         private async Task<(bool isAuthenticated, UserModel? user)> tryAuthenticateForWebAsync(string userName,
-                                                                                              string password,
-                                                                                              bool rememberMe = false)
+                                                                                               string password,
+                                                                                               bool rememberMe = false)
         {
             bool isAuthenticated = false;
             UserModel? user = null;
