@@ -34,21 +34,20 @@
 
 .login-container {
     width: 90%;
-    height: 480px;
+    height: 50%;
     -ms-transform: translateY(40%);
     transform: translateY(40%);
 }
 
 .registration-container {
     width: 90%;
-    height: 560px;
-    -ms-transform: translateY(40%);
-    transform: translateY(40%);
+    height: 70%;
+    -ms-transform: translateY(25%);
+    transform: translateY(25%);
 }
 
 .login-form {
     width: 90%;
-    height: 240px;
     top: 50%;
     left: 5%;
     margin: 0px;
@@ -60,7 +59,6 @@
 
 .registration-form {
     width: 90%;
-    height: 400px;
     top: 50%;
     left: 5%;
     margin: 0px;
@@ -78,22 +76,7 @@
     height: 100%;
 }
 
-@media screen and (max-width: 1024px) and (max-height: 1366px) {
-    .login-container {
-        width: 90%;
-        -ms-transform: translateY(10%);
-        transform: translateY(10%);
-    }
-
-    .registration-container {
-        width: 90%;
-        -ms-transform: translateY(10%);
-        transform: translateY(10%);
-    }
-}
-
-/* iPad Pro */
-@media screen and (max-width: 1024px) and (min-height: 1366px) {
+@media screen and (max-width: 1024px) and (min-height: 1367px) {
     .login-container {
         width: 100%;
         -ms-transform: translateY(50%);
@@ -102,8 +85,6 @@
 
     .registration-container {
         width: 100%;
-        -ms-transform: translateY(50%);
-        transform: translateY(50%);
     }
 
     .login-form {
@@ -117,15 +98,33 @@
     }
 }
 
-/* iPad Mini */
-@media screen and (max-width: 768px) {
+/* iPad Pro */
+@media screen and (max-width: 1024px) and (max-height: 1366px) {
     .login-container {
-        height: 440px;
+        width: 90%;
+        height: 100%;
         -ms-transform: translateY(0%);
         transform: translateY(0%);
     }
 
     .registration-container {
+        width: 90%;
+        height: 100%;
+        -ms-transform: translateY(0%);
+        transform: translateY(0%);
+    }
+}
+
+/* iPad Mini */
+@media screen and (max-width: 768px) {
+    .login-container {
+        height: 60%;
+        -ms-transform: translateY(30%);
+        transform: translateY(30%);
+    }
+
+    .registration-container {
+        height: 100%;
         -ms-transform: translateY(0%);
         transform: translateY(0%);
     }
@@ -150,6 +149,7 @@
 
     .registration-container {
         width: 90%;
+        height: 100%;
         -ms-transform: translateY(10%);
         transform: translateY(0%);
     }
@@ -166,7 +166,5 @@
 
     .registration-container {
         width: 90%;
-        -ms-transform: translateY(-8%);
-        transform: translateY(-8%);
     }
 }
