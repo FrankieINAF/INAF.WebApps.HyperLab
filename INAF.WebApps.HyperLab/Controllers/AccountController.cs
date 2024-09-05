@@ -201,6 +201,18 @@ namespace INAF.WebApps.HyperLab.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)));
+        }
+
+        public async Task<IActionResult> LogoutForJwt()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)));
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Registration()
@@ -215,39 +227,32 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (dbHandlerHyperLabUsers.isUserExistant(model.Email!))
-                    return new JsonResult(new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Users.UserAlreadyExistantMessage });
-
-                /* encrypt password */
-                string encryptedPassword = getEncrypted(model.Password!);
-
-                /* generate confirmation token */
-                string confirmationToken = Guid.NewGuid().ToString();
-
-                /* set token expiration date */
-                string tokenExpiration = configuration!.GetSection("AppSettings:ConfirmationToken:TokenTimeoutDays").Value ?? "1";
-                DateTime tokenExpirationDateTime = DateTime.UtcNow.AddDays(int.Parse(tokenExpiration));
-
-                /* save new user */
-                if (await dbHandlerHyperLabUsers.upsertUserProcedureAsync(id: model.Id,
-                                                                          name: model.Name!.ToLowerInvariant().FirstCharToUpperCase(),
-                                                                          lastName: model.LastName!.ToLowerInvariant().FirstCharToUpperCase(),
-                                                                          userName: model.Email.ToLowerInvariant(),
-                                                                          email: model.Email.ToLowerInvariant(),
-                                                                          encryptedPassword: encryptedPassword,
-                                                                          confirmationToken: confirmationToken,
-                                                                          tokenExpirationDateTime: tokenExpirationDateTime,
-                                                                          roleId: (int)INAF.Libraries.NetStandard.HyperLabCommonModels.Values.Enums.RoleType.User,
-                                                                          operationUserId: getUserId()))
+                GenericValueStringResponseModel response = await registerAsync(model);
+                if (response.IsOk)
                     return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
                 else
-                    return new BadRequestResult();
+                    return new JsonResult(response);
             }
             else
             {
                 logErrorMessage(ModelState.Values);
                 ModelState.Clear();
                 return new BadRequestResult();
+            }
+        }
+
+        [HttpPost]
+        public async Task<GenericValueStringResponseModel> RegistrationFromApp([FromBody] RegistrationModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return await registerAsync(model);
+            }
+            else
+            {
+                logErrorMessage(ModelState.Values);
+                ModelState.Clear();
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = INAF.Libraries.Net.CommonWebAppModels.Resources.Login.RegistrationBadModel };
             }
         }
 
@@ -377,16 +382,36 @@ namespace INAF.WebApps.HyperLab.Controllers
             return (isAuthenticated, user);
         }
 
-        public async Task<IActionResult> Logout()
+        private async Task<GenericValueStringResponseModel> registerAsync(RegistrationModel model)
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)));
-        }
+            if (dbHandlerHyperLabUsers.isUserExistant(model.Email!))
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Users.UserAlreadyExistantMessage };
 
-        public async Task<IActionResult> LogoutForJwt()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)));
+            /* encrypt password */
+            string encryptedPassword = getEncrypted(model.Password!);
+
+            /* generate confirmation token */
+            string confirmationToken = Guid.NewGuid().ToString();
+
+            /* set token expiration date */
+            string tokenExpiration = configuration!.GetSection("AppSettings:ConfirmationToken:TokenTimeoutDays").Value ?? "1";
+            DateTime tokenExpirationDateTime = DateTime.UtcNow.AddDays(int.Parse(tokenExpiration));
+
+            /* save new user */
+            if (await dbHandlerHyperLabUsers.upsertUserProcedureAsync(id: model.Id,
+                                                                      name: model.Name!.ToLowerInvariant().FirstCharToUpperCase(),
+                                                                      lastName: model.LastName!.ToLowerInvariant().FirstCharToUpperCase(),
+                                                                      userName: model.Email.ToLowerInvariant(),
+                                                                      email: model.Email.ToLowerInvariant(),
+                                                                      encryptedPassword: encryptedPassword,
+                                                                      confirmationToken: confirmationToken,
+                                                                      tokenExpirationDateTime: tokenExpirationDateTime,
+                                                                      roleId: (int)INAF.Libraries.NetStandard.HyperLabCommonModels.Values.Enums.RoleType.User,
+                                                                      operationUserId: getUserId()))
+                return new GenericValueStringResponseModel() { IsOk = true };
+            //return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
+            else
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = INAF.Libraries.Net.CommonWebAppModels.Resources.Login.RegistrationBadRequest };
         }
         #endregion
     }
