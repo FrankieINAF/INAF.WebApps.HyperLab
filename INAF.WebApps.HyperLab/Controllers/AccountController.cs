@@ -108,48 +108,6 @@ namespace INAF.WebApps.HyperLab.Controllers
             return View();
         }
 
-        private async Task getTokenAsync(string? code = null)
-        {
-            try
-            {
-                /* create request model for retrieving suggestions for current text */
-                var parameters = new Dictionary<string, string> {
-                    { "client_id", "APP-28MJC162XY2CSSCT" },
-                    { "client_secret", "77ae6944-8fe5-41fe-904c-17b6583f70d7" },
-                    { "grant_type", "authorization_code" },
-                    { "redirect_uri", "/Account/ExternalLoginCallback" },
-                    { "code", code! }
-                };
-
-                var encodedContent = new FormUrlEncodedContent(parameters);
-
-                /* retrieve url for querying web service */
-                var url = "https://orcid.org/oauth/token";
-
-                /* send request to web service */
-                using (var httpClient = new HttpClient())
-                {
-                    using (var response = await httpClient.PostAsync(new Uri(url), encodedContent))
-                    {
-                        if (response.IsSuccessStatusCode)
-                        {
-                            string responseContent = await response.Content.ReadAsStringAsync();
-                            System.Diagnostics.Debug.WriteLine($"responseContent: {responseContent}");
-                        }
-                        else
-                        {
-                            string errorContent = await response.Content.ReadAsStringAsync();
-                            logger.LogError($"Error in {nameof(getTokenAsync)}: {errorContent}");
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"{nameof(getTokenAsync)} - ex: {ex.Message}");
-            }
-        }
-
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login(string? returnUrl,
@@ -270,7 +228,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             return View();
         }
 
-        #region methods
+        #region PRIVATE
         private async Task<JwtTokenModel> createNewTokenForUserAsync(UserModel user)
         {
             using RSA rsa = RSA.Create();
@@ -317,6 +275,48 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* return result */
             return new JwtTokenModel(tokenstring, user.CompleteName, token.ValidTo);
+        }
+
+        private async Task getTokenAsync(string? code = null)
+        {
+            try
+            {
+                /* create request model for retrieving suggestions for current text */
+                var parameters = new Dictionary<string, string> {
+                    { "client_id", "APP-28MJC162XY2CSSCT" },
+                    { "client_secret", "77ae6944-8fe5-41fe-904c-17b6583f70d7" },
+                    { "grant_type", "authorization_code" },
+                    { "redirect_uri", "/Account/ExternalLoginCallback" },
+                    { "code", code! }
+                };
+
+                var encodedContent = new FormUrlEncodedContent(parameters);
+
+                /* retrieve url for querying web service */
+                var url = "https://orcid.org/oauth/token";
+
+                /* send request to web service */
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.PostAsync(new Uri(url), encodedContent))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string responseContent = await response.Content.ReadAsStringAsync();
+                            System.Diagnostics.Debug.WriteLine($"responseContent: {responseContent}");
+                        }
+                        else
+                        {
+                            string errorContent = await response.Content.ReadAsStringAsync();
+                            logger.LogError($"Error in {nameof(getTokenAsync)}: {errorContent}");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"{nameof(getTokenAsync)} - ex: {ex.Message}");
+            }
         }
 
         private async Task<JwtTokenModel> tryAuthenticateForJwtAsync(JwtLoginModel model)
