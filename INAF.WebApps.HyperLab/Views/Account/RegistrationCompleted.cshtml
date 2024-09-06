@@ -1,0 +1,60 @@
+﻿@using INAF.WebApps.HyperLab.Resources
+@using CommonResources = INAF.Libraries.Net.CommonWebAppModels.Resources
+
+@{
+    Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
+
+    ViewBag.Title = "HyperLab Registration completed";
+}
+
+<link rel="stylesheet" href="~/css/slabwebapp/account/login.css" />
+<link rel="stylesheet" href="~/css/slabwebapp/common.css" />
+<div class="h-vh-100 w-vw-100">
+    <div class="row h-vh-100">
+        <!-- TEXT/IMAGES -->
+        <div class="cell-fs-12 cell-xl-4 h-vh-25-fs h-vh-100-xl">
+            <div class="row cell-fs-12 text-center h-25">
+                <span class="fg-black display2">@Html.Raw(SharedResources.HyperLabLabel)</span>
+            </div>
+            <div class="row text-center h-75">
+                <div class="cell-fs-6 cell-lg-12 text-center h-50">
+                    <img src="~/images/login/em_spectrum_400x400.png" class="spectrum-image" />
+                </div>
+                <div class="cell-fs-6 cell-lg-12 text-center h-50">
+                    <img src="~/images/login/iaps_marchio_full_colorinaf.svg" class="inaf-image" />
+                </div>
+            </div>
+        </div>
+
+        <!-- FORM -->
+        <div class="cell-fs-12 cell-xl-8 form-cell-background h-vh-75-fs h-vh-100-xl">
+            <!-- LOGIN ROW -->
+            <div class="row">
+                <div class="cell-md-2">&nbsp;</div>
+                <div class="cell-fs-12 cell-md-8">
+                    <div class="login-container bg-white p-6 mx-auto border bd-default win-shadow">
+                        <div class="row cell-fs-12">
+                            <div class="login-form">
+                                <!-- MESSAGE -->
+                                <div class="row cell-fs-12">
+                                    <p class="text-medium">@Html.Raw(CommonResources.Login.LoginConfirmationRequiredTitle)</p>
+                                    <p class="text-normal text-just margin-top-16">@Html.Raw(CommonResources.Login.LoginConfirmationRequiredMessage1)</p>
+                                    <p class="text-normal text-just margin-top-16">@Html.Raw(CommonResources.Login.LoginConfirmationRequiredMessage2)</p>
+                                    <p class="text-normal text-just margin-top-16">@Html.Raw(CommonResources.Login.LoginConfirmationRequiredMessage3)</p>
+                                </div>
+                                <!-- BUTTON TO LOGIN  -->
+                                <div class="row cell-fs-12 margin-top-8 d-flex flex-justify-center">
+                                    <button class="button primary cycle" onclick="navigateTo('/Account/Login')" title="@Html.Raw(CommonResources.Login.NavigateToLoginMessage)">
+                                        <span class="mif-arrow-right" />   
+                                    </button>
+                                    <span class="margin-left-16 margin-top-4">@Html.Raw(CommonResources.Login.NavigateToLoginMessage)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cell-md-2">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+</div>
