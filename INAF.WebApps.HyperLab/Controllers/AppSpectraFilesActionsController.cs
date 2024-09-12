@@ -1,6 +1,8 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.SLabData;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Extensions;
+using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Files;
+using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.ContinuumRemoval;
 using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Smoothing;
@@ -61,6 +63,28 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                                                     getUserId());
             if (continuumRemovalSettings != null)
                 return new JsonResult(continuumRemovalSettings);
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
+        public IActionResult GetSpectrumFile(GenericRequestByIdModel model)
+        {
+            FileSpectrumModel? parentSpectrum = dbHandlerSLabData.getSpectrumInfo(model.Id,
+                                                                                  getUserId());
+            if (parentSpectrum != null)
+                return new JsonResult(parentSpectrum);
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
+        public IActionResult GetSpectrumData(GenericRequestByIdModel model)
+        {
+            RawRefSpectrumDataModel? rawRefSpectrumData = dbHandlerSLabData.getSpectrumDataInfo(model.Id,
+                                                                                                getUserId());
+            if (rawRefSpectrumData != null)
+                return new JsonResult(rawRefSpectrumData);
             else
                 return new EmptyResult();
         }

@@ -80,7 +80,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetSpectrumFilename(GenericRequestByIdModel model)
         {
-            SpectrumModel? spectrumModel = dbHandlerSLabData.getSpectrumGeneralInfo(model.Id);
+            SpectrumModel? spectrumModel = dbHandlerSLabData.getSpectrumFilename(model.Id);
 
             return new JsonResult(spectrumModel);
         }

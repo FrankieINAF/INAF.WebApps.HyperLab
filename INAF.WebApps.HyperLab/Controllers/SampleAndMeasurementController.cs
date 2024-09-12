@@ -30,7 +30,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult LoadSpectrumMeasurementInfoView(GenericRequestByIdModel model)
         {
-            var generalInfo = dbHandlerSLabData.getSpectrumGeneralInfo(model.Id);
+            var generalInfo = dbHandlerSLabData.getSpectrumFilename(model.Id);
             if (generalInfo == null)
                 return new EmptyResult();
 
@@ -53,7 +53,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             var sampleTypesHelper = serviceProvider.GetRequiredService<SampleTypesHelper>();
             var sampleDataAvailableValues = sampleTypesHelper.getSampleTypeValuesContainer();
 
-            var generalInfo = dbHandlerSLabData.getSpectrumGeneralInfo(model.Id);
+            var generalInfo = dbHandlerSLabData.getSpectrumFilename(model.Id);
             if (generalInfo == null)
                 return new EmptyResult();
 
