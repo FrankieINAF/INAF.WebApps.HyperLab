@@ -68,6 +68,13 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetSpectraTypesParents()
+        {
+            var keyValuePairs = dbHandlerSLabData.getSpectraTypesParents();
+            return new JsonResult(keyValuePairs);
+        }
+
+        [HttpGet]
         public IActionResult GetSpectrumFile(GenericRequestByIdModel model)
         {
             FileSpectrumModel? parentSpectrum = dbHandlerSLabData.getSpectrumInfo(model.Id,

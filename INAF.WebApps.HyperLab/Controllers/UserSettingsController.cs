@@ -113,14 +113,5 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new JsonResult(fitMethods);
         }
         #endregion
-
-        #region SPECTRA-TYPES RELATIONSHIPS
-        [HttpGet]
-        public IActionResult GetSpectraTypesParents()
-        {
-            var keyValuePairs = dbHandlerSLabData.getSpectraTypesParents();
-            return new JsonResult(keyValuePairs);
-        }
-        #endregion
     }
 }
