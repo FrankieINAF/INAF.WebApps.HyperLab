@@ -23,6 +23,7 @@ namespace INAF.WebApps.HyperLab.Controllers
     public class AppSpectraFilesActionsController : BaseController
     {
         private readonly DbHandlerSLabData dbHandlerSLabData;
+
         public AppSpectraFilesActionsController(IServiceProvider serviceProvider,
                                                 ILogger<AppSpectraFilesActionsController> logger,
                                                 DbHandlerSLabData dbHandlerSLabData) : base(serviceProvider, logger)
