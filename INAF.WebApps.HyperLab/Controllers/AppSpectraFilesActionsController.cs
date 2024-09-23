@@ -33,6 +33,13 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region GET
         [HttpGet]
+        public IActionResult IsWhiteSpectrum(GenericRequestByTextModel model)
+        {
+            var isWhiteResponse = dbHandlerSLabData.isWhiteSpectrum(model.Text);
+            return new JsonResult(isWhiteResponse);
+        }
+
+        [HttpGet]
         public IActionResult GetAlignmentSettings(GenericRequestByIdModel model)
         {
             AlignmentSettingsModel? alignmentSettingsModel = dbHandlerSLabData.getAlignmentSettings(model.Id,

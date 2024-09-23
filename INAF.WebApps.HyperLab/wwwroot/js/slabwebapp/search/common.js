@@ -36,15 +36,15 @@ var red = '#a8071e';
 //    resolve();
 //});
 
-function getQueueItem(key, value) {
-    return _({ url: UrlSetUserSetting, model: { Key: key, Value: value } });
-}
+//function getQueueItem(key, value) {
+//    return _({ url: UrlSetUserSetting, model: { Key: key, Value: value } });
+//}
 
 function callEnqueueSaveSetting(timeout, key, value, jsDelay) {
     if (timeout)
         clearTimeout(timeout);
 
-    timeout = setTimeout(function () { enqueueSaveSetting(getQueueItem(key, value)); }, jsDelay);
+    //timeout = setTimeout(function () { enqueueSaveSetting(getQueueItem(key, value)); }, jsDelay);
 }
 
 function enqueueSaveSetting(saveSettingData) {
