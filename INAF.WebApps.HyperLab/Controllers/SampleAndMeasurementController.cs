@@ -1,10 +1,10 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Info;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.SLabData;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Extensions;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.SampleData;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Responses;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Values;
+using INAF.Libraries.Net.HyperLabCommonModels.Extensions;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.SampleData;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Responses;
+using INAF.Libraries.Net.HyperLabCommonModels.Values;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Helpers;

@@ -1,10 +1,10 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Searches;
 using INAF.Libraries.Net.DB.SLabData;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Values;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum;
+using INAF.Libraries.Net.HyperLabCommonModels.Values;
 using INAF.WebApps.HyperLab.Extensions;
 using System.Dynamic;
-using static INAF.Libraries.NetStandard.HyperLabCommonModels.Values.Enums;
+using static INAF.Libraries.Net.HyperLabCommonModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Helpers
 {
@@ -58,7 +58,7 @@ namespace INAF.WebApps.HyperLab.Helpers
                                                       SpectrumType spectrumType,
                                                       int operationUserId)
         {
-            ISpectrumModel spectrumModel = dbHandlerSLabData.getSpectrumByParentIdAndSpectrumType(parentId,
+            ISpectrumModel? spectrumModel = dbHandlerSLabData.getSpectrumByParentIdAndSpectrumType(parentId,
                                                                                                   spectrumType, 
                                                                                                   operationUserId);
 

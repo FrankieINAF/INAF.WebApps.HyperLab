@@ -1,7 +1,7 @@
 ﻿using INAF.Libraries.DB.Net.SLabData.Models.DbValues;
 using INAF.Libraries.Net.DB.SLabData;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Extensions;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.SampleData;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.SampleData;
+using INAF.Libraries.Net.HyperLabCommonModels.Extensions;
 
 namespace INAF.WebApps.HyperLab.Helpers
 {

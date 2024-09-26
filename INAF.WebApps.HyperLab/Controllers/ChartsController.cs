@@ -1,6 +1,6 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.SLabData;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Helpers;

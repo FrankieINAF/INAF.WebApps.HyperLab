@@ -4,10 +4,10 @@ using INAF.Libraries.Net.CommonWebAppModels.Models.Searches;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Searches.Interfaces;
 using INAF.Libraries.Net.CommonWebAppModels.Models.SpectraFiles;
 using INAF.Libraries.Net.DB.SLabData;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.SampleData;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.SampleData.Containers;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Searches;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Responses;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.SampleData;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.SampleData.Containers;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.Searches;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Responses;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Extensions;
@@ -198,15 +198,15 @@ namespace INAF.WebApps.HyperLab.Controllers
 
                 switch (saveSearchResult.queryResult)
                 {
-                    case Libraries.NetStandard.HyperLabCommonModels.Values.Enums.QueryResult.Ok:
+                    case Libraries.Net.HyperLabCommonModels.Values.Enums.QueryResult.Ok:
                         result = new GenericValueStringResponseModel() { IsOk = true, Id = saveSearchResult.id };
                         break;
-                    case Libraries.NetStandard.HyperLabCommonModels.Values.Enums.QueryResult.AlreadyExistingItem:
+                    case Libraries.Net.HyperLabCommonModels.Values.Enums.QueryResult.AlreadyExistingItem:
                         result = new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Search.SaveComplexSearchAlreadyExistingMessage };
                         break;
-                    case Libraries.NetStandard.HyperLabCommonModels.Values.Enums.QueryResult.Error:
-                    case Libraries.NetStandard.HyperLabCommonModels.Values.Enums.QueryResult.ErrorOnInsert:
-                    case Libraries.NetStandard.HyperLabCommonModels.Values.Enums.QueryResult.ErrorOnCommit:
+                    case Libraries.Net.HyperLabCommonModels.Values.Enums.QueryResult.Error:
+                    case Libraries.Net.HyperLabCommonModels.Values.Enums.QueryResult.ErrorOnInsert:
+                    case Libraries.Net.HyperLabCommonModels.Values.Enums.QueryResult.ErrorOnCommit:
                         result = errorResult;
                         break;
                     default:

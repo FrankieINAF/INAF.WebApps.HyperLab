@@ -1,20 +1,20 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.SLabData;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Extensions;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Files;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.ContinuumRemoval;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Smoothing;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.Spectrum.SpectrumVersions;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Requests;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Requests.SaveSpectrum;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Responses;
+using INAF.Libraries.Net.HyperLabCommonModels.Extensions;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.Files;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.ContinuumRemoval;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Smoothing;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum.SpectrumVersions;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Requests;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Requests.SaveSpectrum;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Responses;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static INAF.Libraries.NetStandard.HyperLabCommonModels.Values.Enums;
+using static INAF.Libraries.Net.HyperLabCommonModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {

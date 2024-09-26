@@ -1,8 +1,8 @@
 ﻿using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.DB.SLabData;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Extensions;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Requests;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Responses;
+using INAF.Libraries.Net.HyperLabCommonModels.Extensions;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Requests;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Responses;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;

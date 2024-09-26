@@ -2,9 +2,9 @@
 using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
 using INAF.Libraries.Net.DB.HyperLabUsers;
+using INAF.Libraries.Net.HyperLabCommonModels.Authentication;
+using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Responses;
 using INAF.Libraries.NetStandard.Extensions;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Authentication;
-using INAF.Libraries.NetStandard.HyperLabCommonModels.Models.WebApp.Responses;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Extensions;
 using INAF.WebApps.HyperLab.Helpers.Factories;
@@ -406,7 +406,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                       encryptedPassword: encryptedPassword,
                                                                       confirmationToken: confirmationToken,
                                                                       tokenExpirationDateTime: tokenExpirationDateTime,
-                                                                      roleId: (int)INAF.Libraries.NetStandard.HyperLabCommonModels.Values.Enums.RoleType.User,
+                                                                      roleId: (int)INAF.Libraries.Net.HyperLabCommonModels.Values.Enums.RoleType.User,
                                                                       operationUserId: getUserId()))
                 return new GenericValueStringResponseModel() { IsOk = true };
             //return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));

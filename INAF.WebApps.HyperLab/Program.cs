@@ -1,8 +1,8 @@
 using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.DB.SLabData;
-using INAF.Libraries.NetStandard.HyperLabCommonHelpers;
-using INAF.Libraries.NetStandard.HyperLabCommonHelpers.ProcessingHelpers;
+using INAF.Libraries.Net.HyperLabCommonHelpers;
+using INAF.Libraries.Net.HyperLabCommonHelpers.ProcessingHelpers;
 using INAF.Libraries.NetStandard.Math.Fit.Linear;
 using INAF.Libraries.NetStandard.Math.Fit.Spline;
 using INAF.WebApps.HyperLab.Attributes;
