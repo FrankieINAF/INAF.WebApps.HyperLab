@@ -1,5 +1,5 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
-using INAF.Libraries.Net.DB.SLabData;
+using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.SampleData;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Responses;
 using INAF.WebApps.HyperLab.Attributes;
@@ -14,11 +14,11 @@ namespace INAF.WebApps.HyperLab.Controllers
     [CheckIsLoginValid]
     public class MaterialsController : BaseController
     {
-        private readonly DbHandlerSLabData dbHandlerSLabData;
+        private readonly DbHandlerHyperLabData dbHandlerSLabData;
 
         public MaterialsController(IServiceProvider serviceProvider,
                                    ILogger<MaterialsController> logger,
-                                   DbHandlerSLabData dbHandlerHyperLabUsers) : base(serviceProvider, logger)
+                                   DbHandlerHyperLabData dbHandlerHyperLabUsers) : base(serviceProvider, logger)
         {
             this.dbHandlerSLabData = dbHandlerHyperLabUsers;
         }

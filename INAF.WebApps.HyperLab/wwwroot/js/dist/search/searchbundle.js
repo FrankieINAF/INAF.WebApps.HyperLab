@@ -5247,17 +5247,26 @@ function addProcessedSpectrum(processedSpectrum, processedPoints, spectrumType) 
     /* get id of raw spectrum */
     let rawId = buildId(selectedSpectrumForProcessingId);
 
-    /* retrieve keys of 'alignedPoint' entity and uses the 2nd for adding point to spectrum:
+    /* retrieve keys of 'alignedPoint' entity and uses the right one for adding point to spectrum:
        when adding from locally calculated aligned spectrum, the key is 'Y', while when adding
        from downloaded aligned spectrum, the key is 'idnn' */
     let keys = Object.keys(processedPoints[0]);
+
+    let key = 'Y';
+    const hasYKey = keys.includes('Y');
+    if (!hasYKey) {
+        let idPattern = /^id\d+$/;
+        let hasIdKey = keys.some(key => idPattern.test(key));
+        let idKeyIndex = keys.findIndex(key => idPattern.test(key));
+        key = keys[idKeyIndex];
+    }
 
     /* loop over items to add aligned point */
     let itemsNum = items.length;
     let counter = 0;
     for (var i = 0; i < itemsNum; i++) {
         if (items[i][rawId]) {
-            items[i][idItem] = processedPoints[counter][keys[1]];
+            items[i][idItem] = processedPoints[counter][key];
             counter++;
         }
     }

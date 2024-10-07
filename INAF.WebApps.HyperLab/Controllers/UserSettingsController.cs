@@ -1,5 +1,5 @@
 ﻿using INAF.Libraries.Net.DB.HyperLabUsers;
-using INAF.Libraries.Net.DB.SLabData;
+using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLabCommonModels.Extensions;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Requests;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Responses;
@@ -15,12 +15,12 @@ namespace INAF.WebApps.HyperLab.Controllers
     public class UserSettingsController : BaseController
     {
         private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
-        private readonly DbHandlerSLabData dbHandlerSLabData;
+        private readonly DbHandlerHyperLabData dbHandlerSLabData;
 
         public UserSettingsController(IServiceProvider serviceProvider,
                                       ILogger<UserSettingsController> logger,
                                       DbHandlerHyperLabUsers dbHandlerHyperLabUsers,
-                                      DbHandlerSLabData dbHandlerSLabData) : base(serviceProvider, logger)
+                                      DbHandlerHyperLabData dbHandlerSLabData) : base(serviceProvider, logger)
         {
             this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
             this.dbHandlerSLabData = dbHandlerSLabData;

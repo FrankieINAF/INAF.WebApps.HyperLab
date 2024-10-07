@@ -1,6 +1,6 @@
 ﻿using HtmlAgilityPack;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Searches.Interfaces;
-using INAF.Libraries.Net.DB.SLabData;
+using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLabCommonModels.Extensions;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.SampleData;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.SampleData.Containers;
@@ -11,11 +11,11 @@ namespace INAF.WebApps.HyperLab.Helpers
     public sealed class SearchByMaterialHelper
     {
         private readonly IConfiguration configuration;
-        private readonly DbHandlerSLabData dbHandlerSLabData;
+        private readonly DbHandlerHyperLabData dbHandlerSLabData;
         private readonly ILogger<SearchByMaterialHelper> logger;
 
         public SearchByMaterialHelper(IConfiguration configuration,
-                                      DbHandlerSLabData dbHandlerSLabData,
+                                      DbHandlerHyperLabData dbHandlerSLabData,
                                       ILogger<SearchByMaterialHelper> logger)
         {
             this.configuration = configuration;

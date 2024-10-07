@@ -1,6 +1,6 @@
 using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.DB.HyperLabUsers;
-using INAF.Libraries.Net.DB.SLabData;
+using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLabCommonHelpers;
 using INAF.Libraries.Net.HyperLabCommonHelpers.ProcessingHelpers;
 using INAF.Libraries.NetStandard.Math.Fit.Linear;
@@ -102,7 +102,7 @@ builder.Services
     .AddScoped<CheckIsLoginValidAttribute>()
 
     /* SCOPED SERVICES */
-    .AddScoped<DbHandlerSLabData>()
+    .AddScoped<DbHandlerHyperLabData>()
     .AddScoped<DbHandlerHyperLabUsers>()
     .AddScoped<ChartsHelper>()
 

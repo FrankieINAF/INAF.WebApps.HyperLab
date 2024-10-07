@@ -1,5 +1,5 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
-using INAF.Libraries.Net.DB.SLabData;
+using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLabCommonModels.Extensions;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.Files;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum;
@@ -22,11 +22,11 @@ namespace INAF.WebApps.HyperLab.Controllers
     [CheckIsLoginValid]
     public class AppSpectraFilesActionsController : BaseController
     {
-        private readonly DbHandlerSLabData dbHandlerSLabData;
+        private readonly DbHandlerHyperLabData dbHandlerSLabData;
 
         public AppSpectraFilesActionsController(IServiceProvider serviceProvider,
                                                 ILogger<AppSpectraFilesActionsController> logger,
-                                                DbHandlerSLabData dbHandlerSLabData) : base(serviceProvider, logger)
+                                                DbHandlerHyperLabData dbHandlerSLabData) : base(serviceProvider, logger)
         {
             this.dbHandlerSLabData = dbHandlerSLabData;
         }
@@ -53,7 +53,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetChildrenSpectraTypes(int SpectrumTypeId)
         {
-            var dbHandlerSLabData = serviceProvider.GetRequiredService<DbHandlerSLabData>();
+            var dbHandlerSLabData = serviceProvider.GetRequiredService<DbHandlerHyperLabData>();
             List<SpectrumType> childrenSpectraTypes = dbHandlerSLabData.getChildrenSpectraTypes(SpectrumTypeId.ToSpectrumType());
             if (childrenSpectraTypes.Any())
             {

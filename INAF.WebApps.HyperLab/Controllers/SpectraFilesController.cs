@@ -1,6 +1,6 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.HyperLabUsers;
-using INAF.Libraries.Net.DB.SLabData;
+using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum.BandAnalysis;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment;
@@ -19,12 +19,12 @@ namespace INAF.WebApps.HyperLab.Controllers
     public class SpectraFilesController : BaseController
     {
         private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
-        private readonly DbHandlerSLabData dbHandlerSLabData;
+        private readonly DbHandlerHyperLabData dbHandlerSLabData;
 
         public SpectraFilesController(IServiceProvider serviceProvider,
                                       ILogger<SpectraFilesController> logger,
                                       DbHandlerHyperLabUsers dbHandlerHyperLabUsers,
-                                      DbHandlerSLabData dbHandlerSLabData) : base(serviceProvider, logger)
+                                      DbHandlerHyperLabData dbHandlerSLabData) : base(serviceProvider, logger)
         {
             this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
             this.dbHandlerSLabData = dbHandlerSLabData;

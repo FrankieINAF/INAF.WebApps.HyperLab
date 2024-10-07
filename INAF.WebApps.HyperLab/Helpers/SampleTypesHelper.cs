@@ -1,5 +1,5 @@
 ﻿using INAF.Libraries.DB.Net.SLabData.Models.DbValues;
-using INAF.Libraries.Net.DB.SLabData;
+using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.SampleData;
 using INAF.Libraries.Net.HyperLabCommonModels.Extensions;
 
@@ -7,9 +7,9 @@ namespace INAF.WebApps.HyperLab.Helpers
 {
     public sealed class SampleTypesHelper
     {
-        private readonly DbHandlerSLabData dbHandlerSLabData;
+        private readonly DbHandlerHyperLabData dbHandlerSLabData;
 
-        public SampleTypesHelper(DbHandlerSLabData dbHandlerSLabData)
+        public SampleTypesHelper(DbHandlerHyperLabData dbHandlerSLabData)
         {
             this.dbHandlerSLabData = dbHandlerSLabData;
         }

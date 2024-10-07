@@ -1,6 +1,6 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Info;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
-using INAF.Libraries.Net.DB.SLabData;
+using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLabCommonModels.Extensions;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.SampleData;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Responses;
@@ -17,11 +17,11 @@ namespace INAF.WebApps.HyperLab.Controllers
     [CheckIsLoginValid]
     public class SampleAndMeasurementController : BaseController
     {
-        private readonly DbHandlerSLabData dbHandlerSLabData;
+        private readonly DbHandlerHyperLabData dbHandlerSLabData;
 
         public SampleAndMeasurementController(IServiceProvider serviceProvider,
                                               ILogger<SampleAndMeasurementController> logger,
-                                              DbHandlerSLabData dbHandlerSLabData) : base(serviceProvider, logger)
+                                              DbHandlerHyperLabData dbHandlerSLabData) : base(serviceProvider, logger)
         {
             this.dbHandlerSLabData = dbHandlerSLabData;
         }

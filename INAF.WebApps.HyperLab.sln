@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.Net.CommonWe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.Net.Log", "..\..\Libraries\Net\INAF.Libraries.Net.Log\INAF.Libraries.Net.Log\INAF.Libraries.Net.Log.csproj", "{5BE22C29-4E88-4658-8A2F-BED8A39E1CEC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.Net.DB.SLabData", "..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.SLabData\INAF.Libraries.Net.DB.SLabData\INAF.Libraries.Net.DB.SLabData.csproj", "{3AA05D0D-E2F0-4DF5-85A3-7D15FA271FA9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.Net.DB.HyperLabUsers", "..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLabUsers\INAF.Libraries.Net.DB.HyperLabUsers\INAF.Libraries.Net.DB.HyperLabUsers.csproj", "{7BBEE3CA-9F3E-4F1A-8076-1E1DA1DED8F0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.Net.CommonWebAppModels", "..\..\Libraries\Net\INAF.Libraries.Net.CommonWebAppModels\INAF.Libraries.Net.CommonWebAppModels\INAF.Libraries.Net.CommonWebAppModels.csproj", "{9A7A5A60-BCC0-4220-A04E-1C751601AC2C}"
@@ -22,6 +20,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.Net.HyperLabCommonHelpers", "..\..\Libraries\Net\INAF.Libraries.Net.HyperLabCommonHelpers\INAF.Libraries.Net.HyperLabCommonHelpers\INAF.Libraries.Net.HyperLabCommonHelpers.csproj", "{911165E1-8F22-4AE0-904C-C0580C128B8F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.Net.HyperLabCommonModels", "..\..\Libraries\Net\INAF.Libraries.Net.HyperLabCommonModels\INAF.Libraries.Net.HyperLabCommonModels\INAF.Libraries.Net.HyperLabCommonModels.csproj", "{900AEF7E-6A2F-43B8-8A39-CBD9699E7D2C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.Net.DB.HyperLabData", "..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLabData\INAF.Libraries.Net.DB.HyperLabData\INAF.Libraries.Net.DB.HyperLabData.csproj", "{40552393-650C-40D5-A926-F499CC207617}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,10 +49,6 @@ Global
 		{5BE22C29-4E88-4658-8A2F-BED8A39E1CEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BE22C29-4E88-4658-8A2F-BED8A39E1CEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BE22C29-4E88-4658-8A2F-BED8A39E1CEC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3AA05D0D-E2F0-4DF5-85A3-7D15FA271FA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3AA05D0D-E2F0-4DF5-85A3-7D15FA271FA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3AA05D0D-E2F0-4DF5-85A3-7D15FA271FA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3AA05D0D-E2F0-4DF5-85A3-7D15FA271FA9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7BBEE3CA-9F3E-4F1A-8076-1E1DA1DED8F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7BBEE3CA-9F3E-4F1A-8076-1E1DA1DED8F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BBEE3CA-9F3E-4F1A-8076-1E1DA1DED8F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,6 +65,10 @@ Global
 		{900AEF7E-6A2F-43B8-8A39-CBD9699E7D2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{900AEF7E-6A2F-43B8-8A39-CBD9699E7D2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{900AEF7E-6A2F-43B8-8A39-CBD9699E7D2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40552393-650C-40D5-A926-F499CC207617}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40552393-650C-40D5-A926-F499CC207617}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40552393-650C-40D5-A926-F499CC207617}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40552393-650C-40D5-A926-F499CC207617}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

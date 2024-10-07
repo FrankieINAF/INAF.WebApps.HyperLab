@@ -3,7 +3,7 @@ using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Searches;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Searches.Interfaces;
 using INAF.Libraries.Net.CommonWebAppModels.Models.SpectraFiles;
-using INAF.Libraries.Net.DB.SLabData;
+using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.SampleData;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.SampleData.Containers;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.Searches;
@@ -22,11 +22,11 @@ namespace INAF.WebApps.HyperLab.Controllers
     [CheckIsLoginValid]
     public class SearchesController : BaseController
     {
-        private readonly DbHandlerSLabData dbHandlerSLabData;
+        private readonly DbHandlerHyperLabData dbHandlerSLabData;
 
         public SearchesController(IServiceProvider serviceProvider,
                                   ILogger<SearchesController> logger,
-                                  DbHandlerSLabData dbHandlerSLabData) : base(serviceProvider, logger)
+                                  DbHandlerHyperLabData dbHandlerSLabData) : base(serviceProvider, logger)
         {
             this.dbHandlerSLabData = dbHandlerSLabData;
         }

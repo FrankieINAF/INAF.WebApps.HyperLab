@@ -1,5 +1,5 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
-using INAF.Libraries.Net.DB.SLabData;
+using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
@@ -13,11 +13,11 @@ namespace INAF.WebApps.HyperLab.Controllers
     [CheckIsLoginValid]
     public class ChartsController : BaseController
     {
-        private readonly DbHandlerSLabData dbHandlerSLabData;
+        private readonly DbHandlerHyperLabData dbHandlerSLabData;
 
         public ChartsController(IServiceProvider serviceProvider, 
                                 ILogger<ChartsController> logger,
-                                DbHandlerSLabData dbHandlerSLabData) : base(serviceProvider, logger)
+                                DbHandlerHyperLabData dbHandlerSLabData) : base(serviceProvider, logger)
         {
             this.dbHandlerSLabData = dbHandlerSLabData;
         }

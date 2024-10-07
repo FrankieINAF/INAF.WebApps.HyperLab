@@ -1,5 +1,5 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Searches;
-using INAF.Libraries.Net.DB.SLabData;
+using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum;
 using INAF.Libraries.Net.HyperLabCommonModels.Values;
 using INAF.WebApps.HyperLab.Extensions;
@@ -10,9 +10,9 @@ namespace INAF.WebApps.HyperLab.Helpers
 {
     public sealed class ChartsHelper
     {
-        private readonly DbHandlerSLabData dbHandlerSLabData;
+        private readonly DbHandlerHyperLabData dbHandlerSLabData;
 
-        public ChartsHelper(DbHandlerSLabData dbHandlerSLabData)
+        public ChartsHelper(DbHandlerHyperLabData dbHandlerSLabData)
         {
             this.dbHandlerSLabData = dbHandlerSLabData;
         }
