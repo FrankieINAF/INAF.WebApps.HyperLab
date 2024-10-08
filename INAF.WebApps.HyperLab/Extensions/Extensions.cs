@@ -1,15 +1,45 @@
 ﻿using System.Dynamic;
+using System.Security.Claims;
+using static INAF.Libraries.Net.HyperLabCommonModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Extensions
 {
     public static class Extensions
     {
-        public static string GetToken(this HttpContext httpContext)
+        public static PermissionContext GetPermissionContext(this HttpContext httpContext)
+        {
+            string? token = httpContext.GetToken();
+            if (string.IsNullOrEmpty(token))
+                return PermissionContext.Web;
+            else
+                return PermissionContext.App;
+        }
+
+        public static int GetUserId(this HttpContext httpContext)
+        {
+            int userId = 0;
+
+            try
+            {
+                int.TryParse(httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out userId);
+            }
+            catch (Exception ex)
+            { }
+
+            return userId;
+        }
+
+        public static string? GetUserName(this HttpContext httpContext)
+        {
+            return httpContext.User.FindFirstValue(ClaimTypes.Name);
+        }
+
+        public static string? GetToken(this HttpContext httpContext)
         {
             try
             {
                 if (!string.IsNullOrEmpty(httpContext.Request.Headers["Authorization"]))
-                    return httpContext.Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", string.Empty);
+                    return httpContext.Request.Headers.Authorization.First().Replace("Bearer ", string.Empty);
                 else
                     return null;
             }
@@ -18,6 +48,8 @@ namespace INAF.WebApps.HyperLab.Extensions
                 return null;
             }
         }
+
+
 
         public static void AddProperty(this ExpandoObject expando, string propertyName, object propertyValue)
         {

@@ -12,7 +12,7 @@
         {
             <li>
                 <a class="menuitem" href="@Url.Action(item.ActionName, item.ControllerName)">
-                    <span class="icon"><span class="@item.Ico"></span></span>
+                    <span class="icon"><span class="@item.Icon"></span></span>
                     <span class="caption fg-white">@item.Label</span>
                 </a>
             </li>
@@ -20,7 +20,7 @@
         else        {
             <li>
                 <a href="#" class="dropdown-toggle">
-                    <span class="icon"><span class="@item.Ico"></span></span>
+                    <span class="icon"><span class="@item.Icon"></span></span>
                     <span class="caption fg-white">@item.Label</span>
                 </a>
                 <ul class="navview-menu" data-role="dropdown">
@@ -30,7 +30,7 @@
                         {
                             <li>
                                 <a class="menuhref" href="@Url.Action(child.ActionName, child.ControllerName)">
-                                    <span class="icon" style="margin-left: 24px"><span class="@child.Ico"></span></span>
+                                    <span class="icon" style="margin-left: 24px"><span class="@child.Icon"></span></span>
                                     <span class="caption">@child.Label</span>
                                 </a>
                             </li>

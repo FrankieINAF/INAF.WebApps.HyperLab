@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using static INAF.WebApps.HyperLab.Values.Enums;
 using static Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary;
+using static INAF.Libraries.Net.HyperLabCommonModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Controllers.Base
 {
@@ -31,7 +32,7 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
             appPrefixForUserSecrets = configuration.GetSection("AppSettings:AppPrefixForUserSecrets").Value ?? string.Empty;
         }
 
-        protected string appPrefixForUserSecrets { get; set; }
+        protected string? appPrefixForUserSecrets { get; set; }
 
         #region METHODS
         protected void clearErrorsForKey(string key)
@@ -79,6 +80,15 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
                 exMsg += error.Errors.FirstOrDefault().ErrorMessage + ". ";
 
             return exMsg;
+        }
+
+        protected PermissionContext getPermissionContext()
+        {
+            string token = HttpContext.GetToken();
+            if (string.IsNullOrEmpty(token))
+                return PermissionContext.Web;
+            else
+                return PermissionContext.App;
         }
 
         protected int getUserId()
@@ -133,18 +143,6 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
             logger.LogError(modelError);
         }
         #endregion
-
-        //#region operation user
-        //public static int GetUserId(HttpContext httpContext)
-        //{
-        //    return GenericHelper.GetUserId(httpContext);
-        //}
-
-        //public static string GetUserName(HttpContext httpContext)
-        //{
-        //    return GenericHelper.GetUserName(httpContext);
-        //}
-        //#endregion
 
         #region RESPONSE MODELS
         protected WebBaseModel getUpsertErrorStatusResponseModel()

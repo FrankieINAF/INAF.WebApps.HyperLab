@@ -1,16 +1,18 @@
-﻿using INAF.Libraries.Net.DB.HyperLabUsers;
-using INAF.Libraries.Net.CommonWebAppHelpers;
-using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
+﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Menu;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
+using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Permissions;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Responses;
 using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Users;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
+using INAF.WebApps.HyperLab.Extensions;
 using INAF.WebApps.HyperLab.Helpers.Factories;
 using INAF.WebApps.HyperLab.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace INAF.WebApps.HyperLab.Controllers
@@ -37,7 +39,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetUserDetailsView(GenericRequestByIdModel model)
         {
-            var userModel = dbHandlerHyperLabUsers.getUserDetails(model.Id);
+            var userModel = dbHandlerHyperLabUsers.getUserDetails(model.Id,
+                                                                  getPermissionContext());
             if (userModel != null)
                 return PartialView("Partials/_UserDetails", userModel);
             else
@@ -51,7 +54,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult UsersList(WebBaseModel statusResponseModel = null)
+        public IActionResult UsersList(WebBaseModel? statusResponseModel = null)
         {
             if (statusResponseModel == null)
                 statusResponseModel = getOkStatusResponseModel();
@@ -60,6 +63,17 @@ namespace INAF.WebApps.HyperLab.Controllers
         #endregion
 
         #region GET
+        [HttpGet]
+        public IActionResult GetMenu()
+        {
+            List<MenuItem>? menuItems = dbHandlerHyperLabUsers.getMenu(getUserId(),
+                                                                       getPermissionContext());
+            if (menuItems?.Count > 0)
+                return new JsonResult(menuItems);
+            else
+                return new EmptyResult();
+        }
+
         [HttpGet]
         public IActionResult GetUserDetailsSimple()
         {
@@ -73,7 +87,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetUserPermissions()
         {
-            List<PermissionModel> permissions = dbHandlerHyperLabUsers.getUserPermissions(getUserId());
+            List<PermissionModel>? permissions = dbHandlerHyperLabUsers.getUserPermissions(getUserId(),
+                                                                                           getPermissionContext());
             if (permissions?.Count > 0)
                 return new JsonResult(permissions);
             else
@@ -138,15 +153,15 @@ namespace INAF.WebApps.HyperLab.Controllers
                 string userName = temp[0];
 
                 if (await dbHandlerHyperLabUsers.upsertUserProcedureAsync(model.Id,
-                                                             model.Name,
-                                                             model.LastName,
-                                                             userName,
-                                                             email.Value,
-                                                             getEncrypted(model.Login.Password),
-                                                             string.Empty,
-                                                             DateTime.MaxValue,
-                                                             model.RoleId,
-                                                             HttpContext.GetUserId()))
+                                                                          model.Name,
+                                                                          model.LastName,
+                                                                          userName,
+                                                                          email.Value,
+                                                                          getEncrypted(model.Login.Password),
+                                                                          string.Empty,
+                                                                          DateTime.MaxValue,
+                                                                          model.RoleId,
+                                                                          HttpContext.GetUserId()))
                 {
                     return new OkObjectResult(getOkStatusResponseModel());
                 }

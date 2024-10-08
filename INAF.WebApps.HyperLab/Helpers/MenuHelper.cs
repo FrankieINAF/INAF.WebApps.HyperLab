@@ -1,6 +1,6 @@
-﻿using INAF.Libraries.Net.DB.HyperLabUsers;
-using INAF.Libraries.Net.CommonWebAppHelpers;
-using INAF.Libraries.Net.CommonWebAppModels.Models.Menu;
+﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Menu;
+using INAF.Libraries.Net.DB.HyperLabUsers;
+using INAF.WebApps.HyperLab.Extensions;
 
 namespace INAF.WebApps.HyperLab.Helpers
 {
@@ -13,11 +13,16 @@ namespace INAF.WebApps.HyperLab.Helpers
             this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
         }
 
-        public Menu GetMenu(HttpContext httpContext)
+        public Menu? GetMenu(HttpContext httpContext)
         {
             var menu = new Menu();
 
-            List<MenuItem> menuItems = dbHandlerHyperLabUsers.getMenu(httpContext.GetUserId());
+            List<MenuItem>? menuItems = dbHandlerHyperLabUsers.getMenu(httpContext.GetUserId(),
+                                                                       httpContext.GetPermissionContext());
+
+            if (menuItems == null || menuItems.Count == 0)
+                return null;
+
             foreach (var menuItem in menuItems)
             {
                 if (!string.IsNullOrEmpty(menuItem.LinkText))
@@ -33,10 +38,15 @@ namespace INAF.WebApps.HyperLab.Helpers
             return menu;
         }
 
-        public List<MenuItem> GetItemSubMenu(HttpContext httpContext, int parentId)
+        public List<MenuItem>? GetItemSubMenu(HttpContext httpContext, int parentId)
         {
-            List<MenuItem> subMenuItems = dbHandlerHyperLabUsers.getItemSubMenu(httpContext.GetUserId(),
-                                                                   parentId);
+            List<MenuItem>? subMenuItems = dbHandlerHyperLabUsers.getItemSubMenu(httpContext.GetUserId(),
+                                                                                 httpContext.GetPermissionContext(),
+                                                                                 parentId);
+
+            if (subMenuItems == null || subMenuItems.Count == 0)
+                return null;
+
             foreach (var menuItem in subMenuItems)
             {
                 if (!string.IsNullOrEmpty(menuItem.LinkText))
@@ -52,8 +62,11 @@ namespace INAF.WebApps.HyperLab.Helpers
 
         private (string controllerName, string actionName) getAction(MenuItem menuItem)
         {
-            string controllerName = null;
-            string actionName = null;
+            if (string.IsNullOrEmpty(menuItem.LinkText))
+                return (string.Empty, string.Empty);
+
+            string? controllerName = null;
+            string? actionName = null;
 
             string[] tmp = menuItem.LinkText.Split('/');
             controllerName = tmp[1];
