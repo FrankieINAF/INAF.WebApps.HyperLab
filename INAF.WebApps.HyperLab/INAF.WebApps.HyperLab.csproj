@@ -56,7 +56,6 @@
     <ProjectReference Include="..\..\..\Libraries\NetStandard\INAF.Libraries.NetStandard.Math\INAF.Libraries.NetStandard.Math\INAF.Libraries.NetStandard.Math.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLabData\INAF.Libraries.Net.DB.HyperLabData\INAF.Libraries.Net.DB.HyperLabData.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLabUsers\INAF.Libraries.Net.DB.HyperLabUsers\INAF.Libraries.Net.DB.HyperLabUsers.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.SLabData\INAF.Libraries.Net.DB.SLabData\INAF.Libraries.Net.DB.SLabData.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.CommonWebAppHelpers\INAF.Libraries.Net.CommonWebAppHelpers\INAF.Libraries.Net.CommonWebAppHelpers.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.CommonWebAppModels\INAF.Libraries.Net.CommonWebAppModels\INAF.Libraries.Net.CommonWebAppModels.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.HyperLabCommonHelpers\INAF.Libraries.Net.HyperLabCommonHelpers\INAF.Libraries.Net.HyperLabCommonHelpers.csproj" />
