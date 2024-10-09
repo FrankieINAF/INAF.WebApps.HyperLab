@@ -66,7 +66,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetMenu()
         {
-            List<MenuItem>? menuItems = dbHandlerHyperLabUsers.getMenu(getUserId(),
+            List<MenuItem>? menuItems = dbHandlerHyperLabUsers.getMenuItems(getUserId(),
                                                                        getPermissionContext());
             if (menuItems?.Count > 0)
                 return new JsonResult(menuItems);
