@@ -22,13 +22,13 @@ namespace INAF.WebApps.HyperLab.Controllers
     [CheckIsLoginValid]
     public class SearchesController : BaseController
     {
-        private readonly DbHandlerHyperLabData dbHandlerSLabData;
+        private readonly DbHandlerHyperLabData dbHandlerHyperLabData;
 
         public SearchesController(IServiceProvider serviceProvider,
                                   ILogger<SearchesController> logger,
                                   DbHandlerHyperLabData dbHandlerSLabData) : base(serviceProvider, logger)
         {
-            this.dbHandlerSLabData = dbHandlerSLabData;
+            this.dbHandlerHyperLabData = dbHandlerSLabData;
         }
 
         [HttpGet]
@@ -39,15 +39,16 @@ namespace INAF.WebApps.HyperLab.Controllers
             return View(sampleTypeValuesContainerExtended);
         }
 
-        
+        #region SEARCH COMPLEX
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SearchComplex(ComplexSearchModel model)
         {
-            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerSLabData.searchComplex(model.Conditions,
+            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(model.Conditions,
                                                                                              getUserId());
             return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
         }
+        #endregion
 
         #region SEARCH SIMPLE
         [HttpGet]
@@ -64,7 +65,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult SearchSimpleGroupsByMineralType(GenericRequestByIdModel model)
         {
-            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerSLabData.searchSimpleGroupsByMineralType(model.Id,
+            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByMineralType(model.Id,
                                                                                                        getUserId());
             return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
         }
@@ -72,7 +73,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult SearchSimpleGroupsByOriginType(GenericRequestByIdModel model)
         {
-            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerSLabData.searchSimpleGroupsByOriginType(model.Id,
+            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByOriginType(model.Id,
                                                                                                       getUserId());
             return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
         }
@@ -80,7 +81,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult SearchSimpleGroupsBySampleName(GenericRequestByTextModel model)
         {
-            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerSLabData.searchSimpleGroupsBySampleName(model.Text,
+            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleName(model.Text,
                                                                                                       getUserId());
             return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
         }
@@ -88,7 +89,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult SearchSimpleGroupsBySampleType(GenericRequestByIdModel model)
         {
-            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerSLabData.searchSimpleGroupsBySampleType(model.Id,
+            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleType(model.Id,
                                                                                                       getUserId());
             return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
         }
@@ -98,7 +99,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult SearchGroupItems(GenericRequestByIdModel model)
         {
-            List<SpectrumInfoModel>? spectrumInfoModels = dbHandlerSLabData.searchGroupItems(model.Id,
+            List<SpectrumInfoModel>? spectrumInfoModels = dbHandlerHyperLabData.searchGroupItems(model.Id,
                                                                                      getUserId());
             if (spectrumInfoModels?.Count > 0)
                 return new JsonResult(spectrumInfoModels);
@@ -117,7 +118,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 Task.Run(() =>
                 {
-                    var minerals = dbHandlerSLabData.getMinerals(model.Text);
+                    var minerals = dbHandlerHyperLabData.getMinerals(model.Text);
                     return new MaterialsContainer()
                     {
                         Name = Resources.Search.SuggestionTypeMinerals,
@@ -126,7 +127,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 }),
                 Task.Run(() =>
                 {
-                    var rocks = dbHandlerSLabData.getRocks(model.Text);
+                    var rocks = dbHandlerHyperLabData.getRocks(model.Text);
                     return new MaterialsContainer()
                     {
                         Name = Resources.Search.SuggestionTypeRocks,
@@ -151,6 +152,20 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             return new JsonResult(jsonObject);
         }
+
+        [HttpGet]
+        public IActionResult GetSampleNameSuggestions(GenericRequestByTextModel model)
+        {
+            if (model.Text.Length < 3)
+                return new EmptyResult();
+
+            List<string>? sampleNames = dbHandlerHyperLabData.getSampleNameSuggestions(model.Text,
+                                                                                       getUserId());
+            if (sampleNames?.Count > 0)
+                return new JsonResult(sampleNames);
+            else
+                return new EmptyResult();
+        }
         #endregion
 
         #region SEARCHES MANAGEMENT
@@ -158,7 +173,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteComplexSearch([FromBody] GenericRequestByIdModel model)
         {
-            bool isOk = await dbHandlerSLabData.deleteComplexSearchAsync(model.Id,
+            bool isOk = await dbHandlerHyperLabData.deleteComplexSearchAsync(model.Id,
                                                                  getUserId());
             return new JsonResult(new GenericResponseModel() { IsOk = isOk });
         }
@@ -166,14 +181,14 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetSavedComplexSearches()
         {
-            IEnumerable<ComplexSearchGeneralInfoModel>? savedSearches = dbHandlerSLabData.getSavedComplexSearches(getUserId());
+            IEnumerable<ComplexSearchGeneralInfoModel>? savedSearches = dbHandlerHyperLabData.getSavedComplexSearches(getUserId());
             return new JsonResult(savedSearches);
         }
 
         [HttpGet]
         public IActionResult GetSavedComplexSearchInfo(GenericRequestByIdModel model)
         {
-            ComplexSearchDetailedInfoModel? result = dbHandlerSLabData.getSavedComplexSearchInfo(model.Id,
+            ComplexSearchDetailedInfoModel? result = dbHandlerHyperLabData.getSavedComplexSearchInfo(model.Id,
                                                                                          getUserId());
             return new JsonResult(result);
         }
@@ -191,7 +206,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 if (string.IsNullOrEmpty(model.Name) || model.Conditions == null)
                     return new JsonResult(errorResult);
 
-                var saveSearchResult = await dbHandlerSLabData.saveComplexSearchAsync((int)model.Id,
+                var saveSearchResult = await dbHandlerHyperLabData.saveComplexSearchAsync((int)model.Id,
                                                                               model.Name,
                                                                               model.Conditions,
                                                                               getUserId());
