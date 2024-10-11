@@ -110,7 +110,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region SUGGESTIONS
         [HttpGet]
-        public async Task<IActionResult> GetMineralsSuggestions(GenericRequestByTextModel model)
+        public async Task<IActionResult> GetMaterialsSuggestions(GenericRequestByTextModel model)
         {
             SuggestionsContainer suggestionsContainer = new SuggestionsContainer();
 
@@ -148,9 +148,19 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             var results = await Task.WhenAll(tasks);
 
-            ExpandoObject jsonObject = buildMineralsSuggestionsJson(results.ToList());
+            JsonResult? jsonResult = null;
+            switch (getCallerContext())
+            {
+                case Libraries.Net.HyperLabCommonModels.Values.Enums.CallerContext.Web:
+                    ExpandoObject jsonObject = buildMineralsSuggestionsJson(results.ToList());
+                    jsonResult = new JsonResult(jsonObject);
+                    break;
+                case Libraries.Net.HyperLabCommonModels.Values.Enums.CallerContext.App:
+                    jsonResult = new JsonResult(results);
+                    break;
+            }
 
-            return new JsonResult(jsonObject);
+            return jsonResult!;
         }
 
         [HttpGet]

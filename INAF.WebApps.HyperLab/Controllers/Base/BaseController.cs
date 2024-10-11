@@ -82,13 +82,13 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
             return exMsg;
         }
 
-        protected PermissionContext getPermissionContext()
+        protected CallerContext getCallerContext()
         {
             string token = HttpContext.GetToken();
             if (string.IsNullOrEmpty(token))
-                return PermissionContext.Web;
+                return CallerContext.Web;
             else
-                return PermissionContext.App;
+                return CallerContext.App;
         }
 
         protected int getUserId()

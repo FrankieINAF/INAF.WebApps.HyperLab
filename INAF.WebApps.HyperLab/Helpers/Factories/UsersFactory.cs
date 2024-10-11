@@ -33,7 +33,7 @@ namespace INAF.WebApps.HyperLab.Helpers.Factories
         public UserModel getUserForUpdate(int userId)
         {
             var userDetails = dbHandlerHyperLabUsers.getUserDetails(userId,
-                                                                    Enums.PermissionContext.Web);
+                                                                    Enums.CallerContext.Web);
             return new UserModel()
             {
                 Id = userId,

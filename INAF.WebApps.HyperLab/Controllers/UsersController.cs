@@ -40,7 +40,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult GetUserDetailsView(GenericRequestByIdModel model)
         {
             var userModel = dbHandlerHyperLabUsers.getUserDetails(model.Id,
-                                                                  getPermissionContext());
+                                                                  getCallerContext());
             if (userModel != null)
                 return PartialView("Partials/_UserDetails", userModel);
             else
@@ -67,7 +67,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult GetMenu()
         {
             List<MenuItem>? menuItems = dbHandlerHyperLabUsers.getMenuItems(getUserId(),
-                                                                       getPermissionContext());
+                                                                       getCallerContext());
             if (menuItems?.Count > 0)
                 return new JsonResult(menuItems);
             else
@@ -88,7 +88,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult GetUserPermissions()
         {
             List<PermissionModel>? permissions = dbHandlerHyperLabUsers.getUserPermissions(getUserId(),
-                                                                                           getPermissionContext());
+                                                                                           getCallerContext());
             if (permissions?.Count > 0)
                 return new JsonResult(permissions);
             else

@@ -6,13 +6,13 @@ namespace INAF.WebApps.HyperLab.Extensions
 {
     public static class Extensions
     {
-        public static PermissionContext GetPermissionContext(this HttpContext httpContext)
+        public static CallerContext GetPermissionContext(this HttpContext httpContext)
         {
             string? token = httpContext.GetToken();
             if (string.IsNullOrEmpty(token))
-                return PermissionContext.Web;
+                return CallerContext.Web;
             else
-                return PermissionContext.App;
+                return CallerContext.App;
         }
 
         public static int GetUserId(this HttpContext httpContext)

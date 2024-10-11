@@ -8,7 +8,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpPost]
         public JsonResult GetPermissionsForRole([FromBody] GenericRequestByIdModel model)
         {
-            return new JsonResult(dbHandlerHyperLabUsers.getRolePermissions(model.Id, getPermissionContext()));
+            return new JsonResult(dbHandlerHyperLabUsers.getRolePermissions(model.Id, getCallerContext()));
         }
     }
 }
