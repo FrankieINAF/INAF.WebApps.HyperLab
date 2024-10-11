@@ -15,6 +15,8 @@ using INAF.WebApps.HyperLab.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
+using INAF.Libraries.Net.HyperLabCommonModels.Values;
+using Newtonsoft.Json;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -54,44 +56,87 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult SearchSimpleGroupsByMaterial(GenericRequestByParametersModel model)
         {
-            var searchByMaterialHelper = serviceProvider.GetRequiredService<SearchByMaterialHelper>();
-            List<ISpectraGroupInfoModel>? spectraFilesInfo = searchByMaterialHelper.searchByMaterial(model.Id,
-                                                                                                     model.Type,
-                                                                                                     getUserId());
+            if (model.Type == null)
+                return new EmptyResult();
 
-            return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+            var searchByMaterialHelper = serviceProvider.GetRequiredService<SearchByMaterialHelper>();
+            IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo = searchByMaterialHelper.searchByMaterial(model.Id,
+                                                                                                            model.Type,
+                                                                                                            getUserId());
+
+            switch (getCallerContext())
+            {
+                case Enums.CallerContext.Web:
+                    return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+                case Enums.CallerContext.App:
+                    return buildJsonContentResult(spectraFilesInfo);
+            }
+
+            return new EmptyResult();
         }
 
         [HttpGet]
         public IActionResult SearchSimpleGroupsByMineralType(GenericRequestByIdModel model)
         {
-            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByMineralType(model.Id,
-                                                                                                       getUserId());
-            return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+            IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByMineralType(model.Id,
+                                                                                                                          getUserId());
+            switch (getCallerContext())
+            {
+                case Enums.CallerContext.Web:
+                    return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+                case Enums.CallerContext.App:
+                    return buildJsonContentResult(spectraFilesInfo);
+            }
+
+            return new EmptyResult();
         }
 
         [HttpGet]
         public IActionResult SearchSimpleGroupsByOriginType(GenericRequestByIdModel model)
         {
-            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByOriginType(model.Id,
-                                                                                                      getUserId());
-            return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+            IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByOriginType(model.Id,
+                                                                                                                         getUserId());
+            switch (getCallerContext())
+            {
+                case Enums.CallerContext.Web:
+                    return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+                case Enums.CallerContext.App:
+                    return buildJsonContentResult(spectraFilesInfo);
+            }
+
+            return new EmptyResult();
         }
 
         [HttpGet]
         public IActionResult SearchSimpleGroupsBySampleName(GenericRequestByTextModel model)
         {
-            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleName(model.Text,
-                                                                                                      getUserId());
-            return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+            IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleName(model.Text,
+                                                                                                                         getUserId());
+            switch (getCallerContext())
+            {
+                case Enums.CallerContext.Web:
+                    return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+                case Enums.CallerContext.App:
+                    return buildJsonContentResult(spectraFilesInfo);
+            }
+
+            return new EmptyResult();
         }
 
         [HttpGet]
         public IActionResult SearchSimpleGroupsBySampleType(GenericRequestByIdModel model)
         {
-            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleType(model.Id,
-                                                                                                      getUserId());
-            return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+            IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleType(model.Id,
+                                                                                                                         getUserId());
+            switch (getCallerContext())
+            {
+                case Enums.CallerContext.Web:
+                    return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+                case Enums.CallerContext.App:
+                    return buildJsonContentResult(spectraFilesInfo);
+            }
+
+            return new EmptyResult();
         }
         #endregion
 
@@ -246,6 +291,12 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new JsonResult(result);
         }
         #endregion
+
+        private ContentResult buildJsonContentResult(object? inputValue)
+        {
+            string jsonResult = JsonConvert.SerializeObject(inputValue);
+            return Content(jsonResult, "application/json");
+        }
 
         private ExpandoObject buildMineralsSuggestionsJson(List<MaterialsContainer> materialsContainers)
         {

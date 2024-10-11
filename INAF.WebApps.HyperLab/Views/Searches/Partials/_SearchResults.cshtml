@@ -15,11 +15,11 @@
      data-custom-buttons="customButtons"
      data-on-panel-create="showSearchResults">
     @{
-        if (Model?.Results?.Count > 0)
+        if (Model?.Results?.Count() > 0)
         {
-            MineralType mineralType = Model.Results[0].MineralType;
+            MineralType mineralType = Model.Results.FirstOrDefault().MineralType;
 
-            int rowsNum = Model.Results.Count;
+            int rowsNum = Model.Results.Count();
 
             <table class="table compact striped row-hover">
                 <thead>
@@ -55,20 +55,20 @@
                         int index = i;
                         <tr>
                             <td>
-                                <span id="groupItems@{@index;}IconExpand" class="mif-expand-more mif-2x pointer" onclick="searchGroupItems(@Model.Results[i].Id, @index)" title="@Html.Raw(Search.GroupItemsExpandTooltip)"></span>
+                                <span id="groupItems@{@index;}IconExpand" class="mif-expand-more mif-2x pointer" onclick="searchGroupItems(@Model.Results.ElementAt(i).Id, @index)" title="@Html.Raw(Search.GroupItemsExpandTooltip)"></span>
                                 <span id="groupItems@{@index;}IconShrink" class="mif-expand-less mif-2x pointer d-none" onclick="clearGroupItems(@index)" title="@Html.Raw(Search.GroupItemsShrinkTooltip)"></span>
                             </td>
                             <td>@index</td>
-                            <td>@Html.Raw(Model.Results[i].SpectrumFilename)</td>
-                            <td>@Html.Raw(Model.Results[i].AvailableSpectraTypes?.Count())</td>
+                            <td>@Html.Raw(Model.Results.ElementAt(i).SpectrumFilename)</td>
+                            <td>@Html.Raw(Model.Results.ElementAt(i).AvailableSpectraTypes?.Count())</td>
                             @switch (mineralType)
                             {
                                 case MineralType.Monomineralic:
-                                    var monomineralicItem = (SingleMaterialSpectraGroupInfoModel)Model.Results[i];
+                                    var monomineralicItem = (SingleMaterialSpectraGroupInfoModel)Model.Results.ElementAt(i);
                                     <td>@Html.Raw(monomineralicItem.Mineral.Name)</td>
                                     break;
                                 case MineralType.Mix:
-                                    var mineralsItem = (MineralsSpectraGroupInfoModel)Model.Results[i];
+                                    var mineralsItem = (MineralsSpectraGroupInfoModel)Model.Results.ElementAt(i);
                                     <td>
                                         @{
                                             int mineralsNum = mineralsItem.Minerals.Count;
@@ -84,18 +84,18 @@
                                     </td>
                                     break;
                                 case MineralType.Rock:
-                                    var rockItem = (SingleMaterialSpectraGroupInfoModel)Model.Results[i];
+                                    var rockItem = (SingleMaterialSpectraGroupInfoModel)Model.Results.ElementAt(i);
                                     <td>@Html.Raw(rockItem.Mineral.Name)</td>
                                     break;
                                 case MineralType.Extraterrestrial:
-                                    var meteorItem = (SingleMaterialSpectraGroupInfoModel)Model.Results[i];
+                                    var meteorItem = (SingleMaterialSpectraGroupInfoModel)Model.Results.ElementAt(i);
                                     <td>@Html.Raw(meteorItem.Mineral.Name)</td>
                                     break;
                                 default:
                                     <td>&nbsp;</td>
                                     break;
                             }
-                            <td>@Html.Raw(Model.Results[i].SpectrumLevel)</td>
+                            <td>@Html.Raw(Model.Results.ElementAt(i).SpectrumLevel)</td>
                         </tr>
                         <tr id="tr@{@index;}">
                             <td colspan="6">
@@ -143,7 +143,7 @@
             $('#searchResultsContainer').removeClass('overflow-x-hidden').addClass('overflow-x-auto');
 
         let callback;
-        @if (Model?.Results?.Count > 0)
+        @if (Model?.Results?.Count() > 0)
         {
             <text>
                     callback = function() {
