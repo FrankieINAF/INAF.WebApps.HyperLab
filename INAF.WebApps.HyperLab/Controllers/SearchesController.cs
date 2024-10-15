@@ -69,6 +69,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 case Enums.CallerContext.Web:
                     return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
             }
@@ -85,6 +86,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 case Enums.CallerContext.Web:
                     return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
             }
@@ -101,6 +103,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 case Enums.CallerContext.Web:
                     return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
             }
@@ -117,6 +120,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 case Enums.CallerContext.Web:
                     return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
             }
@@ -133,6 +137,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 case Enums.CallerContext.Web:
                     return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(spectraFilesInfo);
             }

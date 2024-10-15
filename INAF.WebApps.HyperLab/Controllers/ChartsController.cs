@@ -24,7 +24,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region GET
         [HttpGet]
-        public IActionResult GetSpectrumByIdForApp(GenericRequestByIdModel model)
+        public IActionResult GetSpectrumById(GenericRequestByIdModel model)
         {
             ISpectrumModel? spectrumModel = dbHandlerSLabData.getSpectrumById(model.Id,
                                                                               getUserId());
@@ -35,7 +35,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSpectrumByParentIdAndSpectrumTypeForApp(GenericRequestByParentIdAndSpectrumTypeModel model)
+        public IActionResult GetSpectrumByParentIdAndSpectrumType(GenericRequestByParentIdAndSpectrumTypeModel model)
         {
             ISpectrumModel? spectrumModel = dbHandlerSLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId,
                                                                                                    model.SpectrumType,
@@ -66,8 +66,23 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (model.Ids == null || model.Ids.Count == 0)
                 return new JsonResult(null);
 
-            var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
-            return new JsonResult(chartsHelper.createMultipleSpectraJson(model.Ids, getUserId()));
+            switch (getCallerContext())
+            {
+                case Libraries.Net.HyperLabCommonModels.Values.Enums.CallerContext.Web:
+                    var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
+                    return new JsonResult(chartsHelper.createMultipleSpectraJson(model.Ids, getUserId()));
+
+                case Libraries.Net.HyperLabCommonModels.Values.Enums.CallerContext.App:
+                    foreach (var id in model.Ids)
+                    {
+                        var spectrumModel = dbHandlerSLabData.getSpectrumById(id, getUserId());
+                        if (spectrumModel != null)
+                            return new JsonResult(spectrumModel);
+                    }
+                    break;
+            }
+
+            return new EmptyResult();
         }
 
         [HttpPost]
