@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
 using INAF.Libraries.Net.HyperLabCommonModels.Values;
 using Newtonsoft.Json;
+using LinqKit;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -69,7 +70,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 case Enums.CallerContext.Web:
                     return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(spectraFilesInfo);
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
             }
 
             return new EmptyResult();
@@ -85,7 +86,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 case Enums.CallerContext.Web:
                     return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(spectraFilesInfo);
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
             }
 
             return new EmptyResult();
@@ -101,7 +102,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 case Enums.CallerContext.Web:
                     return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(spectraFilesInfo);
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
             }
 
             return new EmptyResult();
@@ -117,7 +118,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 case Enums.CallerContext.Web:
                     return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(spectraFilesInfo);
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
             }
 
             return new EmptyResult();
@@ -145,7 +146,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult SearchGroupItems(GenericRequestByIdModel model)
         {
             List<SpectrumInfoModel>? spectrumInfoModels = dbHandlerHyperLabData.searchGroupItems(model.Id,
-                                                                                     getUserId());
+                                                                                                 getUserId());
             if (spectrumInfoModels?.Count > 0)
                 return new JsonResult(spectrumInfoModels);
             else
@@ -315,6 +316,19 @@ namespace INAF.WebApps.HyperLab.Controllers
             }
 
             return suggestionsContainerObject;
+        }
+
+        private IEnumerable<ISpectraGroupInfoModel>? retrieveSpectraFilesForGroups(IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo)
+        {
+            spectraFilesInfo?.ForEach(spectraGroupInfo =>
+            {
+                List<SpectrumInfoModel>? spectrumInfoModels = dbHandlerHyperLabData.searchGroupItems(spectraGroupInfo.Id,
+                                                                                                     getUserId());
+                if (spectrumInfoModels?.Count > 0)
+                    spectraGroupInfo.Spectra = spectrumInfoModels;
+            });
+
+            return spectraFilesInfo;
         }
     }
 }
