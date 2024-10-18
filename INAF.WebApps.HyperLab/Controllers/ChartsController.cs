@@ -73,13 +73,10 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return new JsonResult(chartsHelper.createMultipleSpectraJson(model.Ids, getUserId()));
 
                 case Libraries.Net.HyperLabCommonModels.Values.Enums.CallerContext.App:
-                    foreach (var id in model.Ids)
-                    {
-                        var spectrumModel = dbHandlerSLabData.getSpectrumById(id, getUserId());
-                        if (spectrumModel != null)
-                            return new JsonResult(spectrumModel);
-                    }
-                    break;
+                    var spectra = dbHandlerSLabData.getSpectraByIdProcedure(model.Ids, getUserId());
+                    if (spectra != null && spectra.Count > 0)
+                        return new JsonResult(spectra);
+                    return new EmptyResult();
             }
 
             return new EmptyResult();
