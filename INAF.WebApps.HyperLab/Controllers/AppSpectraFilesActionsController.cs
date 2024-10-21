@@ -105,6 +105,21 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetSpectrumIdByNameAndSpectrumType(GenericRequestByParametersModel model)
+        {
+            if (string.IsNullOrEmpty(model.Text) || string.IsNullOrEmpty(model.Type))
+                return new EmptyResult();
+
+            SpectrumModel? spectrum = dbHandlerSLabData.getSpectrumId(model.Text,
+                                                                      model.Type.ToSpectrumType(),
+                                                                      getUserId());
+            if (spectrum != null)
+                return new JsonResult(spectrum);
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
         public IActionResult GetSmoothingSettings(GenericRequestByIdModel model)
         {
             SmoothingSettingsModel? smoothingSettings = dbHandlerSLabData.getSmoothingSettings(model.Id,
