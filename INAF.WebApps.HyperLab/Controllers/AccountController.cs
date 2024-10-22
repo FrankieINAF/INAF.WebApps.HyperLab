@@ -44,7 +44,10 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             try
             {
-                string token = HttpContext.GetToken();
+                string? token = HttpContext.GetToken();
+
+                if (string.IsNullOrEmpty(token))
+                    return new JsonResult(isValid);
 
                 if (!dbHandlerHyperLabUsers.isTokenValid(token))
                     return new JsonResult(isValid);
