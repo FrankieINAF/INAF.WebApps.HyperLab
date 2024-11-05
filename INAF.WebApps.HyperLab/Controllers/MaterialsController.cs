@@ -1,7 +1,7 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.HyperLabData;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.SampleData;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Responses;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Helpers;

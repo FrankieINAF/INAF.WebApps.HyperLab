@@ -4,10 +4,10 @@ using INAF.Libraries.Net.CommonWebAppModels.Models.Searches;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Searches.Interfaces;
 using INAF.Libraries.Net.CommonWebAppModels.Models.SpectraFiles;
 using INAF.Libraries.Net.DB.HyperLabData;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.SampleData;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.SampleData.Containers;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.Searches;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Responses;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData.Containers;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Extensions;
@@ -15,7 +15,7 @@ using INAF.WebApps.HyperLab.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
-using INAF.Libraries.Net.HyperLabCommonModels.Values;
+using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using Newtonsoft.Json;
 using LinqKit;
 
@@ -202,11 +202,11 @@ namespace INAF.WebApps.HyperLab.Controllers
             JsonResult? jsonResult = null;
             switch (getCallerContext())
             {
-                case Libraries.Net.HyperLabCommonModels.Values.Enums.CallerContext.Web:
+                case Libraries.Net.HyperLab.CommonModels.Values.Enums.CallerContext.Web:
                     ExpandoObject jsonObject = buildMineralsSuggestionsJson(results.ToList());
                     jsonResult = new JsonResult(jsonObject);
                     break;
-                case Libraries.Net.HyperLabCommonModels.Values.Enums.CallerContext.App:
+                case Libraries.Net.HyperLab.CommonModels.Values.Enums.CallerContext.App:
                     jsonResult = new JsonResult(results);
                     break;
             }
@@ -274,15 +274,15 @@ namespace INAF.WebApps.HyperLab.Controllers
 
                 switch (saveSearchResult.queryResult)
                 {
-                    case Libraries.Net.HyperLabCommonModels.Values.Enums.QueryResult.Ok:
+                    case Libraries.Net.HyperLab.CommonModels.Values.Enums.QueryResult.Ok:
                         result = new GenericValueStringResponseModel() { IsOk = true, Id = saveSearchResult.id };
                         break;
-                    case Libraries.Net.HyperLabCommonModels.Values.Enums.QueryResult.AlreadyExistingItem:
+                    case Libraries.Net.HyperLab.CommonModels.Values.Enums.QueryResult.AlreadyExistingItem:
                         result = new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Search.SaveComplexSearchAlreadyExistingMessage };
                         break;
-                    case Libraries.Net.HyperLabCommonModels.Values.Enums.QueryResult.Error:
-                    case Libraries.Net.HyperLabCommonModels.Values.Enums.QueryResult.ErrorOnInsert:
-                    case Libraries.Net.HyperLabCommonModels.Values.Enums.QueryResult.ErrorOnCommit:
+                    case Libraries.Net.HyperLab.CommonModels.Values.Enums.QueryResult.Error:
+                    case Libraries.Net.HyperLab.CommonModels.Values.Enums.QueryResult.ErrorOnInsert:
+                    case Libraries.Net.HyperLab.CommonModels.Values.Enums.QueryResult.ErrorOnCommit:
                         result = errorResult;
                         break;
                     default:

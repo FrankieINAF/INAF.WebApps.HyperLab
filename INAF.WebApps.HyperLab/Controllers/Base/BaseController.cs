@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using static INAF.WebApps.HyperLab.Values.Enums;
 using static Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary;
-using static INAF.Libraries.Net.HyperLabCommonModels.Values.Enums;
+using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Controllers.Base
 {

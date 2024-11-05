@@ -1,10 +1,10 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Searches;
 using INAF.Libraries.Net.DB.HyperLabData;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum;
-using INAF.Libraries.Net.HyperLabCommonModels.Values;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum;
+using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.WebApps.HyperLab.Extensions;
 using System.Dynamic;
-using static INAF.Libraries.Net.HyperLabCommonModels.Values.Enums;
+using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Helpers
 {

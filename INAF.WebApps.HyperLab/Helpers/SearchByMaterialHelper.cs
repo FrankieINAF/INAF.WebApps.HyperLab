@@ -1,10 +1,10 @@
 ﻿using HtmlAgilityPack;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Searches.Interfaces;
 using INAF.Libraries.Net.DB.HyperLabData;
-using INAF.Libraries.Net.HyperLabCommonModels.Extensions;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.SampleData;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.SampleData.Containers;
-using static INAF.Libraries.Net.HyperLabCommonModels.Values.Enums;
+using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData.Containers;
+using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Helpers
 {

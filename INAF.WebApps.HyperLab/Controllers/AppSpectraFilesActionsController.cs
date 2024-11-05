@@ -1,20 +1,20 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.HyperLabData;
-using INAF.Libraries.Net.HyperLabCommonModels.Extensions;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.Files;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.ContinuumRemoval;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum.ProcessedSpectraInfo.Smoothing;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.Spectrum.SpectrumVersions;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Requests;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Requests.SaveSpectrum;
-using INAF.Libraries.Net.HyperLabCommonModels.Models.WebApp.Responses;
+using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Files;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.ContinuumRemoval;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.Smoothing;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.SpectrumVersions;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests.SaveSpectrum;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static INAF.Libraries.Net.HyperLabCommonModels.Values.Enums;
+using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {

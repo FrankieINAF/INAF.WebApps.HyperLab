@@ -1,6 +1,6 @@
 ﻿using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
-using INAF.Libraries.Net.HyperLabCommonModels.Values;
+using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 
 namespace INAF.WebApps.HyperLab.Helpers.Factories
 {

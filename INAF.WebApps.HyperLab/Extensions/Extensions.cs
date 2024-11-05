@@ -1,6 +1,6 @@
 ﻿using System.Dynamic;
 using System.Security.Claims;
-using static INAF.Libraries.Net.HyperLabCommonModels.Values.Enums;
+using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Extensions
 {
