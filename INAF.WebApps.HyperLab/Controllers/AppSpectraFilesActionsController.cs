@@ -184,7 +184,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> SaveSpectrumOfTypeAligned([FromBody] SaveSpectrumOfTypeAlignedRequestModel model)
         {
             if (model == null)
+            {
+                logger.LogError($"{nameof(SaveSpectrumOfTypeAligned)} - model is null");
                 return new EmptyResult();
+            }
 
             /* save file */
             (bool isOk, int id) result = await dbHandlerSLabData.saveSpectrumFileOfTypeAlignedProcedureAsync(model,
@@ -196,7 +199,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> SaveSpectrumOfTypeContinuumRemoved([FromBody] SaveSpectrumOfTypeContinuumRemovedRequestModel model)
         {
             if (model == null)
+            {
+                logger.LogError($"{nameof(SaveSpectrumOfTypeContinuumRemoved)} - model is null");
                 return new EmptyResult();
+            }
 
             /* save file */
             (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerSLabData.upsertSpectrumFileOfTypeContinuumRemovedProcedureAsync(model,
@@ -208,7 +214,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> SaveAsCopySpectrumOfTypeContinuumRemoved([FromBody] SaveSpectrumOfTypeContinuumRemovedRequestModel model)
         {
             if (model == null)
+            {
+                logger.LogError($"{nameof(SaveAsCopySpectrumOfTypeContinuumRemoved)} - model is null");
                 return new EmptyResult();
+            }
 
             /* save file */
             (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerSLabData.saveAsCopySpectrumFileOfTypeContinuumRemovedProcedureAsync(model,
@@ -220,7 +229,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> SaveSpectrumOfTypeRaw([FromBody] SaveSpectrumOfTypeRawRequestModel model)
         {
             if (model == null)
+            {
+                logger.LogError($"{nameof(SaveSpectrumOfTypeRaw)} - model is null");
                 return new EmptyResult();
+            }
 
             /* save file */
             (bool isOk, int id) result = await dbHandlerSLabData.saveSpectrumFileOfTypeRawProcedureAsync(model,
@@ -232,7 +244,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> SaveSpectrumOfTypeSmoothed([FromBody] SaveSpectrumOfTypeSmoothedRequestModel model)
         {
             if (model == null)
+            {
+                logger.LogError($"{nameof(SaveSpectrumOfTypeSmoothed)} - model is null");
                 return new EmptyResult();
+            }
 
             /* save file */
             (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerSLabData.saveSpectrumFileOfTypeSmoothedProcedureAsync(model,
@@ -243,6 +258,12 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveAsCopySpectrumOfTypeSmoothed([FromBody] SaveSpectrumOfTypeSmoothedRequestModel model)
         {
+            if (model == null)
+            {
+                logger.LogError($"{nameof(SaveAsCopySpectrumOfTypeSmoothed)} - model is null");
+                return new EmptyResult();
+            }
+
             /* save file */
             (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerSLabData.saveAsCopySpectrumFileOfTypeSmoothedProcedureAsync(model,
                                                                                                                                                                getUserId());
