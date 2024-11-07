@@ -236,7 +236,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* save file */
             (bool isOk, int id) result = await dbHandlerSLabData.saveSpectrumFileOfTypeRawProcedureAsync(model,
-                                                                                                 getUserId());
+                                                                                                         getUserId());
             return new JsonResult(result.ToGenericValueStringResponse());
         }
 
