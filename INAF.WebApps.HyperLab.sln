@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.Net.DB.Hyper
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.Libraries.Net.DB.HyperLab.Users", "..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLab.Users\INAF.Libraries.Net.DB.HyperLab.Users\INAF.Libraries.Net.DB.HyperLab.Users.csproj", "{7D9A1427-9128-4C0E-8174-2783B900CBD7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "INAF.Libraries.NetStandard.ScienceModels", "..\..\Libraries\NetStandard\INAF.Libraries.NetStandard.ScienceModels\INAF.Libraries.NetStandard.ScienceModels\INAF.Libraries.NetStandard.ScienceModels.csproj", "{C9814538-C5B6-4756-B489-6BA00110B2B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{7D9A1427-9128-4C0E-8174-2783B900CBD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D9A1427-9128-4C0E-8174-2783B900CBD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D9A1427-9128-4C0E-8174-2783B900CBD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9814538-C5B6-4756-B489-6BA00110B2B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9814538-C5B6-4756-B489-6BA00110B2B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9814538-C5B6-4756-B489-6BA00110B2B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9814538-C5B6-4756-B489-6BA00110B2B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
