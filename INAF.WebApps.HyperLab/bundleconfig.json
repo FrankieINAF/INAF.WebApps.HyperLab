@@ -206,5 +206,21 @@
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/apps/appsbundle.css",
+    "inputFiles": [
+      "wwwroot/css/hyperlab/apps/apps.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/home/indexbundle.css",
+    "inputFiles": [
+      "wwwroot/css/hyperlab/home/index.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
   }
 ]

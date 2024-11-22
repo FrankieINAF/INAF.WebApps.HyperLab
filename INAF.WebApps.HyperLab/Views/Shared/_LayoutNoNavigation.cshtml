@@ -14,7 +14,7 @@
     <link rel="apple-touch-icon" sizes="144x144" href="/images/favicon/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/images/favicon/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/images/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/favicon/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="/images/favicon/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
@@ -38,11 +38,18 @@
     </environment>
     <script type="text/javascript" src="~/js/dist/jquerybundle.min.js"></script>
     <script type="text/javascript" src="~/js/dist/commonbundle.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Detect.js/2.2.2/detect.min.js"></script>
 </head>
 <body class="h-vh-100" style="opacity: 1;">
 
     @RenderBody()
 
-    @{ await Html.RenderPartialAsync("Partials/_JsCommon"); }
+    @{
+        await Html.RenderPartialAsync("Partials/_JsCommon");
+    }
 </body>
+<script type="text/javascript">
+    //var detect = require('detect');
+    var ua = detect.parse(navigator.userAgent);
+</script>
 </html>
