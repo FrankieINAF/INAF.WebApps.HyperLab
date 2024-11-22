@@ -1,8 +1,73 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using INAF.WebApps.HyperLab.Resources
+@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Helpers
+@using INAF.Libraries.Net.CommonWebAppHelpers
+@{
+    ViewData["Title"] = "Welcome!";
+    Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<link rel="stylesheet" href="~/css/hyperlab/common.css" />
+<link rel="stylesheet" href="~/css/hyperlab/home/home.css" />
+
+<div class="h-vh-100 w-vw-100 page-background d-flex flex-justify-center">
+    <div class="tiles-container d-flex flex-column">
+        <div class="margin-vertical-24">
+            <p class="h1 text-center padding-vertical-16 fg-white">@Html.Raw(Home.WelcomeMessage)</p>
+        </div>
+        <div class="image-grid d-flex flex-justify-center">
+            <img class="grid-image-item" src="~/images/em_spectrum_400x400.png" />
+            <img class="grid-image-item" src="~/images/inaf.png" />
+            <img class="grid-image-item" src="~/images/iaps.png" />
+        </div>
+        <div class="margin-vertical-24">
+            <p class="text-leader2 text-just padding-16 fg-white">@Html.Raw(Home.WelcomeExplanation)</p>
+        </div>
+        <div id="tilesContainer" class="tiles-grid d-flex flex-justify-center">
+            <!-- SLAB -->
+            <div data-role="tile" data-size="large" data-effect="hover-slide-up" class="flex-self-center" onclick="navigateTo('@Url.Action(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)))')">
+                <div class="slide-front"><img src="~/images/home/slabdatamanager.png" /></div>
+                <div class="slide-back">
+                    <p class="text-just" style="padding: 8px">@Html.Raw(Home.TileSLabDataManagerDescription)</p>
+                </div>
+                <div class="pos-absolute pos-bottom-left margin-4">
+                    <span data-role="branding-bar">@Html.Raw(Home.TileSLabDataManagerTitle)</span>
+                </div>
+            </div>
+            <!-- GROUP -->
+            <div class="tiles-grid tiles-group flex-self-center">
+                <!-- GModeApp-->
+                <div data-role="tile" data-size="wide" data-effect="hover-slide-up">
+                    <div class="slide-front d-flex flex-justify-center">
+                        <img class="wide-tile-img-size" src="~/images/home/gmodeapp.png" />
+                    </div>
+                    <div class="slide-back">
+                        <p class="text-just" style="padding: 8px">@Html.Raw(Home.TileGModeAppDescription)</p>
+                    </div>
+                    <div class="pos-absolute pos-bottom-left margin-4">
+                        <span data-role="branding-bar">@Html.Raw(Home.TileGModeAppTitle)</span>
+                    </div>
+                </div>
+                <!-- MLApp-->
+                <div data-role="tile" data-size="wide" data-effect="hover-slide-up">
+                    <div class="slide-front d-flex flex-justify-center">
+                        <img class="wide-tile-img-size" src="~/images/home/mlapp.png" />
+                    </div>
+                    <div class="slide-back">
+                        <p class="text-just" style="padding: 8px">@Html.Raw(Home.TileMLAppDescription)</p>
+                    </div>
+                    <div class="pos-absolute pos-bottom-left margin-4">
+                        <span data-role="branding-bar">@Html.Raw(Home.TileMLAppTitle)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script src="~/js/hyperlab/home/index.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        window.mediaQueryHelper.addOrRemoveClass('tilesContainer', 'flex-column', '(max-width: 480px)');
+    });
+</script>

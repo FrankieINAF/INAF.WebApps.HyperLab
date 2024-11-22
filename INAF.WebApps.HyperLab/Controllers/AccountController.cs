@@ -4,7 +4,7 @@ using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Authentication;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
-using INAF.Libraries.NetStandard.Extensions;
+using INAF.Libraries.Net.Extensions;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Extensions;
 using INAF.WebApps.HyperLab.Helpers.Factories;

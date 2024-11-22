@@ -12,9 +12,9 @@
   {
     "outputFileName": "wwwroot/js/dist/account/login.min.js",
     "inputFiles": [
-      "wwwroot/js/slabwebapp/common.js",
-      "wwwroot/js/slabwebapp/account/login.js",
-      "wwwroot/js/slabwebapp/account/orcidauth.js"
+      "wwwroot/js/hyperlab/common.js",
+      "wwwroot/js/hyperlab/account/login.js",
+      "wwwroot/js/hyperlab/account/orcidauth.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -22,7 +22,7 @@
   {
     "outputFileName": "wwwroot/js/dist/search/blazorglobalbundle.js",
     "inputFiles": [
-      "wwwroot/js/slabwebapp/search/blazorglobal.js"
+      "wwwroot/js/hyperlab/search/blazorglobal.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -47,11 +47,11 @@
     "outputFileName": "wwwroot/js/dist/commonbundle.js",
     "inputFiles": [
       "wwwroot/lib/luxon/luxon.min.js",
-      "wwwroot/js/slabwebapp/commonbuttons.js",
-      "wwwroot/js/slabwebapp/common.js",
-      "wwwroot/js/slabwebapp/layout.js",
-      "wwwroot/js/slabwebapp/queue.js",
-      "wwwroot/js/slabwebapp/commondxchart.js"
+      "wwwroot/js/hyperlab/commonbuttons.js",
+      "wwwroot/js/hyperlab/common.js",
+      "wwwroot/js/hyperlab/layout.js",
+      "wwwroot/js/hyperlab/queue.js",
+      "wwwroot/js/hyperlab/commondxchart.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -59,9 +59,9 @@
   {
     "outputFileName": "wwwroot/js/dist/users/userslistbundle.js",
     "inputFiles": [
-      "wwwroot/js/slabwebapp/users/userslist.js",
-      "wwwroot/js/slabwebapp/commonlists.js",
-      "wwwroot/js/slabwebapp/commonsearch.js"
+      "wwwroot/js/hyperlab/users/userslist.js",
+      "wwwroot/js/hyperlab/commonlists.js",
+      "wwwroot/js/hyperlab/commonsearch.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -69,7 +69,7 @@
   {
     "outputFileName": "wwwroot/js/dist/users/upsertuserbundle.js",
     "inputFiles": [
-      "wwwroot/js/slabwebapp/users/upsertuser.js"
+      "wwwroot/js/hyperlab/users/upsertuser.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -77,9 +77,9 @@
   {
     "outputFileName": "wwwroot/js/dist/materials/mineralsbundle.js",
     "inputFiles": [
-      "wwwroot/js/slabwebapp/materials/upsertminerals.js",
-      "wwwroot/js/slabwebapp/commonlists.js",
-      "wwwroot/js/slabwebapp/commonsearch.js"
+      "wwwroot/js/hyperlab/materials/upsertminerals.js",
+      "wwwroot/js/hyperlab/commonlists.js",
+      "wwwroot/js/hyperlab/commonsearch.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -87,25 +87,25 @@
   {
     "outputFileName": "wwwroot/js/dist/search/searchbundle.js",
     "inputFiles": [
-      "wwwroot/js/slabwebapp/search/common.js",
-      "wwwroot/js/slabwebapp/search/charts.js",
-      "wwwroot/js/slabwebapp/search/chartsarrays.js",
-      "wwwroot/js/slabwebapp/search/search.js",
-      "wwwroot/js/slabwebapp/search/searchSimple.js",
-      "wwwroot/js/slabwebapp/search/searchComplex.js",
-      "wwwroot/js/slabwebapp/search/complexsearchesmanagement.js",
-      "wwwroot/js/slabwebapp/search/complexsearchesintro.js",
-      "wwwroot/js/slabwebapp/search/info.js",
-      "wwwroot/js/slabwebapp/search/charms/charms.js",
-      "wwwroot/js/slabwebapp/search/charms/charmslegend.js",
-      "wwwroot/js/slabwebapp/search/charms/charmscolorselector.js",
-      "wwwroot/js/slabwebapp/search/charms/charmsalignmentpanel.js",
-      "wwwroot/js/slabwebapp/search/charms/charmsfitpanel.js",
-      "wwwroot/js/slabwebapp/search/charms/charmsfitpanelcore.js",
-      "wwwroot/js/slabwebapp/search/charms/charmsfitpanelpro.js",
-      "wwwroot/js/slabwebapp/search/charms/charmsfitpanelcommon.js",
-      "wwwroot/js/slabwebapp/search/charms/charmssmoothingpanel.js",
-      "wwwroot/js/slabwebapp/search/charms/charmsbandanalysis.js"
+      "wwwroot/js/hyperlab/search/common.js",
+      "wwwroot/js/hyperlab/search/charts.js",
+      "wwwroot/js/hyperlab/search/chartsarrays.js",
+      "wwwroot/js/hyperlab/search/search.js",
+      "wwwroot/js/hyperlab/search/searchSimple.js",
+      "wwwroot/js/hyperlab/search/searchComplex.js",
+      "wwwroot/js/hyperlab/search/complexsearchesmanagement.js",
+      "wwwroot/js/hyperlab/search/complexsearchesintro.js",
+      "wwwroot/js/hyperlab/search/info.js",
+      "wwwroot/js/hyperlab/search/charms/charms.js",
+      "wwwroot/js/hyperlab/search/charms/charmslegend.js",
+      "wwwroot/js/hyperlab/search/charms/charmscolorselector.js",
+      "wwwroot/js/hyperlab/search/charms/charmsalignmentpanel.js",
+      "wwwroot/js/hyperlab/search/charms/charmsfitpanel.js",
+      "wwwroot/js/hyperlab/search/charms/charmsfitpanelcore.js",
+      "wwwroot/js/hyperlab/search/charms/charmsfitpanelpro.js",
+      "wwwroot/js/hyperlab/search/charms/charmsfitpanelcommon.js",
+      "wwwroot/js/hyperlab/search/charms/charmssmoothingpanel.js",
+      "wwwroot/js/hyperlab/search/charms/charmsbandanalysis.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -142,8 +142,8 @@
   {
     "outputFileName": "wwwroot/css/dist/commonbundle.css",
     "inputFiles": [
-      "wwwroot/css/slabwebapp/common.css",
-      "wwwroot/css/slabwebapp/commonvalidation.css",
+      "wwwroot/css/hyperlab/common.css",
+      "wwwroot/css/hyperlab/commonvalidation.css",
       "wwwroot/css/animate/animate.css"
     ],
     "includeInProject": true,
@@ -152,9 +152,9 @@
   {
     "outputFileName": "wwwroot/css/dist/users/usersbundle.css",
     "inputFiles": [
-      "wwwroot/css/slabwebapp/commonlists.css",
-      "wwwroot/css/slabwebapp/users/users.css",
-      "wwwroot/css/slabwebapp/users/userdata.css"
+      "wwwroot/css/hyperlab/commonlists.css",
+      "wwwroot/css/hyperlab/users/users.css",
+      "wwwroot/css/hyperlab/users/userdata.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -162,8 +162,8 @@
   {
     "outputFileName": "wwwroot/css/dist/materials/mineralsbundle.css",
     "inputFiles": [
-      "wwwroot/css/slabwebapp/commonlists.css",
-      "wwwroot/css/slabwebapp/materials/minerals.css"
+      "wwwroot/css/hyperlab/commonlists.css",
+      "wwwroot/css/hyperlab/materials/minerals.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -171,8 +171,8 @@
   {
     "outputFileName": "wwwroot/css/dist/search/searchbundle.min.css",
     "inputFiles": [
-      "wwwroot/css/slabwebapp/search/search.css",
-      "wwwroot/css/slabwebapp/search/charms.css"
+      "wwwroot/css/hyperlab/search/search.css",
+      "wwwroot/css/hyperlab/search/charms.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }

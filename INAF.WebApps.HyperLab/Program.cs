@@ -3,8 +3,8 @@ using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLabCommonHelpers;
 using INAF.Libraries.Net.HyperLabCommonHelpers.ProcessingHelpers;
-using INAF.Libraries.NetStandard.Math.Fit.Linear;
-using INAF.Libraries.NetStandard.Math.Fit.Spline;
+using INAF.Libraries.Net.Math.Fit.Linear;
+using INAF.Libraries.Net.Math.Fit.Spline;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Helpers;
 using INAF.WebApps.HyperLab.Helpers.Factories;
@@ -18,8 +18,8 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 var config = builder.Configuration;
-string validIssuer = config.GetSection("AppSettings:JwtToken:Issuer").Value;
-string validAudience = config.GetSection("AppSettings:JwtToken:Audience").Value;
+string? validIssuer = config.GetSection("AppSettings:JwtToken:Issuer").Value;
+string? validAudience = config.GetSection("AppSettings:JwtToken:Audience").Value;
 
 RsaSecurityKey rsaSecurityKey = (new TokenValidationParametersFactory(config)).getRsaSecurityKey();
 builder.Services.AddSingleton<RsaSecurityKey>(rsaSecurityKey);
@@ -42,7 +42,7 @@ builder.Services.AddAuthentication(options =>
     })
     .AddCookie(options =>
     {
-        options.Cookie.Name = "SlabWebAppCookies";
+        options.Cookie.Name = "HyperLabWebAppCookies";
         options.LoginPath = new PathString("/Account/Login");
         options.LogoutPath = new PathString("/Account/Login");
         options.AccessDeniedPath = new PathString("/Account/Login");
@@ -68,7 +68,7 @@ builder.Services.AddAuthentication(options =>
     {
         options.ForwardDefaultSelector = context =>
         {
-            string authorization = context.Request.Headers[HeaderNames.Authorization];
+            string? authorization = context.Request.Headers[HeaderNames.Authorization];
             if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer "))
                 return JwtBearerDefaults.AuthenticationScheme;
 
@@ -175,7 +175,7 @@ app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Searches}/{action=Search}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapBlazorHub();
 
 app.Run();

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class HomeController : BaseController
     {
         public HomeController(IServiceProvider serviceProvider, 
