@@ -29,9 +29,9 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         public SearchesController(IServiceProvider serviceProvider,
                                   ILogger<SearchesController> logger,
-                                  DbHandlerHyperLabData dbHandlerSLabData) : base(serviceProvider, logger)
+                                  DbHandlerHyperLabData dbHandlerHyperLabData) : base(serviceProvider, logger)
         {
-            this.dbHandlerHyperLabData = dbHandlerSLabData;
+            this.dbHandlerHyperLabData = dbHandlerHyperLabData;
         }
 
         [HttpGet]

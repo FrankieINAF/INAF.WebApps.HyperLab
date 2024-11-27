@@ -9,9 +9,9 @@ namespace INAF.WebApps.HyperLab.Helpers
     {
         private readonly DbHandlerHyperLabData dbHandlerHyperLabData;
 
-        public SampleTypesHelper(DbHandlerHyperLabData dbHandlerSLabData)
+        public SampleTypesHelper(DbHandlerHyperLabData dbHandlerHyperLabData)
         {
-            this.dbHandlerHyperLabData = dbHandlerSLabData;
+            this.dbHandlerHyperLabData = dbHandlerHyperLabData;
         }
 
         public SampleDataAvailableValues getSampleTypeValuesContainer()

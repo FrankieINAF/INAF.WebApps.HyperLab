@@ -10,11 +10,11 @@ namespace INAF.WebApps.HyperLab.Helpers
 {
     public sealed class ChartsHelper
     {
-        private readonly DbHandlerHyperLabData dbHandlerSLabData;
+        private readonly DbHandlerHyperLabData dbHandlerHyperLabData;
 
-        public ChartsHelper(DbHandlerHyperLabData dbHandlerSLabData)
+        public ChartsHelper(DbHandlerHyperLabData dbHandlerHyperLabData)
         {
-            this.dbHandlerSLabData = dbHandlerSLabData;
+            this.dbHandlerHyperLabData = dbHandlerHyperLabData;
         }
 
         public ExpandoObject createMultipleSpectraJson(List<int> ids,
@@ -24,7 +24,7 @@ namespace INAF.WebApps.HyperLab.Helpers
 
             int idsNum = ids.Count;
 
-            List<ISpectrumModel> spectraModels = dbHandlerSLabData.getSpectraByIdProcedure(ids,
+            List<ISpectrumModel> spectraModels = dbHandlerHyperLabData.getSpectraByIdProcedure(ids,
                                                                                            operationUserId);
 
             /* extract min,max for all series and then retrieve absolute min,max */
@@ -58,7 +58,7 @@ namespace INAF.WebApps.HyperLab.Helpers
                                                       SpectrumType spectrumType,
                                                       int operationUserId)
         {
-            ISpectrumModel? spectrumModel = dbHandlerSLabData.getSpectrumByParentIdAndSpectrumType(parentId,
+            ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumByParentIdAndSpectrumType(parentId,
                                                                                                   spectrumType, 
                                                                                                   operationUserId);
 
@@ -96,7 +96,7 @@ namespace INAF.WebApps.HyperLab.Helpers
 
             int idsNum = ids.Count;
 
-            List<ISpectrumModel> spectraModels = dbHandlerSLabData.getSpectraByIdProcedure(ids,
+            List<ISpectrumModel> spectraModels = dbHandlerHyperLabData.getSpectraByIdProcedure(ids,
                                                                                    operationUserId);
 
             /* extract min,max for all series and then retrieve absolute min,max */

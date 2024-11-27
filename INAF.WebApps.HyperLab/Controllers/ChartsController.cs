@@ -13,21 +13,21 @@ namespace INAF.WebApps.HyperLab.Controllers
     [CheckIsLoginValid]
     public class ChartsController : BaseController
     {
-        private readonly DbHandlerHyperLabData dbHandlerSLabData;
+        private readonly DbHandlerHyperLabData dbHandlerHyperLabData;
 
         public ChartsController(IServiceProvider serviceProvider, 
                                 ILogger<ChartsController> logger,
-                                DbHandlerHyperLabData dbHandlerSLabData) : base(serviceProvider, logger)
+                                DbHandlerHyperLabData dbHandlerHyperLabData) : base(serviceProvider, logger)
         {
-            this.dbHandlerSLabData = dbHandlerSLabData;
+            this.dbHandlerHyperLabData = dbHandlerHyperLabData;
         }
 
         #region GET
         [HttpGet]
         public IActionResult GetSpectrumById(GenericRequestByIdModel model)
         {
-            ISpectrumModel? spectrumModel = dbHandlerSLabData.getSpectrumById(model.Id,
-                                                                              getUserId());
+            ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumById(model.Id,
+                                                                                  getUserId());
             if (spectrumModel == null)
                 return new EmptyResult();
 
@@ -37,9 +37,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetSpectrumByParentIdAndSpectrumType(GenericRequestByParentIdAndSpectrumTypeModel model)
         {
-            ISpectrumModel? spectrumModel = dbHandlerSLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId,
-                                                                                                   model.SpectrumType,
-                                                                                                   getUserId());
+            ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId,
+                                                                                                       model.SpectrumType,
+                                                                                                       getUserId());
             if (spectrumModel == null)
                 return new EmptyResult();
 
@@ -49,7 +49,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetWhiteSpectraForAlignment()
         {
-            List<int>? ids = dbHandlerSLabData.getWhiteSpectraForAlignmentIds();
+            List<int>? ids = dbHandlerHyperLabData.getWhiteSpectraForAlignmentIds();
 
             if (ids == null || ids.Count == 0)
                 return new JsonResult(null);
@@ -73,7 +73,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return new JsonResult(chartsHelper.createMultipleSpectraJson(model.Ids, getUserId()));
 
                 case Libraries.Net.HyperLab.CommonModels.Values.Enums.CallerContext.App:
-                    var spectra = dbHandlerSLabData.getSpectraByIdProcedure(model.Ids, getUserId());
+                    var spectra = dbHandlerHyperLabData.getSpectraByIdProcedure(model.Ids, getUserId());
                     if (spectra != null && spectra.Count > 0)
                         return new JsonResult(spectra);
                     return new EmptyResult();

@@ -17,29 +17,29 @@ namespace INAF.WebApps.HyperLab.Controllers
     [CheckIsLoginValid]
     public class SampleAndMeasurementController : BaseController
     {
-        private readonly DbHandlerHyperLabData dbHandlerSLabData;
+        private readonly DbHandlerHyperLabData dbHandlerHyperLabData;
 
         public SampleAndMeasurementController(IServiceProvider serviceProvider,
                                               ILogger<SampleAndMeasurementController> logger,
-                                              DbHandlerHyperLabData dbHandlerSLabData) : base(serviceProvider, logger)
+                                              DbHandlerHyperLabData dbHandlerHyperLabData) : base(serviceProvider, logger)
         {
-            this.dbHandlerSLabData = dbHandlerSLabData;
+            this.dbHandlerHyperLabData = dbHandlerHyperLabData;
         }
 
         #region PARTIAL VIEWS
         [HttpGet]
         public IActionResult LoadSpectrumMeasurementInfoView(GenericRequestByIdModel model)
         {
-            var generalInfo = dbHandlerSLabData.getSpectrumFilename(model.Id,
+            var generalInfo = dbHandlerHyperLabData.getSpectrumFilename(model.Id,
                                                                     getUserId());
             if (generalInfo == null)
                 return new EmptyResult();
 
             int spectrumId = model.Id;
             if (generalInfo.Type != Enums.SpectrumType.Raw)
-                spectrumId = dbHandlerSLabData.getParentRawSpectrumId(model.Id);
+                spectrumId = dbHandlerHyperLabData.getParentRawSpectrumId(model.Id);
 
-            var measurementInfo = dbHandlerSLabData.getSpectrumFileMeasurementInfo(spectrumId,
+            var measurementInfo = dbHandlerHyperLabData.getSpectrumFileMeasurementInfo(spectrumId,
                                                                            getUserId());
 
             if (measurementInfo != null)
@@ -54,16 +54,16 @@ namespace INAF.WebApps.HyperLab.Controllers
             var sampleTypesHelper = serviceProvider.GetRequiredService<SampleTypesHelper>();
             var sampleDataAvailableValues = sampleTypesHelper.getSampleTypeValuesContainer();
 
-            var generalInfo = dbHandlerSLabData.getSpectrumFilename(model.Id,
+            var generalInfo = dbHandlerHyperLabData.getSpectrumFilename(model.Id,
                                                                     getUserId());
             if (generalInfo == null)
                 return new EmptyResult();
 
             int spectrumId = model.Id;
             if (generalInfo.Type != Enums.SpectrumType.Raw)
-                spectrumId = dbHandlerSLabData.getParentRawSpectrumId(model.Id);
+                spectrumId = dbHandlerHyperLabData.getParentRawSpectrumId(model.Id);
 
-            var sampleDataSelectedValues = dbHandlerSLabData.getSpectrumFileSampleData(spectrumId,
+            var sampleDataSelectedValues = dbHandlerHyperLabData.getSpectrumFileSampleData(spectrumId,
                                                                                getUserId());
 
             if (sampleDataSelectedValues != null && sampleDataAvailableValues != null)
@@ -75,7 +75,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult LoadSpectrumSampleSelectedValuesView(ChangeMineralTypeIdRequestModel model)
         {
-            var sampleDataSelectedValues = dbHandlerSLabData.getSpectrumFileSampleData(model.Id,
+            var sampleDataSelectedValues = dbHandlerHyperLabData.getSpectrumFileSampleData(model.Id,
                                                                                getUserId());
 
             if (sampleDataSelectedValues != null)
@@ -94,13 +94,13 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetSampleDataValues()
         {
-            return new JsonResult(dbHandlerSLabData.getSampleTypeValuesWithGrainSizeValues());
+            return new JsonResult(dbHandlerHyperLabData.getSampleTypeValuesWithGrainSizeValues());
         }
 
         [HttpGet]
         public IActionResult GetSpectrumMeasurementInfo(int FileId)
         {
-            var spectrumMeasurementInfo = dbHandlerSLabData.getSpectrumFileMeasurementInfo(FileId,
+            var spectrumMeasurementInfo = dbHandlerHyperLabData.getSpectrumFileMeasurementInfo(FileId,
                                                                                    getUserId());
             if (spectrumMeasurementInfo != null)
                 return new JsonResult(spectrumMeasurementInfo);
@@ -111,7 +111,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetSpectrumSampleData(GenericRequestByIdModel model)
         {
-            var spectrumSampleData = dbHandlerSLabData.getSpectrumFileSampleData(model.Id,
+            var spectrumSampleData = dbHandlerHyperLabData.getSpectrumFileSampleData(model.Id,
                                                                          getUserId());
             if (spectrumSampleData != null)
                 return new JsonResult(spectrumSampleData);
@@ -123,7 +123,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteMineral([FromBody] DeleteMaterialRequestModel model)
         {
-            if (await dbHandlerSLabData.deleteMineralLinkAsync(model.SpectrumId,
+            if (await dbHandlerHyperLabData.deleteMineralLinkAsync(model.SpectrumId,
                                                               model.MaterialId,
                                                               getUserId()))
                 return new JsonResult(GenericResponseModel.CreateSuccessResponse());
@@ -144,7 +144,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 }
 
                 /* save file */
-                (bool isOk, int id) result = await dbHandlerSLabData.saveSpectrumInfoProcedureAsync(model,
+                (bool isOk, int id) result = await dbHandlerHyperLabData.saveSpectrumInfoProcedureAsync(model,
                                                                                                     getUserId());
                 return new JsonResult(result.ToGenericValueStringResponse());
             }

@@ -15,15 +15,15 @@ namespace INAF.WebApps.HyperLab.Controllers
     public class UserSettingsController : BaseController
     {
         private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
-        private readonly DbHandlerHyperLabData dbHandlerSLabData;
+        private readonly DbHandlerHyperLabData dbHandlerHyperLabData;
 
         public UserSettingsController(IServiceProvider serviceProvider,
                                       ILogger<UserSettingsController> logger,
                                       DbHandlerHyperLabUsers dbHandlerHyperLabUsers,
-                                      DbHandlerHyperLabData dbHandlerSLabData) : base(serviceProvider, logger)
+                                      DbHandlerHyperLabData dbHandlerHyperLabData) : base(serviceProvider, logger)
         {
             this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
-            this.dbHandlerSLabData = dbHandlerSLabData;
+            this.dbHandlerHyperLabData = dbHandlerHyperLabData;
         }
 
         [HttpGet]
@@ -100,7 +100,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetFitFunctions()
         {
-            var fitMethods = dbHandlerSLabData.readFitMethodModels();
+            var fitMethods = dbHandlerHyperLabData.readFitMethodModels();
             return new JsonResult(fitMethods);
         }
         #endregion
@@ -109,7 +109,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetPXMinPXMaxMaxValueFunctions()
         {
-            var fitMethods = dbHandlerSLabData.readPXMinPXMaxFitMethodModels();
+            var fitMethods = dbHandlerHyperLabData.readPXMinPXMaxFitMethodModels();
             return new JsonResult(fitMethods);
         }
         #endregion

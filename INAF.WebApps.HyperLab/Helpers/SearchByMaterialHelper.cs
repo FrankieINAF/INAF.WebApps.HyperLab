@@ -11,15 +11,15 @@ namespace INAF.WebApps.HyperLab.Helpers
     public sealed class SearchByMaterialHelper
     {
         private readonly IConfiguration configuration;
-        private readonly DbHandlerHyperLabData dbHandlerSLabData;
+        private readonly DbHandlerHyperLabData dbHandlerHyperLabData;
         private readonly ILogger<SearchByMaterialHelper> logger;
 
         public SearchByMaterialHelper(IConfiguration configuration,
-                                      DbHandlerHyperLabData dbHandlerSLabData,
+                                      DbHandlerHyperLabData dbHandlerHyperLabData,
                                       ILogger<SearchByMaterialHelper> logger)
         {
             this.configuration = configuration;
-            this.dbHandlerSLabData = dbHandlerSLabData;
+            this.dbHandlerHyperLabData = dbHandlerHyperLabData;
             this.logger = logger;
         }
 
@@ -38,12 +38,12 @@ namespace INAF.WebApps.HyperLab.Helpers
                     break;
 
                 case MaterialType.Mineral:
-                    spectraGroupInfoModels = dbHandlerSLabData.searchSimpleGroupsByMineral(id,
+                    spectraGroupInfoModels = dbHandlerHyperLabData.searchSimpleGroupsByMineral(id,
                                                                                    operationUserId);
                     break;
 
                 case MaterialType.Rock:
-                    spectraGroupInfoModels = dbHandlerSLabData.searchSimpleGroupsByRock(id,
+                    spectraGroupInfoModels = dbHandlerHyperLabData.searchSimpleGroupsByRock(id,
                                                                                 operationUserId);
                     break;
             }
