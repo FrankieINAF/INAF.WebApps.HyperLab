@@ -270,6 +270,10 @@ div.mandatory {
     padding-right: 16px;
 }
 
+.padding-top-16 {
+    padding-top: 16px;
+}
+
 .padding-vertical-4 {
     padding-top: 4px;
     padding-bottom: 4px;
