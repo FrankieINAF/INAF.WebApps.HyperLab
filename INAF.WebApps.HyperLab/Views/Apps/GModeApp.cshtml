@@ -1,0 +1,57 @@
+﻿@using INAF.WebApps.HyperLab.Resources
+
+
+@{
+    ViewData["Title"] = nameof(INAF.WebApps.HyperLab.Controllers.AppsController.GModeApp);
+    Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/dist/commonbundle.min.css" />
+<link rel="stylesheet" href="~/css/dist/apps/appsbundle.min.css" />
+
+<div class="h-vh-100 w-vw-100 page-background d-flex flex-column">
+    <div class="content-container d-flex flex-self-center flex-column">
+        <!-- BANNER -->
+        <div class="banner flex-self-center">
+            <div class="d-flex flex-justify-around margin-top-24">
+                <div class="flex-self-center"><p class="title fg-white">@Html.Raw(Home.TileGModeAppTitle)</p></div>
+                <div><img width="40%" class="float-right margin-horizontal-16" src="~/images/apps/console_app.jpg" /></div>
+            </div>
+        </div>
+        <!-- FEATURES -->
+        <div class="features-container d-flex flex-self-center">
+            <div class="features-grid d-flex flex-justify-center">
+                <div class="feature-item">
+                    <div class="feature-item-imag d-flex flex-justify-center">
+                        <img height="100px" src="~/images/apps/reach.png" />
+                    </div>
+                    <div class="feature-item-text">
+                        <p class="text-just padding-16 fg-white">@Html.Raw(Apps.AppFeatureRich)</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-item-image d-flex flex-justify-center">
+                        <img height="100px" src="~/images/apps/cross_platform.png" />
+                    </div>
+                    <div class="feature-item-text">
+                        <p class="text-just padding-16 fg-white">@Html.Raw(Apps.AppFeatureCrossPlatform)</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-item-image d-flex flex-justify-center">
+                        <img height="100px" src="~/images/apps/portable.png" />
+                    </div>
+                    <div class="feature-item-text">
+                        <p class="text-just padding-16 fg-white">@Html.Raw(Apps.AppFeaturePortable)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('os' + ua.os.family);
+    });
+</script>
