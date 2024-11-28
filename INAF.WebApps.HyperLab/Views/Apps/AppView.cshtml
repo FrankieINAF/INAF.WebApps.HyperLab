@@ -6,6 +6,8 @@
 @{
     ViewData["Title"] = Model.PageTitle;
     Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
+
+    string appName = $"{Model.AppName}";
 }
 
 <link rel="stylesheet" href="~/css/dist/commonbundle.min.css" />
@@ -63,7 +65,7 @@
         </div>
 
         <!-- DOWNLOAD -->
-        <button class="download-button command-button primary rounded m-1">
+        <button class="download-button command-button primary rounded m-1" onclick="downloadApp()">
             <span class="mif-download icon"></span>
             <span class="caption">
                 Download
@@ -115,10 +117,20 @@
 </div>
 
 <script type="text/javascript">
+    var osName = '';
+
     document.addEventListener('DOMContentLoaded', function () {
-        console.log('os' + ua.os.family);
-        var text = `Detected ${ua.os.family} OS`;
-        text = text.replace(/\d+/g, '');
+        console.log('os:' + ua.os.family);
+        osName = ua.os.family;
+        osName = osName.replace(/\d+/g, '').trim();
+        console.log('osName:"' + osName + '"');
+        var text = `Detected ${osName} OS`;
+        console.log('text:' + text);
         document.getElementById('downloadCaption').innerText = text;
     });
+
+    function downloadApp() {
+        const url = `/Apps/Download?appName=${encodeURIComponent('@appName')}&osName=${encodeURIComponent(osName)}`;
+        window.location.href = url;
+    }
 </script>
