@@ -40,5 +40,18 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                          Apps.GModeAppAcknowledgments);
             return View("AppView", appPageModel);
         }
+
+        [HttpGet]
+        public IActionResult MLApp()
+        {
+            AppPageModel appPageModel = new AppPageModel(nameof(MLApp),
+                                                         Home.TileMLAppTitle,
+                                                         new List<string>
+                                                         {
+                                                             Apps.MLAppDescription1,
+                                                             Apps.MLAppDescription2
+                                                         });
+            return View("AppView", appPageModel);
+        }
     }
 }

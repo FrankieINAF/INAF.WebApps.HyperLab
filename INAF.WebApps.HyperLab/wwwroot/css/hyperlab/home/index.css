@@ -26,6 +26,11 @@
     flex-direction: row;
 }
 
+.tile-description-text {
+    padding: 8px;
+    font-size: 14px;
+}
+
 @media screen and (max-width: 1024px) {
     .tiles-container {
         width: 80%;
