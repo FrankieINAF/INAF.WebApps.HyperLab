@@ -41,6 +41,9 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Detect.js/2.2.2/detect.min.js"></script>
 </head>
 <body class="h-vh-100" style="opacity: 1;">
+    @{
+        await Html.RenderPartialAsync("Partials/_CookieConsentPartial");
+    }
 
     @RenderBody()
 

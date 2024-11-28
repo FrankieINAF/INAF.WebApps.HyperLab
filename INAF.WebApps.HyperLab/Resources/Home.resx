@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CookieBannerMessage1" xml:space="preserve">
+    <value>This website uses cookies to ensure you get the best experience while browsing. We want to reassure you that we do not collect any personal information through these cookies. By continuing to use our site, you agree to the use of cookies to enhance your visit.</value>
+  </data>
+  <data name="CookieBannerMessage2" xml:space="preserve">
+    <value>Please note that for &lt;i&gt;SLab Data Manager&lt;/i&gt; registration is required solely to enable users to save their work on our cloud. No use is made of the provided email addresses beyond this purpose.</value>
+  </data>
+  <data name="CookiePolicyTitle" xml:space="preserve">
+    <value>Cookie Policy and User Registration Information</value>
+  </data>
   <data name="TileGModeAppDescription" xml:space="preserve">
     <value>GModeApp is a multi-platform console application based on an advanced algorithm for unsupervised clusterization and developed to explore a wide variety of datasets</value>
   </data>

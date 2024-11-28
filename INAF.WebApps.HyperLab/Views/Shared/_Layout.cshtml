@@ -46,7 +46,7 @@
     <environment names="Production">
         <script type="text/javascript" src="~/metro/js/dist/metrobundle.min.js"></script>
     </environment>
-    
+
 </head>
 <body id="body" class="overflow-y-auto" style="opacity: 1;">
     <div id="mainContainer" class="h-vh-100" data-role="navview" data-toggle="#paneToggle" data-expand="xl" data-compact="lg" data-active-state="true">
@@ -99,6 +99,9 @@
             </div>
 
             <div id="renderbody" class="h-100 w-100 d-none">
+                @{
+                    await Html.RenderPartialAsync("Partials/_CookieConsentPartial");
+                }
                 @RenderBody()
             </div>
         </div>

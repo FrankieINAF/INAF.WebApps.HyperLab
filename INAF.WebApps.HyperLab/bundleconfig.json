@@ -222,5 +222,14 @@
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/home/cookiebannerbundle.css",
+    "inputFiles": [
+      "wwwroot/css/hyperlab/common.css",
+      "wwwroot/css/hyperlab/home/cookiebanner.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
   }
 ]

@@ -61,6 +61,33 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This website uses cookies to ensure you get the best experience while browsing. We want to reassure you that we do not collect any personal information through these cookies. By continuing to use our site, you agree to the use of cookies to enhance your visit..
+        /// </summary>
+        public static string CookieBannerMessage1 {
+            get {
+                return ResourceManager.GetString("CookieBannerMessage1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please note that for &lt;i&gt;SLab Data Manager&lt;/i&gt; registration is required solely to enable users to save their work on our cloud. No use is made of the provided email addresses beyond this purpose..
+        /// </summary>
+        public static string CookieBannerMessage2 {
+            get {
+                return ResourceManager.GetString("CookieBannerMessage2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cookie Policy and User Registration Information.
+        /// </summary>
+        public static string CookiePolicyTitle {
+            get {
+                return ResourceManager.GetString("CookiePolicyTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GModeApp is a multi-platform console application based on an advanced algorithm for unsupervised clusterization and developed to explore a wide variety of datasets.
         /// </summary>
         public static string TileGModeAppDescription {

@@ -31,13 +31,14 @@
     font-size: 14px;
 }
 
+/* iPad Mini */
 @media screen and (max-width: 1024px) {
     .tiles-container {
         width: 80%;
     }
 }
 
-/* iPad Mini */
+/* iPhone SE */
 @media screen and (max-width: 768px) {
     .tiles-container {
         width: 90%;
