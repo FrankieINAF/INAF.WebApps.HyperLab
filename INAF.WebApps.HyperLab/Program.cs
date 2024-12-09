@@ -169,7 +169,7 @@ app.UseRequestLocalization(localizationOptions);
 
 //app.UseHttpsRedirection();
 app.UseBlazorFrameworkFiles();
-app.UseStaticFiles();
+app.MapStaticAssets();
 app.UseCookiePolicy();
 
 
@@ -186,7 +186,8 @@ app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}")
+    .WithStaticAssets();
 app.MapBlazorHub();
 
 app.Run();

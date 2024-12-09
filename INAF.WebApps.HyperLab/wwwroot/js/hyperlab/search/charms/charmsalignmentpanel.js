@@ -709,13 +709,16 @@ async function alignSpectrumAsync() {
     //    showSimpleDialog(WARNING_LABEL, AlignedNoProcessBecauseAlreadyPresentMessage, WARNING);
     //    return;
     //}
+    setIsLoadingCircleIsVisible(true);
 
     if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED))
         await removeSpectraProcedureAsync(SPECTRUM_TYPE_ALIGNED);
 
     let points = getSpectrumPointsById(selectedSpectrumForProcessingId);
-    if (!points)
+    if (!points) { 
+        setIsLoadingCircleIsVisible(false);
         return;
+    }
 
     if (isSpectrumAvailableByType(SPECTRUM_TYPE_REF_WHITE)) {
         let refWhiteYValuesMax = getRefWhiteYMax();
@@ -761,6 +764,8 @@ async function alignSpectrumAsync() {
             isOk = false
     } else
         isOk = false;
+
+    setIsLoadingCircleIsVisible(false);
 
     if (!isOk)
         showSimpleDialog(ERROR_LABEL, AlignmentExecutionErrorMessage, ALERT);
@@ -813,6 +818,9 @@ function buildAlignedSpectrumCompleted() {
 
     /* refresh legend, if opened */
     refreshCharmsLegend();
+
+    /* reset visual range to make all available spectra visible */
+    dxChartResetVisualRange(chartContainer);
 
     /* mantain hidden all not necessary spectra */
     let hiddenSpectraNum = hideSpectraToBeHidden();

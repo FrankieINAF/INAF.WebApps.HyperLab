@@ -30,11 +30,11 @@ var red = '#a8071e';
 /* SAVE USER SETTINGS */
 /* ################################################################################ */
 /* items for creating a queue for saving user settings */
-//var aQueue;
-//var _ = ({ ...data } = {}) => () => new Promise(async resolve => {
-//    await saveUserSettingAsync(data);
-//    resolve();
-//});
+var aQueue;
+var _ = ({ ...data } = {}) => () => new Promise(async resolve => {
+    await saveUserSettingAsync(data);
+    resolve();
+});
 
 function getQueueItem(key, value) {
     return _({ url: UrlSetUserSetting, model: { Key: key, Value: value } });
@@ -6445,13 +6445,16 @@ async function alignSpectrumAsync() {
     //    showSimpleDialog(WARNING_LABEL, AlignedNoProcessBecauseAlreadyPresentMessage, WARNING);
     //    return;
     //}
+    setIsLoadingCircleIsVisible(true);
 
     if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED))
         await removeSpectraProcedureAsync(SPECTRUM_TYPE_ALIGNED);
 
     let points = getSpectrumPointsById(selectedSpectrumForProcessingId);
-    if (!points)
+    if (!points) { 
+        setIsLoadingCircleIsVisible(false);
         return;
+    }
 
     if (isSpectrumAvailableByType(SPECTRUM_TYPE_REF_WHITE)) {
         let refWhiteYValuesMax = getRefWhiteYMax();
@@ -6497,6 +6500,8 @@ async function alignSpectrumAsync() {
             isOk = false
     } else
         isOk = false;
+
+    setIsLoadingCircleIsVisible(false);
 
     if (!isOk)
         showSimpleDialog(ERROR_LABEL, AlignmentExecutionErrorMessage, ALERT);
@@ -6549,6 +6554,9 @@ function buildAlignedSpectrumCompleted() {
 
     /* refresh legend, if opened */
     refreshCharmsLegend();
+
+    /* reset visual range to make all available spectra visible */
+    dxChartResetVisualRange(chartContainer);
 
     /* mantain hidden all not necessary spectra */
     let hiddenSpectraNum = hideSpectraToBeHidden();
@@ -10646,12 +10654,15 @@ async function onSmoothingSegmentByWholeSpectrumWindowSizeChangeAsync(curr, requ
 /* APPLY SMOOTHING */
 /* ################################################################################ */
 async function applySmoothingAsync(smoothingType) {
+    setIsLoadingCircleIsVisible(true);
+
     /* retrieve spectrumType of spectrum to be processed */
     let srcSpectrumType = getSrcSpectrumType();
 
     /* retrieve points of continuum for removing it from aligned */
     let toBeSmoothedPoints = getSpectrumPointsBySpectrumType(srcSpectrumType);
     if (!toBeSmoothedPoints) {
+        setIsLoadingCircleIsVisible(false);
         showSimpleDialog(ERROR_LABEL, SmoothingExecuteSmoothingErrorMessage, ALERT);
         return;
     }
@@ -10673,6 +10684,7 @@ async function applySmoothingAsync(smoothingType) {
 
     if (processingResult.dialogMessage) {
         //console.log(`applySmoothingBySegmentsAsync - ex: ${processingResult.dialogMessage}`);
+        setIsLoadingCircleIsVisible(false);
         showSimpleDialog(ERROR_LABEL, SmoothingApplySmoothingErrorMessage, ALERT);
         return;
     }
@@ -10690,9 +10702,13 @@ async function applySmoothingAsync(smoothingType) {
 
         /* set text of cloud icon */
         setCloudTextAndIconStatus(destSpectrumType, false);
+
+        setIsLoadingCircleIsVisible(false);
     }
-    else
+    else {
+        setIsLoadingCircleIsVisible(false);
         showSimpleDialog(ERROR_LABEL, SmoothingExecutionErrorMessage, ALERT);
+    }
 }
 
 function buildSmoothedSpectrum(smoothingType, srcSpectrumType, destSpectrumType) {

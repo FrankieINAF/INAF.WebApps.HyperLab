@@ -23,7 +23,7 @@
 
 @code {
     private DotNetObjectReference<BlazorHelper>? objRef;
-    private IJSObjectReference jsmodule;
+    private IJSObjectReference? jsmodule;
 
     #region interfaces
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -31,16 +31,22 @@
         if (firstRender)
         {
             objRef = DotNetObjectReference.Create(this);
-            await jsruntime.InvokeAsync<string>("setDotNetHelper", objRef);
+            if (jsruntime != null)
+                await jsruntime.InvokeAsync<string>("setDotNetHelper", objRef);
         }
 
         await base.OnAfterRenderAsync(firstRender);
+
+        Console.WriteLine("OnInitializedAsync completed.");
     }
 
-    public void Dispose()
+    public async void Dispose()
     {
         if (objRef != null)
             objRef.Dispose();
+
+        if (jsmodule != null)
+            await jsmodule.DisposeAsync();
     }
     #endregion
 
