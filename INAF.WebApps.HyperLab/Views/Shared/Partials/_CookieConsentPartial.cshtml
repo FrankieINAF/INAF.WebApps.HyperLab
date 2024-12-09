@@ -1,0 +1,52 @@
+﻿@using INAF.WebApps.HyperLab.Resources
+@using Microsoft.AspNetCore.Http.Features
+
+@{
+    var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    var showBanner = !consentFeature?.CanTrack ?? false;
+    var cookieString = consentFeature?.CreateConsentCookie();
+}
+
+@if (showBanner)
+{
+    <link rel="stylesheet" href="~/css/dist/commonbundle.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/dist/home/cookiebannerbundle.css" asp-append-version="true" />
+
+    <div class="cookie-consent-banner">
+        <p class="cookie-title">@Html.Raw(Home.CookiePolicyTitle)</p>
+        <p class="cookie-text text-just">@Html.Raw(Home.CookieBannerMessage1)</p>
+        <p class="cookie-text text-just">@Html.Raw(Home.CookieBannerMessage2)</p>
+
+        <button id="cookieConsentButton" class="button primary cookie-button" onclick="setCookie('@cookieString')">
+            <span class="mif-checkmark margin-horizontal-8"></span>Ok
+        </button>
+    </div>
+
+    <script>
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function setCookie(value) {
+            value = value + '; secure'; // add secure flag otherwise 'samesite=none' doesn't work
+            document.cookie = value;
+            console.log('cookieString:' + value);
+
+            /* hide banner */
+            document.querySelector('.cookie-consent-banner').style.display = 'none';
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            if (getCookie("cookieConsent") === null) {
+                document.querySelector('.cookie-consent-banner').style.display = 'block';
+            }
+        });
+    </script>
+}
