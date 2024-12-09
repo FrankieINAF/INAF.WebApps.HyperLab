@@ -645,7 +645,7 @@ async function onSmoothingSegmentByWholeSpectrumWindowSizeChangeAsync(curr, requ
 /* APPLY SMOOTHING */
 /* ################################################################################ */
 async function applySmoothingAsync(smoothingType) {
-    setIsLoadingCircleIsVisible(true);
+    setLoadingCircleIsVisible(true);
 
     /* retrieve spectrumType of spectrum to be processed */
     let srcSpectrumType = getSrcSpectrumType();
@@ -653,7 +653,7 @@ async function applySmoothingAsync(smoothingType) {
     /* retrieve points of continuum for removing it from aligned */
     let toBeSmoothedPoints = getSpectrumPointsBySpectrumType(srcSpectrumType);
     if (!toBeSmoothedPoints) {
-        setIsLoadingCircleIsVisible(false);
+        setLoadingCircleIsVisible(false);
         showSimpleDialog(ERROR_LABEL, SmoothingExecuteSmoothingErrorMessage, ALERT);
         return;
     }
@@ -675,7 +675,7 @@ async function applySmoothingAsync(smoothingType) {
 
     if (processingResult.dialogMessage) {
         //console.log(`applySmoothingBySegmentsAsync - ex: ${processingResult.dialogMessage}`);
-        setIsLoadingCircleIsVisible(false);
+        setLoadingCircleIsVisible(false);
         showSimpleDialog(ERROR_LABEL, SmoothingApplySmoothingErrorMessage, ALERT);
         return;
     }
@@ -694,10 +694,10 @@ async function applySmoothingAsync(smoothingType) {
         /* set text of cloud icon */
         setCloudTextAndIconStatus(destSpectrumType, false);
 
-        setIsLoadingCircleIsVisible(false);
+        setLoadingCircleIsVisible(false);
     }
     else {
-        setIsLoadingCircleIsVisible(false);
+        setLoadingCircleIsVisible(false);
         showSimpleDialog(ERROR_LABEL, SmoothingExecutionErrorMessage, ALERT);
     }
 }

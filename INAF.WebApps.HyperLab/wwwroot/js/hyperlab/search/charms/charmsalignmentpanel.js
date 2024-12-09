@@ -709,14 +709,14 @@ async function alignSpectrumAsync() {
     //    showSimpleDialog(WARNING_LABEL, AlignedNoProcessBecauseAlreadyPresentMessage, WARNING);
     //    return;
     //}
-    setIsLoadingCircleIsVisible(true);
+    setLoadingCircleIsVisible(true);
 
     if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED))
         await removeSpectraProcedureAsync(SPECTRUM_TYPE_ALIGNED);
 
     let points = getSpectrumPointsById(selectedSpectrumForProcessingId);
     if (!points) { 
-        setIsLoadingCircleIsVisible(false);
+        setLoadingCircleIsVisible(false);
         return;
     }
 
@@ -765,7 +765,7 @@ async function alignSpectrumAsync() {
     } else
         isOk = false;
 
-    setIsLoadingCircleIsVisible(false);
+    setLoadingCircleIsVisible(false);
 
     if (!isOk)
         showSimpleDialog(ERROR_LABEL, AlignmentExecutionErrorMessage, ALERT);
