@@ -420,7 +420,7 @@ function showPXMinPXMaxFitting(P0P1Val, parentId, segmentIndex, P) {
     let segmentSeriesPointsNum = segmentSeriesPoints.length;
     for (var i = 0; i < segmentSeriesPointsNum; i++) {
         newSeriesPoints[i] = { X: segmentSeriesPoints[i].X };
-        newSeriesPoints[i][`id${spectrumInfo.Id}`] = segmentSeriesPoints[i].Y;
+        newSeriesPoints[i][`${spectrumInfo.Id}`] = segmentSeriesPoints[i].Y;
     }
 
     /* build panel */

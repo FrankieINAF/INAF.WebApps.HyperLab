@@ -121,7 +121,7 @@
     public async Task<ProcessingResult> fitSegmentAsync(List<PointModel> points,
                                                         FitMethodModel fitMethod)
     {
-        IFitProcessingHelper specializedProcessingHelper = null;
+        IFitProcessingHelper? specializedProcessingHelper = null;
         double? parameterValue = null;
         switch (fitMethod.HelperClassName)
         {
@@ -198,7 +198,7 @@
                                                                     double[] ys,
                                                                     FitMethodModel fitMethod)
     {
-        PMinPMaxResultModel pMinPMaxResult = null;
+        PMinPMaxResultModel? pMinPMaxResult = null;
 
         switch (fitMethod.HelperClassName)
         {

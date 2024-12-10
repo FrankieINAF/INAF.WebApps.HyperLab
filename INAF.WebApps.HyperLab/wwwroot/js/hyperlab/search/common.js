@@ -447,7 +447,14 @@ function createSeriesNameFromSpectrumNameAndType(name, spectrumType) {
 }
 
 function getIdValue(idItem) {
-    return parseInt(idItem.replace('id', ''));
+    let idValue = idItem
+        .replace(SPECTRUM_OF_TYPE_ALIGNED_TEMP_ID, '')
+        .replace(SPECTRUM_OF_TYPE_CONTINUUM_TEMP_ID, '')
+        .replace(SPECTRUM_OF_TYPE_CONTINUUM_REMOVED_TEMP_ID, '')
+        .replace(SPECTRUM_OF_TYPE_SMOOTHED_BY_SEGMENTS_TEMP_ID, '')
+        .replace(SPECTRUM_OF_TYPE_SMOOTHED_WHOLE_SPECTRUM_TEMP_ID, '')
+        .replace('id', '');
+    return parseInt(idValue);
 }
 
 function invertYValuesBottomToTop(yValues) {
