@@ -24,6 +24,13 @@ function getFunctionIndexFromValue(id, fitSegmentType) {
     return functionIndex;
 }
 
+function getPXMinPXMaxFunctionIndexFromValue(id) {
+    let numbers = id.replace(FIT_SEGMENT_PRO, '');
+    let functionId = parseInt(numbers.charAt(1));
+    let functionIndex = pXMinPXMaxMaxValueFunctions.findIndex(f => f.Id == functionId);
+    return functionIndex;
+}
+
 function onSegmentFunctionSelectBase(id, val, fitSegmentType, fitSegmentValueType) {
     let segmentIndex;
     if (id)

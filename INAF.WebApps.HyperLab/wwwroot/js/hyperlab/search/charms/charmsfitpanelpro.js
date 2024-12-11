@@ -612,7 +612,7 @@ async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null)
     tryRemovePXMinPXMaxMaxValueSeries();
 
     /* retrieve info about segment and function */
-    let functionIndex = getFunctionIndexFromValue(val, FIT_SEGMENT_PRO);
+    let functionIndex = getPXMinPXMaxFunctionIndexFromValue(val, FIT_SEGMENT_PRO);
 
     /* retrieve the selected fit function */
     let selectedFitFunction = pXMinPXMaxMaxValueFunctions[functionIndex];
