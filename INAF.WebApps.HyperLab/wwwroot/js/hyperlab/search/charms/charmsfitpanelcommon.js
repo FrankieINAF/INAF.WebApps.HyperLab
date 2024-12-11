@@ -118,6 +118,30 @@ function orderSegmentForFittingUIsIds(currentFitMode) {
         /* update id of div containing param value */
         let newFitSegmentValueContainerId = `${fitSegmentValueType}${segmentsForFitting[i].Index}Container`;
         $(`#${newId}`).find('div[id$="Container"]').attr('id', newFitSegmentValueContainerId);
+        /* update id of P0Button */
+        let button0 = $(`#${newId}`).find('div[id$="P0Button"]');
+        if (button0 && button0.length > 0) {
+            $(`#${button0[0].id}`).off();
+
+            let buttonP0Id = `${fitSegmentType}${segmentsForFitting[i].Index}P0Button`;
+            $(`#${button0[0].id}`).attr('id', buttonP0Id);
+            let segment = segmentsForFitting[i];
+            setPButtonAction(buttonP0Id, P0, segment.Index, segment.P0);
+        }
+        let button1 = $(`#${newId}`).find('div[id$="P1Button"]');
+        if (button1 && button1.length > 0) {
+            $(`#${button1[0].id}`).off();
+
+            let buttonP1Id = `${fitSegmentType}${segmentsForFitting[i].Index}P1Button`;
+            $(`#${button1[0].id}`).attr('id', buttonP1Id);
+            let segment = segmentsForFitting[i];
+            setPButtonAction(buttonP1Id, P1, segment.Index, segment.P1);
+        }
+        //$(`#${newId}`).find('div[id$="P0Button"]').attr('id', `${fitSegmentType}${segmentsForFitting[i].Index}P0Button`);
+        $(`#${newId}`).find('span[id$="P0ButtonIcon"]').attr('id', `${fitSegmentType}${segmentsForFitting[i].Index}P0ButtonIcon`);
+        /* update id of P1Button */
+        $(`#${newId}`).find('div[id$="P1Button"]').attr('id', `${fitSegmentType}${segmentsForFitting[i].Index}P1Button`);
+        $(`#${newId}`).find('span[id$="P1ButtonIcon"]').attr('id', `${fitSegmentType}${segmentsForFitting[i].Index}P1ButtonIcon`);
         /* update spinner id, if available */
         let spinner = $(`#${fitSegmentValueType}${segmentsForFitting[i].Index}Container`).find('input[type=text]');
         if (spinner)

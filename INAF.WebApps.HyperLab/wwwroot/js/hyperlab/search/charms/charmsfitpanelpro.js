@@ -55,6 +55,9 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     //    xmax = extractSpectrumXMax(points);
     //}
 
+    let buttonP0Id = `${segmentId}${P0}${Button}`;
+    let buttonP1Id = `${segmentId}${P1}${Button}`;
+
     let html = ``;
 
     /* segment info */
@@ -65,25 +68,16 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     /* top spinners */
     html += `<div class="d-flex flex-row">`;
     if (isFromUserAction)
-        html += `   <div id="${segmentId}${P0}${Button}" style="width: 20px; height: 30px;" class="margin-vertical-4 margin-horizontal-4"><span id="${segmentId}${P0}${Button}Icon" title="${BandAnalysisIconPXMinXMaxFitTitle}" class="mif-chevron-thin-left mif-2x fg-red pointer"></span></div>`;
+        html += `   <div id="${buttonP0Id}" style="width: 20px; height: 30px;" class="margin-vertical-4 margin-horizontal-4"><span id="${buttonP0Id}Icon" title="${BandAnalysisIconPXMinXMaxFitTitle}" class="mif-chevron-thin-left mif-2x fg-red pointer"></span></div>`;
     else
         html += `   <div class="margin-vertical-4 margin-horizontal-4" style="width: 20px; height: 30px"></div>`;
     html += `   <div class="d-flex flex-justify-between">`;
+
     let idP0PMin = `${segmentId}${P0}${PXMin}`;
-    html += `   <input id="${idP0PMin}" `;
-    html += `   data-cls-spinner="width-130" `;
-    html += `   data-default-value="${segment.P0.PXMin.X}" `;
     let p0PMax = (segment.P0.P.X - 1);
     if (!isFromUserAction)
         p0PMax = segment.P0.P.X;
-    html += `   data-max-value="${p0PMax}" `; // only max-value for left boundary
-    html += `   data-step="${1}" `;
-    //html += `   data-fixed="4" `;
-    html += `   data-on-plus-click="${onBoundaryValueChangeByButtonPro.name}" `;
-    html += `   data-on-minus-click="${onBoundaryValueChangeByButtonPro.name}" `;
-    html += `   data-on-change="${onBoundaryValueChangeByEnter.name}" `;
-    html += `   data-repeat-threshold="1000" `;
-    html += `   type="text" data-role="spinner" data-buttons-position="right">`;
+    html += createSpinner(idP0PMin, segment.P0.PXMin.X, p0PMax, false, true);
 
     html += `   <div class="margin-horizontal-8" style="width: 80px;">`;
     let topPMinPMaxResult;
@@ -103,17 +97,8 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     html += `   </div>`;
 
     let idP0PMax = `${segmentId}${P0}${PXMax}`;
-    html += `   <input id="${idP0PMax}" `;
-    html += `   data-cls-spinner="width-130" `;
-    html += `   data-default-value="${segment.P0.PXMax.X}" `;
-    html += `   data-min-value="${(segment.P0.P.X + 1)}" `; // only min-value for right boundary
-    html += `   data-step="${1}" `;
-    //html += `   data-fixed="4" `;
-    html += `   data-on-plus-click="${onBoundaryValueChangeByButtonPro.name}" `;
-    html += `   data-on-minus-click="${onBoundaryValueChangeByButtonPro.name}" `;
-    html += `   data-on-change="${onBoundaryValueChangeByEnter.name}" `;
-    html += `   data-repeat-threshold="1000" `;
-    html += `   type="text" data-role="spinner" data-buttons-position="right">`;
+    html += createSpinner(idP0PMax, segment.P0.PXMax.X, segment.P0.P.X + 1, true, false);
+
     html += `   </div>`;
     html += `</div>`;
 
@@ -136,26 +121,13 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     /* bottom spinners */
     html += `<div class="d-flex flex-row margin-bottom-4">`;
     if (isFromUserAction)
-        html += `   <div id="${segmentId}${P1}${Button}" class="margin-horizontal-4" style="width: 20px; height: 30px;"><span id="${segmentId}${P1}${Button}Icon" title="${BandAnalysisIconPXMinXMaxFitTitle}" class="mif-chevron-thin-left mif-2x fg-red pointer"></span></div>`;
+        html += `   <div id="${buttonP1Id}" class="margin-horizontal-4" style="width: 20px; height: 30px;"><span id="${buttonP1Id}Icon" title="${BandAnalysisIconPXMinXMaxFitTitle}" class="mif-chevron-thin-left mif-2x fg-red pointer"></span></div>`;
     else
         html += `   <div class="margin-horizontal-4" style="width: 20px; height: 30px"></div>`;
     html += `   <div class="d-flex flex-justify-between">`;
-    let idP1PMin = `${segmentId}${P1}${PXMin}`;
-    html += `   <input id="${idP1PMin}" `;
-    html += `   data-cls-spinner="width-130" `;
-    html += `   data-default-value="${segment.P1.PXMin.X}" `;
-    html += `   data-max-value="${(segment.P1.P.X - 1)}" `; // only max-value for left boundary
-    html += `   data-step="${1}" `;
-    //html += `   data-fixed="4" `;
-    html += `   data-on-plus-click="${onBoundaryValueChangeByButtonPro.name}" `;
-    html += `   data-on-minus-click="${onBoundaryValueChangeByButtonPro.name}" `;
-    html += `   data-on-change="${onBoundaryValueChangeByEnter.name}" `;
-    html += `   data-repeat-threshold="1000" `;
-    html += `   type="text" data-role="spinner" data-buttons-position="right">`;
 
-    let p1PMax = (segment.P1.P.X + 1);
-    if (!isFromUserAction)
-        p1PMax = segment.P1.P.X;
+    let idP1PMin = `${segmentId}${P1}${PXMin}`;
+    html += createSpinner(idP1PMin, segment.P1.PXMin.X, segment.P1.P.X - 1, false, true);
 
     html += `   <div class="margin-horizontal-8" style="width: 80px;">`;
     let bottomPMinPMaxResult;
@@ -175,17 +147,11 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     html += `   </div>`;
 
     let idP1PMax = `${segmentId}${P1}${PXMax}`;
-    html += `   <input id="${idP1PMax}" `;
-    html += `   data-cls-spinner="width-130" `;
-    html += `   data-default-value="${segment.P1.PXMax.X}" `;
-    html += `   data-min-value="${p1PMax}" `; // only min-value for right boundary
-    html += `   data-step="${1}" `;
-    //html += `   data-fixed="4" `;
-    html += `   data-on-plus-click="${onBoundaryValueChangeByButtonPro.name}" `;
-    html += `   data-on-minus-click="${onBoundaryValueChangeByButtonPro.name}" `;
-    html += `   data-on-change="${onBoundaryValueChangeByEnter.name}" `;
-    html += `   data-repeat-threshold="1000" `;
-    html += `   type="text" data-role="spinner" data-buttons-position="right">`;
+    let p1PMax = (segment.P1.P.X + 1);
+    if (!isFromUserAction)
+        p1PMax = segment.P1.P.X;
+    html += createSpinner(idP1PMax, segment.P1.PXMax.X, p1PMax, true, false);
+
     html += `   </div>`;
     html += `</div>`;
 
@@ -200,67 +166,22 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
 
     html += `</div>`;
 
-    $(`#${idP0PMin}`).ready(function () {
+    $(function () {
         /* required to set value to default value, otherwise value = 0 */
         Metro.getPlugin(`#${idP0PMin}`, 'spinner').toDefault();
-    });
-
-    $(`#${idP0PMax}`).ready(function () {
         /* required to set value to default value, otherwise value = 0 */
         Metro.getPlugin(`#${idP0PMax}`, 'spinner').toDefault();
-    });
-
-    $(`#${idP1PMin}`).ready(function () {
         /* required to set value to default value, otherwise value = 0 */
         Metro.getPlugin(`#${idP1PMin}`, 'spinner').toDefault();
-    });
-
-    $(`#${idP1PMax}`).ready(function () {
         /* required to set value to default value, otherwise value = 0 */
         Metro.getPlugin(`#${idP1PMax}`, 'spinner').toDefault();
     });
 
     /* show panels for changing method for finding Max in selected segment */
-    let buttonP0Id = `${segmentId}${P0}${Button}`;
-    $(`#${buttonP0Id}`).ready(function () {
-        $(`#${buttonP0Id}`).on('click', function () {
-            if (!isAppendixAlreadyAvailable) {
-                showPXMinPXMaxFitting(P0, `${buttonP0Id}`, segment.Index, segment.P0);
-
-                setIconForPXMinXMaxFit(`${buttonP0Id}Icon`, false);
-
-                setIconParentDivForPXMinPXMaxFit(buttonP0Id, true);
-            } else {
-                hidePXMinPXMaxFitting(`${buttonP0Id}${Appendix}`);
-
-                setIconForPXMinXMaxFit(`${buttonP0Id}Icon`, true);
-
-                setIconParentDivForPXMinPXMaxFit(buttonP0Id, false);
-            }
-        });
-    });
+    setPButtonAction(buttonP0Id, P0, segment.Index, segment.P0);
 
     /* show panels for changing method for finding Max in selected segment */
-    let buttonP1Id = `${segmentId}${P1}${Button}`;
-    $(`#${buttonP1Id}`).ready(function () {
-        $(`#${buttonP1Id}`).on('click', function () {
-            if (!isAppendixAlreadyAvailable) {
-                showPXMinPXMaxFitting(P1, `${buttonP1Id}`, segment.Index, segment.P1);
-
-                setIconForPXMinXMaxFit(`${buttonP1Id}Icon`, false);
-
-                setIconParentDivForPXMinPXMaxFit(buttonP1Id, true);
-
-            } else {
-                hidePXMinPXMaxFitting(`${buttonP1Id}${Appendix}`);
-
-                setIconForPXMinXMaxFit(`${buttonP1Id}Icon`, true);
-
-                setIconParentDivForPXMinPXMaxFit(buttonP1Id, false);
-            }
-
-        });
-    });
+    setPButtonAction(buttonP1Id, P1, segment.Index, segment.P1);
 
     $(`#${segmentId}`).ready(async function () {
         await onSegmentFunctionSelectProAsync(Metro.getPlugin(`#${segmentId}Select`, 'select').val());
@@ -279,6 +200,28 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
         SegmentId: segmentId,
         Html: html
     };
+}
+
+function createSpinner(id, defaultValue, boundaryValue, isMinValueAllowed, isMaxValueAllowed) {
+    let html = `   <input id="${id}" `;
+    html += `   data-cls-spinner="width-130" `;
+    html += `   data-default-value="${defaultValue}" `;
+    if (isMinValueAllowed)
+        html += `   data-min-value="${boundaryValue}" `; // only min-value for right boundary
+    if (isMaxValueAllowed)
+        html += `   data-max-value="${boundaryValue}" `; // only max-value for left boundary
+    html += `   data-step="${1}" `;
+    //html += `   data-fixed="4" `;
+    html += `   data-on-plus-click="${onBoundaryValueChangeByButtonPro.name}" `;
+    html += `   data-on-minus-click="${onBoundaryValueChangeByButtonPro.name}" `;
+    html += `   data-cls-spinner-button="fg-white" `;
+    html += `   data-cls-spinner-button-plus="bg-cyan" `;
+    html += `   data-cls-spinner-button-minus="bg-cyan" `;
+    html += `   data-on-change="${onBoundaryValueChangeByEnter.name}" `;
+    html += `   data-repeat-threshold="1000" `;
+    html += `   type="text" data-role="spinner" data-buttons-position="right">`;
+
+    return html;
 }
 
 function onBoundaryValueChangeByButtonPro(curr, request, real) {
@@ -376,6 +319,26 @@ function setPanelForFitProVisible() {
     /* show container of segments */
     showByClassDFlexItem('fitSegmentsListContainerPro');
     animateCSS('fitSegmentsListContainerPro', 'fadeIn', FAST);
+}
+
+function setPButtonAction(buttonPId, P, segmentIndex, segmentP) {
+    $(function () {
+        $(`#${buttonPId}`).on('click', function () {
+            if (!isAppendixAlreadyAvailable) {
+                showPXMinPXMaxFitting(P, `${buttonPId}`, segmentIndex, segmentP);
+
+                setIconForPXMinXMaxFit(`${buttonPId}Icon`, false);
+
+                setIconParentDivForPXMinPXMaxFit(buttonPId, true);
+            } else {
+                hidePXMinPXMaxFitting(`${buttonPId}${Appendix}`);
+
+                setIconForPXMinXMaxFit(`${buttonPId}Icon`, true);
+
+                setIconParentDivForPXMinPXMaxFit(buttonPId, false);
+            }
+        });
+    });
 }
 
 /* ################################################################################ */
