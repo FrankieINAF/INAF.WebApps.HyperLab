@@ -82,9 +82,19 @@
                                                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                                             </div>
                                             <!-- SUBMIT + REMEMBER ME-->
-                                            <div class="form-group mt-10">
-                                                @Html.CheckBoxFor(m => m.RememberMe, new Dictionary<string, object> { { "data-role", "checkbox" }, { "class", "place-right" }, { "data-caption", @Html.Raw(CommonResources.Login.RememberMeLabel) }, { "id", "checkboxRememberMe" } })
-                                                <button id="submitButton" class="button">@Html.Raw(SharedResources.SubmitLabel)</button>
+                                            <div class="row margin-top-32">
+                                                <div class="cell-fs-4">&nbsp;</div>
+                                                <div class="cell-fs-4 d-flex flex-justify-center">
+                                                    <div>
+                                                        <button id="submitButton" class="image-button primary">
+                                                            <span class="mif-checkmark icon"></span>
+                                                            <span class="caption">@Html.Raw(SharedResources.SubmitLabel)</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="cell-fs-4">
+                                                    @Html.CheckBoxFor(m => m.RememberMe, new Dictionary<string, object> { { "data-role", "checkbox" }, { "class", "place-right" }, { "data-caption", @Html.Raw(CommonResources.Login.RememberMeLabel) }, { "id", "checkboxRememberMe" } })
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -100,7 +110,7 @@
                             <div class="cell-fs-12 d-flex flex-justify-around">
                                 <!-- BUTTON REGISTRATION -->
                                 <div>
-                                    <button class="image-button primary" onclick="navigateTo('/@GenericHelper.GetControllerName(nameof(AccountController))/@nameof(AccountController.Registration)')">
+                                    <button class="image-button success" onclick="navigateTo('/@GenericHelper.GetControllerName(nameof(AccountController))/@nameof(AccountController.Registration)')">
                                         <span class="mif-user-check icon"></span>
                                         <span class="caption">@Html.Raw(CommonResources.Login.RegistrationLabel)</span>
                                     </button>
