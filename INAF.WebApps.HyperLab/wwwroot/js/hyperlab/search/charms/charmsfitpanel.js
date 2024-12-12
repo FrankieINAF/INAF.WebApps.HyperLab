@@ -623,14 +623,11 @@ function tryRemoveFitPointsSeries() {
 /* ################################################################################ */
 /* STARTING METHOD FOR ADDING/REMOVING POINTS */
 function addRemoveSelectedPointForFittingProcedure(seriesId, seriesName, point, mousePosX, mousePosY) {
-    if (seriesId == buildTempContinuumId())
-        return;
-
     /* adjusted coords for showing pulse animation */
     mousePosX -= 6;
     mousePosY -= 4;
 
-    if (seriesId == SERIES_FIT_POINT)
+    if (isFitPointAvailableAtCurrentX(point.X))
         removeSelectedPointFromFitting(point, mousePosX, mousePosY);
     else if (isSpectrumOfType(seriesId, SPECTRUM_TYPE_ALIGNED)) {
         insertPulse(mousePosX, mousePosY, 'pulse-ring-add');
@@ -687,6 +684,11 @@ function cleanPointsPanel() {
     }
 }
 
+function isFitPointAvailableAtCurrentX(x) {
+    let items = dxChartGetItems(chartContainer);
+    return items.some(obj => obj.X == x && Object.keys(obj).includes(SERIES_FIT_POINT));
+}
+
 /* for removing user selected points on chart */
 function removeSelectedPointFromFitting(point, mousePosX = null, mousePosY = null) {
     /* remove point from dedicated array, return the right X coord of the point for fit */
@@ -702,13 +704,13 @@ function removeSelectedPointFromFitting(point, mousePosX = null, mousePosY = nul
         insertPulse(mousePosX, mousePosY, 'pulse-ring-remove');
 
     let callback = function () {
-        let fixedPoint = createPointForFitting(createSimplePoint(pointForFitting.X, point.Y));
-
-        /* remove point from chart */
-        removeFitPointFromChart(fixedPoint.X);
+        /* remove point (with boundary points) from chart */
+        removeFitPointFromChart(pointForFitting.PXMin.X);
+        removeFitPointFromChart(pointForFitting.P.X);
+        removeFitPointFromChart(pointForFitting.PXMax.X);
 
         /* manage segments after point has been removed */
-        manageRemovedPoint(fixedPoint);
+        manageRemovedPoint(pointForFitting);
 
         /* if only 1 point remains, remove segment */
         if (isOnlyOneItemInPointsForFittingArrayAvailable()) { }
@@ -722,7 +724,7 @@ function removeSelectedPointFromFitting(point, mousePosX = null, mousePosY = nul
     };
 
     /* execute callback after pulse animation completed */
-    setTimeout(callback, 1000);
+    setTimeout(callback, 500);
 }
 
 /* for removing points when removing the whole continuum */
@@ -793,14 +795,14 @@ function manageRemovedPoint(point) {
     let minX = getPointsForFittingArrayMinX();
     let maxX = getPointsForFittingArrayMaxX();
 
-    if (point.X <= minX) {
+    if (point.P.X <= minX) {
         /* remove 1st segment on UI */
         removeSegmentForFittingUICore(segmentsForFitting[0]);
         /* remove the 1st segment  */
         removeContinuumSegmentForFittingOnChart(segmentsForFitting[0]);
         /* remove 1st segment from segmentsForFitting */
         removeSegmentForFittingAt(0);
-    } else if (point.X >= maxX) {
+    } else if (point.P.X >= maxX) {
         /* remove last segment on UI */
         removeSegmentForFittingUICore(segmentsForFitting[segmentsForFitting.length - 1]);
         /* remove the lastst segment  */
@@ -808,21 +810,43 @@ function manageRemovedPoint(point) {
         /* remove last segment from segmentsForFitting */
         removeSegmentForFittingAt(segmentsForFitting.length - 1);
     } else {
-        let index = segmentsForFitting.findIndex(p => p.P1.X > point.X);
+        let index = segmentsForFitting.findIndex(p => p.P1.P.X > point.P.X);
+        if (index == -1)
+            return;
         /* before removing the segment, we need to retrieve the x0 of the previous segment and the
            X1 of the next segment. Then we'll remove 2 segments containing the removed point and
            we'll add a new segment with the retrieved boundaries x0,x1 */
         let p0 = segmentsForFitting[index - 1].P0;
         let p1 = segmentsForFitting[index].P1;
         /* remove n-th segment on UI */
-        removeSegmentForFittingUICore(segmentsForFitting[index]);
+        switch (currentFitMode) {
+            case FIT_CORE_MODE:
+                removeSegmentForFittingUICore(segmentsForFitting[index]);
+                break;
+
+            case FIT_PRO_MODE:
+                removeSegmentForFittingUIPro(segmentsForFitting[index]);
+                break;
+        }
+        
         /* remove segments containing the selected removed point  */
         let segments0 = removeSegmentForFittingAt(index);
         removeContinuumSegmentForFittingOnChart(segments0[0]);
+
         /* remove n-th segment on UI */
-        removeSegmentForFittingUICore(segmentsForFitting[index - 1]);
+        switch (currentFitMode) {
+            case FIT_CORE_MODE:
+                removeSegmentForFittingUICore(segmentsForFitting[index - 1]);
+                break;
+
+            case FIT_PRO_MODE:
+                removeSegmentForFittingUIPro(segmentsForFitting[index - 1]);
+                break;
+        }
+        
         let segments1 = removeSegmentForFittingAt(index - 1);
         removeContinuumSegmentForFittingOnChart(segments1[0]);
+
         /* add new segment with p0,p1 */
         addNewSegmentProcedureAsync(p0, p1);
     }
@@ -1087,8 +1111,11 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1) {
 function removeContinuumSegmentForFittingOnChart(segment) {
     let items = dxChartGetItems(chartContainer);
 
-    let index0 = items.findIndex(p => p.X == segment.P0.X);
-    let index1 = items.findIndex(p => p.X == segment.P1.X);
+    let index0 = items.findIndex(p => p.X == segment.P0.P.X);
+    let index1 = items.findIndex(p => p.X == segment.P1.P.X);
+
+    if (index0 == -1 || index1 == -1)
+        return;
 
     dxChartBeginUpdate(chartContainer);
 
@@ -1140,7 +1167,7 @@ function tryAddContinuumSpectrumSeries(continuumSpectrum) {
 }
 
 /* ################################################################################ */
-/* REMOVE CONTINUUM */
+/* DELETE CONTINUUM */
 /* ################################################################################ */
 function removeContinuum() {
     isRemovingContinuum = true;
@@ -1219,7 +1246,7 @@ function removeFitPointsSeriesPoints() {
 }
 
 /* ################################################################################ */
-/* REMOVE CONTINUUM FROM SPECTRUM */
+/* BUILD CONTINUUM-REMOVED SPECTRUM */
 /* ################################################################################ */
 function buildContinuumRemovedSpectrum() {
     try {
@@ -1409,6 +1436,7 @@ async function tryCalculateContinuumRemovedAsync() {
             isOk = false;
 
         setLoadingCircleIsVisible(false);
+
         if (!isOk)
             showSimpleDialog(ERROR_LABEL, ContinuumRemovalExecutionErrorMessage, ALERT);
     }

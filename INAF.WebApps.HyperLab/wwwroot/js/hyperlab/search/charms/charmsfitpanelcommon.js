@@ -313,7 +313,7 @@ function isPointForFittingInExistingSegment(point) {
 }
 
 function removeFromPointsForFittingArray(point) {
-    let index = pointsForFitting.findIndex(p => p.P.X >= (point.P.X - POINT_RADIUS) && (p.P.X <= (point.P.X + POINT_RADIUS)));
+    let index = pointsForFitting.findIndex(p => (p.P.X >= (point.X - POINT_RADIUS)) && (p.P.X <= (point.X + POINT_RADIUS)));
 
     if (index == -1)
         return;

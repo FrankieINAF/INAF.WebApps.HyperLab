@@ -126,3 +126,9 @@ function removeSegmentForFittingUICore(segment) {
     //animateCSS(segmentId, 'slideOutRight', FASTER, callback);
 }
 
+function removeSegmentForFittingUIPro(segment) {
+    let segmentId = `${FIT_SEGMENT_PRO}${segment.Index}`;
+    $(`#${segmentId}`).remove();
+    //let callback = function () { $(`#${segmentId}`).remove(); };
+    //animateCSS(segmentId, 'slideOutRight', FASTER, callback);
+}
