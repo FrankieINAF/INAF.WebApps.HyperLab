@@ -152,12 +152,12 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
 
     html += `</div>`;
 
-    /* button for starting band analysis */
-    if (topPMinPMaxResult) {
-        html += `<div id="${segmentId}BandAnalysisButton" class="flex-align-center d-none">`;
-        html += `<button class="button light cycle small outline pointer" onclick="${startBandAnalysisProcedureAsync.name}(${segment.P0.P.X}, ${segment.P1.P.X})" title=""><span class="mif-calculator2"></span></button>`;
-        html += `</div>`;
-    }
+    ///* button for starting band analysis */
+    //if (topPMinPMaxResult) {
+    //    html += `<div id="${segmentId}BandAnalysisButton" class="flex-align-center d-none">`;
+    //    html += `<button class="button light cycle small outline pointer" onclick="${startBandAnalysisProcedureAsync.name}(${segment.P0.P.X}, ${segment.P1.P.X})" title=""><span class="mif-calculator2"></span></button>`;
+    //    html += `</div>`;
+    //}
 
     html += `</div>`;
 

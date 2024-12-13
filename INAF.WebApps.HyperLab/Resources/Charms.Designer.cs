@@ -1105,6 +1105,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Band analysis.
+        /// </summary>
+        public static string TabsBandAnalysisTitle {
+            get {
+                return ResourceManager.GetString("TabsBandAnalysisTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fit options.
         /// </summary>
         public static string TabsFitTitle {

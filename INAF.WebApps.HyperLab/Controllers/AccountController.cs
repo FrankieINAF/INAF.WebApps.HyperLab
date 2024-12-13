@@ -135,7 +135,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 (bool isAuthenticated, UserModel? user) result = await tryAuthenticateForWebAsync(model.UserName!, model.Password!, model.RememberMe);
                 logger.LogInformation($"{nameof(Login)} - isAuthenticated: {result.isAuthenticated}");
                 if (result.isAuthenticated)
-                    return RedirectToAction(nameof(SearchesController.Search), GenericHelper.GetControllerName(nameof(SearchesController)));
+                    return RedirectToAction(nameof(SLabDataManagerController.Search), GenericHelper.GetControllerName(nameof(SLabDataManagerController)));
                 //return RedirectToHomeView(returnUrl);
             }
             else

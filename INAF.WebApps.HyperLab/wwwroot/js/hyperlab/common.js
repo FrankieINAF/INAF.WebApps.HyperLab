@@ -394,6 +394,14 @@ function remove(id) {
     $(`#${id}`).remove();
 }
 
+function removeClass(id, classname) {
+    $(`#${id}`).removeClass(classname);
+}
+
+function addClass(id, classname) {
+    $(`#${id}`).addClass(classname);
+}
+
 function setElemVisible(elemId, isVisible) {
     if (isVisible)
         $('#' + elemId).css('display', 'block');

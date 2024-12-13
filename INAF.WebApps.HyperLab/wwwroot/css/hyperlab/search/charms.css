@@ -30,11 +30,6 @@
     width: 140px;
 }
 
-.charms-tabs {
-    background-color: transparent !important;
-    z-index: 1;
-}
-
 .charms-select {
     width: 300px;
 }
@@ -52,3 +47,9 @@
         border-color: #ffffff !important;
         background: #ffffff !important;
     }
+
+/* redefine class in metro.css */
+.active {
+    background-color: #1ba1e2 !important;
+    color: white !important;
+}

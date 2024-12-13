@@ -32,6 +32,34 @@ var bandAnalysis = {
 
 var bandsAnalysisData;
 
+/* ################################################################################ */
+/* CREATE LIST OF SEGMENTS */
+/* ################################################################################ */
+function createListOfSegmentsForBandAnalysis() {
+    /* clear list of segments */
+    $('#bandsAnalysisSegmentsListContainer').empty();
+
+    let segmentsNum = segmentsForFitting.length;
+    if (segmentsNum == 0)
+        return;
+
+    /* create new list of segments */
+    let html = `<div class="d-flex flex-column">`;
+    for (var i = 0; i < segmentsNum; i++) {
+        html += `<div class="d-flex flex-row margin-top-8">`;
+        html += `<button class="button light cycle small outline pointer" onclick="${startBandAnalysisProcedureAsync.name}(${segmentsForFitting[i].P0.P.X}, ${segmentsForFitting[i].P1.P.X})" title="${BandAnalysisStartBandAnalysisButtonTitle}"><span class="mif-calculator"></span></button>`;
+        html += `<span class="margin-left-16">Segment ${i}:</span>`;
+        html += `<span class="margin-left-16">[${segmentsForFitting[i].P0.P.X}, ${segmentsForFitting[i].P1.P.X}]</span>`;
+        html += `</div>`;
+    }
+    html += `</div>`;
+    
+    $('#bandsAnalysisSegmentsListContainer').html(html);
+}
+
+/* ################################################################################ */
+/* START BAND ANALYSIS */
+/* ################################################################################ */
 async function startBandAnalysisProcedureAsync(x0, x1) {
     /* retrieve available analysis data, if present */
     getBandsAnalysisDataAsync();
@@ -80,38 +108,38 @@ async function startBandAnalysisProcedureAsync(x0, x1) {
 }
 
 async function executeBandAnalysisProcedureAsync() {
-    if (!isBandDepthCharmsOpened)
-        await showBandAnalysisPanelAsync();
+    //if (!isBandDepthCharmsOpened)
+    //    await showBandAnalysisPanelAsync();
 
     await executeBandAnalysisAsync();
 
     isBandDepthCharmsOpened = true;
 }
 
-/* ################################################################################ */
-/* SHOW/HIDE BAND DEPTH PANEL */
-/* ################################################################################ */
-async function hideBandAnalysisPanelAsync() {
-    await animateCSSAsync('charmsBandAnalysisMainPanel', 'fadeOut', FASTER);
-    hideByClass('charmsBandAnalysisMainPanel');
+///* ################################################################################ */
+///* SHOW/HIDE BAND DEPTH PANEL */
+///* ################################################################################ */
+//async function hideBandAnalysisPanelAsync() {
+//    await animateCSSAsync('charmsBandAnalysisMainPanel', 'fadeOut', FASTER);
+//    hideByClass('charmsBandAnalysisMainPanel');
 
-    showByClass('charmsSpectraProcessingMainPanel');
-    await animateCSSAsync('charmsSpectraProcessingMainPanel', 'fadeIn', FASTER);
+//    showByClass('charmsSpectraProcessingMainPanel');
+//    await animateCSSAsync('charmsSpectraProcessingMainPanel', 'fadeIn', FASTER);
 
-    /* retrieve all points of all series from chart */
-    let items = dxChartGetItems(chartContainer);
+//    /* retrieve all points of all series from chart */
+//    let items = dxChartGetItems(chartContainer);
 
-    /* remove previous analysis and UI items, if available */
-    clearBandAnalysisProcedure(items);
-}
+//    /* remove previous analysis and UI items, if available */
+//    clearBandAnalysisProcedure(items);
+//}
 
-async function showBandAnalysisPanelAsync() {
-    await animateCSSAsync('charmsSpectraProcessingMainPanel', 'fadeOut', FASTER);
-    hideByClass('charmsSpectraProcessingMainPanel');
+//async function showBandAnalysisPanelAsync() {
+//    await animateCSSAsync('charmsSpectraProcessingMainPanel', 'fadeOut', FASTER);
+//    hideByClass('charmsSpectraProcessingMainPanel');
 
-    showByClass('charmsBandAnalysisMainPanel');
-    await animateCSSAsync('charmsBandAnalysisMainPanel', 'fadeIn', FASTER);
-}
+//    showByClass('charmsBandAnalysisMainPanel');
+//    await animateCSSAsync('charmsBandAnalysisMainPanel', 'fadeIn', FASTER);
+//}
 
 /* ################################################################################ */
 /* BAND DEPTH */
@@ -181,6 +209,10 @@ async function executeBandAnalysisAsync() {
 
     /* set isEvaluated value */
     saveIsEvaluated(true);
+
+    removeClass('bandAnalysisResultsContainer', 'd-none');
+    addClass('bandAnalysisResultsContainer', 'd-flex');
+    addClass('bandAnalysisResultsContainer', 'flex-column');
 }
 
 async function evaluateBandAreaAsync(xs, ys) {
@@ -327,7 +359,7 @@ function showFwhm(items, leftMargin, rightMargin) {
     dxChartResetVisualRange(chartContainer);
 }
 
-// ONLY FOR DEVELOP
+// ONLY FOR DEVELOPMENT
 function showInvertedBand(items, xValues, invertedYValues) {
     dxChartBeginUpdate(chartContainer);
 
@@ -584,8 +616,10 @@ async function getBandsAnalysisDataAsync() {
 function buildListOfAvailableBandsAnalysisData(listObj) {
     let bandsNum = listObj.length;
 
-    if (bandsNum == 0)
+    if (bandsNum == 0) {
+        setBandsAnalysisDataDownloadVisibile(false);
         return;
+    }
 
     let html = ``;
     html += `<div class="margin-horizontal-8 margin-vertical-8">`;
@@ -597,6 +631,20 @@ function buildListOfAvailableBandsAnalysisData(listObj) {
     html += `</div>`;
 
     $('#bandsAnalysisDataList').html(html);
+
+    setBandsAnalysisDataDownloadVisibile(true);
+}
+
+function setBandsAnalysisDataDownloadVisibile(isVisible) {
+    if (isVisible) {
+        removeClass('availableBandsAnalysisData', 'd-none');
+        addClass('availableBandsAnalysisData', 'd-flex');
+        addClass('availableBandsAnalysisData', 'flex-column');
+    } else {
+        removeClass('availableBandsAnalysisData', 'd-flex');
+        removeClass('availableBandsAnalysisData', 'flex-column');
+        addClass('availableBandsAnalysisData', 'd-none');
+    }
 }
 
 /* ################################################################################ */

@@ -31,14 +31,14 @@ var red = '#a8071e';
 /* ################################################################################ */
 /* items for creating a queue for saving user settings */
 var aQueue;
-var saveUserSettingPromise = ({ ...data } = {}) => () => new Promise(async resolve => {
-    await saveUserSettingAsync(data);
-    resolve();
-});
+//var saveUserSettingPromise = ({ ...data } = {}) => () => new Promise(async resolve => {
+//    await saveUserSettingAsync(data);
+//    resolve();
+//});
 
-function getQueueItem(key, value) {
-    return saveUserSettingPromise({ url: UrlSetUserSetting, model: { Key: key, Value: value } });
-}
+//function getQueueItem(key, value) {
+//    return saveUserSettingPromise({ url: UrlSetUserSetting, model: { Key: key, Value: value } });
+//}
 
 function callEnqueueSaveSetting(timeout, key, value, jsDelay) {
     if (timeout)

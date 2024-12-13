@@ -61,15 +61,6 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start evaluating band parameters values.
-        /// </summary>
-        public static string BandAnalysisBandAnalysisButtonTitle {
-            get {
-                return ResourceManager.GetString("BandAnalysisBandAnalysisButtonTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Band area: .
         /// </summary>
         public static string BandAnalysisBandAreaLabel {
@@ -196,6 +187,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Band analysis results.
+        /// </summary>
+        public static string BandAnalysisResultsTitle {
+            get {
+                return ResourceManager.GetString("BandAnalysisResultsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, something went wrong while trying to save band analysis info.
         /// </summary>
         public static string BandAnalysisSaveErrorMessage {
@@ -214,11 +214,29 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to List of available segments for evaluating band analysis values.
+        /// </summary>
+        public static string BandAnalysisSegmentsListTitle {
+            get {
+                return ResourceManager.GetString("BandAnalysisSegmentsListTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Boundaries.
         /// </summary>
         public static string BandAnalysisSegmentXBoundariesLabel {
             get {
                 return ResourceManager.GetString("BandAnalysisSegmentXBoundariesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start evaluating band parameters values.
+        /// </summary>
+        public static string BandAnalysisStartBandAnalysisButtonTitle {
+            get {
+                return ResourceManager.GetString("BandAnalysisStartBandAnalysisButtonTitle", resourceCulture);
             }
         }
         

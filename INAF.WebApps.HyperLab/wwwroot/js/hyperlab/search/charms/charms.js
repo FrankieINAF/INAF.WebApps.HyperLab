@@ -919,33 +919,9 @@ function setTabEnabled(index, isEnabled) {
 }
 
 function setTabSelectedProcedure(containerId, selectedTabId, isFromUserAction = false) {
-    if (!isFromUserAction)
-        setTabTitleSelected(containerId, selectedTabId);
-
     showSelectedTab(containerId, selectedTabId);
 
     manageConstantLinesVisualization(selectedTabId);
-}
-
-function setTabTitleSelected(titlesContainerId, selectedTabTitleId) {
-    let titles = $(`#${titlesContainerId}`).find('li');
-    if (titles && titles.length > 0) {
-        let titlesNum = titles.length;
-        for (var i = 0; i < titlesNum; i++) {
-            let currentTabTitleId = $(titles[i]).find('a').attr('id');
-            if (currentTabTitleId == selectedTabTitleId) {
-                $(titles[i]).addClass('active fg-white text-bold');
-
-                let width = $(titles[i]).width();
-                let paddingLeft = $(titles[i]).parent().css('paddingLeft');
-
-                /* move the tab marker and adjust width */
-                $($('#charmsTabs').find('.tab-marker')[0]).css({ 'left': `${parseInt(paddingLeft)}px`, 'width': `${parseInt(width)}px` });
-            } else {
-                $(titles[i]).removeClass('active fg-white text-bold');
-            }
-        }
-    }
 }
 
 function showSelectedTab(containerId, selectedTabId) {

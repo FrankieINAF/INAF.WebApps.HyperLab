@@ -465,6 +465,9 @@
   <data name="TabsAlignmentTitle" xml:space="preserve">
     <value>Alignment options</value>
   </data>
+  <data name="TabsBandAnalysisTitle" xml:space="preserve">
+    <value>Band analysis</value>
+  </data>
   <data name="TabsFitTitle" xml:space="preserve">
     <value>Fit options</value>
   </data>
