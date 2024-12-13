@@ -1,0 +1,70 @@
+﻿@using INAF.WebApps.HyperLab.Resources
+
+<!-- DROPDOWN SETTINGS -->
+<div class="d-flex flex-row margin-vertical-4">
+    <button id="fitSettings" class="button cycle bg-transparent bg-cyan-hover pointer" onclick="toggleSettings('fitSettingsDropdown')"><span class="mif-cogs mif-2x fg-white"></span></button>
+    <span class="text-secondary margin-left-8 margin-top-4">@Html.Raw(Charms.FitSettingsLabel)</span>
+</div>
+<div class="pos-relative">
+    <div id="fitSettingsDropdown"
+         class="fg-white"
+         data-role="dropdown"
+         data-no-close="true"
+         data-toggle-element="#fitSettings">
+        <!-- CORE/PRO MODE -->
+        <div class="row cell-fs-12 margin-vertical-4">
+            <input id="fitCheckboxCoreProMode"
+                   type="checkbox"
+                   data-role="switch"
+                   data-caption="@Html.Raw(Charms.FitSetCoreOrProModeLabel)"
+                   data-off="@Html.Raw(Charms.FitCoreModelLabel)"
+                   data-on="@Html.Raw(Charms.FitProModeLabel)"
+                   data-cls-switch="charmsSwitch"
+                   data-cls-caption="fg-white"
+                   data-cls-check="bd-cyan charmsSwitch">
+        </div>
+        <!-- SHOW/HIDE VERTICAL LINES FOR FIT POINTS -->
+        <div class="row cell-fs-12 margin-vertical-4">
+            <input id="fitChechboxShowLines"
+                   type="checkbox"
+                   data-role="switch"
+                   data-caption="@Html.Raw(Charms.FitShowHideVerticalLinesForFitPointsLabel)"
+                   data-cls-switch="charmsSwitch"
+                   data-cls-caption="fg-white"
+                   data-cls-check="bd-cyan charmsSwitch">
+        </div>
+        <!-- SHOW/HIDE VERTICAL LINES FOR FIT POINTS -->
+        <div class="row cell-fs-12 margin-vertical-16">
+            <input id="charmsAutoRecalculateContinuumRemovedOnChangingFitPoints"
+                   type="checkbox"
+                   data-role="switch"
+                   data-caption="@Html.Raw(Charms.FitAutoRecalculateContinuumRemovedLabel)"
+                   data-cls-switch="charmsSwitch"
+                   data-cls-caption="fg-white"
+                   data-cls-check="bd-cyan charmsSwitch">
+        </div>
+        <!-- SHOW/HIDE BREAKS ON VALUE AXIS -->
+        <div class="row cell-fs-12 margin-vertical-16">
+            <input id="charmsShowHideBreaksOnValueAxis"
+                   type="checkbox"
+                   data-role="switch"
+                   data-caption="@Html.Raw(Charms.FitShowHideBreaksOnValueAxisLabel)"
+                   data-cls-switch="charmsSwitch"
+                   data-cls-caption="fg-white"
+                   data-cls-check="bd-cyan charmsSwitch">
+        </div>
+    </div>
+</div>
+<!-- ICONS SAVED ON CLOUD -->
+<div id="continuumRemovedSavedOnCloud" class="margin-left-4 margin-vertical-8" style="display: none">
+    <div><span id="continuumRemovedCloudIcon" class="mif-cloud-download mif-2x fg-cyan pointer" title="@Html.Raw(Charms.CharmsCloudDownloadLabel)" onclick="downloadContinuumRemovedSpectrumProcedure()"></span></div>
+    <div><span id="continuumRemovedCloudText" class="margin-left-8 text-small margin-top-4">@Html.Raw(Charms.CharmsAlreadySavedOnCloudMessage)</span></div>
+</div>
+<!-- MESSAGE FOR EMPTY PANEL -->
+<div id="charmsTabFitStartingMessageContainer" class="h-vh-75 d-flex flex-content-center" style="flex-wrap: wrap">
+    <span class="mif-info mif-2x"></span>
+    <p class="text-just fg-white margin-top-16">@Html.Raw(Charms.FitStartingMessage1)</p>
+    <p class="text-just fg-white margin-top-8">@Html.Raw(Charms.FitStartingMessage2)</p>
+    <p class="text-just fg-white margin-top-24">@Html.Raw(Charms.FitStartingMessageCloud)</p>
+</div>
+<div id="fitOptionsPanel"></div>

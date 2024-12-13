@@ -1,0 +1,286 @@
+﻿@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Resources
+@using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.Libraries.Net.HyperLab.CommonModels.Values
+@using static INAF.Libraries.Net.Math.Values.Enums;
+
+<script type="text/javascript">
+    var CharmsAlreadySavedOnCloudMessage = "@Html.Raw(Charms.CharmsAlreadySavedOnCloudMessage)";
+    var CharmsCloudDownloadErrorMessage = "@Html.Raw(Charms.CharmsCloudDownloadErrorMessage)";
+    var CharmsCloseWarningMessage = "@Html.Raw(Charms.CharmsCloseWarningMessage)";
+    var CharmsDeleteProcessedSpectraQuestion = "@Html.Raw(Charms.CharmsDeleteProcessedSpectraQuestion)";
+    var CharmsSpectraProcessingManagementLabel = "@Html.Raw(Charms.CharmsSpectraProcessingManagementLabel)";
+    var CharmsUsingAlreadySavedOnCloudMessage = "@Html.Raw(Charms.CharmsUsingAlreadySavedOnCloudMessage)";
+    var ContinuumRemovalExecutionErrorMessage = "@Html.Raw(Charms.ContinuumRemovalExecutionErrorMessage)";
+    var SelectItemLabel = "@Html.Raw(Charms.SelectItemLabel)";
+
+    var BandAnalysisStartBandAnalysisButtonTitle = "@Html.Raw(CharmsBandAnalysis.BandAnalysisStartBandAnalysisButtonTitle)";
+    var BandAnalysisCheckOverlapErrorMessage = "@Html.Raw(CharmsBandAnalysis.BandAnalysisCheckOverlapErrorMessage)";
+    var BandAnalysisCheckOverlapQuestion = "@Html.Raw(CharmsBandAnalysis.BandAnalysisCheckOverlapQuestion)";
+    var BandAnalysisDownloadBandAnalysisErrorMessage = "@Html.Raw(CharmsBandAnalysis.BandAnalysisDownloadBandAnalysisErrorMessage)";
+    var BandAnalysisIconPXMinXMaxFitTitle = "@Html.Raw(CharmsBandAnalysis.BandAnalysisIconPXMinXMaxFitTitle)";
+    var BandAnalysisBandsAnalysisOnCloudLabel = "@Html.Raw(CharmsBandAnalysis.BandAnalysisBandsAnalysisOnCloudLabel)";
+    var BandAnalysisDownloadBandsAnalysisLabel = "@Html.Raw(CharmsBandAnalysis.BandAnalysisDownloadBandsAnalysisLabel)";
+    var BandAnalysisManagementLabel = "@Html.Raw(CharmsBandAnalysis.BandAnalysisManagementLabel)";
+    var BandAnalysisReplaceBandsAnalysisQuestion = "@Html.Raw(CharmsBandAnalysis.BandAnalysisReplaceBandsAnalysisQuestion)";
+    var BandAnalysisSaveErrorMessage = "@Html.Raw(CharmsBandAnalysis.BandAnalysisSaveErrorMessage)";
+    var BandAnalysisSaveSuccessMessage = "@Html.Raw(CharmsBandAnalysis.BandAnalysisSaveSuccessMessage)";
+    var BandAnalysisSegmentXBoundariesLabel = "@Html.Raw(CharmsBandAnalysis.BandAnalysisSegmentXBoundariesLabel)";
+
+    var ChartColorsDifferentiationMessage = "@Html.Raw(Charts.ChartColorsDifferentiationMessage)";
+    var ChartsNoSpectraSelectedMessage = "@Html.Raw(Charts.ChartsNoSpectraSelectedMessage)";
+    var ChartReflectanceLabel = "@Html.Raw(Charts.ChartReflectanceLabel)";
+    var ChartsUseChartsButtonMessage = "@Html.Raw(Charts.ChartsUseChartsButtonMessage)";
+    var ChartOverwriteQuestion = "@Html.Raw(Search.ChartOverwriteQuestion)";
+    var ChartWavelengthLabel = "@Html.Raw(Charts.ChartWavelengthLabel)";
+    var ChartWavelengthsLabel = "@Html.Raw(Charts.ChartWavelengthsLabel)";
+    var ChartLoadSpectraTypeColorsErrorMessage = "@Html.Raw(Charts.ChartLoadSpectraTypeColorsErrorMessage)";
+    var LegendLabel = "@Html.Raw(Charts.LegendLabel)";
+    var NoSpectraFoundForSelectedIdsMessage = "@Html.Raw(Charts.NoSpectraFoundForSelectedIdsMessage)";
+    
+    var SaveInfoNoMeteorClassSelectedErrorMessage = "@Html.Raw(Info.SaveInfoNoMeteorClassSelectedErrorMessage)";
+    var SaveInfoNoMineralSelectedErrorMessage = "@Html.Raw(Info.SaveInfoNoMineralSelectedErrorMessage)";
+    var SaveInfoNoRockSelectedErrorMessage = "@Html.Raw(Info.SaveInfoNoRockSelectedErrorMessage)";
+    var UpsertInfoInfoMessage = "@Html.Raw(Info.UpsertInfoInfoMessage)";
+    var UpsertInfoErrorMessage = "@Html.Raw(Info.UpsertInfoErrorMessage)";
+
+    var ButtonBackClearToSearchLabel = "@Html.Raw(Search.ButtonBackClearToSearchLabel)";
+    var ButtonBackToSearchLabel = "@Html.Raw(Search.ButtonBackToSearchLabel)";
+    var ButtonGraphSelectedSpectraLabel = "@Html.Raw(Search.ButtonGraphSelectedSpectraLabel)";
+    var ButtonHelpLabel = "@Html.Raw(Search.ButtonHelpLabel)";
+    var ButtonOpenCharmsLabel = "@Html.Raw(Search.ButtonOpenCharmsLabel)";
+    var ButtonSearchLabel = "@Html.Raw(Search.ButtonSearchLabel)";
+    var ButtonShowCharmsColorSelectorLabel = "@Html.Raw(Search.ButtonShowCharmsColorSelectorLabel)";
+    var ButtonShowCharmsLegendLabel = "@Html.Raw(Search.ButtonShowCharmsLegendLabel)";
+    var ButtonZoomOutLabel = "@Html.Raw(Search.ButtonZoomOutLabel)";
+
+    var SaveComplexSearchErrorMessage = "@Html.Raw(Search.SaveComplexSearchErrorMessage)";
+    var SaveComplexSearchLabel = "@Html.Raw(Search.SaveComplexSearchLabel)";
+    var SaveComplexSearchNamePlaceholder = "@Html.Raw(Search.SaveComplexSearchNamePlaceholder)";
+    var SaveComplexSearchNoNameErrorMessage = "@Html.Raw(Search.SaveComplexSearchNoNameErrorMessage)";
+    var SaveComplexSearchSavedMessage = "@Html.Raw(Search.SaveComplexSearchSavedMessage)";
+    var SaveComplexSearchUpdatedMessage = "@Html.Raw(Search.SaveComplexSearchUpdatedMessage)";
+
+    var SavedComplexSearchesNameLabel = "@Html.Raw(Search.SavedComplexSearchesNameLabel)";
+    var SavedComplexSearchesDateLabel = "@Html.Raw(Search.SavedComplexSearchesDateLabel)";
+    var SavedComplexSearchesConditionsLabel = "@Html.Raw(Search.SavedComplexSearchesConditionsLabel)";
+    var SavedComplexSearchesDeleteLabel = "@Html.Raw(Search.SavedComplexSearchesDeleteLabel)";
+    var SavedComplexSearchesDeleteErrorMessage = "@Html.Raw(Search.SavedComplexSearchesDeleteErrorMessage)";
+    var SavedComplexSearchesDeleteQuestion = "@Html.Raw(Search.SavedComplexSearchesDeleteQuestion)";
+    var SavedComplexSearchesInfoLabel = "@Html.Raw(Search.SavedComplexSearchesInfoLabel)";
+    var SavedComplexSearchesInfoErrorMessage = "@Html.Raw(Search.SavedComplexSearchesInfoErrorMessage)";
+    var SavedComplexSearchesExecuteLabel = "@Html.Raw(Search.SavedComplexSearchesExecuteLabel)";
+    var SavedComplexSearchesRetrieveInfoErrorMessage = "@Html.Raw(Search.SavedComplexSearchesRetrieveInfoErrorMessage)";
+    var SavedComplexSearchesHideDetailedInfoLabel = "@Html.Raw(Search.SavedComplexSearchesHideDetailedInfoLabel)";
+    var SavedComplexSearchesShowDetailedInfoLabel = "@Html.Raw(Search.SavedComplexSearchesShowDetailedInfoLabel)";
+    var SavedComplexSearchInfoShowErrorMessage = "@Html.Raw(Search.SavedComplexSearchInfoShowErrorMessage)";
+
+    var SearchByMaterialErrorMessage = "@Html.Raw(Search.SearchByMaterialErrorMessage)";
+    var SearchBySampleNameEmptyErrorMessage = "@Html.Raw(Search.SearchBySampleNameEmptyErrorMessage)";
+    var SearchGroupItemsNoResultsMessage = "@Html.Raw(Search.SearchGroupItemsNoResultsMessage)";
+    var SuggestionsRetrievingErrorMessage = "@Html.Raw(Search.SuggestionsRetrievingErrorMessage)";
+    var SuggestionsNoTextWarningMessage = "@Html.Raw(Search.SuggestionsNoTextWarningMessage)";
+
+    var SearchFieldTextRequiredMessage = "@Html.Raw(Search.SearchFieldTextRequiredMessage)";
+    var SearchSuggestionsNotRetrievedMessage = "@Html.Raw(Search.SearchSuggestionsNotRetrievedMessage)";
+
+    var SearchComplexNoConditionsWarningMessage = "@Html.Raw(Search.SearchComplexNoConditionsWarningMessage)";
+
+    var SearchComplexGroupAlreadyInUseLabel = "@Html.Raw(Search.SearchComplexGroupAlreadyInUseLabel)";
+    var SearchComplexQueryConditionsManagement ="@Html.Raw(Search.SearchComplexQueryConditionsManagement)";
+    var SearchComplexRemoveGroupQuestion = "@Html.Raw(Search.SearchComplexRemoveGroupQuestion)";
+
+    var SearchComplexMaxNumOfConditionsReachedMessage = "@Html.Raw(Search.SearchComplexMaxNumOfConditionsReachedMessage)";
+    var SearchComplexValidationErrorsMessage = "@Html.Raw(Search.SearchComplexValidationErrorsMessage)";
+
+    var SearchByMaterialPlaceholder = "@Html.Raw(Search.SearchByMaterialPlaceholder)";
+    var SearchBySampleNamePlaceholder = "@Html.Raw(Search.SearchBySampleNamePlaceholder)";
+    var SearchComplexGroupAddItem = "@Html.Raw(Search.SearchComplexGroupAddItem)";
+    var SearchComplexGroupRemoveGroup = "@Html.Raw(Search.SearchComplexGroupRemoveGroup)";
+    var SearchClearSuggestionsButtonTitle = "@Html.Raw(Search.SearchClearSuggestionsButtonTitle)";
+
+    var SearchComplexConditionsOnMaterialLabel = "@Html.Raw(Search.SearchComplexConditionsOnMaterialLabel)";
+    var SearchComplexConditionsOnMineralTypeLabel = "@Html.Raw(Search.SearchComplexConditionsOnMineralTypeLabel)";
+    var SearchComplexConditionsOnOriginTypeLabel = "@Html.Raw(Search.SearchComplexConditionsOnOriginTypeLabel)";
+    var SearchComplexConditionsOnSampleDataTypeLabel = "@Html.Raw(Search.SearchComplexConditionsOnSampleDataTypeLabel)";
+    var SearchComplexConditionsOnSampleNameLabel = "@Html.Raw(Search.SearchComplexConditionsOnSampleNameLabel)";
+    var SearchComplexClearLabel = "@Html.Raw(Search.SearchComplexClearLabel)";
+    var SearchComplexHideTitle = "@Html.Raw(Search.SearchComplexHideTitle)";
+    var SearchComplexEditTitle = "@Html.Raw(Search.SearchComplexEditTitle)";
+    var SearchComplexTitle = "@Html.Raw(Search.SearchComplexTitle)";
+
+    var SearchSimpleByMaterialLabel = "@Html.Raw(Search.SearchSimpleByMaterialLabel)";
+    var SearchSimpleByMineralTypeLabel = "@Html.Raw(Search.SearchSimpleByMineralTypeLabel)";
+    var SearchSimpleByOriginTypeLabel = "@Html.Raw(Search.SearchSimpleByOriginTypeLabel)";
+    var SearchSimpleBySampleDataTypeLabel = "@Html.Raw(Search.SearchSimpleBySampleDataTypeLabel)";
+    var SearchSimpleBySampleNameLabel = "@Html.Raw(Search.SearchSimpleBySampleNameLabel)";
+
+    var SearchAndLabel = "@Html.Raw(Search.SearchAndLabel)";
+    var SearchOrLabel = "@Html.Raw(Search.SearchOrLabel)";
+
+    var SearchComplexManagementLabel = "@Html.Raw(Search.SearchComplexManagementLabel)";
+    var SearchComplexRemoveQuestion = "@Html.Raw(Search.SearchComplexRemoveQuestion)";
+
+    var SearchGroupItemsColTypeLabel = "@Html.Raw(Search.SearchGroupItemsColTypeLabel)";
+    var SearchGroupItemsColInsertDateTimeLabel = "@Html.Raw(Search.SearchGroupItemsColInsertDateTimeLabel)";
+    var SearchGroupItemsColEditDateTimeLabel = "@Html.Raw(Search.SearchGroupItemsColEditDateTimeLabel)";
+
+    var OverwriteSavedSpectrumQuestion = "@Html.Raw(Charms.OverwriteSavedSpectrumQuestion)";
+
+    /* SpectraFilesController */
+    var UrlDeleteRecursivelySpectrumChildren = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.DeleteRecursivelySpectrumChildren)';
+    var UrlDeleteSpectrum = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.DeleteSpectrum)';
+    var UrlGetChildrenSpectraTypes = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetChildrenSpectraTypes)';
+    var UrlIsSpectrumTypeSavedOnCloud = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.IsSpectrumTypeSavedOnCloud)';
+    var UrlSaveSpectrumOfTypeAligned = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.SaveSpectrumOfTypeAligned)';
+    var UrlSaveSpectrumOfTypeContinuumRemoved = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.SaveSpectrumOfTypeContinuumRemoved)';
+    var UrlSaveSpectrumOfTypeSmoothed = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.SaveSpectrumOfTypeSmoothed)';
+    
+    /* ChartsController */
+    var UrlGetProcessedSpectrum = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.GetProcessedSpectrum)';
+    var UrlGetWhiteSpectraForAlignment = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.GetWhiteSpectraForAlignment)';
+    var UrlGetSpectra = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.GetSpectra)';
+
+    /* SampleAndMeasurementController */
+    var UrlDeleteMineral = '/@GenericHelper.GetControllerName(nameof(SampleAndMeasurementController))/@nameof(SampleAndMeasurementController.DeleteMineral)';
+    var UrlLoadSpectrumMeasurementInfo = '/@GenericHelper.GetControllerName(nameof(SampleAndMeasurementController))/@nameof(SampleAndMeasurementController.LoadSpectrumMeasurementInfoView)';
+    var UrlLoadSpectrumSampleDataPanel = '/@GenericHelper.GetControllerName(nameof(SampleAndMeasurementController))/@nameof(SampleAndMeasurementController.LoadSpectrumSampleDataPanelView)';
+    var UrlSaveInfo = '/@GenericHelper.GetControllerName(nameof(SampleAndMeasurementController))/@nameof(SampleAndMeasurementController.SaveInfo)';
+    
+    /* SearchesController */
+    var UrlDeleteComplexSearch = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.DeleteComplexSearch)';
+    var UrlGetMineralsSuggestions = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.GetMaterialsSuggestions)';
+    var UrlGetSavedComplexSearchInfo = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.GetSavedComplexSearchInfo)';
+    var UrlGetSavedComplexSearches = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.GetSavedComplexSearches)';
+    var UrlSaveComplexSearch = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.SaveComplexSearch)';
+    var UrlSearchComplex = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.SearchComplex)';
+    var UrlSearchGroupItems = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.SearchGroupItems)';
+    var UrlSearchSimpleGroupsByMaterial = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.SearchSimpleGroupsByMaterial)';
+    var UrlSearchSimpleByMineralType = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.SearchSimpleGroupsByMineralType)';
+    var UrlSearchSimpleByOriginType = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.SearchSimpleGroupsByOriginType)';
+    var UrlSearchSimpleGroupsBySampleName = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.SearchSimpleGroupsBySampleName)';
+    var UrlSearchSimpleBySampleType = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.SearchSimpleGroupsBySampleType)';
+
+    /* SpectraFilesController */
+    var UrlGetAlignmentSettings = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetAlignmentSettings)';
+    var UrlGetBandAnalysisData = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetBandAnalysisData)';
+    var UrlGetBandsAnalysisData = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetBandsAnalysisData)';
+    var UrlIsBandOverlappingWithExistingOne = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.IsBandOverlappingWithExistingOne)';
+    var UrlGetContinuumRemovalSettings = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetContinuumRemovalSettings)';
+    var UrlGetSpectrumFilename = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetSpectrumFilename)';
+    var UrlGetSpectrumByParentIdAndSpectrumType = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetSpectrumByParentIdAndSpectrumType)';
+    var UrlGetSpectrumIdByParentIdAndSpectrumType = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetSpectrumIdByParentIdAndSpectrumType)';
+    var UrlSaveBandAnalysisData = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.SaveBandAnalysisData)';
+
+    /* UserSettingsController */
+    var UrlGetFitFunctions = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetFitFunctions)';
+    var UrlGetPXMinPXMaxMaxValueFunctions = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetPXMinPXMaxMaxValueFunctions)';
+    var UrlGetSpectraTypesParents = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetSpectraTypesParents)';
+    var UrlGetUserSetting = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetUserSetting)';
+    var UrlGetUserSettingsByWildcard = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetUserSettingsByWildcard)';
+    var UrlSetUserSetting = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.SetUserSetting)';
+    var UrlLoadAlignmentPanel = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.LoadAlignmentPanel)';
+    var UrlLoadFitPanel = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.LoadFitPanel)';
+    var UrlLoadSmoothingPanel = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.LoadSmoothingPanel)';
+
+    var ALIGNMENT_AUTO_ALIGN_SPECTRUM = "@Constants.ALIGNMENT_AUTO_ALIGN_SPECTRUM";
+    var ALIGNMENT_AUTO_DOWNLOAD_ALIGNED_SPECTRUM = "@Constants.ALIGNMENT_AUTO_DOWNLOAD_ALIGNED_SPECTRUM";
+    var ALIGNMENT_NUM_OF_POINTS = "@Constants.ALIGNMENT_NUM_OF_POINTS";
+    var ALIGNMENT_SEGMENTS_BOUNDARIES = "@Constants.ALIGNMENT_SEGMENTS_BOUNDARIES";
+    var ALIGNMENT_SELECTED_SEGMENT = "@Constants.ALIGNMENT_SELECTED_SEGMENT";
+    var ALIGNMENT_SHOW_LINES = "@Constants.ALIGNMENT_SHOW_LINES";
+
+    var FIT_AUTO_RECALCULATE_ON_CHANGING_FIT_POINTS = "@Constants.FIT_AUTO_RECALCULATE_ON_CHANGING_FIT_POINTS";
+    var FIT_SET_CORE_PRO_MODE = "@Constants.FIT_SET_CORE_PRO_MODE";
+    var FIT_CORE_MODE = "@Constants.FIT_CORE_MODE";
+    var FIT_PRO_MODE = "@Constants.FIT_PRO_MODE";
+    var FIT_SHOW_HIDE_BREAKS_ON_VALUE_AXIS = "@Constants.FIT_SHOW_HIDE_BREAKS_ON_VALUE_AXIS";
+    var FIT_SHOW_HIDE_VERTICAL_LINES_FIT_POINTS = "@Constants.FIT_SHOW_HIDE_VERTICAL_LINES_FIT_POINTS";
+
+    var SMOOTHING_AUTO_SAVE_SEGMENTS_SETTINGS = "@Constants.SMOOTHING_AUTO_SAVE_SEGMENTS_SETTINGS";
+    var SMOOTHING_SEGMENTS_SETTINGS = "@Constants.SMOOTHING_SEGMENTS_SETTINGS";
+    var SMOOTHING_WHOLE_SPECTRUM_SETTINGS = "@Constants.SMOOTHING_WHOLE_SPECTRUM_SETTINGS";
+
+    var MissingPointPositionBeginning = @{@((int)MissingPointPosition.Beginning);};
+    var MissingPointPositionEnd = @{@((int)MissingPointPosition.End);};
+
+    var FIT_NUM_OF_POINTS_FOR_MISSING_POINTS = "@Constants.FIT_NUM_OF_POINTS_FOR_MISSING_POINTS";
+
+    var COLOR_WILDCARD = "@Constants.COLOR_WILDCARD";
+
+    var AlignedNoDownloadBecauseAlreadyPresentMessage = "@Html.Raw(Charms.AlignedNoDownloadBecauseAlreadyPresentMessage)";
+    var AlignedNoProcessBecauseAlreadyPresentMessage = "@Html.Raw(Charms.AlignedNoProcessBecauseAlreadyPresentMessage)";
+    var AlignmentAutoHideNotSelectedRawSpectraMessage = "@Html.Raw(Charms.AlignmentAutoHideNotSelectedRawSpectraMessage)";
+    var AlignmentAutoHideRefSpectraMessage = "@Html.Raw(Charms.AlignmentAutoHideRefSpectraMessage)";
+    var AlignmentButtonDisabledMessage = "@Html.Raw(Charms.AlignmentButtonDisabledMessage)";
+    var AlignmentButtonExecuteLabel = "@Html.Raw(Charms.AlignmentButtonExecuteLabel)";
+    var AlignmentChartMiniatureSelectedSegmentMessage = "@Html.Raw(Charms.AlignmentChartMiniatureSelectedSegmentMessage)";
+    var AlignmentDownloadAlignmentSettingsErrorMessage = "@Html.Raw(Charms.AlignmentDownloadAlignmentSettingsErrorMessage)";
+    var AlignmentExecutionErrorMessage = "@Html.Raw(Charms.AlignmentExecutionErrorMessage)";
+    var AlignmentFixPointsErrorMessage = "@Html.Raw(Charms.AlignmentFixPointsErrorMessage)";
+    var AlignmentLoadNumOfPointsErrorMessage = "@Html.Raw(Charms.AlignmentLoadNumOfPointsErrorMessage)";
+    var AlignmentLoadSegmentsErrorMessage = "@Html.Raw(Charms.AlignmentLoadSegmentsErrorMessage)";
+    var AlignmentLoadSelectedSegmentErrorMessage = "@Html.Raw(Charms.AlignmentLoadSelectedSegmentErrorMessage)";
+    var AlignmentLoadWhiteSpectraForAlignmentErrorMessage = "@Html.Raw(Charms.AlignmentLoadWhiteSpectraForAlignmentErrorMessage)";
+    var AlignmentManagementTitle = "@Html.Raw(Charms.AlignmentManagementTitle)";
+    var AlignmentRefreshSegmentsQuestion = "@Html.Raw(Charms.AlignmentRefreshSegmentsQuestion)";
+    var AlignmentRemovalErrorMessage = "@Html.Raw(Charms.AlignedRemovalErrorMessage)";
+    var AlignmentRemovalSuccessMessage = "@Html.Raw(Charms.AlignedRemovalSuccessMessage)";
+    var AlignmentSaveErrorMessage = "@Html.Raw(Charms.AlignmentSaveErrorMessage)";
+    var AlignmentSaveSuccessMessage = "@Html.Raw(Charms.AlignmentSaveSuccessMessage)";
+
+    var ContinuumRemovedNoDownloadBecauseAlreadyPresentMessage = "@Html.Raw(Charms.ContinuumRemovedNoDownloadBecauseAlreadyPresentMessage)";
+    var ContinuumRemovedNoProcessBecauseAlreadyPresentMessage = "@Html.Raw(Charms.ContinuumRemovedNoProcessBecauseAlreadyPresentMessage)";
+    var ContinuumRemovedRemovalErrorMessage = "@Html.Raw(Charms.ContinuumRemovedRemovalErrorMessage)";
+    var ContinuumRemovedRemovalSuccessMessage = "@Html.Raw(Charms.ContinuumRemovedRemovalSuccessMessage)";
+
+    var FitBoundaryLabel = "@Html.Raw(Charms.FitBoundaryLabel)";
+    var FitButtonDeletePointLabel = "@Html.Raw(Charms.FitButtonDeletePointLabel)"
+    var FitButtonDisabledMessage = "@Html.Raw(Charms.FitButtonDisabledMessage)";
+    var FitButtonExecuteLabel = "@Html.Raw(Charms.FitButtonExecuteLabel)";
+    var FitButtonRemoveLabel = "@Html.Raw(Charms.FitButtonRemoveLabel)";
+    var FitButtonSaveLabel = "@Html.Raw(Charms.FitButtonSaveLabel)";
+    var FitContinuumRemovalErrorMessage = "@Html.Raw(Charms.FitContinuumRemovalErrorMessage)";
+    var FitDownloadContinuumRemovalSettingsErrorMessage = "@Html.Raw(Charms.FitDownloadContinuumRemovalSettingsErrorMessage)";
+    var FitLoadFitFunctionsErrorMessage = "@Html.Raw(Charms.FitLoadFitFunctionsErrorMessage)";
+    var FitLoadNumOfPointsForMissingPointsErrorMessage = "@Html.Raw(Charms.FitLoadNumOfPointsForMissingPointsErrorMessage)";
+    var FitLoadPMinPMaxMaxValueFunctionsErrorMessage = "@Html.Raw(Charms.FitLoadPMinPMaxMaxValueFunctionsErrorMessage)";
+    var FitNoPointsFoundForSegmentErrorMessage = "@Html.Raw(Charms.FitNoPointsFoundForSegmentErrorMessage)";
+    var FitNoProcessBecauseAlreadyPresentMessage = "@Html.Raw(Charms.FitNoProcessBecauseAlreadyPresentMessage)";
+    var FitNumOfPointsForMissingPointsLabel = "@Html.Raw(Charms.FitNumOfPointsForMissingPointsLabel)";
+    var FitProModeCenterLabel = "@Html.Raw(Charms.FitProModeCenterLabel)";
+    var FitRangeLabel = "@Html.Raw(Charms.FitRangeLabel)";
+    var FitSaveErrorMessage = "@Html.Raw(Charms.FitSaveErrorMessage)";
+    var FitSaveSuccessMessage = "@Html.Raw(Charms.FitSaveSuccessMessage)";
+    var FitSegmentFittingErrorMessage = "@Html.Raw(Charms.FitSegmentFittingErrorMessage)";
+    var FitSegmentFunctionsLabel = "@Html.Raw(Charms.FitSegmentFunctionsLabel)";
+    var FitSegmentFunctionParameterLabel = "@Html.Raw(Charms.FitSegmentFunctionParameterLabel)";
+    var FitShowHideBreaksOnValueAxisLabel = "@Html.Raw(Charms.FitShowHideBreaksOnValueAxisLabel)";
+
+    var SmoothedRemovalErrorMessage = "@Html.Raw(Charms.SmoothedRemovalErrorMessage)";
+    var SmoothedRemovalSuccessMessage = "@Html.Raw(Charms.SmoothedRemovalSuccessMessage)";
+    var SmoothedSaveErrorMessage = "@Html.Raw(Charms.SmoothedSaveErrorMessage)";
+    var SmoothedSaveSuccessMessage = "@Html.Raw(Charms.SmoothedSaveSuccessMessage)";
+
+    var SmoothingAddNewSegmentLabel = "@Html.Raw(Charms.SmoothingAddNewSegmentLabel)";
+    var SmoothingApplySmoothingErrorMessage = "@Html.Raw(Charms.SmoothingApplySmoothingErrorMessage)";
+    var SmoothingExecuteSmoothingErrorMessage = "@Html.Raw(Charms.SmoothingExecuteSmoothingErrorMessage)";
+    var SmoothingExecutionErrorMessage = "@Html.Raw(Charms.SmoothingExecutionErrorMessage)";
+    var SmoothingRemoveSegmentQuestion = "@Html.Raw(Charms.SmoothingRemoveSegmentQuestion)";
+    var SmoothingManagementTitle = "@Html.Raw(Charms.SmoothingManagementTitle)";
+    var SmoothingRemoveSegmentLabel = "@Html.Raw(Charms.SmoothingRemoveSegmentLabel)";
+    var SmoothingRetrieveSettingsModelErrorMessage = "@Html.Raw(Charms.SmoothingRetrieveSettingsModelErrorMessage)";
+    var SmoothingSegmentBoundariesLabel = "@Html.Raw(Charms.SmoothingSegmentBoundariesLabel)";
+    var SmoothingSegmentPolynomialOrderLabel = "@Html.Raw(Charms.SmoothingSegmentPolynomialOrderLabel)";
+    var SmoothingSegmentWindowSizeLabel = "@Html.Raw(Charms.SmoothingSegmentWindowSizeLabel)";
+
+    var LegendCloseLabel = "@Html.Raw(CharmsLegend.LegendCloseLabel)";
+    var LegendTitle = "@Html.Raw(CharmsLegend.LegendTitle)";
+
+    var CONDITIONS_CONTAINER = 'ConditionsContainer';
+    var CONDITIONS_ITEMS = 'ConditionsItems';
+
+    var sampleTypes = [];
+    var originTypes = [];
+    var mineralTypes = [];
+</script>

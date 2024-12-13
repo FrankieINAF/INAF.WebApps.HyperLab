@@ -1,0 +1,348 @@
+﻿@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.Smoothing
+@using INAF.Libraries.Net.HyperLabCommonHelpers
+@using INAF.Libraries.Net.HyperLabCommonHelpers.ProcessingHelpers
+@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum
+@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo
+@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment
+@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.ContinuumRemoval
+@using INAF.Libraries.Net.Math.Fit.LinerAlgebra;
+@using INAF.Libraries.Net.Math.Fit.LinerAlgebra.Models;
+@using INAF.Libraries.Net.Math.Models;
+@using INAF.Libraries.Net.Math.Simple;
+@using INAF.Libraries.Net.Math.Fit.Spline;
+@using Microsoft.Extensions.DependencyInjection
+@using Microsoft.JSInterop
+@using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums
+@using static INAF.Libraries.Net.Math.Values.Enums;
+@using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
+
+@inject IServiceProvider serviceProvider
+@inject IJSRuntime jsruntime;
+
+@implements IDisposable
+
+@code {
+    private DotNetObjectReference<BlazorHelper>? objRef;
+    private IJSObjectReference? jsmodule;
+
+    #region interfaces
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            objRef = DotNetObjectReference.Create(this);
+            if (jsruntime != null)
+                await jsruntime.InvokeAsync<string>("setDotNetHelper", objRef);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+
+        Console.WriteLine("OnInitializedAsync completed.");
+    }
+
+    public async void Dispose()
+    {
+        if (objRef != null)
+            objRef.Dispose();
+
+        if (jsmodule != null)
+            await jsmodule.DisposeAsync();
+    }
+    #endregion
+
+    #region JSInvokable
+    [JSInvokable]
+    public int retrieveSpectrumTypeFromString(string spectrumTypeString)
+    {
+        SpectrumType spectrumType = SpectrumType.None;
+
+        try
+        {
+            spectrumType = (SpectrumType)System.Enum.Parse(typeof(SpectrumType), spectrumTypeString, ignoreCase: true);
+        }
+        catch (Exception)
+        { }
+
+        return (int)spectrumType;
+    }
+
+    #region ALIGNMENT
+    [JSInvokable]
+    public List<PointModel> normalizePoints(List<PointModel> points,
+                                            double refWhiteMaxY,
+                                            List<PointModel> refSpectrumPoints)
+    {
+        var normalizedPoints = new AlignmentHelper().multiplyByRef(points,
+                                                                   refWhiteMaxY,
+                                                                   refSpectrumPoints);
+        return normalizedPoints;
+    }
+
+    [JSInvokable]
+    public List<PointModel> alignSpectrumPoints(List<PointModel> points,
+                                                List<double> separators,
+                                                double selectedRefBandXMin,
+                                                double selectedRefBandXMax,
+                                                bool isXMinLowestBoundary,
+                                                bool isXMaxHighestBoundary,
+                                                int numOfPointsForAlignment)
+    {
+        return new AlignmentHelper().alignSegments(points,
+                                                   separators.OrderBy(x => x),
+                                                   selectedRefBandXMin,
+                                                   selectedRefBandXMax,
+                                                   isXMinLowestBoundary,
+                                                   isXMaxHighestBoundary,
+                                                   numOfPointsForAlignment);
+    }
+    #endregion
+
+    #region FIT
+    [JSInvokable]
+    public PointModel? calculateMaximumInRange(List<PointModel> points)
+    {
+        if (points == null || points.Count == 0)
+            return null;
+
+        var maxY = points.Max(p => p.Y);
+        return points.FirstOrDefault(p => p.Y == maxY);
+    }
+
+    [JSInvokable]
+    public PointModel calculateMissingPoint(MissingPointPosition missingPointPosition,
+                                            List<PointModel> points,
+                                            int numOfPointsForMissingPoints)
+    {
+        var missingPointHelper = serviceProvider.GetRequiredService<MissingPointHelper>();
+        return missingPointHelper.calculateMissingPoint(missingPointPosition, points, numOfPointsForMissingPoints);
+    }
+
+    [JSInvokable]
+    public async Task<ProcessingResult> fitSegmentAsync(List<PointModel> points,
+                                                        FitMethodModel fitMethod)
+    {
+        IFitProcessingHelper? specializedProcessingHelper = null;
+        double? parameterValue = null;
+        switch (fitMethod.HelperClassName)
+        {
+            case nameof(SplineFitHelper):
+                specializedProcessingHelper = serviceProvider.GetRequiredService<SplineProcessingHelper>();
+                if (fitMethod.ParameterConstraintValue != null)
+                    parameterValue = fitMethod.ParameterConstraintValue.Value;
+                break;
+
+            default:
+                specializedProcessingHelper = serviceProvider.GetRequiredService<LinearProcessingHelper>();
+                break;
+        }
+
+        return await specializedProcessingHelper.fitSpectrumProcedureAsync(points, fitMethod, parameterValue);
+    }
+
+    [JSInvokable]
+    public ProcessingResult removeContinuum(List<PointModel> points,
+                                            List<PointModel> continuumPoints)
+    {
+        var continuumRemovalHelper = serviceProvider.GetRequiredService<ContinuumRemovalHelper>();
+        return continuumRemovalHelper.calculateContinuumRemoved(points,
+                                                                continuumPoints);
+    }
+    #endregion
+
+    #region SMOOTHING
+    [JSInvokable]
+    public async Task<ProcessingResult> applySmoothingBySegments(List<PointModel> points,
+                                                                 List<SegmentSmoothingSettingsModel> settingsModels)
+    {
+        return await new SmoothingHelper().applySmoothingBySegmentsAsync(points, settingsModels);
+    }
+
+    [JSInvokable]
+    public async Task<ProcessingResult> applySmoothingByWholeSpectrum(List<PointModel> points,
+                                                                      SegmentSmoothingSettingsModel settingsModel)
+    {
+        return await new SmoothingHelper().applySmoothingToWholeSpectrumAsync(points, settingsModel);
+    }
+
+    [JSInvokable]
+    public SmoothingSettingsModel deserializeFromXml(string xml)
+    {
+        return new XmlSerializationHelper().DeserializeFromXml<SmoothingSettingsModel>(xml);
+    }
+
+    [JSInvokable]
+    public SpectrumType getDestSpectrumType(SmoothingType smoothingType,
+                                            SpectrumType srcSpectrumType)
+    {
+        return new SmoothingHelper().getDestSpectrumType(smoothingType, srcSpectrumType);
+    }
+
+    [JSInvokable]
+    public string serializeToXml(SmoothingSettingsModel smoothingSettingsModel)
+    {
+        return new XmlSerializationHelper().SerializeToXml<SmoothingSettingsModel>(smoothingSettingsModel);
+    }
+    #endregion
+
+    #region NORMAL FIT
+    [JSInvokable]
+    public GaussianFitResultModel getAbsorptionBandGaussianFit(double[] xs, double[] ys)
+    {
+        return new GaussianFitHelper().getInvertedYGaussianFit(xs, ys);
+    }
+    #endregion
+
+    #region PMIN-PMAX FIT
+    [JSInvokable]
+    public async Task<PMinPMaxResultModel> getPMinPMaxMaxValueAsync(double[] xs,
+                                                                    double[] ys,
+                                                                    FitMethodModel fitMethod)
+    {
+        PMinPMaxResultModel? pMinPMaxResult = null;
+
+        switch (fitMethod.HelperClassName)
+        {
+            case nameof(GaussianFitHelper):
+                var result = new GaussianFitHelper().getGaussianFit(xs, ys);
+
+                var yMaxValue = result.yValues.Max();
+                var index = result.yValues.IndexOf(yMaxValue);
+                var xMaxValue = xs[index];
+
+                pMinPMaxResult = new PMinPMaxResultModel(result.μ, result.σ, result.yValues) { MaxValuePoint = new PointModel(xMaxValue, yMaxValue) };
+                break;
+
+            case nameof(SplineFitHelper):
+                IFitProcessingHelper specializedProcessingHelper = serviceProvider.GetRequiredService<SplineProcessingHelper>();
+                double? parameterValue = null;
+                if (fitMethod.ParameterConstraintValue != null)
+                    parameterValue = fitMethod.ParameterConstraintValue.Value;
+
+                var xsNum = xs.Count();
+                var points = new List<PointModel>(xsNum);
+                for (int i = 0; i < xsNum; i++)
+                {
+                    points.Add(new PointModel(xs[i], ys[i]));
+                }
+                var processingResult = await specializedProcessingHelper.fitSpectrumProcedureAsync(points, fitMethod, parameterValue);
+
+                var yMax = processingResult.Points.Max(p => p.Y);
+                var yMaxPoint = processingResult.Points.First(p => p.Y == yMax);
+                pMinPMaxResult = new PMinPMaxResultModel(processingResult.Points.Select(p => p.Y).ToList()) { MaxValuePoint = new PointModel(yMaxPoint.X, yMaxPoint.Y) };
+                break;
+
+            default:
+                (double xMaxValue, double yMaxValue) simpleResult = new SimpleHelper().getMax(xs, ys);
+                pMinPMaxResult = new PMinPMaxResultModel() { MaxValuePoint = new PointModel(simpleResult.xMaxValue, simpleResult.yMaxValue) };
+                break;
+        }
+
+        return pMinPMaxResult;
+    }
+    #endregion
+
+    #region BAND ANALYSIS
+    [JSInvokable]
+    public double evaluateBandArea(double[] xs, double[] ys)
+    {
+        double area = 0;
+
+        var xsNum = xs.Count();
+        for (int i = 1; i < xsNum; i++)
+        {
+            area += ((ys[i] + ys[i - 1]) * (xs[i] - xs[i - 1])) / 2d;
+        }
+
+        return area;
+    }
+
+    [JSInvokable]
+    public FwhmResultModel evaluateFwhm(double[] xs, double[] ys, int bandCenterX, double bandDepth)
+    {
+        double halfBandDepth = bandDepth / 2d;
+
+        var index = Array.IndexOf(xs, bandCenterX);
+
+        if (index == -1)
+            return null;
+
+        double refValue = ys[index] + halfBandDepth;
+
+        int leftIndex = -1;
+        for (int i = 0; i < index; i++)
+        {
+            if (ys[i] >= refValue && ys[i + 1] <= refValue)
+            {
+                leftIndex = i;
+                break;
+            }
+        }
+
+        int rightIndex = -1;
+        int xsNum = xs.Count();
+        for (int i = index; i < xsNum; i++)
+        {
+            if (ys[i] <= refValue && ys[i + 1] >= refValue)
+            {
+                rightIndex = i;
+                break;
+            }
+        }
+
+        if (leftIndex == -1 || rightIndex == -1)
+            return null;
+
+        double fwhm = xs[rightIndex] - xs[leftIndex];
+
+        FwhmResultModel fwhmResult = new FwhmResultModel(fwhm, new PointModel(xs[leftIndex], ys[leftIndex]), new PointModel(xs[rightIndex], ys[rightIndex]));
+
+        return fwhmResult;
+    }
+
+    [JSInvokable]
+    public FwhmResultModel rebuildFwhm(double[] xs, double[] ys, int leftMargin, int rightMargin)
+    {
+        int leftIndex = Array.IndexOf(xs, leftMargin);
+        int rightIndex = Array.IndexOf(xs, rightMargin);
+
+        double fwhm = rightMargin - leftMargin;
+
+        FwhmResultModel fwhmResult = new FwhmResultModel(fwhm, new PointModel(xs[leftIndex], ys[leftIndex]), new PointModel(xs[rightIndex], ys[rightIndex]));
+
+        return fwhmResult;
+    }
+    #endregion
+
+    #region TO XML
+    [JSInvokable]
+    public string getSpectrumOfTypeAlignedModelAsXml(string filename,
+                                                     SpectrumType spectrumType,
+                                                     List<PointModel> points,
+                                                     AlignmentSettingsModel alignmentSettings,
+                                                     ParentFilesModel parentFiles)
+    {
+        return new SpectrumOfTypeAlignedModel(filename, spectrumType, points, alignmentSettings, parentFiles).ToXmlString();
+    }
+
+    [JSInvokable]
+    public string getSpectrumOfTypeContinuumRemovedModelAsXml(string filename,
+                                                              SpectrumType spectrumType,
+                                                              List<PointModel> points,
+                                                              ContinuumRemovalSettingsModel continuumRemovalSettings,
+                                                              ParentFilesModel parentFiles)
+    {
+        return new SpectrumOfTypeContinuumRemovedModel(filename, spectrumType, points, continuumRemovalSettings, parentFiles).ToXmlString();
+    }
+
+    [JSInvokable]
+    public string getSpectrumOfTypeSmoothedModelAsXml(string filename,
+                                                      SpectrumType spectrumType,
+                                                      List<PointModel> points,
+                                                      SmoothingSettingsModel smoothingSettingsModel,
+                                                      ParentFilesModel parentFiles)
+    {
+        return new SpectrumOfTypeSmoothedModel(filename, spectrumType, points, smoothingSettingsModel, parentFiles).ToXmlString();
+    }
+    #endregion
+    #endregion
+}
