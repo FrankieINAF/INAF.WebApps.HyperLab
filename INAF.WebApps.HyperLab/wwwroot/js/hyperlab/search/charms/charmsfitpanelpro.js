@@ -47,14 +47,6 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
 
     let points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
 
-    /* find spectrum boundaries for setting the 'boundary' label to the first and last segments */
-    //let xmin;
-    //let xmax;
-    //if (!isFromUserAction) {
-    //    xmin = extractSpectrumXMin(points);
-    //    xmax = extractSpectrumXMax(points);
-    //}
-
     let buttonP0Id = `${segmentId}${P0}${Button}`;
     let buttonP1Id = `${segmentId}${P1}${Button}`;
 
@@ -65,6 +57,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
 
     html += `<div class="d-flex flex-column">`;
 
+    /* ROW 0 */
     /* top spinners */
     html += `<div class="d-flex flex-row">`;
     if (isFromUserAction)
@@ -97,11 +90,12 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     html += `   </div>`;
 
     let idP0PMax = `${segmentId}${P0}${PXMax}`;
-    html += createSpinner(idP0PMax, segment.P0.PXMax.X, segment.P0.P.X + 1, true, false);
+    html += createSpinner(idP0PMax, segment.P0.PXMax.X, segment.P0.P.X + 1, true, false, isFromUserAction);
 
     html += `   </div>`;
     html += `</div>`;
 
+    /* ROW 1 */
     /* segment fit functions selector */
     html += `<div class="d-flex flex-justify-center">`;
     html += `   <div class="d-flex flex-column padding-vertical-4">`;
@@ -118,6 +112,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     html += `   </div>`;
     html += `</div>`;
 
+    /* ROW 2 */
     /* bottom spinners */
     html += `<div class="d-flex flex-row margin-bottom-4">`;
     if (isFromUserAction)
@@ -150,7 +145,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     let p1PMax = (segment.P1.P.X + 1);
     if (!isFromUserAction)
         p1PMax = segment.P1.P.X;
-    html += createSpinner(idP1PMax, segment.P1.PXMax.X, p1PMax, true, false);
+    html += createSpinner(idP1PMax, segment.P1.PXMax.X, p1PMax, true, false, isFromUserAction);
 
     html += `   </div>`;
     html += `</div>`;
@@ -166,7 +161,14 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
 
     html += `</div>`;
 
-    $(function () {
+    /* show panels for changing method for finding Max in selected segment */
+    setPButtonAction(buttonP0Id, P0, segment.Index, segment.P0);
+
+    /* show panels for changing method for finding Max in selected segment */
+    setPButtonAction(buttonP1Id, P1, segment.Index, segment.P1);
+
+    /* add actions for UI elements */
+    $(async function () {
         /* required to set value to default value, otherwise value = 0 */
         Metro.getPlugin(`#${idP0PMin}`, 'spinner').toDefault();
         /* required to set value to default value, otherwise value = 0 */
@@ -175,15 +177,16 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
         Metro.getPlugin(`#${idP1PMin}`, 'spinner').toDefault();
         /* required to set value to default value, otherwise value = 0 */
         Metro.getPlugin(`#${idP1PMax}`, 'spinner').toDefault();
-    });
 
-    /* show panels for changing method for finding Max in selected segment */
-    setPButtonAction(buttonP0Id, P0, segment.Index, segment.P0);
+        /* action for button for deleting point */
+        $(`#${idP0PMax}DeleteButton`).on('click', function () {
+            removeSelectedPointFromFitting(createSimplePoint(segment.P0.P.X, segment.P0.P.Y));
+        });
+        $(`#${idP1PMax}DeleteButton`).on('click', function () {
+            removeSelectedPointFromFitting(createSimplePoint(segment.P1.P.X, segment.P1.P.Y));
+        });
 
-    /* show panels for changing method for finding Max in selected segment */
-    setPButtonAction(buttonP1Id, P1, segment.Index, segment.P1);
-
-    $(`#${segmentId}`).ready(async function () {
+        /* action to automatically calculate fitted segment depending on selected function */
         await onSegmentFunctionSelectProAsync(Metro.getPlugin(`#${segmentId}Select`, 'select').val());
         //console.log(`createSegmentUI - ready - isBuildingUpContinuum: ${isBuildingUpContinuum}, isFromUserAction: ${isFromUserAction}, isLast: ${isLast}`);
         if (isFromUserAction) {
@@ -202,7 +205,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     };
 }
 
-function createSpinner(id, defaultValue, boundaryValue, isMinValueAllowed, isMaxValueAllowed) {
+function createSpinner(id, defaultValue, boundaryValue, isMinValueAllowed, isMaxValueAllowed, isDeleteButtonRequired = false) {
     let html = `   <input id="${id}" `;
     html += `   data-cls-spinner="width-130" `;
     html += `   data-default-value="${defaultValue}" `;
@@ -220,6 +223,13 @@ function createSpinner(id, defaultValue, boundaryValue, isMinValueAllowed, isMax
     html += `   data-on-change="${onBoundaryValueChangeByEnter.name}" `;
     html += `   data-repeat-threshold="1000" `;
     html += `   type="text" data-role="spinner" data-buttons-position="right">`;
+
+    if (isDeleteButtonRequired) {
+        /*          column for delete button */
+        html += `   <div id="${id}DeleteButton" class="margin-left-8 padding-vertical-4">`;
+        html += `       <button class="button light cycle small outline" title="${FitButtonDeletePointLabel}"><span class="mif-bin"></span></button>`;
+        html += `   </div>`;
+    }
 
     return html;
 }
@@ -279,9 +289,7 @@ async function onSegmentFunctionSelectProAsync(val, option, item) {
 
 function removeSegmentForFittingUIPro(segment) {
     let segmentId = `${FIT_SEGMENT_PRO}${segment.Index}`;
-
     $(`#${segmentId}`).remove();
-
     //let callback = function () { $(`#${segmentId}`).remove(); };
     //animateCSS(segmentId, 'slideOutRight', FASTER, callback);
 }

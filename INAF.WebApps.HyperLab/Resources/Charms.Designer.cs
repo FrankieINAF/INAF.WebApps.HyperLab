@@ -538,6 +538,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete current point.
+        /// </summary>
+        public static string FitButtonDeletePointLabel {
+            get {
+                return ResourceManager.GetString("FitButtonDeletePointLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Define at least 1 segment to enable this button.
         /// </summary>
         public static string FitButtonDisabledMessage {

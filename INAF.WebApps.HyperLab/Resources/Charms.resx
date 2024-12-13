@@ -276,6 +276,9 @@
   <data name="FitBoundaryLabel" xml:space="preserve">
     <value>Boundary</value>
   </data>
+  <data name="FitButtonDeletePointLabel" xml:space="preserve">
+    <value>Delete current point</value>
+  </data>
   <data name="FitButtonDisabledMessage" xml:space="preserve">
     <value>Define at least 1 segment to enable this button</value>
   </data>

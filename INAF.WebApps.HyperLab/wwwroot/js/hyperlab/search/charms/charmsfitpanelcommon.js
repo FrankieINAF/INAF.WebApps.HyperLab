@@ -164,13 +164,12 @@ function setParameterSpinner(id, parameter, segmentIndex, fitFunction, onFitMeth
     html += `data-max-value="${parameter.Maximum}" `;
     html += `data-step="${parameter.Step}" `;
     html += `data-fixed="4" `;
-    html += `data-cls-spinner="margin-top-8" `;
     html += `data-on-plus-click="${onFitMethodFunctionParameterChangeFunctionName}" `;
     html += `data-on-minus-click="${onFitMethodFunctionParameterChangeFunctionName}" `;
     html += `data-repeat-threshold="1000" `;
     html += `type="text" data-role="spinner" data-buttons-position="right">`;
     $(`#${id}Container`).html(html);
-    $(`#${id}`).ready(function () {
+    $(function () {
         segmentsForFitting[segmentIndex].FitFunctionParameterValue = fitFunction.ParameterConstraintValue.Value;
         /* required to set value to default value, otherwise value = 0 */
         Metro.getPlugin(`#${id}`, 'spinner').toDefault();

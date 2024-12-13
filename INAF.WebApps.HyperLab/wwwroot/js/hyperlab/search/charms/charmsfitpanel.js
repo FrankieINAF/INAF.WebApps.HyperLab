@@ -705,9 +705,7 @@ function removeSelectedPointFromFitting(point, mousePosX = null, mousePosY = nul
 
     let callback = function () {
         /* remove point (with boundary points) from chart */
-        removeFitPointFromChart(pointForFitting.PXMin.X);
-        removeFitPointFromChart(pointForFitting.P.X);
-        removeFitPointFromChart(pointForFitting.PXMax.X);
+        removeFitPointsFromChart([pointForFitting.PXMin.X, pointForFitting.P.X, pointForFitting.PXMax.X]);
 
         /* manage segments after point has been removed */
         manageRemovedPoint(pointForFitting);
@@ -797,14 +795,32 @@ function manageRemovedPoint(point) {
 
     if (point.P.X <= minX) {
         /* remove 1st segment on UI */
-        removeSegmentForFittingUICore(segmentsForFitting[0]);
+        switch (currentFitMode) {
+            case FIT_CORE_MODE:
+                removeSegmentForFittingUICore(segmentsForFitting[0]);
+                break;
+
+            case FIT_PRO_MODE:
+                removeSegmentForFittingUIPro(segmentsForFitting[0]);
+                break;
+        }
+        
         /* remove the 1st segment  */
         removeContinuumSegmentForFittingOnChart(segmentsForFitting[0]);
         /* remove 1st segment from segmentsForFitting */
         removeSegmentForFittingAt(0);
     } else if (point.P.X >= maxX) {
         /* remove last segment on UI */
-        removeSegmentForFittingUICore(segmentsForFitting[segmentsForFitting.length - 1]);
+        switch (currentFitMode) {
+            case FIT_CORE_MODE:
+                removeSegmentForFittingUICore(segmentsForFitting[segmentsForFitting.length - 1]);
+                break;
+
+            case FIT_PRO_MODE:
+                removeSegmentForFittingUIPro(segmentsForFitting[segmentsForFitting.length - 1]);
+                break;
+        }
+        
         /* remove the lastst segment  */
         removeContinuumSegmentForFittingOnChart(segmentsForFitting[segmentsForFitting.length - 1]);
         /* remove last segment from segmentsForFitting */
@@ -850,6 +866,9 @@ function manageRemovedPoint(point) {
         /* add new segment with p0,p1 */
         addNewSegmentProcedureAsync(p0, p1);
     }
+
+    dxChartRefresh(chartContainer);
+    hideSpectraToBeHidden();
 }
 
 /* ################################################################################ */

@@ -53,10 +53,7 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
     html += `    </div>`;
     html += `</div>`;
 
-    $(`#${segmentId}`).ready(async function () {
-        let parent = $(`#${segmentId}Select`).parent();
-        $(parent).css({ 'margin-top': '8px' });
-
+    $(async function () {
         await onSegmentFunctionSelectCoreAsync(Metro.getPlugin(`#${segmentId}Select`, 'select').val());
         //console.log(`${createSegmentFittingUICore.name} - ready - isBuildingUpContinuum: ${isBuildingUpContinuum}, isFromUserAction: ${isFromUserAction}, isLast: ${isLast}`);
         if (isFromUserAction) {
@@ -122,13 +119,6 @@ function removeSegmentForFittingUICore(segment) {
 
     $(`#${segmentId}`).remove();
 
-    //let callback = function () { $(`#${segmentId}`).remove(); };
-    //animateCSS(segmentId, 'slideOutRight', FASTER, callback);
-}
-
-function removeSegmentForFittingUIPro(segment) {
-    let segmentId = `${FIT_SEGMENT_PRO}${segment.Index}`;
-    $(`#${segmentId}`).remove();
     //let callback = function () { $(`#${segmentId}`).remove(); };
     //animateCSS(segmentId, 'slideOutRight', FASTER, callback);
 }
