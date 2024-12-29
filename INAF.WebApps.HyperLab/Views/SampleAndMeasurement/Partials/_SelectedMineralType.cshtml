@@ -89,10 +89,10 @@ else if (Model.MineralTypeId == (int)Enums.MineralType.Extraterrestrial)
     <label for="selectedMeteorClassContainer" class="control-label">@Html.Raw(Info.InfoSelectedMeteorMeteorClassLabel)</label>
     </div>
     <div id="selectedMeteorClassContainer" class="row cell-fs-12">
-    @if (Model.MeteorClass != null)
+        @if (Model.MeteoriteClass != null)
     {
-        <span id="selectedMeteorClass">@Html.Raw(Model.MeteorClass.Name)</span>
-        @Html.HiddenFor(model => model.MeteorClass.Id)
+            <span id="selectedMeteorClass">@Html.Raw(Model.MeteoriteClass.Name)</span>
+            @Html.HiddenFor(model => model.MeteoriteClass.Id)
     }
     else
     {
@@ -133,9 +133,9 @@ else if (Model.MineralTypeId == (int)Enums.MineralType.Extraterrestrial)
     }
     else if (Model.MineralTypeId == (int)Enums.MineralType.Extraterrestrial)
     {
-        if (Model.MeteorClass != null)
+        if (Model.MeteoriteClass != null)
         {
-            string setMeteorClass = $"setMeteorClass({Model.MeteorClass.Id}, \"{Model.MeteorClass.Name}\")";
+            string setMeteorClass = $"setMeteorClass({Model.MeteoriteClass.Id}, \"{Model.MeteoriteClass.Name}\")";
             @Html.Raw(setMeteorClass);
         }
     }

@@ -677,8 +677,16 @@ function extractSpectrumRange(points, x0, x1) {
     return points.filter(p => p.X >= x0 && p.X <= x1);
 }
 
-function getPointByX(points, x) {
-    let point = points.find(p => p.X == x);
+function getPointHigherThanX(points, x) {
+    let point = points.find(p => p.X >= x);
+    if (!point)
+        return null;
+
+    return point;
+}
+
+function getPointLowerThanX(points, x) {
+    let point = points.find(p => p.X <= x);
     if (!point)
         return null;
 

@@ -53,6 +53,66 @@ namespace INAF.WebApps.HyperLab.Controllers
         #endregion
 
         #region GET
+        //[HttpGet]
+        //public async Task<IActionResult> GetMaterialsSuggestions(GenericRequestByTextModel model)
+        //{
+        //    SuggestionsContainer suggestionsContainer = new SuggestionsContainer();
+
+        //    List<Task<MaterialsContainer>> tasks = new List<Task<MaterialsContainer>>(2)
+        //    {
+        //        Task.Run(() =>
+        //        {
+        //            var minerals = dbHandlerHyperLabData.getMinerals(model.Text);
+        //            return new MaterialsContainer()
+        //            {
+        //                Name = Resources.Search.SuggestionTypeMinerals,
+        //                Materials = minerals.Cast<MaterialBaseModel>(),
+        //            };
+        //        }),
+        //        Task.Run(() =>
+        //        {
+        //            var rocks = dbHandlerHyperLabData.getRocks(model.Text);
+        //            return new MaterialsContainer()
+        //            {
+        //                Name = Resources.Search.SuggestionTypeRocks,
+        //                Materials = rocks,
+        //            };
+        //        }),
+        //        Task.Run(async () =>
+        //        {
+        //            var searchByMaterialHelper = serviceProvider.GetRequiredService<SearchByMaterialHelper>();
+        //            MaterialsContainer meteorClassesContainer = await searchByMaterialHelper.getMeteorClassesAsync(model.Text);
+        //            return new MaterialsContainer()
+        //            {
+        //                Name = Resources.Search.SuggestionTypeRocks,
+        //                Materials = meteorClassesContainer.Materials,
+        //            };
+        //        }),
+        //    };
+
+        //    var results = await Task.WhenAll(tasks);
+
+        //    JsonResult? jsonResult = null;
+        //    switch (getCallerContext())
+        //    {
+        //        case Libraries.Net.HyperLab.CommonModels.Values.Enums.CallerContext.Web:
+        //            ExpandoObject jsonObject = buildMineralsSuggestionsJson(results.ToList());
+        //            jsonResult = new JsonResult(jsonObject);
+        //            break;
+        //        case Libraries.Net.HyperLab.CommonModels.Values.Enums.CallerContext.App:
+        //            jsonResult = new JsonResult(results);
+        //            break;
+        //    }
+
+        //    return jsonResult!;
+        //}
+
+        [HttpGet]
+        public IActionResult GetMeteoriteClasses(GenericRequestByTextModel model)
+        {
+            return new JsonResult(dbHandlerHyperLabData.getMeteoriteClasses(model.Text));
+        }
+
         [HttpGet]
         public IActionResult GetMinerals(GenericRequestByTextModel model)
         {

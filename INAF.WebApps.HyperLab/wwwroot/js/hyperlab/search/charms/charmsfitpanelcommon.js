@@ -345,22 +345,21 @@ function calculateSemiErrorBarHeight() {
 
 function createPointBoundariesForFitting(point) {
     let points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
-    //let points = getPointsFromSeriesPoints(dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval))));
 
     let minXPoint;
     if (isExistingPointByX(points, point.X - fitPointSemiRange))
-        minXPoint = getPointByX(points, point.X - fitPointSemiRange);
+        minXPoint = getPointLowerThanX(points, point.X - fitPointSemiRange);
     else {
         let minX = getPointsMinX(points);
-        minXPoint = getPointByX(points, minX);
+        minXPoint = getPointLowerThanX(points, minX);
     }
 
     let maxXPoint;
     if (isExistingPointByX(points, point.X + fitPointSemiRange))
-        maxXPoint = getPointByX(points, point.X + fitPointSemiRange);
+        maxXPoint = getPointHigherThanX(points, point.X + fitPointSemiRange);
     else {
         let maxX = getPointsMaxX(points);
-        maxXPoint = getPointByX(points, maxX);
+        maxXPoint = getPointHigherThanX(points, maxX);
     }
 
     /* error-bar semi-height is calculated only once, to have always the same height */
