@@ -58,6 +58,14 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     html += `<div class="d-flex flex-column">`;
 
     /* ROW 0 */
+    let topPMinPMaxResult;
+    if (isFromUserAction) {
+        /* find the maximum in the segments defined by the points boundaries */
+        topPMinPMaxResult = await calculateMaxValuePointAsync(points, segment.P0, segment.P0.SelectedPXMinPXMaxFitFunctionId);
+        /* save the max-y-val point as P for P0 */
+        if (topPMinPMaxResult)
+            segment.P0.P = topPMinPMaxResult.maxValuePoint;
+    }
     /* top spinners */
     html += `<div class="d-flex flex-row">`;
     if (isFromUserAction)
@@ -73,14 +81,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     html += createSpinner(idP0PMin, segment.P0.PXMin.X, p0PMax, false, true);
 
     html += `   <div class="margin-horizontal-8" style="width: 80px;">`;
-    let topPMinPMaxResult;
-    if (isFromUserAction) {
-        /* find the maximum in the segments defined by the points boundaries */
-        topPMinPMaxResult = await calculateMaxValuePointAsync(points, segment.P0, segment.P0.SelectedPXMinPXMaxFitFunctionId);
-        /* save the max-y-val point as P for P0 */
-        if (topPMinPMaxResult)
-            segment.P0.P = topPMinPMaxResult.maxValuePoint;
-    }
+    
     let topSpinnerTextElem;
     if (topPMinPMaxResult)
         topSpinnerTextElem = `<p class="text-secondary">${FitProModeCenterLabel}<span id="${segmentId}${P0}Text" class="margin-left-4 text-secondary">${(topPMinPMaxResult.maxValuePoint.X)}</span></p>`;
@@ -113,6 +114,14 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     html += `</div>`;
 
     /* ROW 2 */
+    let bottomPMinPMaxResult;
+    if (isFromUserAction) {
+        /* find the maximum in the segments defined by the points boundaries */
+        bottomPMinPMaxResult = await calculateMaxValuePointAsync(points, segment.P1, segment.P0.SelectedPXMinPXMaxFitFunctionId);
+        /* save the max-y-val point as P for P1 */
+        if (bottomPMinPMaxResult)
+            segment.P1.P = bottomPMinPMaxResult.maxValuePoint;
+    }
     /* bottom spinners */
     html += `<div class="d-flex flex-row margin-bottom-4">`;
     if (isFromUserAction)
@@ -125,14 +134,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     html += createSpinner(idP1PMin, segment.P1.PXMin.X, segment.P1.P.X - 1, false, true);
 
     html += `   <div class="margin-horizontal-8" style="width: 80px;">`;
-    let bottomPMinPMaxResult;
-    if (isFromUserAction) {
-        /* find the maximum in the segments defined by the points boundaries */
-        bottomPMinPMaxResult = await calculateMaxValuePointAsync(points, segment.P1, segment.P0.SelectedPXMinPXMaxFitFunctionId);
-        /* save the max-y-val point as P for P1 */
-        if (bottomPMinPMaxResult)
-            segment.P1.P = bottomPMinPMaxResult.maxValuePoint;
-    }
+    
     let bottomSpinnerTextElem;
     if (bottomPMinPMaxResult)
         bottomSpinnerTextElem = `<p class="text-secondary">${FitProModeCenterLabel}<span id="${segmentId}${P1}Text" class="margin-left-4 text-secondary">${(bottomPMinPMaxResult.maxValuePoint.X)}</span></p>`;
@@ -333,16 +335,22 @@ function setPButtonAction(buttonPId, P, segmentIndex, segmentP) {
     $(function () {
         $(`#${buttonPId}`).on('click', function () {
             if (!isAppendixAlreadyAvailable) {
+                /* show panel for fitting the PXMin-PXMax segment */
                 showPXMinPXMaxFitting(P, `${buttonPId}`, segmentIndex, segmentP);
 
+                /* set icon for button used for showing/hiding the PXMin-PXMax fit */
                 setIconForPXMinXMaxFit(`${buttonPId}Icon`, false);
 
+                /* highlight button container */
                 setIconParentDivForPXMinPXMaxFit(buttonPId, true);
             } else {
+                /* hide panel for fitting the PXMin-PXMax segment */
                 hidePXMinPXMaxFitting(`${buttonPId}${Appendix}`);
 
+                /* set icon for button used for showing/hiding the PXMin-PXMax fit */
                 setIconForPXMinXMaxFit(`${buttonPId}Icon`, true);
 
+                /* lowlight button container */
                 setIconParentDivForPXMinPXMaxFit(buttonPId, false);
             }
         });
@@ -615,12 +623,16 @@ async function onPXMinPXMaxFitFunctionSelectProAsync(val, option, item) {
     await pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId)
 }
 
-async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null) {
+async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null, isNextSegmentUpdateRequired = true) {
     /* remove fit-series */
     tryRemovePXMinPXMaxMaxValueSeries();
 
+    /* retrieve the function value */
+    let numbers = val.replace(FIT_SEGMENT_PRO, '');
+    let functionId = parseInt(numbers.charAt(1));
+
     /* retrieve info about segment and function */
-    let functionIndex = getPXMinPXMaxFunctionIndexFromValue(val, FIT_SEGMENT_PRO);
+    let functionIndex = getPXMinPXMaxFunctionIndexFromId(val);
 
     /* retrieve the selected fit function */
     let selectedFitFunction = pXMinPXMaxMaxValueFunctions[functionIndex];
@@ -694,6 +706,25 @@ async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null)
 
     if (textId)
         $(`#${textId}`).text(pXMinPXMaxResult.maxValuePoint.X);
+
+    /* update next segment, if existant and if current point is P1 */
+    if (P0P1Val == P0 || isNextSegmentUpdateRequired == false)
+        return;
+
+    let currentSegmentBaseId = val.slice(0, val.length - 4);
+    let _currentSegmentIndex = val.slice(val.length - 4, val.length - 3);
+    let currentSegmentIndex = parseInt(_currentSegmentIndex);
+
+    let nextSegmentId = `${currentSegmentBaseId}${currentSegmentIndex + 1}`;
+    if ($(`#${nextSegmentId}`).length == 0)
+        return;
+
+    let nextVal = `${nextSegmentId}${functionId}${P0}`;
+    let nextTextId = `${nextSegmentId}${P0}Text`;
+    console.log(`val:${val}, textId:${textId}`);
+    console.log(`nextVal:${nextVal}, nextTextId:${nextTextId}`);
+    console.log('-------------------');
+    pXMinPXMaxFitFunctionSelectProManagementAsync(nextVal, nextTextId, false);
 }
 
 function tryRemovePXMinPXMaxMaxValueSeries() {

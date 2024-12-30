@@ -887,10 +887,12 @@ async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isL
     let result;
     switch (currentFitMode) {
         case FIT_CORE_MODE:
+            /* create UI element on charms and build the continuum segment on chart */
             result = createSegmentFittingUICore(segment, isFromUserAction, isLast);
             break;
 
         case FIT_PRO_MODE:
+            /* create UI element on charms and build the continuum segment on chart */
             result = await createSegmentFittingUIProAsync(segment, isFromUserAction, isLast);
             break;
     }
