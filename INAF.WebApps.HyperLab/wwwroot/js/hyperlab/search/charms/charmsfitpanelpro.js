@@ -81,7 +81,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     html += createSpinner(idP0PMin, segment.P0.PXMin.X, p0PMax, false, true);
 
     html += `   <div class="margin-horizontal-8" style="width: 80px;">`;
-    
+
     let topSpinnerTextElem;
     if (topPMinPMaxResult)
         topSpinnerTextElem = `<p class="text-secondary">${FitProModeCenterLabel}<span id="${segmentId}${P0}Text" class="margin-left-4 text-secondary">${(topPMinPMaxResult.maxValuePoint.X)}</span></p>`;
@@ -134,7 +134,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     html += createSpinner(idP1PMin, segment.P1.PXMin.X, segment.P1.P.X - 1, false, true);
 
     html += `   <div class="margin-horizontal-8" style="width: 80px;">`;
-    
+
     let bottomSpinnerTextElem;
     if (bottomPMinPMaxResult)
         bottomSpinnerTextElem = `<p class="text-secondary">${FitProModeCenterLabel}<span id="${segmentId}${P1}Text" class="margin-left-4 text-secondary">${(bottomPMinPMaxResult.maxValuePoint.X)}</span></p>`;
@@ -707,8 +707,8 @@ async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null,
     if (textId)
         $(`#${textId}`).text(pXMinPXMaxResult.maxValuePoint.X);
 
-    /* update next segment, if existant and if current point is P1 */
-    if (P0P1Val == P0 || isNextSegmentUpdateRequired == false)
+    /* update next/previous segment, if existant and if current point is P1 */
+    if (!isNextSegmentUpdateRequired)
         return;
 
     let currentSegmentBaseId = val.slice(0, val.length - 4);
@@ -716,14 +716,21 @@ async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null,
     let currentSegmentIndex = parseInt(_currentSegmentIndex);
 
     let nextSegmentId = `${currentSegmentBaseId}${currentSegmentIndex + 1}`;
+    if (P0P1Val == P0)
+        nextSegmentId = `${currentSegmentBaseId}${currentSegmentIndex - 1}`;
+
     if ($(`#${nextSegmentId}`).length == 0)
         return;
 
     let nextVal = `${nextSegmentId}${functionId}${P0}`;
     let nextTextId = `${nextSegmentId}${P0}Text`;
-    console.log(`val:${val}, textId:${textId}`);
-    console.log(`nextVal:${nextVal}, nextTextId:${nextTextId}`);
-    console.log('-------------------');
+    if (P0P1Val == P0) {
+        nextVal = `${nextSegmentId}${functionId}${P1}`;
+        nextTextId = `${nextSegmentId}${P1}Text`;
+    }
+    //console.log(`val:${val}, textId:${textId}`);
+    //console.log(`nextVal:${nextVal}, nextTextId:${nextTextId}`);
+    //console.log('-------------------');
     pXMinPXMaxFitFunctionSelectProManagementAsync(nextVal, nextTextId, false);
 }
 
