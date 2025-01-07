@@ -1,6 +1,7 @@
 using INAF.Libraries.Net.CommonWebAppHelpers;
-using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.DB.HyperLabData;
+using INAF.Libraries.Net.DB.HyperLabUsers;
+using INAF.Libraries.Net.HyperLab.CommonHelpers;
 using INAF.Libraries.Net.HyperLabCommonHelpers;
 using INAF.Libraries.Net.HyperLabCommonHelpers.ProcessingHelpers;
 using INAF.Libraries.Net.Math.Fit.Linear;
@@ -78,7 +79,8 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddServerSideBlazor()
-                    .AddHubOptions(options => options.MaximumReceiveMessageSize = 1024 * 1024);
+    .AddCircuitOptions(options => options.DetailedErrors = true)
+    .AddHubOptions(options => options.MaximumReceiveMessageSize = 1024 * 1024);
 
 /* configure IIS options (disable automatic authentication end use the one defined in current project) */
 builder.Services.Configure<IISServerOptions>(options =>
@@ -123,6 +125,7 @@ builder.Services
     .AddTransient<LinearProcessingHelper>()
     .AddTransient<MenuHelper>()
     .AddTransient<MissingPointHelper>()
+    .AddTransient<PMinPMaxHelper>()
     .AddTransient<SampleTypesHelper>()
     .AddTransient<SearchByMaterialHelper>()
     .AddTransient<SplineFitHelper>()

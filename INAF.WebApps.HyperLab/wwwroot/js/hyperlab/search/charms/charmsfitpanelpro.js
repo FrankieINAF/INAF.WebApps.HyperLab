@@ -680,20 +680,6 @@ async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null,
         /* extract min-max for yvalues in range */
         let rangeYValues = range.map(p => { return p.Y });
         let fitYValues = updateSegmentYRange(rangeYValues, pXMinPXMaxResult.yValues);
-        //let rangeYValuesMin = Math.min(...rangeYValues);
-        //let rangeYValuesMax = Math.max(...rangeYValues);
-        ////console.log(`rangeYValuesMin: ${rangeYValuesMin}, rangeYValuesMax: ${rangeYValuesMax}`);
-
-        //let fitYValuesMin = Math.min(...pXMinPXMaxResult.yValues);
-        //let fitYValuesMax = Math.max(...pXMinPXMaxResult.yValues);
-
-        ///* create a new y-array with fitvalues mapped to original y-values-interval */
-        //let fitYValues = [];
-        //let pXMinPXMaxResultYValuesNum = pXMinPXMaxResult.yValues.length;
-        //for (var i = 0; i < pXMinPXMaxResultYValuesNum; i++) {
-        //    fitYValues[i] = ((pXMinPXMaxResult.yValues[i] - fitYValuesMin) / (fitYValuesMax - fitYValuesMin)) * (rangeYValuesMax - rangeYValuesMin) + rangeYValuesMin;
-        //    //console.log(fitYValues);
-        //}
 
         addPXMinPXMaxFitToChart(fitYValues);
     }
