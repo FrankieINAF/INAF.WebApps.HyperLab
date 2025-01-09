@@ -138,9 +138,9 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             if (ModelState.IsValid)
             {
-                if (model.SampleDataSelectedValues.Minerals.Count > 0)
+                if (model.SampleDataSelectedValues!.Minerals.Count > 0)
                 {
-                    model.SampleDataSelectedValues.Minerals.All(x => { x.Name = x.Name.ReplaceLineEndings(string.Empty).Trim(); return true; });
+                    model.SampleDataSelectedValues.Minerals.All(x => { x.Name = x.Name!.ReplaceLineEndings(string.Empty).Trim(); return true; });
                 }
 
                 /* save file */
