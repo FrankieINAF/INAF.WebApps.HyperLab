@@ -30,7 +30,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult LoadSpectrumMeasurementInfoView(GenericRequestByIdModel model)
         {
-            var generalInfo = dbHandlerHyperLabData.getSpectrumFilename(model.Id,
+            var generalInfo = dbHandlerHyperLabData.getSpectrumMinimalInfo(model.Id,
                                                                     getUserId());
             if (generalInfo == null)
                 return new EmptyResult();
@@ -54,8 +54,8 @@ namespace INAF.WebApps.HyperLab.Controllers
             var sampleTypesHelper = serviceProvider.GetRequiredService<SampleTypesHelper>();
             var sampleDataAvailableValues = sampleTypesHelper.getSampleTypeValuesContainer();
 
-            var generalInfo = dbHandlerHyperLabData.getSpectrumFilename(model.Id,
-                                                                    getUserId());
+            var generalInfo = dbHandlerHyperLabData.getSpectrumMinimalInfo(model.Id,
+                                                                        getUserId());
             if (generalInfo == null)
                 return new EmptyResult();
 
@@ -145,7 +145,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
                 /* save file */
                 (bool isOk, int id) result = await dbHandlerHyperLabData.saveSpectrumInfoProcedureAsync(model,
-                                                                                                    getUserId());
+                                                                                                        getUserId());
                 return new JsonResult(result.ToGenericValueStringResponse());
             }
             else

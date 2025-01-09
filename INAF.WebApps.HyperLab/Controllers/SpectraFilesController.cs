@@ -253,7 +253,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetSpectrumFilename(GenericRequestByIdModel model)
         {
-            SpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumFilename(model.Id,
+            SpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumMinimalInfo(model.Id,
                                                                                  getUserId());
 
             return new JsonResult(spectrumModel);

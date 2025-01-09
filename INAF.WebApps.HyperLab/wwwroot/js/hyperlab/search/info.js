@@ -6,7 +6,7 @@ var selectedId;
 var minerals = [];
 var monoMineral;
 var rock;
-var meteorClass;
+var meteoriteClass;
 
 /* ---------- MINERALS ---------- */
 function addMineralItem(id, name, percentage) {
@@ -76,15 +76,15 @@ function setRock(id, name) {
 }
 
 /* ---------- METEOR CLASS ---------- */
-function getMeteorClass() {
-    if (meteorClass)
-        return meteorClass;
+function getMeteoriteClass() {
+    if (meteoriteClass)
+        return meteoriteClass;
     else
         return createEmpty();
 }
 
-function setMeteorClass(id, name) {
-    meteorClass = {
+function setMeteoriteClass(id, name) {
+    meteoriteClass = {
         Id: id,
         Name: name
     };
@@ -242,7 +242,7 @@ async function saveInfo() {
             break;
 
         case MINERAL_TYPE_EXTRATERRESTRIAL:
-            if (getMeteorClass() == null) {
+            if (getMeteoriteClass() == null) {
                 isSavingAllowed = false;
                 savingErrorMessage = SaveInfoNoMeteorClassSelectedErrorMessage;
             }
@@ -271,7 +271,7 @@ async function saveInfo() {
             MineralTypeId: mineralTypeId,
             Minerals: getMinerals(mineralTypeId),
             Rock: getRock(),
-            MeteorClass: getMeteorClass(),
+            MeteoriteClass: getMeteoriteClass(),
         },
         SpectrumFileMeasurementInfoValues: {
             NumOfAcquiredSpectra: getNumOfAcquiredSpectra(),
@@ -361,7 +361,7 @@ var samplesData = [];
 
 function hideInfo() {
     let callback = function () {
-        setPositionTop(`info`, 0);
+        setPositionTopRelativePx(`info`, 0);
         clearInfo();
     };
     animateCSS(`info`, `slideOutDown`, FAST, callback);
@@ -378,7 +378,7 @@ function showInfo(id) {
     selectedId = id;
 
     let pos = $('#info').position();
-    setPositionTop(`info`, -(pos.top));
+    setPositionTopRelativePx(`info`, -(pos.top));
 
     let callbacks = function () {
         loadInfoSampleData();
@@ -500,17 +500,19 @@ function setSelection(ui) {
 
 function setMaterialForExtraterrestrial(ui) {
     if ($('#noSelectedMeteorClass').length) {
-        /* is no mono-mineral exists, then remove and add selected mono-mineral... */
+        /* if no meteorite exists, then remove and add selected meteorite... */
         $('#selectedMeteorClassContainer').empty();
 
         let html = `<span id="selectedMeteorClass">${ui.item.label}</span>`;
-        html += `<input data-val="true" data-val-required="The Id field is required." id="MeteorClass__Id" name="MeteorClass.Id" type="hidden" value="${ui.item.id}">`;
+        html += `<input data-val="true" data-val-required="The Id field is required." id="MeteoriteClass__Id" name="MeteoriteClass.Id" type="hidden" value="${ui.item.id}">`;
         $('#selectedMeteorClassContainer').html(html);
     } else {
         /* ...otherwise replace value */
         $('#selectedMeteorClass').text(ui.item.label);
-        $('#MeteorClass__Id').val(ui.item.id);
+        $('#MeteoriteClass__Id').val(ui.item.id);
     }
+
+    setMeteoriteClass(ui.item.id, ui.item.label);
 }
 
 function setMaterialForMix(ui) {

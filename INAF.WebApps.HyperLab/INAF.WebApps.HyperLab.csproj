@@ -52,7 +52,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.Extensions\INAF.Libraries.Net.Extensions\INAF.Libraries.Net.Extensions.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.Math\INAF.Libraries.Net.Math\INAF.Libraries.Net.Math.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLab.Data\INAF.Libraries.Net.DB.HyperLab.Data\INAF.Libraries.Net.DB.HyperLab.Data.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLab.Users\INAF.Libraries.Net.DB.HyperLab.Users\INAF.Libraries.Net.DB.HyperLab.Users.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\HyperLab\INAF.Libraries.Net.HyperLab.CommonHelpers\INAF.Libraries.Net.HyperLab.CommonHelpers\INAF.Libraries.Net.HyperLab.CommonHelpers.csproj" />

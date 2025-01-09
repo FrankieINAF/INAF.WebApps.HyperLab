@@ -87,6 +87,7 @@
   {
     "outputFileName": "wwwroot/js/dist/search/searchbundle.js",
     "inputFiles": [
+      "wwwroot/js/hyperlab/common.js",
       "wwwroot/js/hyperlab/search/common.js",
       "wwwroot/js/hyperlab/search/charts.js",
       "wwwroot/js/hyperlab/search/chartsarrays.js",

@@ -105,39 +105,43 @@ else if (Model.MineralTypeId == (int)Enums.MineralType.Extraterrestrial)
 
 <script type="text/javascript">
     function setMineralTypeItems() {
-    @if (Model.MineralTypeId == (int)Enums.MineralType.Monomineralic)
-    {
-        string setMonomineral = $"setMonomineral({Model.Minerals[0].Id}, \"{Model.Minerals[0].Name}\")";
-        @Html.Raw(setMonomineral);
-    }
-    else if (Model.MineralTypeId == (int)Enums.MineralType.Mix)
-    {
-        if (Model.Minerals?.Count > 0)
+        @if (Model.MineralTypeId == (int)Enums.MineralType.Monomineralic)
         {
-            StringBuilder sb = new StringBuilder();
-            int mineralsNum = Model.Minerals.Count;
-            for (int i = 0; i < mineralsNum; i++)
+            if (Model.Minerals?.Count > 0)
             {
-                sb.AppendLine($"addMineralItem({Model.Minerals[i].Id}, \"{Model.Minerals[i].Name}\", {Model.Minerals[i].Percentage});");
+                string setMonomineral = $"setMonomineral({Model.Minerals[0].Id}, \"{Model.Minerals[0].Name}\")";
+                @Html.Raw(setMonomineral);
             }
-            @Html.Raw(sb.ToString());
         }
-    }
-    else if (Model.MineralTypeId == (int)Enums.MineralType.Rock)
-    {
-        if (Model.Rock != null)
+        else if (Model.MineralTypeId == (int)Enums.MineralType.Mix)
         {
-            string setRock = $"setRock({Model.Rock.Id}, \"{Model.Rock.Name}\")";
-            @Html.Raw(setRock);
+            if (Model.Minerals?.Count > 0)
+            {
+                StringBuilder sb = new StringBuilder();
+                int mineralsNum = Model.Minerals.Count;
+                for (int i = 0; i < mineralsNum; i++)
+                {
+                    sb.AppendLine($"addMineralItem({Model.Minerals[i].Id}, \"{Model.Minerals[i].Name}\", {Model.Minerals[i].Percentage});");
+                }
+                @Html.Raw(sb.ToString());
+            }
         }
-    }
-    else if (Model.MineralTypeId == (int)Enums.MineralType.Extraterrestrial)
-    {
-        if (Model.MeteoriteClass != null)
+        else if (Model.MineralTypeId == (int)Enums.MineralType.Rock)
         {
-            string setMeteorClass = $"setMeteorClass({Model.MeteoriteClass.Id}, \"{Model.MeteoriteClass.Name}\")";
-            @Html.Raw(setMeteorClass);
+            if (Model.Rock != null)
+            {
+                string setRock = $"setRock({Model.Rock.Id}, \"{Model.Rock.Name}\")";
+                @Html.Raw(setRock);
+            }
         }
-    }
+        else if (Model.MineralTypeId == (int)Enums.MineralType.Extraterrestrial)
+        {
+            if (Model.MeteoriteClass != null)
+            {
+                string setMeteoriteClass = $"setMeteoriteClass({Model.MeteoriteClass.Id}, \"{Model.MeteoriteClass.Name}\")";
+                @Html.Raw(setMeteoriteClass);
+            }
+        }
+        //console.log("Mineral type items set");
     }
 </script>

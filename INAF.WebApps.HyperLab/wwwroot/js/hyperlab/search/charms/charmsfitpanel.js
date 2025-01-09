@@ -1452,6 +1452,8 @@ async function tryCalculateContinuumRemovedAsync() {
 
             /* set text of cloud icon */
             setCloudTextAndIconStatus(SPECTRUM_TYPE_CONTINUUM_REMOVED, false);
+
+            removeClass('bandanalysistitle', 'disabled');
         }
         else
             isOk = false;
