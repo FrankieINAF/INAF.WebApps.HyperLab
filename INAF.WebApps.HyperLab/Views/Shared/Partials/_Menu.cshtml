@@ -25,15 +25,18 @@
                 </a>
                 <ul class="navview-menu" data-role="dropdown">
                     @{
-                        List<MenuItem> children = menuHelper.GetItemSubMenu(Context, item.Id);
-                        foreach (var child in children)
+                        List<MenuItem>? children = menuHelper.GetItemSubMenu(Context, item.Id);
+                        if (children != null)
                         {
-                            <li>
-                                <a class="menuhref" href="@Url.Action(child.ActionName, child.ControllerName)">
-                                    <span class="icon" style="margin-left: 24px"><span class="@child.Icon"></span></span>
-                                    <span class="caption">@child.Label</span>
-                                </a>
-                            </li>
+                            foreach (var child in children)
+                            {
+                                <li>
+                                    <a class="menuhref" href="@Url.Action(child.ActionName, child.ControllerName)">
+                                        <span class="icon" style="margin-left: 24px"><span class="@child.Icon"></span></span>
+                                        <span class="caption">@child.Label</span>
+                                    </a>
+                                </li>
+                            }
                         }
                     }
                 </ul>
