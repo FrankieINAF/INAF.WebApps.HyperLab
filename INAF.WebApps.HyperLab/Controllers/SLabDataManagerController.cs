@@ -47,8 +47,11 @@ namespace INAF.WebApps.HyperLab.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SearchComplex(ComplexSearchModel model)
         {
+            if (model.Conditions == null)
+                return new EmptyResult();
+
             List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(model.Conditions,
-                                                                                             getUserId());
+                                                                                                 getUserId());
             return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
         }
         #endregion
