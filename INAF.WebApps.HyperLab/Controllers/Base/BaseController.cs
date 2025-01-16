@@ -91,6 +91,12 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
                 return CallerContext.App;
         }
 
+        protected int getScientificResponsibleUserId()
+        {
+            var dbHandlerHyperLabUsers = serviceProvider.GetRequiredService<DbHandlerHyperLabUsers>();
+            return dbHandlerHyperLabUsers.getScientificResponsibleUserId();
+        }
+
         protected int getUserId()
         {
             string token = HttpContext.GetToken();

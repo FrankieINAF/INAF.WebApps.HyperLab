@@ -138,13 +138,19 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult IsAnySpectrumTypeSavedOnCloud(IsAnySpectrumTypeSavedOnCloudRequestModel model)
         {
-            (bool isSaved, int id) result = dbHandlerHyperLabData.isAnySpectrumTypeSaved(model.Filename, model.SpectrumTypes);
+            if (string.IsNullOrEmpty(model.Filename) || model.SpectrumTypes == null || !model.SpectrumTypes.Any())
+                return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
+
+            (bool isSaved, int id) result = dbHandlerHyperLabData.isAnySpectrumTypeSaved(model.Filename, model.SpectrumTypes, getUserId());
             return new JsonResult(result.ToGenericValueStringResponse());
         }
 
         [HttpGet]
         public IActionResult IsSpectrumTypeSavedOnCloud(IsSpectrumTypeSavedOnCloudRequestModel model)
         {
+            if (string.IsNullOrEmpty(model.Filename))
+                return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
+
             (bool isSaved, int id) result = dbHandlerHyperLabData.isSpectrumTypeSaved(model.Filename, model.SpectrumType, getUserId());
             return new JsonResult(result.ToGenericValueStringResponse());
         }
@@ -152,6 +158,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult IsSpectrumTypeSavedWithCountOnCloud(IsSpectrumTypeSavedOnCloudRequestModel model)
         {
+            if (string.IsNullOrEmpty(model.Filename))
+                return new JsonResult(GenericResponseModel.CreateErrorResponse());
+
             int count = dbHandlerHyperLabData.isSpectrumTypeSavedWithCount(model.Filename, model.SpectrumType, getUserId());
             return new JsonResult(new GenericResponseModel(count));
         }
@@ -229,9 +238,9 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (string.IsNullOrEmpty(model.Text) || string.IsNullOrEmpty(model.Type))
                 return new EmptyResult();
 
-            SpectrumModel? spectrum = dbHandlerHyperLabData.getSpectrumId(model.Text,
-                                                                      model.Type.ToSpectrumType(),
-                                                                      getUserId());
+            SpectrumModel? spectrum = dbHandlerHyperLabData.getSpectrumIdByNameAndType(model.Text,
+                                                                          model.Type.ToSpectrumType(),
+                                                                          getUserId());
             if (spectrum != null)
                 return new JsonResult(spectrum);
             else
@@ -262,10 +271,12 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetSpectrumVersions(IsSpectrumTypeSavedOnCloudRequestModel model)
         {
-            int userId = getUserId();
+            if (string.IsNullOrEmpty(model.Filename))
+                return new EmptyResult();
+
             IEnumerable<SpectrumVersionModel>? spectrumVersions = dbHandlerHyperLabData.getSpectrumVersions(model.Filename,
-                                                                                                        model.SpectrumType,
-                                                                                                        userId);
+                                                                                                            model.SpectrumType,
+                                                                                                            getUserId());
 
             if (spectrumVersions != null && spectrumVersions.Any())
                 return new JsonResult(spectrumVersions);
@@ -306,7 +317,8 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* save file */
             (bool isOk, int id) result = await dbHandlerHyperLabData.saveSpectrumFileOfTypeAlignedProcedureAsync(model,
-                                                                                                     getUserId());
+                                                                                                                 getUserId(),
+                                                                                                                 getScientificResponsibleUserId());
             return new JsonResult(result.ToGenericValueStringResponse());
         }
 
@@ -321,7 +333,8 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* save file */
             (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerHyperLabData.upsertSpectrumFileOfTypeContinuumRemovedProcedureAsync(model,
-                                                                                                                                                            getUserId());
+                                                                                                                                                                       getUserId(),
+                                                                                                                                                                       getScientificResponsibleUserId());
             return new JsonResult(result.ToSegmentsProcessingResponseModel());
         }
 
@@ -336,7 +349,8 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* save file */
             (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerHyperLabData.saveAsCopySpectrumFileOfTypeContinuumRemovedProcedureAsync(model,
-                                                                                                                                                                  getUserId());
+                                                                                                                                                                           getUserId(),
+                                                                                                                                                                           getScientificResponsibleUserId());
             return new JsonResult(result.ToSegmentsProcessingResponseModel());
         }
 
@@ -351,7 +365,8 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* save file */
             (bool isOk, int id) result = await dbHandlerHyperLabData.saveSpectrumFileOfTypeRawProcedureAsync(model,
-                                                                                                         getUserId());
+                                                                                                             getUserId(),
+                                                                                                             getScientificResponsibleUserId());
             return new JsonResult(result.ToGenericValueStringResponse());
         }
 
@@ -366,7 +381,8 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* save file */
             (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerHyperLabData.saveSpectrumFileOfTypeSmoothedProcedureAsync(model,
-                                                                                                                                                 getUserId());
+                                                                                                                                                             getUserId(),
+                                                                                                                                                             getScientificResponsibleUserId());
             return new JsonResult(result.ToSegmentsProcessingResponseModel());
         }
 
@@ -381,7 +397,8 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* save file */
             (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerHyperLabData.saveAsCopySpectrumFileOfTypeSmoothedProcedureAsync(model,
-                                                                                                                                                               getUserId());
+                                                                                                                                                                   getUserId(),
+                                                                                                                                                                   getScientificResponsibleUserId());
             return new JsonResult(result.ToSegmentsProcessingResponseModel());
         }
         #endregion

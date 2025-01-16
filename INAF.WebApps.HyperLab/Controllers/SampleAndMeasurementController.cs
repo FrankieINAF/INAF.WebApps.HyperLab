@@ -37,7 +37,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             int spectrumId = model.Id;
             if (generalInfo.Type != Enums.SpectrumType.Raw)
-                spectrumId = dbHandlerHyperLabData.getParentRawSpectrumId(model.Id);
+                spectrumId = dbHandlerHyperLabData.getParentRawSpectrumId(model.Id, getUserId());
 
             var measurementInfo = dbHandlerHyperLabData.getSpectrumFileMeasurementInfo(spectrumId,
                                                                            getUserId());
@@ -61,7 +61,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             int spectrumId = model.Id;
             if (generalInfo.Type != Enums.SpectrumType.Raw)
-                spectrumId = dbHandlerHyperLabData.getParentRawSpectrumId(model.Id);
+                spectrumId = dbHandlerHyperLabData.getParentRawSpectrumId(model.Id, getUserId());
 
             var sampleDataSelectedValues = dbHandlerHyperLabData.getSpectrumFileSampleData(spectrumId,
                                                                                getUserId());
@@ -145,7 +145,8 @@ namespace INAF.WebApps.HyperLab.Controllers
 
                 /* save file */
                 (bool isOk, int id) result = await dbHandlerHyperLabData.saveSpectrumInfoProcedureAsync(model,
-                                                                                                        getUserId());
+                                                                                                        getUserId(),
+                                                                                                        getScientificResponsibleUserId());
                 return new JsonResult(result.ToGenericValueStringResponse());
             }
             else

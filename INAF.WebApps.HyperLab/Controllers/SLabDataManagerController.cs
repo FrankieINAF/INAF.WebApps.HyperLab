@@ -28,8 +28,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         private readonly DbHandlerHyperLabData dbHandlerHyperLabData;
 
         public SLabDataManagerController(IServiceProvider serviceProvider,
-                                  ILogger<SLabDataManagerController> logger,
-                                  DbHandlerHyperLabData dbHandlerHyperLabData) : base(serviceProvider, logger)
+                                         ILogger<SLabDataManagerController> logger,
+                                         DbHandlerHyperLabData dbHandlerHyperLabData) : base(serviceProvider, logger)
         {
             this.dbHandlerHyperLabData = dbHandlerHyperLabData;
         }
