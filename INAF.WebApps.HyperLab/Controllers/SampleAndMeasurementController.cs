@@ -64,7 +64,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 spectrumId = dbHandlerHyperLabData.getParentRawSpectrumId(model.Id, getUserId());
 
             var sampleDataSelectedValues = dbHandlerHyperLabData.getSpectrumFileSampleData(spectrumId,
-                                                                               getUserId());
+                                                                                           getUserId());
 
             if (sampleDataSelectedValues != null && sampleDataAvailableValues != null)
                 return PartialView("Partials/_InfoSampleData", new SpectrumFileSampleDataValuesContainer(model.Id, sampleDataAvailableValues, sampleDataSelectedValues));
