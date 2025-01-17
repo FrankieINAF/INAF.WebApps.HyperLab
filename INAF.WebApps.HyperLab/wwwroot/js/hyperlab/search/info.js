@@ -351,7 +351,7 @@ function loadInfoSampleData() {
     loadFilename();
 
     /* load tab about sample */
-    loadPartialViewWithAjaxGet(UrlLoadSpectrumSampleDataPanel, model, 'infoSampleData', callSetMineralTypeItems);
+    loadPartialViewWithAjaxGet(UrlLoadSpectrumSampleData, model, 'infoSampleData', callSetMineralTypeItems);
 }
 
 /* ################################################################################ */
@@ -372,6 +372,21 @@ function refreshInfo() {
     loadInfoMeasurementInfo();
 }
 
+async function showHideButtonsForInfoPanelAsync() {
+    var model = {
+        Id: selectedId
+    };
+
+    let obj = await doAjaxGetAsync(UrlIsUserStrictlyAuthorized, model);
+    if (obj && obj.IsOk) {
+        showByClass('saveInfo');
+        showByClass('refreshInfo');
+    } else {
+        hideByClass('saveInfo');
+        hideByClass('refreshInfo');
+    }
+}
+
 function showInfo(id) {
     //console.log(`showInfo id: ${id}`);
 
@@ -381,6 +396,7 @@ function showInfo(id) {
     setPositionTopRelativePx(`info`, -(pos.top));
 
     let callbacks = function () {
+        showHideButtonsForInfoPanelAsync();
         loadInfoSampleData();
         loadInfoMeasurementInfo();
         showByClass('saveInfo');

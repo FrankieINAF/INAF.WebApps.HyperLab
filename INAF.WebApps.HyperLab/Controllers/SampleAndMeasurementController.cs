@@ -28,10 +28,16 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region PARTIAL VIEWS
         [HttpGet]
+        public IActionResult IsUserStrictlyAuthorized(GenericRequestByIdModel model)
+        {
+            return new JsonResult(new GenericResponseModel() { IsOk = dbHandlerHyperLabData.isUserStrictlyAuthorized(model.Id, getUserId()) });
+        }
+
+        [HttpGet]
         public IActionResult LoadSpectrumMeasurementInfoView(GenericRequestByIdModel model)
         {
             var generalInfo = dbHandlerHyperLabData.getSpectrumMinimalInfo(model.Id,
-                                                                    getUserId());
+                                                                           getUserId());
             if (generalInfo == null)
                 return new EmptyResult();
 
@@ -40,22 +46,27 @@ namespace INAF.WebApps.HyperLab.Controllers
                 spectrumId = dbHandlerHyperLabData.getParentRawSpectrumId(model.Id, getUserId());
 
             var measurementInfo = dbHandlerHyperLabData.getSpectrumFileMeasurementInfo(spectrumId,
-                                                                           getUserId());
+                                                                                       getUserId());
 
             if (measurementInfo != null)
-                return PartialView("Partials/_InfoMeasurementInfo", measurementInfo);
+            {
+                if (dbHandlerHyperLabData.isUserStrictlyAuthorized(model.Id, getUserId()))
+                    return PartialView("Partials/_InfoMeasurementInfoEditor", measurementInfo);
+                else
+                    return PartialView("Partials/_InfoMeasurementInfoViewer", measurementInfo);
+            }
             else
                 return new EmptyResult();
         }
 
         [HttpGet]
-        public IActionResult LoadSpectrumSampleDataPanelView(GenericRequestByIdModel model)
+        public IActionResult LoadSpectrumSampleDataView(GenericRequestByIdModel model)
         {
             var sampleTypesHelper = serviceProvider.GetRequiredService<SampleTypesHelper>();
             var sampleDataAvailableValues = sampleTypesHelper.getSampleTypeValuesContainer();
 
             var generalInfo = dbHandlerHyperLabData.getSpectrumMinimalInfo(model.Id,
-                                                                        getUserId());
+                                                                           getUserId());
             if (generalInfo == null)
                 return new EmptyResult();
 
@@ -67,7 +78,12 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                            getUserId());
 
             if (sampleDataSelectedValues != null && sampleDataAvailableValues != null)
-                return PartialView("Partials/_InfoSampleData", new SpectrumFileSampleDataValuesContainer(model.Id, sampleDataAvailableValues, sampleDataSelectedValues));
+            {
+                if (dbHandlerHyperLabData.isUserStrictlyAuthorized(model.Id, getUserId()))
+                    return PartialView("Partials/_InfoSampleDataEditor", new SpectrumFileSampleDataValuesContainer(model.Id, sampleDataAvailableValues, sampleDataSelectedValues, isEditAllowed: true));
+                else
+                    return PartialView("Partials/_InfoSampleDataViewer", new SpectrumFileSampleDataValuesContainer(model.Id, sampleDataAvailableValues, sampleDataSelectedValues, isEditAllowed: false));
+            }
             else
                 return new EmptyResult();
         }

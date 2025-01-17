@@ -135,6 +135,9 @@
   <data name="GrainSizeTypeLabel" xml:space="preserve">
     <value>Select grain size type</value>
   </data>
+  <data name="GrainSizeTypeSelectedValueLabel" xml:space="preserve">
+    <value>Grain size type</value>
+  </data>
   <data name="GrainSizeUpperLimitLabel" xml:space="preserve">
     <value>Upper limit (micron)</value>
   </data>
@@ -204,11 +207,20 @@
   <data name="SampleDataTypeLabel" xml:space="preserve">
     <value>Select sample data type</value>
   </data>
+  <data name="SampleDataTypeSelectedValueLabel" xml:space="preserve">
+    <value>Sample data type</value>
+  </data>
   <data name="SampleMineralTypeLabel" xml:space="preserve">
     <value>Select sample mineral type</value>
   </data>
+  <data name="SampleMineralTypeSelectedValueLabel" xml:space="preserve">
+    <value>Sample mineral type</value>
+  </data>
   <data name="SampleOriginTypeLabel" xml:space="preserve">
     <value>Select sample origin type</value>
+  </data>
+  <data name="SampleOriginTypeSelectedValueLabel" xml:space="preserve">
+    <value>Sample origin type</value>
   </data>
   <data name="SaveInfoNoMeteorClassSelectedErrorMessage" xml:space="preserve">
     <value>No meteor class selected yet, select one to proceed with saving</value>

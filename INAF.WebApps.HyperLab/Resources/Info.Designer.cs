@@ -115,6 +115,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Grain size type.
+        /// </summary>
+        public static string GrainSizeTypeSelectedValueLabel {
+            get {
+                return ResourceManager.GetString("GrainSizeTypeSelectedValueLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Upper limit (micron).
         /// </summary>
         public static string GrainSizeUpperLimitLabel {
@@ -322,6 +331,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sample data type.
+        /// </summary>
+        public static string SampleDataTypeSelectedValueLabel {
+            get {
+                return ResourceManager.GetString("SampleDataTypeSelectedValueLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select sample mineral type.
         /// </summary>
         public static string SampleMineralTypeLabel {
@@ -331,11 +349,29 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sample mineral type.
+        /// </summary>
+        public static string SampleMineralTypeSelectedValueLabel {
+            get {
+                return ResourceManager.GetString("SampleMineralTypeSelectedValueLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select sample origin type.
         /// </summary>
         public static string SampleOriginTypeLabel {
             get {
                 return ResourceManager.GetString("SampleOriginTypeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sample origin type.
+        /// </summary>
+        public static string SampleOriginTypeSelectedValueLabel {
+            get {
+                return ResourceManager.GetString("SampleOriginTypeSelectedValueLabel", resourceCulture);
             }
         }
         
