@@ -28,12 +28,6 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region PARTIAL VIEWS
         [HttpGet]
-        public IActionResult IsUserStrictlyAuthorized(GenericRequestByIdModel model)
-        {
-            return new JsonResult(new GenericResponseModel() { IsOk = dbHandlerHyperLabData.isUserStrictlyAuthorized(model.Id, getUserId()) });
-        }
-
-        [HttpGet]
         public IActionResult LoadSpectrumMeasurementInfoView(GenericRequestByIdModel model)
         {
             var generalInfo = dbHandlerHyperLabData.getSpectrumMinimalInfo(model.Id,
@@ -117,7 +111,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult GetSpectrumMeasurementInfo(int FileId)
         {
             var spectrumMeasurementInfo = dbHandlerHyperLabData.getSpectrumFileMeasurementInfo(FileId,
-                                                                                   getUserId());
+                                                                                               getUserId());
             if (spectrumMeasurementInfo != null)
                 return new JsonResult(spectrumMeasurementInfo);
             else
@@ -128,7 +122,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult GetSpectrumSampleData(GenericRequestByIdModel model)
         {
             var spectrumSampleData = dbHandlerHyperLabData.getSpectrumFileSampleData(model.Id,
-                                                                         getUserId());
+                                                                                     getUserId());
             if (spectrumSampleData != null)
                 return new JsonResult(spectrumSampleData);
             else
@@ -140,8 +134,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> DeleteMineral([FromBody] DeleteMaterialRequestModel model)
         {
             if (await dbHandlerHyperLabData.deleteMineralLinkAsync(model.SpectrumId,
-                                                              model.MaterialId,
-                                                              getUserId()))
+                                                                   model.MaterialId,
+                                                                   getUserId()))
                 return new JsonResult(GenericResponseModel.CreateSuccessResponse());
             else
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
