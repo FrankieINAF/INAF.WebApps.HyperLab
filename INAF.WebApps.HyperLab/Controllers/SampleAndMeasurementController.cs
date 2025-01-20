@@ -93,7 +93,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 if (model.SelectedMineralTypeId != sampleDataSelectedValues.MineralTypeId)
                     /* if the 2 values are different, then we want to change the mineral type selection, otherwise we're reloading original value */
                     sampleDataSelectedValues.MineralTypeId = model.SelectedMineralTypeId;
-                return PartialView("Partials/_SelectedMineralType", sampleDataSelectedValues);
+                return PartialView("Partials/_SelectedMineralTypeEditor", sampleDataSelectedValues);
             }
             else
                 return new EmptyResult();

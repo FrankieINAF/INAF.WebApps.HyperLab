@@ -165,8 +165,8 @@
   <data name="InfoNamePlaceholder" xml:space="preserve">
     <value>Name for current sample</value>
   </data>
-  <data name="InfoNoMeteorClassSelectedYet" xml:space="preserve">
-    <value>No meteor class selected yet</value>
+  <data name="InfoNoMeteoriteClassSelectedYet" xml:space="preserve">
+    <value>No meteorite class selected yet</value>
   </data>
   <data name="InfoNoMineralSelectedYet" xml:space="preserve">
     <value>No mineral selected yet</value>
@@ -177,8 +177,8 @@
   <data name="InfoNoRockSelectedYet" xml:space="preserve">
     <value>No rock selected yet</value>
   </data>
-  <data name="InfoSelectedMeteorMeteorClassLabel" xml:space="preserve">
-    <value>Selected meteor class</value>
+  <data name="InfoSelectedMeteoriteClassLabel" xml:space="preserve">
+    <value>Selected meteorite class</value>
   </data>
   <data name="InfoSelectedMineralLabel" xml:space="preserve">
     <value>Selected mineral</value>
@@ -222,6 +222,9 @@
   <data name="SampleOriginTypeSelectedValueLabel" xml:space="preserve">
     <value>Sample origin type</value>
   </data>
+  <data name="SaveInfoMineralPercentageExceeds100ErrorMessage" xml:space="preserve">
+    <value>Sum of minerals percentages exceeds 100!</value>
+  </data>
   <data name="SaveInfoNoMeteorClassSelectedErrorMessage" xml:space="preserve">
     <value>No meteor class selected yet, select one to proceed with saving</value>
   </data>
@@ -231,8 +234,8 @@
   <data name="SaveInfoNoRockSelectedErrorMessage" xml:space="preserve">
     <value>No rock selected yet, select one to proceed with saving</value>
   </data>
-  <data name="SuggestionsForMeteorsLabel" xml:space="preserve">
-    <value>Search for meteors</value>
+  <data name="SuggestionsForMeteoritesLabel" xml:space="preserve">
+    <value>Search for meteorites</value>
   </data>
   <data name="SuggestionsForMineralsLabel" xml:space="preserve">
     <value>Search for minerals</value>

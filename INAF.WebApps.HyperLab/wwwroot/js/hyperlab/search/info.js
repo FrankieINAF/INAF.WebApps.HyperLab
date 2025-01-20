@@ -38,6 +38,19 @@ function getMineralItems() {
     return minerals;
 }
 
+function isSumOfMineralItemsPercentageGreaterThan100() {
+    let sum = 0;
+    for (let i = 0; i < minerals.length; i++) {
+        sum += minerals[i].Percentage;
+    }
+
+    return (sum > 100);
+}
+
+function removeMinerals() {
+    minerals = [];
+}
+
 function updateMineralItemPercentage(id, percentage) {
     let index = minerals.findIndex(x => x.Id == id);
     if (index == -1)
@@ -51,6 +64,10 @@ function getMonomineral() {
     return monoMineral;
 }
 
+function removeMonomineral() {
+    monoMineral = null;
+}
+
 function setMonomineral(id, name) {
     minerals = [];
 
@@ -58,6 +75,8 @@ function setMonomineral(id, name) {
         Id: id,
         Name: name
     };
+
+    minerals.push(monoMineral);
 }
 
 /* ---------- ROCK ---------- */
@@ -66,6 +85,10 @@ function getRock() {
         return rock;
     else
         return createEmpty();
+}
+
+function removeRock() {
+    rock = null;
 }
 
 function setRock(id, name) {
@@ -81,6 +104,10 @@ function getMeteoriteClass() {
         return meteoriteClass;
     else
         return createEmpty();
+}
+
+function removeMeteoriteClass() {
+    meteoriteClass = null;
 }
 
 function setMeteoriteClass(id, name) {
@@ -232,6 +259,10 @@ async function saveInfo() {
                 isSavingAllowed = false;
                 savingErrorMessage = SaveInfoNoMineralSelectedErrorMessage;
             }
+            if (isSumOfMineralItemsPercentageGreaterThan100()) {
+                isSavingAllowed = false;
+                savingErrorMessage = SaveInfoMineralPercentageExceeds100ErrorMessage;
+            }
             break;
 
         case MINERAL_TYPE_ROCK:
@@ -377,7 +408,7 @@ async function showHideButtonsForInfoPanelAsync() {
         Id: selectedId
     };
 
-    let obj = await doAjaxGetAsync(UrlIsUserStrictlyAuthorized, model);
+    let obj = await doAjaxGetAsync(UrlIsUserStrictlyAuthorizedForSpectrum, model);
     if (obj && obj.IsOk) {
         showByClass('saveInfo');
         showByClass('refreshInfo');
@@ -468,7 +499,7 @@ function setAutocomplete(url) {
                     }));
                 },
                 error: function (xhr, status, error) {
-                    console.log('autocomplete - mineralsSuggestion - ex:' + error);
+                    console.log('autocomplete - materialsSuggestion - ex:' + error);
                 }
             });
         },
@@ -487,7 +518,7 @@ function setAutocomplete(url) {
 }
 
 function setLabel(text) {
-    $('#mineralsSuggestionLabel').text(text);
+    $('#materialsSuggestionLabel').text(text);
 }
 
 function setSelection(ui) {
@@ -505,6 +536,7 @@ function setSelection(ui) {
             break;
 
         case 4: //Rocks
+            
             setMaterialForRock(ui);
             break;
 
@@ -514,22 +546,47 @@ function setSelection(ui) {
     }
 }
 
+/* ---------- UI ---------- */
+function removeMaterialForExtraterrestrial() {
+    $('#selectedMeteoriteClass').text('');
+    $('#MeteoriteClass_Id').val(0);
+    removeMeteoriteClass();
+}
+
+function removeMaterialForMix() {
+    $('#selectedMineralsContainer').empty();
+    removeMinerals();
+}
+
+function removeMaterialForMonomineralic() {
+    $('#selectedMineral').text('');
+    $('#Minerals_0_Id').val(0);
+    removeMonomineral();
+}
+
+function removeMaterialForRock() {
+    $('#selectedRock').text('');
+    $('#Rock_Id').val(0);
+    removeRock();
+}
+
 function setMaterialForExtraterrestrial(ui) {
     if ($('#noSelectedMeteorClass').length) {
         /* if no meteorite exists, then remove and add selected meteorite... */
-        $('#selectedMeteorClassContainer').empty();
+        $('#selectedMeteoriteClassContainer').empty();
 
-        let html = `<span id="selectedMeteorClass">${ui.item.label}</span>`;
+        let html = `<span id="selectedMeteoriteClass">${ui.item.label}</span>`;
         html += `<input data-val="true" data-val-required="The Id field is required." id="MeteoriteClass__Id" name="MeteoriteClass.Id" type="hidden" value="${ui.item.id}">`;
-        $('#selectedMeteorClassContainer').html(html);
+        $('#selectedMeteoriteClassContainer').html(html);
     } else {
         /* ...otherwise replace value */
-        $('#selectedMeteorClass').text(ui.item.label);
-        $('#MeteoriteClass__Id').val(ui.item.id);
+        $('#selectedMeteoriteClass').text(ui.item.label);
+        $('#MeteoriteClass_Id').val(ui.item.id);
     }
 
     setMeteoriteClass(ui.item.id, ui.item.label);
 }
+
 
 function setMaterialForMix(ui) {
     hideByClass('noSelectedMinerals');
@@ -567,12 +624,12 @@ function setMaterialForMonomineralic(ui) {
         $('#selectedMonoMineralContainer').empty();
 
         let html = `<span id="selectedMineral">${ui.item.label}</span>`;
-        html += `<input data-val="true" data-val-required="The Id field is required." id="Minerals_0__Id" name="Minerals[0].Id" type="hidden" value="${ui.item.id}">`;
+        html += `<input data-val="true" data-val-required="The Id field is required." id="Minerals_0_Id" name="Minerals[0].Id" type="hidden" value="${ui.item.id}">`;
         $('#selectedMonoMineralContainer').html(html);
     } else {
         /* ...otherwise replace value */
         $('#selectedMineral').text(ui.item.label);
-        $('#Minerals_0__Id').val(ui.item.id);
+        $('#Minerals_0_Id').val(ui.item.id);
     }
 
     setMonomineral(ui.item.id, ui.item.label);
@@ -584,12 +641,12 @@ function setMaterialForRock(ui) {
         $('#selectedRockContainer').empty();
 
         let html = `<span id="selectedRock">${ui.item.label}</span>`;
-        html += `<input data-val="true" data-val-required="The Id field is required." id="Rock__Id" name="RockId" type="hidden" value="${ui.item.id}">`;
+        html += `<input data-val="true" data-val-required="The Id field is required." id="Rock_Id" name="RockId" type="hidden" value="${ui.item.id}">`;
         $('#selectedRockContainer').html(html);
     } else {
         /* ...otherwise replace value */
         $('#selectedRock').text(ui.item.label);
-        $('#Rock__Id').val(ui.item.id);
+        $('#Rock_Id').val(ui.item.id);
     }
 
     setRock(ui.item.id, ui.item.label)
@@ -611,30 +668,68 @@ function setSelectedMineralType(selected) {
     let isShowRequired = true;
     switch (mineralTypeId) {
         case 1: //Monomineralic
+            removeMeteoriteClass();
+            removeMaterialForExtraterrestrial();
+
+            removeMaterialForMix();
+
+            removeRock();
+            removeMaterialForRock();
+
             setAutocomplete(UrlGetMinerals);
             setLabel(SuggestionsForMineralsLabel);
             isShowRequired = true;
             break;
 
         case 2: //Amorphous
+            removeMeteoriteClass();
+            removeMaterialForExtraterrestrial();
+
+            removeMaterialForMix();
+
+            removeMonomineral();
+            removeMaterialForMonomineralic();
+
+            removeRock();
+            removeMaterialForRock();
+
             isShowRequired = false;
             break;
 
         case 3: //Mix
+            removeMeteoriteClass();
+            removeMaterialForExtraterrestrial();
+
+            removeMonomineral();
+            removeMaterialForMonomineralic();
+
+            removeRock();
+            removeMaterialForRock();
+
             setAutocomplete(UrlGetMinerals);
             setLabel(SuggestionsForMineralsLabel);
             isShowRequired = true;
             break;
 
         case 4: //Rock
+            removeMeteoriteClass();
+            removeMaterialForExtraterrestrial();
+
+            removeMaterialForMix();
+
+            removeMonomineral();
+            removeMaterialForMonomineralic();
+
             setAutocomplete(UrlGetRocks);
             setLabel(SuggestionsForRocksLabel);
             isShowRequired = true;
             break;
 
         case 5: //Extraterrestrial
+            removeMaterialForRock();
+
             setAutocomplete(UrlGetMeteorClasses);
-            setLabel(SuggestionsForMeteorsLabel);
+            setLabel(SuggestionsForMeteoritesLabel);
             isShowRequired = true;
             break;
     }

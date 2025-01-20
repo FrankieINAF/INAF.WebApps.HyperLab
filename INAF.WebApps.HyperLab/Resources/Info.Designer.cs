@@ -205,11 +205,11 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No meteor class selected yet.
+        ///   Looks up a localized string similar to No meteorite class selected yet.
         /// </summary>
-        public static string InfoNoMeteorClassSelectedYet {
+        public static string InfoNoMeteoriteClassSelectedYet {
             get {
-                return ResourceManager.GetString("InfoNoMeteorClassSelectedYet", resourceCulture);
+                return ResourceManager.GetString("InfoNoMeteoriteClassSelectedYet", resourceCulture);
             }
         }
         
@@ -241,11 +241,11 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selected meteor class.
+        ///   Looks up a localized string similar to Selected meteorite class.
         /// </summary>
-        public static string InfoSelectedMeteorMeteorClassLabel {
+        public static string InfoSelectedMeteoriteClassLabel {
             get {
-                return ResourceManager.GetString("InfoSelectedMeteorMeteorClassLabel", resourceCulture);
+                return ResourceManager.GetString("InfoSelectedMeteoriteClassLabel", resourceCulture);
             }
         }
         
@@ -376,6 +376,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sum of minerals percentages exceeds 100!.
+        /// </summary>
+        public static string SaveInfoMineralPercentageExceeds100ErrorMessage {
+            get {
+                return ResourceManager.GetString("SaveInfoMineralPercentageExceeds100ErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No meteor class selected yet, select one to proceed with saving.
         /// </summary>
         public static string SaveInfoNoMeteorClassSelectedErrorMessage {
@@ -403,11 +412,11 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search for meteors.
+        ///   Looks up a localized string similar to Search for meteorites.
         /// </summary>
-        public static string SuggestionsForMeteorsLabel {
+        public static string SuggestionsForMeteoritesLabel {
             get {
-                return ResourceManager.GetString("SuggestionsForMeteorsLabel", resourceCulture);
+                return ResourceManager.GetString("SuggestionsForMeteoritesLabel", resourceCulture);
             }
         }
         

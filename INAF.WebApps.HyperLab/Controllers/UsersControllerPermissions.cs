@@ -8,7 +8,7 @@ namespace INAF.WebApps.HyperLab.Controllers
     public partial class UsersController
     {
         [HttpGet]
-        public IActionResult IsUserStrictlyAuthorized(GenericRequestByIdModel model)
+        public IActionResult IsUserStrictlyAuthorizedForSpectrum(GenericRequestByIdModel model)
         {
             var dbHandlerHyperLabData = serviceProvider.GetRequiredService<DbHandlerHyperLabData>();
             return new JsonResult(new GenericResponseModel() { IsOk = dbHandlerHyperLabData.isUserStrictlyAuthorized(model.Id, getUserId()) });
