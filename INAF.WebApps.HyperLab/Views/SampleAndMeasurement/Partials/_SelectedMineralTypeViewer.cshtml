@@ -1,0 +1,137 @@
+﻿@model SampleDataSelectedValues
+
+@using INAF.WebApps.HyperLab.Resources
+@using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData
+@using INAF.Libraries.Net.HyperLab.CommonModels.Values
+@using System.Text;
+
+<!-- MINERALS -->
+@if (Model.MineralTypeId == (int)Enums.MineralType.Monomineralic)
+{
+    <div class="row cell-fs-12">
+        <span>
+            <label for="selectedMineral" class="control-label">@Html.Raw(Info.InfoSelectedMineralLabel)</label>
+        </span>
+        <span>:&nbsp;</span>
+        <span>
+            @if (Model.Minerals?.Count > 0)
+            {
+                <label id="selectedMineral">@Html.Raw(Model.Minerals[0].Name)</label>
+            }
+            else
+            {
+                @Html.Raw(Info.InfoNoMineralSelectedYet)
+            }
+        </span>
+    </div>
+}
+else if (Model.MineralTypeId == (int)Enums.MineralType.Amorphous)
+{
+    // do nothing
+}
+else if (Model.MineralTypeId == (int)Enums.MineralType.Mix)
+{
+    <div class="row cell-fs-12">
+        <label class="control-label">@Html.Raw(Info.InfoSelectedMineralsLabel)</label>
+    </div>
+
+    @if (Model.Minerals?.Count > 0)
+    {
+        int mineralsNum = Model.Minerals.Count;
+        for (int i = 0; i < mineralsNum; i++)
+        {
+            <div class="row cell-fs-12 margin-top-8">
+                <span class="label">@Model.Minerals[i].Name</span>
+                @{
+                    double percentage = Model.Minerals[i].Percentage / 100d;
+                }
+                <span class="label">@percentage.ToString("P2", System.Globalization.CultureInfo.InvariantCulture)</span>
+            </div>
+        }
+    }
+}
+else if (Model.MineralTypeId == (int)Enums.MineralType.Rock)
+{
+    <div class="row cell-fs-12">
+        <span>
+            <label for="selectedRock" class="control-label">@Html.Raw(Info.InfoSelectedRockLabel)</label>
+        </span>
+        <span>:&nbsp;</span>
+        <span>
+            @if (Model.Rock != null)
+            {
+                <label id="selectedRock">@Html.Raw(Model.Rock.Name)</label>
+            }
+            else
+            {
+                @Html.Raw(Info.InfoNoRockSelectedYet)
+            }
+        </span>
+    </div>
+}
+else if (Model.MineralTypeId == (int)Enums.MineralType.Extraterrestrial)
+{
+    <div class="row cell-fs-12">
+        <span>
+            <label for="selectedMeteoriteClass" class="control-label">@Html.Raw(Info.InfoSelectedMeteoriteClassLabel)</label>
+        </span>
+        <span>:&nbsp;</span>
+        <span>
+            @if (Model.MeteoriteClass != null)
+            {
+                <label id="selectedMeteoriteClass">@Html.Raw(Model.MeteoriteClass.Name)</label>
+            }
+            else
+            {
+                @Html.Raw(Info.InfoNoMeteoriteClassSelectedYet)
+            }
+        </span>
+    </div>
+}
+
+<script type="text/javascript">
+    function setMineralTypeItems() {
+    @if (Model.MineralTypeId == (int)Enums.MineralType.Monomineralic)
+    {
+        if (Model.Minerals?.Count > 0)
+        {
+            string setMonomineral = $"setMonomineral({Model.Minerals[0].Id}, \"{Model.Minerals[0].Name}\")";
+            @Html.Raw(setMonomineral)
+            ;
+        }
+    }
+    else if (Model.MineralTypeId == (int)Enums.MineralType.Mix)
+    {
+        if (Model.Minerals?.Count > 0)
+        {
+            StringBuilder sb = new StringBuilder();
+            int mineralsNum = Model.Minerals.Count;
+            for (int i = 0; i < mineralsNum; i++)
+            {
+                sb.AppendLine($"addMineralItem({Model.Minerals[i].Id}, \"{Model.Minerals[i].Name}\", {Model.Minerals[i].Percentage});");
+            }
+            @Html.Raw(sb.ToString())
+            ;
+        }
+    }
+    else if (Model.MineralTypeId == (int)Enums.MineralType.Rock)
+    {
+        if (Model.Rock != null)
+        {
+            string setRock = $"setRock({Model.Rock.Id}, \"{Model.Rock.Name}\")";
+            @Html.Raw(setRock)
+            ;
+        }
+    }
+    else if (Model.MineralTypeId == (int)Enums.MineralType.Extraterrestrial)
+    {
+        if (Model.MeteoriteClass != null)
+        {
+            string setMeteoriteClass = $"setMeteoriteClass({Model.MeteoriteClass.Id}, \"{Model.MeteoriteClass.Name}\")";
+            @Html.Raw(setMeteoriteClass)
+            ;
+        }
+    }
+        //console.log("Mineral type items set");
+    }
+</script>
