@@ -57,15 +57,15 @@
                 case (int)Enums.SampleType.Pellet:
                 case (int)Enums.SampleType.Particulate:
                     visibilityClass = "d-flex";
-                    var grainSizeValues = Model.SampleDataAvailableValues.SampleDataValues!.First(x => x.Id == Model.SampleDataSelectedValues.GrainSizeTypeId);
+                    var sampleDataValues = Model.SampleDataAvailableValues.SampleDataValues!.First(x => x.Id == Model.SampleDataSelectedValues.SampleTypeId);
                     if (Model.SampleDataSelectedValues.GrainSizeLowerValueId != null)
                     {
-                        lowerLimit = grainSizeValues.GrainSizeValues!.First(x => x.Id == Model.SampleDataSelectedValues.GrainSizeLowerValueId).Value.ToString();
+                        lowerLimit = sampleDataValues.GrainSizeValues!.First(x => x.Id == Model.SampleDataSelectedValues.GrainSizeLowerValueId).Value.ToString();
                         lowerLimitVisibilityClass = "d-flex";
                     }
                     if (Model.SampleDataSelectedValues.GrainSizeUpperValueId != null)
                     {
-                        upperLimit = grainSizeValues.GrainSizeValues!.First(x => x.Id == Model.SampleDataSelectedValues.GrainSizeUpperValueId).Value.ToString();
+                        upperLimit = sampleDataValues.GrainSizeValues!.First(x => x.Id == Model.SampleDataSelectedValues.GrainSizeUpperValueId).Value.ToString();
                         upperLimitVisibilityClass = "d-flex";
                         if (Model.SampleDataSelectedValues.GrainSizeLowerValueId != null)
                             upperLimitMargin = "margin-top-8";
