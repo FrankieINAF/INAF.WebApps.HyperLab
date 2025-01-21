@@ -52,6 +52,12 @@ function addSelectedspectrum(id) {
     }
 }
 
+function navigateToChart() {
+    var ids = selectedSpectra.join(',');
+    var url = `${UrlChart}?Ids=${ids}`;
+    navigateTo(url);
+}
+
 function removeSelectedSpectrum(index) {
     console.log(`removeSelectedSpectrum - index: ${index}`);
     selectedSpectra.splice(index, 1);
@@ -327,7 +333,7 @@ function onWindowResize() {
     }, 200);
 }
 
-$(document).ready(function () {
+$(function () {
 
     /* fill arrays for search */
     fillSampleTypes();
@@ -376,7 +382,7 @@ $(document).ready(function () {
     };
 
     /* init array for vertical constant lines */
-    initConstantLines();
+    //initConstantLines();
 
     //$("body").click(function (e) {
     //    var parentOffset = $(this).offset();

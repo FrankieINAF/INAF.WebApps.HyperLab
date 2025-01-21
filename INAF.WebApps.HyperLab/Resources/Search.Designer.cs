@@ -151,6 +151,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chart.
+        /// </summary>
+        public static string ChartPageTitle {
+            get {
+                return ResourceManager.GetString("ChartPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List of available conditions.
         /// </summary>
         public static string ComplexSearchListOfConditions {

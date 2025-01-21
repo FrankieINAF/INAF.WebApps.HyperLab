@@ -85,28 +85,38 @@
     "includeInProject": true
   },
   {
+    "outputFileName": "wwwroot/js/dist/chart/chartbundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/common.js",
+      "wwwroot/js/hyperlab/search/common.js",
+      "wwwroot/js/hyperlab/chart/charts.js",
+      "wwwroot/js/hyperlab/chart/chartsarrays.js",
+      "wwwroot/js/hyperlab/chart/charms/charms.js",
+      "wwwroot/js/hyperlab/chart/charms/charmslegend.js",
+      "wwwroot/js/hyperlab/chart/charms/charmscolorselector.js",
+      "wwwroot/js/hyperlab/chart/charms/charmsalignmentpanel.js",
+      "wwwroot/js/hyperlab/chart/charms/charmsfitpanel.js",
+      "wwwroot/js/hyperlab/chart/charms/charmsfitpanelcore.js",
+      "wwwroot/js/hyperlab/chart/charms/charmsfitpanelpro.js",
+      "wwwroot/js/hyperlab/chart/charms/charmsfitpanelcommon.js",
+      "wwwroot/js/hyperlab/chart/charms/charmssmoothingpanel.js",
+      "wwwroot/js/hyperlab/chart/charms/charmsbandanalysis.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
     "outputFileName": "wwwroot/js/dist/search/searchbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/common.js",
       "wwwroot/js/hyperlab/search/common.js",
-      "wwwroot/js/hyperlab/search/charts.js",
-      "wwwroot/js/hyperlab/search/chartsarrays.js",
       "wwwroot/js/hyperlab/search/search.js",
+      "wwwroot/js/hyperlab/search/searchbuttons.js",
       "wwwroot/js/hyperlab/search/searchSimple.js",
       "wwwroot/js/hyperlab/search/searchComplex.js",
       "wwwroot/js/hyperlab/search/complexsearchesmanagement.js",
       "wwwroot/js/hyperlab/search/complexsearchesintro.js",
-      "wwwroot/js/hyperlab/search/info.js",
-      "wwwroot/js/hyperlab/search/charms/charms.js",
-      "wwwroot/js/hyperlab/search/charms/charmslegend.js",
-      "wwwroot/js/hyperlab/search/charms/charmscolorselector.js",
-      "wwwroot/js/hyperlab/search/charms/charmsalignmentpanel.js",
-      "wwwroot/js/hyperlab/search/charms/charmsfitpanel.js",
-      "wwwroot/js/hyperlab/search/charms/charmsfitpanelcore.js",
-      "wwwroot/js/hyperlab/search/charms/charmsfitpanelpro.js",
-      "wwwroot/js/hyperlab/search/charms/charmsfitpanelcommon.js",
-      "wwwroot/js/hyperlab/search/charms/charmssmoothingpanel.js",
-      "wwwroot/js/hyperlab/search/charms/charmsbandanalysis.js"
+      "wwwroot/js/hyperlab/search/info.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true

@@ -15,5 +15,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             return View();
         }
+
+        public IActionResult Error()
+        {
+            return View("Error");
+        }
     }
 }

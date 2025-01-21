@@ -153,88 +153,6 @@ function removeSearchButton() {
     $(`#${searchButtonId}`).remove();
 }
 
-/* ---------- SHOW-CHARTS BUTTON ---------- */
-function addCreateChartsButton() {
-    addButton(showChartsButtonId, ButtonGraphSelectedSpectraLabel, 'mif-chart-line', createChartsProcedureCaller);
-}
-
-function removeCreateChartsButtonProcedure() {
-    if (!isButtonAvailable(showChartsButtonId))
-        return;
-
-    /* show the 'create chart' button */
-    animateCSS(`${showChartsButtonId}`, `bounceOutUp`, FAST, removeCreateChartsButton);
-}
-
-function removeCreateChartsButton() {
-    $(`#${showChartsButtonId}`).remove();
-}
-
-/* ---------- BACK-TO-SEARCH BUTTON ---------- */
-function addBackToSearchButton() {
-    addButton(backToSearchButtonId, ButtonBackToSearchLabel, 'mif-arrow-left', backToSearchProcedure);
-}
-
-function removeBackToSearchButtonProcedure() {
-    if (!isButtonAvailable(backToSearchButtonId))
-        return;
-
-    animateCSS(`${backToSearchButtonId}`, `bounceOutUp`, FAST, removeBackToSearchButton);
-}
-
-function removeBackToSearchButton() {
-    $(`#${backToSearchButtonId}`).remove();
-}
-
-/* ---------- BACK-CLEAR-TO-SEARCH BUTTON ---------- */
-function addBackClearToSearchButton() {
-    addButton(backClearToSearchButtonId, ButtonBackClearToSearchLabel, 'mif-cross-light', backClearToSearchProcedureAsync);
-}
-
-function removeBackClearToSearchButtonProcedure() {
-    if (!isButtonAvailable(backClearToSearchButtonId))
-        return;
-
-    animateCSS(`${backClearToSearchButtonId}`, `bounceOutUp`, FAST, removeBackClearToSearchButton);
-}
-
-function removeBackClearToSearchButton() {
-    $(`#${backClearToSearchButtonId}`).remove();
-}
-
-/* ---------- CHARMS BUTTON ---------- */
-function addOpenCharmsButton() {
-    addButton(openCharmsButtonId, ButtonOpenCharmsLabel, 'mif-magic-wand', openCharms);
-}
-
-function removeOpenCharmsButtonProcedure() {
-    if (!isButtonAvailable(openCharmsButtonId))
-        return;
-
-    animateCSS(`${openCharmsButtonId}`, `bounceOutUp`, FAST, removeOpenCharmsButton);
-}
-
-function removeOpenCharmsButton() {
-    $(`#${openCharmsButtonId}`).remove();
-}
-
-/* ---------- GO-TO-CHARTS BUTTON ---------- */
-function addGoToChartsButton() {
-    isChartLoadRequired = false;
-    addButton(goToChartsButtonId, ButtonBackToSearchLabel, 'mif-arrow-right', showChartsProcedure);
-}
-
-function removeGoToChartsButtonProcedure() {
-    if (!isButtonAvailable(goToChartsButtonId))
-        return;
-
-    animateCSS(`${goToChartsButtonId}`, `bounceOutUp`, FAST, removeGoToChartsButton);
-}
-
-function removeGoToChartsButton() {
-    $(`#${goToChartsButtonId}`).remove();
-}
-
 /* ---------- HELP BUTTON ---------- */
 function addHelpButton() {
     addButton(helpButtonId, ButtonHelpLabel, 'mif-help', showSearchInfo);
@@ -249,22 +167,6 @@ function removeHelpButtonProcedure() {
 
 function removeHelpButton() {
     $(`#${helpButtonId}`).remove();
-}
-
-/* ---------- ZOOM-OUT BUTTON ---------- */
-function addZoomOutButton() {
-    addButton(zoomOutButtonId, ButtonZoomOutLabel, 'mif-zoom-out', resetZoom);
-}
-
-function removeZoomButtonProcedure() {
-    if (!isButtonAvailable(zoomOutButtonId))
-        return;
-
-    animateCSS(`${zoomOutButtonId}`, `bounceOutUp`, FAST, removeZoomButton);
-}
-
-function removeZoomButton() {
-    $(`#${zoomOutButtonId}`).remove();
 }
 
 /* ################################################################################ */
@@ -323,13 +225,6 @@ function manageNavigation() {
             
             break;
     }
-}
-
-/* ---------- INIT BUTTONS IN SEARCH PANEL ---------- */
-function initButtonsInSearchPanel() {
-    removeBackToSearchButton();
-    addSearchButton();
-    addHelpButton();
 }
 
 /* ---------- SET NAVIGATION BUTTONS FOR CHARTS PANEL SEARCH PANEL ---------- */

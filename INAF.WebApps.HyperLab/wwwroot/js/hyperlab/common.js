@@ -129,6 +129,28 @@ function navigateTo(url) {
     window.location.href = url;
 }
 
+async function navigateToView(url, data) {
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            // Assuming the server responds with the URL to redirect to
+            const result = await response.json();
+            window.location.href = result.redirectUrl;
+        } else {
+            console.error('Failed to navigate:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
 /* -------------------------------------------------------------------------------- */
 /* ---------- DIALOGS/NOTIFICATIONS ---------- */
 /* -------------------------------------------------------------------------------- */
