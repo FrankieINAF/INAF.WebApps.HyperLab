@@ -86,7 +86,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult LoadSpectrumSampleSelectedValuesView(ChangeMineralTypeIdRequestModel model)
         {
             var sampleDataSelectedValues = dbHandlerHyperLabData.getSpectrumFileSampleData(model.Id,
-                                                                               getUserId());
+                                                                                           getUserId());
 
             if (sampleDataSelectedValues != null)
             {
