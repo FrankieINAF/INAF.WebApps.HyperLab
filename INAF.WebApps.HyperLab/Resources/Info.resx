@@ -165,6 +165,9 @@
   <data name="InfoNamePlaceholder" xml:space="preserve">
     <value>Name for current sample</value>
   </data>
+  <data name="InfoNoInputSpectraMessage" xml:space="preserve">
+    <value>This spectrum has no parent spectra</value>
+  </data>
   <data name="InfoNoMeteoriteClassSelectedYet" xml:space="preserve">
     <value>No meteorite class selected yet</value>
   </data>

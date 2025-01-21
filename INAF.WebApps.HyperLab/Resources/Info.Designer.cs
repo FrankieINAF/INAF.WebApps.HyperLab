@@ -205,6 +205,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This spectrum has no parent spectra.
+        /// </summary>
+        public static string InfoNoInputSpectraMessage {
+            get {
+                return ResourceManager.GetString("InfoNoInputSpectraMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No meteorite class selected yet.
         /// </summary>
         public static string InfoNoMeteoriteClassSelectedYet {
