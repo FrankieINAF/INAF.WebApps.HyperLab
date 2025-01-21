@@ -88,7 +88,7 @@
     "outputFileName": "wwwroot/js/dist/chart/chartbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/common.js",
-      "wwwroot/js/hyperlab/search/common.js",
+      "wwwroot/js/hyperlab/commonsearchandchart.js",
       "wwwroot/js/hyperlab/chart/charts.js",
       "wwwroot/js/hyperlab/chart/chartsarrays.js",
       "wwwroot/js/hyperlab/chart/charms/charms.js",
@@ -109,7 +109,7 @@
     "outputFileName": "wwwroot/js/dist/search/searchbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/common.js",
-      "wwwroot/js/hyperlab/search/common.js",
+      "wwwroot/js/hyperlab/commonsearchandchart.js",
       "wwwroot/js/hyperlab/search/search.js",
       "wwwroot/js/hyperlab/search/searchbuttons.js",
       "wwwroot/js/hyperlab/search/searchSimple.js",
@@ -180,7 +180,7 @@
     "minify": { "enabled": true }
   },
   {
-    "outputFileName": "wwwroot/css/dist/search/searchbundle.min.css",
+    "outputFileName": "wwwroot/css/dist/search/searchandchartbundle.css",
     "inputFiles": [
       "wwwroot/css/hyperlab/search/search.css",
       "wwwroot/css/hyperlab/search/charms.css"

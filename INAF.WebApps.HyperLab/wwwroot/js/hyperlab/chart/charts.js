@@ -11,6 +11,10 @@ var isChartLoaded = false;
 var MIN_Y = 'minY';
 var MAX_Y = 'maxY';
 
+var backToSearchButtonId = 'buttonBackToSearch';
+var backClearToSearchButtonId = 'buttonBackClearToSearch';
+var openCharmsButtonId = 'buttonOpenCharms'
+
 /* ################################################################################ */
 /* SHOW/HIDE CHARTS */
 /* ################################################################################ */
@@ -414,6 +418,65 @@ function resetZoom() {
 $(function () {
     createChartsProcedureCaller();
 });
+
+/* ################################################################################ */
+/* MANAGE PANELS SEARCH/CHART POSITION */
+/* ################################################################################ */
+function initSecondaryPanels() {
+    //console.log('top:' + position.top);
+    setPositionTopRelativePx('charts', -(pageH + APPBAR_HEIGHT) / 2);
+    setPositionLeftRelativePercent('charts', '100');
+    //setPositionCompleteRelativePxPercent('charts', -(pageH + APPBAR_HEIGHT) / 2, '100');
+    $('#charts').height(pageH - APPBAR_HEIGHT);
+}
+
+/* ---------- FOR SEARCH ---------- */
+function setChartsPositionForSearch() {
+    setChartsPositionForSearchDesktop();
+}
+
+function setWrapperPositionForSearch() {
+    setWrapperPositionForSearchDesktop();
+}
+
+/* FOR SEARCH (DESKTOP) */
+function setChartsPositionForSearchDesktop() {
+    setPositionTopRelativePx('charts', -(pageH - APPBAR_HEIGHT));
+    setPositionLeftRelativePercent('charts', 100);
+}
+
+function setWrapperPositionForSearchDesktop() {
+    setPositionLeftRelativePercent('wrapper', 0);
+}
+
+/* ---------- FOR CHARTS ---------- */
+function setChartsPositionForChart() {
+    if (isMobile())
+        setChartsPositionForChartMobile();
+    else
+        setChartsPositionForChartDesktop();
+}
+
+function setWrapperPositionForChart() {
+    setWrapperPositionForChartDesktop();
+}
+
+/* FOR CHART (DESKTOP) */
+function setWrapperPositionForChartDesktop() {
+    setPositionLeftRelativePercent('wrapper', -100);
+}
+
+function setChartsPositionForChartDesktop() {
+    setPositionTopRelativePx('charts', -pageH + APPBAR_HEIGHT);
+    setPositionLeftRelativePx('charts', 0);
+}
+
+/* FOR CHART (MOBILE) */
+function setChartsPositionForChartMobile() {
+    setPositionTopAbsolutePx('charts', -(pageH - (2 * APPBAR_HEIGHT)));
+    setPositionLeftRelativePx('charts', 0);
+}
+
 /* ################################################################################ */
 /* MANAGE CHART DIM/POS FOR ORIENTATION CHANGE */
 /* ################################################################################ */

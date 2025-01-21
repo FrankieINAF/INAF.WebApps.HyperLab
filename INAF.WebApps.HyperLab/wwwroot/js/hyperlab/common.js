@@ -15,6 +15,59 @@ var DELAY_3S = 'delay-3s';
 var DELAY_4S = 'delay-4s';
 var DELAY_5S = 'delay-5s';
 
+var isFirstLoading = true;
+
+/* ################################################################################ */
+/* PAGE INTRO */
+/* ################################################################################ */
+function completePageRendering() {
+    let callback = function () {
+        /* retrieve page w,h */
+        initPageDims();
+
+        /* add event for handling mobile-device rotation */
+        //tryAddOrientationEventHandler();
+
+        /* set y-overflow for page */
+        setOverflowYAuto();
+    };
+
+    setTimeout(function () { animateHideIntro(callback); }, 500);
+}
+
+//function animateShowIntro() {
+//    if (!isFirstLoading)
+//        return;
+
+//    isFirstLoading = false;
+//    window.removeEventListener('load', animateShowIntro);
+
+//    showByClass('pageCoverLogo');
+//    animateCSS('pageCoverLogo', 'fadeIn', FASTER);
+//}
+
+function animateHideIntro(extcallback) {
+    //let callback = function () {
+        $('#pageCover').remove();
+
+        showPageItems(extcallback);
+    //};
+
+    //animateCSS('pageCover', 'fadeOut', FASTER, callback);
+}
+//window.addEventListener("load", animateShowIntro);
+
+function showPageItems(extcallback) {
+    showByClass('leftMenu');
+    animateCSS('leftMenu', 'fadeIn', FASTER);
+
+    showByClass('appbar');
+    animateCSS('appbar', 'fadeIn', FASTER);
+
+    showByClass('renderbody');
+    animateCSS('renderbody', 'fadeIn', FASTER, extcallback);
+}
+
 /* constants for css transform */
 var TRANSITION_DURATION = 250;
 var TRANSITION_SHORTHAND = 'all ' + TRANSITION_DURATION + 'ms cubic-bezier(0.4, 0.46, 0.32, 1)';
@@ -127,28 +180,6 @@ var isLoadingVisible = false;
 
 function navigateTo(url) {
     window.location.href = url;
-}
-
-async function navigateToView(url, data) {
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-
-        if (response.ok) {
-            // Assuming the server responds with the URL to redirect to
-            const result = await response.json();
-            window.location.href = result.redirectUrl;
-        } else {
-            console.error('Failed to navigate:', response.statusText);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
 }
 
 /* -------------------------------------------------------------------------------- */

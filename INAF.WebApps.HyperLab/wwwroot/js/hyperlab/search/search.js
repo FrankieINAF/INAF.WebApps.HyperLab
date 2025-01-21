@@ -63,7 +63,7 @@ function removeSelectedSpectrum(index) {
     selectedSpectra.splice(index, 1);
     console.log(`removeSelectedSpectrum - selectedSpectra: ${selectedSpectra}`);
     if (selectedSpectra.length == 0) {
-        removeCreateChartsButtonProcedure();
+        //removeCreateChartsButtonProcedure();
         showToast(ChartsNoSpectraSelectedMessage, 3000, WARNING);
     }
 }
@@ -303,24 +303,6 @@ function showSearchInfo() {
 /* ################################################################################ */
 /* DOCUMENT READY */
 /* ################################################################################ */
-function completePageRendering() {
-    let callback = function () {
-        /* retrieve page w,h */
-        initPageDims();
-
-        /* set starting position for panels */
-        initSecondaryPanels();
-
-        /* add event for handling mobile-device rotation */
-        //tryAddOrientationEventHandler();
-
-        /* set y-overflow for page */
-        setOverflowYAuto();
-    };
-
-    setTimeout(function () { animateHideIntro(callback); }, 500);
-}
-
 function onWindowResize() {
     if (timeoutOnWindowResize)
         clearTimeout(timeoutOnWindowResize);
@@ -380,9 +362,6 @@ $(function () {
     window.onresize = function () {
         onWindowResize();
     };
-
-    /* init array for vertical constant lines */
-    //initConstantLines();
 
     //$("body").click(function (e) {
     //    var parentOffset = $(this).offset();

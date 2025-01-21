@@ -31,7 +31,7 @@
     string materialTypeMeteorClass = Enums.MaterialType.MeteorClass.ToString();
 }
 
-<link rel="stylesheet" href="~/css/dist/search/searchbundle.min.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/dist/search/searchandchartbundle.min.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/dist/jqueryuibundle.min.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/dist/speechbubble.min.css" asp-append-version="true" />
 <style>
@@ -397,7 +397,7 @@
         selectedSpectra = [];
 
         /* remove 'show chart' button, if available */
-        removeCreateChartsButtonProcedure();
+        //removeCreateChartsButtonProcedure();
 
         /* execute selected search */
         if (SELECTED_SEARCH_TYPE == SEARCH_SIMPLE_TYPE) {
@@ -461,8 +461,7 @@
 </script>
 <script type="text/javascript" src="~/js/dist/devextreme/devextremebundle.min.js" asp-append-version="true"></script>
 <environment names="Development">
-    <script type="text/javascript" src="~/js/hyperlab/common.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/common.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/commonsearchandchart.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/search.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/searchbuttons.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/searchSimple.js" asp-append-version="true"></script>

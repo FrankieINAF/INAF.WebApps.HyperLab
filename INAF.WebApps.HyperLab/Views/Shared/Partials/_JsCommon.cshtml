@@ -7,8 +7,6 @@
 @using INAF.Libraries.Net.Extensions
 
 <script type="text/javascript">
-    var isFirstLoading = true;
-
     var UTC_OFFSET_HOURS = @System.TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).Hours;
 
     var JS_DELAY_200 = 200
@@ -208,41 +206,4 @@
         var selectedIlItem = aItem.closest('li');
         setActiveItem(selectedIlItem);
     }
-
-    /* ################################################################################ */
-    /* PAGE INTRO */
-    /* ################################################################################ */
-    function animateShowIntro() {
-        if (isFirstLoading)
-            return;
-
-        isFirstLoading = false;
-        showByClass('pageCoverLogo');
-        animateCSS('pageCoverLogo', 'fadeIn', FASTER);
-
-        window.removeEventListener('load', animateShowIntro);
-    }
-
-    function animateHideIntro(extcallback) {
-        let callback = function () {
-            $('#pageCover').remove();
-
-            showPageItems(extcallback);
-        };
-
-        animateCSS('pageCover', 'fadeOut', FASTER, callback);
-    }
-
-    function showPageItems(extcallback){
-        showByClass('leftMenu');
-        animateCSS('leftMenu', 'fadeIn', FASTER);
-
-        showByClass('appbar');
-        animateCSS('appbar', 'fadeIn', FASTER);
-
-        showByClass('renderbody');
-        animateCSS('renderbody', 'fadeIn', FASTER, extcallback);
-    }
-
-    window.addEventListener("load", animateShowIntro);
 </script>

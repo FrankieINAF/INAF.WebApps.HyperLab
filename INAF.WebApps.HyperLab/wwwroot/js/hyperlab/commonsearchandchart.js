@@ -1,10 +1,9 @@
-﻿var backToSearchButtonId = 'buttonBackToSearch';
-var backClearToSearchButtonId = 'buttonBackClearToSearch';
+﻿
 var showCharmsColorSelectorId = 'buttonShowCharmsColorSelector';
 var showCharmsLegendButtonId = 'buttonShowCharmsLegend';
 var goToChartsButtonId = 'buttonGoToCharts';
 var helpButtonId = 'buttonHelp';
-var openCharmsButtonId = 'buttonOpenCharms'
+
 var searchButtonId = 'buttonSearch';
 var showChartsButtonId = 'buttonShowCharts';
 var zoomOutButtonId = 'buttonZoomOut';
@@ -25,6 +24,82 @@ var pageW, pageH;
 var lightGreen = '#90ee90';
 var lightGreenTransparent = '#90ee9099';
 var red = '#a8071e';
+
+function initPageDims() {
+    pageW = $('#renderbody').width();
+    pageH = $('#renderbody').height();
+}
+
+/* ################################################################################ */
+/* MANAGE BUTTONS WHEN NAVIGATING BETWEEN SEARCH/CHART PANELS */
+/* ################################################################################ */
+function manageNavigation() {
+    let containerFunction = null;
+
+    switch (navigationStatus) {
+        case NAVIGATION_BACK_TO_SEARCH:
+            closeCharmsLegend();
+            removeBackToSearchButtonProcedure();
+            removeBackClearToSearchButtonProcedure();
+            removeOpenCharmsButtonProcedure();
+            removeCharmsLegendButtonProcedure();
+            removeCharmsColorSelectorButtonProcedure();
+            containerFunction = function () {
+                addSearchButton();
+                addCreateChartsButton();
+                addGoToChartsButton();
+            };
+            executeAfter(containerFunction, 500);
+            break;
+
+        case NAVIGATION_BACK_CLEAR_CHART:
+            initChartSeries();
+            initSpectraInfo();
+            initFitArrays();
+            setCloudTextAndIconStatus(SPECTRUM_TYPE_CONTINUUM_REMOVED, false); // reset cloud icon/text in 'fit options' panel
+
+            setTabSelectedProcedure('charmsTabs', OPTIONS_TITLE_ALIGNMENT);
+
+            closeCharmsLegend();
+            removeBackToSearchButtonProcedure();
+            removeBackClearToSearchButtonProcedure();
+            removeOpenCharmsButtonProcedure();
+            removeCharmsLegendButtonProcedure();
+            removeCharmsColorSelectorButtonProcedure();
+            containerFunction = function () {
+                addSearchButton();
+                addCreateChartsButton();
+            };
+            executeAfter(containerFunction, 500);
+            break;
+
+        case NAVIGATION_SHOW_CHART:
+        case NAVIGATION_CREATE_CHART:
+            removeSearchButtonProcedure();
+            //removeCreateChartsButtonProcedure();
+            addCharmsLegendButton();
+            addCharmsColorSelectorButton();
+            setNavigationButtonsForChartsPanel();
+            break;
+
+        default: // NAVIGATION_INIT
+
+            break;
+    }
+}
+
+/* ---------- SET NAVIGATION BUTTONS FOR CHARTS PANEL SEARCH PANEL ---------- */
+function setNavigationButtonsForChartsPanel() {
+    //removeGoToChartsButtonProcedure();
+    /* add button for back-to-search */
+    let containerFunction = function () {
+        addBackToSearchButton();
+        addBackClearToSearchButton();
+        addOpenCharmsButton();
+    };
+    executeAfter(containerFunction, 500);
+}
+
 
 /* ################################################################################ */
 /* SAVE USER SETTINGS */
@@ -170,76 +245,6 @@ function removeHelpButton() {
 }
 
 /* ################################################################################ */
-/* MANAGE BUTTONS WHEN NAVIGATING BETWEEN SEARCH/CHART PANELS */
-/* ################################################################################ */
-function manageNavigation() {
-    let containerFunction = null;
-
-    switch (navigationStatus) {
-        case NAVIGATION_BACK_TO_SEARCH:
-            closeCharmsLegend();
-            removeBackToSearchButtonProcedure();
-            removeBackClearToSearchButtonProcedure();
-            removeOpenCharmsButtonProcedure();
-            removeCharmsLegendButtonProcedure();
-            removeCharmsColorSelectorButtonProcedure();
-            containerFunction = function () {
-                addSearchButton();
-                addCreateChartsButton();
-                addGoToChartsButton();
-            };
-            executeAfter(containerFunction, 500);
-            break;
-
-        case NAVIGATION_BACK_CLEAR_CHART:
-            initChartSeries();
-            initSpectraInfo();
-            initFitArrays();
-            setCloudTextAndIconStatus(SPECTRUM_TYPE_CONTINUUM_REMOVED, false); // reset cloud icon/text in 'fit options' panel
-
-            setTabSelectedProcedure('charmsTabs', OPTIONS_TITLE_ALIGNMENT);
-
-            closeCharmsLegend();
-            removeBackToSearchButtonProcedure();
-            removeBackClearToSearchButtonProcedure();
-            removeOpenCharmsButtonProcedure();
-            removeCharmsLegendButtonProcedure();
-            removeCharmsColorSelectorButtonProcedure();
-            containerFunction = function () {
-                addSearchButton();
-                addCreateChartsButton();
-            };
-            executeAfter(containerFunction, 500);
-            break;
-
-        case NAVIGATION_SHOW_CHART:
-        case NAVIGATION_CREATE_CHART:
-            removeSearchButtonProcedure();
-            removeCreateChartsButtonProcedure();
-            addCharmsLegendButton();
-            addCharmsColorSelectorButton();
-            setNavigationButtonsForChartsPanel();
-            break;
-
-        default: // NAVIGATION_INIT
-            
-            break;
-    }
-}
-
-/* ---------- SET NAVIGATION BUTTONS FOR CHARTS PANEL SEARCH PANEL ---------- */
-function setNavigationButtonsForChartsPanel() {
-    removeGoToChartsButtonProcedure();
-    /* add button for back-to-search */
-    let containerFunction = function () {
-        addBackToSearchButton();
-        addBackClearToSearchButton();
-        addOpenCharmsButton();
-    };
-    executeAfter(containerFunction, 500);
-}
-
-/* ################################################################################ */
 /* MANAGE OVERFLOW-Y */
 /* ################################################################################ */
 function setOverflowYAuto(isRequired = false) {
@@ -250,69 +255,6 @@ function setOverflowYAuto(isRequired = false) {
 function setOverflowYHidden() {
     if (!isMobile())
         $('#wrapper').removeClass('overflow-y-auto').addClass('overflow-y-hidden');
-}
-
-/* ################################################################################ */
-/* MANAGE PANELS SEARCH/CHART POSITION */
-/* ################################################################################ */
-function initSecondaryPanels() {
-    //console.log('top:' + position.top);
-    setPositionTopRelativePx('charts', -(pageH + APPBAR_HEIGHT) / 2);
-    setPositionLeftRelativePercent('charts', '100');
-    //setPositionCompleteRelativePxPercent('charts', -(pageH + APPBAR_HEIGHT) / 2, '100');
-    $('#charts').height(pageH - APPBAR_HEIGHT);
-}
-
-function initPageDims() {
-    pageW = $('#renderbody').width();
-    pageH = $('#renderbody').height();
-}
-
-/* ---------- FOR SEARCH ---------- */
-function setChartsPositionForSearch() {
-    setChartsPositionForSearchDesktop();
-}
-
-function setWrapperPositionForSearch() {
-    setWrapperPositionForSearchDesktop();
-}
-
-/* FOR SEARCH (DESKTOP) */
-function setChartsPositionForSearchDesktop() {
-    setPositionTopRelativePx('charts', -(pageH - APPBAR_HEIGHT));
-    setPositionLeftRelativePercent('charts', 100);
-}
-
-function setWrapperPositionForSearchDesktop() {
-    setPositionLeftRelativePercent('wrapper', 0);
-}
-
-/* ---------- FOR CHARTS ---------- */
-function setChartsPositionForChart() {
-    if (isMobile())
-        setChartsPositionForChartMobile();
-    else
-        setChartsPositionForChartDesktop();
-}
-
-function setWrapperPositionForChart() {
-    setWrapperPositionForChartDesktop();
-}
-
-/* FOR CHART (DESKTOP) */
-function setWrapperPositionForChartDesktop() {
-    setPositionLeftRelativePercent('wrapper', -100);
-}
-
-function setChartsPositionForChartDesktop() {
-    setPositionTopRelativePx('charts', -pageH + APPBAR_HEIGHT);
-    setPositionLeftRelativePx('charts', 0);
-}
-
-/* FOR CHART (MOBILE) */
-function setChartsPositionForChartMobile() {
-    setPositionTopAbsolutePx('charts', -(pageH - (2 * APPBAR_HEIGHT)));
-    setPositionLeftRelativePx('charts', 0);
 }
 
 /* ################################################################################ */

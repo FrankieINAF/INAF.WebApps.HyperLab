@@ -27,13 +27,13 @@ function addCreateChartsButton() {
     addButton(showChartsButtonId, ButtonGraphSelectedSpectraLabel, 'mif-chart-line', navigateToChart);
 }
 
-function removeCreateChartsButtonProcedure() {
-    if (!isButtonAvailable(showChartsButtonId))
-        return;
+//function removeCreateChartsButtonProcedure() {
+//    if (!isButtonAvailable(showChartsButtonId))
+//        return;
 
-    /* show the 'create chart' button */
-    animateCSS(`${showChartsButtonId}`, `bounceOutUp`, FAST, removeCreateChartsButton);
-}
+//    /* show the 'create chart' button */
+//    animateCSS(`${showChartsButtonId}`, `bounceOutUp`, FAST, removeCreateChartsButton);
+//}
 
 function removeCreateChartsButton() {
     $(`#${showChartsButtonId}`).remove();

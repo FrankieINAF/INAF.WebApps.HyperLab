@@ -15,6 +15,7 @@
 }
 
 <link rel="stylesheet" href="~/css/dist/devextreme/devextremebundle.min.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/dist/search/searchandchartbundle.min.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/dist/jqueryuibundle.min.css" asp-append-version="true" />
 
 <!-- CHARTS -->
@@ -240,11 +241,11 @@
 }
 
 <script src="_framework/blazor.server.js"></script>
+
 <script type="text/javascript" src="~/js/dist/search/blazorglobalbundle.min.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/js/dist/devextreme/devextremebundle.min.js" asp-append-version="true"></script>
 <environment names="Development">
-    <script type="text/javascript" src="~/js/hyperlab/common.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/chart/common.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/commonsearchandchart.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/chart/charts.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/chart/chartsbuttons.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/chart/chartsarrays.js" asp-append-version="true"></script>
@@ -271,7 +272,34 @@
     }
 
     $(function () {
+        //completePageRendering();
+
+        /* retrieve page w,h */
+        initPageDims();
+
+        /* set y-overflow for page */
+        setOverflowYAuto();
+
+         showByClass('leftMenu');
+        animateCSS('leftMenu', 'fadeIn', FASTER);
+
+        showByClass('appbar');
+        animateCSS('appbar', 'fadeIn', FASTER);
+
+        showByClass('renderbody');
+
+        /* set starting position for panels */
+        initSecondaryPanels();
+
+        /* init array for vertical constant lines */
+        initConstantLines();
+
+        /* init chartContainer */
+        chartContainer = $('#charts');
+
         addClass('bandanalysistitle', 'disabled');
+
+        
 
         fillSelectedSpectra();
         createChartsProcedureCaller();
