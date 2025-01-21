@@ -158,7 +158,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (spectrumInfoModels?.Count > 0)
                 return new JsonResult(spectrumInfoModels);
             else
-                return new EmptyResult();
+                return new JsonResult(null);
         }
         #endregion
 
