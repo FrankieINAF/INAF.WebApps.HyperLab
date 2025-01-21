@@ -239,33 +239,41 @@
     await Html.RenderPartialAsync("Partials/_SearchJsCommon");
 }
 
-<script type="text/javascript">
-    $(function () {
-        addClass('bandanalysistitle', 'disabled');
-    });
-
-
-</script>
 <script src="_framework/blazor.server.js"></script>
 <script type="text/javascript" src="~/js/dist/search/blazorglobalbundle.min.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/js/dist/devextreme/devextremebundle.min.js" asp-append-version="true"></script>
 <environment names="Development">
     <script type="text/javascript" src="~/js/hyperlab/common.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/common.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charts.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/chartsbuttons.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/chartsarrays.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charms.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmslegend.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmscolorselector.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmsalignmentpanel.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmsfitpanel.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmsfitpanelcore.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmsfitpanelpro.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmsfitpanelcommon.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmssmoothingpanel.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmsbandanalysis.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/common.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/charts.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/chartsbuttons.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/chartsarrays.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/charms/charms.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmslegend.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmscolorselector.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmsalignmentpanel.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmsfitpanel.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmsfitpanelcore.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmsfitpanelpro.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmsfitpanelcommon.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmssmoothingpanel.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmsbandanalysis.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">
     <script type="text/javascript" src="~/js/dist/chart/chartbundle.js" asp-append-version="true"></script>
 </environment>
+
+<script type="text/javascript">
+    var selectedSpectra = [];
+
+    function fillSelectedSpectra() {
+        selectedSpectra = @Html.Raw(Json.Serialize(spectraIds));
+    }
+
+    $(function () {
+        addClass('bandanalysistitle', 'disabled');
+
+        fillSelectedSpectra();
+        createChartsProcedureCaller();
+    });
+</script>
