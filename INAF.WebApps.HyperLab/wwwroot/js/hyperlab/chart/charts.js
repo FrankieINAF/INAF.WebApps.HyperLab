@@ -91,7 +91,8 @@ async function loadCharts() {
     } else {
         setLoadingCircleIsVisible(false);
         isChartLoaded = false;
-        showDialogWithAction(ERROR_LABEL, NoSpectraFoundForSelectedIdsMessage, ALERT, OK_LABEL, backToSearchProcedure);
+        addClass('charts', 'no-spectra-background');
+        showSimpleDialog(ERROR_LABEL, NoSpectraFoundForSelectedIdsMessage, ALERT);
     }
 }
 

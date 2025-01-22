@@ -6,6 +6,7 @@ using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static alglib;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -70,7 +71,11 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 case Libraries.Net.HyperLab.CommonModels.Values.Enums.CallerContext.Web:
                     var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
-                    return new JsonResult(chartsHelper.createMultipleSpectraJson(model.Ids, getUserId()));
+                    List<ISpectrumModel> spectraModels = dbHandlerHyperLabData.getSpectraByIdProcedure(model.Ids,
+                                                                                                        getUserId());
+                    if (spectraModels == null || spectraModels.Count == 0)
+                        return new EmptyResult();
+                    return new JsonResult(chartsHelper.createMultipleSpectraJson(spectraModels, getUserId()));
 
                 case Libraries.Net.HyperLab.CommonModels.Values.Enums.CallerContext.App:
                     var spectra = dbHandlerHyperLabData.getSpectraByIdProcedure(model.Ids, getUserId());

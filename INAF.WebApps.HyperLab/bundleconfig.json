@@ -180,10 +180,10 @@
     "minify": { "enabled": true }
   },
   {
-    "outputFileName": "wwwroot/css/dist/search/searchandchartbundle.css",
+    "outputFileName": "wwwroot/css/dist/searchandchart/searchandchartbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/search/search.css",
-      "wwwroot/css/hyperlab/search/charms.css"
+      "wwwroot/css/hyperlab/searchandchart/searchandchart.css",
+      "wwwroot/css/hyperlab/searchandchart/charms.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
