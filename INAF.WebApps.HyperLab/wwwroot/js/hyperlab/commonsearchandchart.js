@@ -100,7 +100,6 @@ function setNavigationButtonsForChartsPanel() {
     executeAfter(containerFunction, 500);
 }
 
-
 /* ################################################################################ */
 /* SAVE USER SETTINGS */
 /* ################################################################################ */
@@ -249,12 +248,12 @@ function removeHelpButton() {
 /* ################################################################################ */
 function setOverflowYAuto(isRequired = false) {
     if (isMobile() || isRequired)
-        $('#wrapper').removeClass('overflow-y-hidden').addClass('overflow-y-auto');
+        $('#search').removeClass('overflow-y-hidden').addClass('overflow-y-auto');
 }
 
 function setOverflowYHidden() {
     if (!isMobile())
-        $('#wrapper').removeClass('overflow-y-auto').addClass('overflow-y-hidden');
+        $('#search').removeClass('overflow-y-auto').addClass('overflow-y-hidden');
 }
 
 /* ################################################################################ */

@@ -62,25 +62,6 @@ namespace INAF.WebApps.HyperLab.Controllers
             return Content(jsonResult, "application/json");
         }
 
-        private ExpandoObject buildMineralsSuggestionsJson(List<MaterialsContainer> materialsContainers)
-        {
-            ExpandoObject suggestionsContainerObject = new ExpandoObject();
-            foreach (var material in materialsContainers)
-            {
-                if (material.Materials == null)
-                    continue;
-
-                ExpandoObject suggestionsObject = new ExpandoObject();
-                foreach (var item in material.Materials)
-                {
-                    suggestionsObject.AddProperty(item.Id.ToString(), item.Name);
-                }
-                suggestionsContainerObject.AddProperty(material.Name, suggestionsObject);
-            }
-
-            return suggestionsContainerObject;
-        }
-
         private IEnumerable<ISpectraGroupInfoModel>? retrieveSpectraFilesForGroups(IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo)
         {
             spectraFilesInfo?.ForEach(spectraGroupInfo =>

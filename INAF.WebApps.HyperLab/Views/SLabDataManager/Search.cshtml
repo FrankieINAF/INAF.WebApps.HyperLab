@@ -47,7 +47,7 @@
     }
 </style>
 <!-- SEARCH -->
-<div id="wrapper" class="container mywrapper overflow-x-auto overflow-y-hidden">
+<div id="search" class="container h-100 overflow-x-auto overflow-y-hidden">
     @Html.AntiForgeryToken()
     <!-- SEARCH -->
     <div data-role="panel"
@@ -102,7 +102,7 @@
                     <label id="selectMaterialSearchTypeLabel" for="selectMaterialInput" class="text-secondary">@Html.Raw(Search.SearchSimpleByMaterialLabel)</label>
                     <div class="d-flex flex-content-start">
                         <input id="@{
-                                    @selectMaterial
+                                            @selectMaterial
 }Input"
                                type="text"
                                placeholder="@Html.Raw(Search.SearchByMaterialPlaceholder)"
@@ -119,7 +119,7 @@
                         <button class="button dark cycle small outline margin-top-4 margin-left-8"
                                 onclick="resetSearchByMaterial('@{
 
-                                    @selectMaterial
+                                            @selectMaterial
 ;
 }Input')"
                                 title="@Html.Raw(Search.SearchClearSuggestionsButtonTitle)">
@@ -393,64 +393,73 @@
     var selectOriginType = '@selectOriginType';
 
     function search() {
-        /* reset array */
-        selectedSpectra = [];
+    /* reset array */
+    selectedSpectra = [];
 
-        /* remove 'show chart' button, if available */
-        //removeCreateChartsButtonProcedure();
+    /* remove 'show chart' button, if available */
+    //removeCreateChartsButtonProcedure();
 
-        /* execute selected search */
-        if (SELECTED_SEARCH_TYPE == SEARCH_SIMPLE_TYPE) {
-            if (selectedSearchSimpleType == '@selectMaterial') {
-                searchSimpleByMaterial();
-            } else if (selectedSearchSimpleType == '@selectSampleName') {
-                searchSimpleBySampleName();
-            } else if (selectedSearchSimpleType == '@selectMineralType') {
-                searchSimpleByMineralType();
-            } else if (selectedSearchSimpleType == '@selectOriginType') {
-                searchSimpleByOriginType();
-            } else if (selectedSearchSimpleType == '@selectSampleDataType') {
-                searchSimpleBySampleType();
-            }
-        } else {
-            executeComplexSearch();
-        }
+    /* execute selected search */
+    if (SELECTED_SEARCH_TYPE == SEARCH_SIMPLE_TYPE) {
+    if (selectedSearchSimpleType == '@selectMaterial') {
+    searchSimpleByMaterial();
+    } else if (selectedSearchSimpleType == '@selectSampleName') {
+    searchSimpleBySampleName();
+    } else if (selectedSearchSimpleType == '@selectMineralType') {
+    searchSimpleByMineralType();
+    } else if (selectedSearchSimpleType == '@selectOriginType') {
+    searchSimpleByOriginType();
+    } else if (selectedSearchSimpleType == '@selectSampleDataType') {
+    searchSimpleBySampleType();
+    }
+    } else {
+    executeComplexSearch();
+    }
     }
 
     function fillSampleTypes() {
-    @{
-        StringBuilder sb0 = new StringBuilder();
-        int sampleTypesNum = Model.SampleDataValues.Count;
-        for (int i = 0; i < sampleTypesNum; i++)
-        {
-            sb0.AppendLine($"sampleTypes.push({{key: {Model.SampleDataValues[i].Id}, value: '{Model.SampleDataValues[i].Value}' }});");
+        @{
+            if (Model.SampleDataValues != null && Model.SampleDataValues.Any())
+            {
+                StringBuilder sb = new StringBuilder();
+                int sampleTypesNum = Model.SampleDataValues.Count;
+                for (int i = 0; i < sampleTypesNum; i++)
+                {
+                    sb.AppendLine($"sampleTypes.push({{key: {Model.SampleDataValues[i].Id}, value: '{Model.SampleDataValues[i].Value}' }});");
+                }
+                @Html.Raw(sb.ToString());
+            }
         }
-    }
-    @Html.Raw(sb0.ToString());
     }
 
     function fillMineralTypes() {
-    @{
-        StringBuilder sb1 = new StringBuilder();
-        int mineralTypesNum = Model.MineralTypeValues.Count;
-        for (int i = 0; i < mineralTypesNum; i++)
-        {
-            sb1.AppendLine($"mineralTypes.push({{key: {Model.MineralTypeValues[i].Id}, value: '{Model.MineralTypeValues[i].Value}' }});");
+        @{
+            if (Model.MineralTypeValues != null && Model.MineralTypeValues.Any())
+            {
+                StringBuilder sb = new StringBuilder();
+                int mineralTypesNum = Model.MineralTypeValues.Count;
+                for (int i = 0; i < mineralTypesNum; i++)
+                {
+                    sb.AppendLine($"mineralTypes.push({{key: {Model.MineralTypeValues[i].Id}, value: '{Model.MineralTypeValues[i].Value}' }});");
+                }
+                @Html.Raw(sb.ToString());
+            }
         }
-    }
-    @Html.Raw(sb1.ToString());
     }
 
     function fillOriginTypes() {
-    @{
-        StringBuilder sb2 = new StringBuilder();
-        int originTypesNum = Model.OriginTypeValues.Count;
-        for (int i = 0; i < originTypesNum; i++)
-        {
-            sb2.AppendLine($"originTypes.push({{key: {Model.OriginTypeValues[i].Id}, value: '{Model.OriginTypeValues[i].Value}' }});");
+        @{
+            if (Model.OriginTypeValues != null && Model.OriginTypeValues.Any())
+            {
+                StringBuilder sb = new StringBuilder();
+                int originTypesNum = Model.OriginTypeValues.Count;
+                for (int i = 0; i < originTypesNum; i++)
+                {
+                    sb.AppendLine($"originTypes.push({{key: {Model.OriginTypeValues[i].Id}, value: '{Model.OriginTypeValues[i].Value}' }});");
+                }
+                @Html.Raw(sb.ToString());
+            }
         }
-    }
-    @Html.Raw(sb2.ToString());
     }
 
     $(function () {

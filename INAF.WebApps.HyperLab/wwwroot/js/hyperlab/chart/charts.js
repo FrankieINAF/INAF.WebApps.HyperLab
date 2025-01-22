@@ -40,7 +40,7 @@ async function backClearToSearchProcedureAsync() {
 
     setWrapperPositionForSearch();
     animateCSS(`charts`, `slideOutRight`, FAST, setChartsPositionForSearch); //function defined in common.js
-    animateCSS(`wrapper`, `slideInLeft`, FAST, manageNavigation);
+    animateCSS(`search`, `slideInLeft`, FAST, manageNavigation);
 
     selectedSpectrumForProcessingId = 0;
 
@@ -58,13 +58,13 @@ function backToSearchProcedure() {
     navigationStatus = NAVIGATION_BACK_TO_SEARCH;
 
     animateCSS(`charts`, `slideOutRight`, FAST, setChartsPositionForSearch); //function defined in panel.js
-    animateCSS(`wrapper`, `slideInLeft`, FAST, manageNavigation); //function defined in panel.js
+    animateCSS(`search`, `slideInLeft`, FAST, manageNavigation); //function defined in panel.js
 }
 
 function createChartsProcedure() {
     setMenuCollapsed();
 
-    animateCSS(`wrapper`, `fadeOutLeft`, FAST, setWrapperPositionForChart); //function defined in common.js
+    animateCSS(`search`, `fadeOutLeft`, FAST, setWrapperPositionForChart); //function defined in common.js
     animateCSS(`charts`, `slideInRight`, FAST, setChartsPositionForChart); //function defined in common.js
 
     navigationStatus = NAVIGATION_CREATE_CHART;
@@ -82,7 +82,7 @@ function showChartsProcedure() {
     setMenuCollapsed();
 
     setChartsPositionForChart();
-    animateCSS(`wrapper`, `slideOutLeft`, FAST, setWrapperPositionForChart); //function defined in panel.js
+    animateCSS(`search`, `slideOutLeft`, FAST, setWrapperPositionForChart); //function defined in panel.js
     animateCSS(`charts`, `slideInRight`, FAST); //function defined in panel.js
 
     navigationStatus = NAVIGATION_SHOW_CHART;
@@ -422,7 +422,7 @@ $(function () {
 /* ################################################################################ */
 /* MANAGE PANELS SEARCH/CHART POSITION */
 /* ################################################################################ */
-function initSecondaryPanels() {
+function initChartPanel() {
     //console.log('top:' + position.top);
     setPositionTopRelativePx('charts', -(pageH + APPBAR_HEIGHT) / 2);
     setPositionLeftRelativePercent('charts', '100');
@@ -431,51 +431,51 @@ function initSecondaryPanels() {
 }
 
 /* ---------- FOR SEARCH ---------- */
-function setChartsPositionForSearch() {
-    setChartsPositionForSearchDesktop();
-}
+//function setChartsPositionForSearch() {
+//    setChartsPositionForSearchDesktop();
+//}
 
-function setWrapperPositionForSearch() {
-    setWrapperPositionForSearchDesktop();
-}
+//function setWrapperPositionForSearch() {
+//    setWrapperPositionForSearchDesktop();
+//}
 
 /* FOR SEARCH (DESKTOP) */
-function setChartsPositionForSearchDesktop() {
-    setPositionTopRelativePx('charts', -(pageH - APPBAR_HEIGHT));
-    setPositionLeftRelativePercent('charts', 100);
-}
+//function setChartsPositionForSearchDesktop() {
+//    setPositionTopRelativePx('charts', -(pageH - APPBAR_HEIGHT));
+//    setPositionLeftRelativePercent('charts', 100);
+//}
 
-function setWrapperPositionForSearchDesktop() {
-    setPositionLeftRelativePercent('wrapper', 0);
-}
+//function setWrapperPositionForSearchDesktop() {
+//    setPositionLeftRelativePercent('search', 0);
+//}
 
 /* ---------- FOR CHARTS ---------- */
-function setChartsPositionForChart() {
-    if (isMobile())
-        setChartsPositionForChartMobile();
-    else
-        setChartsPositionForChartDesktop();
-}
+//function setChartsPositionForChart() {
+//    if (isMobile())
+//        setChartsPositionForChartMobile();
+//    else
+//        setChartsPositionForChartDesktop();
+//}
 
-function setWrapperPositionForChart() {
-    setWrapperPositionForChartDesktop();
-}
+//function setWrapperPositionForChart() {
+//    setWrapperPositionForChartDesktop();
+//}
 
 /* FOR CHART (DESKTOP) */
-function setWrapperPositionForChartDesktop() {
-    setPositionLeftRelativePercent('wrapper', -100);
-}
+//function setWrapperPositionForChartDesktop() {
+//    setPositionLeftRelativePercent('search', -100);
+//}
 
-function setChartsPositionForChartDesktop() {
-    setPositionTopRelativePx('charts', -pageH + APPBAR_HEIGHT);
-    setPositionLeftRelativePx('charts', 0);
-}
+//function setChartsPositionForChartDesktop() {
+//    setPositionTopRelativePx('charts', -pageH + APPBAR_HEIGHT);
+//    setPositionLeftRelativePx('charts', 0);
+//}
 
 /* FOR CHART (MOBILE) */
-function setChartsPositionForChartMobile() {
-    setPositionTopAbsolutePx('charts', -(pageH - (2 * APPBAR_HEIGHT)));
-    setPositionLeftRelativePx('charts', 0);
-}
+//function setChartsPositionForChartMobile() {
+//    setPositionTopAbsolutePx('charts', -(pageH - (2 * APPBAR_HEIGHT)));
+//    setPositionLeftRelativePx('charts', 0);
+//}
 
 /* ################################################################################ */
 /* MANAGE CHART DIM/POS FOR ORIENTATION CHANGE */

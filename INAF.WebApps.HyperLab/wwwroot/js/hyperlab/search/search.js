@@ -13,8 +13,6 @@ var areComplexSearchesRetrieved = false;
 
 var timeoutOnWindowResize;
 
-
-
 function setChartAreaWidth(isChartVisible) {
     let bodyW = $('#body').width();
     let menuW = $('#leftMenu').width();
@@ -188,9 +186,8 @@ async function getMaterialsSuggestions(srcElemId, dstElemId, callback) {
     };
 
     try {
-        let obj = await doAjaxGetAsync(UrlGetMineralsSuggestions, model);
+        let obj = await doAjaxGetAsync(GetMaterialsSuggestions, model);
         if (obj) {
-            //console.log(obj);
             /* remember suggestions for creating search request */
             suggestions[dstElemId] = obj;
             /* fill the 'select' ui item with suggestions */
@@ -339,8 +336,8 @@ $(function () {
     hideMetroUIElem(`${selectMaterial}`);
 
     /* enable search for materials suggestions when 'Enter' is pressed */
-    $(`#${selectMaterial}Input`).ready(function () {
-        $(`#${selectMaterial}Input`).keydown(function (evt) {
+    $(`#${selectMaterial}Input`).each(function () {
+        $(`#${selectMaterial}Input`).on('keydown', function (evt) {
             getMaterialForSearchByEnter(evt, `${selectMaterial}Input`, `${selectMaterial}`);
         });
     });
