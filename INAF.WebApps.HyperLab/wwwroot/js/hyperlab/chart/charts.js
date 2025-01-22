@@ -3,6 +3,8 @@ var chartContainer;
 
 var chartConstantLines;
 
+var selectedSpectra = [];
+
 var spectraInfo = [];
 var spectraTree = [];
 var spectraTypeColors = [];
@@ -16,56 +18,14 @@ var backClearToSearchButtonId = 'buttonBackClearToSearch';
 var openCharmsButtonId = 'buttonOpenCharms'
 
 /* ################################################################################ */
-/* SHOW/HIDE CHARTS */
+/* BACK TO SEARCH */
 /* ################################################################################ */
 async function backClearToSearchProcedureAsync() {
-    setMenuExpanded();
-
-    navigationStatus = NAVIGATION_BACK_CLEAR_CHART;
-
-    /* remove all constant lines from memory and chart */
-    initConstantLines();
-    resetShownConstantLines();
-
-    if (isCharmsOpen()) {
-        await closeCharmsAsync(false);
-    } else {
-        /* remove all loaded items */
-        await initCharmsPhase1Async();
-        /* reset tabs visualization to 1st tab */
-        showSelectedTab('charmsTabs', 'alignmentoptionstitle');
-    }
-
-    disposeChart();
-
-    setWrapperPositionForSearch();
-    animateCSS(`charts`, `slideOutRight`, FAST, setChartsPositionForSearch); //function defined in common.js
-    animateCSS(`search`, `slideInLeft`, FAST, manageNavigation);
-
-    selectedSpectrumForProcessingId = 0;
-
-    /* hide info button about auto hidden spectra when one of them is selected for processing */
-    hideByClass('buttonShowToastAutoHideNotSelectedSpectra');
-}
-
-function backToSearchProcedure() {
-    hideCharms();
-
-    setMenuExpanded();
-
-    setWrapperPositionForSearch();
-
-    navigationStatus = NAVIGATION_BACK_TO_SEARCH;
-
-    animateCSS(`charts`, `slideOutRight`, FAST, setChartsPositionForSearch); //function defined in panel.js
-    animateCSS(`search`, `slideInLeft`, FAST, manageNavigation); //function defined in panel.js
+    navigateTo(UrlSearch);
 }
 
 function createChartsProcedure() {
     setMenuCollapsed();
-
-    animateCSS(`search`, `fadeOutLeft`, FAST, setWrapperPositionForChart); //function defined in common.js
-    animateCSS(`charts`, `slideInRight`, FAST, setChartsPositionForChart); //function defined in common.js
 
     navigationStatus = NAVIGATION_CREATE_CHART;
     executeAfter(loadChartsProcedure, 500);
@@ -82,7 +42,7 @@ function showChartsProcedure() {
     setMenuCollapsed();
 
     setChartsPositionForChart();
-    animateCSS(`search`, `slideOutLeft`, FAST, setWrapperPositionForChart); //function defined in panel.js
+    animateCSS(`search`, `slideOutLeft`, FAST); //function defined in panel.js
     animateCSS(`charts`, `slideInRight`, FAST); //function defined in panel.js
 
     navigationStatus = NAVIGATION_SHOW_CHART;
@@ -293,8 +253,6 @@ function updateChartSize() {
         width: `${w}px`,
         height: `${h}px`
     });
-
-    setChartsPositionForChart();
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -348,31 +306,6 @@ function createSeriesFromPoint(firstPoint) {
     return series;
 }
 
-//function extractVisualRanges() {
-//    var visualRangeValuesX = chartContainer.dxChart("getArgumentAxis", "argumentAxis").visualRange();
-//    var valuesX = [];
-//    valuesX.push(visualRangeValuesX.startValue);
-//    valuesX.push(visualRangeValuesX.endValue);
-//    var minX = Math.min.apply(Math, valuesX);
-//    var maxX = Math.max.apply(Math, valuesX);
-//    console.log(`X RANGE: ${minX},${maxX}`);
-//    visualRangeX = [];
-//    visualRangeX.push(minX);
-//    visualRangeX.push(maxX);
-
-//    var visualRangeValuesY = chartContainer.dxChart("getValueAxis", "valueAxis").visualRange();
-//    var valuesY = [];
-//    valuesY.push(visualRangeValuesY.startValue);
-//    valuesY.push(visualRangeValuesY.endValue);
-//    var minY = Math.min.apply(Math, valuesY);
-//    var maxY = Math.max.apply(Math, valuesY);
-//    console.log(`Y RANGE: ${minY},${maxY}`);
-//    visualRangeY = [];
-//    visualRangeY.push(minY);
-//    visualRangeY.push(maxY);
-
-//}
-
 function extractVisualRangesFromDataSource(axisRange) {
     chartContainer.dxChart("getValueAxis", "valueAxis").visualRange(axisRange.Min, axisRange.Max)
 }
@@ -413,69 +346,15 @@ function resetZoom() {
 }
 
 /* ################################################################################ */
-/* DOCUMENT READY */
-/* ################################################################################ */
-$(function () {
-    createChartsProcedureCaller();
-});
-
-/* ################################################################################ */
 /* MANAGE PANELS SEARCH/CHART POSITION */
 /* ################################################################################ */
 function initChartPanel() {
     //console.log('top:' + position.top);
     setPositionTopRelativePx('charts', -(pageH + APPBAR_HEIGHT) / 2);
-    setPositionLeftRelativePercent('charts', '100');
+    //setPositionLeftRelativePercent('charts', '100');
     //setPositionCompleteRelativePxPercent('charts', -(pageH + APPBAR_HEIGHT) / 2, '100');
     $('#charts').height(pageH - APPBAR_HEIGHT);
 }
-
-/* ---------- FOR SEARCH ---------- */
-//function setChartsPositionForSearch() {
-//    setChartsPositionForSearchDesktop();
-//}
-
-//function setWrapperPositionForSearch() {
-//    setWrapperPositionForSearchDesktop();
-//}
-
-/* FOR SEARCH (DESKTOP) */
-//function setChartsPositionForSearchDesktop() {
-//    setPositionTopRelativePx('charts', -(pageH - APPBAR_HEIGHT));
-//    setPositionLeftRelativePercent('charts', 100);
-//}
-
-//function setWrapperPositionForSearchDesktop() {
-//    setPositionLeftRelativePercent('search', 0);
-//}
-
-/* ---------- FOR CHARTS ---------- */
-//function setChartsPositionForChart() {
-//    if (isMobile())
-//        setChartsPositionForChartMobile();
-//    else
-//        setChartsPositionForChartDesktop();
-//}
-
-//function setWrapperPositionForChart() {
-//    setWrapperPositionForChartDesktop();
-//}
-
-/* FOR CHART (DESKTOP) */
-//function setWrapperPositionForChartDesktop() {
-//    setPositionLeftRelativePercent('search', -100);
-//}
-
-//function setChartsPositionForChartDesktop() {
-//    setPositionTopRelativePx('charts', -pageH + APPBAR_HEIGHT);
-//    setPositionLeftRelativePx('charts', 0);
-//}
-
-/* FOR CHART (MOBILE) */
-//function setChartsPositionForChartMobile() {
-//    setPositionTopAbsolutePx('charts', -(pageH - (2 * APPBAR_HEIGHT)));
-//    setPositionLeftRelativePx('charts', 0);
-//}
 
 /* ################################################################################ */
 /* MANAGE CHART DIM/POS FOR ORIENTATION CHANGE */
@@ -514,3 +393,30 @@ function initChartPanel() {
 //            $("#charts").css({ transform: 'rotate(0deg) translateY(0%)' });
 //    }
 //}
+
+/* ################################################################################ */
+/* DOCUMENT READY */
+/* ################################################################################ */
+$(function () {
+    /* set y-overflow for page */
+    setOverflowYAuto();
+    /* set starting position for panels */
+    initChartPanel();
+
+    /* init array for vertical constant lines */
+    initConstantLines();
+
+    /* init chartContainer */
+    chartContainer = $('#charts');
+
+    addClass('bandanalysistitle', 'disabled');
+
+    fillSelectedSpectra();
+
+    let callback = function () {
+        initPageDims();
+        createChartsProcedureCaller();
+    }
+
+    showPageItems(callback);
+});

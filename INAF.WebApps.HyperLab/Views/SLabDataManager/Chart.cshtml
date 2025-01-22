@@ -1,6 +1,8 @@
 ﻿@model SelectedSpectraModel
 
+@using INAF.Libraries.Net.CommonWebAppHelpers
 @using INAF.Libraries.Net.CommonWebAppModels.Models.Searches
+@using INAF.WebApps.HyperLab.Controllers
 @using INAF.WebApps.HyperLab.Resources
 @using INAF.WebApps.HyperLab.Views.SLabDataManager.Blazor
 
@@ -12,6 +14,8 @@
     {
         spectraIds = Model.Ids;
     }
+
+    var UrlSearch = $"/{GenericHelper.GetControllerName(nameof(SLabDataManagerController))}/{nameof(SLabDataManagerController.Search)}";
 }
 
 <link rel="stylesheet" href="~/css/dist/devextreme/devextremebundle.min.css" asp-append-version="true" />
@@ -265,43 +269,9 @@
 </environment>
 
 <script type="text/javascript">
-    var selectedSpectra = [];
+    var UrlSearch = '@UrlSearch';
 
     function fillSelectedSpectra() {
         selectedSpectra = @Html.Raw(Json.Serialize(spectraIds));
     }
-
-    $(function () {
-        //completePageRendering();
-
-        /* retrieve page w,h */
-        initPageDims();
-
-        /* set y-overflow for page */
-        setOverflowYAuto();
-
-         showByClass('leftMenu');
-        animateCSS('leftMenu', 'fadeIn', FASTER);
-
-        showByClass('appbar');
-        animateCSS('appbar', 'fadeIn', FASTER);
-
-        showByClass('renderbody');
-
-        /* set starting position for panels */
-        initChartPanel();
-
-        /* init array for vertical constant lines */
-        initConstantLines();
-
-        /* init chartContainer */
-        chartContainer = $('#charts');
-
-        addClass('bandanalysistitle', 'disabled');
-
-        
-
-        fillSelectedSpectra();
-        createChartsProcedureCaller();
-    });
 </script>

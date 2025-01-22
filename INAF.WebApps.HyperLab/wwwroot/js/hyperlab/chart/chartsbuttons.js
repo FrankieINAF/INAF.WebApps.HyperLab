@@ -1,18 +1,18 @@
-﻿/* ---------- BACK-TO-SEARCH BUTTON ---------- */
-function addBackToSearchButton() {
-    addButton(backToSearchButtonId, ButtonBackToSearchLabel, 'mif-arrow-left', backToSearchProcedure);
-}
+﻿///* ---------- BACK-TO-SEARCH BUTTON ---------- */
+//function addBackToSearchButton() {
+//    addButton(backToSearchButtonId, ButtonBackToSearchLabel, 'mif-arrow-left', backToSearchProcedure);
+//}
 
-function removeBackToSearchButtonProcedure() {
-    if (!isButtonAvailable(backToSearchButtonId))
-        return;
+//function removeBackToSearchButtonProcedure() {
+//    if (!isButtonAvailable(backToSearchButtonId))
+//        return;
 
-    animateCSS(`${backToSearchButtonId}`, `bounceOutUp`, FAST, removeBackToSearchButton);
-}
+//    animateCSS(`${backToSearchButtonId}`, `bounceOutUp`, FAST, removeBackToSearchButton);
+//}
 
-function removeBackToSearchButton() {
-    $(`#${backToSearchButtonId}`).remove();
-}
+//function removeBackToSearchButton() {
+//    $(`#${backToSearchButtonId}`).remove();
+//}
 
 /* ---------- BACK-CLEAR-TO-SEARCH BUTTON ---------- */
 function addBackClearToSearchButton() {

@@ -20,20 +20,20 @@ var isFirstLoading = true;
 /* ################################################################################ */
 /* PAGE INTRO */
 /* ################################################################################ */
-function completePageRendering() {
-    let callback = function () {
-        /* retrieve page w,h */
-        initPageDims();
+//function completePageRendering() {
+//    let callback = function () {
+//        /* retrieve page w,h */
+//        //initPageDims();
 
-        /* add event for handling mobile-device rotation */
-        //tryAddOrientationEventHandler();
+//        /* add event for handling mobile-device rotation */
+//        //tryAddOrientationEventHandler();
 
-        /* set y-overflow for page */
-        setOverflowYAuto();
-    };
+//        /* set y-overflow for page */
+//        setOverflowYAuto();
+//    };
 
-    setTimeout(function () { animateHideIntro(callback); }, 500);
-}
+//    setTimeout(function () { animateHideIntro(callback); }, 500);
+//}
 
 //function animateShowIntro() {
 //    if (!isFirstLoading)
@@ -46,18 +46,18 @@ function completePageRendering() {
 //    animateCSS('pageCoverLogo', 'fadeIn', FASTER);
 //}
 
-function animateHideIntro(extcallback) {
-    //let callback = function () {
-        $('#pageCover').remove();
+//function animateHideIntro(extcallback) {
+//    //let callback = function () {
+//        $('#pageCover').remove();
 
-        showPageItems(extcallback);
-    //};
+//        showPageItems(extcallback);
+//    //};
 
-    //animateCSS('pageCover', 'fadeOut', FASTER, callback);
-}
+//    //animateCSS('pageCover', 'fadeOut', FASTER, callback);
+//}
 //window.addEventListener("load", animateShowIntro);
 
-function showPageItems(extcallback) {
+function showPageItems(callback) {
     showByClass('leftMenu');
     animateCSS('leftMenu', 'fadeIn', FASTER);
 
@@ -65,7 +65,7 @@ function showPageItems(extcallback) {
     animateCSS('appbar', 'fadeIn', FASTER);
 
     showByClass('renderbody');
-    animateCSS('renderbody', 'fadeIn', FASTER, extcallback);
+    animateCSS('renderbody', 'fadeIn', FASTER, callback);
 }
 
 /* constants for css transform */

@@ -313,7 +313,6 @@ function onWindowResize() {
 }
 
 $(function () {
-
     /* fill arrays for search */
     fillSampleTypes();
     fillMineralTypes();
@@ -348,7 +347,7 @@ $(function () {
     executeAfter(setListviewSearchConditionsUI, 500);
 
     /* animate intro for 1st loading */
-    completePageRendering();
+    //completePageRendering();
 
     aQueue = new AutoQueue();
 
@@ -359,6 +358,8 @@ $(function () {
     window.onresize = function () {
         onWindowResize();
     };
+
+    showPageItems();
 
     //$("body").click(function (e) {
     //    var parentOffset = $(this).offset();

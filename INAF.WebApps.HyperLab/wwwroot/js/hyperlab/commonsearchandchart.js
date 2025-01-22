@@ -90,10 +90,9 @@ function manageNavigation() {
 
 /* ---------- SET NAVIGATION BUTTONS FOR CHARTS PANEL SEARCH PANEL ---------- */
 function setNavigationButtonsForChartsPanel() {
-    //removeGoToChartsButtonProcedure();
     /* add button for back-to-search */
     let containerFunction = function () {
-        addBackToSearchButton();
+        //addBackToSearchButton();
         addBackClearToSearchButton();
         addOpenCharmsButton();
     };
