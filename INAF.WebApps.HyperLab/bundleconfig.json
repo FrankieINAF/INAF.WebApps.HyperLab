@@ -111,7 +111,6 @@
       "wwwroot/js/hyperlab/common.js",
       "wwwroot/js/hyperlab/commonsearchandchart.js",
       "wwwroot/js/hyperlab/search/search.js",
-      "wwwroot/js/hyperlab/search/searchbuttons.js",
       "wwwroot/js/hyperlab/search/searchSimple.js",
       "wwwroot/js/hyperlab/search/searchComplex.js",
       "wwwroot/js/hyperlab/search/complexsearchesmanagement.js",

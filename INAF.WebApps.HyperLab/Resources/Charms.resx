@@ -240,6 +240,21 @@
   <data name="CharmsRemoveOnCloudQuestion" xml:space="preserve">
     <value>Do you also want to delete file saved on cloud?</value>
   </data>
+  <data name="CharmsShareCheckUserMessage" xml:space="preserve">
+    <value>Checking user...</value>
+  </data>
+  <data name="CharmsShareExplanation" xml:space="preserve">
+    <value>Sharing spectra with other users allows them to review and edit the data, such as adjusting parameters for alignment, continuum removal, or smoothing.</value>
+  </data>
+  <data name="CharmsShareNumOfSpectra" xml:space="preserve">
+    <value>You're going to share r_v spectra</value>
+  </data>
+  <data name="CharmsShareTitle" xml:space="preserve">
+    <value>Share spectra with other users</value>
+  </data>
+  <data name="CharmsShareUserNotExistantMessage" xml:space="preserve">
+    <value>Sorry, email doesn't correspond to any existing user</value>
+  </data>
   <data name="CharmsSpectraProcessingManagementLabel" xml:space="preserve">
     <value>Spectra management</value>
   </data>

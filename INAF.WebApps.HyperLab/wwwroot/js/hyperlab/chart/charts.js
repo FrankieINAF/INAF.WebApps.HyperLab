@@ -18,6 +18,41 @@ var backClearToSearchButtonId = 'buttonBackClearToSearch';
 var openCharmsButtonId = 'buttonOpenCharms'
 
 /* ################################################################################ */
+/* BUTTONS */
+/* ################################################################################ */
+/* ---------- CHARMS COLOR-PICKER ---------- */
+function addCharmsColorSelectorButton() {
+    addButton(showCharmsColorSelectorId, ButtonShowCharmsColorSelectorLabel, 'mif-palette', toggleCharmsColorSelector);
+}
+
+function removeCharmsColorSelectorButtonProcedure() {
+    if (!isButtonAvailable(showCharmsColorSelectorId))
+        return;
+
+    animateCSS(`${showCharmsColorSelectorId}`, `bounceOutUp`, FAST, removeCharmsColorSelectorButton);
+}
+
+function removeCharmsColorSelectorButton() {
+    $(`#${showCharmsColorSelectorId}`).remove();
+}
+
+/* ---------- CHARMS LEGEND ---------- */
+function addCharmsLegendButton() {
+    addButton(showCharmsLegendButtonId, ButtonShowCharmsLegendLabel, 'mif-list', toggleCharmsLegend);
+}
+
+function removeCharmsLegendButtonProcedure() {
+    if (!isButtonAvailable(showCharmsLegendButtonId))
+        return;
+
+    animateCSS(`${showCharmsLegendButtonId}`, `bounceOutUp`, FAST, removeCharmsLegendButton);
+}
+
+function removeCharmsLegendButton() {
+    $(`#${showCharmsLegendButtonId}`).remove();
+}
+
+/* ################################################################################ */
 /* BACK TO SEARCH */
 /* ################################################################################ */
 async function backClearToSearchProcedureAsync() {

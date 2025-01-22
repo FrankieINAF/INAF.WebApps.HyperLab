@@ -37,8 +37,13 @@ function addOrRemoveSelectedSpectrum(id) {
     //console.log(`addOrRemoveSelectedSpectrum - id: ${id}, index: ${index}`);
     if (index == -1)
         addSelectedspectrum(id);
-    else
+    else {
         removeSelectedSpectrum(index);
+        if (selectedSpectra.length == 0) {
+            removeCreateChartsButtonProcedure();
+            removeShareButtonProcedure();
+        }
+    }
 }
 
 function addSelectedspectrum(id) {
@@ -46,6 +51,7 @@ function addSelectedspectrum(id) {
 
     if (selectedSpectra.length == 1) {
         addCreateChartsButton();
+        addShareButton();
         showToast(ChartsUseChartsButtonMessage, 3000, INFO);
     }
 }
@@ -298,6 +304,66 @@ function showSearchInfo() {
 }
 
 /* ################################################################################ */
+/* BUTTONS */
+/* ################################################################################ */
+/* ---------- INIT BUTTONS IN SEARCH PANEL ---------- */
+function initButtonsInSearchPanel() {
+    //removeBackToSearchButton();
+    addSearchButton();
+    addHelpButton();
+}
+
+/* ---------- CHARTS BUTTON ---------- */
+function addCreateChartsButton() {
+    addButton(showChartsButtonId, ButtonGraphSelectedSpectraLabel, 'mif-chart-line', navigateToChart);
+}
+
+function removeCreateChartsButtonProcedure() {
+    if (!isButtonAvailable(showChartsButtonId))
+        return;
+
+    /* show the 'create chart' button */
+    animateCSS(`${showChartsButtonId}`, `bounceOutUp`, FAST, removeCreateChartsButton);
+}
+
+function removeCreateChartsButton() {
+    $(`#${showChartsButtonId}`).remove();
+}
+
+/* ---------- HELP BUTTON ---------- */
+function addHelpButton() {
+    addButton(helpButtonId, ButtonHelpLabel, 'mif-help', showSearchInfo);
+}
+
+function removeHelpButtonProcedure() {
+    if (!isButtonAvailable(helpButtonId))
+        return;
+
+    animateCSS(`${helpButtonId}`, `bounceOutUp`, FAST, removeHelpButton);
+}
+
+function removeHelpButton() {
+    $(`#${helpButtonId}`).remove();
+}
+
+/* ---------- SEARCH BUTTON ---------- */
+function addSearchButton() {
+    addButton(searchButtonId, ButtonSearchLabel, 'mif-search', search);
+}
+
+function removeSearchButtonProcedure() {
+    if (!isButtonAvailable(searchButtonId))
+        return;
+
+    animateCSS(`${searchButtonId}`, `bounceOutUp`, FAST, removeSearchButton);
+}
+
+function removeSearchButton() {
+    $(`#${searchButtonId}`).remove();
+}
+
+
+/* ################################################################################ */
 /* DOCUMENT READY */
 /* ################################################################################ */
 function onWindowResize() {
@@ -306,9 +372,6 @@ function onWindowResize() {
 
     timeoutOnWindowResize = setTimeout(function () {
         setListviewSearchConditionsUI();
-
-        if (isChartLoaded)
-            updateChartSize();
     }, 200);
 }
 

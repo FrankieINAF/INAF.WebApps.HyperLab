@@ -9,6 +9,8 @@
     var CharmsCloudDownloadErrorMessage = "@Html.Raw(Charms.CharmsCloudDownloadErrorMessage)";
     var CharmsCloseWarningMessage = "@Html.Raw(Charms.CharmsCloseWarningMessage)";
     var CharmsDeleteProcessedSpectraQuestion = "@Html.Raw(Charms.CharmsDeleteProcessedSpectraQuestion)";
+    var CharmsShareCheckUserMessage = "@Html.Raw(Charms.CharmsShareCheckUserMessage)";
+    var CharmsShareUserNotExistantMessage = "@Html.Raw(Charms.CharmsShareUserNotExistantMessage)";
     var CharmsSpectraProcessingManagementLabel = "@Html.Raw(Charms.CharmsSpectraProcessingManagementLabel)";
     var CharmsUsingAlreadySavedOnCloudMessage = "@Html.Raw(Charms.CharmsUsingAlreadySavedOnCloudMessage)";
     var ContinuumRemovalExecutionErrorMessage = "@Html.Raw(Charms.ContinuumRemovalExecutionErrorMessage)";
@@ -38,6 +40,8 @@
     var LegendLabel = "@Html.Raw(Charts.LegendLabel)";
     var NoSpectraFoundForSelectedIdsMessage = "@Html.Raw(Charts.NoSpectraFoundForSelectedIdsMessage)";
     
+    var NumOfSharedSpectra = "@Html.Raw(Charms.CharmsShareNumOfSpectra)";
+
     var SaveInfoNoMeteorClassSelectedErrorMessage = "@Html.Raw(Info.SaveInfoNoMeteorClassSelectedErrorMessage)";
     var SaveInfoNoMineralSelectedErrorMessage = "@Html.Raw(Info.SaveInfoNoMineralSelectedErrorMessage)";
     var SaveInfoNoRockSelectedErrorMessage = "@Html.Raw(Info.SaveInfoNoRockSelectedErrorMessage)";
@@ -51,6 +55,7 @@
     var ButtonHelpLabel = "@Html.Raw(Search.ButtonHelpLabel)";
     var ButtonOpenCharmsLabel = "@Html.Raw(Search.ButtonOpenCharmsLabel)";
     var ButtonSearchLabel = "@Html.Raw(Search.ButtonSearchLabel)";
+    var ButtonShareLabel = "@Html.Raw(Search.ButtonShareLabel)";
     var ButtonShowCharmsColorSelectorLabel = "@Html.Raw(Search.ButtonShowCharmsColorSelectorLabel)";
     var ButtonShowCharmsLegendLabel = "@Html.Raw(Search.ButtonShowCharmsLegendLabel)";
     var ButtonZoomOutLabel = "@Html.Raw(Search.ButtonZoomOutLabel)";
@@ -177,6 +182,7 @@
     var UrlSaveBandAnalysisData = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.SaveBandAnalysisData)';
 
     /* UsersController */
+    var UrlCheckUser = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.CheckUser)';
     var UrlIsUserStrictlyAuthorizedForSpectrum = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.IsUserStrictlyAuthorizedForSpectrum)';
 
     /* UserSettingsController */

@@ -5,6 +5,7 @@ var goToChartsButtonId = 'buttonGoToCharts';
 var helpButtonId = 'buttonHelp';
 
 var searchButtonId = 'buttonSearch';
+var shareButtonId = 'buttonShare';
 var showChartsButtonId = 'buttonShowCharts';
 var zoomOutButtonId = 'buttonZoomOut';
 
@@ -25,6 +26,8 @@ var lightGreen = '#90ee90';
 var lightGreenTransparent = '#90ee9099';
 var red = '#a8071e';
 
+var usersToShare = [];
+
 function initPageDims() {
     pageW = $('#renderbody').width();
     pageH = $('#renderbody').height();
@@ -37,20 +40,20 @@ function manageNavigation() {
     let containerFunction = null;
 
     switch (navigationStatus) {
-        case NAVIGATION_BACK_TO_SEARCH:
-            closeCharmsLegend();
-            removeBackToSearchButtonProcedure();
-            removeBackClearToSearchButtonProcedure();
-            removeOpenCharmsButtonProcedure();
-            removeCharmsLegendButtonProcedure();
-            removeCharmsColorSelectorButtonProcedure();
-            containerFunction = function () {
-                addSearchButton();
-                addCreateChartsButton();
-                addGoToChartsButton();
-            };
-            executeAfter(containerFunction, 500);
-            break;
+        //case NAVIGATION_BACK_TO_SEARCH:
+        //    closeCharmsLegend();
+        //    removeBackToSearchButtonProcedure();
+        //    removeBackClearToSearchButtonProcedure();
+        //    removeOpenCharmsButtonProcedure();
+        //    removeCharmsLegendButtonProcedure();
+        //    removeCharmsColorSelectorButtonProcedure();
+        //    containerFunction = function () {
+        //        addSearchButton();
+        //        addCreateChartsButton();
+        //        addGoToChartsButton();
+        //    };
+        //    executeAfter(containerFunction, 500);
+        //    break;
 
         case NAVIGATION_BACK_CLEAR_CHART:
             initChartSeries();
@@ -75,7 +78,7 @@ function manageNavigation() {
 
         case NAVIGATION_SHOW_CHART:
         case NAVIGATION_CREATE_CHART:
-            removeSearchButtonProcedure();
+            //removeSearchButtonProcedure();
             //removeCreateChartsButtonProcedure();
             addCharmsLegendButton();
             addCharmsColorSelectorButton();
@@ -178,68 +181,135 @@ function isButtonAvailable(buttonId) {
         return false
 }
 
-/* ---------- CHARMS COLOR-PICKER ---------- */
-function addCharmsColorSelectorButton() {
-    addButton(showCharmsColorSelectorId, ButtonShowCharmsColorSelectorLabel, 'mif-palette', toggleCharmsColorSelector);
+/* ---------- SHARE BUTTON ---------- */
+function addShareButton() {
+    addButton(shareButtonId, ButtonShareLabel, 'mif-share', openCharmsShare);
 }
 
-function removeCharmsColorSelectorButtonProcedure() {
-    if (!isButtonAvailable(showCharmsColorSelectorId))
+function removeShareButtonProcedure() {
+    if (!isButtonAvailable(shareButtonId))
         return;
 
-    animateCSS(`${showCharmsColorSelectorId}`, `bounceOutUp`, FAST, removeCharmsColorSelectorButton);
+    animateCSS(`${shareButtonId}`, `bounceOutUp`, FAST, removeShareButton);
 }
 
-function removeCharmsColorSelectorButton() {
-    $(`#${showCharmsColorSelectorId}`).remove();
+function removeShareButton() {
+    $(`#${shareButtonId}`).remove();
 }
 
-/* ---------- CHARMS LEGEND ---------- */
-function addCharmsLegendButton() {
-    addButton(showCharmsLegendButtonId, ButtonShowCharmsLegendLabel, 'mif-list', toggleCharmsLegend);
+/* ################################################################################ */
+/* CHARMS SHARE */
+/* ################################################################################ */
+function closeCharmsShare() {
+    if (Metro.charms.isOpen('#charmsShare'))
+        Metro.charms.close('#charmsShare');
 }
 
-function removeCharmsLegendButtonProcedure() {
-    if (!isButtonAvailable(showCharmsLegendButtonId))
-        return;
-
-    animateCSS(`${showCharmsLegendButtonId}`, `bounceOutUp`, FAST, removeCharmsLegendButton);
+function openCharmsShare() {
+    if (!Metro.charms.isOpen('#charmsShare'))
+        Metro.charms.open('#charmsShare');
 }
 
-function removeCharmsLegendButton() {
-    $(`#${showCharmsLegendButtonId}`).remove();
+function onCharmsShareOpen() {
+    NumOfSharedSpectra = NumOfSharedSpectra.replace('r_v', selectedSpectra.length);
+    $('#numOfSharedSpectraLabel').text(NumOfSharedSpectra);
 }
 
-/* ---------- SEARCH BUTTON ---------- */
-function addSearchButton() {
-    addButton(searchButtonId, ButtonSearchLabel, 'mif-search', search);
+/* ################################################################################ */
+/* SHARE SPECTRA */
+/* ################################################################################ */
+function setCharmsShareLoadingCircle(isvisible) {
+    if (isvisible) {
+        let html = '<div data-role="activity" data-type="ring" data-style="light"></div>';
+        html += `<div class="margin-left-8 margin-top-16"><span>${CharmsShareCheckUserMessage}</span></div>`;
+        $('#newUserToShareActivity').html(html);
+    } else
+        $('#newUserToShareActivity').empty();
 }
 
-function removeSearchButtonProcedure() {
-    if (!isButtonAvailable(searchButtonId))
-        return;
+function addUserToShare(email) {
+    if (email) {
+        let item = {
+            caption: email,
+            icon: `<span class="mif-cross fg-light"></span>`
+        };
+        Metro.getPlugin("#selectedUsersToShareList", 'listview').add(null, item);
+        $('#newUserToShare').val('');
 
-    animateCSS(`${searchButtonId}`, `bounceOutUp`, FAST, removeSearchButton);
+        var icons = $('#selectedUsersToShareList').find('.icon');
+        if (icons && icons.length > 0) {
+            let iconsNum = icons.length;
+            for (var i = 0; i < iconsNum; i++) {
+                let icon = icons[i];
+                //$(caption).addClass('charms-share-listview-caption');
+                $(icon).on('click', function () {
+                    console.log($($(this.parentElement).find('.data')[0]).children('.caption').text());
+                });
+            }
+        }
+
+        var captions = $('#selectedUsersToShareList').find('.caption');
+        if (captions && captions.length > 0) {
+            let captionsNum = captions.length;
+            for (var i = 0; i < captionsNum; i++) {
+                let caption = captions[i];
+                $(caption).addClass('charms-share-listview-caption');
+            }
+        }
+
+        var nodes = $('#selectedUsersToShareList').find('.node');
+        if (nodes && nodes.length > 0) {
+            let nodesNum = nodes.length;
+            for (var i = 0; i < nodesNum; i++) {
+                let node = nodes[i];
+                $(node).addClass('charms-share-listview-node');
+            }
+        }
+    }
 }
 
-function removeSearchButton() {
-    $(`#${searchButtonId}`).remove();
+async function checkUser() {
+    try {
+        setCharmsShareLoadingCircle(true);
+
+        let userEmail = $('#newUserToShare').val();
+
+        let model = {
+            Text: userEmail
+        };
+
+        let obj = await doAjaxGetAsync(UrlCheckUser, model);
+        if (obj.IsOk) {
+            let userToShareId = parseInt(obj.ResponseObject);
+
+            if (usersToShare.indexOf(userToShareId)) {
+                setCharmsShareLoadingCircle(false);
+                return;
+            }
+
+            let item = {
+                id: userToShareId,
+                email: userEmail
+            };
+
+            usersToShare.push(item);
+            addUserToShare(userEmail);
+            setCharmsShareLoadingCircle(false);
+        } else {
+            setCharmsShareLoadingCircle(false);
+            showSimpleDialog(ERROR_LABEL, CharmsShareUserNotExistantMessage, ALERT)
+        }
+    } catch (e) {
+        setCharmsShareLoadingCircle(false);
+    }
 }
 
-/* ---------- HELP BUTTON ---------- */
-function addHelpButton() {
-    addButton(helpButtonId, ButtonHelpLabel, 'mif-help', showSearchInfo);
+function removeUserToShare(element) {
+
 }
 
-function removeHelpButtonProcedure() {
-    if (!isButtonAvailable(helpButtonId))
-        return;
+function shareSpectra() {
 
-    animateCSS(`${helpButtonId}`, `bounceOutUp`, FAST, removeHelpButton);
-}
-
-function removeHelpButton() {
-    $(`#${helpButtonId}`).remove();
 }
 
 /* ################################################################################ */

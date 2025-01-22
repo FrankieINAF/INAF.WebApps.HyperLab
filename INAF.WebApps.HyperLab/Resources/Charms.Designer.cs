@@ -430,6 +430,51 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Checking user....
+        /// </summary>
+        public static string CharmsShareCheckUserMessage {
+            get {
+                return ResourceManager.GetString("CharmsShareCheckUserMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sharing spectra with other users allows them to review and edit the data, such as adjusting parameters for alignment, continuum removal, or smoothing..
+        /// </summary>
+        public static string CharmsShareExplanation {
+            get {
+                return ResourceManager.GetString("CharmsShareExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You&apos;re going to share r_v spectra.
+        /// </summary>
+        public static string CharmsShareNumOfSpectra {
+            get {
+                return ResourceManager.GetString("CharmsShareNumOfSpectra", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share spectra with other users.
+        /// </summary>
+        public static string CharmsShareTitle {
+            get {
+                return ResourceManager.GetString("CharmsShareTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, email doesn&apos;t correspond to any existing user.
+        /// </summary>
+        public static string CharmsShareUserNotExistantMessage {
+            get {
+                return ResourceManager.GetString("CharmsShareUserNotExistantMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Spectra management.
         /// </summary>
         public static string CharmsSpectraProcessingManagementLabel {

@@ -115,6 +115,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Share selected spectra.
+        /// </summary>
+        public static string ButtonShareLabel {
+            get {
+                return ResourceManager.GetString("ButtonShareLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show color settings panel.
         /// </summary>
         public static string ButtonShowCharmsColorSelectorLabel {

@@ -135,6 +135,9 @@
   <data name="ButtonSearchLabel" xml:space="preserve">
     <value>Start searching</value>
   </data>
+  <data name="ButtonShareLabel" xml:space="preserve">
+    <value>Share selected spectra</value>
+  </data>
   <data name="ButtonShowCharmsColorSelectorLabel" xml:space="preserve">
     <value>Show color settings panel</value>
   </data>

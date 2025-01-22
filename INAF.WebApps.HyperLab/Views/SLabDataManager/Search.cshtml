@@ -360,9 +360,10 @@
     </div>
 </div>
 
-<!-- REFERENCE TO BLAZOR BlazorHelper COMPONENT -->
-@* <base href="~/" />
-<component type="typeof(BlazorHelper)" render-mode="ServerPrerendered" /> *@
+<!-- CHARMS SHARE -->
+@{
+    await Html.RenderPartialAsync("Partials/_Share");
+}
 
 <!-- common js variables -->
 @{
@@ -472,7 +473,6 @@
 <environment names="Development">
     <script type="text/javascript" src="~/js/hyperlab/commonsearchandchart.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/search.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/searchbuttons.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/searchSimple.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/searchComplex.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/complexsearchesmanagement.js" asp-append-version="true"></script>
