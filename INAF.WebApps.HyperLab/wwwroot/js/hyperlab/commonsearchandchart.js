@@ -232,6 +232,13 @@ function addUserToShare(id, email) {
     }
 }
 
+function checkShareButtonCanBeEnabled() {
+    if (usersToShare.length > 0)
+        setMetroUIButtonEnabled('buttonShare', true);
+    else
+        setMetroUIButtonEnabled('buttonShare', false);
+}
+
 async function checkUser() {
     try {
         /* remove message, if existant */
@@ -245,30 +252,55 @@ async function checkUser() {
             Text: userEmail
         };
 
+        let isUserExistant = false;
         let obj = await doAjaxGetAsync(UrlCheckUser, model);
+        let userToShareId = 0;
         if (obj.IsOk) {
-            let userToShareId = parseInt(obj.ResponseObject);
-
-            if (usersToShare.indexOf(x => x.Id == userToShareId) > -1) {
-                setCharmsShareLoadingCircle(false);
-                return;
-            }
-
-            let item = {
-                Id: userToShareId,
-                Email: userEmail
-            };
-
-            usersToShare.push(item);
-            addUserToShare(userToShareId, userEmail);
-            setCharmsShareLoadingCircle(false);
+            isUserExistant = true;
+            userToShareId = parseInt(obj.ResponseObject);
         } else {
-            setCharmsShareLoadingCircle(false);
-            setUserNotExistantMessage();
+            userToShareId = await generateHash(userEmail);
         }
+
+        if (usersToShare.indexOf(x => x.Id == userToShareId) > -1) {
+            setCharmsShareLoadingCircle(false);
+            return;
+        }
+
+        let item = {
+            Id: userToShareId,
+            Email: userEmail
+        };
+
+        usersToShare.push(item);
+        addUserToShare(userToShareId, userEmail);
+
+        checkShareButtonCanBeEnabled();
+
+        setCharmsShareLoadingCircle(false);
+
+        if (!isUserExistant)
+            setUserNotExistantMessage();
+        //if (obj.IsOk) {
+        //    let userToShareId = parseInt(obj.ResponseObject);
+
+            
+        //} else {
+        //    setCharmsShareLoadingCircle(false);
+        //    setUserNotExistantMessage();
+        //}
     } catch (e) {
         setCharmsShareLoadingCircle(false);
     }
+}
+
+async function generateHash(input) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(input);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
 }
 
 function removeUserToShare(id) {
@@ -278,6 +310,8 @@ function removeUserToShare(id) {
         usersToShare.splice(index, 1);
         /* remove from listview */
         $(`#user${id}`).remove();
+
+        checkShareButtonCanBeEnabled();
     }
 }
 

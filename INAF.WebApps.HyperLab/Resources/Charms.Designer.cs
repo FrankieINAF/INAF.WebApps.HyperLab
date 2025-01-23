@@ -430,6 +430,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Share.
+        /// </summary>
+        public static string CharmsShareButton {
+            get {
+                return ResourceManager.GetString("CharmsShareButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checking user....
         /// </summary>
         public static string CharmsShareCheckUserMessage {
@@ -444,6 +453,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string CharmsShareExplanation {
             get {
                 return ResourceManager.GetString("CharmsShareExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter email of registered user.
+        /// </summary>
+        public static string CharmsShareInputPlaceholder {
+            get {
+                return ResourceManager.GetString("CharmsShareInputPlaceholder", resourceCulture);
             }
         }
         
@@ -466,7 +484,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorry, email doesn&apos;t correspond to any existing user.
+        ///   Looks up a localized string similar to Email doesn&apos;t correspond to any existing user. An invitation to join HyperLab will be sent.
         /// </summary>
         public static string CharmsShareUserNotExistantMessage {
             get {

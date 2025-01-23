@@ -27,24 +27,37 @@
     </div>
 
     <!-- NUM OF SHARED SPECTRA -->
-    <div class="row margin-top-16">
+    <div class="row margin-top-8">
         <div class="cell-fs-12">
             <h5 id="numOfSharedSpectraLabel" class="text-light text-center"></h5>
         </div>
     </div>
 
     <!-- SHARE INTERFACE -->
-    <div class="row margin-top-16">
+    <!-- insert new user -->
+    <div class="row margin-top-8">
         <div class="cell-fs-2 cell-md-4">&nbsp;</div>
         <div class="cell-fs-8 cell-md-4 margin-top-8">
-            <input id="newUserToShare" type="text" data-role="input" data-prevent-submit="true" data-custom-buttons="customButtons">
+            <input id="newUserToShare" type="email" data-role="input" placeholder="@Html.Raw(Charms.CharmsShareInputPlaceholder)" data-prevent-submit="true" data-custom-buttons="customButtons">
         </div>
         <div id="newUserToShareActivity" class="cell-fs-2 cell-md-4 d-flex"></div>
     </div>
-    <div class="row margin-top-16">
+    <!-- list of inserted users -->
+    <div class="row margin-top-8">
         <div class="cell-fs-2 cell-md-4">&nbsp;</div>
         <div class="cell-fs-8 cell-md-4">
-            <ul id="selectedUsersToShareList"></ul>
+            <ul id="selectedUsersToShareList" class="overflow-y-auto"></ul>
+        </div>
+        <div class="cell-fs-2 cell-md-4">&nbsp;</div>
+    </div>
+    <!-- share button -->
+    <div class="row margin-top-8">
+        <div class="cell-fs-2 cell-md-4">&nbsp;</div>
+        <div class="cell-fs-8 cell-md-4">
+            <button id="buttonShare" class="image-button primary disabled float-right" onclick="shareSpectra()">
+                <span class="mif-share icon"></span>
+                <span class="caption">@Html.Raw(Charms.CharmsShareButton)</span>
+            </button>
         </div>
         <div class="cell-fs-2 cell-md-4">&nbsp;</div>
     </div>
