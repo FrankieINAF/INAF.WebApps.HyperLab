@@ -44,7 +44,7 @@
     <div class="row margin-top-16">
         <div class="cell-fs-2 cell-md-4">&nbsp;</div>
         <div class="cell-fs-8 cell-md-4">
-            <ul id="selectedUsersToShareList" data-role="listview" data-view="list" data-cls="charms-share-listview"></ul>
+            <ul id="selectedUsersToShareList"></ul>
         </div>
         <div class="cell-fs-2 cell-md-4">&nbsp;</div>
     </div>
@@ -62,8 +62,5 @@
             if (evt.originalEvent.code == 'Enter')
                 checkUser();
         });
-
-        Metro.makePlugin("#selectedUsersToShareList", 'listview');
-        $('#selectedUsersToShareList').addClass('charms-share-listview')
     });
 </script>

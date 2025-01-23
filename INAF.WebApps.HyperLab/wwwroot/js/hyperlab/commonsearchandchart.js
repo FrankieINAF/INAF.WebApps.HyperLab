@@ -218,58 +218,25 @@ function onCharmsShareOpen() {
 /* ################################################################################ */
 /* SHARE SPECTRA */
 /* ################################################################################ */
-function setCharmsShareLoadingCircle(isvisible) {
-    if (isvisible) {
-        let html = '<div data-role="activity" data-type="ring" data-style="light"></div>';
-        html += `<div class="margin-left-8 margin-top-16"><span>${CharmsShareCheckUserMessage}</span></div>`;
-        $('#newUserToShareActivity').html(html);
-    } else
-        $('#newUserToShareActivity').empty();
-}
-
-function addUserToShare(email) {
+function addUserToShare(id, email) {
     if (email) {
-        let item = {
-            caption: email,
-            icon: `<span class="mif-cross fg-light"></span>`
-        };
-        Metro.getPlugin("#selectedUsersToShareList", 'listview').add(null, item);
+        let html = `<li id="user${id}" class="d-flex charms-share-listview-item">`;
+        html += `<div class="margin-right-16 pointer" onclick="removeUserToShare(${id})"><span class="mif-bin pointer"></span></div>`;
+        html += `<div><span class="charms-share-listview-caption">${email}</span></div>`;
+        html += `</li>`;
+
+        $("#selectedUsersToShareList").append(html);
+
+        /* empty the input field for writing user email */
         $('#newUserToShare').val('');
-
-        var icons = $('#selectedUsersToShareList').find('.icon');
-        if (icons && icons.length > 0) {
-            let iconsNum = icons.length;
-            for (var i = 0; i < iconsNum; i++) {
-                let icon = icons[i];
-                //$(caption).addClass('charms-share-listview-caption');
-                $(icon).on('click', function () {
-                    console.log($($(this.parentElement).find('.data')[0]).children('.caption').text());
-                });
-            }
-        }
-
-        var captions = $('#selectedUsersToShareList').find('.caption');
-        if (captions && captions.length > 0) {
-            let captionsNum = captions.length;
-            for (var i = 0; i < captionsNum; i++) {
-                let caption = captions[i];
-                $(caption).addClass('charms-share-listview-caption');
-            }
-        }
-
-        var nodes = $('#selectedUsersToShareList').find('.node');
-        if (nodes && nodes.length > 0) {
-            let nodesNum = nodes.length;
-            for (var i = 0; i < nodesNum; i++) {
-                let node = nodes[i];
-                $(node).addClass('charms-share-listview-node');
-            }
-        }
     }
 }
 
 async function checkUser() {
     try {
+        /* remove message, if existant */
+        $('#newUserToShareActivity').empty();
+
         setCharmsShareLoadingCircle(true);
 
         let userEmail = $('#newUserToShare').val();
@@ -282,34 +249,57 @@ async function checkUser() {
         if (obj.IsOk) {
             let userToShareId = parseInt(obj.ResponseObject);
 
-            if (usersToShare.indexOf(userToShareId)) {
+            if (usersToShare.indexOf(x => x.Id == userToShareId) > -1) {
                 setCharmsShareLoadingCircle(false);
                 return;
             }
 
             let item = {
-                id: userToShareId,
-                email: userEmail
+                Id: userToShareId,
+                Email: userEmail
             };
 
             usersToShare.push(item);
-            addUserToShare(userEmail);
+            addUserToShare(userToShareId, userEmail);
             setCharmsShareLoadingCircle(false);
         } else {
             setCharmsShareLoadingCircle(false);
-            showSimpleDialog(ERROR_LABEL, CharmsShareUserNotExistantMessage, ALERT)
+            setUserNotExistantMessage();
         }
     } catch (e) {
         setCharmsShareLoadingCircle(false);
     }
 }
 
-function removeUserToShare(element) {
-
+function removeUserToShare(id) {
+    let index = usersToShare.findIndex(x => x.Id == id);
+    if (index > -1) {
+        /* remove from in-memory array */
+        usersToShare.splice(index, 1);
+        /* remove from listview */
+        $(`#user${id}`).remove();
+    }
 }
 
 function shareSpectra() {
 
+}
+
+function setCharmsShareLoadingCircle(isvisible) {
+    if (isvisible) {
+        let html = `<div data-role="activity" data-type="ring" data-style="light"></div>`;
+        html += `<div class="margin-left-8 margin-top-16"><span>${CharmsShareCheckUserMessage}</span></div>`;
+        $('#newUserToShareActivity').html(html);
+    } else
+        $('#newUserToShareActivity').empty();
+}
+
+function setUserNotExistantMessage() {
+    let html = `<div class="margin-top-8 d-flex">`;
+    html += `<div><span class="mif-warning mif-2x fg-orange"></span></div>`;
+    html += `<div class="fg-orange margin-left-16 text-leader2">${CharmsShareUserNotExistantMessage}</div>`;
+    html += `</div>`;
+    $('#newUserToShareActivity').html(html);
 }
 
 /* ################################################################################ */
