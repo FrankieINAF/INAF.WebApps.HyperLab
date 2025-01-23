@@ -225,7 +225,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult GetSpectrumFile(GenericRequestByIdModel model)
         {
             FileSpectrumModel? parentSpectrum = dbHandlerHyperLabData.getSpectrumInfo(model.Id,
-                                                                                  getUserId());
+                                                                                    getUserId());
             if (parentSpectrum != null)
                 return new JsonResult(parentSpectrum);
             else
