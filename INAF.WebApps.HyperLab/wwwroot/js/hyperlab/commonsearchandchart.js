@@ -221,7 +221,7 @@ function onCharmsShareOpen() {
 function addUserToShare(id, email) {
     if (email) {
         let html = `<li id="user${id}" class="d-flex charms-share-listview-item">`;
-        html += `<div class="margin-right-16 pointer" onclick="removeUserToShare(${id})"><span class="mif-bin pointer"></span></div>`;
+        html += `<div class="margin-right-16 pointer" onclick="removeUserToShare('${id}')"><span class="mif-bin pointer"></span></div>`;
         html += `<div><span class="charms-share-listview-caption">${email}</span></div>`;
         html += `</li>`;
 
@@ -234,9 +234,9 @@ function addUserToShare(id, email) {
 
 function checkShareButtonCanBeEnabled() {
     if (usersToShare.length > 0)
-        setMetroUIButtonEnabled('buttonShare', true);
+        setMetroUIButtonEnabled('buttonShareSpectra', true);
     else
-        setMetroUIButtonEnabled('buttonShare', false);
+        setMetroUIButtonEnabled('buttonShareSpectra', false);
 }
 
 async function checkUser() {
@@ -268,7 +268,7 @@ async function checkUser() {
         }
 
         let item = {
-            Id: userToShareId,
+            Id: `${userToShareId}`,
             Email: userEmail
         };
 

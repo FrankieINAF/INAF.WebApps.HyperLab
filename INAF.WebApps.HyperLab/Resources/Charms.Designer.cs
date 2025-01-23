@@ -457,7 +457,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter email of registered user.
+        ///   Looks up a localized string similar to Enter email.
         /// </summary>
         public static string CharmsShareInputPlaceholder {
             get {
