@@ -17,46 +17,6 @@ var DELAY_5S = 'delay-5s';
 
 var isFirstLoading = true;
 
-/* ################################################################################ */
-/* PAGE INTRO */
-/* ################################################################################ */
-//function completePageRendering() {
-//    let callback = function () {
-//        /* retrieve page w,h */
-//        //initPageDims();
-
-//        /* add event for handling mobile-device rotation */
-//        //tryAddOrientationEventHandler();
-
-//        /* set y-overflow for page */
-//        setOverflowYAuto();
-//    };
-
-//    setTimeout(function () { animateHideIntro(callback); }, 500);
-//}
-
-//function animateShowIntro() {
-//    if (!isFirstLoading)
-//        return;
-
-//    isFirstLoading = false;
-//    window.removeEventListener('load', animateShowIntro);
-
-//    showByClass('pageCoverLogo');
-//    animateCSS('pageCoverLogo', 'fadeIn', FASTER);
-//}
-
-//function animateHideIntro(extcallback) {
-//    //let callback = function () {
-//        $('#pageCover').remove();
-
-//        showPageItems(extcallback);
-//    //};
-
-//    //animateCSS('pageCover', 'fadeOut', FASTER, callback);
-//}
-//window.addEventListener("load", animateShowIntro);
-
 function showPageItems(callback) {
     showByClass('leftMenu');
     animateCSS('leftMenu', 'fadeIn', FASTER);
@@ -190,6 +150,14 @@ var INFO = 'info';
 var SUCCESS = 'success';
 var WARNING = 'warning';
 var appToast;
+
+var ICON_INFO_NAME = 'mif-info';
+var ICON_WARNING_NAME = 'mif-warning';
+var ICON_ERROR_NAME = 'mif-cross-light';
+
+var COLOR_INFO_CLASS = 'fg-green';
+var COLOR_WARNING_CLASS = 'fg-yellow';
+var COLOR_ERROR_CLASS = 'fg-red';
 
 function showDialogWithAction(title, content, cls, caption1, callback1) {
     Metro.dialog.create({

@@ -341,9 +341,9 @@ async function shareSpectraAsync() {
     }
 
     if (isOk)
-        setMessage(CharmsShareSpectraSharedInfoMessage, 'fg-white');
+        setMessage(CharmsShareSpectraSharedInfoMessage, ICON_INFO_NAME, COLOR_INFO_CLASS);
     else
-        setMessage(CharmsShareSpectraSharedErrorMessage, 'fg-red');
+        setMessage(CharmsShareSpectraSharedErrorMessage, ICON_ERROR_NAME, COLOR_ERROR_CLASS);
 }
 
 function setCharmsShareLoadingCircle(isvisible) {
@@ -355,12 +355,14 @@ function setCharmsShareLoadingCircle(isvisible) {
         $('#newUserToShareActivity').empty();
 }
 
-function setMessage(message, messageClass) {
+function setMessage(message, messageIcon, messageClass) {
     let html = `<div class="margin-top-8 d-flex">`;
-    html += `<div><span class="mif-warning mif-2x ${messageClass}"></span></div>`;
-    html += `<div class="${messageClass} margin-left-16 text-leader2">${CharmsShareUserNotExistantMessage}</div>`;
+    html += `<div><span class="${messageIcon} mif-2x ${messageClass}"></span></div>`;
+    html += `<div class="${messageClass} margin-left-16 text-leader2">${message}</div>`;
     html += `</div>`;
     $('#newUserToShareActivity').html(html);
+
+    setTimeout(function () { $('#newUserToShareActivity').empty(); }, 5000);
 }
 
 /* ################################################################################ */
