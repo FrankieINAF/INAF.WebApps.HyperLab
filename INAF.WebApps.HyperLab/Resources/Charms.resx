@@ -255,6 +255,12 @@
   <data name="CharmsShareNumOfSpectra" xml:space="preserve">
     <value>You're going to share r_v spectra</value>
   </data>
+  <data name="CharmsShareSpectraSharedErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to share spectra</value>
+  </data>
+  <data name="CharmsShareSpectraSharedInfoMessage" xml:space="preserve">
+    <value>Spectra have been successfully shared!</value>
+  </data>
   <data name="CharmsShareTitle" xml:space="preserve">
     <value>Share spectra with other users</value>
   </data>

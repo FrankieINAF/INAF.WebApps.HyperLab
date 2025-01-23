@@ -22,36 +22,37 @@ namespace INAF.WebApps.HyperLab.Controllers
             //this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
         }
 
-        public async Task<IActionResult> AddShareForUser(SpectrumShareModel model)
+        [HttpPost]
+        public async Task<IActionResult> AddSharesBetweenOwnerUserAndUsers([FromBody] SpectraShareModel model)
         {
-            if (await dbHandlerHyperLabData.addShareForUserAsync(getUserId(), model.SpectrumId, model.UserId))
+            if (await dbHandlerHyperLabData.upsertSharesBetweenOwnerUserAndUsersAsync(getUserId(), model.SpectraIds!, model.UsersToShare!))
                 return new JsonResult(GenericResponseModel.CreateSuccessResponse());
             else
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
         }
 
-        public IActionResult GetSharesForUser()
-        {
-            var shares = dbHandlerHyperLabData.getSharesForUser(getUserId());
-            if (shares != null && shares.Any())
-                return new JsonResult(shares);
-            else
-                return new EmptyResult();
-        }
+        //public IActionResult GetSharesForUser()
+        //{
+        //    var shares = dbHandlerHyperLabData.getSharesForUser(getUserId());
+        //    if (shares != null && shares.Any())
+        //        return new JsonResult(shares);
+        //    else
+        //        return new EmptyResult();
+        //}
 
-        public IActionResult IsAnyShareAvailableForUser()
-        {
-            if (dbHandlerHyperLabData.isAnyShareAvailableForUser(getUserId()))
-                return new JsonResult(GenericResponseModel.CreateSuccessResponse());
-            else
-                return new JsonResult(GenericResponseModel.CreateErrorResponse());
-        }
+        //public IActionResult IsAnyShareAvailableForUser()
+        //{
+        //    if (dbHandlerHyperLabData.isAnyShareAvailableForUser(getUserId()))
+        //        return new JsonResult(GenericResponseModel.CreateSuccessResponse());
+        //    else
+        //        return new JsonResult(GenericResponseModel.CreateErrorResponse());
+        //}
 
         public async Task<IActionResult> JoinShare()
         {
-            if (await dbHandlerHyperLabData.joinAllSharesForUserAsync(getUserId()))
-                return new JsonResult(GenericResponseModel.CreateSuccessResponse());
-            else
+            //if (await dbHandlerHyperLabData.joinAllSharesForUserAsync(getUserId()))
+            //    return new JsonResult(GenericResponseModel.CreateSuccessResponse());
+            //else>
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
         }
     }

@@ -262,13 +262,13 @@ async function checkUser() {
             userToShareId = await generateHash(userEmail);
         }
 
-        if (usersToShare.indexOf(x => x.Id == userToShareId) > -1) {
+        if (usersToShare.findIndex(x => x.Id == userToShareId) > -1) {
             setCharmsShareLoadingCircle(false);
             return;
         }
 
         let item = {
-            Id: `${userToShareId}`,
+            Id: userToShareId,
             Email: userEmail
         };
 
@@ -280,7 +280,7 @@ async function checkUser() {
         setCharmsShareLoadingCircle(false);
 
         if (!isUserExistant)
-            setUserNotExistantMessage();
+            setMessage();
         //if (obj.IsOk) {
         //    let userToShareId = parseInt(obj.ResponseObject);
 
@@ -315,8 +315,35 @@ function removeUserToShare(id) {
     }
 }
 
-function shareSpectra() {
+async function shareSpectraAsync() {
+    let isOk = true;
 
+    setLoadingCircleIsVisible(true);
+
+    try {
+        let users = usersToShare.map(user => {
+            return {
+                Id: user.Id.toString(),
+                Email: user.Email
+            };
+        });
+        let model = {
+            SpectraIds: selectedSpectra,
+            UsersToShare: users
+        };
+
+        let obj = await doAjaxPostAsync(UrlAddSharesBetweenOwnerUserAndUsers, model);
+        isOk = obj.IsOk;
+        setLoadingCircleIsVisible(false);
+    } catch (e) {
+        isOk = false;
+        setLoadingCircleIsVisible(false);
+    }
+
+    if (isOk)
+        setMessage(CharmsShareSpectraSharedInfoMessage, 'fg-white');
+    else
+        setMessage(CharmsShareSpectraSharedErrorMessage, 'fg-red');
 }
 
 function setCharmsShareLoadingCircle(isvisible) {
@@ -328,10 +355,10 @@ function setCharmsShareLoadingCircle(isvisible) {
         $('#newUserToShareActivity').empty();
 }
 
-function setUserNotExistantMessage() {
+function setMessage(message, messageClass) {
     let html = `<div class="margin-top-8 d-flex">`;
-    html += `<div><span class="mif-warning mif-2x fg-orange"></span></div>`;
-    html += `<div class="fg-orange margin-left-16 text-leader2">${CharmsShareUserNotExistantMessage}</div>`;
+    html += `<div><span class="mif-warning mif-2x ${messageClass}"></span></div>`;
+    html += `<div class="${messageClass} margin-left-16 text-leader2">${CharmsShareUserNotExistantMessage}</div>`;
     html += `</div>`;
     $('#newUserToShareActivity').html(html);
 }

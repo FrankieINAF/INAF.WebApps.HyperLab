@@ -475,6 +475,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, something went wrong while trying to share spectra.
+        /// </summary>
+        public static string CharmsShareSpectraSharedErrorMessage {
+            get {
+                return ResourceManager.GetString("CharmsShareSpectraSharedErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spectra have been successfully shared!.
+        /// </summary>
+        public static string CharmsShareSpectraSharedInfoMessage {
+            get {
+                return ResourceManager.GetString("CharmsShareSpectraSharedInfoMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Share spectra with other users.
         /// </summary>
         public static string CharmsShareTitle {
