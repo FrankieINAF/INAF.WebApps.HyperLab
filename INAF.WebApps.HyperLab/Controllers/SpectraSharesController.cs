@@ -34,9 +34,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             foreach (ShareResultModel result in results)
             {
                 if (result.IsShareCreated)
-                {
                     result.IsErrorInInvitation = !await dbHandlerHyperLabUsers.tryAddUserToBeInvited(result.Email);
-                }
             }
 
             bool isAnyErrorInInvitations = results.Any(x => x.IsErrorInInvitation);

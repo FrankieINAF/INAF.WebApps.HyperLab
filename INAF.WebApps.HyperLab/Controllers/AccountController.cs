@@ -92,6 +92,8 @@ namespace INAF.WebApps.HyperLab.Controllers
                 /* if confirmation is ok, then send user to registration completed page */
                 if (confirmationResult.isOk)
                 {
+                    //inserisci ricerca share esistente e metti id utente
+
                     ViewBag.Confirmation = 1;
                     return RedirectToAction(nameof(RegistrationConfirmed), GenericHelper.GetControllerName(nameof(AccountController)));
                 }
