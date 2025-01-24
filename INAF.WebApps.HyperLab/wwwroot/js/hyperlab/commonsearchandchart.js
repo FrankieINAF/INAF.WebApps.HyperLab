@@ -280,15 +280,7 @@ async function checkUser() {
         setCharmsShareLoadingCircle(false);
 
         if (!isUserExistant)
-            setMessage();
-        //if (obj.IsOk) {
-        //    let userToShareId = parseInt(obj.ResponseObject);
-
-            
-        //} else {
-        //    setCharmsShareLoadingCircle(false);
-        //    setUserNotExistantMessage();
-        //}
+            setMessage(CharmsShareUserNotExistantMessage, ICON_WARNING_NAME, COLOR_WARNING_CLASS);
     } catch (e) {
         setCharmsShareLoadingCircle(false);
     }
