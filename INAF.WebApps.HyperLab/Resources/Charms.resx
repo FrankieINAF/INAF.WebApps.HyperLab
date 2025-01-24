@@ -252,8 +252,14 @@
   <data name="CharmsShareInputPlaceholder" xml:space="preserve">
     <value>Enter email</value>
   </data>
+  <data name="CharmsShareInvitationNotCreatedErrorMessage" xml:space="preserve">
+    <value>Error while creating invitation for 'r_v'</value>
+  </data>
   <data name="CharmsShareNumOfSpectra" xml:space="preserve">
     <value>You're going to share r_v spectra</value>
+  </data>
+  <data name="CharmsShareShareNotCreatedForUserErrorMessage" xml:space="preserve">
+    <value>Share not created for 'r_v'</value>
   </data>
   <data name="CharmsShareSpectraSharedErrorMessage" xml:space="preserve">
     <value>Sorry, something went wrong while trying to share spectra</value>

@@ -307,37 +307,6 @@ function removeUserToShare(id) {
     }
 }
 
-async function shareSpectraAsync() {
-    let isOk = true;
-
-    setLoadingCircleIsVisible(true);
-
-    try {
-        let users = usersToShare.map(user => {
-            return {
-                Id: user.Id.toString(),
-                Email: user.Email
-            };
-        });
-        let model = {
-            SpectraIds: selectedSpectra,
-            UsersToShare: users
-        };
-
-        let obj = await doAjaxPostAsync(UrlAddSharesBetweenOwnerUserAndUsers, model);
-        isOk = obj.IsOk;
-        setLoadingCircleIsVisible(false);
-    } catch (e) {
-        isOk = false;
-        setLoadingCircleIsVisible(false);
-    }
-
-    if (isOk)
-        setMessage(CharmsShareSpectraSharedInfoMessage, ICON_INFO_NAME, COLOR_INFO_CLASS);
-    else
-        setMessage(CharmsShareSpectraSharedErrorMessage, ICON_ERROR_NAME, COLOR_ERROR_CLASS);
-}
-
 function setCharmsShareLoadingCircle(isvisible) {
     if (isvisible) {
         let html = `<div data-role="activity" data-type="ring" data-style="light"></div>`;
@@ -357,6 +326,77 @@ function setMessage(message, messageIcon, messageClass) {
     setTimeout(function () { $('#newUserToShareActivity').empty(); }, 5000);
 }
 
+async function shareSpectraAsync() {
+    let isOk = true;
+
+    setLoadingCircleIsVisible(true);
+
+    let shareResults;
+
+    try {
+        let users = usersToShare.map(user => {
+            return {
+                Id: user.Id.toString(),
+                Email: user.Email
+            };
+        });
+        let model = {
+            SpectraIds: selectedSpectra,
+            UsersToShare: users
+        };
+
+        shareResults = await doAjaxPostAsync(UrlAddSharesBetweenOwnerUserAndUsers, model);
+        isOk = shareResults.IsOk;
+        setLoadingCircleIsVisible(false);
+    } catch (e) {
+        isOk = false;
+        setLoadingCircleIsVisible(false);
+    }
+
+    if (isOk)
+        setMessage(CharmsShareSpectraSharedInfoMessage, ICON_INFO_NAME, COLOR_INFO_CLASS);
+    else {
+        /* when an error in creation of shares or in invitations happned, show the specific message */
+        if (showSharesErrors(shareResults) > 0)
+            return;
+        /* when an error on the back-end happened, show the generic message */
+        setMessage(CharmsShareSpectraSharedErrorMessage, ICON_ERROR_NAME, COLOR_ERROR_CLASS);
+    }
+}
+
+function showSharesErrors(shareResults) {
+    let errorsNum = 0;
+
+    if (shareResults == null)
+        return errorsNum;
+    if (shareResults.ResponseObject.length == 0)
+        return errorsNum;
+
+    let html = `<div class='row cell-fs-12 margin-16'>`;
+    let shareResultsNum = shareResults.ResponseObject.length;
+    for (var i = 0; i < shareResultsNum; i++) {
+        if (!shareResults.ResponseObject[i].IsShareCreated) {
+            errorsNum += 1;
+            html += `<div class='row cell-fs-12'><p class='text-leader2'>${CharmsShareShareNotCreatedForUserErrorMessage.replace('r_v', shareResults.ResponseObject[i].Email)}</p></div>`;
+        }
+
+        if (shareResults.ResponseObject[i].IsErrorInInvitation) {
+            errorsNum += 1;
+            html += `<div class='row cell-fs-12'><p class='text-leader2'>${CharmsShareInvitationNotCreatedErrorMessage.replace('r_v', shareResults.ResponseObject[i].Email)}</p></div>`;
+        }
+    }
+    html += `</div>`;
+
+    let options = {
+        callback: Metro.noop,
+        timeout: 5000,
+        showTop: true,
+        clsToast: "alert"
+    };
+    Metro.toast.create(html, null, null, null, options);
+
+    return errorsNum;
+}
 /* ################################################################################ */
 /* MANAGE OVERFLOW-Y */
 /* ################################################################################ */

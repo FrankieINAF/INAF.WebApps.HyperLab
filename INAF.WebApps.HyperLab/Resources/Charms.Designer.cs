@@ -466,11 +466,29 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error while creating invitation for &apos;r_v&apos;.
+        /// </summary>
+        public static string CharmsShareInvitationNotCreatedErrorMessage {
+            get {
+                return ResourceManager.GetString("CharmsShareInvitationNotCreatedErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You&apos;re going to share r_v spectra.
         /// </summary>
         public static string CharmsShareNumOfSpectra {
             get {
                 return ResourceManager.GetString("CharmsShareNumOfSpectra", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share not created for &apos;r_v&apos;.
+        /// </summary>
+        public static string CharmsShareShareNotCreatedForUserErrorMessage {
+            get {
+                return ResourceManager.GetString("CharmsShareShareNotCreatedForUserErrorMessage", resourceCulture);
             }
         }
         

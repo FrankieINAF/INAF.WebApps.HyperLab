@@ -39,7 +39,13 @@ namespace INAF.WebApps.HyperLab.Controllers
                 }
             }
 
-            return new JsonResult(new GenericResponseModel(results));
+            bool isAnyErrorInInvitations = results.Any(x => x.IsErrorInInvitation);
+            bool isAnyErrorInShare = results.Any(x => !x.IsShareCreated);
+
+            if (isAnyErrorInShare || isAnyErrorInInvitations) 
+                return new JsonResult(new GenericResponseModel(false, results));
+
+            return new JsonResult(GenericResponseModel.CreateSuccessResponse());
         }
     }
 }
