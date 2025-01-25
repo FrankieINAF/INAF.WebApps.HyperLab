@@ -1,4 +1,5 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Menu;
+using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.WebApps.HyperLab.Extensions;
 
@@ -6,10 +7,13 @@ namespace INAF.WebApps.HyperLab.Helpers
 {
     public sealed class MenuHelper
     {
+        private readonly DbHandlerHyperLabData dbHandlerHyperLabData;
         private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
 
-        public MenuHelper(DbHandlerHyperLabUsers dbHandlerHyperLabUsers)
+        public MenuHelper(DbHandlerHyperLabData dbHandlerHyperLabData,
+                          DbHandlerHyperLabUsers dbHandlerHyperLabUsers)
         {
+            this.dbHandlerHyperLabData = dbHandlerHyperLabData;
             this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
         }
 
@@ -34,6 +38,27 @@ namespace INAF.WebApps.HyperLab.Helpers
             }
 
             menu.Items = menuItems;
+
+            /* add menu-item for shares if any */
+            bool isAnySharedSpectraByMe = dbHandlerHyperLabData.isAnySharedSpectraForOwnerUser(httpContext.GetUserId());
+            bool isAnySharedSpectraWithMe = dbHandlerHyperLabData.isAnySharedSpectraForUser(httpContext.GetUserId());
+
+            if (isAnySharedSpectraByMe || isAnySharedSpectraWithMe)
+            {
+                //MenuItem menuItem = new MenuItem()
+                //{
+                //    Id = -1,
+                //    Name = "Shares",
+                //    Label = "Shares",
+                //    Icon = "fa fa-share-alt",
+                //    LinkText = "/SpectraShares/SharedStuff",
+                //    ParentId = 0
+                //};
+                //(string controllerName, string actionName) values = getAction(menuItem);
+                //menuItem.ControllerName = values.controllerName;
+                //menuItem.ActionName = values.actionName;
+                //menu.Items.Add(menuItem);
+            }
 
             return menu;
         }

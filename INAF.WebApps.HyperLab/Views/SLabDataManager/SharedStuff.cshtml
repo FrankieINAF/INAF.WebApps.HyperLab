@@ -1,4 +1,19 @@
 ﻿@model SharedStuffContainer
 
+@using INAF.WebApps.HyperLab.Resources
 @using INAF.Libraries.Net.HyperLab.CommonModels.Models.Shares
 
+<div class="container h-100 overflow-x-auto overflow-y-hidden">
+    <ul data-role="tabs" data-expand="true">
+        <li><a href="#sharedByMe">@Html.Raw(SharedStuff.TabSharedByMeTitle)</a></li>
+        <li><a href="#sharedWithMe">@Html.Raw(SharedStuff.TabSharedWithMeTitle)</a></li>
+    </ul>
+    <div class="border bd-default no-border-top p-2">
+        <div id="sharedByMe">
+            A falsis, calceus altus racana.
+        </div>
+        <div id="sharedWithMe">
+            The shield is a post-apocalyptic nanomachine.
+        </div>
+    </div>
+</div>

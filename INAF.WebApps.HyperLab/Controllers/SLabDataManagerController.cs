@@ -18,6 +18,7 @@ using System.Dynamic;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using Newtonsoft.Json;
 using LinqKit;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Shares;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -35,14 +36,6 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search()
-        {
-            var sampleTypesHelper = serviceProvider.GetRequiredService<SampleTypesHelper>();
-            SampleTypeValuesContainerExtended sampleTypeValuesContainerExtended = SampleTypeValuesContainerExtended.Create(sampleTypesHelper.getSampleTypeValuesContainer());
-            return View(sampleTypeValuesContainerExtended);
-        }
-
-        [HttpGet]
         public IActionResult Chart([FromQuery] string ids)
         {
             IEnumerable<int>? Ids = null;
@@ -54,6 +47,31 @@ namespace INAF.WebApps.HyperLab.Controllers
             }
 
             return RedirectToAction("Error", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult Search()
+        {
+            var sampleTypesHelper = serviceProvider.GetRequiredService<SampleTypesHelper>();
+            SampleTypeValuesContainerExtended sampleTypeValuesContainerExtended = SampleTypeValuesContainerExtended.Create(sampleTypesHelper.getSampleTypeValuesContainer());
+            return View(sampleTypeValuesContainerExtended);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SharedStuff()
+        {
+            List<SharedSpectrumModel>? spectraSharedWithMe = null;
+            List<SharedSpectrumModel>? spectraSharedByMe = null;
+            var tasks = new List<Task>
+            {
+                Task.Run(() => spectraSharedWithMe = dbHandlerHyperLabData.getSharedSpectraForUserAsync(getUserId())),
+                Task.Run(() => spectraSharedByMe = dbHandlerHyperLabData.getSharedSpectraForOwnerUserAsync(getUserId()))
+            };
+            await Task.WhenAll(tasks);
+
+            SharedStuffContainer sharedStuffContainer = new SharedStuffContainer(spectraSharedByMe, spectraSharedWithMe);
+
+            return View(sharedStuffContainer);
         }
 
         private ContentResult buildJsonContentResult(object? inputValue)
