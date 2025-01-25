@@ -42,6 +42,13 @@
 .registration-container {
     width: 90%;
     height: 70%;
+    -ms-transform: translateY(40%);
+    transform: translateY(40%);
+}
+
+.registration-completed-container {
+    width: 90%;
+    height: 100%;
     -ms-transform: translateY(25%);
     transform: translateY(25%);
 }

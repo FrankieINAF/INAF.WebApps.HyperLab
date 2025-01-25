@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using INAF.Libraries.Net.DB.HyperLabData;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -92,7 +93,13 @@ namespace INAF.WebApps.HyperLab.Controllers
                 /* if confirmation is ok, then send user to registration completed page */
                 if (confirmationResult.isOk)
                 {
-                    //inserisci ricerca share esistente e metti id utente
+                    /* retrieve user data to fix userId in shares and then fix them, when existant */
+                    LoginModel? loginModel = dbHandlerHyperLabUsers.getUserDataForShareFromLoginId(model.Id);
+                    if (loginModel != null)
+                    {
+                        var dbHandlerHyperLabData = serviceProvider.GetRequiredService<DbHandlerHyperLabData>();
+                        await dbHandlerHyperLabData.fixSharesForNewUser(loginModel.Id, loginModel.UserName!);
+                    }
 
                     ViewBag.Confirmation = 1;
                     return RedirectToAction(nameof(RegistrationConfirmed), GenericHelper.GetControllerName(nameof(AccountController)));
@@ -138,7 +145,6 @@ namespace INAF.WebApps.HyperLab.Controllers
                 logger.LogInformation($"{nameof(Login)} - isAuthenticated: {result.isAuthenticated}");
                 if (result.isAuthenticated)
                     return RedirectToAction(nameof(SLabDataManagerController.Search), GenericHelper.GetControllerName(nameof(SLabDataManagerController)));
-                //return RedirectToHomeView(returnUrl);
             }
             else
             {
