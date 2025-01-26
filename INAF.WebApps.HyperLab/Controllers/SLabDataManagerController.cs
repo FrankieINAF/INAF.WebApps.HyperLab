@@ -1,24 +1,16 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Info;
-using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Searches;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Searches.Interfaces;
-using INAF.Libraries.Net.CommonWebAppModels.Models.SpectraFiles;
 using INAF.Libraries.Net.DB.HyperLabData;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData.Containers;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
+using INAF.Libraries.Net.DB.HyperLabUsers;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Shares;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
-using INAF.WebApps.HyperLab.Extensions;
 using INAF.WebApps.HyperLab.Helpers;
+using LinqKit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Dynamic;
-using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using Newtonsoft.Json;
-using LinqKit;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.Shares;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -27,12 +19,15 @@ namespace INAF.WebApps.HyperLab.Controllers
     public partial class SLabDataManagerController : BaseController
     {
         private readonly DbHandlerHyperLabData dbHandlerHyperLabData;
+        private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
 
         public SLabDataManagerController(IServiceProvider serviceProvider,
                                          ILogger<SLabDataManagerController> logger,
-                                         DbHandlerHyperLabData dbHandlerHyperLabData) : base(serviceProvider, logger)
+                                         DbHandlerHyperLabData dbHandlerHyperLabData,
+                                         DbHandlerHyperLabUsers dbHandlerHyperLabUsers) : base(serviceProvider, logger)
         {
             this.dbHandlerHyperLabData = dbHandlerHyperLabData;
+            this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
         }
 
         [HttpGet]
@@ -60,12 +55,12 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public async Task<IActionResult> SharedStuff()
         {
-            List<SharedSpectrumModel>? spectraSharedWithMe = null;
-            List<SharedSpectrumModel>? spectraSharedByMe = null;
+            IEnumerable<SharedSpectrumModel>? spectraSharedWithMe = null;
+            IEnumerable<SharedSpectrumModel>? spectraSharedByMe = null;
             var tasks = new List<Task>
             {
-                Task.Run(() => spectraSharedWithMe = dbHandlerHyperLabData.getSharedSpectraForUserAsync(getUserId())),
-                Task.Run(() => spectraSharedByMe = dbHandlerHyperLabData.getSharedSpectraForOwnerUserAsync(getUserId()))
+                Task.Run(() => spectraSharedWithMe = getSharedSpectra(getUserId(), dbHandlerHyperLabData.getSharedSpectraForUser)),
+                Task.Run(() => spectraSharedByMe = getSharedSpectra(getUserId(), dbHandlerHyperLabData.getSharedSpectraForOwnerUser))
             };
             await Task.WhenAll(tasks);
 
@@ -92,5 +87,21 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             return spectraFilesInfo;
         }
+
+        #region ANCILLARY
+        private IEnumerable<SharedSpectrumModel>? getSharedSpectra(int userId, Func<int, List<SharedSpectrumModel>?> function)
+        {
+            List<SharedSpectrumModel>? sharedSpectra = function(userId);
+            if (sharedSpectra == null || sharedSpectra.Count == 0)
+                return null;
+
+            foreach (var sharedSpectrum in sharedSpectra)
+            {
+                sharedSpectrum.OwnerUser = dbHandlerHyperLabUsers.getUserDetailsSimple(sharedSpectrum.OwnerUser!.Id);
+            }
+
+            return sharedSpectra.OrderBy(x => x.Filename);
+        }
+        #endregion
     }
 }

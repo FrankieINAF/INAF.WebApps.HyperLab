@@ -1,6 +1,8 @@
-﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Menu;
+﻿using INAF.Libraries.Net.CommonWebAppHelpers;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Menu;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
+using INAF.WebApps.HyperLab.Controllers;
 using INAF.WebApps.HyperLab.Extensions;
 
 namespace INAF.WebApps.HyperLab.Helpers
@@ -45,19 +47,20 @@ namespace INAF.WebApps.HyperLab.Helpers
 
             if (isAnySharedSpectraByMe || isAnySharedSpectraWithMe)
             {
-                //MenuItem menuItem = new MenuItem()
-                //{
-                //    Id = -1,
-                //    Name = "Shares",
-                //    Label = "Shares",
-                //    Icon = "fa fa-share-alt",
-                //    LinkText = "/SpectraShares/SharedStuff",
-                //    ParentId = 0
-                //};
-                //(string controllerName, string actionName) values = getAction(menuItem);
-                //menuItem.ControllerName = values.controllerName;
-                //menuItem.ActionName = values.actionName;
-                //menu.Items.Add(menuItem);
+                MenuItem menuItem = new MenuItem()
+                {
+                    Id = -1,
+                    PageName = "Shares",
+                    Label = Resources.SharedStuff.SharedStuffPageTitle,
+                    Icon = "mif-shareable",
+                    AppIcon = "mif-shareable",
+                    LinkText = $"/{GenericHelper.GetControllerName(nameof(SLabDataManagerController))}/{nameof(SLabDataManagerController.SharedStuff)}",
+                    ParentId = 0
+                };
+                (string controllerName, string actionName) values = getAction(menuItem);
+                menuItem.ControllerName = values.controllerName;
+                menuItem.ActionName = values.actionName;
+                menu.Items.Add(menuItem);
             }
 
             return menu;

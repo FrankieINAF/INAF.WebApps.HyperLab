@@ -7,7 +7,7 @@
     $('#buttonsAppBar').append($(button));
     animateCSS(`${buttonId}`, `bounceInDown`, FAST);
 
-    $(`#${buttonId}`).click(function (e) {
+    $(`#${buttonId}`).on('click', function (e) {
         buttonAction();
         e.preventDefault();
         e.stopPropagation();

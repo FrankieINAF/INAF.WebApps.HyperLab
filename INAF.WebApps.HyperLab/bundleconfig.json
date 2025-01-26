@@ -87,7 +87,7 @@
   {
     "outputFileName": "wwwroot/js/dist/chart/chartbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/common.js",
+      "wwwroot/js/hyperlab/commonsearchandchartsandsharedstuff.js",
       "wwwroot/js/hyperlab/commonsearchandchart.js",
       "wwwroot/js/hyperlab/chart/charts.js",
       "wwwroot/js/hyperlab/chart/chartsarrays.js",
@@ -108,14 +108,25 @@
   {
     "outputFileName": "wwwroot/js/dist/search/searchbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/common.js",
+      "wwwroot/js/hyperlab/commonsearchandchartsandsharedstuff.js",
       "wwwroot/js/hyperlab/commonsearchandchart.js",
       "wwwroot/js/hyperlab/search/search.js",
+      "wwwroot/js/hyperlab/commonsearchandsharedstuff.js",
       "wwwroot/js/hyperlab/search/searchSimple.js",
       "wwwroot/js/hyperlab/search/searchComplex.js",
       "wwwroot/js/hyperlab/search/complexsearchesmanagement.js",
       "wwwroot/js/hyperlab/search/complexsearchesintro.js",
       "wwwroot/js/hyperlab/search/info.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/sharedstuff/sharedstuffbundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/commonsearchandchartsandsharedstuff.js",
+      "wwwroot/js/hyperlab/commonsearchandsharedstuff.js",
+      "wwwroot/js/hyperlab/sharedstuff/sharedstuff.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true

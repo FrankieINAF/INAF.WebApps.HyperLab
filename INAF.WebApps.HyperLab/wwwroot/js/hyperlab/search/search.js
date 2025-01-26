@@ -5,8 +5,6 @@ var SELECTED_SEARCH_TYPE;
 var SEARCH_SIMPLE_TYPE = 'searhsimpletype';
 var SEARCH_COMPLEX_TYPE = 'searhcomplextype';
 
-var selectedSpectra = [];
-
 var suggestions = {};
 
 var areComplexSearchesRetrieved = false;
@@ -54,12 +52,6 @@ function addSelectedspectrum(id) {
         addShareButton();
         showToast(ChartsUseChartsButtonMessage, 3000, INFO);
     }
-}
-
-function navigateToChart() {
-    var ids = selectedSpectra.join(',');
-    var url = `${UrlChart}?Ids=${ids}`;
-    navigateTo(url);
 }
 
 function removeSelectedSpectrum(index) {
@@ -311,23 +303,6 @@ function initButtonsInSearchPanel() {
     //removeBackToSearchButton();
     addSearchButton();
     addHelpButton();
-}
-
-/* ---------- CHARTS BUTTON ---------- */
-function addCreateChartsButton() {
-    addButton(showChartsButtonId, ButtonGraphSelectedSpectraLabel, 'mif-chart-line', navigateToChart);
-}
-
-function removeCreateChartsButtonProcedure() {
-    if (!isButtonAvailable(showChartsButtonId))
-        return;
-
-    /* show the 'create chart' button */
-    animateCSS(`${showChartsButtonId}`, `bounceOutUp`, FAST, removeCreateChartsButton);
-}
-
-function removeCreateChartsButton() {
-    $(`#${showChartsButtonId}`).remove();
 }
 
 /* ---------- HELP BUTTON ---------- */

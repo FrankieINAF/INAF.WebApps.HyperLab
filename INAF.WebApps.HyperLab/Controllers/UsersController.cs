@@ -87,7 +87,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetUserDetailsSimple()
         {
-            UserSimpleModel user = dbHandlerHyperLabUsers.getUserDetailsSimple(getUserId());
+            Libraries.Net.HyperLab.CommonModels.Models.WebApp.Users.UserSimpleModel user = dbHandlerHyperLabUsers.getUserDetailsSimple(getUserId());
             if (user != null)
                 return new JsonResult(user);
             else

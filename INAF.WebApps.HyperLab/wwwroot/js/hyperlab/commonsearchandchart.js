@@ -6,7 +6,6 @@ var helpButtonId = 'buttonHelp';
 
 var searchButtonId = 'buttonSearch';
 var shareButtonId = 'buttonShare';
-var showChartsButtonId = 'buttonShowCharts';
 var zoomOutButtonId = 'buttonZoomOut';
 
 var OPTIONS_TITLE_ALIGNMENT = 'alignmentoptionstitle';

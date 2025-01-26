@@ -1,0 +1,1 @@
+﻿var showChartsButtonId = 'buttonShowCharts';
