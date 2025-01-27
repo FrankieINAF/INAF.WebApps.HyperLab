@@ -42,8 +42,8 @@ namespace INAF.WebApps.HyperLab.Helpers
             menu.Items = menuItems;
 
             /* add menu-item for shares if any */
-            bool isAnySharedSpectraByMe = dbHandlerHyperLabData.isAnySharedSpectraForOwnerUser(httpContext.GetUserId());
-            bool isAnySharedSpectraWithMe = dbHandlerHyperLabData.isAnySharedSpectraForUser(httpContext.GetUserId());
+            bool isAnySharedSpectraByMe = dbHandlerHyperLabData.isAnySharedSpectraByOwnerUser(httpContext.GetUserId());
+            bool isAnySharedSpectraWithMe = dbHandlerHyperLabData.isAnySharedSpectraForSubjectUser(httpContext.GetUserId());
 
             if (isAnySharedSpectraByMe || isAnySharedSpectraWithMe)
             {

@@ -102,31 +102,6 @@ function setNavigationButtonsForChartsPanel() {
 }
 
 /* ################################################################################ */
-/* SAVE USER SETTINGS */
-/* ################################################################################ */
-/* items for creating a queue for saving user settings */
-//var aQueue;
-//var saveUserSettingPromise = ({ ...data } = {}) => () => new Promise(async resolve => {
-//    await saveUserSettingAsync(data);
-//    resolve();
-//});
-
-function getQueueItem(key, value) {
-    return saveUserSettingPromise({ url: UrlSetUserSetting, model: { Key: key, Value: value } });
-}
-
-function callEnqueueSaveSetting(timeout, key, value, jsDelay) {
-    if (timeout)
-        clearTimeout(timeout);
-
-    timeout = setTimeout(function () { enqueueSaveSetting(getQueueItem(key, value)); }, jsDelay);
-}
-
-function enqueueSaveSetting(saveSettingData) {
-    aQueue.enqueue(saveSettingData);
-}
-
-/* ################################################################################ */
 /* SHOW/HIDE WARNING IN DIALOG MESSAGE */
 /* ################################################################################ */
 async function showAndAnimateElementAsync(id, animation, speed) {
@@ -172,14 +147,6 @@ function setButtonAlignEnabled(id, isEnabled, label) {
 /* ################################################################################ */
 /* ADD/REMOVE BUTTONS */
 /* ################################################################################ */
-function isButtonAvailable(buttonId) {
-    var item = $('#buttonsAppBar').find(`#${buttonId}`);
-    if (item[0])
-        return true;
-    else
-        return false
-}
-
 /* ---------- SHARE BUTTON ---------- */
 function addShareButton() {
     addButton(shareButtonId, ButtonShareLabel, 'mif-share', openCharmsShare);

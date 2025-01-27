@@ -1,3 +1,20 @@
-﻿<script type="text/javascript">
+﻿@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Resources
+@using INAF.Libraries.Net.CommonWebAppHelpers
 
+
+<script type="text/javascript">
+    var CharmsShareCheckUserMessage = "@Html.Raw(Charms.CharmsShareCheckUserMessage)";
+    var CharmsShareInvitationNotCreatedErrorMessage = "@Html.Raw(Charms.CharmsShareInvitationNotCreatedErrorMessage)";
+    var CharmsShareShareNotCreatedForUserErrorMessage = "@Html.Raw(Charms.CharmsShareShareNotCreatedForUserErrorMessage)";
+    var CharmsShareSpectraSharedInfoMessage = "@Html.Raw(Charms.CharmsShareSpectraSharedInfoMessage)";
+    var CharmsShareSpectraSharedErrorMessage = "@Html.Raw(Charms.CharmsShareSpectraSharedErrorMessage)";
+    var CharmsShareUserNotExistantMessage = "@Html.Raw(Charms.CharmsShareUserNotExistantMessage)";
+
+    var RemoveSharesErrorMessage = '@Html.Raw(SharedStuff.RemoveSharesErrorMessage)';
+    var RemoveShareSuccessMessage = '@Html.Raw(SharedStuff.RemoveShareSuccessMessage)';
+
+        /* SpectraSharesController */
+    var UrlAddSharesBetweenOwnerUserAndUsers = '/@GenericHelper.GetControllerName(nameof(SpectraSharesController))/@nameof(SpectraSharesController.AddSharesBetweenOwnerUserAndUsers)';
+    var UrlRemoveSharesBetweenOwnerUserAndUsers = '/@GenericHelper.GetControllerName(nameof(SpectraSharesController))/@nameof(SpectraSharesController.RemoveSharesBetweenOwnerUserAndUsers)';
 </script>

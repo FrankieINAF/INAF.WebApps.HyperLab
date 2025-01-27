@@ -23,7 +23,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddSharesBetweenOwnerUserAndUsers([FromBody] SpectraShareModel model)
+        public async Task<IActionResult> AddSharesBetweenOwnerUserAndUsers([FromBody] AddShareModel model)
         {
             if (model == null || model.SpectraIds == null || !model.SpectraIds.Any() || model.UsersToShare == null || !model.UsersToShare.Any())
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
@@ -33,14 +33,31 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                                                    model.UsersToShare);
             foreach (ShareResultModel result in results)
             {
-                if (result.IsShareCreated)
+                if (result.IsShareOperationCompleted)
                     result.IsErrorInInvitation = !await dbHandlerHyperLabUsers.tryAddUserToBeInvited(result.Email);
             }
 
             bool isAnyErrorInInvitations = results.Any(x => x.IsErrorInInvitation);
-            bool isAnyErrorInShare = results.Any(x => !x.IsShareCreated);
+            bool isAnyErrorInShare = results.Any(x => !x.IsShareOperationCompleted);
 
             if (isAnyErrorInShare || isAnyErrorInInvitations) 
+                return new JsonResult(new GenericResponseModel(false, results));
+
+            return new JsonResult(GenericResponseModel.CreateSuccessResponse());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveSharesBetweenOwnerUserAndUsers([FromBody] RemoveSharesContainer model)
+        {
+            if (model == null || model.Shares == null || !model.Shares.Any())
+                return new JsonResult(GenericResponseModel.CreateErrorResponse());
+
+            int operationUserId = getUserId();
+            List<ShareResultModel> results = await dbHandlerHyperLabData.removeSharesBetweenOwnerUserAndUsersAsync(operationUserId,
+                                                                                                                   model.Shares,
+                                                                                                                   operationUserId);
+            bool isAnyErrorInShare = results.Any(x => !x.IsShareOperationCompleted);
+            if (isAnyErrorInShare)
                 return new JsonResult(new GenericResponseModel(false, results));
 
             return new JsonResult(GenericResponseModel.CreateSuccessResponse());

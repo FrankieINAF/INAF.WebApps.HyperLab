@@ -59,8 +59,8 @@ namespace INAF.WebApps.HyperLab.Controllers
             IEnumerable<SharedSpectrumModel>? spectraSharedByMe = null;
             var tasks = new List<Task>
             {
-                Task.Run(() => spectraSharedWithMe = getSharedSpectra(getUserId(), dbHandlerHyperLabData.getSharedSpectraForUser)),
-                Task.Run(() => spectraSharedByMe = getSharedSpectra(getUserId(), dbHandlerHyperLabData.getSharedSpectraForOwnerUser))
+                Task.Run(() => spectraSharedWithMe = getSharedSpectra(getUserId(), dbHandlerHyperLabData.getSharedSpectraForSubjectUser)),
+                Task.Run(() => spectraSharedByMe = getSharedSpectra(getUserId(), dbHandlerHyperLabData.getSharedSpectraByOwnerUser))
             };
             await Task.WhenAll(tasks);
 
@@ -98,9 +98,13 @@ namespace INAF.WebApps.HyperLab.Controllers
             foreach (var sharedSpectrum in sharedSpectra)
             {
                 sharedSpectrum.OwnerUser = dbHandlerHyperLabUsers.getUserDetailsSimple(sharedSpectrum.OwnerUser!.Id);
+                sharedSpectrum.SubjectUser = dbHandlerHyperLabUsers.getUserDetailsSimple(sharedSpectrum.SubjectUser!.Id);
             }
 
-            return sharedSpectra.OrderBy(x => x.Filename);
+            if (sharedSpectra.Any(x => x.AmITheOwner))
+                return sharedSpectra.OrderBy(x => x.SubjectUser!.Name).ThenBy(x => x.Filename);
+            else
+                return sharedSpectra.OrderBy(x => x.Filename);
         }
         #endregion
     }

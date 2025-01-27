@@ -16,12 +16,69 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\css\hyperlab\account\confirmationcompleted.css" />
+    <Content Remove="wwwroot\css\hyperlab\account\confirmationerror.css" />
+    <Content Remove="wwwroot\css\hyperlab\account\login.css" />
+    <Content Remove="wwwroot\css\hyperlab\account\registrationconfirmed.css" />
+    <Content Remove="wwwroot\css\hyperlab\apps\apps.css" />
+    <Content Remove="wwwroot\css\hyperlab\common.css" />
+    <Content Remove="wwwroot\css\hyperlab\commonlayoutnonavigation.css" />
+    <Content Remove="wwwroot\css\hyperlab\commonlists.css" />
+    <Content Remove="wwwroot\css\hyperlab\commonvalidation.css" />
+    <Content Remove="wwwroot\css\hyperlab\errorpage.css" />
+    <Content Remove="wwwroot\css\hyperlab\home\cookiebanner.css" />
+    <Content Remove="wwwroot\css\hyperlab\home\index.css" />
+    <Content Remove="wwwroot\css\hyperlab\materials\minerals.css" />
+    <Content Remove="wwwroot\css\hyperlab\searchandchart\charms.css" />
+    <Content Remove="wwwroot\css\hyperlab\searchandchart\searchandchart.css" />
+    <Content Remove="wwwroot\css\site.css" />
+    <Content Remove="wwwroot\css\speechbubble\speechbubble.css" />
+    <Content Remove="wwwroot\js\hyperlab\account\login.js" />
+    <Content Remove="wwwroot\js\hyperlab\chart\charms\charms.js" />
+    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmsalignmentpanel.js" />
+    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmsbandanalysis.js" />
+    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmscolorselector.js" />
+    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmsfitpanel.js" />
+    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmsfitpanelcommon.js" />
+    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmsfitpanelcore.js" />
+    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmsfitpanelpro.js" />
+    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmslegend.js" />
+    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmssmoothingpanel.js" />
+    <Content Remove="wwwroot\js\hyperlab\chart\charts.js" />
+    <Content Remove="wwwroot\js\hyperlab\chart\chartsarrays.js" />
+    <Content Remove="wwwroot\js\hyperlab\chart\chartsbuttons.js" />
+    <Content Remove="wwwroot\js\hyperlab\common.js" />
+    <Content Remove="wwwroot\js\hyperlab\commonbuttons.js" />
+    <Content Remove="wwwroot\js\hyperlab\commondxchart.js" />
+    <Content Remove="wwwroot\js\hyperlab\commonlists.js" />
+    <Content Remove="wwwroot\js\hyperlab\commonsearch.js" />
+    <Content Remove="wwwroot\js\hyperlab\commonsearchandchart.js" />
+    <Content Remove="wwwroot\js\hyperlab\commonsearchandchartsandsharedstuff.js" />
+    <Content Remove="wwwroot\js\hyperlab\commonsearchandsharedstuff.js" />
+    <Content Remove="wwwroot\js\hyperlab\home\index.js" />
+    <Content Remove="wwwroot\js\hyperlab\layout.js" />
+    <Content Remove="wwwroot\js\hyperlab\materials\upsertminerals.js" />
+    <Content Remove="wwwroot\js\hyperlab\queue.js" />
+    <Content Remove="wwwroot\js\hyperlab\search\blazorglobal.js" />
+    <Content Remove="wwwroot\js\hyperlab\search\complexsearchesintro.js" />
+    <Content Remove="wwwroot\js\hyperlab\search\complexsearchesmanagement.js" />
+    <Content Remove="wwwroot\js\hyperlab\search\info.js" />
+    <Content Remove="wwwroot\js\hyperlab\search\search.js" />
+    <Content Remove="wwwroot\js\hyperlab\search\searchComplex.js" />
+    <Content Remove="wwwroot\js\hyperlab\search\searchSimple.js" />
+    <Content Remove="wwwroot\js\hyperlab\sharedstuff\sharedstuff.js" />
+    <Content Remove="wwwroot\js\hyperlab\users\commonsaveusersettings.js" />
+    <Content Remove="wwwroot\js\hyperlab\users\upsertuser.js" />
+    <Content Remove="wwwroot\js\hyperlab\users\userslist.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\css\hyperlab\account\confirmationcompleted.css" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Attributes\" />
-    <Folder Include="wwwroot\js\dist\account\" />
+    <Folder Include="wwwroot\js\dist\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +89,60 @@
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
     <None Include="Views\_ViewImports.cshtml" />
     <None Include="Views\_ViewStart.cshtml" />
+    <None Include="wwwroot\css\hyperlab\account\confirmationcompleted.css" />
+    <None Include="wwwroot\css\hyperlab\account\confirmationerror.css" />
+    <None Include="wwwroot\css\hyperlab\account\login.css" />
+    <None Include="wwwroot\css\hyperlab\account\registrationconfirmed.css" />
+    <None Include="wwwroot\css\hyperlab\apps\apps.css" />
+    <None Include="wwwroot\css\hyperlab\common.css" />
+    <None Include="wwwroot\css\hyperlab\commonlayoutnonavigation.css" />
+    <None Include="wwwroot\css\hyperlab\commonlists.css" />
+    <None Include="wwwroot\css\hyperlab\commonvalidation.css" />
+    <None Include="wwwroot\css\hyperlab\errorpage.css" />
+    <None Include="wwwroot\css\hyperlab\home\cookiebanner.css" />
+    <None Include="wwwroot\css\hyperlab\home\index.css" />
+    <None Include="wwwroot\css\hyperlab\materials\minerals.css" />
+    <None Include="wwwroot\css\hyperlab\searchandchart\charms.css" />
+    <None Include="wwwroot\css\hyperlab\searchandchart\searchandchart.css" />
+    <None Include="wwwroot\css\site.css" />
+    <None Include="wwwroot\css\speechbubble\speechbubble.css" />
+    <None Include="wwwroot\js\hyperlab\account\login.js" />
+    <None Include="wwwroot\js\hyperlab\chart\charms\charms.js" />
+    <None Include="wwwroot\js\hyperlab\chart\charms\charmsalignmentpanel.js" />
+    <None Include="wwwroot\js\hyperlab\chart\charms\charmsbandanalysis.js" />
+    <None Include="wwwroot\js\hyperlab\chart\charms\charmscolorselector.js" />
+    <None Include="wwwroot\js\hyperlab\chart\charms\charmsfitpanel.js" />
+    <None Include="wwwroot\js\hyperlab\chart\charms\charmsfitpanelcommon.js" />
+    <None Include="wwwroot\js\hyperlab\chart\charms\charmsfitpanelcore.js" />
+    <None Include="wwwroot\js\hyperlab\chart\charms\charmsfitpanelpro.js" />
+    <None Include="wwwroot\js\hyperlab\chart\charms\charmslegend.js" />
+    <None Include="wwwroot\js\hyperlab\chart\charms\charmssmoothingpanel.js" />
+    <None Include="wwwroot\js\hyperlab\chart\charts.js" />
+    <None Include="wwwroot\js\hyperlab\chart\chartsarrays.js" />
+    <None Include="wwwroot\js\hyperlab\chart\chartsbuttons.js" />
+    <None Include="wwwroot\js\hyperlab\common.js" />
+    <None Include="wwwroot\js\hyperlab\commonbuttons.js" />
+    <None Include="wwwroot\js\hyperlab\commondxchart.js" />
+    <None Include="wwwroot\js\hyperlab\commonlists.js" />
+    <None Include="wwwroot\js\hyperlab\commonsearch.js" />
+    <None Include="wwwroot\js\hyperlab\commonsearchandchart.js" />
+    <None Include="wwwroot\js\hyperlab\commonsearchandchartsandsharedstuff.js" />
+    <None Include="wwwroot\js\hyperlab\commonsearchandsharedstuff.js" />
+    <None Include="wwwroot\js\hyperlab\home\index.js" />
+    <None Include="wwwroot\js\hyperlab\layout.js" />
+    <None Include="wwwroot\js\hyperlab\materials\upsertminerals.js" />
+    <None Include="wwwroot\js\hyperlab\queue.js" />
+    <None Include="wwwroot\js\hyperlab\search\blazorglobal.js" />
+    <None Include="wwwroot\js\hyperlab\search\complexsearchesintro.js" />
+    <None Include="wwwroot\js\hyperlab\search\complexsearchesmanagement.js" />
+    <None Include="wwwroot\js\hyperlab\search\info.js" />
+    <None Include="wwwroot\js\hyperlab\search\search.js" />
+    <None Include="wwwroot\js\hyperlab\search\searchComplex.js" />
+    <None Include="wwwroot\js\hyperlab\search\searchSimple.js" />
+    <None Include="wwwroot\js\hyperlab\sharedstuff\sharedstuff.js" />
+    <None Include="wwwroot\js\hyperlab\users\commonsaveusersettings.js" />
+    <None Include="wwwroot\js\hyperlab\users\upsertuser.js" />
+    <None Include="wwwroot\js\hyperlab\users\userslist.js" />
   </ItemGroup>
 
   <ItemGroup>

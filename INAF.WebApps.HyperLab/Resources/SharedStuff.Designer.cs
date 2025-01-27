@@ -61,6 +61,51 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove selected shares.
+        /// </summary>
+        public static string ButtonRemoveSharesLabel {
+            get {
+                return ResourceManager.GetString("ButtonRemoveSharesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You haven&apos;t shared any spectra yet.
+        /// </summary>
+        public static string NoSharedSpectraByOwnerMessage {
+            get {
+                return ResourceManager.GetString("NoSharedSpectraByOwnerMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You currently have no shared spectra.
+        /// </summary>
+        public static string NoSharedSpectraForUserMessage {
+            get {
+                return ResourceManager.GetString("NoSharedSpectraForUserMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, something went wrong while trying to remove selected shares.
+        /// </summary>
+        public static string RemoveSharesErrorMessage {
+            get {
+                return ResourceManager.GetString("RemoveSharesErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shares have been successfully removed.
+        /// </summary>
+        public static string RemoveShareSuccessMessage {
+            get {
+                return ResourceManager.GetString("RemoveShareSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Owner.
         /// </summary>
         public static string SharedFileOwnerLabel {
@@ -75,6 +120,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SharedFileRemoveShareLabel {
             get {
                 return ResourceManager.GetString("SharedFileRemoveShareLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shared with.
+        /// </summary>
+        public static string SharedFileSubjectLabel {
+            get {
+                return ResourceManager.GetString("SharedFileSubjectLabel", resourceCulture);
             }
         }
         

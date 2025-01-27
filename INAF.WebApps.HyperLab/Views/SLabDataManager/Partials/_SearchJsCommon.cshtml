@@ -9,12 +9,6 @@
     var CharmsCloudDownloadErrorMessage = "@Html.Raw(Charms.CharmsCloudDownloadErrorMessage)";
     var CharmsCloseWarningMessage = "@Html.Raw(Charms.CharmsCloseWarningMessage)";
     var CharmsDeleteProcessedSpectraQuestion = "@Html.Raw(Charms.CharmsDeleteProcessedSpectraQuestion)";
-    var CharmsShareCheckUserMessage = "@Html.Raw(Charms.CharmsShareCheckUserMessage)";
-    var CharmsShareInvitationNotCreatedErrorMessage = "@Html.Raw(Charms.CharmsShareInvitationNotCreatedErrorMessage)";
-    var CharmsShareShareNotCreatedForUserErrorMessage = "@Html.Raw(Charms.CharmsShareShareNotCreatedForUserErrorMessage)";
-    var CharmsShareSpectraSharedInfoMessage = "@Html.Raw(Charms.CharmsShareSpectraSharedInfoMessage)";
-    var CharmsShareSpectraSharedErrorMessage = "@Html.Raw(Charms.CharmsShareSpectraSharedErrorMessage)";
-    var CharmsShareUserNotExistantMessage = "@Html.Raw(Charms.CharmsShareUserNotExistantMessage)";
     var CharmsSpectraProcessingManagementLabel = "@Html.Raw(Charms.CharmsSpectraProcessingManagementLabel)";
     var CharmsUsingAlreadySavedOnCloudMessage = "@Html.Raw(Charms.CharmsUsingAlreadySavedOnCloudMessage)";
     var ContinuumRemovalExecutionErrorMessage = "@Html.Raw(Charms.ContinuumRemovalExecutionErrorMessage)";
@@ -55,9 +49,10 @@
 
     var ButtonBackClearToSearchLabel = "@Html.Raw(Search.ButtonBackClearToSearchLabel)";
     var ButtonBackToSearchLabel = "@Html.Raw(Search.ButtonBackToSearchLabel)";
-    var ButtonGraphSelectedSpectraLabel = "@Html.Raw(Search.ButtonGraphSelectedSpectraLabel)";
+
     var ButtonHelpLabel = "@Html.Raw(Search.ButtonHelpLabel)";
     var ButtonOpenCharmsLabel = "@Html.Raw(Search.ButtonOpenCharmsLabel)";
+    var ButtonRemoveSharesLabel = "@Html.Raw(SharedStuff.ButtonRemoveSharesLabel)";
     var ButtonSearchLabel = "@Html.Raw(Search.ButtonSearchLabel)";
     var ButtonShareLabel = "@Html.Raw(Search.ButtonShareLabel)";
     var ButtonShowCharmsColorSelectorLabel = "@Html.Raw(Search.ButtonShowCharmsColorSelectorLabel)";
@@ -182,10 +177,7 @@
     var UrlSaveSpectrumOfTypeAligned = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.SaveSpectrumOfTypeAligned)';
     var UrlSaveSpectrumOfTypeContinuumRemoved = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.SaveSpectrumOfTypeContinuumRemoved)';
     var UrlSaveSpectrumOfTypeSmoothed = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.SaveSpectrumOfTypeSmoothed)';
-    
-    /* SpectraSharesController */
-    var UrlAddSharesBetweenOwnerUserAndUsers = '/@GenericHelper.GetControllerName(nameof(SpectraSharesController))/@nameof(SpectraSharesController.AddSharesBetweenOwnerUserAndUsers)';
-    
+   
     /* UsersController */
     var UrlCheckUser = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.CheckUser)';
     var UrlIsUserStrictlyAuthorizedForSpectrum = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.IsUserStrictlyAuthorizedForSpectrum)';

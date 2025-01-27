@@ -49,6 +49,7 @@
       "wwwroot/lib/luxon/luxon.min.js",
       "wwwroot/js/hyperlab/commonbuttons.js",
       "wwwroot/js/hyperlab/common.js",
+      "wwwroot/js/hyperlab/commonsaveusersettings.js",
       "wwwroot/js/hyperlab/layout.js",
       "wwwroot/js/hyperlab/queue.js",
       "wwwroot/js/hyperlab/commondxchart.js"
@@ -90,6 +91,7 @@
       "wwwroot/js/hyperlab/commonsearchandchartsandsharedstuff.js",
       "wwwroot/js/hyperlab/commonsearchandchart.js",
       "wwwroot/js/hyperlab/chart/charts.js",
+      "wwwroot/js/hyperlab/chart/chartsbuttons.js",
       "wwwroot/js/hyperlab/chart/chartsarrays.js",
       "wwwroot/js/hyperlab/chart/charms/charms.js",
       "wwwroot/js/hyperlab/chart/charms/charmslegend.js",
