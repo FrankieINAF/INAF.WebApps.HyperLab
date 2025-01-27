@@ -5,41 +5,6 @@
 @using static INAF.Libraries.Net.Math.Values.Enums;
 
 <script type="text/javascript">
-    var CharmsAlreadySavedOnCloudMessage = "@Html.Raw(Charms.CharmsAlreadySavedOnCloudMessage)";
-    var CharmsCloudDownloadErrorMessage = "@Html.Raw(Charms.CharmsCloudDownloadErrorMessage)";
-    var CharmsCloseWarningMessage = "@Html.Raw(Charms.CharmsCloseWarningMessage)";
-    var CharmsDeleteProcessedSpectraQuestion = "@Html.Raw(Charms.CharmsDeleteProcessedSpectraQuestion)";
-    var CharmsSpectraProcessingManagementLabel = "@Html.Raw(Charms.CharmsSpectraProcessingManagementLabel)";
-    var CharmsUsingAlreadySavedOnCloudMessage = "@Html.Raw(Charms.CharmsUsingAlreadySavedOnCloudMessage)";
-    var ContinuumRemovalExecutionErrorMessage = "@Html.Raw(Charms.ContinuumRemovalExecutionErrorMessage)";
-    var SelectItemLabel = "@Html.Raw(Charms.SelectItemLabel)";
-
-    var BandAnalysisStartBandAnalysisButtonTitle = "@Html.Raw(CharmsBandAnalysis.BandAnalysisStartBandAnalysisButtonTitle)";
-    var BandAnalysisCheckOverlapErrorMessage = "@Html.Raw(CharmsBandAnalysis.BandAnalysisCheckOverlapErrorMessage)";
-    var BandAnalysisCheckOverlapQuestion = "@Html.Raw(CharmsBandAnalysis.BandAnalysisCheckOverlapQuestion)";
-    var BandAnalysisDownloadBandAnalysisErrorMessage = "@Html.Raw(CharmsBandAnalysis.BandAnalysisDownloadBandAnalysisErrorMessage)";
-    var BandAnalysisIconPXMinXMaxFitTitle = "@Html.Raw(CharmsBandAnalysis.BandAnalysisIconPXMinXMaxFitTitle)";
-    var BandAnalysisBandsAnalysisOnCloudLabel = "@Html.Raw(CharmsBandAnalysis.BandAnalysisBandsAnalysisOnCloudLabel)";
-    var BandAnalysisDownloadBandsAnalysisLabel = "@Html.Raw(CharmsBandAnalysis.BandAnalysisDownloadBandsAnalysisLabel)";
-    var BandAnalysisManagementLabel = "@Html.Raw(CharmsBandAnalysis.BandAnalysisManagementLabel)";
-    var BandAnalysisReplaceBandsAnalysisQuestion = "@Html.Raw(CharmsBandAnalysis.BandAnalysisReplaceBandsAnalysisQuestion)";
-    var BandAnalysisSaveErrorMessage = "@Html.Raw(CharmsBandAnalysis.BandAnalysisSaveErrorMessage)";
-    var BandAnalysisSaveSuccessMessage = "@Html.Raw(CharmsBandAnalysis.BandAnalysisSaveSuccessMessage)";
-    var BandAnalysisSegmentXBoundariesLabel = "@Html.Raw(CharmsBandAnalysis.BandAnalysisSegmentXBoundariesLabel)";
-
-    var ChartColorsDifferentiationMessage = "@Html.Raw(Charts.ChartColorsDifferentiationMessage)";
-    var ChartsNoSpectraSelectedMessage = "@Html.Raw(Charts.ChartsNoSpectraSelectedMessage)";
-    var ChartReflectanceLabel = "@Html.Raw(Charts.ChartReflectanceLabel)";
-    var ChartsUseChartsButtonMessage = "@Html.Raw(Charts.ChartsUseChartsButtonMessage)";
-    var ChartOverwriteQuestion = "@Html.Raw(Search.ChartOverwriteQuestion)";
-    var ChartWavelengthLabel = "@Html.Raw(Charts.ChartWavelengthLabel)";
-    var ChartWavelengthsLabel = "@Html.Raw(Charts.ChartWavelengthsLabel)";
-    var ChartLoadSpectraTypeColorsErrorMessage = "@Html.Raw(Charts.ChartLoadSpectraTypeColorsErrorMessage)";
-    var LegendLabel = "@Html.Raw(Charts.LegendLabel)";
-    var NoSpectraFoundForSelectedIdsMessage = "@Html.Raw(Charts.NoSpectraFoundForSelectedIdsMessage)";
-    
-    var NumOfSharedSpectra = "@Html.Raw(Charms.CharmsShareNumOfSpectra)";
-
     var SaveInfoNoMeteorClassSelectedErrorMessage = "@Html.Raw(Info.SaveInfoNoMeteorClassSelectedErrorMessage)";
     var SaveInfoNoMineralSelectedErrorMessage = "@Html.Raw(Info.SaveInfoNoMineralSelectedErrorMessage)";
     var SaveInfoNoRockSelectedErrorMessage = "@Html.Raw(Info.SaveInfoNoRockSelectedErrorMessage)";
@@ -52,12 +17,8 @@
 
     var ButtonHelpLabel = "@Html.Raw(Search.ButtonHelpLabel)";
     var ButtonOpenCharmsLabel = "@Html.Raw(Search.ButtonOpenCharmsLabel)";
-    var ButtonRemoveSharesLabel = "@Html.Raw(SharedStuff.ButtonRemoveSharesLabel)";
+    
     var ButtonSearchLabel = "@Html.Raw(Search.ButtonSearchLabel)";
-    var ButtonShareLabel = "@Html.Raw(Search.ButtonShareLabel)";
-    var ButtonShowCharmsColorSelectorLabel = "@Html.Raw(Search.ButtonShowCharmsColorSelectorLabel)";
-    var ButtonShowCharmsLegendLabel = "@Html.Raw(Search.ButtonShowCharmsLegendLabel)";
-    var ButtonZoomOutLabel = "@Html.Raw(Search.ButtonZoomOutLabel)";
 
     var SaveComplexSearchErrorMessage = "@Html.Raw(Search.SaveComplexSearchErrorMessage)";
     var SaveComplexSearchLabel = "@Html.Raw(Search.SaveComplexSearchLabel)";
@@ -160,39 +121,10 @@
     var UrlSearchSimpleGroupsBySampleName = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.SearchSimpleGroupsBySampleName)';
     var UrlSearchSimpleBySampleType = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.SearchSimpleGroupsBySampleType)';
 
-    /* SpectraFilesController */
-    var UrlDeleteRecursivelySpectrumChildren = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.DeleteRecursivelySpectrumChildren)';
-    var UrlDeleteSpectrum = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.DeleteSpectrum)';
-    var UrlGetAlignmentSettings = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetAlignmentSettings)';
-    var UrlGetBandAnalysisData = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetBandAnalysisData)';
-    var UrlGetBandsAnalysisData = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetBandsAnalysisData)';
-    var UrlGetChildrenSpectraTypes = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetChildrenSpectraTypes)';
-    var UrlGetContinuumRemovalSettings = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetContinuumRemovalSettings)';
-    var UrlGetSpectrumByParentIdAndSpectrumType = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetSpectrumByParentIdAndSpectrumType)';
-    var UrlGetSpectrumFilename = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetSpectrumFilename)';
-    var UrlGetSpectrumIdByParentIdAndSpectrumType = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetSpectrumIdByParentIdAndSpectrumType)';
-    var UrlIsBandOverlappingWithExistingOne = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.IsBandOverlappingWithExistingOne)';
-    var UrlIsSpectrumTypeSavedOnCloud = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.IsSpectrumTypeSavedOnCloud)';
-    var UrlSaveBandAnalysisData = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.SaveBandAnalysisData)';
-    var UrlSaveSpectrumOfTypeAligned = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.SaveSpectrumOfTypeAligned)';
-    var UrlSaveSpectrumOfTypeContinuumRemoved = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.SaveSpectrumOfTypeContinuumRemoved)';
-    var UrlSaveSpectrumOfTypeSmoothed = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.SaveSpectrumOfTypeSmoothed)';
-   
     /* UsersController */
-    var UrlCheckUser = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.CheckUser)';
     var UrlIsUserStrictlyAuthorizedForSpectrum = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.IsUserStrictlyAuthorizedForSpectrum)';
 
-    /* UserSettingsController */
-    var UrlGetFitFunctions = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetFitFunctions)';
-    var UrlGetPXMinPXMaxMaxValueFunctions = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetPXMinPXMaxMaxValueFunctions)';
-    var UrlGetSpectraTypesParents = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetSpectraTypesParents)';
-    var UrlGetUserSetting = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetUserSetting)';
-    var UrlGetUserSettingsByWildcard = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetUserSettingsByWildcard)';
-    var UrlSetUserSetting = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.SetUserSetting)';
-    var UrlLoadAlignmentPanel = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.LoadAlignmentPanel)';
-    var UrlLoadFitPanel = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.LoadFitPanel)';
-    var UrlLoadSmoothingPanel = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.LoadSmoothingPanel)';
-
+    
     var ALIGNMENT_AUTO_ALIGN_SPECTRUM = "@Constants.ALIGNMENT_AUTO_ALIGN_SPECTRUM";
     var ALIGNMENT_AUTO_DOWNLOAD_ALIGNED_SPECTRUM = "@Constants.ALIGNMENT_AUTO_DOWNLOAD_ALIGNED_SPECTRUM";
     var ALIGNMENT_NUM_OF_POINTS = "@Constants.ALIGNMENT_NUM_OF_POINTS";

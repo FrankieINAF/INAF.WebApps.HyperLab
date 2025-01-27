@@ -241,7 +241,8 @@
 
 <!-- common js variables -->
 @{
-    await Html.RenderPartialAsync("Partials/_SearchJsCommon");
+    await Html.RenderPartialAsync("Partials/_SearchAndChartJsCommon");
+    await Html.RenderPartialAsync("Partials/_ChartJsCommon");
 }
 
 <script src="_framework/blazor.server.js"></script>
