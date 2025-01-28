@@ -1,0 +1,12 @@
+﻿@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Resources
+@using INAF.Libraries.Net.CommonWebAppHelpers
+
+<script type="text/javascript">
+    var ButtonShareLabel = "@Html.Raw(Search.ButtonShareLabel)";
+
+    var NumOfSharedSpectra = "@Html.Raw(Charms.CharmsShareNumOfSpectra)";
+    
+    /* UsersController */
+    var UrlCheckUser = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.CheckUser)';
+</script>
