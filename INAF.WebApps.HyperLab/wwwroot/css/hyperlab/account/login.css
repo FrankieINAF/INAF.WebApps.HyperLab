@@ -105,11 +105,27 @@
     }
 }
 
-/* iPad Pro */
-@media screen and (max-width: 1024px) and (max-height: 1366px) {
+@media screen and (max-width: 1024px) and (max-height: 600px) {
     .login-container {
         width: 90%;
         height: 100%;
+        -ms-transform: translateY(0%);
+        transform: translateY(0%);
+    }
+
+    .registration-container {
+        width: 90%;
+        height: 100%;
+        -ms-transform: translateY(0%);
+        transform: translateY(0%);
+    }
+
+}
+/* iPad Pro */
+@media screen and (max-width: 1024px) and (min-height:601px) and (max-height: 1366px) {
+    .login-container {
+        width: 90%;
+        height: 50%;
         -ms-transform: translateY(0%);
         transform: translateY(0%);
     }
@@ -142,6 +158,15 @@
 
     .spectrum-image {
         height: 200%;
+    }
+}
+
+/* dual screen phones */
+@media screen and (max-width: 540px) {
+    .login-container {
+        height: 100%;
+        -ms-transform: translateY(0%);
+        transform: translateY(0%);
     }
 }
 

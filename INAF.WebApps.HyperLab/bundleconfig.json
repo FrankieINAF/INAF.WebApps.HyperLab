@@ -149,15 +149,9 @@
   /* CSS */
   /* ################################################################################ */
   {
-    "outputFileName": "wwwroot/metro/css/dist/metrobundle.css",
+    "outputFileName": "wwwroot/css/dist/apps/appsbundle.css",
     "inputFiles": [
-      "wwwroot/metro/css/index.css",
-      "wwwroot/metro/css/metro.css",
-      "wwwroot/metro/css/metro-colors.css",
-      "wwwroot/metro/css/metro-common.css",
-      "wwwroot/metro/css/metro-components.css",
-      "wwwroot/metro/css/metro-icons.css",
-      "wwwroot/metro/css/metro-reset.css"
+      "wwwroot/css/hyperlab/apps/apps.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -173,11 +167,72 @@
     "minify": { "enabled": true }
   },
   {
-    "outputFileName": "wwwroot/css/dist/users/usersbundle.css",
+    "outputFileName": "wwwroot/css/dist/account/commonlayoutnonavigationbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/commonlists.css",
-      "wwwroot/css/hyperlab/users/users.css",
-      "wwwroot/css/hyperlab/users/userdata.css"
+      "wwwroot/css/hyperlab/commonlayoutnonavigation.css",
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/home/cookiebannerbundle.css",
+    "inputFiles": [
+      "wwwroot/css/hyperlab/common.css",
+      "wwwroot/css/hyperlab/home/cookiebanner.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/devextreme/devextremebundle.css",
+    "inputFiles": [
+      "wwwroot/lib/devextreme/css/dx.common.css",
+      "wwwroot/lib/devextreme/css/dx.light.css",
+      "wwwroot/lib/devextreme/css/icons/*.ttf",
+      "wwwroot/lib/devextreme/css/icons/*.woff",
+      "wwwroot/lib/devextreme/css/icons/*.woff2"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/home/indexbundle.css",
+    "inputFiles": [
+      "wwwroot/css/hyperlab/home/index.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/jqueryuibundle.css",
+    "inputFiles": [
+      "wwwroot/lib/jqueryui/themes/base/jquery-ui.min.css",
+      "wwwroot/lib/jqueryui/themes/base/theme.min.css",
+      "wwwroot/lib/jqueryui/themes/base/images/*.png"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/account/loginbundle.css",
+    "inputFiles": [
+      "wwwroot/css/hyperlab/common.css",
+      "wwwroot/css/hyperlab/account/confirmationcompleted.css",
+      "wwwroot/css/hyperlab/account/login.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/metro/css/dist/metrobundle.css",
+    "inputFiles": [
+      "wwwroot/metro/css/index.css",
+      "wwwroot/metro/css/metro.css",
+      "wwwroot/metro/css/metro-colors.css",
+      "wwwroot/metro/css/metro-common.css",
+      "wwwroot/metro/css/metro-components.css",
+      "wwwroot/metro/css/metro-icons.css",
+      "wwwroot/metro/css/metro-reset.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -201,28 +256,6 @@
     "minify": { "enabled": true }
   },
   {
-    "outputFileName": "wwwroot/css/dist/devextreme/devextremebundle.css",
-    "inputFiles": [
-      "wwwroot/lib/devextreme/css/dx.common.css",
-      "wwwroot/lib/devextreme/css/dx.light.css",
-      "wwwroot/lib/devextreme/css/icons/*.ttf",
-      "wwwroot/lib/devextreme/css/icons/*.woff",
-      "wwwroot/lib/devextreme/css/icons/*.woff2"
-    ],
-    "includeInProject": true,
-    "minify": { "enabled": true }
-  },
-  {
-    "outputFileName": "wwwroot/css/dist/jqueryuibundle.css",
-    "inputFiles": [
-      "wwwroot/lib/jqueryui/themes/base/jquery-ui.min.css",
-      "wwwroot/lib/jqueryui/themes/base/theme.min.css",
-      "wwwroot/lib/jqueryui/themes/base/images/*.png"
-    ],
-    "includeInProject": true,
-    "minify": { "enabled": true }
-  },
-  {
     "outputFileName": "wwwroot/css/dist/speechbubble.min.css",
     "inputFiles": [
       "wwwroot/css/speechbubble/speechbubble.css"
@@ -231,26 +264,11 @@
     "minify": { "enabled": true }
   },
   {
-    "outputFileName": "wwwroot/css/dist/apps/appsbundle.css",
+    "outputFileName": "wwwroot/css/dist/users/usersbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/apps/apps.css"
-    ],
-    "includeInProject": true,
-    "minify": { "enabled": true }
-  },
-  {
-    "outputFileName": "wwwroot/css/dist/home/indexbundle.css",
-    "inputFiles": [
-      "wwwroot/css/hyperlab/home/index.css"
-    ],
-    "includeInProject": true,
-    "minify": { "enabled": true }
-  },
-  {
-    "outputFileName": "wwwroot/css/dist/home/cookiebannerbundle.css",
-    "inputFiles": [
-      "wwwroot/css/hyperlab/common.css",
-      "wwwroot/css/hyperlab/home/cookiebanner.css"
+      "wwwroot/css/hyperlab/commonlists.css",
+      "wwwroot/css/hyperlab/users/users.css",
+      "wwwroot/css/hyperlab/users/userdata.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
