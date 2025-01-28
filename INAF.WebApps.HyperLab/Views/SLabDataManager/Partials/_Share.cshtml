@@ -1,5 +1,11 @@
 ﻿@using INAF.WebApps.HyperLab.Resources
 
+<environment names="Development">
+    <link rel="stylesheet" href="~/css/hyperlab/searchandchart/share.css" />
+</environment>
+<environment names="Production">
+    <link rel="stylesheet" href="~/css/dist/searchandchart/sharebundle.min.css" asp-append-version="true" />
+</environment>
 <div id="charmsShare" data-role="charms" data-cls-charms="charms-share-panel" data-position="bottom" data-on-open="onCharmsShareOpen">
     <!-- TITLE + CLOSE BUTTON -->
     <div class="row">
@@ -27,7 +33,7 @@
     <!-- NUM OF SHARED SPECTRA -->
     <div class="row margin-top-8">
         <div class="cell-fs-12">
-            <h5 id="numOfSharedSpectraLabel" class="text-light text-center"></h5>
+            <p id="numOfSharedSpectraLabel" class="text-light text-center h5"></p>
         </div>
     </div>
 
@@ -38,10 +44,17 @@
         <div class="cell-fs-8 cell-md-4 margin-top-8">
             <input id="newUserToShare" type="email" data-role="input" placeholder="@Html.Raw(Charms.CharmsShareInputPlaceholder)" data-prevent-submit="true" data-custom-buttons="customButtons">
         </div>
-        <div id="newUserToShareActivity" class="cell-fs-2 cell-md-4 d-flex"></div>
+        <div>&nbsp;</div>
+    </div>
+    <!-- activity messages-->
+    <div class="row cell-fs-12">
+        <div id="newUserToShareActivity" class="d-flex flex-column flex-align-center"></div>
     </div>
     <!-- list of inserted users -->
-    <div class="row margin-top-8">
+    <div id="selectedUsersToShareListLabel" class="row cell-fs-12 margin-top-8 d-none">
+        <p class="text-center text-light h5">@Html.Raw(Charms.CharmsShareSelectedUsersLabel)</p>
+    </div>
+    <div class="row margin-top-4">
         <div class="cell-fs-2 cell-md-4">&nbsp;</div>
         <div class="cell-fs-8 cell-md-4">
             <ul id="selectedUsersToShareList" class="overflow-y-auto"></ul>

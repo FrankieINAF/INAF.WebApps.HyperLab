@@ -62,37 +62,6 @@
     margin: 4px 0px;
 }
 
-/* CHARMS SHARE */
-.charms-share-panel {
-    height: 400px !important;
-    background-color: rgba(0, 0, 0, 0.9) !important;
-    overflow-y: auto;
-}
-
-@media (max-width: 576px) {
-    .charms-share-panel {
-        height: 100% !important;
-        background-color: rgba(0, 0, 0, 0.8) !important;
-        overflow-y: auto;
-    }
-}
-
-.charms-share-listview-item {
-    padding: 4px;
-    background-color: transparent !important;
-    margin-top: 8px;
-}
-
-    .charms-share-listview-item:hover {
-        border: 1px solid white !important;
-        color: white !important;
-    }
-
-
-.charms-share-listview-caption {
-    font-size: 18px;
-}
-
 /* COMPLEX SEARCH */
 .complex-search-button {
     height: 40px !important;

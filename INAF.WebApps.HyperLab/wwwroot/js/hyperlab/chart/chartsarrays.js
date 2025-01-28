@@ -427,6 +427,8 @@ function getSeriesColor(id) {
         return spectraInfo[index].Color;
     else {
         let index2 = dxChartGetAllSeries(chartContainer).findIndex(x => x.name == createSeriesNameFromSpectrumNameAndType(spectraInfo[index].Name, spectraInfo[index].SpectrumType));
+        if (index2 < 0)
+            return;
         return dxChartGetAllSeries(chartContainer)[index2].getColor();
     }
 }

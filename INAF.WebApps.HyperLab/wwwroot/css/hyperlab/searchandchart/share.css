@@ -1,2 +1,29 @@
-﻿body {
+﻿/* CHARMS SHARE */
+.charms-share-panel {
+    height: 80%;
+    background-color: rgba(0, 0, 0, 0.9) !important;
+    overflow-y: auto;
+}
+
+.charms-share-listview-item {
+    padding: 4px;
+    background-color: transparent !important;
+    margin-top: 8px;
+}
+
+    .charms-share-listview-item:hover {
+        border: 1px solid white !important;
+        color: white !important;
+    }
+
+
+.charms-share-listview-caption {
+    font-size: 18px;
+}
+
+/* phones */
+@media screen and (max-width: 540px) {
+    .charms-share-panel {
+        height: 100%;
+    }
 }

@@ -272,6 +272,14 @@
     "minify": { "enabled": true }
   },
   {
+    "outputFileName": "wwwroot/css/dist/searchandchart/sharebundle.css",
+    "inputFiles": [
+      "wwwroot/css/hyperlab/searchandchart/share.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
     "outputFileName": "wwwroot/css/dist/speechbubble.min.css",
     "inputFiles": [
       "wwwroot/css/speechbubble/speechbubble.css"

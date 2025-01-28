@@ -12,11 +12,7 @@
     var UpsertInfoInfoMessage = "@Html.Raw(Info.UpsertInfoInfoMessage)";
     var UpsertInfoErrorMessage = "@Html.Raw(Info.UpsertInfoErrorMessage)";
 
-    var ButtonBackClearToSearchLabel = "@Html.Raw(Search.ButtonBackClearToSearchLabel)";
-    var ButtonBackToSearchLabel = "@Html.Raw(Search.ButtonBackToSearchLabel)";
-
     var ButtonHelpLabel = "@Html.Raw(Search.ButtonHelpLabel)";
-    var ButtonOpenCharmsLabel = "@Html.Raw(Search.ButtonOpenCharmsLabel)";
     
     var ButtonSearchLabel = "@Html.Raw(Search.ButtonSearchLabel)";
 
@@ -93,13 +89,6 @@
     var SearchGroupItemsColInsertDateTimeLabel = "@Html.Raw(Search.SearchGroupItemsColInsertDateTimeLabel)";
     var SearchGroupItemsColEditDateTimeLabel = "@Html.Raw(Search.SearchGroupItemsColEditDateTimeLabel)";
 
-    var OverwriteSavedSpectrumQuestion = "@Html.Raw(Charms.OverwriteSavedSpectrumQuestion)";
-
-    /* ChartsController */
-    var UrlGetProcessedSpectrum = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.GetProcessedSpectrum)';
-    var UrlGetWhiteSpectraForAlignment = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.GetWhiteSpectraForAlignment)';
-    var UrlGetSpectra = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.GetSpectra)';
-    
     /* MaterialsController */
     var GetMaterialsSuggestions = '/@GenericHelper.GetControllerName(nameof(MaterialsController))/@nameof(MaterialsController.GetMaterialsSuggestions)';
 
@@ -125,80 +114,6 @@
 
     /* UsersController */
     var UrlIsUserStrictlyAuthorizedForSpectrum = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.IsUserStrictlyAuthorizedForSpectrum)';
-
-    
-    
-
-    var COLOR_WILDCARD = "@Constants.COLOR_WILDCARD";
-
-    var AlignedNoDownloadBecauseAlreadyPresentMessage = "@Html.Raw(Charms.AlignedNoDownloadBecauseAlreadyPresentMessage)";
-    var AlignedNoProcessBecauseAlreadyPresentMessage = "@Html.Raw(Charms.AlignedNoProcessBecauseAlreadyPresentMessage)";
-    var AlignmentAutoHideNotSelectedRawSpectraMessage = "@Html.Raw(Charms.AlignmentAutoHideNotSelectedRawSpectraMessage)";
-    var AlignmentAutoHideRefSpectraMessage = "@Html.Raw(Charms.AlignmentAutoHideRefSpectraMessage)";
-    var AlignmentButtonDisabledMessage = "@Html.Raw(Charms.AlignmentButtonDisabledMessage)";
-    var AlignmentButtonExecuteLabel = "@Html.Raw(Charms.AlignmentButtonExecuteLabel)";
-    var AlignmentChartMiniatureSelectedSegmentMessage = "@Html.Raw(Charms.AlignmentChartMiniatureSelectedSegmentMessage)";
-    var AlignmentDownloadAlignmentSettingsErrorMessage = "@Html.Raw(Charms.AlignmentDownloadAlignmentSettingsErrorMessage)";
-    var AlignmentExecutionErrorMessage = "@Html.Raw(Charms.AlignmentExecutionErrorMessage)";
-    var AlignmentFixPointsErrorMessage = "@Html.Raw(Charms.AlignmentFixPointsErrorMessage)";
-    var AlignmentLoadNumOfPointsErrorMessage = "@Html.Raw(Charms.AlignmentLoadNumOfPointsErrorMessage)";
-    var AlignmentLoadSegmentsErrorMessage = "@Html.Raw(Charms.AlignmentLoadSegmentsErrorMessage)";
-    var AlignmentLoadSelectedSegmentErrorMessage = "@Html.Raw(Charms.AlignmentLoadSelectedSegmentErrorMessage)";
-    var AlignmentLoadWhiteSpectraForAlignmentErrorMessage = "@Html.Raw(Charms.AlignmentLoadWhiteSpectraForAlignmentErrorMessage)";
-    var AlignmentManagementTitle = "@Html.Raw(Charms.AlignmentManagementTitle)";
-    var AlignmentRefreshSegmentsQuestion = "@Html.Raw(Charms.AlignmentRefreshSegmentsQuestion)";
-    var AlignmentRemovalErrorMessage = "@Html.Raw(Charms.AlignedRemovalErrorMessage)";
-    var AlignmentRemovalSuccessMessage = "@Html.Raw(Charms.AlignedRemovalSuccessMessage)";
-    var AlignmentSaveErrorMessage = "@Html.Raw(Charms.AlignmentSaveErrorMessage)";
-    var AlignmentSaveSuccessMessage = "@Html.Raw(Charms.AlignmentSaveSuccessMessage)";
-
-    var ContinuumRemovedNoDownloadBecauseAlreadyPresentMessage = "@Html.Raw(Charms.ContinuumRemovedNoDownloadBecauseAlreadyPresentMessage)";
-    var ContinuumRemovedNoProcessBecauseAlreadyPresentMessage = "@Html.Raw(Charms.ContinuumRemovedNoProcessBecauseAlreadyPresentMessage)";
-    var ContinuumRemovedRemovalErrorMessage = "@Html.Raw(Charms.ContinuumRemovedRemovalErrorMessage)";
-    var ContinuumRemovedRemovalSuccessMessage = "@Html.Raw(Charms.ContinuumRemovedRemovalSuccessMessage)";
-
-    var FitBoundaryLabel = "@Html.Raw(Charms.FitBoundaryLabel)";
-    var FitButtonDeletePointLabel = "@Html.Raw(Charms.FitButtonDeletePointLabel)"
-    var FitButtonDisabledMessage = "@Html.Raw(Charms.FitButtonDisabledMessage)";
-    var FitButtonExecuteLabel = "@Html.Raw(Charms.FitButtonExecuteLabel)";
-    var FitButtonRemoveLabel = "@Html.Raw(Charms.FitButtonRemoveLabel)";
-    var FitButtonSaveLabel = "@Html.Raw(Charms.FitButtonSaveLabel)";
-    var FitContinuumRemovalErrorMessage = "@Html.Raw(Charms.FitContinuumRemovalErrorMessage)";
-    var FitDownloadContinuumRemovalSettingsErrorMessage = "@Html.Raw(Charms.FitDownloadContinuumRemovalSettingsErrorMessage)";
-    var FitLoadFitFunctionsErrorMessage = "@Html.Raw(Charms.FitLoadFitFunctionsErrorMessage)";
-    var FitLoadNumOfPointsForMissingPointsErrorMessage = "@Html.Raw(Charms.FitLoadNumOfPointsForMissingPointsErrorMessage)";
-    var FitLoadPMinPMaxMaxValueFunctionsErrorMessage = "@Html.Raw(Charms.FitLoadPMinPMaxMaxValueFunctionsErrorMessage)";
-    var FitNoPointsFoundForSegmentErrorMessage = "@Html.Raw(Charms.FitNoPointsFoundForSegmentErrorMessage)";
-    var FitNoProcessBecauseAlreadyPresentMessage = "@Html.Raw(Charms.FitNoProcessBecauseAlreadyPresentMessage)";
-    var FitNumOfPointsForMissingPointsLabel = "@Html.Raw(Charms.FitNumOfPointsForMissingPointsLabel)";
-    var FitProModeCenterLabel = "@Html.Raw(Charms.FitProModeCenterLabel)";
-    var FitRangeLabel = "@Html.Raw(Charms.FitRangeLabel)";
-    var FitSaveErrorMessage = "@Html.Raw(Charms.FitSaveErrorMessage)";
-    var FitSaveSuccessMessage = "@Html.Raw(Charms.FitSaveSuccessMessage)";
-    var FitSegmentFittingErrorMessage = "@Html.Raw(Charms.FitSegmentFittingErrorMessage)";
-    var FitSegmentFunctionsLabel = "@Html.Raw(Charms.FitSegmentFunctionsLabel)";
-    var FitSegmentFunctionParameterLabel = "@Html.Raw(Charms.FitSegmentFunctionParameterLabel)";
-    var FitShowHideBreaksOnValueAxisLabel = "@Html.Raw(Charms.FitShowHideBreaksOnValueAxisLabel)";
-
-    var SmoothedRemovalErrorMessage = "@Html.Raw(Charms.SmoothedRemovalErrorMessage)";
-    var SmoothedRemovalSuccessMessage = "@Html.Raw(Charms.SmoothedRemovalSuccessMessage)";
-    var SmoothedSaveErrorMessage = "@Html.Raw(Charms.SmoothedSaveErrorMessage)";
-    var SmoothedSaveSuccessMessage = "@Html.Raw(Charms.SmoothedSaveSuccessMessage)";
-
-    var SmoothingAddNewSegmentLabel = "@Html.Raw(Charms.SmoothingAddNewSegmentLabel)";
-    var SmoothingApplySmoothingErrorMessage = "@Html.Raw(Charms.SmoothingApplySmoothingErrorMessage)";
-    var SmoothingExecuteSmoothingErrorMessage = "@Html.Raw(Charms.SmoothingExecuteSmoothingErrorMessage)";
-    var SmoothingExecutionErrorMessage = "@Html.Raw(Charms.SmoothingExecutionErrorMessage)";
-    var SmoothingRemoveSegmentQuestion = "@Html.Raw(Charms.SmoothingRemoveSegmentQuestion)";
-    var SmoothingManagementTitle = "@Html.Raw(Charms.SmoothingManagementTitle)";
-    var SmoothingRemoveSegmentLabel = "@Html.Raw(Charms.SmoothingRemoveSegmentLabel)";
-    var SmoothingRetrieveSettingsModelErrorMessage = "@Html.Raw(Charms.SmoothingRetrieveSettingsModelErrorMessage)";
-    var SmoothingSegmentBoundariesLabel = "@Html.Raw(Charms.SmoothingSegmentBoundariesLabel)";
-    var SmoothingSegmentPolynomialOrderLabel = "@Html.Raw(Charms.SmoothingSegmentPolynomialOrderLabel)";
-    var SmoothingSegmentWindowSizeLabel = "@Html.Raw(Charms.SmoothingSegmentWindowSizeLabel)";
-
-    var LegendCloseLabel = "@Html.Raw(CharmsLegend.LegendCloseLabel)";
-    var LegendTitle = "@Html.Raw(CharmsLegend.LegendTitle)";
 
     var CONDITIONS_CONTAINER = 'ConditionsContainer';
     var CONDITIONS_ITEMS = 'ConditionsItems';

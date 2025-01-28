@@ -448,7 +448,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sharing spectra with other users allows them to review and edit the data, such as adjusting parameters for alignment, continuum removal, or smoothing..
+        ///   Looks up a localized string similar to Sharing spectra with other users allows them to review and edit the data. They can adjust parameters for alignment, remove the continuum, or apply smoothing techniques. This collaboration leverages different experts&apos; skills, improving analysis quality and facilitating new discoveries within the spectroscopic data.
         /// </summary>
         public static string CharmsShareExplanation {
             get {
@@ -480,6 +480,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string CharmsShareNumOfSpectra {
             get {
                 return ResourceManager.GetString("CharmsShareNumOfSpectra", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected users.
+        /// </summary>
+        public static string CharmsShareSelectedUsersLabel {
+            get {
+                return ResourceManager.GetString("CharmsShareSelectedUsersLabel", resourceCulture);
             }
         }
         

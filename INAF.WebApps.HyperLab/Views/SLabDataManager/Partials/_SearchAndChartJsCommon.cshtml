@@ -3,10 +3,15 @@
 @using INAF.Libraries.Net.CommonWebAppHelpers
 
 <script type="text/javascript">
+    var ButtonBackClearToSearchLabel = "@Html.Raw(Search.ButtonBackClearToSearchLabel)";
+    var ButtonBackToSearchLabel = "@Html.Raw(Search.ButtonBackToSearchLabel)";
     var ButtonShareLabel = "@Html.Raw(Search.ButtonShareLabel)";
 
     var NumOfSharedSpectra = "@Html.Raw(Charms.CharmsShareNumOfSpectra)";
     
+    /* ChartsController */
+    var UrlGetSpectra = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.GetSpectra)';
+
     /* UsersController */
     var UrlCheckUser = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.CheckUser)';
 </script>

@@ -311,6 +311,9 @@ function enableByClassElem(id) {
 }
 
 function executeAfter(callback, timeout) {
+    if (!callback)
+        return;
+
     setTimeout(function () { callback(); }, timeout);
 }
 

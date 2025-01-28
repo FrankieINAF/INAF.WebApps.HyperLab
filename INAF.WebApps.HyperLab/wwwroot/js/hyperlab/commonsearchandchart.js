@@ -195,6 +195,8 @@ function addUserToShare(id, email) {
 
         /* empty the input field for writing user email */
         $('#newUserToShare').val('');
+
+        removeClass('selectedUsersToShareListLabel', 'd-none');
     }
 }
 
@@ -275,6 +277,9 @@ function removeUserToShare(id) {
         $(`#user${id}`).remove();
 
         checkShareButtonCanBeEnabled();
+
+        if (usersToShare.length == 0)
+            addClass('selectedUsersToShareListLabel', 'd-none');
     }
 }
 
