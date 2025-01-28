@@ -65,7 +65,12 @@
     </div>
 </div>
 
-<script src="~/js/hyperlab/home/index.js"></script>
+<environment names="Development">
+    <script src="~/js/hyperlab/home/index.js"></script>
+</environment>
+<environment names="Production">
+    <script src="~/js/dist/home/indexbundle.min.js"></script>
+</environment>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         window.mediaQueryHelper.addOrRemoveClass('tilesContainer', 'flex-column', '(max-width: 480px)');

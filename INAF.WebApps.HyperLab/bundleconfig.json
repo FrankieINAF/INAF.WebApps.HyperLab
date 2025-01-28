@@ -1,86 +1,8 @@
 [
   {
-    "outputFileName": "wwwroot/metro/js/dist/metrobundle.js",
-    "inputFiles": [
-      "wwwroot/metro/js/metro.js",
-      "wwwroot/metro/js/commonformetro.js",
-      "wwwroot/metro/js/index.js"
-    ],
-    "minify": { "enabled": true },
-    "includeInProject": true
-  },
-  {
-    "outputFileName": "wwwroot/js/dist/account/login.min.js",
-    "inputFiles": [
-      "wwwroot/js/hyperlab/common.js",
-      "wwwroot/js/hyperlab/account/login.js",
-      "wwwroot/js/hyperlab/account/orcidauth.js"
-    ],
-    "minify": { "enabled": true },
-    "includeInProject": true
-  },
-  {
     "outputFileName": "wwwroot/js/dist/search/blazorglobalbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/search/blazorglobal.js"
-    ],
-    "minify": { "enabled": true },
-    "includeInProject": true
-  },
-  {
-    "outputFileName": "wwwroot/js/dist/jquerybundle.js",
-    "inputFiles": [
-      "wwwroot/lib/jquery/jquery.min.js",
-      "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
-      "wwwroot/lib/jquery-validation/dist/additional-methods.min.js",
-      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
-      "wwwroot/lib/jquery-dateFormat/dist/jquery-dateFormat.js",
-      "wwwroot/lib/jquery-contextMenu/jquery.contextMenu.js",
-      "wwwroot/lib/jquery-contextMenu/jquery.ui.position.js",
-      "wwwroot/lib/jquery-scrollTo/jquery.scrollTo.min.js",
-      "wwwroot/lib/jqueryui/jquery-ui.min.js"
-    ],
-    "minify": { "enabled": true },
-    "includeInProject": true
-  },
-  {
-    "outputFileName": "wwwroot/js/dist/commonbundle.js",
-    "inputFiles": [
-      "wwwroot/lib/luxon/luxon.min.js",
-      "wwwroot/js/hyperlab/commonbuttons.js",
-      "wwwroot/js/hyperlab/common.js",
-      "wwwroot/js/hyperlab/commonsaveusersettings.js",
-      "wwwroot/js/hyperlab/layout.js",
-      "wwwroot/js/hyperlab/queue.js",
-      "wwwroot/js/hyperlab/commondxchart.js"
-    ],
-    "minify": { "enabled": true },
-    "includeInProject": true
-  },
-  {
-    "outputFileName": "wwwroot/js/dist/users/userslistbundle.js",
-    "inputFiles": [
-      "wwwroot/js/hyperlab/users/userslist.js",
-      "wwwroot/js/hyperlab/commonlists.js",
-      "wwwroot/js/hyperlab/commonsearch.js"
-    ],
-    "minify": { "enabled": true },
-    "includeInProject": true
-  },
-  {
-    "outputFileName": "wwwroot/js/dist/users/upsertuserbundle.js",
-    "inputFiles": [
-      "wwwroot/js/hyperlab/users/upsertuser.js"
-    ],
-    "minify": { "enabled": true },
-    "includeInProject": true
-  },
-  {
-    "outputFileName": "wwwroot/js/dist/materials/mineralsbundle.js",
-    "inputFiles": [
-      "wwwroot/js/hyperlab/materials/upsertminerals.js",
-      "wwwroot/js/hyperlab/commonlists.js",
-      "wwwroot/js/hyperlab/commonsearch.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -103,6 +25,86 @@
       "wwwroot/js/hyperlab/chart/charms/charmsfitpanelcommon.js",
       "wwwroot/js/hyperlab/chart/charms/charmssmoothingpanel.js",
       "wwwroot/js/hyperlab/chart/charms/charmsbandanalysis.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/commonbundle.js",
+    "inputFiles": [
+      "wwwroot/lib/luxon/luxon.min.js",
+      "wwwroot/js/hyperlab/commonbuttons.js",
+      "wwwroot/js/hyperlab/common.js",
+      "wwwroot/js/hyperlab/commonsaveusersettings.js",
+      "wwwroot/js/hyperlab/layout.js",
+      "wwwroot/js/hyperlab/queue.js",
+      "wwwroot/js/hyperlab/commondxchart.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/devextreme/devextremebundle.js",
+    "inputFiles": [
+      "wwwroot/lib/devextreme/js/dx.all.js",
+      "wwwroot/lib/devextreme/js/localization/devextreme-intl.min.js",
+      "wwwroot/lib/devextreme/js/localization/dx.messages.*.js",
+      "wwwroot/lib/devextreme/js/localization/supplemental.js",
+      "wwwroot/lib/devextreme/js/dx.aspnet.mvc.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/home/indexbundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/home/index.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/jquerybundle.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/jquery.min.js",
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+      "wwwroot/lib/jquery-validation/dist/additional-methods.min.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+      "wwwroot/lib/jquery-dateFormat/dist/jquery-dateFormat.js",
+      "wwwroot/lib/jquery-contextMenu/jquery.contextMenu.js",
+      "wwwroot/lib/jquery-contextMenu/jquery.ui.position.js",
+      "wwwroot/lib/jquery-scrollTo/jquery.scrollTo.min.js",
+      "wwwroot/lib/jqueryui/jquery-ui.min.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/account/login.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/common.js",
+      "wwwroot/js/hyperlab/account/login.js",
+      "wwwroot/js/hyperlab/account/orcidauth.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/metro/js/dist/metrobundle.js",
+    "inputFiles": [
+      "wwwroot/metro/js/metro.js",
+      "wwwroot/metro/js/commonformetro.js",
+      "wwwroot/metro/js/index.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/materials/mineralsbundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/materials/upsertminerals.js",
+      "wwwroot/js/hyperlab/commonlists.js",
+      "wwwroot/js/hyperlab/commonsearch.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -134,13 +136,19 @@
     "includeInProject": true
   },
   {
-    "outputFileName": "wwwroot/js/dist/devextreme/devextremebundle.js",
+    "outputFileName": "wwwroot/js/dist/users/upsertuserbundle.js",
     "inputFiles": [
-      "wwwroot/lib/devextreme/js/dx.all.js",
-      "wwwroot/lib/devextreme/js/localization/devextreme-intl.min.js",
-      "wwwroot/lib/devextreme/js/localization/dx.messages.*.js",
-      "wwwroot/lib/devextreme/js/localization/supplemental.js",
-      "wwwroot/lib/devextreme/js/dx.aspnet.mvc.js"
+      "wwwroot/js/hyperlab/users/upsertuser.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/users/userslistbundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/users/userslist.js",
+      "wwwroot/js/hyperlab/commonlists.js",
+      "wwwroot/js/hyperlab/commonsearch.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -169,7 +177,7 @@
   {
     "outputFileName": "wwwroot/css/dist/account/commonlayoutnonavigationbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/commonlayoutnonavigation.css",
+      "wwwroot/css/hyperlab/commonlayoutnonavigation.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
