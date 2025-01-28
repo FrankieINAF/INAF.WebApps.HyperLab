@@ -15,23 +15,21 @@
     var password = nameof(RegistrationModel.Password);
 }
 
-<link rel="stylesheet" href="~/css/hyperlab/account/login.css" />
+<environment names="Development">
+    <link rel="stylesheet" href="~/css/hyperlab/common.css" />
+    <link rel="stylesheet" href="~/css/hyperlab/account/confirmationcompleted.css" />
+    <link rel="stylesheet" href="~/css/hyperlab/account/login.css" />
+</environment>
+<environment names="Production">
+    <link rel="stylesheet" href="~/css/dist/account/loginbundle.min.css" asp-append-version="true" />
+</environment>
+
 <div class="h-vh-100 w-vw-100">
     <div class="row h-vh-100">
         <!-- TEXT/IMAGES -->
-        <div class="cell-fs-12 cell-xl-4 h-vh-25-fs h-vh-100-xl">
-            <div class="row cell-fs-12 text-center h-25">
-                <span class="fg-black display2">@Html.Raw(SharedResources.HyperLabLabel)</span>
-            </div>
-            <div class="row text-center h-75">
-                <div class="cell-fs-6 cell-lg-12 text-center h-50">
-                    <img src="~/images/em_spectrum_400x400.png" class="spectrum-image" />
-                </div>
-                <div class="cell-fs-6 cell-lg-12 text-center h-50">
-                    <img src="~/images/login/iaps_marchio_full_colorinaf.svg" class="inaf-image" />
-                </div>
-            </div>
-        </div>
+        @{
+            await Html.RenderPartialAsync("Partials/_TextImages");
+        }
 
         <!-- FORM -->
         <div class="cell-fs-12 cell-xl-8 form-cell-background h-vh-75-fs h-vh-100-xl">
