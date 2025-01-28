@@ -80,7 +80,7 @@
     "includeInProject": true
   },
   {
-    "outputFileName": "wwwroot/js/dist/account/login.js",
+    "outputFileName": "wwwroot/js/dist/account/loginbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/common.js",
       "wwwroot/js/hyperlab/account/login.js",
@@ -105,6 +105,14 @@
       "wwwroot/js/hyperlab/materials/upsertminerals.js",
       "wwwroot/js/hyperlab/commonlists.js",
       "wwwroot/js/hyperlab/commonsearch.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/account/registrationbundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/account/registration.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true

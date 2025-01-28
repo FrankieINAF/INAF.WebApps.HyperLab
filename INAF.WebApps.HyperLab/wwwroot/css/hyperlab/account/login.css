@@ -19,7 +19,6 @@
     /*transition: background-image 0.2s ease-in;*/
 }
 
-
 .countdown-container {
     width: 90%;
     height: 100px;
@@ -49,8 +48,8 @@
 .registration-completed-container {
     width: 90%;
     height: 100%;
-    -ms-transform: translateY(25%);
-    transform: translateY(25%);
+    -ms-transform: translateY(50%);
+    transform: translateY(50%);
 }
 
 .login-form {
@@ -83,7 +82,17 @@
     height: 100%;
 }
 
-@media screen and (max-width: 1024px) and (min-height: 1367px) {
+/* nest hub max */
+@media screen and (max-width: 1280px) and (max-height: 800px) {
+    .registration-container {
+        height: 70%;
+        -ms-transform: translateY(20%);
+        transform: translateY(20%);
+    }
+}
+
+/* iPad Pro/surface 7 */
+@media screen and (max-width: 1024px) and (min-height: 1368px) {
     .login-container {
         width: 100%;
         -ms-transform: translateY(50%);
@@ -121,6 +130,10 @@
         transform: translateY(0%);
     }
 
+    .registration-completed-container {
+        -ms-transform: translateY(0%);
+        transform: translateY(0%);
+    }
 }
 
 /* iPad Pro */
@@ -154,6 +167,11 @@
         transform: translateY(0%);
     }
 
+    .registration-completed-container {
+        -ms-transform: translateY(25%);
+        transform: translateY(25%);
+    }
+
     .inaf-image {
         height: 200%;
     }
@@ -169,6 +187,16 @@
         height: 100%;
         -ms-transform: translateY(0%);
         transform: translateY(0%);
+    }
+
+    .registration-container {
+        width: 90%;
+        height: 100%;
+    }
+
+    .registration-completed-container {
+        -ms-transform: translateY(-5%);
+        transform: translateY(-5%);
     }
 }
 
@@ -187,18 +215,24 @@
         -ms-transform: translateY(10%);
         transform: translateY(0%);
     }
+
+    .registration-completed-container {
+        -ms-transform: translateY(-5%);
+        transform: translateY(-5%);
+    }
 }
 
-/* iphone SE */
-@media screen and (max-width: 400px) {
-    .login-container {
+/* phones 2 */
+@media screen and (max-width: 375px) {
+    .registration-container {
         width: 90%;
-        height: 560px;
+        height: 100%;
         -ms-transform: translateY(-5%);
         transform: translateY(-5%);
     }
 
-    .registration-container {
-        width: 90%;
+    .registration-completed-container {
+        -ms-transform: translateY(-5%);
+        transform: translateY(-5%);
     }
 }
