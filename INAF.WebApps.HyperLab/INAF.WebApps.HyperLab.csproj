@@ -140,7 +140,7 @@
     <None Include="wwwroot\js\hyperlab\search\searchComplex.js" />
     <None Include="wwwroot\js\hyperlab\search\searchSimple.js" />
     <None Include="wwwroot\js\hyperlab\sharedstuff\sharedstuff.js" />
-    <None Include="wwwroot\js\hyperlab\users\commonsaveusersettings.js" />
+    <None Include="wwwroot\js\hyperlab\commonsaveusersettings.js" />
     <None Include="wwwroot\js\hyperlab\users\upsertuser.js" />
     <None Include="wwwroot\js\hyperlab\users\userslist.js" />
   </ItemGroup>
