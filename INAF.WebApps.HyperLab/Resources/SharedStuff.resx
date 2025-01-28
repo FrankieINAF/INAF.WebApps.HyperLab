@@ -129,6 +129,9 @@
   <data name="RemoveSharesErrorMessage" xml:space="preserve">
     <value>Sorry, something went wrong while trying to remove selected shares</value>
   </data>
+  <data name="RemoveSharesForUserErrorMessage" xml:space="preserve">
+    <value>Error(s) occurred while trying to remove share(s) with user 'r_v'</value>
+  </data>
   <data name="RemoveShareSuccessMessage" xml:space="preserve">
     <value>Shares have been successfully removed</value>
   </data>

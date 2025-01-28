@@ -97,6 +97,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error(s) occurred while trying to remove share(s) with user &apos;r_v&apos;.
+        /// </summary>
+        public static string RemoveSharesForUserErrorMessage {
+            get {
+                return ResourceManager.GetString("RemoveSharesForUserErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shares have been successfully removed.
         /// </summary>
         public static string RemoveShareSuccessMessage {

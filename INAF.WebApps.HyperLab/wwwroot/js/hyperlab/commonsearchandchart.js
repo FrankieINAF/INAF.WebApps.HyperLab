@@ -205,7 +205,7 @@ function checkShareButtonCanBeEnabled() {
         setMetroUIButtonEnabled('buttonShareSpectra', false);
 }
 
-async function checkUser() {
+async function checkUserAsync() {
     try {
         /* remove message, if existant */
         $('#newUserToShareActivity').empty();
@@ -213,6 +213,11 @@ async function checkUser() {
         setCharmsShareLoadingCircle(true);
 
         let userEmail = $('#newUserToShare').val();
+
+        if (!userEmail) {
+            setCharmsShareLoadingCircle(false);
+            return;
+        }
 
         let model = {
             Text: userEmail
@@ -323,14 +328,14 @@ async function shareSpectraAsync() {
         setMessage(CharmsShareSpectraSharedInfoMessage, ICON_INFO_NAME, COLOR_INFO_CLASS);
     else {
         /* when an error in creation of shares or in invitations happned, show the specific message */
-        if (showSharesErrors(shareResults) > 0)
+        if (showAddSharesErrors(shareResults) > 0)
             return;
         /* when an error on the back-end happened, show the generic message */
         setMessage(CharmsShareSpectraSharedErrorMessage, ICON_ERROR_NAME, COLOR_ERROR_CLASS);
     }
 }
 
-function showSharesErrors(shareResults) {
+function showAddSharesErrors(shareResults) {
     let errorsNum = 0;
 
     if (shareResults == null)
@@ -341,7 +346,7 @@ function showSharesErrors(shareResults) {
     let html = `<div class='row cell-fs-12 margin-16'>`;
     let shareResultsNum = shareResults.ResponseObject.length;
     for (var i = 0; i < shareResultsNum; i++) {
-        if (!shareResults.ResponseObject[i].IsShareCreated) {
+        if (!shareResults.ResponseObject[i].IsShareOperationCompleted) {
             errorsNum += 1;
             html += `<div class='row cell-fs-12'><p class='text-leader2'>${CharmsShareShareNotCreatedForUserErrorMessage.replace('r_v', shareResults.ResponseObject[i].Email)}</p></div>`;
         }

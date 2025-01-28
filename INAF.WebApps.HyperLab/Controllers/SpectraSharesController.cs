@@ -3,6 +3,7 @@ using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Shares;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.WebApps.HyperLab.Controllers.Base;
+using MathNet.Numerics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace INAF.WebApps.HyperLab.Controllers
@@ -28,13 +29,13 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (model == null || model.SpectraIds == null || !model.SpectraIds.Any() || model.UsersToShare == null || !model.UsersToShare.Any())
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
 
-            List<ShareResultModel> results = await dbHandlerHyperLabData.upsertSharesBetweenOwnerUserAndUsersAsync(getUserId(), 
-                                                                                                                   model.SpectraIds, 
-                                                                                                                   model.UsersToShare);
-            foreach (ShareResultModel result in results)
+            List<ShareResultAddModel> results = await dbHandlerHyperLabData.upsertSharesBetweenOwnerUserAndUsersAsync(getUserId(), 
+                                                                                                                      model.SpectraIds, 
+                                                                                                                      model.UsersToShare);
+            foreach (ShareResultAddModel result in results)
             {
                 if (result.IsShareOperationCompleted)
-                    result.IsErrorInInvitation = !await dbHandlerHyperLabUsers.tryAddUserToBeInvited(result.Email);
+                    result.IsErrorInInvitation = !await dbHandlerHyperLabUsers.tryAddUserToBeInvited(result.Email!);
             }
 
             bool isAnyErrorInInvitations = results.Any(x => x.IsErrorInInvitation);
@@ -53,14 +54,26 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
 
             int operationUserId = getUserId();
-            List<ShareResultModel> results = await dbHandlerHyperLabData.removeSharesBetweenOwnerUserAndUsersAsync(operationUserId,
-                                                                                                                   model.Shares,
-                                                                                                                   operationUserId);
+            List<ShareResultRemoveModel> results = await dbHandlerHyperLabData.removeSharesBetweenOwnerUserAndUsersAsync(operationUserId,
+                                                                                                                         model.Shares,
+                                                                                                                         operationUserId);
+
             bool isAnyErrorInShare = results.Any(x => !x.IsShareOperationCompleted);
             if (isAnyErrorInShare)
-                return new JsonResult(new GenericResponseModel(false, results));
+            {
+                var wrongSharesResults = results.Where(x => !x.IsShareOperationCompleted).ToList();
+                foreach (ShareResultRemoveModel result in wrongSharesResults)
+                {
+                    if (string.IsNullOrEmpty(result.UserId))
+                        continue;
+                    var user = dbHandlerHyperLabUsers.getUserDetailsSimple(int.Parse(result.UserId));
+                    if (user == null)
+                        continue;
+                    result.CompleteUserName = $"{user.Name} {user.LastName}";
+                }
+            }
 
-            return new JsonResult(GenericResponseModel.CreateSuccessResponse());
+            return new JsonResult(new GenericResponseModel(!isAnyErrorInShare, results));
         }
     }
 }

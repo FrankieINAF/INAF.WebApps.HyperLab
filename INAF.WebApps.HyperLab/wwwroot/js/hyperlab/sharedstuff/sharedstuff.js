@@ -58,21 +58,81 @@ async function removeSharesAsync() {
 
         removeSharesResults = await doAjaxPostAsync(UrlRemoveSharesBetweenOwnerUserAndUsers, model);
         isOk = removeSharesResults.IsOk;
+        removeSharesFromList(removeSharesResults);
         setLoadingCircleIsVisible(false);
     } catch (e) {
         isOk = false;
         setLoadingCircleIsVisible(false);
     }
 
+    /* remove buttons since items are supposed to be not available anymore */
+    removeRemoveSharesButtonProcedure();
+    removeCreateChartsButtonProcedure();
+
+    /* final message for success or error */
     if (isOk)
         showSimpleDialog(INFO_LABEL, RemoveShareSuccessMessage, SUCCESS);
     else {
         /* when an error in creation of shares or in invitations happned, show the specific message */
-        if (showSharesErrors(removeSharesResults) > 0)
+        if (showRemoveSharesErrors(removeSharesResults) > 0)
             return;
         /* when an error on the back-end happened, show the generic message */
         showSimpleDialog(ERROR_LABEL, RemoveSharesErrorMessage, ALERT);
     }
+}
+
+function removeSharesFromList(removeSharesResults) {
+    if (removeSharesResults == null)
+        return;
+    if (removeSharesResults.ResponseObject.length == 0)
+        return;
+
+    let itemsToBeRemovedNum = removeSharesResults.ResponseObject.length;
+    for (var i = 0; i < itemsToBeRemovedNum; i++) {
+        let item = removeSharesResults.ResponseObject[i];
+        let itemToBeRemoved = $(`[id$="Spectrum${item.SpectrumId}_User${item.UserId}Container"]`);
+        if (itemToBeRemoved != null)
+            itemToBeRemoved.remove();
+    }
+}
+
+function showRemoveSharesErrors(removeSharesResults) {
+    let errorsNum = 0;
+
+    if (removeSharesResults == null)
+        return errorsNum;
+    if (removeSharesResults.ResponseObject.length == 0)
+        return errorsNum;
+
+    let groupedItems = groupItemsByUserId(removeSharesResults.ResponseObject);
+
+    if (groupedItems == null || groupedItems.length == 0)
+        return errorsNum;
+
+    let html = `<div class='row cell-fs-12 margin-16'>`;
+
+    let keys = Object.keys(groupedItems)
+    let keysNum = keys.length;
+    for (var i = 0; i < keysNum; i++) {
+        let userId = keys[i];
+        let errors = groupedItems[userId].filter(x => !x.IsShareOperationCompleted);
+        if (errors && errors.length > 0) {
+            errorsNum += 1;
+            html += `<div class='row cell-fs-12'><p class='text-leader2'>${RemoveSharesForUserErrorMessage.replace('r_v', removeSharesResults.ResponseObject[i].CompleteUserName)}</p></div>`;
+        }
+    }
+
+    html += `</div>`;
+
+    let options = {
+        callback: Metro.noop,
+        timeout: 5000,
+        showTop: true,
+        clsToast: "alert"
+    };
+    Metro.toast.create(html, null, null, null, options);
+
+    return errorsNum;
 }
 
 /* ################################################################################ */

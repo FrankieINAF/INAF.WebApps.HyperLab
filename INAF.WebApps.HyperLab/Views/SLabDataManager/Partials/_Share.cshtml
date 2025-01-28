@@ -62,8 +62,22 @@
 </div>
 
 <script type="text/javascript">
+    var CharmsShareCheckUserMessage = "@Html.Raw(Charms.CharmsShareCheckUserMessage)";
+    var CharmsShareInvitationNotCreatedErrorMessage = "@Html.Raw(Charms.CharmsShareInvitationNotCreatedErrorMessage)";
+    var CharmsShareShareNotCreatedForUserErrorMessage = "@Html.Raw(Charms.CharmsShareShareNotCreatedForUserErrorMessage)";
+    var CharmsShareSpectraSharedInfoMessage = "@Html.Raw(Charms.CharmsShareSpectraSharedInfoMessage)";
+    var CharmsShareSpectraSharedErrorMessage = "@Html.Raw(Charms.CharmsShareSpectraSharedErrorMessage)";
+    var CharmsShareUserNotExistantMessage = "@Html.Raw(Charms.CharmsShareUserNotExistantMessage)";
+
     var customButtons = [
         {
+            html: "<span class='mif-add'></span>",
+            cls: 'primary',
+            onclick: function() {
+                checkUserAsync();
+            }
+        },
+         {
             html: "<span class='mif-user'></span>",
         }
     ]
@@ -71,7 +85,7 @@
     $(function() {
         $('#newUserToShare').on('keydown', function(evt) {
             if (evt.originalEvent.code == 'Enter')
-                checkUser();
+                checkUserAsync();
         });
     });
 </script>

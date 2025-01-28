@@ -31,12 +31,12 @@
                         int itemsCount = Model.SharedSpectraByMe.Count();
                         for (int i = 0; i < itemsCount; i++)
                         {
-                            <div class="row cell-fs-12 d-flex">
-                                @{
-                                    SharedSpectrumModel spectrumModel = Model.SharedSpectraByMe.ElementAt(i);
-                                    UserSimpleModel user = spectrumModel.SubjectUser!;
-                                    string checkboxId = $"{checkboxSharedByMeBaseId}_Spectrum{spectrumModel.Id}_User{spectrumModel.SubjectUser!.Id}";
-                                }
+                            SharedSpectrumModel spectrumModel = Model.SharedSpectraByMe.ElementAt(i);
+                            UserSimpleModel user = spectrumModel.SubjectUser!;
+                            string checkboxId = $"{checkboxSharedByMeBaseId}_Spectrum{spectrumModel.Id}_User{spectrumModel.SubjectUser!.Id}";
+                            string checkboxContainerId = $"{checkboxId}Container";
+
+                            <div id="@checkboxContainerId" class="row cell-fs-12 d-flex">
                                 <div><input id="@checkboxId" type="checkbox" data-role="checkbox" data-style="2"></div>
                                 <div class="margin-top-4"><span>@spectrumModel.Filename</span></div>
                                 <div class="margin-left-4 margin-top-4">(<span>@spectrumModel.Type.GetDescription()</span>)</div>
