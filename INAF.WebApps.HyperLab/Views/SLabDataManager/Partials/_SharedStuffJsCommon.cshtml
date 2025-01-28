@@ -1,0 +1,16 @@
+﻿@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Resources
+@using INAF.Libraries.Net.CommonWebAppHelpers
+
+
+<script type="text/javascript">
+    var ButtonRemoveSharesLabel = '@Html.Raw(SharedStuff.ButtonRemoveSharesLabel)';
+
+    var RemoveSharesErrorMessage = '@Html.Raw(SharedStuff.RemoveSharesErrorMessage)';
+    var RemoveShareSuccessMessage = '@Html.Raw(SharedStuff.RemoveShareSuccessMessage)';
+    var RemoveSharesForUserErrorMessage = "@Html.Raw(SharedStuff.RemoveSharesForUserErrorMessage)";
+
+        /* SpectraSharesController */
+    var UrlAddSharesBetweenOwnerUserAndUsers = '/@GenericHelper.GetControllerName(nameof(SpectraSharesController))/@nameof(SpectraSharesController.AddSharesBetweenOwnerUserAndUsers)';
+    var UrlRemoveSharesBetweenOwnerUserAndUsers = '/@GenericHelper.GetControllerName(nameof(SpectraSharesController))/@nameof(SpectraSharesController.RemoveSharesBetweenOwnerUserAndUsers)';
+</script>

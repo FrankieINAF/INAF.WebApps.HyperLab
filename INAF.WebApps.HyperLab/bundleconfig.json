@@ -1,28 +1,64 @@
 [
   {
-    "outputFileName": "wwwroot/metro/js/dist/metrobundle.js",
-    "inputFiles": [
-      "wwwroot/metro/js/metro.js",
-      "wwwroot/metro/js/commonformetro.js",
-      "wwwroot/metro/js/index.js"
-    ],
-    "minify": { "enabled": true },
-    "includeInProject": true
-  },
-  {
-    "outputFileName": "wwwroot/js/dist/account/login.min.js",
-    "inputFiles": [
-      "wwwroot/js/hyperlab/common.js",
-      "wwwroot/js/hyperlab/account/login.js",
-      "wwwroot/js/hyperlab/account/orcidauth.js"
-    ],
-    "minify": { "enabled": true },
-    "includeInProject": true
-  },
-  {
     "outputFileName": "wwwroot/js/dist/search/blazorglobalbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/search/blazorglobal.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/chart/chartbundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/commonsearchandchartsandsharedstuff.js",
+      "wwwroot/js/hyperlab/commonsearchandchart.js",
+      "wwwroot/js/hyperlab/chart/charts.js",
+      "wwwroot/js/hyperlab/chart/chartsbuttons.js",
+      "wwwroot/js/hyperlab/chart/chartsarrays.js",
+      "wwwroot/js/hyperlab/chart/charms/charms.js",
+      "wwwroot/js/hyperlab/chart/charms/charmslegend.js",
+      "wwwroot/js/hyperlab/chart/charms/charmscolorselector.js",
+      "wwwroot/js/hyperlab/chart/charms/charmsalignmentpanel.js",
+      "wwwroot/js/hyperlab/chart/charms/charmsfitpanel.js",
+      "wwwroot/js/hyperlab/chart/charms/charmsfitpanelcore.js",
+      "wwwroot/js/hyperlab/chart/charms/charmsfitpanelpro.js",
+      "wwwroot/js/hyperlab/chart/charms/charmsfitpanelcommon.js",
+      "wwwroot/js/hyperlab/chart/charms/charmssmoothingpanel.js",
+      "wwwroot/js/hyperlab/chart/charms/charmsbandanalysis.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/commonbundle.js",
+    "inputFiles": [
+      "wwwroot/lib/luxon/luxon.min.js",
+      "wwwroot/js/hyperlab/commonbuttons.js",
+      "wwwroot/js/hyperlab/common.js",
+      "wwwroot/js/hyperlab/commonsaveusersettings.js",
+      "wwwroot/js/hyperlab/layout.js",
+      "wwwroot/js/hyperlab/queue.js",
+      "wwwroot/js/hyperlab/commondxchart.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/devextreme/devextremebundle.js",
+    "inputFiles": [
+      "wwwroot/lib/devextreme/js/dx.all.js",
+      "wwwroot/lib/devextreme/js/localization/devextreme-intl.min.js",
+      "wwwroot/lib/devextreme/js/localization/dx.messages.*.js",
+      "wwwroot/lib/devextreme/js/localization/supplemental.js",
+      "wwwroot/lib/devextreme/js/dx.aspnet.mvc.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/home/indexbundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/home/index.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -44,32 +80,21 @@
     "includeInProject": true
   },
   {
-    "outputFileName": "wwwroot/js/dist/commonbundle.js",
+    "outputFileName": "wwwroot/js/dist/account/login.js",
     "inputFiles": [
-      "wwwroot/lib/luxon/luxon.min.js",
-      "wwwroot/js/hyperlab/commonbuttons.js",
       "wwwroot/js/hyperlab/common.js",
-      "wwwroot/js/hyperlab/layout.js",
-      "wwwroot/js/hyperlab/queue.js",
-      "wwwroot/js/hyperlab/commondxchart.js"
+      "wwwroot/js/hyperlab/account/login.js",
+      "wwwroot/js/hyperlab/account/orcidauth.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
   },
   {
-    "outputFileName": "wwwroot/js/dist/users/userslistbundle.js",
+    "outputFileName": "wwwroot/metro/js/dist/metrobundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/users/userslist.js",
-      "wwwroot/js/hyperlab/commonlists.js",
-      "wwwroot/js/hyperlab/commonsearch.js"
-    ],
-    "minify": { "enabled": true },
-    "includeInProject": true
-  },
-  {
-    "outputFileName": "wwwroot/js/dist/users/upsertuserbundle.js",
-    "inputFiles": [
-      "wwwroot/js/hyperlab/users/upsertuser.js"
+      "wwwroot/metro/js/metro.js",
+      "wwwroot/metro/js/commonformetro.js",
+      "wwwroot/metro/js/index.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -87,38 +112,43 @@
   {
     "outputFileName": "wwwroot/js/dist/search/searchbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/common.js",
-      "wwwroot/js/hyperlab/search/common.js",
-      "wwwroot/js/hyperlab/search/charts.js",
-      "wwwroot/js/hyperlab/search/chartsarrays.js",
+      "wwwroot/js/hyperlab/commonsearchandchartsandsharedstuff.js",
+      "wwwroot/js/hyperlab/commonsearchandchart.js",
       "wwwroot/js/hyperlab/search/search.js",
+      "wwwroot/js/hyperlab/commonsearchandsharedstuff.js",
       "wwwroot/js/hyperlab/search/searchSimple.js",
       "wwwroot/js/hyperlab/search/searchComplex.js",
       "wwwroot/js/hyperlab/search/complexsearchesmanagement.js",
       "wwwroot/js/hyperlab/search/complexsearchesintro.js",
-      "wwwroot/js/hyperlab/search/info.js",
-      "wwwroot/js/hyperlab/search/charms/charms.js",
-      "wwwroot/js/hyperlab/search/charms/charmslegend.js",
-      "wwwroot/js/hyperlab/search/charms/charmscolorselector.js",
-      "wwwroot/js/hyperlab/search/charms/charmsalignmentpanel.js",
-      "wwwroot/js/hyperlab/search/charms/charmsfitpanel.js",
-      "wwwroot/js/hyperlab/search/charms/charmsfitpanelcore.js",
-      "wwwroot/js/hyperlab/search/charms/charmsfitpanelpro.js",
-      "wwwroot/js/hyperlab/search/charms/charmsfitpanelcommon.js",
-      "wwwroot/js/hyperlab/search/charms/charmssmoothingpanel.js",
-      "wwwroot/js/hyperlab/search/charms/charmsbandanalysis.js"
+      "wwwroot/js/hyperlab/search/info.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
   },
   {
-    "outputFileName": "wwwroot/js/dist/devextreme/devextremebundle.js",
+    "outputFileName": "wwwroot/js/dist/sharedstuff/sharedstuffbundle.js",
     "inputFiles": [
-      "wwwroot/lib/devextreme/js/dx.all.js",
-      "wwwroot/lib/devextreme/js/localization/devextreme-intl.min.js",
-      "wwwroot/lib/devextreme/js/localization/dx.messages.*.js",
-      "wwwroot/lib/devextreme/js/localization/supplemental.js",
-      "wwwroot/lib/devextreme/js/dx.aspnet.mvc.js"
+      "wwwroot/js/hyperlab/commonsearchandchartsandsharedstuff.js",
+      "wwwroot/js/hyperlab/commonsearchandsharedstuff.js",
+      "wwwroot/js/hyperlab/sharedstuff/sharedstuff.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/users/upsertuserbundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/users/upsertuser.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/users/userslistbundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/users/userslist.js",
+      "wwwroot/js/hyperlab/commonlists.js",
+      "wwwroot/js/hyperlab/commonsearch.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -127,15 +157,9 @@
   /* CSS */
   /* ################################################################################ */
   {
-    "outputFileName": "wwwroot/metro/css/dist/metrobundle.css",
+    "outputFileName": "wwwroot/css/dist/apps/appsbundle.css",
     "inputFiles": [
-      "wwwroot/metro/css/index.css",
-      "wwwroot/metro/css/metro.css",
-      "wwwroot/metro/css/metro-colors.css",
-      "wwwroot/metro/css/metro-common.css",
-      "wwwroot/metro/css/metro-components.css",
-      "wwwroot/metro/css/metro-icons.css",
-      "wwwroot/metro/css/metro-reset.css"
+      "wwwroot/css/hyperlab/apps/apps.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -151,29 +175,18 @@
     "minify": { "enabled": true }
   },
   {
-    "outputFileName": "wwwroot/css/dist/users/usersbundle.css",
+    "outputFileName": "wwwroot/css/dist/account/commonlayoutnonavigationbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/commonlists.css",
-      "wwwroot/css/hyperlab/users/users.css",
-      "wwwroot/css/hyperlab/users/userdata.css"
+      "wwwroot/css/hyperlab/commonlayoutnonavigation.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
   },
   {
-    "outputFileName": "wwwroot/css/dist/materials/mineralsbundle.css",
+    "outputFileName": "wwwroot/css/dist/home/cookiebannerbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/commonlists.css",
-      "wwwroot/css/hyperlab/materials/minerals.css"
-    ],
-    "includeInProject": true,
-    "minify": { "enabled": true }
-  },
-  {
-    "outputFileName": "wwwroot/css/dist/search/searchbundle.min.css",
-    "inputFiles": [
-      "wwwroot/css/hyperlab/search/search.css",
-      "wwwroot/css/hyperlab/search/charms.css"
+      "wwwroot/css/hyperlab/common.css",
+      "wwwroot/css/hyperlab/home/cookiebanner.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -191,11 +204,61 @@
     "minify": { "enabled": true }
   },
   {
+    "outputFileName": "wwwroot/css/dist/home/indexbundle.css",
+    "inputFiles": [
+      "wwwroot/css/hyperlab/home/index.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
     "outputFileName": "wwwroot/css/dist/jqueryuibundle.css",
     "inputFiles": [
       "wwwroot/lib/jqueryui/themes/base/jquery-ui.min.css",
       "wwwroot/lib/jqueryui/themes/base/theme.min.css",
       "wwwroot/lib/jqueryui/themes/base/images/*.png"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/account/loginbundle.css",
+    "inputFiles": [
+      "wwwroot/css/hyperlab/common.css",
+      "wwwroot/css/hyperlab/account/confirmationcompleted.css",
+      "wwwroot/css/hyperlab/account/login.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/metro/css/dist/metrobundle.css",
+    "inputFiles": [
+      "wwwroot/metro/css/index.css",
+      "wwwroot/metro/css/metro.css",
+      "wwwroot/metro/css/metro-colors.css",
+      "wwwroot/metro/css/metro-common.css",
+      "wwwroot/metro/css/metro-components.css",
+      "wwwroot/metro/css/metro-icons.css",
+      "wwwroot/metro/css/metro-reset.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/materials/mineralsbundle.css",
+    "inputFiles": [
+      "wwwroot/css/hyperlab/commonlists.css",
+      "wwwroot/css/hyperlab/materials/minerals.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/searchandchart/searchandchartbundle.css",
+    "inputFiles": [
+      "wwwroot/css/hyperlab/searchandchart/searchandchart.css",
+      "wwwroot/css/hyperlab/searchandchart/charms.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -209,26 +272,11 @@
     "minify": { "enabled": true }
   },
   {
-    "outputFileName": "wwwroot/css/dist/apps/appsbundle.css",
+    "outputFileName": "wwwroot/css/dist/users/usersbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/apps/apps.css"
-    ],
-    "includeInProject": true,
-    "minify": { "enabled": true }
-  },
-  {
-    "outputFileName": "wwwroot/css/dist/home/indexbundle.css",
-    "inputFiles": [
-      "wwwroot/css/hyperlab/home/index.css"
-    ],
-    "includeInProject": true,
-    "minify": { "enabled": true }
-  },
-  {
-    "outputFileName": "wwwroot/css/dist/home/cookiebannerbundle.css",
-    "inputFiles": [
-      "wwwroot/css/hyperlab/common.css",
-      "wwwroot/css/hyperlab/home/cookiebanner.css"
+      "wwwroot/css/hyperlab/commonlists.css",
+      "wwwroot/css/hyperlab/users/users.css",
+      "wwwroot/css/hyperlab/users/userdata.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }

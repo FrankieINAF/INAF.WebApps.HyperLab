@@ -8,8 +8,6 @@
 @using INAF.WebApps.HyperLab.Resources
 @using System.Text;
 
-@using INAF.WebApps.HyperLab.Views.SLabDataManager.Blazor
-
 @{
     ViewBag.Title = Search.SearchPageTitle;
 
@@ -33,8 +31,7 @@
     string materialTypeMeteorClass = Enums.MaterialType.MeteorClass.ToString();
 }
 
-<link rel="stylesheet" href="~/css/dist/search/searchbundle.min.css" asp-append-version="true" />
-<link rel="stylesheet" href="~/css/dist/devextreme/devextremebundle.min.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/dist/searchandchart/searchandchartbundle.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/dist/jqueryuibundle.min.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/dist/speechbubble.min.css" asp-append-version="true" />
 <style>
@@ -50,7 +47,7 @@
     }
 </style>
 <!-- SEARCH -->
-<div id="wrapper" class="container mywrapper overflow-x-auto overflow-y-hidden">
+<div id="search" class="container h-100 overflow-x-auto overflow-y-hidden">
     @Html.AntiForgeryToken()
     <!-- SEARCH -->
     <div data-role="panel"
@@ -105,7 +102,7 @@
                     <label id="selectMaterialSearchTypeLabel" for="selectMaterialInput" class="text-secondary">@Html.Raw(Search.SearchSimpleByMaterialLabel)</label>
                     <div class="d-flex flex-content-start">
                         <input id="@{
-                                    @selectMaterial
+                                            @selectMaterial
 }Input"
                                type="text"
                                placeholder="@Html.Raw(Search.SearchByMaterialPlaceholder)"
@@ -122,7 +119,7 @@
                         <button class="button dark cycle small outline margin-top-4 margin-left-8"
                                 onclick="resetSearchByMaterial('@{
 
-                                    @selectMaterial
+                                            @selectMaterial
 ;
 }Input')"
                                 title="@Html.Raw(Search.SearchClearSuggestionsButtonTitle)">
@@ -267,235 +264,6 @@
     </div>
 </div>
 
-<!-- CHARTS -->
-<div id="charts" class="mywrapper overflow-x-auto overflow-y-auto" style="max-width: 100%">
-</div>
-
-<!-- CHARMS - COLOR SELECTOR -->
-<div id="charmsColorSelector" data-role="charms" data-cls-charms="charms-color-selector-panel" data-position="top" data-on-open="createSpectraTypesColorList()">
-    <!-- TITLE + BUTTON-->
-    <div class="d-flex flex-justify-between">
-        <div>&nbsp;</div>
-        <div class="text-leader">@Html.Raw(CharmsColorSelector.ColorSelectorTitle)</div>
-        <div>
-            <button class="button light cycle outline float-right pointer" onclick="toggleCharmsColorSelector()">
-                <span class="mif-arrow-up mif-2x"></span>
-            </button>
-        </div>
-    </div>
-    <!-- ASSOCIATION + COLOR-SELECTOR -->
-    <div class="row">
-        <!-- ASSOCIATION SPECTRUMTYPE - COLOR -->
-        <div class="cell-fs-12 cell-md-6 d-flex flex-justify-center charms-color-selector-column">
-            <!-- LABEL + LIST -->
-            <div class="row">
-                <!-- LABEL -->
-                <div class="cell-fs-12 cell-md-6">
-                    <div>
-                        <p class="text-medium margin-bottom-8">@Html.Raw(CharmsColorSelector.ColorSelectorLabel1)</p>
-                        <ol>
-                            <li class="margin-vertical-8">@Html.Raw(CharmsColorSelector.ColorSelectorLabel2)</li>
-                            <li class="margin-vertical-8">@Html.Raw(CharmsColorSelector.ColorSelectorLabel3)</li>
-                        </ol>
-                    </div>
-                </div>
-                <!-- LIST -->
-                <div class="cell-fs-12 cell-md-6">
-                    <div id="spectraTypesColorsListContainer"></div>
-                </div>
-            </div>
-        </div>
-        <!-- COLOR-SELECTOR -->
-        <div class="cell-fs-12 cell-md-6 d-flex flex-justify-center charms-color-selector-column">
-            <div id="colorSelector" data-role="color-selector" data-show-values="hex,rgb" data-on-select-color="onSelectColor"></div>
-        </div>
-    </div>
-</div>
-
-<!-- CHARMS - SPECTRA PROCESSING -->
-<div id="charms" data-role="charms" data-cls-charms="charms-panel" data-position="right" data-on-open="onCharmsOpened()" data-on-close="onCharmsClosed()">
-    <!-- MAIN BAR -->
-    <div class="d-flex flex-justify-between" style="height: 60px">
-        <!-- SPECTRUM SELECTION -->
-        <div class="d-flex flex-row">
-            <div id="spectrumSelectionContainer"></div>
-            <div>
-                <button id="buttonShowToastAutoHideNotSelectedSpectra" class="button primary cycle small margin-left-8 margin-top-4 pointer d-none" onmouseover="showToastAutoHideNotSelectedSpectra()">
-                    <span class="mif-info mif-2x"></span>
-                </button>
-            </div>
-        </div>
-
-        <!-- CLOSE-AND-RESET-CHARMS BUTTON -->
-        <div onclick="closeCharmsAsync()" class="button light cycle outline float-right pointer" title="@Html.Raw(Charms.CharmsHideAndResetLabel)">
-            <span class="mif-cross-light"></span>
-        </div>
-        <!-- HIDE-CHARMS BUTTON -->
-        <div onclick="hideCharms()" class="button light cycle outline float-right pointer" title="@Html.Raw(Charms.CharmsHideLabel)">
-            <span class="mif-arrow-right"></span>
-        </div>
-    </div>
-    <!-- SPECTRA PROCESSING MAIN PANEL -->
-    <div id="charmsSpectraProcessingMainPanel" class="row cell-fs-12">
-        <!-- TABS -->
-        <div id="charmsTabsContainer" class="row cell-fs-12 d-none">
-            <ul id="charmsTabs"
-                data-app-bar="false"
-                data-role="tabs"
-                data-expand="true"
-                data-expand-point="fs"
-                data-cls-tabs="tabs-list">
-                <li><a id="alignmentoptionstitle" href="#alignmentoptions">@Html.Raw(Charms.TabsAlignmentTitle)</a></li>
-                <li><a id="fitoptionstitle" href="#fitoptions">@Html.Raw(Charms.TabsFitTitle)</a></li>
-                <li><a id="smoothingoptionstitle" href="#smoothingoptions" onclick="selectTargetSpectrumType()">@Html.Raw(Charms.TabsSmoothingTitle)</a></li>
-                <li><a id="bandanalysistitle" href="#bandanalysis" onclick="createListOfSegmentsForBandAnalysis()">@Html.Raw(Charms.TabsBandAnalysisTitle)</a></li>
-            </ul>
-        </div>
-        <!-- PANELS -->
-        <div id="charmsPanels" class="row cell-fs-12">
-            <!-- ALIGNMENT -->
-            <div id="alignmentoptions">
-                <!-- MESSAGE FOR EMPTY PANEL -->
-                <div id="charmsTabAlignmentStartingMessageContainer" class="h-vh-75 d-flex flex-content-center" style="flex-wrap: wrap">
-                    <span class="mif-info mif-2x"></span>
-                    <p class="text-just fg-white margin-top-16">@Html.Raw(Charms.CharmsStartingMessage)</p>
-                </div>
-                <div id="alignmentOptionsPanel"></div>
-            </div>
-            <!-- FIT -->
-            <div id="fitoptions">
-                @{
-                    await Html.RenderPartialAsync("Partials/_AlwaysVisibleFitPanel");
-                }
-            </div>
-            <!-- SMOOTHING -->
-            <div id="smoothingoptions"></div>
-            <!-- BAND ANALYSIS -->
-            <div id="bandanalysis">
-                <div class="d-flex flex-column">
-                    <!-- SEGMENTS -->
-                    <div><span class="text-leader text-center">@Html.Raw(CharmsBandAnalysis.BandAnalysisSegmentsListTitle)</span></div>
-                    <div id="bandsAnalysisSegmentsListContainer" class="margin-top-24"></div>
-                    <!-- RESULT -->
-                    <div id="bandAnalysisResultsContainer" class="d-none border-top margin-top-24">
-                        <!-- DROPDOWN SETTINGS -->
-                        <div id="availableBandsAnalysisData" class="margin-vertical-4 d-none">
-                            <button class="button cycle bg-transparent bg-cyan-hover pointer" onclick="toggleSettings('availableBandsAnalysisDataDropdown')"><span class="mif-cloud-download mif-2x fg-white"></span></button>
-                            <span class="text-secondary margin-left-8 margin-top-4">@Html.Raw(CharmsBandAnalysis.BandAnalysisBandsAnalysisOnCloudLabel)</span>
-                        </div>
-                        <div class="pos-relative">
-                            <div id="availableBandsAnalysisDataDropdown"
-                                 class="fg-white"
-                                 data-role="dropdown"
-                                 data-no-close="true"
-                                 data-toggle-element="#availableBandsAnalysisData">
-                                <!-- LIST OF AVAILABLE BANDS ANALYSIS DATA -->
-                                <div id="bandsAnalysisDataList"></div>
-                            </div>
-                        </div>
-                        <!-- RESULTS TITLE -->
-                        <div><span class="text-leader">@Html.Raw(CharmsBandAnalysis.BandAnalysisResultsTitle)</span></div>
-                        <!-- BAND BOUNDARIES -->
-                        <div class="d-flex flex-row margin-top-16">
-                            <div><span>@Html.Raw(CharmsBandAnalysis.BandAnalysisBandBoundariesLabel)</span></div>
-                            <div class="margin-left-16">
-                                <span>[</span>
-                                <span id="bandAnalysisBandBoundariesMinValue"></span>
-                                <span class="margin-left-4">,</span>
-                                <span class="margin-left-4" id="bandAnalysisBandBoundariesMaxValue"></span>
-                                <span>]</span>
-                            </div>
-                        </div>
-
-                        <!-- BAND CENTER -->
-                        <div class="d-flex flex-row margin-top-16">
-                            <div><span>@Html.Raw(CharmsBandAnalysis.BandAnalysisBandCenterLabel)</span></div>
-                            <div class="margin-left-16"><span id="bandAnalysisBandCenterValue">-</span></div>
-                            <div class="margin-left-8"><span id="bandAnalysisBandCenterUnit" class="d-none">nm</span></div>
-                        </div>
-
-                        <!-- BAND FWHM -->
-                        <div class="d-flex flex-row margin-top-16">
-                            <div><span>@Html.Raw(CharmsBandAnalysis.BandAnalysisBandFwhmLabel)</span></div>
-                            <div class="margin-left-16"><span id="bandAnalysisBandFwhmValue">-</span></div>
-                            <div class="margin-left-8"><span id="bandAnalysisBandFwhmUnit" class="d-none">nm</span></div>
-                        </div>
-
-                        <!-- BAND DEPTH -->
-                        <div class="d-flex flex-row margin-top-16">
-                            <div><span>@Html.Raw(CharmsBandAnalysis.BandAnalysisBandDepthLabel)</span></div>
-                            <div class="margin-left-16"><span id="bandAnalysisBandDepthValue">-</span></div>
-                        </div>
-
-                        <!-- BAND AREA -->
-                        <div class="d-flex flex-row margin-top-16">
-                            <div><span>@Html.Raw(CharmsBandAnalysis.BandAnalysisBandAreaLabel)</span></div>
-                            <div class="margin-left-16"><span id="bandAnalysisBandAreaValue">-</span></div>
-                        </div>
-
-                        <!-- BUTTON SAVE -->
-                        <div class="d-flex flex-row margin-top-16">
-                            <button id="bandAnalysisDataButtonSave" class="button primary cycle pointer disabled margin-left-16" title="@Html.Raw(Charms.FitButtonSaveLabel)" onclick="saveBandAnalysisDataProcedureAsync()"><span class="mif-floppy-disk"></span></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @*    <!-- BAND ANALYSIS MAIN PANEL -->
-    <div id="charmsBandAnalysisMainPanel" class="row cell-fs-12 d-none">
-        <!-- TITLE -->
-        <div class="d-flex flex-row">
-            <div><span class="text-upper">@Html.Raw(CharmsBandAnalysis.BandAnalysisTitle)</span></div>
-            <div>
-                <button class="button cycle mini margin-left-16" title="@Html.Raw(CharmsBandAnalysis.BandAnalysisHideTool)" onclick="hideBandAnalysisPanelAsync()">
-                    <span class="mif-cross-light"></span>
-                </button>
-            </div>
-        </div>
-
-        <!-- BAND-ANALYSIS PARAMETERS PANEL -->
-
-    </div> *@
-</div>
-
-<!-- CHARMS - LEGEND -->
-<div id="charmsLegend" data-role="charms" data-cls-charms="charms-legend-panel" data-position="left" data-on-open="createCharmsLegend()">
-
-    <!-- ARROW + TITLE -->
-    <div class="row">
-        <!-- ARROW -->
-        <div class="cell-fs-4 cell-md-2">
-            <div class="button light cycle outline float-left pointer fg-white" title="@Html.Raw(Charms.CharmsHideLabel)" onclick="toggleCharmsLegend()">
-                <span class="mif-arrow-left"></span>
-            </div>
-        </div>
-        <!-- TITLE -->
-        <div class="cell-fs-4 cell-md-8 text-center">
-            <span class="text-bold text-leader fg-white">@Html.Raw(CharmsLegend.LegendTitle)</span>
-        </div>
-        <!-- EMPTY-->
-        <div class="cell-fs-4 cell-md-2">
-            <div class="button light cycle outline float-left pointer fg-white" title="@Html.Raw(CharmsLegend.LegendRefreshLabel)" onclick="refreshCharmsLegend()">
-                <span class="mif-refresh"></span>
-            </div>
-        </div>
-    </div>
-
-    <!-- LEGEND LABEL -->
-    <div class="row cell-fs-12">
-        <p class="fg-light text-secondary">@Html.Raw(CharmsLegend.LegendLabel1)</p>
-        <p class="fg-light text-secondary">@Html.Raw(CharmsLegend.LegendLabel2)</p>
-    </div>
-
-    <!-- LEGEND -->
-    <div id="legendContainer" class="row cell-fs-12">
-        <ul id="legend" data-role="treeview">
-        </ul>
-    </div>
-</div>
-
 <!-- SPECTRUM INFO -->
 <div id="info" class="container mywrapper overflow-x-auto overflow-y-auto bg-light zindex-10">
     <!-- CLOSE BUTTON -->
@@ -592,12 +360,15 @@
     </div>
 </div>
 
-<!-- REFERENCE TO BLAZOR BlazorHelper COMPONENT -->
-<base href="~/" />
-<component type="typeof(BlazorHelper)" render-mode="ServerPrerendered" />
+<!-- CHARMS SHARE -->
+@{
+    await Html.RenderPartialAsync("Partials/_Share");
+}
 
 <!-- common js variables -->
 @{
+    await Html.RenderPartialAsync("Partials/_SearchAndShareJsCommon");
+    await Html.RenderPartialAsync("Partials/_SearchAndChartJsCommon");
     await Html.RenderPartialAsync("Partials/_SearchJsCommon");
 }
 <script type="text/javascript">
@@ -625,64 +396,73 @@
     var selectOriginType = '@selectOriginType';
 
     function search() {
-        /* reset array */
-        selectedSpectra = [];
+    /* reset array */
+    selectedSpectra = [];
 
-        /* remove 'show chart' button, if available */
-        removeCreateChartsButtonProcedure();
+    /* remove 'show chart' button, if available */
+    //removeCreateChartsButtonProcedure();
 
-        /* execute selected search */
-        if (SELECTED_SEARCH_TYPE == SEARCH_SIMPLE_TYPE) {
-            if (selectedSearchSimpleType == '@selectMaterial') {
-                searchSimpleByMaterial();
-            } else if (selectedSearchSimpleType == '@selectSampleName') {
-                searchSimpleBySampleName();
-            } else if (selectedSearchSimpleType == '@selectMineralType') {
-                searchSimpleByMineralType();
-            } else if (selectedSearchSimpleType == '@selectOriginType') {
-                searchSimpleByOriginType();
-            } else if (selectedSearchSimpleType == '@selectSampleDataType') {
-                searchSimpleBySampleType();
-            }
-        } else {
-            executeComplexSearch();
-        }
+    /* execute selected search */
+    if (SELECTED_SEARCH_TYPE == SEARCH_SIMPLE_TYPE) {
+    if (selectedSearchSimpleType == '@selectMaterial') {
+    searchSimpleByMaterial();
+    } else if (selectedSearchSimpleType == '@selectSampleName') {
+    searchSimpleBySampleName();
+    } else if (selectedSearchSimpleType == '@selectMineralType') {
+    searchSimpleByMineralType();
+    } else if (selectedSearchSimpleType == '@selectOriginType') {
+    searchSimpleByOriginType();
+    } else if (selectedSearchSimpleType == '@selectSampleDataType') {
+    searchSimpleBySampleType();
+    }
+    } else {
+    executeComplexSearch();
+    }
     }
 
     function fillSampleTypes() {
-    @{
-        StringBuilder sb0 = new StringBuilder();
-        int sampleTypesNum = Model.SampleDataValues.Count;
-        for (int i = 0; i < sampleTypesNum; i++)
-        {
-            sb0.AppendLine($"sampleTypes.push({{key: {Model.SampleDataValues[i].Id}, value: '{Model.SampleDataValues[i].Value}' }});");
+        @{
+            if (Model.SampleDataValues != null && Model.SampleDataValues.Any())
+            {
+                StringBuilder sb = new StringBuilder();
+                int sampleTypesNum = Model.SampleDataValues.Count;
+                for (int i = 0; i < sampleTypesNum; i++)
+                {
+                    sb.AppendLine($"sampleTypes.push({{key: {Model.SampleDataValues[i].Id}, value: '{Model.SampleDataValues[i].Value}' }});");
+                }
+                @Html.Raw(sb.ToString());
+            }
         }
-    }
-    @Html.Raw(sb0.ToString());
     }
 
     function fillMineralTypes() {
-    @{
-        StringBuilder sb1 = new StringBuilder();
-        int mineralTypesNum = Model.MineralTypeValues.Count;
-        for (int i = 0; i < mineralTypesNum; i++)
-        {
-            sb1.AppendLine($"mineralTypes.push({{key: {Model.MineralTypeValues[i].Id}, value: '{Model.MineralTypeValues[i].Value}' }});");
+        @{
+            if (Model.MineralTypeValues != null && Model.MineralTypeValues.Any())
+            {
+                StringBuilder sb = new StringBuilder();
+                int mineralTypesNum = Model.MineralTypeValues.Count;
+                for (int i = 0; i < mineralTypesNum; i++)
+                {
+                    sb.AppendLine($"mineralTypes.push({{key: {Model.MineralTypeValues[i].Id}, value: '{Model.MineralTypeValues[i].Value}' }});");
+                }
+                @Html.Raw(sb.ToString());
+            }
         }
-    }
-    @Html.Raw(sb1.ToString());
     }
 
     function fillOriginTypes() {
-    @{
-        StringBuilder sb2 = new StringBuilder();
-        int originTypesNum = Model.OriginTypeValues.Count;
-        for (int i = 0; i < originTypesNum; i++)
-        {
-            sb2.AppendLine($"originTypes.push({{key: {Model.OriginTypeValues[i].Id}, value: '{Model.OriginTypeValues[i].Value}' }});");
+        @{
+            if (Model.OriginTypeValues != null && Model.OriginTypeValues.Any())
+            {
+                StringBuilder sb = new StringBuilder();
+                int originTypesNum = Model.OriginTypeValues.Count;
+                for (int i = 0; i < originTypesNum; i++)
+                {
+                    sb.AppendLine($"originTypes.push({{key: {Model.OriginTypeValues[i].Id}, value: '{Model.OriginTypeValues[i].Value}' }});");
+                }
+                @Html.Raw(sb.ToString());
+            }
         }
-    }
-    @Html.Raw(sb2.ToString());
     }
 
     $(function () {
@@ -691,30 +471,18 @@
 
 
 </script>
-<script type="text/javascript" src="~/js/dist/search/blazorglobalbundle.min.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/js/dist/devextreme/devextremebundle.min.js" asp-append-version="true"></script>
 <environment names="Development">
-    <script type="text/javascript" src="~/js/hyperlab/common.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/common.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charts.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/chartsarrays.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/commonsearchandchartsandsharedstuff.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/commonsearchandsharedstuff.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/commonsearchandchart.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/search.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/searchSimple.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/searchComplex.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/complexsearchesmanagement.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/complexsearchesintro.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/info.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charms.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmslegend.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmscolorselector.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmsalignmentpanel.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmsfitpanel.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmsfitpanelcore.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmsfitpanelpro.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmsfitpanelcommon.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmssmoothingpanel.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/charms/charmsbandanalysis.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">
-    <script type="text/javascript" src="~/js/dist/search/searchbundle.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/dist/search/searchbundle.min.js" asp-append-version="true"></script>
 </environment>

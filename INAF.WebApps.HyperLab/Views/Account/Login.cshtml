@@ -14,25 +14,21 @@
 
     int confirmation = ViewBag?.Confirmation ?? 0;
 }
-<link rel="stylesheet" href="~/css/hyperlab/common.css" />
-<link rel="stylesheet" href="~/css/hyperlab/account/confirmationcompleted.css" />
-<link rel="stylesheet" href="~/css/hyperlab/account/login.css" />
+<environment names="Development">
+    <link rel="stylesheet" href="~/css/hyperlab/common.css" />
+    <link rel="stylesheet" href="~/css/hyperlab/account/confirmationcompleted.css" />
+    <link rel="stylesheet" href="~/css/hyperlab/account/login.css" />
+</environment>
+<environment names="Production">
+    <link rel="stylesheet" href="~/css/dist/account/loginbundle.min.css" asp-append-version="true" />
+</environment>
+
 <div class="h-vh-100 w-vw-100">
     <div class="row h-vh-100">
         <!-- TEXT/IMAGES -->
-        <div class="cell-fs-12 cell-xl-4 h-vh-25-fs h-vh-100-xl">
-            <div class="row cell-fs-12 text-center h-25">
-                <span class="fg-black display2">@Html.Raw(SharedResources.HyperLabLabel)</span>
-            </div>
-            <div class="row text-center h-75">
-                <div class="cell-fs-6 cell-lg-12 text-center h-50">
-                    <img src="~/images/em_spectrum_400x400.png" class="spectrum-image" />
-                </div>
-                <div class="cell-fs-6 cell-lg-12 text-center h-50">
-                    <img src="~/images/login/iaps_marchio_full_colorinaf.svg" class="inaf-image" />
-                </div>
-            </div>
-        </div>
+        @{
+            await Html.RenderPartialAsync("Partials/_TextImages");
+        }
 
         <!-- FORM -->
         <div class="cell-fs-12 cell-xl-8 form-cell-background h-vh-75-fs h-vh-100-xl">
@@ -53,12 +49,12 @@
                                       method="post"
                                       action="/@GenericHelper.GetControllerName(nameof(AccountController))/@nameof(AccountController.Login)"
                                       target="_self">
-                                   
+
 
                                     @Html.AntiForgeryToken()
 
                                     <div class="row loginRowsDivider">
-                                        <div class="col-xs-12">
+                                        <div class="cell-fs-12">
                                             <!-- USERNAME -->
                                             <div class="form-group">
                                                 @Html.TextBoxFor(m => m.UserName,
@@ -83,8 +79,8 @@
                                             </div>
                                             <!-- SUBMIT + REMEMBER ME-->
                                             <div class="row margin-top-32">
-                                                <div class="cell-fs-4">&nbsp;</div>
-                                                <div class="cell-fs-4 d-flex flex-justify-center">
+                                                <div class="d-none-fs cell-sm-2">&nbsp;</div>
+                                                <div class="cell-fs-8 cell-sm-8 d-flex flex-justify-center">
                                                     <div>
                                                         <button id="submitButton" class="image-button primary">
                                                             <span class="mif-checkmark icon"></span>
@@ -92,7 +88,7 @@
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <div class="cell-fs-4">
+                                                <div class="cell-fs-4 cell-sm-2">
                                                     @Html.CheckBoxFor(m => m.RememberMe, new Dictionary<string, object> { { "data-role", "checkbox" }, { "class", "place-right" }, { "data-caption", @Html.Raw(CommonResources.Login.RememberMeLabel) }, { "id", "checkboxRememberMe" } })
                                                 </div>
                                             </div>

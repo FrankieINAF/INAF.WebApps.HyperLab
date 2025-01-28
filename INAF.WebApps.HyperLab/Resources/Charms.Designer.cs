@@ -430,6 +430,105 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Share.
+        /// </summary>
+        public static string CharmsShareButton {
+            get {
+                return ResourceManager.GetString("CharmsShareButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking user....
+        /// </summary>
+        public static string CharmsShareCheckUserMessage {
+            get {
+                return ResourceManager.GetString("CharmsShareCheckUserMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sharing spectra with other users allows them to review and edit the data, such as adjusting parameters for alignment, continuum removal, or smoothing..
+        /// </summary>
+        public static string CharmsShareExplanation {
+            get {
+                return ResourceManager.GetString("CharmsShareExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter email.
+        /// </summary>
+        public static string CharmsShareInputPlaceholder {
+            get {
+                return ResourceManager.GetString("CharmsShareInputPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while creating invitation for &apos;r_v&apos;.
+        /// </summary>
+        public static string CharmsShareInvitationNotCreatedErrorMessage {
+            get {
+                return ResourceManager.GetString("CharmsShareInvitationNotCreatedErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You&apos;re going to share r_v spectra.
+        /// </summary>
+        public static string CharmsShareNumOfSpectra {
+            get {
+                return ResourceManager.GetString("CharmsShareNumOfSpectra", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share not created for &apos;r_v&apos;.
+        /// </summary>
+        public static string CharmsShareShareNotCreatedForUserErrorMessage {
+            get {
+                return ResourceManager.GetString("CharmsShareShareNotCreatedForUserErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, something went wrong while trying to share spectra.
+        /// </summary>
+        public static string CharmsShareSpectraSharedErrorMessage {
+            get {
+                return ResourceManager.GetString("CharmsShareSpectraSharedErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spectra have been successfully shared!.
+        /// </summary>
+        public static string CharmsShareSpectraSharedInfoMessage {
+            get {
+                return ResourceManager.GetString("CharmsShareSpectraSharedInfoMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share spectra with other users.
+        /// </summary>
+        public static string CharmsShareTitle {
+            get {
+                return ResourceManager.GetString("CharmsShareTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email doesn&apos;t correspond to any existing user. An invitation to join HyperLab will be sent.
+        /// </summary>
+        public static string CharmsShareUserNotExistantMessage {
+            get {
+                return ResourceManager.GetString("CharmsShareUserNotExistantMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Spectra management.
         /// </summary>
         public static string CharmsSpectraProcessingManagementLabel {

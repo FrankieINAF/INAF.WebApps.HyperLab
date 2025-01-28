@@ -1,12 +1,15 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData.Containers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
+using INAF.WebApps.HyperLab.Extensions;
 using INAF.WebApps.HyperLab.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Dynamic;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -53,59 +56,64 @@ namespace INAF.WebApps.HyperLab.Controllers
         #endregion
 
         #region GET
-        //[HttpGet]
-        //public async Task<IActionResult> GetMaterialsSuggestions(GenericRequestByTextModel model)
-        //{
-        //    SuggestionsContainer suggestionsContainer = new SuggestionsContainer();
+        [HttpGet]
+        public async Task<IActionResult> GetMaterialsSuggestions(GenericRequestByTextModel model)
+        {
+            SuggestionsContainer suggestionsContainer = new SuggestionsContainer();
 
-        //    List<Task<MaterialsContainer>> tasks = new List<Task<MaterialsContainer>>(2)
-        //    {
-        //        Task.Run(() =>
-        //        {
-        //            var minerals = dbHandlerHyperLabData.getMinerals(model.Text);
-        //            return new MaterialsContainer()
-        //            {
-        //                Name = Resources.Search.SuggestionTypeMinerals,
-        //                Materials = minerals.Cast<MaterialBaseModel>(),
-        //            };
-        //        }),
-        //        Task.Run(() =>
-        //        {
-        //            var rocks = dbHandlerHyperLabData.getRocks(model.Text);
-        //            return new MaterialsContainer()
-        //            {
-        //                Name = Resources.Search.SuggestionTypeRocks,
-        //                Materials = rocks,
-        //            };
-        //        }),
-        //        Task.Run(async () =>
-        //        {
-        //            var searchByMaterialHelper = serviceProvider.GetRequiredService<SearchByMaterialHelper>();
-        //            MaterialsContainer meteorClassesContainer = await searchByMaterialHelper.getMeteorClassesAsync(model.Text);
-        //            return new MaterialsContainer()
-        //            {
-        //                Name = Resources.Search.SuggestionTypeRocks,
-        //                Materials = meteorClassesContainer.Materials,
-        //            };
-        //        }),
-        //    };
+            List<Task<MaterialsContainer?>> tasks = new List<Task<MaterialsContainer?>>(2)
+            {
+                Task.Run(() =>
+                {
+                    var minerals = dbHandlerHyperLabData.getMinerals(model.Text);
+                    if (minerals == null)
+                        return null;
+                    return new MaterialsContainer()
+                    {
+                        Name = Resources.Search.SuggestionTypeMinerals,
+                        Materials = minerals.Cast<MaterialBaseModel>(),
+                    };
+                }),
+                Task.Run(() =>
+                {
+                    var rocks = dbHandlerHyperLabData.getRocks(model.Text);
+                    if (rocks == null)
+                        return null;
+                    return new MaterialsContainer()
+                    {
+                        Name = Resources.Search.SuggestionTypeRocks,
+                        Materials = rocks,
+                    };
+                }),
+                Task.Run(() =>
+                {
+                    var meteoriteClasses = dbHandlerHyperLabData.getMeteoriteClasses(model.Text);
+                    if (meteoriteClasses == null)
+                        return null;
+                    return new MaterialsContainer()
+                    {
+                        Name = Resources.Search.SuggestionTypeRocks,
+                        Materials = meteoriteClasses,
+                    };
+                }),
+            };
 
-        //    var results = await Task.WhenAll(tasks);
+            var results = await Task.WhenAll(tasks);
 
-        //    JsonResult? jsonResult = null;
-        //    switch (getCallerContext())
-        //    {
-        //        case Libraries.Net.HyperLab.CommonModels.Values.Enums.CallerContext.Web:
-        //            ExpandoObject jsonObject = buildMineralsSuggestionsJson(results.ToList());
-        //            jsonResult = new JsonResult(jsonObject);
-        //            break;
-        //        case Libraries.Net.HyperLab.CommonModels.Values.Enums.CallerContext.App:
-        //            jsonResult = new JsonResult(results);
-        //            break;
-        //    }
+            JsonResult? jsonResult = null;
+            switch (getCallerContext())
+            {
+                case Libraries.Net.HyperLab.CommonModels.Values.Enums.CallerContext.Web:
+                    ExpandoObject jsonObject = buildMineralsSuggestionsJson(results.ToList());
+                    jsonResult = new JsonResult(jsonObject);
+                    break;
+                case Libraries.Net.HyperLab.CommonModels.Values.Enums.CallerContext.App:
+                    jsonResult = new JsonResult(results);
+                    break;
+            }
 
-        //    return jsonResult!;
-        //}
+            return jsonResult!;
+        }
 
         [HttpGet]
         public IActionResult GetMeteoriteClasses(GenericRequestByTextModel model)
@@ -147,7 +155,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> DeleteMineral([FromBody] GenericRequestByIdModel model)
         {
             bool isOk = await dbHandlerHyperLabData.deleteMineralAsync(model.Id,
-                                                           getUserId());
+                                                                       getUserId());
             return new JsonResult(new GenericValueStringResponseModel() { IsOk = isOk, Id = model.Id });
         }
 
@@ -158,8 +166,8 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (ModelState.IsValid)
             {
                 (bool isOk, int id) result = await dbHandlerHyperLabData.upsertMineralDataSimpleAsync(materialModel.Id,
-                                                                                          materialModel.Name,
-                                                                                          materialModel.Formula);
+                                                                                                      materialModel.Name,
+                                                                                                      materialModel.Formula);
                 return new JsonResult(new GenericValueStringResponseModel() { IsOk = result.isOk, Id = result.id, Value = materialModel.Name });
             }
 
@@ -167,5 +175,24 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new BadRequestObjectResult(getUpsertErrorStatusResponseModel());
         }
         #endregion
+
+        private ExpandoObject buildMineralsSuggestionsJson(List<MaterialsContainer> materialsContainers)
+        {
+            ExpandoObject suggestionsContainerObject = new ExpandoObject();
+            foreach (var material in materialsContainers)
+            {
+                if (material.Materials == null)
+                    continue;
+
+                ExpandoObject suggestionsObject = new ExpandoObject();
+                foreach (var item in material.Materials)
+                {
+                    suggestionsObject.AddProperty($"{material.Name}_{item.Id.ToString()}", item.Name!);
+                }
+                suggestionsContainerObject.AddProperty(material.Name!, suggestionsObject);
+            }
+
+            return suggestionsContainerObject;
+        }
     }
 }

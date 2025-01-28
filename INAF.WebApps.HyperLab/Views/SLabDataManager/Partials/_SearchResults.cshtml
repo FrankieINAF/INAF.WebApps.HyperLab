@@ -17,7 +17,7 @@
     @{
         if (Model?.Results?.Count() > 0)
         {
-            MineralType mineralType = Model.Results.FirstOrDefault().MineralType;
+            MineralType mineralType = Model.Results.First().MineralType;
 
             int rowsNum = Model.Results.Count();
 

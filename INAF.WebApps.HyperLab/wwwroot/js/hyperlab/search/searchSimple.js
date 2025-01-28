@@ -8,24 +8,19 @@ function getMaterialForSearch() {
         return null;
 
     try {
-        let selectedValues = Metro.getPlugin('#selectMaterial', 'select').getSelected();
-        let selectedTexts = Metro.getPlugin('#selectMaterial', 'select').getSelectedText();
+        let selectedValue = Metro.getPlugin('#selectMaterial', 'select').val();
 
-        if (suggestions['selectMaterial'].Minerals) {
-            if (selectedValues && selectedTexts) {
-                model = {
-                    Id: parseInt(selectedValues[0]),
-                    Text: selectedTexts[0],
-                    Type: MATERIAL_TYPE_MINERAL,
-                };
-            }
-        } else if (suggestions['selectMaterial'].Rocks) {
+        let tmp = selectedValue.split('_');
+        let materialName = tmp[0];
+        let type = tmp[0].slice(0, -1);
 
-        } else if (suggestions['selectMaterial'].MeteorClasses) {
+        let text = suggestions['selectMaterial'][materialName][Metro.getPlugin('#selectMaterial', 'select').val()];
 
-        }
-
-        //console.log(model);
+        model = {
+            Id: parseInt(tmp[1]),
+            Text: text,
+            Type: type,
+        };
     } catch (e) {
         console.log(`getMaterialForSearch - ex: ${e}`);
         showSimpleDialog(ERROR_LABEL, SearchByMaterialErrorMessage, ALERT);

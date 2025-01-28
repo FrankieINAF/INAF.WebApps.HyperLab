@@ -15,6 +15,19 @@ var DELAY_3S = 'delay-3s';
 var DELAY_4S = 'delay-4s';
 var DELAY_5S = 'delay-5s';
 
+var isFirstLoading = true;
+
+function showPageItems(callback) {
+    showByClass('leftMenu');
+    animateCSS('leftMenu', 'fadeIn', FASTER);
+
+    showByClass('appbar');
+    animateCSS('appbar', 'fadeIn', FASTER);
+
+    showByClass('renderbody');
+    animateCSS('renderbody', 'fadeIn', FASTER, callback);
+}
+
 /* constants for css transform */
 var TRANSITION_DURATION = 250;
 var TRANSITION_SHORTHAND = 'all ' + TRANSITION_DURATION + 'ms cubic-bezier(0.4, 0.46, 0.32, 1)';
@@ -137,6 +150,14 @@ var INFO = 'info';
 var SUCCESS = 'success';
 var WARNING = 'warning';
 var appToast;
+
+var ICON_INFO_NAME = 'mif-info';
+var ICON_WARNING_NAME = 'mif-warning';
+var ICON_ERROR_NAME = 'mif-cross-light';
+
+var COLOR_INFO_CLASS = 'fg-green';
+var COLOR_WARNING_CLASS = 'fg-yellow';
+var COLOR_ERROR_CLASS = 'fg-red';
 
 function showDialogWithAction(title, content, cls, caption1, callback1) {
     Metro.dialog.create({

@@ -3,46 +3,49 @@
 @inject INAF.WebApps.HyperLab.Helpers.MenuHelper menuHelper
 
 @{
-    Menu menu = menuHelper.GetMenu(Context);
+    Menu? menu = menuHelper.GetMenu(Context);
     int index = 0;
 
-    foreach (var item in menu.Items)
-    {
-        if (item.ChildrenNum == 0)
+    if (menu != null && menu.Items != null && menu.Items.Any()) {
+        foreach (var item in menu.Items)
         {
-            <li>
-                <a class="menuitem" href="@Url.Action(item.ActionName, item.ControllerName)">
-                    <span class="icon"><span class="@item.Icon"></span></span>
-                    <span class="caption fg-white">@item.Label</span>
-                </a>
-            </li>
-        }
-        else        {
-            <li>
-                <a href="#" class="dropdown-toggle">
-                    <span class="icon"><span class="@item.Icon"></span></span>
-                    <span class="caption fg-white">@item.Label</span>
-                </a>
-                <ul class="navview-menu" data-role="dropdown">
-                    @{
-                        List<MenuItem>? children = menuHelper.GetItemSubMenu(Context, item.Id);
-                        if (children != null)
-                        {
-                            foreach (var child in children)
+            if (item.ChildrenNum == 0)
+            {
+                <li>
+                    <a class="menuitem" href="@Url.Action(item.ActionName, item.ControllerName)">
+                        <span class="icon"><span class="@item.Icon"></span></span>
+                        <span class="caption fg-white">@item.Label</span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <span class="icon"><span class="@item.Icon"></span></span>
+                        <span class="caption fg-white">@item.Label</span>
+                    </a>
+                    <ul class="navview-menu" data-role="dropdown">
+                        @{
+                            List<MenuItem>? children = menuHelper.GetItemSubMenu(Context, item.Id);
+                            if (children != null)
                             {
-                                <li>
-                                    <a class="menuhref" href="@Url.Action(child.ActionName, child.ControllerName)">
-                                        <span class="icon" style="margin-left: 24px"><span class="@child.Icon"></span></span>
-                                        <span class="caption">@child.Label</span>
-                                    </a>
-                                </li>
+                                foreach (var child in children)
+                                {
+                                    <li>
+                                        <a class="menuhref" href="@Url.Action(child.ActionName, child.ControllerName)">
+                                            <span class="icon" style="margin-left: 24px"><span class="@child.Icon"></span></span>
+                                            <span class="caption">@child.Label</span>
+                                        </a>
+                                    </li>
+                                }
                             }
                         }
-                    }
-                </ul>
-            </li>
-        }
+                    </ul>
+                </li>
+            }
 
-        index++;
+            index++;
+        }
     }
 }

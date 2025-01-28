@@ -3,6 +3,7 @@ using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Shares;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.WebApps.HyperLab.Controllers.Base;
+using MathNet.Numerics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace INAF.WebApps.HyperLab.Controllers
@@ -10,49 +11,69 @@ namespace INAF.WebApps.HyperLab.Controllers
     public class SpectraSharesController : BaseController
     {
         private readonly DbHandlerHyperLabData dbHandlerHyperLabData;
-        //private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
+        private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
 
-        public SpectraSharesController(IServiceProvider serviceProvider, 
+        public SpectraSharesController(IServiceProvider serviceProvider,
                                        IConfiguration configuration,
                                        DbHandlerHyperLabData dbHandlerHyperLabData,
                                        DbHandlerHyperLabUsers dbHandlerHyperLabUsers,
                                        ILogger<BaseController> logger) : base(serviceProvider, configuration, logger)
         {
             this.dbHandlerHyperLabData = dbHandlerHyperLabData;
-            //this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
+            this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
         }
 
-        public async Task<IActionResult> AddShareForUser(SpectrumShareModel model)
+        [HttpPost]
+        public async Task<IActionResult> AddSharesBetweenOwnerUserAndUsers([FromBody] AddShareModel model)
         {
-            if (await dbHandlerHyperLabData.addShareForUserAsync(getUserId(), model.SpectrumId, model.UserId))
-                return new JsonResult(GenericResponseModel.CreateSuccessResponse());
-            else
+            if (model == null || model.SpectraIds == null || !model.SpectraIds.Any() || model.UsersToShare == null || !model.UsersToShare.Any())
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
+
+            List<ShareResultAddModel> results = await dbHandlerHyperLabData.upsertSharesBetweenOwnerUserAndUsersAsync(getUserId(), 
+                                                                                                                      model.SpectraIds, 
+                                                                                                                      model.UsersToShare);
+            foreach (ShareResultAddModel result in results)
+            {
+                if (result.IsShareOperationCompleted)
+                    result.IsErrorInInvitation = !await dbHandlerHyperLabUsers.tryAddUserToBeInvited(result.Email!);
+            }
+
+            bool isAnyErrorInInvitations = results.Any(x => x.IsErrorInInvitation);
+            bool isAnyErrorInShare = results.Any(x => !x.IsShareOperationCompleted);
+
+            if (isAnyErrorInShare || isAnyErrorInInvitations) 
+                return new JsonResult(new GenericResponseModel(false, results));
+
+            return new JsonResult(GenericResponseModel.CreateSuccessResponse());
         }
 
-        public IActionResult GetSharesForUser()
+        [HttpPost]
+        public async Task<IActionResult> RemoveSharesBetweenOwnerUserAndUsers([FromBody] RemoveSharesContainer model)
         {
-            var shares = dbHandlerHyperLabData.getSharesForUser(getUserId());
-            if (shares != null && shares.Any())
-                return new JsonResult(shares);
-            else
-                return new EmptyResult();
-        }
-
-        public IActionResult IsAnyShareAvailableForUser()
-        {
-            if (dbHandlerHyperLabData.isAnyShareAvailableForUser(getUserId()))
-                return new JsonResult(GenericResponseModel.CreateSuccessResponse());
-            else
+            if (model == null || model.Shares == null || !model.Shares.Any())
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
-        }
 
-        public async Task<IActionResult> JoinShare()
-        {
-            if (await dbHandlerHyperLabData.joinAllSharesForUserAsync(getUserId()))
-                return new JsonResult(GenericResponseModel.CreateSuccessResponse());
-            else
-                return new JsonResult(GenericResponseModel.CreateErrorResponse());
+            int operationUserId = getUserId();
+            List<ShareResultRemoveModel> results = await dbHandlerHyperLabData.removeSharesBetweenOwnerUserAndUsersAsync(operationUserId,
+                                                                                                                         model.Shares,
+                                                                                                                         operationUserId);
+
+            bool isAnyErrorInShare = results.Any(x => !x.IsShareOperationCompleted);
+            if (isAnyErrorInShare)
+            {
+                var wrongSharesResults = results.Where(x => !x.IsShareOperationCompleted).ToList();
+                foreach (ShareResultRemoveModel result in wrongSharesResults)
+                {
+                    if (string.IsNullOrEmpty(result.UserId))
+                        continue;
+                    var user = dbHandlerHyperLabUsers.getUserDetailsSimple(int.Parse(result.UserId));
+                    if (user == null)
+                        continue;
+                    result.CompleteUserName = $"{user.Name} {user.LastName}";
+                }
+            }
+
+            return new JsonResult(new GenericResponseModel(!isAnyErrorInShare, results));
         }
     }
 }

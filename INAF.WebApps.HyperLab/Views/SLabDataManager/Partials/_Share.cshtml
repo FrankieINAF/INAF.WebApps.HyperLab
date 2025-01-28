@@ -1,0 +1,91 @@
+﻿@using INAF.WebApps.HyperLab.Resources
+
+<div id="charmsShare" data-role="charms" data-cls-charms="charms-share-panel" data-position="bottom" data-on-open="onCharmsShareOpen">
+    <!-- TITLE + CLOSE BUTTON -->
+    <div class="row">
+        <div class="cell-fs-2">&nbsp;</div>
+        <!-- TITLE -->
+        <div class="cell-fs-8">
+            <h3 class="text-light text-center">@Html.Raw(Charms.CharmsShareTitle)</h3>
+        </div>
+        <!-- CLOSE-AND-RESET-CHARMS BUTTON -->
+        <div class="cell-fs-2">
+            <div onclick="closeCharmsShare()" class="button light cycle outline float-right pointer" title="@Html.Raw(Charms.CharmsHideAndResetLabel)">
+                <span class="mif-cross-light"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXPLANATION -->
+    <div class="row margin-top-16">
+        <div class="cell-fs-12 d-flex">
+            <div><span class="mif-info"></span></div>
+            <div class="margin-left-16"><p class="text-light text-just">@Html.Raw(Charms.CharmsShareExplanation)</p></div>
+        </div>
+    </div>
+
+    <!-- NUM OF SHARED SPECTRA -->
+    <div class="row margin-top-8">
+        <div class="cell-fs-12">
+            <h5 id="numOfSharedSpectraLabel" class="text-light text-center"></h5>
+        </div>
+    </div>
+
+    <!-- SHARE INTERFACE -->
+    <!-- insert new user -->
+    <div class="row margin-top-8">
+        <div class="cell-fs-2 cell-md-4">&nbsp;</div>
+        <div class="cell-fs-8 cell-md-4 margin-top-8">
+            <input id="newUserToShare" type="email" data-role="input" placeholder="@Html.Raw(Charms.CharmsShareInputPlaceholder)" data-prevent-submit="true" data-custom-buttons="customButtons">
+        </div>
+        <div id="newUserToShareActivity" class="cell-fs-2 cell-md-4 d-flex"></div>
+    </div>
+    <!-- list of inserted users -->
+    <div class="row margin-top-8">
+        <div class="cell-fs-2 cell-md-4">&nbsp;</div>
+        <div class="cell-fs-8 cell-md-4">
+            <ul id="selectedUsersToShareList" class="overflow-y-auto"></ul>
+        </div>
+        <div class="cell-fs-2 cell-md-4">&nbsp;</div>
+    </div>
+    <!-- share button -->
+    <div class="row margin-top-8">
+        <div class="cell-fs-2 cell-md-4">&nbsp;</div>
+        <div class="cell-fs-8 cell-md-4">
+            <button id="buttonShareSpectra" class="image-button primary disabled float-right" onclick="shareSpectraAsync()">
+                <span class="mif-share icon"></span>
+                <span class="caption">@Html.Raw(Charms.CharmsShareButton)</span>
+            </button>
+        </div>
+        <div class="cell-fs-2 cell-md-4">&nbsp;</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var CharmsShareCheckUserMessage = "@Html.Raw(Charms.CharmsShareCheckUserMessage)";
+    var CharmsShareInvitationNotCreatedErrorMessage = "@Html.Raw(Charms.CharmsShareInvitationNotCreatedErrorMessage)";
+    var CharmsShareShareNotCreatedForUserErrorMessage = "@Html.Raw(Charms.CharmsShareShareNotCreatedForUserErrorMessage)";
+    var CharmsShareSpectraSharedInfoMessage = "@Html.Raw(Charms.CharmsShareSpectraSharedInfoMessage)";
+    var CharmsShareSpectraSharedErrorMessage = "@Html.Raw(Charms.CharmsShareSpectraSharedErrorMessage)";
+    var CharmsShareUserNotExistantMessage = "@Html.Raw(Charms.CharmsShareUserNotExistantMessage)";
+
+    var customButtons = [
+        {
+            html: "<span class='mif-add'></span>",
+            cls: 'primary',
+            onclick: function() {
+                checkUserAsync();
+            }
+        },
+         {
+            html: "<span class='mif-user'></span>",
+        }
+    ]
+
+    $(function() {
+        $('#newUserToShare').on('keydown', function(evt) {
+            if (evt.originalEvent.code == 'Enter')
+                checkUserAsync();
+        });
+    });
+</script>

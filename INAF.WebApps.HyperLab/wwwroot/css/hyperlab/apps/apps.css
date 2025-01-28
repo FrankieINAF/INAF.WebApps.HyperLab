@@ -30,6 +30,18 @@
     flex-direction: row;
 }
 
+.description-container {
+    width: 100%;
+    height: 40%;
+    /*    margin-top: 24px;
+    margin-bottom: 24px;*/
+}
+
+.download-button {
+    width: 300px;
+    margin-left: 16px !important;
+}
+
 .features-container {
     width: 100%;
     height: 40%;
@@ -44,45 +56,150 @@
     background-color: #1ba1e2 !important; /* ciano */
 }
 
-.download-button {
-    width: 300px;
-    margin-left: 16px !important;
+.image {
+    width: 40%;
 }
 
-@media screen and (max-width: 1024px) {
+.title {
+    font-size: 60px;
+}
+
+/*@media screen and (max-width: 1024px) {
     .content-container {
         width: 80%;
     }
-}
+}*/
+
 
 /* Full HD monitors (1920x1080) */
-@media screen and (max-width: 1920px) and (max-height: 1080px) {
+/*@media screen and (max-width: 1920px) and (max-height: 1080px) {
     .features-container {
         height: 40%;
     }
-}
+}*/
 
 /* Higher resolution monitors */
-@media screen and (min-width: 1921px) {
+/*@media screen and (min-width: 1921px) {
     .features-container {
+        height: 20%;
+    }
+}*/
+
+/* nest hub */
+@media screen and (max-width: 1280px) and (max-height: 800px) {
+    .content-container {
+        width: 90%;
+        height: 150%
+    }
+
+    .description-container {
+        height: 100%;
+    }
+
+    .features-container {
+        height: 30%;
+    }
+
+    .image {
+        width: 30%;
+    }
+
+
+    .title {
+        font-size: 40px;
+    }
+}
+
+/* iPad Pro/surface 7 */
+@media screen and (max-width: 1024px) and (max-height: 1368px) {
+    .content-container {
+        width: 90%;
+    }
+
+    .description-container {
+        height: 15%;
+    }
+
+    .features-container {
+        height: 15%;
+    }
+}
+
+/* nest hub */
+@media screen and (max-width: 1024px) and (max-height: 600px) {
+    .content-container {
+        width: 90%;
+        height: 150%
+    }
+
+    .description-container {
+        height: 100%;
+    }
+
+    .features-container {
+        height: 30%;
+    }
+
+    .image {
+        width: 30%;
+    }
+
+
+    .title {
+        font-size: 40px;
+    }
+}
+
+/* iPad Air */
+@media screen and (max-width: 820px) {
+    .content-container {
+        width: 90%;
+    }
+
+    .description-container {
         height: 20%;
     }
 }
 
 /* iPad Mini */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) and (max-height: 1024px) {
     .content-container {
         width: 90%;
     }
-}
 
-/* iPad Pro */
-@media screen and (max-width: 1024px) and (max-height: 1366px) {
-    .content-container {
-        width: 90%;
+    .description-container {
+        height: 25%;
     }
 }
 
-.title {
-    font-size: 60px;
+/* phones */
+@media screen and (max-width: 540px) {
+    .banner {
+        height: 10%;
+    }
+
+    .content-container {
+        height: 200%;
+    }
+
+    .description-container {
+        height: 30%;
+    }
+
+    .features-container {
+        height: 30%;
+    }
+
+    .feature-item {
+        width: 90%;
+        height: 100px;
+        margin: auto;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        background-color: #1ba1e2 !important; /* ciano */
+    }
+
+    .title {
+        font-size: 40px;
+    }
 }

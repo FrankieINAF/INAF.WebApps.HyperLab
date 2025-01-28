@@ -17,21 +17,16 @@ namespace INAF.WebApps.HyperLab.Helpers
             this.dbHandlerHyperLabData = dbHandlerHyperLabData;
         }
 
-        public ExpandoObject createMultipleSpectraJson(List<int> ids,
+        public ExpandoObject createMultipleSpectraJson(List<ISpectrumModel> spectraModels,
                                                        int operationUserId)
         {
-            //string json = string.Empty;
-
-            int idsNum = ids.Count;
-
-            List<ISpectrumModel> spectraModels = dbHandlerHyperLabData.getSpectraByIdProcedure(ids,
-                                                                                           operationUserId);
+            int idsNum = spectraModels.Count;
 
             /* extract min,max for all series and then retrieve absolute min,max */
             (double min, double max) seriesBoundaries = getSeriesBoundaries(spectraModels);
 
             /* retrieve x values from 1st spectrum */
-            List<double> xValues = spectraModels.First().Points.Select(x => x.X).ToList();
+            List<double> xValues = spectraModels.First().Points!.Select(x => x.X).ToList();
 
             ExpandoObject resultObject = new ExpandoObject();
             resultObject.AddProperty(nameof(AxisRange), new AxisRange(Enums.Axis.Y, seriesBoundaries.min, seriesBoundaries.max));
@@ -42,7 +37,7 @@ namespace INAF.WebApps.HyperLab.Helpers
             {
                 ExpandoObject Value = new ExpandoObject();
                 Value.AddProperty("X", xValue);
-                var infos = spectraModels.Select(x => new { x.Id, x.Points.First(y => y.X == xValue).Y }).ToList();
+                var infos = spectraModels.Select(x => new { x.Id, x.Points!.First(y => y.X == xValue).Y }).ToList();
                 for (int i = 0; i < idsNum; i++)
                 {
                     Value.AddProperty($"id{infos[i].Id}", infos[i].Y);
@@ -59,7 +54,7 @@ namespace INAF.WebApps.HyperLab.Helpers
                                                       int operationUserId)
         {
             ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumByParentIdAndSpectrumType(parentId,
-                                                                                                  spectrumType, 
+                                                                                                  spectrumType,
                                                                                                   operationUserId);
 
             if (spectrumModel == null)

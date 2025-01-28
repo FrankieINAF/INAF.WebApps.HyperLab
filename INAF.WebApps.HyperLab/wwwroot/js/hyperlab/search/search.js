@@ -5,15 +5,11 @@ var SELECTED_SEARCH_TYPE;
 var SEARCH_SIMPLE_TYPE = 'searhsimpletype';
 var SEARCH_COMPLEX_TYPE = 'searhcomplextype';
 
-var selectedSpectra = [];
-
 var suggestions = {};
 
 var areComplexSearchesRetrieved = false;
 
 var timeoutOnWindowResize;
-
-
 
 function setChartAreaWidth(isChartVisible) {
     let bodyW = $('#body').width();
@@ -39,8 +35,13 @@ function addOrRemoveSelectedSpectrum(id) {
     //console.log(`addOrRemoveSelectedSpectrum - id: ${id}, index: ${index}`);
     if (index == -1)
         addSelectedspectrum(id);
-    else
+    else {
         removeSelectedSpectrum(index);
+        if (selectedSpectra.length == 0) {
+            removeCreateChartsButtonProcedure();
+            removeShareButtonProcedure();
+        }
+    }
 }
 
 function addSelectedspectrum(id) {
@@ -48,6 +49,7 @@ function addSelectedspectrum(id) {
 
     if (selectedSpectra.length == 1) {
         addCreateChartsButton();
+        addShareButton();
         showToast(ChartsUseChartsButtonMessage, 3000, INFO);
     }
 }
@@ -57,7 +59,7 @@ function removeSelectedSpectrum(index) {
     selectedSpectra.splice(index, 1);
     console.log(`removeSelectedSpectrum - selectedSpectra: ${selectedSpectra}`);
     if (selectedSpectra.length == 0) {
-        removeCreateChartsButtonProcedure();
+        //removeCreateChartsButtonProcedure();
         showToast(ChartsNoSpectraSelectedMessage, 3000, WARNING);
     }
 }
@@ -182,9 +184,8 @@ async function getMaterialsSuggestions(srcElemId, dstElemId, callback) {
     };
 
     try {
-        let obj = await doAjaxGetAsync(UrlGetMineralsSuggestions, model);
+        let obj = await doAjaxGetAsync(GetMaterialsSuggestions, model);
         if (obj) {
-            //console.log(obj);
             /* remember suggestions for creating search request */
             suggestions[dstElemId] = obj;
             /* fill the 'select' ui item with suggestions */
@@ -295,40 +296,61 @@ function showSearchInfo() {
 }
 
 /* ################################################################################ */
-/* DOCUMENT READY */
+/* BUTTONS */
 /* ################################################################################ */
-function completePageRendering() {
-    let callback = function () {
-        /* retrieve page w,h */
-        initPageDims();
-
-        /* set starting position for panels */
-        initSecondaryPanels();
-
-        /* add event for handling mobile-device rotation */
-        //tryAddOrientationEventHandler();
-
-        /* set y-overflow for page */
-        setOverflowYAuto();
-    };
-
-    setTimeout(function () { animateHideIntro(callback); }, 500);
+/* ---------- INIT BUTTONS IN SEARCH PANEL ---------- */
+function initButtonsInSearchPanel() {
+    //removeBackToSearchButton();
+    addSearchButton();
+    addHelpButton();
 }
 
+/* ---------- HELP BUTTON ---------- */
+function addHelpButton() {
+    addButton(helpButtonId, ButtonHelpLabel, 'mif-help', showSearchInfo);
+}
+
+function removeHelpButtonProcedure() {
+    if (!isButtonAvailable(helpButtonId))
+        return;
+
+    animateCSS(`${helpButtonId}`, `bounceOutUp`, FAST, removeHelpButton);
+}
+
+function removeHelpButton() {
+    $(`#${helpButtonId}`).remove();
+}
+
+/* ---------- SEARCH BUTTON ---------- */
+function addSearchButton() {
+    addButton(searchButtonId, ButtonSearchLabel, 'mif-search', search);
+}
+
+function removeSearchButtonProcedure() {
+    if (!isButtonAvailable(searchButtonId))
+        return;
+
+    animateCSS(`${searchButtonId}`, `bounceOutUp`, FAST, removeSearchButton);
+}
+
+function removeSearchButton() {
+    $(`#${searchButtonId}`).remove();
+}
+
+
+/* ################################################################################ */
+/* DOCUMENT READY */
+/* ################################################################################ */
 function onWindowResize() {
     if (timeoutOnWindowResize)
         clearTimeout(timeoutOnWindowResize);
 
     timeoutOnWindowResize = setTimeout(function () {
         setListviewSearchConditionsUI();
-
-        if (isChartLoaded)
-            updateChartSize();
     }, 200);
 }
 
-$(document).ready(function () {
-
+$(function () {
     /* fill arrays for search */
     fillSampleTypes();
     fillMineralTypes();
@@ -351,8 +373,8 @@ $(document).ready(function () {
     hideMetroUIElem(`${selectMaterial}`);
 
     /* enable search for materials suggestions when 'Enter' is pressed */
-    $(`#${selectMaterial}Input`).ready(function () {
-        $(`#${selectMaterial}Input`).keydown(function (evt) {
+    $(`#${selectMaterial}Input`).each(function () {
+        $(`#${selectMaterial}Input`).on('keydown', function (evt) {
             getMaterialForSearchByEnter(evt, `${selectMaterial}Input`, `${selectMaterial}`);
         });
     });
@@ -363,7 +385,7 @@ $(document).ready(function () {
     executeAfter(setListviewSearchConditionsUI, 500);
 
     /* animate intro for 1st loading */
-    completePageRendering();
+    //completePageRendering();
 
     aQueue = new AutoQueue();
 
@@ -375,8 +397,7 @@ $(document).ready(function () {
         onWindowResize();
     };
 
-    /* init array for vertical constant lines */
-    initConstantLines();
+    showPageItems();
 
     //$("body").click(function (e) {
     //    var parentOffset = $(this).offset();

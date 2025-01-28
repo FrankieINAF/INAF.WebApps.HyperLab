@@ -135,6 +135,9 @@
   <data name="ButtonSearchLabel" xml:space="preserve">
     <value>Start searching</value>
   </data>
+  <data name="ButtonShareLabel" xml:space="preserve">
+    <value>Share selected spectra</value>
+  </data>
   <data name="ButtonShowCharmsColorSelectorLabel" xml:space="preserve">
     <value>Show color settings panel</value>
   </data>
@@ -146,6 +149,9 @@
   </data>
   <data name="ChartOverwriteQuestion" xml:space="preserve">
     <value>By proceeding, the current chart will be overwritten by a new one with selected spectra. Do you really want to continue?</value>
+  </data>
+  <data name="ChartPageTitle" xml:space="preserve">
+    <value>Chart</value>
   </data>
   <data name="ComplexSearchListOfConditions" xml:space="preserve">
     <value>List of available conditions</value>

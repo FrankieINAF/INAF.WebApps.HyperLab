@@ -115,6 +115,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Share selected spectra.
+        /// </summary>
+        public static string ButtonShareLabel {
+            get {
+                return ResourceManager.GetString("ButtonShareLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show color settings panel.
         /// </summary>
         public static string ButtonShowCharmsColorSelectorLabel {
@@ -147,6 +156,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string ChartOverwriteQuestion {
             get {
                 return ResourceManager.GetString("ChartOverwriteQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chart.
+        /// </summary>
+        public static string ChartPageTitle {
+            get {
+                return ResourceManager.GetString("ChartPageTitle", resourceCulture);
             }
         }
         

@@ -1,0 +1,116 @@
+﻿@model SharedStuffContainer
+
+@using INAF.WebApps.HyperLab.Resources
+@using INAF.Libraries.Net.Extensions
+@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Shares
+@using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Users
+
+@{
+    ViewBag.Title = SharedStuff.SharedStuffPageTitle;
+
+    string checkboxSharedByMeBaseId = $"checkbox{nameof(SharedStuffContainer.SharedSpectraByMe)}";
+    string checkboxSharedWithMeBaseId = $"checkbox{nameof(SharedStuffContainer.SharedSpectraWithMe)}";
+}
+
+<div class="container h-100 overflow-x-auto overflow-y-hidden">
+    <ul data-role="tabs" data-expand="true">
+        <li><a href="#sharedByMe"><span class="text-bold">@Html.Raw(SharedStuff.TabSharedByMeTitle)</span></a></li>
+        <li><a href="#sharedWithMe"><span class="text-bold">@Html.Raw(SharedStuff.TabSharedWithMeTitle)</span></a></li>
+    </ul>
+    <div class="border bd-default no-border-top p-2">
+        <!-- SHARED BY ME -->
+        <div id="sharedByMe">
+            <div class="row cell-fs-12 margin-vertical-16">
+                <p class="text-leader2 text-medium">@Html.Raw(SharedStuff.TabSharedByMeExplanation)</p>
+            </div>
+            <!-- LIST OF SPECTRA -->
+            @if (Model.SharedSpectraByMe != null && Model.SharedSpectraByMe.Any())
+            {
+                <div class="h-75 overflow-y-auto">
+                    @{
+                        int itemsCount = Model.SharedSpectraByMe.Count();
+                        for (int i = 0; i < itemsCount; i++)
+                        {
+                            SharedSpectrumModel spectrumModel = Model.SharedSpectraByMe.ElementAt(i);
+                            UserSimpleModel user = spectrumModel.SubjectUser!;
+                            string checkboxId = $"{checkboxSharedByMeBaseId}_Spectrum{spectrumModel.Id}_User{spectrumModel.SubjectUser!.Id}";
+                            string checkboxContainerId = $"{checkboxId}Container";
+
+                            <div id="@checkboxContainerId" class="row cell-fs-12 d-flex">
+                                <div><input id="@checkboxId" type="checkbox" data-role="checkbox" data-style="2"></div>
+                                <div class="margin-top-4"><span>@spectrumModel.Filename</span></div>
+                                <div class="margin-left-4 margin-top-4">(<span>@spectrumModel.Type.GetDescription()</span>)</div>
+                                <div class="margin-top-4 margin-horizontal-16"><span>-</span></div>
+                                <div class="margin-top-4"><span class="mif mif-user" title="@Html.Raw(SharedStuff.SharedFileSubjectLabel)"></span></div>
+                                <input type="hidden" value="@spectrumModel.SubjectUser!.Id" />
+                                <div class="margin-top-4"><span class="margin-left-8">@Html.Raw($"{user.Name} {user.LastName}")</span></div>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="remark info margin-top-16">
+                    <p class="text-light text-leader2">@Html.Raw(SharedStuff.NoSharedSpectraByOwnerMessage)</p>
+                </div>
+            }
+        </div>
+        <!-- SHARED WITH ME -->
+        <div id="sharedWithMe">
+            <div class="row cell-fs-12 margin-vertical-16">
+                <p class="text-leader2 text-medium">@Html.Raw(SharedStuff.TabSharedWithMeExplanation)</p>
+            </div>
+            <!-- LIST OF SPECTRA -->
+            @if (Model.SharedSpectraWithMe != null && Model.SharedSpectraWithMe.Any())
+            {
+                <div class="h-75 overflow-y-auto">
+                    @{
+                        int itemsCount = Model.SharedSpectraWithMe.Count();
+                        for (int i = 0; i < itemsCount; i++)
+                        {
+
+                            <div class="row cell-fs-12 d-flex">
+                                @{
+                                    SharedSpectrumModel spectrumModel = Model.SharedSpectraWithMe.ElementAt(i);
+                                    UserSimpleModel user = spectrumModel.OwnerUser!;
+                                    string checkboxId = $"{checkboxSharedWithMeBaseId}{spectrumModel.Id}";
+                                }
+                                <div><input id="@checkboxId" type="checkbox" data-role="checkbox" data-style="2"></div>
+                                <div class="margin-top-4"><span>@spectrumModel.Filename</span></div>
+                                <div class="margin-left-4 margin-top-4">(<span>@spectrumModel.Type.GetDescription()</span>)</div>
+                                <div class="margin-top-4 margin-horizontal-16"><span>-</span></div>
+                                <div class="margin-top-4"><span class="mif mif-user" title="@Html.Raw(SharedStuff.SharedFileOwnerLabel)"></span></div>
+                                <div class="margin-top-4"><span class="margin-left-8">@Html.Raw($"{user.Name} {user.LastName}")</span></div>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="remark info margin-top-16">
+                    <p class="text-light text-leader2">@Html.Raw(SharedStuff.NoSharedSpectraForUserMessage)</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- common js variables -->
+@{
+    await Html.RenderPartialAsync("Partials/_SearchAndShareJsCommon");
+    await Html.RenderPartialAsync("Partials/_SharedStuffJsCommon");
+}
+<script type="text/javascript">
+    var checkboxSharedSpectraByMeBaseId = '@checkboxSharedByMeBaseId';
+    var checkboxSharedSpectraWithMeBaseId = '@checkboxSharedWithMeBaseId';
+</script>
+<environment names="Development">
+    <script type="text/javascript" src="~/js/hyperlab/commonsearchandchartsandsharedstuff.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/commonsearchandsharedstuff.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/sharedstuff/sharedstuff.js" asp-append-version="true"></script>
+</environment>
+<environment names="Production">
+    <script type="text/javascript" src="~/js/dist/sharedstuff/sharedstuffbundle.min.js" asp-append-version="true"></script>
+</environment>
