@@ -10,7 +10,6 @@
   {
     "outputFileName": "wwwroot/js/dist/chart/chartbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/commonsaveusersettings.js",
       "wwwroot/js/hyperlab/commonsearchandchartsandsharedstuff.js",
       "wwwroot/js/hyperlab/commonsearchandchart.js",
       "wwwroot/js/hyperlab/chart/charts.js",
@@ -36,9 +35,7 @@
       "wwwroot/lib/luxon/luxon.min.js",
       "wwwroot/js/hyperlab/commonbuttons.js",
       "wwwroot/js/hyperlab/common.js",
-      "wwwroot/js/hyperlab/commonsaveusersettings.js",
       "wwwroot/js/hyperlab/layout.js",
-      "wwwroot/js/hyperlab/queue.js",
       "wwwroot/js/hyperlab/commondxchart.js"
     ],
     "minify": { "enabled": true },
@@ -150,6 +147,15 @@
       "wwwroot/js/hyperlab/users/upsertuser.js"
     ],
     "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/queue/queuebundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/queue/queue.js",
+      "wwwroot/js/hyperlab/queue/commonsaveusersettings.js"
+    ],
+    "minify": { "enabled": false },
     "includeInProject": true
   },
   {

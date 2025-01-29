@@ -2,7 +2,9 @@
 /* SAVE USER SETTINGS */
 /* ################################################################################ */
 /* items for creating a queue for saving user settings */
-var aQueue;
+//var aQueue;
+var aQueue = new AutoQueue();
+
 var saveUserSettingPromise = ({ ...data } = {}) => () => new Promise(async resolve => {
     await saveUserSettingAsync(data);
     resolve();
