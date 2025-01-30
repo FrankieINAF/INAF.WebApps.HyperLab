@@ -14,6 +14,33 @@ var isHidingRefWhitesRequested = false;
 /* we want to know which spectra are ref whites */
 var refWhitesIds = [];
 
+const loadingCheckObj = {
+    IsLoading: false,
+    IsError: false,
+
+    setError: function (isError) {
+        this.IsError = isError;
+    },
+
+    setIsLoading: function (isLoading) {
+        this.IsLoading = isLoading;
+    },
+
+    startLoading: function () {
+        this.setIsLoading(true);
+        this.setError(false);
+    },
+
+    stopLoading: function () {
+        this.setIsLoading(false);
+    },
+
+    reset: function () {
+        this.setIsLoading(false);
+        this.setError(false);
+    }
+};
+
 var PARENT_ID = 'ParentId';
 
 async function initAlignmentAsync() {
@@ -49,6 +76,12 @@ function callCheckIsSpectrumOfTypeSavedOnCloudForAligned(filename = null) {
 /* RETRIEVE SETTING FOR ALIGNMENT */
 /* ################################################################################ */
 async function loadAlignmentValuesAsync() {
+    /* enable event management for switch for loading whites spectra */
+    initSwitchLoadWhiteSpectraForAlignment();
+
+    /* automatically raise event for loading ref whites */
+    setWhitesSwitchChecked(true);
+
     /* enable event management for switch for auto-aligning spectrum */
     await initSwitchLoadAutoAlignSpectrumAsync();
 
@@ -60,9 +93,6 @@ async function loadAlignmentValuesAsync() {
     buildSliders();
     await loadSelectedSegmentAsync();
     await loadNumOfPointsForAlignmentAsync();
-
-    /* automatically raise event for loading ref whites */
-    setWhitesSwitchChecked(true);
 
     /* enable 1st tab */
     setTabEnabled(0, true);
@@ -464,6 +494,9 @@ function extractSpectraIds(points) {
 }
 
 async function loadWhiteSpectraForAlignmentAsync() {
+    loadingCheckObj.reset();
+    loadingCheckObj.startLoading();
+
     let obj = await doAjaxGetNoModelAsync(UrlGetWhiteSpectraForAlignment);
     if (obj) {
         dxChartBeginUpdate(chartContainer);
@@ -516,9 +549,12 @@ async function loadWhiteSpectraForAlignmentAsync() {
         if (!isCheckboxChecked('charmsSwitchAutoAlignSpectrum') && !isCheckboxChecked('charmsSwitchAutoDownloadAlignedSpectrum'))
             dxChartResetVisualRange(chartContainer);
 
+        loadingCheckObj.stopLoading();
         /* enable button for alignment and change title */
         setButtonAlignEnabled('alignmentButtonExecute', true, AlignmentButtonExecuteLabel);
     } else {
+        loadingCheckObj.setError(true);
+        loadingCheckObj.stopLoading();
         showSimpleDialog(ERROR_LABEL, AlignmentLoadWhiteSpectraForAlignmentErrorMessage, ALERT);
     }
 }
@@ -715,8 +751,20 @@ async function alignSpectrumAsync() {
         await removeSpectraProcedureAsync(SPECTRUM_TYPE_ALIGNED);
 
     let points = getSpectrumPointsById(selectedSpectrumForProcessingId);
-    if (!points) { 
+    if (!points) {
         setLoadingCircleIsVisible(false);
+        return;
+    }
+
+    /* check whether ref whites are going to be retrieved or not */
+    if (loadingCheckObj.IsLoading) {
+        //console.log('alignSpectrumAsync - loadingCheckObj.IsLoading');
+        await waitForBooleanValueAsync(() => !loadingCheckObj.IsLoading, 400);
+    }
+
+    if (loadingCheckObj.IsError) {
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(ERROR_LABEL, AlignmentNoRefWhitesAvailableErrorMessage, ALERT);
         return;
     }
 
@@ -729,6 +777,10 @@ async function alignSpectrumAsync() {
             points,
             refWhiteYValuesMax,
             refSpectrumPoints);
+    } else {
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(ERROR_LABEL, AlignmentNoRefWhitesAvailableErrorMessage, ALERT);
+        return;
     }
 
     let segments = alignmentModel.Segments.map(x => { return parseFloat(x); });
@@ -801,7 +853,7 @@ function buildAlignedSpectrumCompleted() {
     setTabEnabled(1, true);
 
     /* load panel for smoothing */
-    loadPartialViewWithAjaxGetNoModel(UrlLoadSmoothingPanel, 'smoothingoptions');
+    //loadPartialViewWithAjaxGetNoModel(UrlLoadSmoothingPanel, 'smoothingoptions');
 
     /* enable management of clicked point on aligned spectrum for fitting */
     setIsPointClickForFitEnabled(true);
@@ -820,7 +872,7 @@ function buildAlignedSpectrumCompleted() {
     refreshCharmsLegend();
 
     /* reset visual range to make all available spectra visible */
-    dxChartResetVisualRange(chartContainer);
+    //dxChartResetVisualRange(chartContainer);
 
     /* mantain hidden all not necessary spectra */
     let hiddenSpectraNum = hideSpectraToBeHidden();

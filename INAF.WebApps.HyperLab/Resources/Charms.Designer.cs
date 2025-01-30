@@ -295,6 +295,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, alignment procedure is not available since ref whites spectra has not been loaded.
+        /// </summary>
+        public static string AlignmentNoRefWhitesAvailableErrorMessage {
+            get {
+                return ResourceManager.GetString("AlignmentNoRefWhitesAvailableErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Num of points for alignment.
         /// </summary>
         public static string AlignmentNumOfPointsLabel {

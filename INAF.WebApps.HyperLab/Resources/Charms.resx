@@ -195,6 +195,9 @@
   <data name="AlignmentManagementTitle" xml:space="preserve">
     <value>Alignment management</value>
   </data>
+  <data name="AlignmentNoRefWhitesAvailableErrorMessage" xml:space="preserve">
+    <value>Sorry, alignment procedure is not available since ref whites spectra has not been loaded</value>
+  </data>
   <data name="AlignmentNumOfPointsLabel" xml:space="preserve">
     <value>Num of points for alignment</value>
   </data>

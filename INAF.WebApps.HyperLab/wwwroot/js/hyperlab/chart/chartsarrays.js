@@ -1,4 +1,6 @@
-﻿function findAllSpectraToBeHidden(selectedRawId) {
+﻿/* find all RAW spectra + their children, 
+   DO NOT SEARCH FOR REF WHITES */
+function findAllSpectraToBeHidden(selectedRawId) {
     let spectraToBeHiddenIds = [];
 
     /* find all raw spectra */

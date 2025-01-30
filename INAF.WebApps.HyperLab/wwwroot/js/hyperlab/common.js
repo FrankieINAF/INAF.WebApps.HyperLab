@@ -88,8 +88,15 @@ function animateCSSAsync(element, animation, speed = 'faster', callback = null, 
     });
 }
 
+async function waitForBooleanValueAsync(checkFunction, interval = 100) {
+    while (!checkFunction()) {
+        console.log(`waiting...for ${interval}`);
+        await delay(interval);
+    }
+}
+
 function delay(millisecs) {
-    return new Promise(resolve => setTimeout(resolve, time));
+    return new Promise(resolve => setTimeout(resolve, millisecs));
 }
 
 function returnTrue() { return true; }
