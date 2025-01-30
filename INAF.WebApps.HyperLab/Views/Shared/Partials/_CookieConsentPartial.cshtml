@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="~/css/dist/commonbundle.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/dist/home/cookiebannerbundle.css" asp-append-version="true" />
 
-    <div class="cookie-consent-banner">
+    <div class="cookie-consent-banner overflow-y-auto" style="z-index: 10">
         <p class="cookie-title">@Html.Raw(Home.CookiePolicyTitle)</p>
         <p class="cookie-text text-just">@Html.Raw(Home.CookieBannerMessage1)</p>
         <p class="cookie-text text-just">@Html.Raw(Home.CookieBannerMessage2)</p>

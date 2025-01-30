@@ -102,10 +102,10 @@
             </div>
 
             <div id="renderbody" class="h-100 w-100 d-none">
+                @RenderBody()
                 @{
                     await Html.RenderPartialAsync("Partials/_CookieConsentPartial");
                 }
-                @RenderBody()
             </div>
         </div>
     </div>

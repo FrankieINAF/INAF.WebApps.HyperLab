@@ -1068,6 +1068,7 @@ function lowlightSegmentForFitting(segmentId) {
 
 /* MANAGE ADDING/UPDATING OF SEGMENT ON UI */
 async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1) {
+    console.log(`buildContinuumSegmentAsync - p0: ${p0.X}, p1: ${p1.X}`);
     /* retrieve range for current segment to extract the required set of points from aligned model */
     let pointsInRange = extractSpectrumRange(getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval), p0.X, p1.X);
 
@@ -1111,6 +1112,8 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1) {
         if (index > -1)
             items[index][continuumSpectrum.Id] = processingResult.Points[i].Y;
     }
+
+    console.log(`buildContinuumSegmentAsync - pointsNum: ${pointsNum}`);
 
     /* add (if not already present) the continuum series */
     tryAddContinuumSpectrumSeries(continuumSpectrum);
@@ -1463,6 +1466,9 @@ async function tryCalculateContinuumRemovedAsync() {
         if (!isOk)
             showSimpleDialog(ERROR_LABEL, ContinuumRemovalExecutionErrorMessage, ALERT);
     }
+
+    /* to remove loading when error occurred */
+    setLoadingCircleIsVisible(false);
 }
 
 /* -------------------------------------------------------------------------------- */

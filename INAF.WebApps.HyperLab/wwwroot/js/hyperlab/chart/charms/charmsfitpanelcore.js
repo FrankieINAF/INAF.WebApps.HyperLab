@@ -28,10 +28,13 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
         .replace('rv_1', segment.P0.P.X)
         .replace('rv_2', segment.P1.P.X);
 
-    let segmentId = `${FIT_SEGMENT_CORE}${segment.Index}`;
+    let segmentId = getSegmentUIElementId(FIT_SEGMENT_CORE, segment.Index);
+    let rangeLabelId = getSegmentUIElementId(FIT_SEGMENT_CORE, segment.Index, 'RangeLabel');
+    let segmentSelectId = getSegmentUIElementId(FIT_SEGMENT_CORE, segment.Index, 'Select');
+    let segmentContainerId = getSegmentUIElementId(FIT_SEGMENT_CORE_VALUE, segment.Index, 'Container');
     let html = ``;
     html += `<div id="${segmentId}" class="d-flex flex-column padding-bottom-8 margin-top-16 border-bottom">`;
-    html += `    <div><span id="${segmentId}RangeLabel">${rangeLabel}</span></div>`;
+    html += `    <div><span id="${rangeLabelId}">${rangeLabel}</span></div>`;
     html += `    <div class="d-flex flex-row">`;
     /*              rectangle for highlighting segment */
     //html += `       <div class="select-segment-rectangle pointer" onmouseover="${highlightSegmentForFitting.name}('${segmentId}')" onmouseout="${lowlightSegmentForFitting.name}('${segmentId}')">`;
@@ -40,21 +43,24 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
     /*               column for functions */
     html += `        <div class="d-flex flex-column margin-top-8" style="width: 50%">`;
     html += `           <label>${FitSegmentFunctionsLabel}</label>`;
-    html += `           <select id="${FIT_SEGMENT_CORE}${segment.Index}Select" data-role="select" data-on-item-select="${onSegmentFunctionSelectCoreAsync.name}">`;
+    html += `           <select id="${segmentSelectId}" data-role="select" data-on-item-select="${onSegmentFunctionSelectCoreAsync.name}">`;
     let fitFunctionsNum = fitFunctions.length;
     for (var i = 0; i < fitFunctionsNum; i++) {
-        html += `<option value="${FIT_SEGMENT_CORE}${segment.Index}${fitFunctions[i].Id}">${fitFunctions[i].Name}</option>`;
+        let value = getSegmentUIElementId(segmentId, fitFunctions[i].Id);
+        html += `<option value="${value}">${fitFunctions[i].Name}</option>`;
     }
     html += `           </select>`;
     html += `        </div>`;
     /*               column for function parameter */
-    html += `        <div id="${FIT_SEGMENT_CORE_VALUE}${segment.Index}Container" class="d-flex flex-column margin-left-8 margin-top-8" style="width: 50%">`;
+    html += `        <div id="${segmentContainerId}" class="d-flex flex-column margin-left-8 margin-top-8" style="width: 50%">`;
     html += `        </div>`;
     html += `    </div>`;
     html += `</div>`;
 
     $(async function () {
-        await onSegmentFunctionSelectCoreAsync(Metro.getPlugin(`#${segmentId}Select`, 'select').val());
+        //console.log('------------------------------------------------------------------------------------------')
+        //console.log(`createSegmentFittingUICore - ready - segmentSelectId: ${segmentSelectId}`);
+        await onSegmentFunctionSelectCoreAsync(Metro.getPlugin(`#${segmentSelectId}`, 'select').val());
         //console.log(`${createSegmentFittingUICore.name} - ready - isBuildingUpContinuum: ${isBuildingUpContinuum}, isFromUserAction: ${isFromUserAction}, isLast: ${isLast}`);
         if (isFromUserAction) {
             /* if conditions are satisfied, then auto recalculate continuum-remved */
@@ -73,45 +79,14 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
 }
 
 async function onSegmentFunctionSelectCoreAsync(val, option, item) {
-    //console.log(`onSegmentFunctionSelectAsync ${val}`);
+    //console.log(`onSegmentFunctionSelectCoreAsync ${val}`);
 
-    let segmentIndex;
-    if (this.id)
-        segmentIndex = parseInt(this.id.replace(FIT_SEGMENT_CORE, '').replace('Select', ''));
-    else
-        segmentIndex = parseInt(val.replace(FIT_SEGMENT_CORE, '').split('')[0]);
-
-    /* retrieve info about segment and function */
-    let functionIndex = getFunctionIndexFromValue(val, FIT_SEGMENT_CORE);
-
-    /* clear the div */
-    $(`#${FIT_SEGMENT_CORE_VALUE}${segmentIndex}Container`).empty();
-
-    /* retrieve the selected fit function */
-    let selectedFitFunction = fitFunctions[functionIndex];
-    if (!selectedFitFunction)
+    let result = onSegmentFunctionSelectBase(this.id, val, FIT_SEGMENT_CORE, FIT_SEGMENT_CORE_VALUE);
+    if (!result)
         return;
 
-    /* save selected fit function for segment */
-    segmentsForFitting[segmentIndex].SelectedFitFunctionId = selectedFitFunction.Id;
-    /* set default parameter value */
-    let fitFunction = getFitFunctionById(segmentsForFitting[segmentIndex].SelectedFitFunctionId);
-    if (fitFunction.ParameterConstraintValue)
-        segmentsForFitting[segmentIndex].FitFunctionParameterValue = fitFunction.ParameterConstraintValue.Value;
-    else
-        segmentsForFitting[segmentIndex].FitFunctionParameterValue = 0;
-
-    /* retrieve parameter, if existant, and build the spinner for parameter value */
-    let parameter = selectedFitFunction.ParameterConstraintValue;
-    if (parameter) {
-        setParameterSpinner(`${FIT_SEGMENT_CORE_VALUE}${segmentIndex}`, parameter, segmentIndex, selectedFitFunction, onFitMethodFunctionParameterChange.name);
-    }
-
     /* add/update continuum segment */
-    await buildContinuumSegmentAsync(selectedFitFunction, segmentsForFitting[segmentIndex].P0.P, segmentsForFitting[segmentIndex].P1.P);
-
-    /* update the chart */
-    dxChartResetVisualRange(chartContainer);
+    await buildContinuumSegmentAsync(result.SelectedFitFunction, segmentsForFitting[result.SegmentIndex].P0.P, segmentsForFitting[result.SegmentIndex].P1.P);
 }
 
 function removeSegmentForFittingUICore(segment) {

@@ -18,8 +18,8 @@ function getFunctionIndexFromValue(id, fitSegmentType) {
             fitSegmentType = FIT_SEGMENT_PRO;
     }
 
-    let numbers = id.replace(fitSegmentType, '');
-    let functionId = parseInt(numbers.charAt(1));
+    let tmp = id.split('_');
+    let functionId = parseInt(tmp[2]);
     let functionIndex = fitFunctions.findIndex(f => f.Id == functionId);
     return functionIndex;
 }
@@ -32,17 +32,20 @@ function getPXMinPXMaxFunctionIndexFromId(id) {
 }
 
 function onSegmentFunctionSelectBase(id, val, fitSegmentType, fitSegmentValueType) {
-    let segmentIndex;
-    if (id)
-        segmentIndex = parseInt(id.replace(fitSegmentType, '').replace('Select', ''));
+    let temp;
+    if (this.id)
+        temp = this.id.split('-');
     else
-        segmentIndex = parseInt(val.replace(fitSegmentType, '').split('')[0]);
+        temp = val.split('_');
+
+    let segmentIndex = parseInt(temp[1]);
 
     /* retrieve info about segment and function */
     let functionIndex = getFunctionIndexFromValue(val, fitSegmentType);
 
     /* clear the div */
-    $(`#${fitSegmentValueType}${segmentIndex}Container`).empty();
+    let segmentContainerId = getSegmentUIElementId(fitSegmentValueType, segmentIndex, 'Container');
+    $(`#${segmentContainerId}`).empty();
 
     /* retrieve the selected fit function */
     let selectedFitFunction = fitFunctions[functionIndex];
@@ -106,6 +109,16 @@ async function onFitMethodFunctionParameterChange(curr, request, real) {
     }
 }
 
+/* ################################################################################ */
+/* CREATE/REORDER SEGMENTS */
+/* ################################################################################ */
+function getSegmentUIElementId(prefix, segmentIndex, elementType) {
+    if (elementType)
+        return `${prefix}_${segmentIndex}_${elementType}`;
+    else
+        return `${prefix}_${segmentIndex}`;
+}
+
 function orderSegmentForFittingUIsIds(currentFitMode) {
 
     let fitSegmentType = FIT_SEGMENT_CORE;
@@ -117,42 +130,43 @@ function orderSegmentForFittingUIsIds(currentFitMode) {
 
     let segmentsForFittingNum = segmentsForFitting.length;
     for (var i = segmentsForFittingNum - 1; i >= 0; i--) {
-        let newId = `${fitSegmentType}${segmentsForFitting[i].Index}`;
+        let newId = `${fitSegmentType}_${segmentsForFitting[i].Index}`;
         $(`#${segmentsForFitting[i].uiId}`).attr('id', newId);
         segmentsForFitting[i].uiId = newId;
         /* update id of select */
-        $(`#${newId}`).find('select').attr('id', `${fitSegmentType}${segmentsForFitting[i].Index}Select`);
+        $(`#${newId}`).find('select').attr('id', getSegmentUIElementId(fitSegmentType, segmentsForFitting[i].Index, 'Select'));
         /* update id of div containing param value */
-        let newFitSegmentValueContainerId = `${fitSegmentValueType}${segmentsForFitting[i].Index}Container`;
+        let newFitSegmentValueContainerId = getSegmentUIElementId(fitSegmentValueType, segmentsForFitting[i].Index, 'Container');
         $(`#${newId}`).find('div[id$="Container"]').attr('id', newFitSegmentValueContainerId);
         /* update id of P0Button */
-        let button0 = $(`#${newId}`).find('div[id$="P0Button"]');
+        let button0 = $(`#${newId}`).find(`div[id$=${P0Button}]`);
         if (button0 && button0.length > 0) {
             $(`#${button0[0].id}`).off();
 
-            let buttonP0Id = `${fitSegmentType}${segmentsForFitting[i].Index}P0Button`;
+            let buttonP0Id = getSegmentUIElementId(fitSegmentType, segmentsForFitting[i].Index, P0Button);
             $(`#${button0[0].id}`).attr('id', buttonP0Id);
             let segment = segmentsForFitting[i];
             setPButtonAction(buttonP0Id, P0, segment.Index, segment.P0);
         }
-        let button1 = $(`#${newId}`).find('div[id$="P1Button"]');
+        let button1 = $(`#${newId}`).find(`div[id$="${P1Button}"]`);
         if (button1 && button1.length > 0) {
             $(`#${button1[0].id}`).off();
 
-            let buttonP1Id = `${fitSegmentType}${segmentsForFitting[i].Index}P1Button`;
+            let buttonP1Id = getSegmentUIElementId(fitSegmentType, segmentsForFitting[i].Index, P1Button);
             $(`#${button1[0].id}`).attr('id', buttonP1Id);
             let segment = segmentsForFitting[i];
             setPButtonAction(buttonP1Id, P1, segment.Index, segment.P1);
         }
-        //$(`#${newId}`).find('div[id$="P0Button"]').attr('id', `${fitSegmentType}${segmentsForFitting[i].Index}P0Button`);
-        $(`#${newId}`).find('span[id$="P0ButtonIcon"]').attr('id', `${fitSegmentType}${segmentsForFitting[i].Index}P0ButtonIcon`);
+        let P0ButtonIcon = `${P0Button}Icon`;
+        let P1ButtonIcon = `${P1Button}Icon`;
+        $(`#${newId}`).find(`span[id$="${P0ButtonIcon}"]`).attr('id', getSegmentUIElementId(fitSegmentType, segmentsForFitting[i].Index, P0ButtonIcon));
         /* update id of P1Button */
-        $(`#${newId}`).find('div[id$="P1Button"]').attr('id', `${fitSegmentType}${segmentsForFitting[i].Index}P1Button`);
-        $(`#${newId}`).find('span[id$="P1ButtonIcon"]').attr('id', `${fitSegmentType}${segmentsForFitting[i].Index}P1ButtonIcon`);
+        $(`#${newId}`).find(`div[id$="${P1Button}"]`).attr('id', getSegmentUIElementId(fitSegmentType, segmentsForFitting[i].Index, P1Button));
+        $(`#${newId}`).find(`span[id$="${P1ButtonIcon}"]`).attr('id', getSegmentUIElementId(fitSegmentType, segmentsForFitting[i].Index, P1ButtonIcon));
         /* update spinner id, if available */
-        let spinner = $(`#${fitSegmentValueType}${segmentsForFitting[i].Index}Container`).find('input[type=text]');
+        let spinner = $(`#${newFitSegmentValueContainerId}`).find('input[type=text]');
         if (spinner)
-            $(spinner).attr('id', `${fitSegmentValueType}${segmentsForFitting[i].Index}`);
+            $(spinner).attr('id', getSegmentUIElementId(fitSegmentValueType, segmentsForFitting[i].Index));
     }
 }
 

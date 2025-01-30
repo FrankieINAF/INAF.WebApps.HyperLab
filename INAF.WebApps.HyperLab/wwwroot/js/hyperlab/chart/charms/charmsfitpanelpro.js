@@ -6,6 +6,9 @@ var Appendix = 'Appendix';
 var BandAnalysisButton = 'BandAnalysisButton';
 var Button = 'Button';
 
+var P0Button = `${P0}${Button}`;
+var P1Button = `${P1}${Button}`;
+
 var currentP0P1Selection;
 var currentAppendixSelectId;
 var appendixChartContainer;
@@ -43,12 +46,14 @@ async function calculateMaxValuePointAsync(points, pointForFitting, pMinPMaxMaxV
 }
 
 async function createSegmentFittingUIProAsync(segment, isFromUserAction = false, isLast = false) {
-    let segmentId = `${FIT_SEGMENT_PRO}${segment.Index}`;
+    let segmentId = getSegmentUIElementId(FIT_SEGMENT_PRO, segment.Index);
+    let segmentSelectId = getSegmentUIElementId(FIT_SEGMENT_PRO, segment.Index, 'Select');
+    let segmentContainerId = getSegmentUIElementId(FIT_SEGMENT_PRO_VALUE, segment.Index, 'Container');
 
     let points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
 
-    let buttonP0Id = `${segmentId}${P0}${Button}`;
-    let buttonP1Id = `${segmentId}${P1}${Button}`;
+    let buttonP0Id = `${segmentId}_${P0Button}`;
+    let buttonP1Id = `${segmentId}_${P1Button}`;
 
     let html = ``;
 
@@ -101,15 +106,16 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     html += `<div class="d-flex flex-justify-center">`;
     html += `   <div class="d-flex flex-column padding-vertical-4">`;
     html += `      <label>${FitSegmentFunctionsLabel}</label>`;
-    html += `      <select id="${FIT_SEGMENT_PRO}${segment.Index}Select" data-role="select" data-on-item-select="${onSegmentFunctionSelectProAsync.name}">`;
+    html += `      <select id="${segmentSelectId}" data-role="select" data-on-item-select="${onSegmentFunctionSelectProAsync.name}">`;
     let fitFunctionsNum = fitFunctions.length;
     for (var i = 0; i < fitFunctionsNum; i++) {
-        html += `<option value="${FIT_SEGMENT_PRO}${segment.Index}${fitFunctions[i].Id}">${fitFunctions[i].Name}</option>`;
+        let value = getSegmentUIElementId(segmentId, fitFunctions[i].Id);
+        html += `<option value="${value}">${fitFunctions[i].Name}</option>`;
     }
     html += `      </select>`;
     html += `   </div>`;
     /*          column for function parameter */
-    html += `   <div id="${FIT_SEGMENT_PRO_VALUE}${segment.Index}Container" class="d-flex flex-column margin-left-8 padding-vertical-4">`;
+    html += `   <div id="${segmentContainerId}" class="d-flex flex-column margin-left-8 padding-vertical-4">`;
     html += `   </div>`;
     html += `</div>`;
 
@@ -189,7 +195,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
         });
 
         /* action to automatically calculate fitted segment depending on selected function */
-        await onSegmentFunctionSelectProAsync(Metro.getPlugin(`#${segmentId}Select`, 'select').val());
+        await onSegmentFunctionSelectProAsync(Metro.getPlugin(`#${segmentSelectId}`, 'select').val());
         //console.log(`createSegmentUI - ready - isBuildingUpContinuum: ${isBuildingUpContinuum}, isFromUserAction: ${isFromUserAction}, isLast: ${isLast}`);
         if (isFromUserAction) {
             /* if conditions are satisfied, then auto recalculate continuum-remved */
@@ -283,7 +289,11 @@ async function onBoundaryValueChangedProcedureAsync(id, spinnerId, curr, request
 }
 
 async function onSegmentFunctionSelectProAsync(val, option, item) {
+    //console.log(`onSegmentFunctionSelectProAsync ${val}`);
+
     let result = onSegmentFunctionSelectBase(this.id, val, FIT_SEGMENT_PRO, FIT_SEGMENT_PRO_VALUE);
+    if (!result)
+        return;
 
     /* add/update continuum segment */
     await buildContinuumSegmentAsync(result.SelectedFitFunction, segmentsForFitting[result.SegmentIndex].P0.P, segmentsForFitting[result.SegmentIndex].P1.P);
