@@ -528,9 +528,8 @@ function addConditionSampleName(liId, currentIndex = null, groupIndex = null) {
             addConditionsOperators(currentIndex);
 
         /* begin building up condition group */
-        let _currentIndex = currentIndex;
-        if (_currentIndex == null)
-            _currentIndex = conditionsIndex;
+        if (currentIndex == null)
+            currentIndex = conditionsIndex;
 
         let id = `${CONDITION_TYPE_SAMPLE_NAME}${CONDITIONS_CONTAINER}`;
 
@@ -938,7 +937,7 @@ function getConditionModel(currentIndex, conditionType) {
         MaterialType: MATERIAL_TYPE_NONE, // used only for conditionType = CONDITION_TYPE_MATERIAL
         ValueId: 0,
         ValueText: '',
-        ConditionOperatorType: CONDITION_OPERATOR_NONE
+        ConditionOperatorType: CONDITION_OPERATOR_AND
     };
 }
 

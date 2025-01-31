@@ -6,6 +6,10 @@
 @using Microsoft.AspNetCore.Html;
 @using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
+@{
+    int resultsNum = Model?.Results?.Count() ?? 0;
+}
+
 <div data-role="panel"
      id="resultsPanel"
      data-title-caption="<strong>@Search.ResultsPanelTitle</strong>"
@@ -13,7 +17,7 @@
      data-collapsed="false"
      data-collapsible="false"
      data-custom-buttons="customButtons"
-     data-on-panel-create="showSearchResults">
+     data-on-panel-create="showSearchResultsCaller">
     @{
         if (Model?.Results?.Count() > 0)
         {
@@ -118,41 +122,7 @@
 </div>
 
 <script type="text/javascript">
-    var customButtons = [
-        {
-            html: "<span class='mif-bin' title='@Html.Raw(Search.SearchResultClearLabel)'></span>",
-            onclick: "clearSearchResults()"
-        }
-    ];
-
-    function clearSearchResults() {
-        if (!$('#searchResultsContainer').length)
-            return;
-
-        let callback = function() {
-            $('#searchResultsContainer').empty();
-            setOverflowYHidden();
-        };
-        animateCSS('searchResultsContainer', 'backOutDown', FAST, callback);
-    }
-
-    function showSearchResults() {
-        setOverflowYAuto(true);
-
-        if (isMobile())
-            $('#searchResultsContainer').removeClass('overflow-x-hidden').addClass('overflow-x-auto');
-
-        let callback;
-        @if (Model?.Results?.Count() > 0)
-        {
-            <text>
-                    callback = function() {
-                        $('#panelSearch').parent().removeClass('h-vh-50');
-                        Metro.getPlugin('#panelSearch', 'panel').collapse();
-                    };
-            </text>
-        }
-        showByClass('searchResultsContainer');
-        animateCSS('searchResultsContainer', 'backInUp', FAST, callback);
+    function showSearchResultsCaller() {
+        showSearchResults(@resultsNum);
     }
 </script>

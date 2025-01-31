@@ -169,6 +169,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back to list.
+        /// </summary>
+        public static string ComplexSearchBackToListLabel {
+            get {
+                return ResourceManager.GetString("ComplexSearchBackToListLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List of available conditions.
         /// </summary>
         public static string ComplexSearchListOfConditions {

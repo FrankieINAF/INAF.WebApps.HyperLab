@@ -69,6 +69,37 @@ function resetSelectedSpectra() {
 }
 
 /* ################################################################################ */
+/* SEARCH RESULTS  */
+/* ################################################################################ */
+function clearSearchResults() {
+    if (!$('#searchResultsContainer').length)
+        return;
+
+    let callback = function () {
+        $('#searchResultsContainer').empty();
+        setOverflowYHidden();
+    };
+    animateCSS('searchResultsContainer', 'backOutDown', FAST, callback);
+}
+
+function showSearchResults(resultsNum) {
+    setOverflowYAuto(true);
+
+    if (isMobile())
+        $('#searchResultsContainer').removeClass('overflow-x-hidden').addClass('overflow-x-auto');
+
+    let callback;
+    if (resultsNum > 0) {
+        callback = function () {
+            $('#panelSearch').parent().removeClass('h-vh-50');
+            Metro.getPlugin('#panelSearch', 'panel').collapse();
+        };
+    }
+    showByClass('searchResultsContainer');
+    animateCSS('searchResultsContainer', 'backInUp', FAST, callback);
+}
+
+/* ################################################################################ */
 /* SEARCH RESULT (GROUP ITEMS) */
 /* ################################################################################ */
 function buildGroupItems(obj, rowIndex) {

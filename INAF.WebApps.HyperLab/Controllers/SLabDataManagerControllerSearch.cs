@@ -187,21 +187,21 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return new JsonResult(errorResult);
 
                 var saveSearchResult = await dbHandlerHyperLabData.saveComplexSearchAsync((int)model.Id,
-                                                                              model.Name,
-                                                                              model.Conditions,
-                                                                              getUserId());
+                                                                                          model.Name,
+                                                                                          model.Conditions,
+                                                                                          getUserId());
 
                 switch (saveSearchResult.queryResult)
                 {
-                    case Libraries.Net.HyperLab.CommonModels.Values.Enums.QueryResult.Ok:
+                    case Enums.QueryResult.Ok:
                         result = new GenericValueStringResponseModel() { IsOk = true, Id = saveSearchResult.id };
                         break;
-                    case Libraries.Net.HyperLab.CommonModels.Values.Enums.QueryResult.AlreadyExistingItem:
+                    case Enums.QueryResult.AlreadyExistingItem:
                         result = new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Search.SaveComplexSearchAlreadyExistingMessage };
                         break;
-                    case Libraries.Net.HyperLab.CommonModels.Values.Enums.QueryResult.Error:
-                    case Libraries.Net.HyperLab.CommonModels.Values.Enums.QueryResult.ErrorOnInsert:
-                    case Libraries.Net.HyperLab.CommonModels.Values.Enums.QueryResult.ErrorOnCommit:
+                    case Enums.QueryResult.Error:
+                    case Enums.QueryResult.ErrorOnInsert:
+                    case Enums.QueryResult.ErrorOnCommit:
                         result = errorResult;
                         break;
                     default:

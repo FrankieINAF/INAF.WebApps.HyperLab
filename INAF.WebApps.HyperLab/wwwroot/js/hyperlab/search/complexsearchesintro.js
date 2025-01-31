@@ -14,7 +14,6 @@ function checkComplexSearchesIntroIsRequired() {
 /* HIDE PROCEDURE */
 /* -------------------------------------------------------------------------------- */
 function hideComplexSearchesIntroProcedure(extcallback) {
-    let id;
     if (!areSavedComplexSearchesAvailable)
         hideComplexSearchesInfo(extcallback);
     else
@@ -24,11 +23,11 @@ function hideComplexSearchesIntroProcedure(extcallback) {
 /* -------------------------------------------------------------------------------- */
 /* SHOW PROCEDURE */
 /* -------------------------------------------------------------------------------- */
-function showComplexSearchesIntroProcedure() {
+function showComplexSearchesIntroProcedure(isReload = false) {
     if (!areSavedComplexSearchesAvailable)
         showComplexSearchesInfo();
     else
-        showComplexSearchesList();
+        showComplexSearchesList(isReload);
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -69,11 +68,13 @@ function hideComplexSearchesList(extcallback) {
     animateCSS(id, 'backOutRight', FAST, callback);
 }
 
-function showComplexSearchesList() {
+function showComplexSearchesList(isReload) {
     let id = 'retrievedComplexSearchesListContainer';
 
-    showByClass(id);
-    showByClass('retrievedComplexSearchesListTitle');
-    animateCSS(id, 'backInUp', FAST);
+    if (!isReload) {
+        showByClass(id);
+        showByClass('retrievedComplexSearchesListTitle');
+        animateCSS(id, 'backInUp', FAST);
+    }
 }
 

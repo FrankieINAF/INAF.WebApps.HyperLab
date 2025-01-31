@@ -61,7 +61,10 @@ function tryAddSaveSearchElement() {
     let html = '';
     html += `<div id="saveSearchGroup" class="d-flex flex-justify-between complex-search-title">`;
     // add button save search
-    html += `   <button class="flex-start button primary cycle outline margin-top-8 margin-left-8" title="${SaveComplexSearchLabel}" onclick="saveSearch()"><span class="mif-floppy-disk"></span></button>`;
+    html += '   <div class="d-flex flex-start">';
+    html += `       <button id="buttonBackToList" class=" button primary cycle outline margin-top-8 margin-left-8 d-none" title="${ComplexSearchBackToListLabel}" onclick="removeSearch(true)"><span class="mif-arrow-left"></span></button>`;
+    html += `       <button class="button primary cycle outline margin-top-8 margin-left-8" title="${SaveComplexSearchLabel}" onclick="saveSearch()"><span class="mif-floppy-disk"></span></button>`;
+    html += '   </div>';
     // add title
     html += `   <div id='searchTitleInput' class="flex-center flex-row d-none">`;
     html += `       <div class="flex-center flex-column">`;
@@ -120,7 +123,7 @@ function removeSearchProcedure() {
     confirmAndExecute(SearchComplexManagementLabel, SearchComplexRemoveQuestion, removeSearch);
 }
 
-function removeSearch() {
+function removeSearch(isReloadRequired = false) {
     let callback = function () {
         /* remove search title */
         $('#complexSearchTopBar').empty();
@@ -145,13 +148,18 @@ function removeSearch() {
         conditionsIndex = 0;
 
         /* check whether saved complex-searches-explanation/list is required */
-        checkComplexSearchesIntroIsRequired();
+        if (isReloadRequired) {
+            showByClass('retrievedComplexSearchesListContainer');
+            getSavedComplexSearches(true);
+        }  else
+            checkComplexSearchesIntroIsRequired();
 
         /* remove search result, if present */
         clearSearchResults();
     };
     animateCSS('complexSearchContainer', 'backOutRight', FASTER, callback);
 }
+
 /* -------------------------------------------------------------------------------- */
 /* SAVE PROCEDURE */
 /* -------------------------------------------------------------------------------- */
@@ -196,6 +204,8 @@ async function saveSearch() {
             showByClass('searchSavedCheckmark');
             animateCSS('searchSavedCheckmark', 'pulse', FAST);
 
+            /* show button to go back to searches list */
+            showByClass('buttonBackToList');
             if (isNewSearch)
                 showSimpleDialog(INFO_LABEL, SaveComplexSearchSavedMessage, SUCCESS);
             else
@@ -213,6 +223,8 @@ async function saveSearch() {
 /* RETRIEVE SAVED COMPLEX SEARCHES */
 /* ################################################################################ */
 function buildSavedComplexSearchesTable(obj) {
+    $('#retrievedComplexSearchesList').empty();
+
     let html = ``;
 
     let tableid = 'retrievedComplexSearchesTable';
@@ -246,7 +258,7 @@ function buildSavedComplexSearchesTable(obj) {
         let popoverhtml = ``;
         popoverhtml += `<button class="button info cycle mini outline" `;
         popoverhtml += `        data-role="popover" `;
-        popoverhtml += `        data-popover-text="<div id='complexSearch${obj[i].Id}Info'></div>" `; 
+        popoverhtml += `        data-popover-text="<div id='complexSearch${obj[i].Id}Info'></div>" `;
         popoverhtml += `        data-popover-position="right" `;
         popoverhtml += `        data-popover-hide="0" `;
         popoverhtml += `        title = "${SavedComplexSearchesShowDetailedInfoLabel}" `;
@@ -270,11 +282,11 @@ function buildSavedComplexSearchesTable(obj) {
     html += `</table>`;
 
     /* append html with list and animate it */
-    $('#retrievedComplexSearchesList').html(html);    
+    $('#retrievedComplexSearchesList').html(html);
 }
 
-async function getSavedComplexSearches() {
-    if (areComplexSearchesRetrieved)
+async function getSavedComplexSearches(isReloadRequired = false) {
+    if (areComplexSearchesRetrieved && !isReloadRequired)
         return;
 
     setLoadingCircleIsVisible(true);
@@ -289,9 +301,12 @@ async function getSavedComplexSearches() {
             hideByClass('retrievedComplexSearchesInfo');
             /* set saved complex searches available */
             areSavedComplexSearchesAvailable = true;
-            showComplexSearchesIntroProcedure();
+            showComplexSearchesIntroProcedure(isReloadRequired);
         };
-        animateCSS('retrievedComplexSearchesInfo', 'backOutRight', FASTER, callback);
+        if (isReloadRequired)
+            callback();
+        else
+            animateCSS('retrievedComplexSearchesInfo', 'backOutRight', FASTER, callback);
 
         /* set list as retrieved */
         areComplexSearchesRetrieved = true;

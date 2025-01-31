@@ -153,6 +153,9 @@
   <data name="ChartPageTitle" xml:space="preserve">
     <value>Chart</value>
   </data>
+  <data name="ComplexSearchBackToListLabel" xml:space="preserve">
+    <value>Back to list</value>
+  </data>
   <data name="ComplexSearchListOfConditions" xml:space="preserve">
     <value>List of available conditions</value>
   </data>
