@@ -754,6 +754,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manage points.
+        /// </summary>
+        public static string FitManagePointsListLabel {
+            get {
+                return ResourceManager.GetString("FitManagePointsListLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage segments.
+        /// </summary>
+        public static string FitManageSegmentsListLabel {
+            get {
+                return ResourceManager.GetString("FitManageSegmentsListLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, no points found for selected segment.
         /// </summary>
         public static string FitNoPointsFoundForSegmentErrorMessage {
@@ -786,6 +804,33 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string FitNumOfPointsForMissingPointsLabel {
             get {
                 return ResourceManager.GetString("FitNumOfPointsForMissingPointsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Point at r_v nm.
+        /// </summary>
+        public static string FitPointAtLabel {
+            get {
+                return ResourceManager.GetString("FitPointAtLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove this point from fit.
+        /// </summary>
+        public static string FitPointAtRemoveLabel {
+            get {
+                return ResourceManager.GetString("FitPointAtRemoveLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List of selected points.
+        /// </summary>
+        public static string FitPointsListLabel {
+            get {
+                return ResourceManager.GetString("FitPointsListLabel", resourceCulture);
             }
         }
         

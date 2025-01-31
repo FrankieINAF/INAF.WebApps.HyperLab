@@ -348,6 +348,12 @@
   <data name="FitLoadPMinPMaxMaxValueFunctionsErrorMessage" xml:space="preserve">
     <value>Sorry, something went wrong while trying to load functions for fitting band shoulders segments</value>
   </data>
+  <data name="FitManagePointsListLabel" xml:space="preserve">
+    <value>Manage points</value>
+  </data>
+  <data name="FitManageSegmentsListLabel" xml:space="preserve">
+    <value>Manage segments</value>
+  </data>
   <data name="FitNoPointsFoundForSegmentErrorMessage" xml:space="preserve">
     <value>Sorry, no points found for selected segment</value>
   </data>
@@ -359,6 +365,15 @@
   </data>
   <data name="FitNumOfPointsForMissingPointsLabel" xml:space="preserve">
     <value>Num of points for missing points average X</value>
+  </data>
+  <data name="FitPointAtLabel" xml:space="preserve">
+    <value>Point at r_v nm</value>
+  </data>
+  <data name="FitPointAtRemoveLabel" xml:space="preserve">
+    <value>Remove this point from fit</value>
+  </data>
+  <data name="FitPointsListLabel" xml:space="preserve">
+    <value>List of selected points</value>
   </data>
   <data name="FitProModeCenterLabel" xml:space="preserve">
     <value>Max @</value>

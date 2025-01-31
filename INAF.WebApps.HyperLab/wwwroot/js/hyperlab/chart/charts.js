@@ -157,6 +157,7 @@ function createChart(dataSource, series, axisRange) {
             argumentField: "X",
             type: "line",
             point: { visible: true, size: 6 },
+            maxLabelCount: 100,
         },
         argumentAxis: {
             name: 'argumentAxis',

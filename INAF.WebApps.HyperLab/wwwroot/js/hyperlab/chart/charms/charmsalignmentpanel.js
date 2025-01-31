@@ -759,7 +759,7 @@ async function alignSpectrumAsync() {
     /* check whether ref whites are going to be retrieved or not */
     if (loadingCheckObj.IsLoading) {
         //console.log('alignSpectrumAsync - loadingCheckObj.IsLoading');
-        await waitForBooleanValueAsync(() => !loadingCheckObj.IsLoading, 400);
+        await waitForBooleanValueAsync(() => !loadingCheckObj.IsLoading, 100);
     }
 
     if (loadingCheckObj.IsError) {

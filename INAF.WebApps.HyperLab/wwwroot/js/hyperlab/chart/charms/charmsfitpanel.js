@@ -48,7 +48,7 @@ async function callCheckIsSpectrumOfTypeSavedOnCloudForContinuumRemovedAsync(fil
     return checkIsSpectrumOfTypeSavedOnCloudAsync(filename, SPECTRUM_TYPE_CONTINUUM_REMOVED);
 }
 
-async function preparePanelForFitPhase1Async() {
+async function preparePanelForFitPhase1Async(extCallback) {
     if (!isFitTabSelected) {
         setTabSelectedProcedure('charmsTabs', OPTIONS_TITLE_FIT);
 
@@ -61,6 +61,9 @@ async function preparePanelForFitPhase1Async() {
             showByClass('fitPanel');
             /* load num of points for averaging missing points on x axis */
             loadNumOfPointsForMissingPointsAsync();
+
+            /* execute external callback */
+            extCallback();
         }
         loadPartialViewWithAjaxGetNoModel(UrlLoadFitPanel, 'fitOptionsPanel', callback);
 
@@ -645,9 +648,23 @@ async function addSelectedPointForFittingAsync(point, isFromUserAction = false, 
             /* add point to fit series */
             await addFitPointToChartAsync(point, isFromUserAction);
 
+            let pointUICallback = function () {
+                switch (currentFitMode) {
+                    case FIT_CORE_MODE:
+                        /* create UI element on charms */
+                        addPointUI(point);
+                        break;
+
+                    case FIT_PRO_MODE:
+                        /* do nothing */
+                        break;
+                }
+            };
             /* switch to 'FIT OPTIONS' tab and load fitting functions  */
             if (isOnlyOneItemInPointsForFittingArrayAvailable())
-                preparePanelForFitPhase1Async();
+                await preparePanelForFitPhase1Async(pointUICallback);
+            else
+                pointUICallback();
 
             await manageNewPointAsync(point, isFromUserAction, isLast);
 

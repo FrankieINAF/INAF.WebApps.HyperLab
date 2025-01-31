@@ -1,4 +1,41 @@
-﻿function setPanelForFitCoreHidden() {
+﻿var FIT_POINT_CORE = 'FitPointCore';
+
+/* ################################################################################ */
+/* POINTS */
+/* ################################################################################ */
+function addPointUI(point) {
+    let index = pointsForFitting.findIndex(p => p.P.X === point.P.X);
+
+    if (index === -1)
+        return;
+
+    let wl = parseInt(point.P.X);
+    let pointUIId = getUIElementId(FIT_POINT_CORE, wl);
+    let html = ``;
+    html += `<div id="${pointUIId}" class="d-flex padding-bottom-8 margin-top-8 border-bottom">`;
+    html += `<div class="pointer"><span class="mif mif-bin" title="${FitPointAtRemoveLabel}" onclick="${removePointUICore.name}(${index})"></span></div>`;
+    let pointLabel = FitPointAtLabel.replace('r_v', wl);
+    html += `<div class="margin-left-16"><p class="text-light">${pointLabel}</p></div>`;
+    html += '</div>';
+
+    $('#fitPointsListCore').append(html);
+}
+
+function removePointUICore(index) {
+    let pointComplex = pointsForFitting[index];
+
+    let point = pointComplex.P;
+
+    removeSelectedPointFromFitting(point);
+
+    let id = getUIElementId(FIT_POINT_CORE, parseInt(pointComplex.P.X));
+    $(`#${id}`).remove();
+}
+
+/* ################################################################################ */
+/* SEGMENTS */
+/* ################################################################################ */
+function setPanelForFitCoreHidden() {
     /* hide container of segments */
     hideByClassDFlexItem('fitSegmentsListContainerCore');
 
@@ -28,10 +65,10 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
         .replace('rv_1', segment.P0.P.X)
         .replace('rv_2', segment.P1.P.X);
 
-    let segmentId = getSegmentUIElementId(FIT_SEGMENT_CORE, segment.Index);
-    let rangeLabelId = getSegmentUIElementId(FIT_SEGMENT_CORE, segment.Index, 'RangeLabel');
-    let segmentSelectId = getSegmentUIElementId(FIT_SEGMENT_CORE, segment.Index, 'Select');
-    let segmentContainerId = getSegmentUIElementId(FIT_SEGMENT_CORE_VALUE, segment.Index, 'Container');
+    let segmentId = getUIElementId(FIT_SEGMENT_CORE, segment.Index);
+    let rangeLabelId = getUIElementId(FIT_SEGMENT_CORE, segment.Index, 'RangeLabel');
+    let segmentSelectId = getUIElementId(FIT_SEGMENT_CORE, segment.Index, 'Select');
+    let segmentContainerId = getUIElementId(FIT_SEGMENT_CORE_VALUE, segment.Index, 'Container');
     let html = ``;
     html += `<div id="${segmentId}" class="d-flex flex-column padding-bottom-8 margin-top-16 border-bottom">`;
     html += `    <div><span id="${rangeLabelId}">${rangeLabel}</span></div>`;
@@ -46,7 +83,7 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
     html += `           <select id="${segmentSelectId}" data-role="select" data-on-item-select="${onSegmentFunctionSelectCoreAsync.name}">`;
     let fitFunctionsNum = fitFunctions.length;
     for (var i = 0; i < fitFunctionsNum; i++) {
-        let value = getSegmentUIElementId(segmentId, fitFunctions[i].Id);
+        let value = getUIElementId(segmentId, fitFunctions[i].Id);
         html += `<option value="${value}">${fitFunctions[i].Name}</option>`;
     }
     html += `           </select>`;

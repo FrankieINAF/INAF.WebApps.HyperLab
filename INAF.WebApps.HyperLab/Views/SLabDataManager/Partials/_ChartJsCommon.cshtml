@@ -135,6 +135,9 @@
     
     var ContinuumRemovalExecutionErrorMessage = "@Html.Raw(Charms.ContinuumRemovalExecutionErrorMessage)";
 
+    var FitPointAtLabel = "@Html.Raw(Charms.FitPointAtLabel)";
+    var FitPointAtRemoveLabel = "@Html.Raw(Charms.FitPointAtRemoveLabel)";
+
     var LegendLabel = "@Html.Raw(Charts.LegendLabel)";
 
     var NoSpectraFoundForSelectedIdsMessage = "@Html.Raw(Charts.NoSpectraFoundForSelectedIdsMessage)";
@@ -146,7 +149,10 @@
     /* ChartsController */
     var UrlGetProcessedSpectrum = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.GetProcessedSpectrum)';
     var UrlGetWhiteSpectraForAlignment = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.GetWhiteSpectraForAlignment)';
-    
+    var UrlLoadAlignmentPanel = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.LoadAlignmentPanel)';
+    var UrlLoadFitPanel = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.LoadFitPanel)';
+    var UrlLoadSmoothingPanel = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.LoadSmoothingPanel)';
+
     /* SpectraFilesController */
     var UrlDeleteRecursivelySpectrumChildren = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.DeleteRecursivelySpectrumChildren)';
     var UrlDeleteSpectrum = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.DeleteSpectrum)';
@@ -172,8 +178,5 @@
     var UrlGetUserSetting = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetUserSetting)';
     var UrlGetUserSettingsByWildcard = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetUserSettingsByWildcard)';
     var UrlSetUserSetting = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.SetUserSetting)';
-    var UrlLoadAlignmentPanel = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.LoadAlignmentPanel)';
-    var UrlLoadFitPanel = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.LoadFitPanel)';
-    var UrlLoadSmoothingPanel = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.LoadSmoothingPanel)';
-
+    
 </script>

@@ -24,9 +24,20 @@
 
     <!-- SEGMENTS (CORE) -->
     <div id="fitSegmentsListContainerCore" class="flex-column margin-top-24 d-none">
+        <ul data-role="tabs" data-expand="true">
+            <li class="active"><a href="#fitSegmentsListCoreContainer">@Html.Raw(Charms.FitManageSegmentsListLabel)</a></li>
+            <li><a href="#fitPointsListCoreContainer">@Html.Raw(Charms.FitManagePointsListLabel)</a></li>
+        </ul>
         <!-- LIST OF SEGMENTS -->
-        <label for="fitSegmentsListCore">@Html.Raw(Charms.FitSegmentsListLabel)</label>
-        <div id="fitSegmentsListCore" class="overflow-y-auto overflow-x-hidden" style="height: 55vh"></div>
+        <div id="fitSegmentsListCoreContainer" class="margin-top-24">
+            <label for="fitSegmentsListCore">@Html.Raw(Charms.FitSegmentsListLabel)</label>
+            <div id="fitSegmentsListCore" class="overflow-y-auto overflow-x-hidden" style="height: 55vh"></div>
+        </div>
+        <!-- LIST OF POINTS -->
+        <div id="fitPointsListCoreContainer" class="margin-top-24">
+            <label for="fitPointsListCore">@Html.Raw(Charms.FitPointsListLabel)</label>
+            <div id="fitPointsListCore" class="overflow-y-auto overflow-x-hidden" style="height: 55vh"></div>
+        </div>
     </div>
 
     <!-- SEGMENTS (PRO) -->

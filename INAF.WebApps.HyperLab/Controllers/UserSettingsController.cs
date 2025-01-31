@@ -26,24 +26,6 @@ namespace INAF.WebApps.HyperLab.Controllers
             this.dbHandlerHyperLabData = dbHandlerHyperLabData;
         }
 
-        [HttpGet]
-        public IActionResult LoadAlignmentPanel()
-        {
-            return PartialView("Partials/_AlignmentPanel");
-        }
-
-        [HttpGet]
-        public IActionResult LoadFitPanel()
-        {
-            return PartialView("Partials/_FitPanel");
-        }
-
-        [HttpGet]
-        public IActionResult LoadSmoothingPanel()
-        {
-            return PartialView("Partials/_SmoothingPanel");
-        }
-
         #region GET
         [HttpGet]
         public IActionResult GetDefaultColors(bool searchForDefaults)
