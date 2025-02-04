@@ -119,6 +119,7 @@ builder.Services
     .AddScoped<ChartsHelper>()
 
     /* TRANSIENT SERVICES */
+    .AddTransient<ConnectionStringBuilder>()
     .AddTransient<ContinuumRemovalHelper>()
     .AddTransient<EncryptionHelper>()
     .AddTransient<LinearFitHelper>()
