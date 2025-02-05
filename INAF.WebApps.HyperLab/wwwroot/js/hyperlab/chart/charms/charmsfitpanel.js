@@ -144,26 +144,45 @@ async function loadFitPanelValuesAsync() {
 async function initSwitchCoreProModeAsync() {
     await loadFitCoreProModeAsync();
 
-    $('#fitCheckboxCoreProMode').on('change', function () {
+    $('#fitCheckboxCoreProMode').off(); // to avoid fire multiple times the same event
+    $('#fitCheckboxCoreProMode').on('click', function (event) {
         let isChecked = isCheckboxChecked('fitCheckboxCoreProMode');
+        let callbackYes = function () {
+            alert('ciao');
+        };
 
-        enqueueSaveSetting(getQueueItem(FIT_SET_CORE_PRO_MODE, (isChecked ? FIT_PRO_MODE : FIT_CORE_MODE)));
-
-        /* trick to let switch button changing status on UI, without wating for in-memory operations completion  */
-        setTimeout(function () {
-            currentFitMode = getFitMode(isChecked);
-
-            switch (currentFitMode) {
-                case FIT_CORE_MODE:
-                    switchToCoreMode();
-                    break;
-
-                case FIT_PRO_MODE:
-                    switchToProMode();
-                    break;
-            }
-        }, 100);
+        let callbackNo = function () {
+            $('#fitCheckboxCoreProMode').prop('checked', !isChecked);
+        };
+        showDialogWithActions(WARNING_LABEL, FitSwitchModeResetQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);
     });
+
+    //$('#fitCheckboxCoreProMode').on('change', function () {
+    //    let isChecked = isCheckboxChecked('fitCheckboxCoreProMode');
+
+    //    let callbackYes = function () {
+    //        enqueueSaveSetting(getQueueItem(FIT_SET_CORE_PRO_MODE, (isChecked ? FIT_PRO_MODE : FIT_CORE_MODE)));
+
+    //        /* trick to let switch button changing status on UI, without wating for in-memory operations completion  */
+    //        setTimeout(function () {
+    //            currentFitMode = getFitMode(isChecked);
+
+    //            switch (currentFitMode) {
+    //                case FIT_CORE_MODE:
+    //                    switchToCoreMode();
+    //                    break;
+
+    //                case FIT_PRO_MODE:
+    //                    switchToProMode();
+    //                    break;
+    //            }
+    //        }, 100);
+    //    };
+    //    let callbackNo = function () {
+    //        Metro.getPlugin('fitCheckboxCoreProMode', 'checkbox').toggleState();
+    //    };
+    //    showDialogWithActions(WARNING_LABEL, FitSwitchModeResetQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);
+    //});
 }
 
 function getFitMode(isChecked) {
@@ -821,7 +840,7 @@ function manageRemovedPoint(point) {
                 removeSegmentForFittingUIPro(segmentsForFitting[0]);
                 break;
         }
-        
+
         /* remove the 1st segment  */
         removeContinuumSegmentForFittingOnChart(segmentsForFitting[0]);
         /* remove 1st segment from segmentsForFitting */
@@ -837,7 +856,7 @@ function manageRemovedPoint(point) {
                 removeSegmentForFittingUIPro(segmentsForFitting[segmentsForFitting.length - 1]);
                 break;
         }
-        
+
         /* remove the lastst segment  */
         removeContinuumSegmentForFittingOnChart(segmentsForFitting[segmentsForFitting.length - 1]);
         /* remove last segment from segmentsForFitting */
@@ -861,7 +880,7 @@ function manageRemovedPoint(point) {
                 removeSegmentForFittingUIPro(segmentsForFitting[index]);
                 break;
         }
-        
+
         /* remove segments containing the selected removed point  */
         let segments0 = removeSegmentForFittingAt(index);
         removeContinuumSegmentForFittingOnChart(segments0[0]);
@@ -876,7 +895,7 @@ function manageRemovedPoint(point) {
                 removeSegmentForFittingUIPro(segmentsForFitting[index - 1]);
                 break;
         }
-        
+
         let segments1 = removeSegmentForFittingAt(index - 1);
         removeContinuumSegmentForFittingOnChart(segments1[0]);
 

@@ -46,9 +46,9 @@ async function calculateMaxValuePointAsync(points, pointForFitting, pMinPMaxMaxV
 }
 
 async function createSegmentFittingUIProAsync(segment, isFromUserAction = false, isLast = false) {
-    let segmentId = getSegmentUIElementId(FIT_SEGMENT_PRO, segment.Index);
-    let segmentSelectId = getSegmentUIElementId(FIT_SEGMENT_PRO, segment.Index, 'Select');
-    let segmentContainerId = getSegmentUIElementId(FIT_SEGMENT_PRO_VALUE, segment.Index, 'Container');
+    let segmentId = getUIElementId(FIT_SEGMENT_PRO, segment.Index);
+    let segmentSelectId = getUIElementId(FIT_SEGMENT_PRO, segment.Index, 'Select');
+    let segmentContainerId = getUIElementId(FIT_SEGMENT_PRO_VALUE, segment.Index, 'Container');
 
     let points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
 
@@ -109,7 +109,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     html += `      <select id="${segmentSelectId}" data-role="select" data-on-item-select="${onSegmentFunctionSelectProAsync.name}">`;
     let fitFunctionsNum = fitFunctions.length;
     for (var i = 0; i < fitFunctionsNum; i++) {
-        let value = getSegmentUIElementId(segmentId, fitFunctions[i].Id);
+        let value = getUIElementId(segmentId, fitFunctions[i].Id);
         html += `<option value="${value}">${fitFunctions[i].Name}</option>`;
     }
     html += `      </select>`;

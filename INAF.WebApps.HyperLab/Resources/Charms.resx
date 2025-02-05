@@ -426,6 +426,9 @@
   <data name="FitStartingMessageCloud" xml:space="preserve">
     <value>Also, when a version of continuum-removed spectrum is available on cloud, you can skip previous steps and download the available version.</value>
   </data>
+  <data name="FitSwitchModeResetQuestion" xml:space="preserve">
+    <value>By switching mode all fit points will be removed. Do you want to continue?</value>
+  </data>
   <data name="OverwriteSavedSpectrumQuestion" xml:space="preserve">
     <value>By saving this processing step, the one saved on cloud will be overwritten. Do you want to continue?</value>
   </data>

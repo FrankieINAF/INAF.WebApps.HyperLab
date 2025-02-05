@@ -100,6 +100,7 @@ function delay(millisecs) {
 }
 
 function returnTrue() { return true; }
+
 function returnFalse() { return false; }
 
 /* MOBILE/NOT */
@@ -184,7 +185,7 @@ function showDialogWithAction(title, content, cls, caption1, callback1) {
     });
 }
 
-function showDialogWithActions(title, content, cls, caption1, caption2, callback1) {
+function showDialogWithActions(title, content, cls, caption1, caption2, callbackYes, callbackNo) {
     Metro.dialog.create({
         title: title,
         content: content,
@@ -195,12 +196,16 @@ function showDialogWithActions(title, content, cls, caption1, caption2, callback
                 caption: caption1,
                 cls: "js-dialog-close info",
                 onclick: function () {
-                    callback1();
+                    callbackYes();
                 }
             },
             {
                 caption: caption2,
                 cls: "js-dialog-close",
+                onclick: function () {
+                    if (callbackNo)
+                        callbackNo();
+                }
             }
         ]
     });

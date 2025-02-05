@@ -988,6 +988,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to By switching mode all fit points will be removed. Do you want to continue?.
+        /// </summary>
+        public static string FitSwitchModeResetQuestion {
+            get {
+                return ResourceManager.GetString("FitSwitchModeResetQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to By saving this processing step, the one saved on cloud will be overwritten. Do you want to continue?.
         /// </summary>
         public static string OverwriteSavedSpectrumQuestion {
