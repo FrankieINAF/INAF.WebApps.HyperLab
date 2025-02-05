@@ -156,33 +156,6 @@ async function initSwitchCoreProModeAsync() {
         };
         showDialogWithActions(WARNING_LABEL, FitSwitchModeResetQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);
     });
-
-    //$('#fitCheckboxCoreProMode').on('change', function () {
-    //    let isChecked = isCheckboxChecked('fitCheckboxCoreProMode');
-
-    //    let callbackYes = function () {
-    //        enqueueSaveSetting(getQueueItem(FIT_SET_CORE_PRO_MODE, (isChecked ? FIT_PRO_MODE : FIT_CORE_MODE)));
-
-    //        /* trick to let switch button changing status on UI, without wating for in-memory operations completion  */
-    //        setTimeout(function () {
-    //            currentFitMode = getFitMode(isChecked);
-
-    //            switch (currentFitMode) {
-    //                case FIT_CORE_MODE:
-    //                    switchToCoreMode();
-    //                    break;
-
-    //                case FIT_PRO_MODE:
-    //                    switchToProMode();
-    //                    break;
-    //            }
-    //        }, 100);
-    //    };
-    //    let callbackNo = function () {
-    //        Metro.getPlugin('fitCheckboxCoreProMode', 'checkbox').toggleState();
-    //    };
-    //    showDialogWithActions(WARNING_LABEL, FitSwitchModeResetQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);
-    //});
 }
 
 function getFitMode(isChecked) {
