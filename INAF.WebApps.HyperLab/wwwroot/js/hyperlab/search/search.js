@@ -430,13 +430,11 @@ $(function () {
 
     showPageItems();
 
-    //$("body").click(function (e) {
-    //    var parentOffset = $(this).offset();
-    //    var relX = e.pageX - parentOffset.left;
-    //    var relY = e.pageY - parentOffset.top;
+    $('#selectSampleName').on('keydown', function (evt) {
+        if (evt.originalEvent.code == 'Enter')
+            search();
+    });
 
-    //    console.log(`${relX}, ${relY}`);
-    //});
 });
 
 $(document).on('beforeunload', function () {

@@ -962,7 +962,7 @@ function showSelectedTab(containerId, selectedTabId) {
 /* ################################################################################ */
 /* OPEN/CLOSE SETTINGS */
 /* ################################################################################ */
-function toggleSettings(id) {
+function toggleDropDown(id) {
     if ($(`#${id}`).hasClass('keep-open')) {
         $(`#${id}`).removeClass('keep-open');
 

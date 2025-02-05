@@ -39,7 +39,13 @@ namespace INAF.WebApps.HyperLab.Extensions
             try
             {
                 if (!string.IsNullOrEmpty(httpContext.Request.Headers["Authorization"]))
-                    return httpContext.Request.Headers.Authorization.First().Replace("Bearer ", string.Empty);
+                {
+                    if (httpContext.Request.Headers["Authorization"].Count > 0)
+                        return httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", string.Empty);
+                    else
+                        return null;
+                    //return httpContext.Request.Headers.Authorization.First().Replace("Bearer ", string.Empty);
+                }
                 else
                     return null;
             }

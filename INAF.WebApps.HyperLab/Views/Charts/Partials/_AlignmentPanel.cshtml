@@ -3,11 +3,11 @@
 <div id="alignmentPanel" class="row cell-fs-12">
     <!-- DROPDOWN SETTINGS -->
     <div class="d-flex flex-row margin-vertical-4">
-        <button id="alignmentSettings" class="button cycle bg-transparent bg-cyan-hover pointer" onclick="toggleSettings('alignmentSettingsDropdown')"><span class="mif-cogs mif-2x fg-white"></span></button>
+        <button id="alignmentSettings" class="button cycle bg-transparent bg-cyan-hover pointer" onclick="toggleDropDown('alignmentSettingsDropdown')"><span class="mif-cogs mif-2x fg-white"></span></button>
         <span class="text-secondary margin-left-8 margin-top-4">@Html.Raw(Charms.AlignmentSettingsLabel)</span>
     </div>
     <div class="pos-relative">
-        <div id="alignmentSettingsDropdown" 
+        <div id="alignmentSettingsDropdown"
              class="fg-white"
              data-role="dropdown"
              data-no-close="true"
@@ -69,15 +69,27 @@
 
     <!-- ICONS SAVED ON CLOUD -->
     <div id="alignedSavedOnCloud" class="margin-left-4 margin-vertical-8" style="display: none">
-        <div><span id="alignedCloudIcon"  class="mif-cloud-download mif-2x fg-cyan pointer" title="@Html.Raw(Charms.CharmsCloudDownloadLabel)" onclick="downloadProcessedSpectrumAsync(SPECTRUM_TYPE_ALIGNED)"></span></div>
+        <div><span id="alignedCloudIcon" class="mif-cloud-download mif-2x fg-cyan pointer" title="@Html.Raw(Charms.CharmsCloudDownloadLabel)" onclick="downloadProcessedSpectrumAsync(SPECTRUM_TYPE_ALIGNED)"></span></div>
         <div><span id="alignedCloudText" class="margin-left-8 text-small margin-top-4">@Html.Raw(Charms.CharmsAlreadySavedOnCloudMessage)</span></div>
     </div>
 
     <!-- SLIDERS -->
-    <div id="slider0Container" class="row cell-fs-12 d-none"></div>
-    <div id="slider1Container" class="row cell-fs-12 d-none"></div>
-    <div id="slider2Container" class="row cell-fs-12 d-none"></div>
-    <div id="slider3Container" class="row cell-fs-12 d-none"></div>
+    <div class="d-flex flex-row margin-vertical-4">
+        <button id="alignmentSliders" class="button cycle bg-transparent bg-cyan-hover pointer" onclick="toggleDropDown('alignmentSlidersDropdown')"><span class="mif-expand-more mif-2x fg-white"></span></button>
+        <span class="text-secondary margin-left-8 margin-top-4">@Html.Raw(Charms.AlignmentShowHideSlidersLabel)</span>
+    </div>
+    <div class="pos-relative">
+        <div id="alignmentSlidersDropdown"
+             class="fg-white"
+             data-role="dropdown"
+             data-no-close="true"
+             data-toggle-element="#alignmentSliders">
+            <div id="slider0Container" class="row cell-fs-12 d-none"></div>
+            <div id="slider1Container" class="row cell-fs-12 d-none"></div>
+            <div id="slider2Container" class="row cell-fs-12 d-none"></div>
+            <div id="slider3Container" class="row cell-fs-12 d-none"></div>
+        </div>
+    </div>
 
     <!-- CHART MINIATURE -->
     <div id="chartMiniatureLabelContainer" class="row cell-fs-12 margin-top-4 d-none">
@@ -91,9 +103,9 @@
     <!-- NUM OF POINTS FOR ALIGNMENT-->
     <div id="alignedNumOfPointsForAlignment" class="row cell-fs-12 d-none">
         <label for="inputNumOfPointsForAlignment">@Html.Raw(Charms.AlignmentNumOfPointsLabel)</label>
-        <input id="inputNumOfPointsForAlignment" 
-               type="text" 
-               data-role="spinner" 
+        <input id="inputNumOfPointsForAlignment"
+               type="text"
+               data-role="spinner"
                data-buttons-position="right"
                data-cls-spinner="spinner margin-top-4"
                data-step="1"

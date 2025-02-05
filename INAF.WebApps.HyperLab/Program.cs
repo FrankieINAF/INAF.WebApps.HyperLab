@@ -2,6 +2,7 @@ using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonHelpers;
+using INAF.Libraries.Net.HyperLab.CommonWebAppHelpers;
 using INAF.Libraries.Net.HyperLabCommonHelpers;
 using INAF.Libraries.Net.HyperLabCommonHelpers.ProcessingHelpers;
 using INAF.Libraries.Net.Math.Fit.Linear;
@@ -23,7 +24,7 @@ var config = builder.Configuration;
 string? validIssuer = config.GetSection("AppSettings:JwtToken:Issuer").Value;
 string? validAudience = config.GetSection("AppSettings:JwtToken:Audience").Value;
 
-RsaSecurityKey rsaSecurityKey = (new TokenValidationParametersFactory(config)).getRsaSecurityKey();
+RsaSecurityKey rsaSecurityKey = (new TokenValidationParametersHelper(config)).getRsaSecurityKey();
 builder.Services.AddSingleton<RsaSecurityKey>(rsaSecurityKey);
 
 
@@ -131,7 +132,8 @@ builder.Services
     .AddTransient<SearchByMaterialHelper>()
     .AddTransient<SplineFitHelper>()
     .AddTransient<SplineProcessingHelper>()
-    .AddTransient<TokenValidationParametersFactory>()
+    .AddTransient<TokenValidationHelper>()
+    .AddTransient<TokenValidationParametersHelper>()
     .AddTransient<UsersFactory>();
 
 /* logging */

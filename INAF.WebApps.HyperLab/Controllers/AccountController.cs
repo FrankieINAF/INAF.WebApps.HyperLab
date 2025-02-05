@@ -2,7 +2,6 @@
 using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
 using INAF.Libraries.Net.DB.HyperLabUsers;
-using INAF.Libraries.Net.HyperLab.CommonModels.Authentication;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.Libraries.Net.Extensions;
 using INAF.WebApps.HyperLab.Controllers.Base;
@@ -17,6 +16,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using INAF.Libraries.Net.DB.HyperLabData;
+using INAF.Libraries.Net.HyperLab.CommonWebAppHelpers;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Authentication;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -53,18 +54,8 @@ namespace INAF.WebApps.HyperLab.Controllers
                 if (!dbHandlerHyperLabUsers.isTokenValid(token))
                     return new JsonResult(isValid);
 
-                TokenValidationParametersFactory tokenValidationParametersFactory = serviceProvider.GetRequiredService<TokenValidationParametersFactory>();
-                TokenValidationParameters tokenValidationParameters = tokenValidationParametersFactory.getTokenValidationParameters();
-                ISecurityTokenValidator tokenValidator = new JwtSecurityTokenHandler();
-                var claim = tokenValidator.ValidateToken(token, tokenValidationParameters, out _);
-                if (claim != null)
-                {
-                    var scope = claim.FindFirst(c => c.Type.ToLower() == "exp").Value;
-                    double expirationUnixTime = scope.ToDoubleInvariant();
-                    DateTime expirationDateTime = expirationUnixTime.UnixTimeStampToDateTime();
-                    if (DateTime.UtcNow < expirationDateTime)
-                        isValid = true;
-                }
+                var tokenValidationHelper = serviceProvider.GetRequiredService<TokenValidationHelper>();
+                isValid = tokenValidationHelper.isValidToken(token);
             }
             catch (Exception ex)
             {
@@ -155,6 +146,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             return View();
         }
 
+        [HttpPost]
         public async Task<IActionResult> LoginForJwt([FromBody] JwtLoginModel model)
         {
             if (ModelState.IsValid)

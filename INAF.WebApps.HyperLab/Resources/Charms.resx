@@ -219,6 +219,9 @@
   <data name="AlignmentSettingsLabel" xml:space="preserve">
     <value>Alignment settings</value>
   </data>
+  <data name="AlignmentShowHideSlidersLabel" xml:space="preserve">
+    <value>Show/hide dividers settings</value>
+  </data>
   <data name="CharmsAlreadySavedOnCloudMessage" xml:space="preserve">
     <value>A copy of this processing step is already saved on cloud</value>
   </data>

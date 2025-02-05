@@ -1,5 +1,6 @@
 ﻿using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.DB.HyperLabUsers;
+using INAF.Libraries.Net.HyperLab.CommonWebAppHelpers;
 using INAF.WebApps.HyperLab.Controllers;
 using INAF.WebApps.HyperLab.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +15,21 @@ namespace INAF.WebApps.HyperLab.Attributes
             int userId = int.MinValue;
 
             var dbHandler = filterContext.HttpContext.RequestServices.GetRequiredService<DbHandlerHyperLabUsers>();
+            var tokenValidationHelper = filterContext.HttpContext.RequestServices.GetRequiredService<TokenValidationHelper>();
 
             /* retrieve userId from token or from context */
-            string token = filterContext.HttpContext.GetToken();
+            string? token = filterContext.HttpContext.GetToken();
             if (string.IsNullOrEmpty(token))
                 userId = filterContext.HttpContext.GetUserId();
             else
+            {
+                if (!tokenValidationHelper.isValidToken(token))
+                {
+                    filterContext.Result = new RedirectResult(GenericHelper.GetUrl(GenericHelper.GetControllerName(nameof(AccountController)), nameof(AccountController.Login)));
+                    return;
+                }
                 userId = dbHandler.getUserIdFromToken(token.Replace("Bearer ", string.Empty));
+            }
 
             /* redirect to action depending on login */
             if (!dbHandler.isLoginValid(userId))
