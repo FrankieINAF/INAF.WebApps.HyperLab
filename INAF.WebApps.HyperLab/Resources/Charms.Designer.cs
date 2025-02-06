@@ -160,6 +160,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download aligned spectrum as csv.
+        /// </summary>
+        public static string AlignmentButtonDownloadAsCsvLabel {
+            get {
+                return ResourceManager.GetString("AlignmentButtonDownloadAsCsvLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download aligned spectrum as xml.
+        /// </summary>
+        public static string AlignmentButtonDownloadAsXmlLabel {
+            get {
+                return ResourceManager.GetString("AlignmentButtonDownloadAsXmlLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Align spectrum sections.
         /// </summary>
         public static string AlignmentButtonExecuteLabel {
@@ -372,6 +390,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string AlignmentShowHideSlidersLabel {
             get {
                 return ResourceManager.GetString("AlignmentShowHideSlidersLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download.
+        /// </summary>
+        public static string ButtonDownloadLabel {
+            get {
+                return ResourceManager.GetString("ButtonDownloadLabel", resourceCulture);
             }
         }
         

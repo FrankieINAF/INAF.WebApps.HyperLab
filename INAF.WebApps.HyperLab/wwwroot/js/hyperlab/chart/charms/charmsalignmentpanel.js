@@ -860,6 +860,7 @@ function buildAlignedSpectrumCompleted() {
 
     /* enable buttons for saving/removing aligned spectrum */
     setMetroUIButtonEnabled('alignmentButtonSave', true);
+    showByClass('alignmentButtonDownload', true);
     setMetroUIButtonEnabled('alignmentButtonRemove', true);
 
     /* set hidden the checkbox for removing file on cloud (because of the used HTML & css, we need to do it manually, since the 'd-none' class doesn't work) */
@@ -959,7 +960,6 @@ async function saveAlignedSpectrumAsync(showLoadingAndMessage = true) {
             getSpectrumPointsById(spectrum.Id),
             alignmentSettings,
             parentFiles);
-
 
         let spectrumFile = {
             Id: 0,
@@ -1061,6 +1061,7 @@ async function removeAlignedSpectrumAsync(alignedSpectrum, isRemovalOnCloudReque
 
     /* disable buttons for saving/removing since aligned spectrum is not present anymore */
     setMetroUIButtonEnabled('alignmentButtonSave', false);
+    hideByClass('alignmentButtonDownload', false);
     setMetroUIButtonEnabled('alignmentButtonRemove', false);
 
     /* disable tabs for fit and smoothing */
@@ -1098,4 +1099,39 @@ async function downloadAlignmentSettingsAsync(id) {
     } else {
         showSimpleDialog(ERROR_LABEL, AlignmentDownloadAlignmentSettingsErrorMessage, ALERT);
     }
+}
+
+/* ################################################################################ */
+/* DOWNLOAD ALIGNED SPECTRUM */
+/* ################################################################################ */
+async function downloadAlignedSpectrumAsCsv() {
+    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+    if (!spectrum)
+        return;
+
+    let txt = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAlignedModelAsTxt",
+        spectrum.Name,
+        SPECTRUM_TYPE_ALIGNED,
+        getSpectrumPointsById(spectrum.Id),);
+    //console.info(txt);
+
+    executeDownloadFile(txt, `${spectrum.Name}_${getSpectrumTypeString(SPECTRUM_TYPE_ALIGNED)}.csv`)
+}
+
+async function downloadAlignedSpectrumAsXml() {
+    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+    if (!spectrum)
+        return;
+
+    let alignmentSettings = getAlignmentSettings();
+    let parentFiles = getAlignedParentFiles(selectedSpectrumForProcessingId);
+
+    let xml = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAlignedModelAsXml",
+        spectrum.Name,
+        spectrum.SpectrumType,
+        getSpectrumPointsById(spectrum.Id),
+        alignmentSettings,
+        parentFiles);
+
+    executeDownloadFile(xml, `${spectrum.Name}_${getSpectrumTypeString(SPECTRUM_TYPE_ALIGNED)}.xml`)
 }

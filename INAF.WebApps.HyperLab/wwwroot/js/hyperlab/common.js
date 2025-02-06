@@ -99,6 +99,22 @@ function delay(millisecs) {
     return new Promise(resolve => setTimeout(resolve, millisecs));
 }
 
+function executeDownloadFile(data, filename) {
+    const blob = new Blob([data], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename; // `${spectrum.Name}_${getSpectrumTypeString(SPECTRUM_TYPE_ALIGNED)}.csv`;
+
+    // Append the anchor element to the document and trigger a click to start the download
+    document.body.appendChild(a);
+    a.click();
+
+    // Clean up by removing the anchor element and revoking the Blob URL
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
 function returnTrue() { return true; }
 
 function returnFalse() { return false; }

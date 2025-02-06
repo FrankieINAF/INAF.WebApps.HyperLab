@@ -123,11 +123,22 @@
     <!-- BUTTONS -->
     <div class="row cell-fs-12">
         <!-- BUTTON ALIGN -->
-        <button id="alignmentButtonExecute" class="button primary cycle pointer disabled" title="@Html.Raw(Charms.AlignmentButtonDisabledMessage)" onclick="alignSpectrumAsync()"><span class="mif-checkmark"></span></button>
+        <button id="alignmentButtonExecute" class="button primary cycle pointer disabled large" title="@Html.Raw(Charms.AlignmentButtonDisabledMessage)" onclick="alignSpectrumAsync()"><span class="mif-checkmark"></span></button>
         <!-- BUTTON SAVE -->
-        <button id="alignmentButtonSave" class="button primary cycle pointer disabled margin-left-16" title="@Html.Raw(Charms.AlignmentButtonSaveLabel)" onclick="saveAlignedSpectrumProcedureAsync()"><span class="mif-floppy-disk"></span></button>
+        <button id="alignmentButtonSave" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.AlignmentButtonSaveLabel)" onclick="saveAlignedSpectrumProcedureAsync()"><span class="mif-floppy-disk"></span></button>
         <!-- BUTTON REMOVE -->
-        <button id="alignmentButtonRemove" class="button primary cycle pointer disabled margin-left-16" title="@Html.Raw(Charms.AlignmentButtonRemoveLabel)" onclick="removeAlignedSpectrumProcedure()"><span class="mif-bin"></span></button>
+        <button id="alignmentButtonRemove" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.AlignmentButtonRemoveLabel)" onclick="removeAlignedSpectrumProcedure()"><span class="mif-bin"></span></button>
+        <!-- BUTTON DOWNLOAD -->
+        <div id="alignmentButtonDownload" class="multi-action d-none margin-left-16">
+            <button class="action-button rotate-minus primary fg-white"
+                    onclick="$(this).toggleClass('active')">
+                <span class="icon"><span class="mif-file-download"></span></span>
+            </button>
+            <ul class="actions drop-bottom">
+                <li class="bg-cyan" title="@Html.Raw(Charms.AlignmentButtonDownloadAsCsvLabel)" onclick="downloadAlignedSpectrumAsCsv()"><span class="mif-file-text margin-left-8"></span></li>
+                <li class="bg-cyan" title="@Html.Raw(Charms.AlignmentButtonDownloadAsXmlLabel)" onclick="downloadAlignedSpectrumAsXml()"><span class="mif-library margin-left-8"></span></li>
+            </ul>
+        </div>
     </div>
 </div>
 

@@ -284,6 +284,19 @@
     }
     #endregion
 
+    #region TO TXT
+    [JSInvokable]
+    public string? getSpectrumOfTypeAlignedModelAsTxt(string filename,
+                                                      SpectrumType spectrumType,
+                                                      List<PointModel> points)
+    {
+        SpectrumModel spectrumModel = new SpectrumModel(spectrumType, SpectrumLevel.Averaged, filename);
+        spectrumModel.Points = points;
+
+        return spectrumModel.ToTxt();
+    }
+    #endregion
+
     #region TO XML
     [JSInvokable]
     public string getSpectrumOfTypeAlignedModelAsXml(string filename,

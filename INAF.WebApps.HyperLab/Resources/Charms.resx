@@ -150,6 +150,12 @@
   <data name="AlignmentButtonDisabledMessage" xml:space="preserve">
     <value>Load white spectra to enable this button</value>
   </data>
+  <data name="AlignmentButtonDownloadAsCsvLabel" xml:space="preserve">
+    <value>Download aligned spectrum as csv</value>
+  </data>
+  <data name="AlignmentButtonDownloadAsXmlLabel" xml:space="preserve">
+    <value>Download aligned spectrum as xml</value>
+  </data>
   <data name="AlignmentButtonExecuteLabel" xml:space="preserve">
     <value>Align spectrum sections</value>
   </data>
@@ -221,6 +227,9 @@
   </data>
   <data name="AlignmentShowHideSlidersLabel" xml:space="preserve">
     <value>Show/hide dividers settings</value>
+  </data>
+  <data name="ButtonDownloadLabel" xml:space="preserve">
+    <value>Download</value>
   </data>
   <data name="CharmsAlreadySavedOnCloudMessage" xml:space="preserve">
     <value>A copy of this processing step is already saved on cloud</value>
