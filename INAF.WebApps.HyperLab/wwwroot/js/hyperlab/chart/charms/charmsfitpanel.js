@@ -147,13 +147,30 @@ async function initSwitchCoreProModeAsync() {
     $('#fitCheckboxCoreProMode').off(); // to avoid fire multiple times the same event
     $('#fitCheckboxCoreProMode').on('click', function (event) {
         let isChecked = isCheckboxChecked('fitCheckboxCoreProMode');
+
         let callbackYes = function () {
-            alert('ciao');
+            enqueueSaveSetting(getQueueItem(FIT_SET_CORE_PRO_MODE, (isChecked ? FIT_PRO_MODE : FIT_CORE_MODE)));
+
+            /* trick to let switch button changing status on UI, without wating for in-memory operations completion  */
+            setTimeout(function () {
+                currentFitMode = getFitMode(isChecked);
+
+                switch (currentFitMode) {
+                    case FIT_CORE_MODE:
+                        switchToCoreMode();
+                        break;
+
+                    case FIT_PRO_MODE:
+                        switchToProMode();
+                        break;
+                }
+            }, 100);
         };
 
         let callbackNo = function () {
             $('#fitCheckboxCoreProMode').prop('checked', !isChecked);
         };
+
         showDialogWithActions(WARNING_LABEL, FitSwitchModeResetQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);
     });
 }
@@ -1314,6 +1331,7 @@ function buildContinuumRemovedSpectrumCompleted(filename) {
     /* enable buttons for saving/removing continuum-removed spectrum */
     setMetroUIButtonEnabled('fitButtonSave', true);
     setMetroUIButtonEnabled('fitButtonRemove', true);
+    showByClass('fitButtonDownload');
 
     /* set hidden the checkbox for removing file on cloud (because of the used HTML & css, we need to do it manually, since the 'd-none' class doesn't work) */
     hideElemMetroUIElem('checkboxRemoveContinuumRemovedSpectrumOnCloud');
@@ -1631,8 +1649,8 @@ function getSegments() {
 
         segments.push({
             Id: 0,
-            XStart: segmentsForFitting[i].P0.X,
-            XEnd: segmentsForFitting[i].P1.X,
+            XStart: segmentsForFitting[i].P0.P.X,
+            XEnd: segmentsForFitting[i].P1.P.X,
             FitMethodName: fitFunction.MethodName,
             ParameterValue: segmentsForFitting[i].FitFunctionParameterValue
         });
@@ -1791,6 +1809,7 @@ async function removeContinuumRemovedSpectrumAsync(continuumRemovedSpectrum, isR
     /* disable buttons for saving/removing since aligned spectrum is not present anymore */
     setMetroUIButtonEnabled('fitButtonSave', false);
     setMetroUIButtonEnabled('fitButtonRemove', false);
+    hideByClass('fitButtonDownload');
 
     /* refresh legend, if opened */
     refreshCharmsLegend();
@@ -1896,3 +1915,38 @@ window.addEventListener(EVENT_SEGMENTS_LOADED_DOWNLOAD_CONTINUUM_REMOVED, (e) =>
     isBuildingUpContinuum = false;
 });
 
+/* ################################################################################ */
+/* DOWNLOAD CONTINUUM-REMOVED SPECTRUM */
+/* ################################################################################ */
+async function downloadContinuumRemovedSpectrumAsCsvAsync() {
+    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    if (!spectrum)
+        return;
+
+    let txt = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAsTxt",
+        spectrum.Name,
+        SPECTRUM_TYPE_CONTINUUM_REMOVED,
+        getSpectrumPointsById(spectrum.Id),);
+    //console.info(txt);
+
+    executeDownloadFile(txt, `${spectrum.Name}_${getSpectrumTypeString(SPECTRUM_TYPE_CONTINUUM_REMOVED)}.csv`)
+}
+
+async function downloadContinuumRemovedSpectrumAsXmlAsync() {
+    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    if (!spectrum)
+        return;
+
+    let parentFiles = getContinuumRemovedParentFiles(selectedSpectrumForProcessingId);
+
+    let continuumRemovalSettings = getContinuumRemovalSettings();
+
+    let xml = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeContinuumRemovedModelAsXml",
+        spectrum.Name,
+        spectrum.SpectrumType,
+        getSpectrumPointsById(spectrum.Id),
+        continuumRemovalSettings,
+        parentFiles);
+
+    executeDownloadFile(xml, `${spectrum.Name}_${getSpectrumTypeString(SPECTRUM_TYPE_CONTINUUM_REMOVED)}.xml`)
+}

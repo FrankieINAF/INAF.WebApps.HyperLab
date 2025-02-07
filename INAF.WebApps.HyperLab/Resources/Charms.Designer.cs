@@ -709,6 +709,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download continuum-removed spectrum as csv.
+        /// </summary>
+        public static string FitButtonDownloadAsCsvLabel {
+            get {
+                return ResourceManager.GetString("FitButtonDownloadAsCsvLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download continuum-removed spectrum as xml.
+        /// </summary>
+        public static string FitButtonDownloadAsXmlLabel {
+            get {
+                return ResourceManager.GetString("FitButtonDownloadAsXmlLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove continuum.
         /// </summary>
         public static string FitButtonExecuteLabel {
@@ -1110,6 +1128,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SmoothingAutoSaveSegmentsMessage {
             get {
                 return ResourceManager.GetString("SmoothingAutoSaveSegmentsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download smoothed spectrum as csv.
+        /// </summary>
+        public static string SmoothingButtonDownloadAsCsvLabel {
+            get {
+                return ResourceManager.GetString("SmoothingButtonDownloadAsCsvLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download smoothed spectrum as xml.
+        /// </summary>
+        public static string SmoothingButtonDownloadAsXmlLabel {
+            get {
+                return ResourceManager.GetString("SmoothingButtonDownloadAsXmlLabel", resourceCulture);
             }
         }
         

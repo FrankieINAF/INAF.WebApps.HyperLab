@@ -43,8 +43,16 @@
         <p class="text-secondary">@Html.Raw(Charms.SmoothingSrcSpectrumTypeLabel)</p>
         <div id="srcSpectrumTypeListContainer" class="d-none">
             <select id="srcSpectrumTypeList" data-role="select">
-                <option value="@{@((int)Enums.Enums.SpectrumType.Aligned);}">@Enums.Enums.SpectrumType.Aligned.ToString()</option>
-                <option value="@{@((int)Enums.Enums.SpectrumType.ContinuumRemoved);}">@Enums.Enums.SpectrumType.ContinuumRemoved.ToString()</option>
+                <option value="@{
+
+                    @((int)Enums.Enums.SpectrumType.Aligned)
+;
+}">@Enums.Enums.SpectrumType.Aligned.ToString()</option>
+                <option value="@{
+
+                    @((int)Enums.Enums.SpectrumType.ContinuumRemoved)
+;
+}">@Enums.Enums.SpectrumType.ContinuumRemoved.ToString()</option>
             </select>
         </div>
         <p id="smoothingSrcSpectrumType" class="text-bold d-none"></p>
@@ -53,14 +61,13 @@
     <!-- TABS FOR SMOOTHING TYPE SELECTION -->
     <div class="row cell-fs-12">
         <ul id="smoothingTypeTabs"
+            data-role="tabs"
             data-app-bar="false"
-            data-role="materialtabs"
-            data-cls-tabs="charms-tabs"
-            data-cls-tab="fg-white text-light"
-            data-cls-tab-active="fg-white text-bold"
-            data-cls-marker="bg-white">
-            <li><a id="bysegmentstitle" href="#bysegmentsoptions" style="color: white !important">@Html.Raw(Charms.SmoothingBySegmentsTabTitle)</a></li>
-            <li><a id="wholespectrum" href="#wholespectrumoptions" style="color: white !important">@Html.Raw(Charms.SmoothingWholeSpectrumTabTitle)</a></li>
+            data-expand="true"
+            data-expand-point="fs"
+            data-cls-tabs="tabs-list flex-justify-center">
+            <li><a id="bysegmentstitle" href="#bysegmentsoptions">@Html.Raw(Charms.SmoothingBySegmentsTabTitle)</a></li>
+            <li><a id="wholespectrum" href="#wholespectrumoptions">@Html.Raw(Charms.SmoothingWholeSpectrumTabTitle)</a></li>
         </ul>
     </div>
     <div class="row cell-fs-12">
@@ -76,11 +83,22 @@
             <!-- BUTTONS -->
             <div class="row cell-fs-12">
                 <!-- BUTTON ALIGN -->
-                <button id="smoothingBySegmentsButtonExecute" class="button primary cycle pointer disabled" title="@Html.Raw(Charms.SmoothingButtonExecuteLabel)" onclick="applySmoothingAsync(BY_SEGMENTS)"><span class="mif-checkmark"></span></button>
+                <button id="smoothingBySegmentsButtonExecute" class="button primary cycle pointer disabled large" title="@Html.Raw(Charms.SmoothingButtonExecuteLabel)" onclick="applySmoothingAsync(BY_SEGMENTS)"><span class="mif-checkmark"></span></button>
                 <!-- BUTTON SAVE -->
-                <button id="smoothingBySegmentsButtonSave" class="button primary cycle pointer disabled margin-left-16" title="@Html.Raw(Charms.SmoothingButtonSaveLabel)" onclick="saveSmoothedSpectrumProcedureAsync(BY_SEGMENTS)"><span class="mif-floppy-disk"></span></button>
+                <button id="smoothingBySegmentsButtonSave" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.SmoothingButtonSaveLabel)" onclick="saveSmoothedSpectrumProcedureAsync(BY_SEGMENTS)"><span class="mif-floppy-disk"></span></button>
                 <!-- BUTTON REMOVE -->
-                <button id="smoothingBySegmentsButtonRemove" class="button primary cycle pointer disabled margin-left-16" title="@Html.Raw(Charms.SmoothingButtonRemoveLabel)" onclick="removeSmoothedSpectrumProcedure(BY_SEGMENTS)"><span class="mif-bin"></span></button>
+                <button id="smoothingBySegmentsButtonRemove" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.SmoothingButtonRemoveLabel)" onclick="removeSmoothedSpectrumProcedure(BY_SEGMENTS)"><span class="mif-bin"></span></button>
+                <!-- BUTTON DOWNLOAD -->
+                <div id="smoothingButtonDownload" class="multi-action d-none margin-left-16">
+                    <button class="action-button rotate-minus primary fg-white"
+                            onclick="$(this).toggleClass('active')">
+                        <span class="icon"><span class="mif-file-download"></span></span>
+                    </button>
+                    <ul class="actions drop-bottom">
+                        <li class="bg-cyan" title="@Html.Raw(Charms.SmoothingButtonDownloadAsCsvLabel)" onclick="downloadSmoothedSpectrumAsCsvAsync()"><span class="mif-file-text margin-left-8"></span></li>
+                        <li class="bg-cyan" title="@Html.Raw(Charms.SmoothingButtonDownloadAsXmlLabel)" onclick="downloadSmoothedSpectrumAsXmlAsync()"><span class="mif-library margin-left-8"></span></li>
+                    </ul>
+                </div>
             </div>
         </div>
 

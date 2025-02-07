@@ -853,15 +853,15 @@ function buildAlignedSpectrumCompleted() {
     setTabEnabled(1, true);
 
     /* load panel for smoothing */
-    //loadPartialViewWithAjaxGetNoModel(UrlLoadSmoothingPanel, 'smoothingoptions');
+    loadPartialViewWithAjaxGetNoModel(UrlLoadSmoothingPanel, 'smoothingoptions');
 
     /* enable management of clicked point on aligned spectrum for fitting */
     setIsPointClickForFitEnabled(true);
 
     /* enable buttons for saving/removing aligned spectrum */
     setMetroUIButtonEnabled('alignmentButtonSave', true);
-    showByClass('alignmentButtonDownload', true);
     setMetroUIButtonEnabled('alignmentButtonRemove', true);
+    showByClass('alignmentButtonDownload');
 
     /* set hidden the checkbox for removing file on cloud (because of the used HTML & css, we need to do it manually, since the 'd-none' class doesn't work) */
     hideElemMetroUIElem('checkboxRemoveAlignedSpectrumOnCloud');
@@ -1061,8 +1061,8 @@ async function removeAlignedSpectrumAsync(alignedSpectrum, isRemovalOnCloudReque
 
     /* disable buttons for saving/removing since aligned spectrum is not present anymore */
     setMetroUIButtonEnabled('alignmentButtonSave', false);
-    hideByClass('alignmentButtonDownload', false);
     setMetroUIButtonEnabled('alignmentButtonRemove', false);
+    hideByClass('alignmentButtonDownload');
 
     /* disable tabs for fit and smoothing */
     setTabEnabled(1, false);
@@ -1104,12 +1104,12 @@ async function downloadAlignmentSettingsAsync(id) {
 /* ################################################################################ */
 /* DOWNLOAD ALIGNED SPECTRUM */
 /* ################################################################################ */
-async function downloadAlignedSpectrumAsCsv() {
+async function downloadAlignedSpectrumAsCsvAsync() {
     let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
     if (!spectrum)
         return;
 
-    let txt = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAlignedModelAsTxt",
+    let txt = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAsTxt",
         spectrum.Name,
         SPECTRUM_TYPE_ALIGNED,
         getSpectrumPointsById(spectrum.Id),);
@@ -1118,7 +1118,7 @@ async function downloadAlignedSpectrumAsCsv() {
     executeDownloadFile(txt, `${spectrum.Name}_${getSpectrumTypeString(SPECTRUM_TYPE_ALIGNED)}.csv`)
 }
 
-async function downloadAlignedSpectrumAsXml() {
+async function downloadAlignedSpectrumAsXmlAsync() {
     let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
     if (!spectrum)
         return;

@@ -153,6 +153,18 @@
   <data name="AlignmentButtonDownloadAsCsvLabel" xml:space="preserve">
     <value>Download aligned spectrum as csv</value>
   </data>
+  <data name="FitButtonDownloadAsCsvLabel" xml:space="preserve">
+    <value>Download continuum-removed spectrum as csv</value>
+  </data>
+  <data name="SmoothingButtonDownloadAsCsvLabel" xml:space="preserve">
+    <value>Download smoothed spectrum as csv</value>
+  </data>
+  <data name="SmoothingButtonDownloadAsXmlLabel" xml:space="preserve">
+    <value>Download smoothed spectrum as xml</value>
+  </data>
+  <data name="FitButtonDownloadAsXmlLabel" xml:space="preserve">
+    <value>Download continuum-removed spectrum as xml</value>
+  </data>
   <data name="AlignmentButtonDownloadAsXmlLabel" xml:space="preserve">
     <value>Download aligned spectrum as xml</value>
   </data>

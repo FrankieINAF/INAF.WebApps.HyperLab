@@ -10,14 +10,13 @@ var POLYNOMIAL_ORDER = "PolynomialOrder";
 var isAutoSaveSmoothingSettingsEnabled = false;
 var timeoutSmoothingSettings;
 
+var currentSmoothingType;
 var smoothingSegmentsOptions;
 var smoothingWholeSpectrumOptions;
 
 
 var INCREASE = 'increase';
 var DECREASE = 'decrease';
-
-var currentSmoothingTypeForDelete;
 
 async function callCheckIsSpectrumOfTypeSavedOnCloudForSmoothedAsync(filename = null, spectrumType) {
     if (filename == null) {
@@ -645,6 +644,8 @@ async function onSmoothingSegmentByWholeSpectrumWindowSizeChangeAsync(curr, requ
 /* APPLY SMOOTHING */
 /* ################################################################################ */
 async function applySmoothingAsync(smoothingType) {
+    currentSmoothingType = smoothingType;
+
     setLoadingCircleIsVisible(true);
 
     /* retrieve spectrumType of spectrum to be processed */
@@ -732,6 +733,7 @@ function buildSmoothedSpectrumCompleted(smoothingType) {
     /* enable buttons for saving/removing aligned spectrum */
     setMetroUIButtonEnabled(`smoothing${smoothingType}ButtonSave`, true);
     setMetroUIButtonEnabled(`smoothing${smoothingType}ButtonRemove`, true);
+    showByClass(`smoothingButtonDownload`);
 
     /* set hidden the checkbox for removing file on cloud (because of the used HTML & css, we need to do it manually, since the 'd-none' class doesn't work) */
     hideElemMetroUIElem('checkboxRemoveSmoothedSpectrumOnCloud');
@@ -879,13 +881,13 @@ async function saveSmoothedSpectrumAsync(smoothingType, showLoadingAndMessage = 
 /* ################################################################################ */
 async function callRemoveSpectraProcedureAsync(dialogId, checkboxId) {
     /* retrieve spectrumType of processed spectrum */
-    let destSpectrumType = await getDestSpectrumTypeAsync(currentSmoothingTypeForDelete, getSrcSpectrumType());
+    let destSpectrumType = await getDestSpectrumTypeAsync(currentSmoothingType, getSrcSpectrumType());
 
     removeSpectraProcedureAsync(destSpectrumType, dialogId, checkboxId);
 }
 
 async function removeSmoothedSpectrumProcedure(smoothingType) {
-    currentSmoothingTypeForDelete = smoothingType;
+    currentSmoothingType = smoothingType;
 
     /* retrieve spectrumType of processed spectrum */
     let destSpectrumType = await getDestSpectrumTypeAsync(smoothingType, getSrcSpectrumType());
@@ -923,6 +925,7 @@ async function removeSmoothedSpectrumAsync(smoothedSpectrum, isRemovalOnCloudReq
     }
     setMetroUIButtonEnabled(`smoothing${smoothingType}ButtonSave`, false);
     setMetroUIButtonEnabled(`smoothing${smoothingType}ButtonRemove`, false);
+    hideByClass(`smoothingButtonDownload`);
 
     /* refresh legend, if opened */
     refreshCharmsLegend();
@@ -933,4 +936,72 @@ async function removeSmoothedSpectrumAsync(smoothedSpectrum, isRemovalOnCloudReq
     /* set text of cloud icon */
     setCloudTextAndIconStatus(SPECTRUM_TYPE_ALIGNED, false);
     await callCheckIsSpectrumOfTypeSavedOnCloudForSmoothedAsync(smoothedSpectrum.Name, smoothedSpectrum.SpectrumType);
+}
+
+/* ################################################################################ */
+/* DOWNLOAD SMOOTHED SPECTRUM */
+/* ################################################################################ */
+async function downloadSmoothedSpectrumAsCsvAsync() {
+    /* retrieve spectrumType of spectrum to be processed */
+    let srcSpectrumType = getSrcSpectrumType();
+
+    /* retrieve spectrumType of processed spectrum */
+    let destSpectrumType = await getDestSpectrumTypeAsync(currentSmoothingType, srcSpectrumType);
+
+    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, destSpectrumType);
+    if (!spectrum)
+        return;
+
+    let txt = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAsTxt",
+        spectrum.Name,
+        destSpectrumType,
+        getSpectrumPointsById(spectrum.Id),);
+    //console.info(txt);
+
+    executeDownloadFile(txt, `${spectrum.Name}_${getSpectrumTypeString(destSpectrumType)}.csv`)
+}
+
+async function downloadSmoothedSpectrumAsXmlAsync() {
+    /* retrieve spectrumType of spectrum to be processed */
+    let srcSpectrumType = getSrcSpectrumType();
+
+    /* retrieve spectrumType of processed spectrum */
+    let destSpectrumType = await getDestSpectrumTypeAsync(currentSmoothingType, srcSpectrumType);
+
+    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, destSpectrumType);
+    if (!spectrum)
+        return;
+
+    /* retrieve parent file */
+    let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
+    if (srcSpectrum.Id == buildTempSmoothedSpectrumId(srcSpectrumType, currentSmoothingType))
+        srcSpectrum.Id = 0;
+
+    let parentFiles = getSmoothedParentFiles(srcSpectrum.Id);
+    if (!Number.isInteger(parentFiles.ParentFile.Id))
+        parentFiles.ParentFile.Id = 0;
+
+    let smoothingOptions;
+    switch (currentSmoothingType) {
+        case BY_SEGMENTS:
+            smoothingOptions = smoothingSegmentsOptions;
+            break;
+
+        case BY_WHOLE_SPECTRUM:
+            smoothingOptions = [smoothingWholeSpectrumOptions];
+            break;
+    }
+
+    let smoothingSettings = {
+        Segments: smoothingOptions
+    };
+
+    let xml = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeSmoothedModelAsXml",
+        spectrum.Name,
+        spectrum.SpectrumType,
+        getSpectrumPointsById(spectrum.Id),
+        smoothingSettings,
+        parentFiles);
+
+    executeDownloadFile(xml, `${spectrum.Name}_${getSpectrumTypeString(destSpectrumType)}.xml`)
 }
