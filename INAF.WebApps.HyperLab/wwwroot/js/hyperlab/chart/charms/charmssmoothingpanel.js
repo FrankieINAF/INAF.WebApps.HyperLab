@@ -175,30 +175,10 @@ function buildSmoothingSegmentUI(smoothingSegment, segmentType, index, useButton
     /* ROW 3 */
     html += `   <div class="row margin-top--8">`;
     html += `       <div class="cell-fs-5">`;
-    let actionNameWindowSize;
-    switch (segmentType) {
-        case BY_SEGMENTS:
-            actionNameWindowSize = onSmoothingSegmentBySegmentsWindowSizeChangeAsync.name;
-            break;
-
-        case BY_WHOLE_SPECTRUM:
-            actionNameWindowSize = onSmoothingSegmentByWholeSpectrumWindowSizeChangeAsync.name;
-            break;
-    }
-    html += getSmoothingSegmentUISpinner(segmentType, WINDOW_SIZE, index, actionNameWindowSize, 0, 30);
+    html += getSmoothingSegmentUISpinner(segmentType, WINDOW_SIZE, index, null, 0, 30);
     html += `       </div>`;
     html += `       <div class="cell-fs-5">`;
-    let actionNamePolynomialOrder;
-    switch (segmentType) {
-        case BY_SEGMENTS:
-            actionNamePolynomialOrder = onSmoothingSegmentBySegmentsPolynomialOrderChangeAsync.name;
-            break;
-
-        case BY_WHOLE_SPECTRUM:
-            actionNamePolynomialOrder = onSmoothingSegmentByWholeSpectrumPolynomialOrderChangeAsync.name;
-            break;
-    }
-    html += getSmoothingSegmentUISpinner(segmentType, POLYNOMIAL_ORDER, index, actionNamePolynomialOrder, 0, 3);
+    html += getSmoothingSegmentUISpinner(segmentType, POLYNOMIAL_ORDER, index, null, 0, 3);
     html += `       </div>`;
     html += `       <div class="cell-fs-2">`;
     html += (useButtonRemove ? getSmoothingSegmentUIButtonRemove(segmentType, index) : `&nbsp;`);
@@ -215,12 +195,20 @@ function buildSmoothingSegmentUI(smoothingSegment, segmentType, index, useButton
         Metro.getPlugin(`#${segmentType}${X_END}${index}`, 'spinner').val(smoothingSegment.XEnd);
     });
 
-    $(`#${segmentType}${WINDOW_SIZE}${index}`).ready(function () {
-        Metro.getPlugin(`#${segmentType}${WINDOW_SIZE}${index}`, 'spinner').val(smoothingSegment.WindowSize);
+    let windowSizeId = `${segmentType}${WINDOW_SIZE}${index}`;
+    $(`#${windowSizeId}`).ready(function () {
+        Metro.getPlugin(`#${windowSizeId}`, 'spinner').val(smoothingSegment.WindowSize);
+        $(`#${windowSizeId}`).on('change', function (evt) {
+            onSmoothingSegmentBySegmentsWindowSizeChangeEventAsync(evt.target.id);
+        });
     });
 
-    $(`#${segmentType}${POLYNOMIAL_ORDER}${index}`).ready(function () {
-        Metro.getPlugin(`#${segmentType}${POLYNOMIAL_ORDER}${index}`, 'spinner').val(smoothingSegment.PolynomialOrder);
+    let polynomialOrderId = `${segmentType}${POLYNOMIAL_ORDER}${index}`;
+    $(`#${polynomialOrderId}`).ready(function () {
+        Metro.getPlugin(`#${polynomialOrderId}`, 'spinner').val(smoothingSegment.PolynomialOrder);
+        $(`#${polynomialOrderId}`).on('change', function (evt) {
+            onSmoothingSegmentBySegmentsPolynomialOrderChangeEventAsync(evt.target.id);
+        });
     });
 
     /* append t the end of the list or insert in the middle, depending on the index value */
@@ -405,8 +393,10 @@ function getSmoothingSegmentUISpinner(segmentType, propertyName, index, onValueC
     html += `       data-minus-icon="<span class='mif-chevron-thin-down'></span>"`;
     html += `       data-cls-spinner-button-plus="bg-cyan"`;
     html += `       data-cls-spinner-button-minus="bg-cyan"`;
-    html += `       data-on-plus-click="${onValueChangeName}"`;
-    html += `       data-on-minus-click="${onValueChangeName}"`;
+    if (onValueChangeName) {
+        html += `       data-on-plus-click="${onValueChangeName}"`;
+        html += `       data-on-minus-click="${onValueChangeName}"`;
+    }
     html += `       data-cls-spinner-button="fg-white">`;
     return html;
 }
@@ -443,7 +433,7 @@ async function loadSmoothingSegmentsOptionsAsync() {
 /* ---------- UPDATE SEGMENT SETTINGS ---------- */
 /* -------------------------------------------------------------------------------- */
 async function onSmoothingSegmentBySegmentsXStartChangeAsync(curr, request, real) {
-    let index = extractIndex(this, X_START);
+    let index = extractIndex(this.id, X_START);
     updateSmoothingSegment(index, X_START, request);
 
     /* to avoid overlapping between 2 segments boundaries, when a segment lower boundary changes, the previous upper boundary changes consequently */
@@ -455,7 +445,7 @@ async function onSmoothingSegmentBySegmentsXStartChangeAsync(curr, request, real
 }
 
 async function onSmoothingSegmentBySegmentsXEndChangeAsync(curr, request, real) {
-    let index = extractIndex(this, X_END);
+    let index = extractIndex(this.id, X_END);
     updateSmoothingSegment(index, X_END, request);
 
     /* to avoid overlapping between 2 segments boundaries, when a segment upper boundary changes, the next lower boundary changes consequently */
@@ -466,22 +456,28 @@ async function onSmoothingSegmentBySegmentsXEndChangeAsync(curr, request, real) 
     await trySaveSmoothingSettingsAsync(BY_SEGMENTS);
 }
 
-async function onSmoothingSegmentBySegmentsPolynomialOrderChangeAsync(curr, request, real) {
-    let index = extractIndex(this, POLYNOMIAL_ORDER);
+async function onSmoothingSegmentBySegmentsPolynomialOrderChangeEventAsync(id) {
+    //console.log(`onSmoothingSegmentBySegmentsWindowSizeChangeAsync - request: ${request}`);
+    let index = extractIndex(id, POLYNOMIAL_ORDER);
+    let request = parseInt(Metro.getPlugin(`#${id}`, 'spinner').val());
+    //console.log(`onSmoothingSegmentBySegmentsPolynomialOrderChangeEventAsync - index: ${index}, request: ${request}`);
     updateSmoothingSegment(index, POLYNOMIAL_ORDER, request);
 
     await trySaveSmoothingSettingsAsync(BY_SEGMENTS);
 }
 
-async function onSmoothingSegmentBySegmentsWindowSizeChangeAsync(curr, request, real) {
-    let index = extractIndex(this, WINDOW_SIZE);
+async function onSmoothingSegmentBySegmentsWindowSizeChangeEventAsync(id) {
+    //console.log(`onSmoothingSegmentBySegmentsWindowSizeChangeAsync - request: ${request}`);
+    let index = extractIndex(id, WINDOW_SIZE);
+    let request = parseInt(Metro.getPlugin(`#${id}`, 'spinner').val());
+    //console.log(`onSmoothingSegmentBySegmentsWindowSizeChangeEventAsync - index: ${index}, request: ${request}`);
     updateSmoothingSegment(index, WINDOW_SIZE, request);
 
     await trySaveSmoothingSettingsAsync(BY_SEGMENTS);
 }
 
-function extractIndex(reference, replaceValue) {
-    let _index = reference.id.replace(BY_SEGMENTS, '').replace(replaceValue, '');
+function extractIndex(id, replaceValue) {
+    let _index = id.replace(BY_SEGMENTS, '').replace(replaceValue, '');
     let index = parseInt(_index);
     return index;
 }
@@ -576,7 +572,7 @@ async function trySaveSmoothingSettingsAsync(segmentType, isForced = false) {
             break;
 
         case BY_WHOLE_SPECTRUM:
-            segments = [ smoothingWholeSpectrumOptions ];
+            segments = [smoothingWholeSpectrumOptions];
             break;
     }
     let model = {
@@ -799,7 +795,7 @@ async function saveSmoothedSpectrumAsync(smoothingType, showLoadingAndMessage = 
                 break;
 
             case BY_WHOLE_SPECTRUM:
-                smoothingOptions = [ smoothingWholeSpectrumOptions ];
+                smoothingOptions = [smoothingWholeSpectrumOptions];
                 break;
         }
 
@@ -859,7 +855,7 @@ async function saveSmoothedSpectrumAsync(smoothingType, showLoadingAndMessage = 
                 setMetroUIButtonEnabled(`smoothing${smoothingType}ButtonRemove`, true);
             } else
                 isSavingOk = false;
-        } else 
+        } else
             isSavingOk = false;
     } catch (e) {
         isSavingOk = false;

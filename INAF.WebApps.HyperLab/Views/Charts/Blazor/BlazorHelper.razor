@@ -155,6 +155,7 @@
     public async Task<ProcessingResult> applySmoothingBySegments(List<PointModel> points,
                                                                  List<SegmentSmoothingSettingsModel> settingsModels)
     {
+        var p = await new SmoothingHelper().applySmoothingBySegmentsAsync(points, settingsModels);
         return await new SmoothingHelper().applySmoothingBySegmentsAsync(points, settingsModels);
     }
 
