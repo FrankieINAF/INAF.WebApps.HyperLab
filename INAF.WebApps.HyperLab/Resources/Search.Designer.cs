@@ -79,6 +79,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter full screen.
+        /// </summary>
+        public static string ButtonEnterFullScreenLabel {
+            get {
+                return ResourceManager.GetString("ButtonEnterFullScreenLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit full screen.
+        /// </summary>
+        public static string ButtonExitFullScreenLabel {
+            get {
+                return ResourceManager.GetString("ButtonExitFullScreenLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Graph selected spectra.
         /// </summary>
         public static string ButtonGraphSelectedSpectraLabel {

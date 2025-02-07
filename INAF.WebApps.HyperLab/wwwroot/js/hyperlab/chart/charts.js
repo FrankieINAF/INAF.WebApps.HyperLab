@@ -15,6 +15,8 @@ var MAX_Y = 'maxY';
 
 var backToSearchButtonId = 'buttonBackToSearch';
 var backClearToSearchButtonId = 'buttonBackClearToSearch';
+var enterFullScreenButtonId = 'buttonEnterFullScreen';
+var exitFullScreenButtonId = 'buttonExitFullScreen';
 var openCharmsButtonId = 'buttonOpenCharms'
 
 /* ################################################################################ */
@@ -50,6 +52,38 @@ function removeCharmsLegendButtonProcedure() {
 
 function removeCharmsLegendButton() {
     $(`#${showCharmsLegendButtonId}`).remove();
+}
+
+/* ---------- ENTER FULL-SCREEN ---------- */
+function addEnterFullScreenButton() {
+    addButton(enterFullScreenButtonId, ButtonEnterFullScreenLabel, 'mif-enlarge', enterFullScreen);
+}
+
+function removeEnterFullScreenButtonProcedure() {
+    if (!isButtonAvailable(enterFullScreenButtonId))
+        return;
+
+    animateCSS(`${enterFullScreenButtonId}`, `bounceOutUp`, FAST, removeEnterFullScreenButton);
+}
+
+function removeEnterFullScreenButton() {
+    $(`#${enterFullScreenButtonId}`).remove();
+}
+
+/* ---------- EXIT FULL-SCREEN ---------- */
+function addExitFullScreenButton() {
+    addButton(exitFullScreenButtonId, ButtonExitFullScreenLabel, 'mif-shrink', exitFullScreen);
+}
+
+function removeExitFullScreenButtonProcedure() {
+    if (!isButtonAvailable(exitFullScreenButtonId))
+        return;
+
+    animateCSS(`${exitFullScreenButtonId}`, `bounceOutUp`, FAST, removeExitFullScreenButton);
+}
+
+function removeExitFullScreenButton() {
+    $(`#${exitFullScreenButtonId}`).remove();
 }
 
 /* ################################################################################ */
@@ -383,6 +417,62 @@ function resetZoom() {
 }
 
 /* ################################################################################ */
+/* FULL-SCREEN */
+/* ################################################################################ */
+function enterFullScreen() {
+    switchFullScreenButtonsToExitFullScreen();
+
+    let elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) { /* Firefox */
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+        elem.msRequestFullscreen();
+    }
+}
+
+function exitFullScreen() {
+    switchFullScreenButtonsToEnterFullScreen();
+
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) { /* Firefox */
+        document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+        document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { /* IE/Edge */
+        document.msExitFullscreen();
+    }
+}
+
+function setFullScreenChangeListener() {
+    $(document).on('fullscreenchange', function () {
+        if (document.fullscreenElement) {
+            switchFullScreenButtonsToExitFullScreen();
+        } else {
+            switchFullScreenButtonsToEnterFullScreen();
+        }
+    });
+}
+
+function switchFullScreenButtonsToEnterFullScreen() {
+    removeExitFullScreenButtonProcedure();
+    setTimeout(() => {
+        addEnterFullScreenButton();
+    }, 500);
+}
+
+function switchFullScreenButtonsToExitFullScreen() {
+    removeEnterFullScreenButtonProcedure();
+    setTimeout(() => {
+        addExitFullScreenButton();
+    }, 500);
+}
+
+/* ################################################################################ */
 /* MANAGE PANELS SEARCH/CHART POSITION */
 /* ################################################################################ */
 function initChartPanel() {
@@ -456,4 +546,7 @@ $(function () {
     }
 
     showPageItems(callback);
+
+    /* add listener for detecting full-screen change and manage buttons */
+    setFullScreenChangeListener();
 });

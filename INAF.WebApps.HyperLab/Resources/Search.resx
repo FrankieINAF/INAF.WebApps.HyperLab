@@ -123,6 +123,12 @@
   <data name="ButtonBackToSearchLabel" xml:space="preserve">
     <value>Back to search (charts are maintained)</value>
   </data>
+  <data name="ButtonEnterFullScreenLabel" xml:space="preserve">
+    <value>Enter full screen</value>
+  </data>
+  <data name="ButtonExitFullScreenLabel" xml:space="preserve">
+    <value>Exit full screen</value>
+  </data>
   <data name="ButtonGraphSelectedSpectraLabel" xml:space="preserve">
     <value>Graph selected spectra</value>
   </data>
