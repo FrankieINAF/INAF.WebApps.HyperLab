@@ -115,6 +115,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download band analysis data as CSV file.
+        /// </summary>
+        public static string BandAnalysisButtonDownloadAsCsvLabel {
+            get {
+                return ResourceManager.GetString("BandAnalysisButtonDownloadAsCsvLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download band analysis data as XML file.
+        /// </summary>
+        public static string BandAnalysisButtonDownloadAsXmlLabel {
+            get {
+                return ResourceManager.GetString("BandAnalysisButtonDownloadAsXmlLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, something went wrong while trying to check whether current band overlaps an already saved one or not.
         /// </summary>
         public static string BandAnalysisCheckOverlapErrorMessage {
@@ -147,6 +165,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string BandAnalysisDownloadBandsAnalysisLabel {
             get {
                 return ResourceManager.GetString("BandAnalysisDownloadBandsAnalysisLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BandAnalysis.
+        /// </summary>
+        public static string BandAnalysisForFileLabel {
+            get {
+                return ResourceManager.GetString("BandAnalysisForFileLabel", resourceCulture);
             }
         }
         
@@ -201,6 +228,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string BandAnalysisSaveErrorMessage {
             get {
                 return ResourceManager.GetString("BandAnalysisSaveErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save on cloud.
+        /// </summary>
+        public static string BandAnalysisSaveOnCloudLabel {
+            get {
+                return ResourceManager.GetString("BandAnalysisSaveOnCloudLabel", resourceCulture);
             }
         }
         

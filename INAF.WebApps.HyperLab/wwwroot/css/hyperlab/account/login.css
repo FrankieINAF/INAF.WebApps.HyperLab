@@ -33,23 +33,20 @@
 
 .login-container {
     width: 90%;
-    height: 50%;
-    -ms-transform: translateY(40%);
-    transform: translateY(40%);
+    height: 40vh;
+    min-height: 450px;
 }
 
 .registration-container {
     width: 90%;
-    height: 60%;
-    -ms-transform: translateY(40%);
-    transform: translateY(40%);
+    height: 40vh;
+    min-height: 500px;
 }
 
 .registration-completed-container {
     width: 90%;
-    height: 100%;
-    -ms-transform: translateY(50%);
-    transform: translateY(50%);
+    height: 40vh;
+    min-height: 400px;
 }
 
 .login-form {
@@ -57,9 +54,6 @@
     top: 50%;
     left: 5%;
     margin: 0px;
-    /*position: absolute;*/
-    -ms-transform: translateY(0%);
-    transform: translateY(0%);
     z-index: 10
 }
 
@@ -68,9 +62,6 @@
     top: 50%;
     left: 5%;
     margin: 0px;
-    /*position: absolute;*/
-    -ms-transform: translateY(0%);
-    transform: translateY(0%);
     z-index: 10
 }
 
@@ -90,8 +81,18 @@
 
     .registration-container {
         height: 90%;
-        -ms-transform: translateY(5%);
-        transform: translateY(5%);
+    }
+
+    .registration-completed-container {
+        height: 60vh;
+    }
+
+    .inaf-image {
+        height: 50%;
+    }
+
+    .spectrum-image {
+        width: 75%;
     }
 }
 
@@ -99,8 +100,6 @@
 @media screen and (max-width: 1024px) and (min-height: 1368px) {
     .login-container {
         width: 100%;
-        -ms-transform: translateY(50%);
-        transform: translateY(50%);
     }
 
     .registration-container {
@@ -116,6 +115,18 @@
         width: 100%;
         left: 0%;
     }
+
+    .registration-completed-container {
+        height: 80vh;
+    }
+
+    .inaf-image {
+        height: 50%;
+    }
+
+    .spectrum-image {
+        height: 50%;
+    }
 }
 
 /* nest hub */
@@ -123,20 +134,15 @@
     .login-container {
         width: 90%;
         height: 100%;
-        -ms-transform: translateY(0%);
-        transform: translateY(0%);
     }
 
     .registration-container {
         width: 90%;
         height: 100%;
-        -ms-transform: translateY(0%);
-        transform: translateY(0%);
     }
 
     .registration-completed-container {
-        -ms-transform: translateY(0%);
-        transform: translateY(0%);
+        height: 80vh;
     }
 }
 
@@ -145,15 +151,19 @@
     .login-container {
         width: 90%;
         height: 60%;
-        -ms-transform: translateY(30%);
-        transform: translateY(30%);
     }
 
     .registration-container {
         width: 90%;
         height: 70%;
-        -ms-transform: translateY(30%);
-        transform: translateY(30%);
+    }
+
+    .inaf-image {
+        height: 50%;
+    }
+
+    .spectrum-image {
+        height: 50%;
     }
 }
 
@@ -162,8 +172,6 @@
     .registration-container {
         width: 90%;
         height: 80%;
-        -ms-transform: translateY(10%);
-        transform: translateY(10%);
     }
 }
 
@@ -171,27 +179,22 @@
 @media screen and (max-width: 768px) {
     .login-container {
         height: 60%;
-        -ms-transform: translateY(30%);
-        transform: translateY(30%);
     }
 
     .registration-container {
         height: 90%;
-        -ms-transform: translateY(5%);
-        transform: translateY(5%);
     }
 
     .registration-completed-container {
-        -ms-transform: translateY(25%);
-        transform: translateY(25%);
+        height: 50vh;
     }
 
     .inaf-image {
-        height: 200%;
+        height: 40%;
     }
 
     .spectrum-image {
-        height: 200%;
+        height: 40%;
     }
 }
 
@@ -199,8 +202,6 @@
 @media screen and (max-width: 540px) {
     .login-container {
         height: 100%;
-        -ms-transform: translateY(0%);
-        transform: translateY(0%);
     }
 
     .registration-container {
@@ -209,8 +210,16 @@
     }
 
     .registration-completed-container {
-        -ms-transform: translateY(-5%);
-        transform: translateY(-5%);
+        height: 60vh;
+    }
+
+    .inaf-image {
+        height: 25%;
+    }
+
+    .spectrum-image {
+        width: 25%;
+        height: 25%;
     }
 }
 
@@ -219,34 +228,42 @@
     .login-container {
         width: 90%;
         height: 500px;
-        -ms-transform: translateY(10%);
-        transform: translateY(0%);
     }
 
     .registration-container {
         width: 90%;
         height: 100%;
-        -ms-transform: translateY(10%);
-        transform: translateY(0%);
     }
 
     .registration-completed-container {
-        -ms-transform: translateY(-5%);
-        transform: translateY(-5%);
+        height: 60vh;
+    }
+
+    .inaf-image {
+        height: 50%;
+    }
+
+    .spectrum-image {
+        height: 50%;
     }
 }
 
 /* phones 2 */
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 400px) {
     .registration-container {
         width: 90%;
         height: 100%;
-        -ms-transform: translateY(-5%);
-        transform: translateY(-5%);
     }
 
     .registration-completed-container {
-        -ms-transform: translateY(-5%);
-        transform: translateY(-5%);
+        height: 90vh;
+    }
+
+    .inaf-image {
+        height: 40%;
+    }
+
+    .spectrum-image {
+        height: 40%;
     }
 }

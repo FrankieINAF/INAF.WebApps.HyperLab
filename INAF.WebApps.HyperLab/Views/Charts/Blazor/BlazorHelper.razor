@@ -1,4 +1,5 @@
 ﻿@using INAF.Libraries.Net.HyperLab.CommonHelpers
+@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.BandAnalysis
 @using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.Smoothing
 @using INAF.Libraries.Net.HyperLabCommonHelpers
 @using INAF.Libraries.Net.HyperLabCommonHelpers.ProcessingHelpers
@@ -155,7 +156,6 @@
     public async Task<ProcessingResult> applySmoothingBySegments(List<PointModel> points,
                                                                  List<SegmentSmoothingSettingsModel> settingsModels)
     {
-        var p = await new SmoothingHelper().applySmoothingBySegmentsAsync(points, settingsModels);
         return await new SmoothingHelper().applySmoothingBySegmentsAsync(points, settingsModels);
     }
 
@@ -282,6 +282,20 @@
         FwhmResultModel fwhmResult = new FwhmResultModel(fwhm, new PointModel(xs[leftIndex], ys[leftIndex]), new PointModel(xs[rightIndex], ys[rightIndex]));
 
         return fwhmResult;
+    }
+
+    [JSInvokable]
+    public string? getBandAnalysisAsTxt(string filename,
+                                        BandAnalysisModel bandAnalysisModel)
+    {
+        return bandAnalysisModel.ToTxt(filename);
+    }
+
+    [JSInvokable]
+    public string? getBandAnalysisAsXml(string filename,
+                                        BandAnalysisModel bandAnalysisModel)
+    {
+        return bandAnalysisModel.ToXml(filename);
     }
     #endregion
 

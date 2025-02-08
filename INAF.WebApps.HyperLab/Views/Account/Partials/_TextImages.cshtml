@@ -1,15 +1,17 @@
 ﻿@using INAF.WebApps.HyperLab.Resources
 
 <div class="cell-fs-12 cell-xl-4 h-vh-25-fs h-vh-100-xl">
-    <div class="row cell-fs-12 text-center h-50-fs h-50-sm h-25-xl">
-        <span class="fg-black display2 text-light">@Html.Raw(SharedResources.HyperLabLabel)</span>
-    </div>
-    <div class="row text-center h-50-fs h-50-sm">
-        <div class="cell-fs-6 cell-lg-6 cell-xl-12 text-center h-50-fs h-100-sm h-50-md h-100-lg h-75-xl">
-            <img src="~/images/em_spectrum_400x400.png" class="spectrum-image" />
+    <div class="row cell-fs-12 d-flex flex-column">
+        <div class="flex-self-center">
+            <p class="fg-black display2 text-light">@Html.Raw(SharedResources.HyperLabLabel)</p>
         </div>
-        <div class="cell-fs-6 cell-lg-6 cell-xl-12 text-center h-50-fs h-100-sm h-50-md h-100-lg h-75-xl">
-            <img src="~/images/login/iaps_marchio_full_colorinaf.svg" class="inaf-image" />
+    </div>
+    <div class="row cell-fs-12 d-flex flex-row-fs flex-column-xl">
+        <div class="cell-fs-6 cell-xl-12 d-flex flex-column">
+            <img src="~/images/em_spectrum_400x400.png" class="spectrum-image flex-self-center" />
+        </div>
+        <div class="cell-fs-6 cell-xl-12 d-flex flex-column">
+            <img src="~/images/login/iaps_marchio_full_colorinaf.svg" class="inaf-image flex-self-center" />
         </div>
     </div>
 </div>

@@ -160,7 +160,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download aligned spectrum as csv.
+        ///   Looks up a localized string similar to Download aligned spectrum as CSV file.
         /// </summary>
         public static string AlignmentButtonDownloadAsCsvLabel {
             get {
@@ -169,7 +169,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download aligned spectrum as xml.
+        ///   Looks up a localized string similar to Download aligned spectrum as XML file.
         /// </summary>
         public static string AlignmentButtonDownloadAsXmlLabel {
             get {
@@ -709,7 +709,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download continuum-removed spectrum as csv.
+        ///   Looks up a localized string similar to Download continuum-removed spectrum as CSV file.
         /// </summary>
         public static string FitButtonDownloadAsCsvLabel {
             get {
@@ -718,7 +718,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download continuum-removed spectrum as xml.
+        ///   Looks up a localized string similar to Download continuum-removed spectrum as XML file.
         /// </summary>
         public static string FitButtonDownloadAsXmlLabel {
             get {
@@ -1132,7 +1132,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download smoothed spectrum as csv.
+        ///   Looks up a localized string similar to Download smoothed spectrum as CSV file.
         /// </summary>
         public static string SmoothingButtonDownloadAsCsvLabel {
             get {
@@ -1141,7 +1141,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download smoothed spectrum as xml.
+        ///   Looks up a localized string similar to Download smoothed spectrum as XML file.
         /// </summary>
         public static string SmoothingButtonDownloadAsXmlLabel {
             get {

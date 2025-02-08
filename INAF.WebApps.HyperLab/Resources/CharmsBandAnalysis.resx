@@ -180,4 +180,16 @@
   <data name="BandAnalysisResultsTitle" xml:space="preserve">
     <value>Band analysis results</value>
   </data>
+  <data name="BandAnalysisSaveOnCloudLabel" xml:space="preserve">
+    <value>Save on cloud</value>
+  </data>
+  <data name="BandAnalysisButtonDownloadAsCsvLabel" xml:space="preserve">
+    <value>Download band analysis data as CSV file</value>
+  </data>
+  <data name="BandAnalysisButtonDownloadAsXmlLabel" xml:space="preserve">
+    <value>Download band analysis data as XML file</value>
+  </data>
+  <data name="BandAnalysisForFileLabel" xml:space="preserve">
+    <value>BandAnalysis</value>
+  </data>
 </root>

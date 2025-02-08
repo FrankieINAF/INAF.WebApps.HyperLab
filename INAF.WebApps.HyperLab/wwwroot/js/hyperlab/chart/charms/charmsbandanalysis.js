@@ -206,6 +206,7 @@ async function executeBandAnalysisAsync() {
     dxChartResetVisualRange(chartContainer);
 
     enableByClassElem('bandAnalysisDataButtonSave');
+    showByClass('bandAnalysisButtonDownload');
 
     /* set isEvaluated value */
     saveIsEvaluated(true);
@@ -385,6 +386,7 @@ function showInvertedBand(items, xValues, invertedYValues) {
 /* -------------------------------------------------------------------------------- */
 function clearBandAnalysisProcedure(items) {
     disableByClassElem('bandAnalysisDataButtonSave');
+    hideByClass('bandAnalysisButtonDownload');
 
     clearBandCenter(items);
 
@@ -779,4 +781,51 @@ async function saveBandAnalysisDataAsync() {
         showSimpleDialog(INFO_LABEL, BandAnalysisSaveSuccessMessage, SUCCESS);
     else
         showSimpleDialog(ERROR_LABEL, BandAnalysisSaveErrorMessage, ALERT);
+}
+
+/* ################################################################################ */
+/* DOWNLOAD BAND ANALYSIS DATA */
+/* ################################################################################ */
+async function downloadCommonProcedureAsync (methodName) {
+    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    if (!spectrum)
+        return;
+
+    let model = {
+        Id: 0,
+        FileId: selectedSpectrumForProcessingId,
+        LeftBoundary: bandAnalysis.boundaries[0],
+        RightBoundary: bandAnalysis.boundaries[1],
+        BandArea: bandAnalysis.area,
+        BandCenterX: bandAnalysis.center,
+        BandDepth: bandAnalysis.depth,
+        FwhmLeftMargin: bandAnalysis.fwhmResult.leftMargin.X,
+        FwhmRightMargin: bandAnalysis.fwhmResult.rightMargin.X,
+        Fwhm: bandAnalysis.fwhmResult.fwhm,
+    }
+
+    let txt = await window.dotNetHelper.invokeMethodAsync(methodName,
+        spectrum.Name,
+        model);
+
+    if (!txt)
+        return;
+
+    return {
+        Name: spectrum.Name,
+        Text: txt,
+        Model: model
+    };
+}
+
+async function downloadBandAnalysisDataAsCsvAsync() {
+    let result = await downloadCommonProcedureAsync("getBandAnalysisAsTxt");
+
+    executeDownloadFile(result.Text, `${result.Name}_${BandAnalysisForFileLabel}_${result.Model.LeftBoundary}-${result.Model.RightBoundary}.csv`)
+}
+
+async function downloadBandAnalysisDataAsXmlAsync() {
+    let result = await downloadCommonProcedureAsync("getBandAnalysisAsXml");
+
+    executeDownloadFile(result.Text, `${result.Name}_${BandAnalysisForFileLabel}_${result.Model.LeftBoundary}-${result.Model.RightBoundary}.xml`)
 }

@@ -21,13 +21,12 @@
             await Html.RenderPartialAsync("Partials/_TextImages");
         }
 
-        <!-- FORM -->
         <div class="cell-fs-12 cell-xl-8 form-cell-background h-vh-75-fs h-vh-100-xl">
-            <!-- LOGIN ROW -->
-            <div class="row">
+            <!-- MAIN ROW -->
+            <div class="row" style="height: 100%; overflow-y: auto">
                 <div class="cell-md-2">&nbsp;</div>
-                <div class="cell-fs-12 cell-md-8">
-                    <div class="registration-completed-container bg-white p-6 mx-auto border bd-default win-shadow">
+                <div class="cell-fs-12 cell-md-8 d-flex">
+                    <div class="registration-completed-container bg-white p-6 mx-auto border bd-default win-shadow flex-self-center">
                         <div class="row cell-fs-12">
                             <div class="login-form">
                                 <!-- MESSAGE -->
@@ -40,7 +39,7 @@
                                 <!-- BUTTON TO LOGIN  -->
                                 <div class="row cell-fs-12 margin-top-8 d-flex flex-justify-center">
                                     <button class="button primary cycle" onclick="navigateTo('/Account/Login')" title="@Html.Raw(CommonResources.Login.NavigateToLoginMessage)">
-                                        <span class="mif-arrow-right" />   
+                                        <span class="mif-arrow-right" />
                                     </button>
                                     <span class="margin-left-16 margin-top-4">@Html.Raw(CommonResources.Login.NavigateToLoginMessage)</span>
                                 </div>

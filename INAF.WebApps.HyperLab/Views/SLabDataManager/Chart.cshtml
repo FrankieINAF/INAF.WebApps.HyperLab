@@ -188,9 +188,21 @@
                             <div class="margin-left-16"><span id="bandAnalysisBandAreaValue">-</span></div>
                         </div>
 
-                        <!-- BUTTON SAVE -->
+                        <!-- BUTTONS -->
                         <div class="d-flex flex-row margin-top-16">
-                            <button id="bandAnalysisDataButtonSave" class="button primary cycle pointer disabled margin-left-16" title="@Html.Raw(Charms.FitButtonSaveLabel)" onclick="saveBandAnalysisDataProcedureAsync()"><span class="mif-floppy-disk"></span></button>
+                            <!-- BUTTON SAVE -->
+                            <button id="bandAnalysisDataButtonSave" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(CharmsBandAnalysis.BandAnalysisSaveOnCloudLabel)" onclick="saveBandAnalysisDataProcedureAsync()"><span class="mif-cloud-upload"></span></button>
+                            <!-- BUTTON DOWNLOAD -->
+                            <div id="bandAnalysisButtonDownload" class="multi-action d-none margin-left-16">
+                                <button class="action-button rotate-minus primary fg-white"
+                                        onclick="$(this).toggleClass('active')">
+                                    <span class="icon"><span class="mif-file-download"></span></span>
+                                </button>
+                                <ul class="actions drop-bottom">
+                                    <li class="bg-cyan" title="@Html.Raw(CharmsBandAnalysis.BandAnalysisButtonDownloadAsCsvLabel)" onclick="downloadBandAnalysisDataAsCsvAsync()"><span class="mif-file-text margin-left-8"></span></li>
+                                    <li class="bg-cyan" title="@Html.Raw(CharmsBandAnalysis.BandAnalysisButtonDownloadAsXmlLabel)" onclick="downloadBandAnalysisDataAsXmlAsync()"><span class="mif-library margin-left-8"></span></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>

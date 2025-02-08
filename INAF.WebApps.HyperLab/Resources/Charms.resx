@@ -151,22 +151,22 @@
     <value>Load white spectra to enable this button</value>
   </data>
   <data name="AlignmentButtonDownloadAsCsvLabel" xml:space="preserve">
-    <value>Download aligned spectrum as csv</value>
+    <value>Download aligned spectrum as CSV file</value>
   </data>
   <data name="FitButtonDownloadAsCsvLabel" xml:space="preserve">
-    <value>Download continuum-removed spectrum as csv</value>
+    <value>Download continuum-removed spectrum as CSV file</value>
   </data>
   <data name="SmoothingButtonDownloadAsCsvLabel" xml:space="preserve">
-    <value>Download smoothed spectrum as csv</value>
+    <value>Download smoothed spectrum as CSV file</value>
   </data>
   <data name="SmoothingButtonDownloadAsXmlLabel" xml:space="preserve">
-    <value>Download smoothed spectrum as xml</value>
+    <value>Download smoothed spectrum as XML file</value>
   </data>
   <data name="FitButtonDownloadAsXmlLabel" xml:space="preserve">
-    <value>Download continuum-removed spectrum as xml</value>
+    <value>Download continuum-removed spectrum as XML file</value>
   </data>
   <data name="AlignmentButtonDownloadAsXmlLabel" xml:space="preserve">
-    <value>Download aligned spectrum as xml</value>
+    <value>Download aligned spectrum as XML file</value>
   </data>
   <data name="AlignmentButtonExecuteLabel" xml:space="preserve">
     <value>Align spectrum sections</value>
