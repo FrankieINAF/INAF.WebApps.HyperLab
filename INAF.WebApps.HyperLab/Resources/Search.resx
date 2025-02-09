@@ -141,6 +141,9 @@
   <data name="ButtonSearchLabel" xml:space="preserve">
     <value>Start searching</value>
   </data>
+  <data name="ButtonSetPublicLabel" xml:space="preserve">
+    <value>Set spectra as public</value>
+  </data>
   <data name="ButtonShareLabel" xml:space="preserve">
     <value>Share selected spectra</value>
   </data>
@@ -476,6 +479,15 @@
   </data>
   <data name="SearchTypeSimpleLabel" xml:space="preserve">
     <value>Simple search</value>
+  </data>
+  <data name="SetAsPublicErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong trying to set selected spectra as public</value>
+  </data>
+  <data name="SetAsPublicQuestion" xml:space="preserve">
+    <value>By continuing, the selected spectra will become public: they will be visible to all registered users. Do you want to proceed?</value>
+  </data>
+  <data name="SetAsPublicSuccessMessage" xml:space="preserve">
+    <value>Spectra have been successfully set as public</value>
   </data>
   <data name="SuggestionsNoTextWarningMessage" xml:space="preserve">
     <value>Please, enter a value to retrieve suggestions</value>

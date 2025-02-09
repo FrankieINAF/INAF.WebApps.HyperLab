@@ -5,6 +5,7 @@ var goToChartsButtonId = 'buttonGoToCharts';
 var helpButtonId = 'buttonHelp';
 
 var searchButtonId = 'buttonSearch';
+var setPublicButtonId = 'buttonSetPublic';
 var shareButtonId = 'buttonShare';
 var zoomOutButtonId = 'buttonZoomOut';
 
@@ -150,6 +151,22 @@ function setButtonAlignEnabled(id, isEnabled, label) {
 /* ################################################################################ */
 /* ADD/REMOVE BUTTONS */
 /* ################################################################################ */
+/* ---------- SET PUBLIC BUTTON ---------- */
+function addSetPublicButton() {
+    addButton(setPublicButtonId, ButtonSetPublicLabel, 'mif-vpn-publ mif-2x', setAsPublicProcedure);
+}
+
+function removeSetPublicButtonProcedure() {
+    if (!isButtonAvailable(setPublicButtonId))
+        return;
+
+    animateCSS(`${setPublicButtonId}`, `bounceOutUp`, FAST, removeSetPublicButton);
+}
+
+function removeSetPublicButton() {
+    $(`#${setPublicButtonId}`).remove();
+}
+
 /* ---------- SHARE BUTTON ---------- */
 function addShareButton() {
     addButton(shareButtonId, ButtonShareLabel, 'mif-share', openCharmsShare);
@@ -376,6 +393,31 @@ function showAddSharesErrors(shareResults) {
 
     return errorsNum;
 }
+
+/* ################################################################################ */
+/* SET SPECTRA AS PUBLIC */
+/* ################################################################################ */
+function setAsPublicProcedure() {
+    showDialogWithAction(WARNING_LABEL, SetAsPublicQuestion, WARNING, YES_LABEL, setAsPublicAsync);
+}
+
+async function setAsPublicAsync() {
+    setLoadingCircleIsVisible(true);
+
+    let model = {
+        SpectraIds: selectedSpectra
+    };
+
+    let obj = await doAjaxPostAsync(UrlSetSpectraAsPublic, model);
+    if (obj.IsOk) {
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(INFO_LABEL, SetAsPublicSuccessMessage, SUCCESS);
+    } else {
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(ERROR_LABEL, SetAsPublicErrorMessage, ALERT);
+    }
+}
+
 /* ################################################################################ */
 /* MANAGE OVERFLOW-Y */
 /* ################################################################################ */

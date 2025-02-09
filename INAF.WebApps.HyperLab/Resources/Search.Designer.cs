@@ -133,6 +133,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set spectra as public.
+        /// </summary>
+        public static string ButtonSetPublicLabel {
+            get {
+                return ResourceManager.GetString("ButtonSetPublicLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Share selected spectra.
         /// </summary>
         public static string ButtonShareLabel {
@@ -1137,6 +1146,33 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SearchTypeSimpleLabel {
             get {
                 return ResourceManager.GetString("SearchTypeSimpleLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, something went wrong trying to set selected spectra as public.
+        /// </summary>
+        public static string SetAsPublicErrorMessage {
+            get {
+                return ResourceManager.GetString("SetAsPublicErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By continuing, the selected spectra will become public: they will be visible to all registered users. Do you want to proceed?.
+        /// </summary>
+        public static string SetAsPublicQuestion {
+            get {
+                return ResourceManager.GetString("SetAsPublicQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spectra have been successfully set as public.
+        /// </summary>
+        public static string SetAsPublicSuccessMessage {
+            get {
+                return ResourceManager.GetString("SetAsPublicSuccessMessage", resourceCulture);
             }
         }
         

@@ -6,11 +6,18 @@
     var ButtonBackClearToSearchLabel = "@Html.Raw(Search.ButtonBackClearToSearchLabel)";
     var ButtonBackToSearchLabel = "@Html.Raw(Search.ButtonBackToSearchLabel)";
     var ButtonShareLabel = "@Html.Raw(Search.ButtonShareLabel)";
+    var ButtonSetPublicLabel = "@Html.Raw(Search.ButtonSetPublicLabel)";
 
     var NumOfSharedSpectra = "@Html.Raw(Charms.CharmsShareNumOfSpectra)";
+    var SetAsPublicQuestion = "@Html.Raw(Search.SetAsPublicQuestion)";
+    var SetAsPublicSuccessMessage = "@Html.Raw(Search.SetAsPublicSuccessMessage)";
+    var SetAsPublicErrorMessage = "@Html.Raw(Search.SetAsPublicErrorMessage)";
     
     /* ChartsController */
     var UrlGetSpectra = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.GetSpectra)';
+
+    /* ShareController */
+    var UrlSetSpectraAsPublic = '/@GenericHelper.GetControllerName(nameof(SpectraSharesController))/@nameof(SpectraSharesController.SetSpectraAsPublic)';
 
     /* UsersController */
     var UrlCheckUser = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.CheckUser)';

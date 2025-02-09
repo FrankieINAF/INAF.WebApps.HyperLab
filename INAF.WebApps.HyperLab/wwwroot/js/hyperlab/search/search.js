@@ -40,6 +40,7 @@ function addOrRemoveSelectedSpectrum(id) {
         if (selectedSpectra.length == 0) {
             removeCreateChartsButtonProcedure();
             removeShareButtonProcedure();
+            removeSetPublicButtonProcedure();
         }
     }
 }
@@ -50,6 +51,7 @@ function addSelectedspectrum(id) {
     if (selectedSpectra.length == 1) {
         addCreateChartsButton();
         addShareButton();
+        addSetPublicButton();
         showToast(ChartsUseChartsButtonMessage, 3000, INFO);
     }
 }

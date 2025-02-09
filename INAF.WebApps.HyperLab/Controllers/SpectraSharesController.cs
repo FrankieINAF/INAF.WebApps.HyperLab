@@ -75,5 +75,17 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             return new JsonResult(new GenericResponseModel(!isAnyErrorInShare, results));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SetSpectraAsPublic([FromBody] SetSpectraAsPublicModel model)
+        {
+            if (model == null || model.SpectraIds == null || !model.SpectraIds.Any())
+                return new JsonResult(GenericResponseModel.CreateErrorResponse());
+            
+            if (await dbHandlerHyperLabData.setSpectraAsPublicAsync(model.SpectraIds, getUserId()))
+                return new JsonResult(GenericResponseModel.CreateSuccessResponse());
+            else
+                return new JsonResult(GenericResponseModel.CreateErrorResponse());
+        }
     }
 }
