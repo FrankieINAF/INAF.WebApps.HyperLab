@@ -92,7 +92,7 @@ namespace INAF.WebApps.HyperLab.Helpers
             int idsNum = ids.Count;
 
             List<ISpectrumModel> spectraModels = dbHandlerHyperLabData.getSpectraByIdProcedure(ids,
-                                                                                   operationUserId);
+                                                                                               operationUserId);
 
             /* extract min,max for all series and then retrieve absolute min,max */
             (double min, double max) seriesBoundaries = getSeriesBoundaries(spectraModels);

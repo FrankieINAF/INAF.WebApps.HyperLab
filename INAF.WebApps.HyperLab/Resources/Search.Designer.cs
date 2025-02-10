@@ -79,6 +79,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download as CSV file.
+        /// </summary>
+        public static string ButtonDownloadAsCsvFileLabel {
+            get {
+                return ResourceManager.GetString("ButtonDownloadAsCsvFileLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download as XML file.
+        /// </summary>
+        public static string ButtonDownloadAsXmlFileLabel {
+            get {
+                return ResourceManager.GetString("ButtonDownloadAsXmlFileLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter full screen.
         /// </summary>
         public static string ButtonEnterFullScreenLabel {
@@ -219,6 +237,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string ComplexSearchShowExplanation {
             get {
                 return ResourceManager.GetString("ComplexSearchShowExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CSV.
+        /// </summary>
+        public static string FileCsvLabel {
+            get {
+                return ResourceManager.GetString("FileCsvLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XML.
+        /// </summary>
+        public static string FileXmlLabel {
+            get {
+                return ResourceManager.GetString("FileXmlLabel", resourceCulture);
             }
         }
         

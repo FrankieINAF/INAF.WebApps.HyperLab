@@ -402,19 +402,83 @@ function setAsPublicProcedure() {
 }
 
 async function setAsPublicAsync() {
+    let isOk = true;
+
     setLoadingCircleIsVisible(true);
 
     let model = {
         SpectraIds: selectedSpectra
     };
 
-    let obj = await doAjaxPostAsync(UrlSetSpectraAsPublic, model);
-    if (obj.IsOk) {
-        setLoadingCircleIsVisible(false);
-        showSimpleDialog(INFO_LABEL, SetAsPublicSuccessMessage, SUCCESS);
-    } else {
+    try {
+        let obj = await doAjaxPostAsync(UrlSetSpectraAsPublic, model);
+        if (obj.IsOk) {
+            setLoadingCircleIsVisible(false);
+            showSimpleDialog(INFO_LABEL, SetAsPublicSuccessMessage, SUCCESS);
+        } else
+            isOk = false;
+    } catch (e) {
+        isOk = false;
+    }
+
+    if (!isOk) {
         setLoadingCircleIsVisible(false);
         showSimpleDialog(ERROR_LABEL, SetAsPublicErrorMessage, ALERT);
+    }
+}
+
+/* ################################################################################ */
+/* DOWNLOAD PROCEDURE */
+/* ################################################################################ */
+async function downloadSpectrumAsCsvAsync(id) {
+    let isOk = true;
+
+    setLoadingCircleIsVisible(true);
+
+    let model = {
+        Id: id
+    };
+
+    try {
+        let obj = await doAjaxGetAsync(UrlGetSpectrumAsCsv, model);
+        if (obj.IsOk) {
+            setLoadingCircleIsVisible(false);
+            executeDownloadFile(obj.ResponseObject.Csv, `${obj.ResponseObject.Filename}_${getSpectrumTypeString(obj.ResponseObject.TypeId)}.csv`)
+        } else
+            isOk = false;
+    } catch (e) {
+        isOk = false;
+    }
+
+    if (!isOk) {
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(ERROR_LABEL, DownloadSpectrumErrorMessage, ALERT);
+    }
+}
+
+async function downloadSpectrumAsXmlAsync(id) {
+    let isOk = true;
+
+    setLoadingCircleIsVisible(true);
+
+    let model = {
+        Id: id
+    };
+
+    try {
+        let obj = await doAjaxGetAsync(UrlGetSpectrumAsXml, model);
+        if (obj.IsOk) {
+            setLoadingCircleIsVisible(false);
+            executeDownloadFile(obj.ResponseObject.Xml, `${obj.ResponseObject.Filename}_${getSpectrumTypeString(obj.ResponseObject.TypeId)}.xml`)
+        } else
+            isOk = false;
+    } catch (e) {
+        isOk = false;
+    }
+
+    if (!isOk) {
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(ERROR_LABEL, DownloadSpectrumErrorMessage, ALERT);
     }
 }
 

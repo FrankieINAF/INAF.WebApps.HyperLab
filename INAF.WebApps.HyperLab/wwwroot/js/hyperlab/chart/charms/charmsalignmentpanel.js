@@ -1112,7 +1112,7 @@ async function downloadAlignedSpectrumAsCsvAsync() {
     let txt = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAsTxt",
         spectrum.Name,
         SPECTRUM_TYPE_ALIGNED,
-        getSpectrumPointsById(spectrum.Id),);
+        getSpectrumPointsById(spectrum.Id));
     //console.info(txt);
 
     executeDownloadFile(txt, `${spectrum.Name}_${getSpectrumTypeString(SPECTRUM_TYPE_ALIGNED)}.csv`)

@@ -246,7 +246,9 @@
     }
 }
 
-
+.row-text {
+    font-size: 14px !important;
+}
 
 
 /* ANIMATION INSERT FIT POINT */

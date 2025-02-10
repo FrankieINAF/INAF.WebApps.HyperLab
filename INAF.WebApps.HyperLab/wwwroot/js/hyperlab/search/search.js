@@ -1,4 +1,5 @@
-﻿var GROUP_ITEM = 'groupItem';
+﻿var CHECKBOX = 'checkbox';
+var GROUP_ITEM = 'groupItem';
 var GROUP_ITEMS = 'groupItems';
 
 var SELECTED_SEARCH_TYPE;
@@ -31,6 +32,9 @@ function setUIForChart(isChartVisible) {
 /* SELECTED SPECTRA */
 /* ################################################################################ */
 function addOrRemoveSelectedSpectrum(id) {
+    if (isNaN(id))
+        return;
+
     var index = selectedSpectra.findIndex(x => x == id);
     //console.log(`addOrRemoveSelectedSpectrum - id: ${id}, index: ${index}`);
     if (index == -1)
@@ -57,9 +61,9 @@ function addSelectedspectrum(id) {
 }
 
 function removeSelectedSpectrum(index) {
-    console.log(`removeSelectedSpectrum - index: ${index}`);
+    //console.log(`removeSelectedSpectrum - index: ${index}`);
     selectedSpectra.splice(index, 1);
-    console.log(`removeSelectedSpectrum - selectedSpectra: ${selectedSpectra}`);
+    //console.log(`removeSelectedSpectrum - selectedSpectra: ${selectedSpectra}`);
     if (selectedSpectra.length == 0) {
         //removeCreateChartsButtonProcedure();
         showToast(ChartsNoSpectraSelectedMessage, 3000, WARNING);
@@ -107,65 +111,44 @@ function showSearchResults(resultsNum) {
 function buildGroupItems(obj, rowIndex) {
     let itemsNum = obj.length;
 
-    var text = `<ul data-role="listview" `;
-    text += `id = "groupItemsTable${rowIndex}" `;
-    text += `data-view="table" `;
-    text += `data-selectable="true" `;
-    text += `data-select-node="false" `;
-    text += 'data-cls-list-item-check="bd-cyan" ';
-    text += `data-structure='{"id": false, "insertDate": true, "editDate": true}'>`;
-    text += `<li data-icon="<span class='mif-chart-line margin-right-8' style='color: transparent'>" `;
-    text += `    data-caption="<strong>${SearchGroupItemsColTypeLabel}</strong>" `;
-    text += `    data-insertDate="<strong>${SearchGroupItemsColInsertDateTimeLabel}</strong>" `;
-    text += `    data-editDate="<strong>${SearchGroupItemsColEditDateTimeLabel}</strong>"></li>`;
-
+    var text = `<table class="table striped compact table-border row-border row-hover">`;
+    text += `<thead>`;
+    text += `   <th>&nbsp;</th>`;
+    text += `   <th>&nbsp;</th>`;
+    text += `   <th>${FileCsvLabel}</th>`;
+    text += `   <th>${FileXmlLabel}</th>`;
+    text += `   <th>${SearchGroupItemsColTypeLabel}</th>`;
+    text += `   <th>${SearchGroupItemsColInsertDateTimeLabel}</th>`;
+    text += `   <th>${SearchGroupItemsColEditDateTimeLabel}</th>`;
+    text += `</thead>`;
+    text += `<tbody>`;
     for (var i = 0; i < itemsNum; i++) {
-        text += `<li id="${GROUP_ITEM}${obj[i].Id}" `;
-        text += `    data-icon="<span class='mif-info margin-right-8 pointer' onclick='showInfo(${obj[i].Id})'>" `;
-        text += `    data-caption="${getSpectrumTypeDescription(obj[i].SpectrumType)}" `;
-        text += `    data-insertDate="${formatDate(obj[i].InsertDateTimeJs)}" `;
+        let id = `${CHECKBOX}${GROUP_ITEM}${obj[i].Id}`;
+        text += `   <tr>`;
+        text += `    <td><input id="${id}" type="checkbox" data-role="checkbox" data-style="2" data-cls-check="bd-cyan"></td>`;
+        text += `    <td><span class="mif mif-info mif-3x pointer" onclick='showInfo(${obj[i].Id})'></span></td>`;
+        text += `    <td><button class="button primary cycle outline pointer"><span class="mif mif-file-download pointer" title="${ButtonDownloadAsCsvFileLabel}" onclick='downloadSpectrumAsCsvAsync(${obj[i].Id})'></span></button></td>`;
+        text += `    <td><button class="button primary cycle outline pointer"><span class="mif mif-file-download pointer" title="${ButtonDownloadAsXmlFileLabel}" onclick='downloadSpectrumAsXmlAsync(${obj[i].Id})'></span></button></td>`;
+        text += `    <td class="row-text">${getSpectrumTypeDescription(obj[i].SpectrumType)}</td>`;
+        text += `    <td class="row-text">${formatDate(obj[i].InsertDateTimeJs)}</td>`;
         let editDateTime = '-';
         if (obj[i].EditDateTimeJs)
             editDateTime = formatDate(obj[i].EditDateTimeJs);
-        text += `data-editDate="${editDateTime}"></li>`;
+        text += `    <td class="row-text">${editDateTime}</td>`;
+        text += `   </tr>`;
     }
-    text += '</ul>';
+    text += `</tbody>`;
+    text += '</table>';
 
     $(`#${GROUP_ITEMS}${rowIndex}`).html(text);
 
-    /* trick to hide the checkbox in the 1st row (fake header) */
-    $(`#${GROUP_ITEMS}${rowIndex}`).ready(function () {
-        let firstChild = $(`#${GROUP_ITEMS}${rowIndex}`).first();
-        let labels = $(firstChild).find('label');
-        if (labels) {
-            $(labels[0]).empty();
-            /* resize checkboxes column dimension */
-            $(labels).each(function () {
-                $(this).addClass('width-48');
-            });
-        }
-
-        /* customize checkboxs UI */
-        let checks = $(`#${GROUP_ITEMS}${rowIndex}`).find('.check');
-        if (checks) {
-            $(checks).each(function () {
-                $(this).addClass('bd-cyan');
-            });
-        }
-
-        let groupItemChildren = $(`#${GROUP_ITEMS}${rowIndex}`).find(`[id^=${GROUP_ITEM}]`);
-        $(groupItemChildren).each(function (index) {
-            if ($(this).is("li")) {
-                $(this).off();
-                $(this).change(function () {
-                    var id = this.id;
-                    addOrRemoveSelectedSpectrum(cleanId(id))
-                });
-            }
+    $(function () {
+        $(`[id^=${CHECKBOX}${GROUP_ITEM}]`).off();
+        $(`[id^=${CHECKBOX}${GROUP_ITEM}]`).on('change', function () {
+            var id = this.id;
+            addOrRemoveSelectedSpectrum(cleanId(id));
         });
     });
-
-    Metro.makePlugin(`#${GROUP_ITEMS}Table${rowIndex}`, 'listview');
 
     /* show 'shrink' icon and hide 'expand' icon */
     hideByClass(`${GROUP_ITEMS}${rowIndex}IconExpand`);
@@ -173,7 +156,7 @@ function buildGroupItems(obj, rowIndex) {
 }
 
 function cleanId(id) {
-    return parseInt(id.replace(GROUP_ITEM, ''));
+    return parseInt(id.replace(`${CHECKBOX}${GROUP_ITEM}`, ''));
 }
 
 function clearGroupItems(rowIndex) {

@@ -13,6 +13,7 @@ using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests.SaveSpectrum;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
+using INAF.Libraries.Net.Math.Models;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
@@ -54,7 +55,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                     case Enums.CallerContext.App:
                         return new JsonResult(alignmentSettingsModel);
                 }
-            }   
+            }
             else
             {
                 switch (getCallerContext())
@@ -184,7 +185,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getCommonRefSpectrumByType(model.SpectrumType);
 
-            if (spectrumModel != null )
+            if (spectrumModel != null)
                 return new JsonResult(spectrumModel);
             else
                 return new EmptyResult();
@@ -195,6 +196,50 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             var keyValuePairs = dbHandlerHyperLabData.getSpectraTypesParents();
             return new JsonResult(keyValuePairs);
+        }
+
+        [HttpGet]
+        public IActionResult GetSpectrumAsCsv(GenericRequestByIdModel model)
+        {
+            SpectrumModel? spectrumMinimalInfo = dbHandlerHyperLabData.getSpectrumMinimalInfo(model.Id,
+                                                                                              getUserId());
+            if (spectrumMinimalInfo == null)
+                return new EmptyResult();
+
+            List<PointModel>? points = dbHandlerHyperLabData.getSpectrumPointsById(model.Id,
+                                                                                   getUserId());
+
+            if (points == null || !points.Any())
+                return new EmptyResult();
+
+            SpectrumModel spectrumModel = new SpectrumModel()
+            {
+                Points = points
+            };
+            string? csv = spectrumModel.ToTxt();
+
+            if (string.IsNullOrEmpty(csv))
+                return new EmptyResult();
+
+            FileSpectrumModel fileSpectrumModel = new FileSpectrumModel()
+            {
+                Filename = spectrumMinimalInfo.Filename,
+                TypeId = spectrumMinimalInfo.TypeId,
+                Csv = csv
+            };
+
+            return new JsonResult(new GenericResponseModel(fileSpectrumModel));
+        }
+
+        [HttpGet]
+        public IActionResult GetSpectrumAsXml(GenericRequestByIdModel model)
+        {
+            var fileSpectrumModel = dbHandlerHyperLabData.getSpectrumInfo(model.Id,
+                                                                          getUserId());
+            if (fileSpectrumModel == null)
+                return new EmptyResult();
+
+            return new JsonResult(new GenericResponseModel(fileSpectrumModel));
         }
 
         [HttpGet]
@@ -224,7 +269,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult GetSpectrumFile(GenericRequestByIdModel model)
         {
             FileSpectrumModel? parentSpectrum = dbHandlerHyperLabData.getSpectrumInfo(model.Id,
-                                                                                    getUserId());
+                                                                                      getUserId());
             if (parentSpectrum != null)
                 return new JsonResult(parentSpectrum);
             else

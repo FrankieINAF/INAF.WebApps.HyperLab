@@ -123,6 +123,12 @@
   <data name="ButtonBackToSearchLabel" xml:space="preserve">
     <value>Back to search (charts are maintained)</value>
   </data>
+  <data name="ButtonDownloadAsCsvFileLabel" xml:space="preserve">
+    <value>Download as CSV file</value>
+  </data>
+  <data name="ButtonDownloadAsXmlFileLabel" xml:space="preserve">
+    <value>Download as XML file</value>
+  </data>
   <data name="ButtonEnterFullScreenLabel" xml:space="preserve">
     <value>Enter full screen</value>
   </data>
@@ -170,6 +176,12 @@
   </data>
   <data name="ComplexSearchShowExplanation" xml:space="preserve">
     <value>Show explanation</value>
+  </data>
+  <data name="FileCsvLabel" xml:space="preserve">
+    <value>CSV</value>
+  </data>
+  <data name="FileXmlLabel" xml:space="preserve">
+    <value>XML</value>
   </data>
   <data name="GroupItemsExpandTooltip" xml:space="preserve">
     <value>Show spectra belonging to current group</value>
