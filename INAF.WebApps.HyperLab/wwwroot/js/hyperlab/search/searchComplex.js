@@ -1227,7 +1227,7 @@ async function executeComplexSearch() {
     }
 
     let model = {
-        Conditions: complexSearchConditions
+        Id: saveComplexSearchModel.Id
     };
 
     loadPartialViewWithAjaxPost(UrlSearchComplex, model, 'searchResultsContainer');
@@ -1259,6 +1259,7 @@ function showErrors(errors) {
         }
     }
 }
+
 
 function showErrorSampleName(error) {
     let id = `${error.ConditionType}${error.Index}${error.GroupIndex}`;

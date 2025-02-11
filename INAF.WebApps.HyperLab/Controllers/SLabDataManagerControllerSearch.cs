@@ -15,12 +15,14 @@ namespace INAF.WebApps.HyperLab.Controllers
         #region SEARCH COMPLEX
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SearchComplex(ComplexSearchModel model)
+        public IActionResult SearchComplex(GenericRequestByIdModel model)
         {
-            if (model.Conditions == null)
+            ComplexSearchSavingModel? complexSearchModel = dbHandlerHyperLabData.getSavedComplexSearch(model.Id,
+                                                                                                       getUserId());
+            if (complexSearchModel == null || complexSearchModel.Conditions == null || !complexSearchModel.Conditions.Any())
                 return new EmptyResult();
 
-            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(model.Conditions,
+            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(complexSearchModel.Conditions,
                                                                                                  getUserId());
             return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
         }
@@ -148,15 +150,51 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
         #endregion
 
-        #region SEARCHES MANAGEMENT
+        #region COMPLEX SEARCHES MANAGEMENT
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteComplexSearch([FromBody] GenericRequestByIdModel model)
         {
             bool isOk = await dbHandlerHyperLabData.deleteComplexSearchAsync(model.Id,
-                                                                 getUserId());
+                                                                             getUserId());
             return new JsonResult(new GenericResponseModel() { IsOk = isOk });
         }
+
+        [HttpPost]
+        public IActionResult ExecuteSearchComplex([FromBody] GenericRequestByIdModel model)
+        {
+            ComplexSearchSavingModel? complexSearchModel = dbHandlerHyperLabData.getSavedComplexSearch(model.Id,
+                                                                                                       getUserId());
+            if (complexSearchModel == null || complexSearchModel.Conditions == null || !complexSearchModel.Conditions.Any())
+                return new EmptyResult();
+
+            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(complexSearchModel.Conditions,
+                                                                                                 getUserId());
+            if (spectraFilesInfo == null || !spectraFilesInfo.Any())
+                return new EmptyResult();
+
+            return new JsonResult(spectraFilesInfo);
+        }
+
+        [HttpGet]
+        public IActionResult GetSavedComplexSearch(GenericRequestByIdModel model)
+        {
+            ComplexSearchSavingModel? complexSearchModel = dbHandlerHyperLabData.getSavedComplexSearch(model.Id,
+                                                                                                       getUserId());
+            if (complexSearchModel == null || complexSearchModel.Conditions == null || !complexSearchModel.Conditions.Any())
+                return new EmptyResult();
+
+            return new JsonResult(complexSearchModel);
+        }
+
+        [HttpGet]
+        public IActionResult GetSavedComplexSearchInfo(GenericRequestByIdModel model)
+        {
+            ComplexSearchDetailedInfoModel? result = dbHandlerHyperLabData.getSavedComplexSearchInfo(model.Id,
+                                                                                                     getUserId());
+            return new JsonResult(result);
+        }
+
 
         [HttpGet]
         public IActionResult GetSavedComplexSearches()
@@ -165,17 +203,22 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new JsonResult(savedSearches);
         }
 
-        [HttpGet]
-        public IActionResult GetSavedComplexSearchInfo(GenericRequestByIdModel model)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SaveComplexSearch(ComplexSearchSavingModel model)
         {
-            ComplexSearchDetailedInfoModel? result = dbHandlerHyperLabData.getSavedComplexSearchInfo(model.Id,
-                                                                                         getUserId());
+            GenericValueStringResponseModel? result = await saveComplexSearchAsync(model);
             return new JsonResult(result);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SaveComplexSearch(ComplexSearchSavingModel model)
+        public async Task<IActionResult> SaveComplexSearchForJwt(ComplexSearchSavingModel model)
+        {
+            GenericValueStringResponseModel? result = await saveComplexSearchAsync(model);
+            return new JsonResult(result);
+        }
+
+        private async Task<GenericValueStringResponseModel?> saveComplexSearchAsync(ComplexSearchSavingModel model)
         {
             GenericValueStringResponseModel? result = null;
 
@@ -184,7 +227,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (ModelState.IsValid)
             {
                 if (string.IsNullOrEmpty(model.Name) || model.Conditions == null)
-                    return new JsonResult(errorResult);
+                    return errorResult;
 
                 var saveSearchResult = await dbHandlerHyperLabData.saveComplexSearchAsync((int)model.Id,
                                                                                           model.Name,
@@ -213,7 +256,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 result = errorResult;
             }
 
-            return new JsonResult(result);
+            return result;
         }
         #endregion
     }
