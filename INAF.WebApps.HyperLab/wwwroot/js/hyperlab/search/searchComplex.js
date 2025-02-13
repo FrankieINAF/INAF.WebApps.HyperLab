@@ -251,6 +251,8 @@ function addConditionsOperators(currentIndex = null) {
     html += `</div>`;
 
     /* add event on radio-buttons to update the related complexSearchConditions item */
+    /* DO NOT USE addRadioButtonAction since it works for and/or belonging to group-conditions
+       while the following statements work for and/or between groups */
     let startid = `${searchTypeRadio}${_currentIndex}`;
     $(`[id^='${startid}']`).ready(function () {
         $(`[id^='${startid}']`).click(function () {
@@ -264,6 +266,18 @@ function addConditionsOperators(currentIndex = null) {
     $(complexSearchConditionsContainer).append(html);
 
     conditionsIndex++;
+}
+
+function addRadioButtonAction(currentIndex, groupIndex) {
+    /* add event on radio-buttons to update the related complexSearchConditions item */
+    let startid = `${searchTypeRadio}${currentIndex}`;
+    $(`[id^='${startid}']`).ready(function () {
+        $(`[id^='${startid}']`).click(function () {
+            let index = complexSearchConditions.findIndex(x => x.Index == currentIndex && x.GroupIndex == groupIndex);
+            if (index > -1)
+                complexSearchConditions[index].ConditionOperatorType = $(this).attr('data-tag');
+        });
+    });
 }
 
 function getRadioButton(label, conditionOperator, captionPosition, currentIndex, isChecked, useCustomHeight, groupIndex) {
@@ -325,6 +339,9 @@ function addConditionMaterial(liId, currentIndex = null, groupIndex = null) {
         /* hide the 'select' field and manage variable for incrementing conditionsIndex */
         setMaterialItem(currentIndex, groupIndex);
 
+        /* add actions for and/or radio buttons */
+        addRadioButtonAction(currentIndex, groupIndex);
+
         /* append html to create group */
         $(complexSearchConditionsContainer).append(html);
 
@@ -384,8 +401,11 @@ function getConditionMaterialItem(currentIndex = null, groupIndex = null) {
     }
 
     /* if we're not building up from existings conditions, then add new condition to models */
-    if (!isBuildingFromExistingConditions)
+    if (!isBuildingFromExistingConditions) {
+        addConditionModel(getConditionOperatorModel(currentIndex, _groupIndex, CONDITION_TYPE_MATERIAL, CONDITION_OPERATOR_OR, 0));
+        _groupIndex = getGroupIndex(CONDITION_TYPE_MATERIAL);
         addConditionModel(getConditionModelWithValueText(currentIndex, CONDITION_TYPE_MATERIAL));
+    }
 
     let inputid = `${CONDITION_TYPE_MATERIAL}Input${currentIndex}${_groupIndex}`;
     let selectid = `${CONDITION_TYPE_MATERIAL}${currentIndex}${_groupIndex}`;
@@ -551,6 +571,8 @@ function addConditionSampleName(liId, currentIndex = null, groupIndex = null) {
         /* append html to create group */
         $(complexSearchConditionsContainer).append(html);
 
+
+
         /* disable caller button and set title 'group already in use' */
         setGroupButtonInUse(liId);
 
@@ -564,12 +586,15 @@ function addConditionSampleName(liId, currentIndex = null, groupIndex = null) {
 function addConditionSampleNameItem(currentIndex = null, groupIndex = null) {
     let _currentIndex = currentIndex;
     if (_currentIndex == null)
-        _currentIndex = getCurrentIndex(conditionType);
+        _currentIndex = getCurrentIndex(CONDITION_TYPE_SAMPLE_NAME);
 
     let html = getConditionSampleNameItem(_currentIndex, groupIndex);
 
     /* realize metro plugin when item has been created */
     setSampleNameItem(_currentIndex, groupIndex);
+
+    /* add actions for and/or radio buttons */
+    addRadioButtonAction(_currentIndex, groupIndex - 1);
 
     /* append html to create item */
     $(`#${CONDITION_TYPE_SAMPLE_NAME}${CONDITIONS_ITEMS}`).append(html);
@@ -594,8 +619,11 @@ function getConditionSampleNameItem(currentIndex, groupIndex) {
     }
 
     /* if we're not building up from existings conditions, then add new condition to models */
-    if (!isBuildingFromExistingConditions)
+    if (!isBuildingFromExistingConditions) {
+        addConditionModel(getConditionOperatorModel(currentIndex, _groupIndex, CONDITION_TYPE_SAMPLE_NAME, CONDITION_OPERATOR_OR, 0));
+        _groupIndex = getGroupIndex(CONDITION_TYPE_SAMPLE_NAME);
         addConditionModel(getConditionModelWithValueText(currentIndex, CONDITION_TYPE_SAMPLE_NAME));
+    }
 
     /* create id */
     let id = `${CONDITION_TYPE_SAMPLE_NAME}${currentIndex}${_groupIndex}`;
@@ -694,6 +722,9 @@ function addConditionSelectItem(liId, conditionType, itemsArray, itemsArrayName,
 
         let functionhtml = `addConditionSelectItemOtherItems('${conditionType}', ${itemsArrayName}, ${selectItemCallbackName})`;
 
+        /* add actions for and/or radio buttons */
+        addRadioButtonAction(_currentIndex, groupIndex);
+
         /* build html for select + condition item */
         let html = buildConditionsGroupWithSelectItems(id, _currentIndex, conditionType, itemhtml, functionhtml, groupLabel);
 
@@ -778,6 +809,8 @@ function getSelectItem(arrayItems, currentIndex, groupIndex, selectType, conditi
             select.val(_itemValue);
         });
     } else {
+        addConditionModel(getConditionOperatorModel(currentIndex, _groupIndex, conditionType, CONDITION_OPERATOR_OR, 0));
+        _groupIndex = getGroupIndex(conditionType);
         addConditionModel(getConditionModelWithValueId(currentIndex, conditionType, _itemValue, _itemId));
     }
 
@@ -1259,7 +1292,6 @@ function showErrors(errors) {
         }
     }
 }
-
 
 function showErrorSampleName(error) {
     let id = `${error.ConditionType}${error.Index}${error.GroupIndex}`;

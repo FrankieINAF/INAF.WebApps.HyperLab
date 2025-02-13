@@ -13,6 +13,22 @@ namespace INAF.WebApps.HyperLab.Controllers
     public partial class SLabDataManagerController
     {
         #region SEARCH COMPLEX
+        [HttpGet]
+        public IActionResult ExecuteSearchComplex(GenericRequestByIdModel model)
+        {
+            ComplexSearchSavingModel? complexSearchModel = dbHandlerHyperLabData.getSavedComplexSearch(model.Id,
+                                                                                                       getUserId());
+            if (complexSearchModel == null || complexSearchModel.Conditions == null || !complexSearchModel.Conditions.Any())
+                return new EmptyResult();
+
+            List<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(complexSearchModel.Conditions,
+                                                                                                 getUserId());
+            if (spectraFilesInfo == null || !spectraFilesInfo.Any())
+                return new EmptyResult();
+
+            return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SearchComplex(GenericRequestByIdModel model)
@@ -22,9 +38,12 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (complexSearchModel == null || complexSearchModel.Conditions == null || !complexSearchModel.Conditions.Any())
                 return new EmptyResult();
 
-            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(complexSearchModel.Conditions,
+            List<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(complexSearchModel.Conditions,
                                                                                                  getUserId());
-            return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+            if (spectraFilesInfo == null || !spectraFilesInfo.Any())
+                return new EmptyResult();
+
+            return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
         }
         #endregion
 
@@ -36,14 +55,14 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new EmptyResult();
 
             var searchByMaterialHelper = serviceProvider.GetRequiredService<SearchByMaterialHelper>();
-            IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo = searchByMaterialHelper.searchByMaterial(model.Id,
+            IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = searchByMaterialHelper.searchByMaterial(model.Id,
                                                                                                             model.Type,
                                                                                                             getUserId());
 
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
-                    return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+                    return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
@@ -55,12 +74,12 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult SearchSimpleGroupsByMineralType(GenericRequestByIdModel model)
         {
-            IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByMineralType(model.Id,
+            IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByMineralType(model.Id,
                                                                                                                           getUserId());
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
-                    return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+                    return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
@@ -72,12 +91,12 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult SearchSimpleGroupsByOriginType(GenericRequestByIdModel model)
         {
-            IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByOriginType(model.Id,
+            IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByOriginType(model.Id,
                                                                                                                          getUserId());
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
-                    return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+                    return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
@@ -89,12 +108,12 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult SearchSimpleGroupsBySampleName(GenericRequestByTextModel model)
         {
-            IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleName(model.Text,
+            IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleName(model.Text,
                                                                                                                          getUserId());
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
-                    return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+                    return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
@@ -106,12 +125,12 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult SearchSimpleGroupsBySampleType(GenericRequestByIdModel model)
         {
-            IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleType(model.Id,
+            IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleType(model.Id,
                                                                                                                          getUserId());
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
-                    return PartialView("Partials/_SearchResults", new SimpleSearchResultsContainer(spectraFilesInfo));
+                    return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(spectraFilesInfo);
@@ -161,19 +180,11 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpPost]
-        public IActionResult ExecuteSearchComplex([FromBody] GenericRequestByIdModel model)
+        public async Task<IActionResult> DeleteComplexSearchForJwt([FromBody] GenericRequestByIdModel model)
         {
-            ComplexSearchSavingModel? complexSearchModel = dbHandlerHyperLabData.getSavedComplexSearch(model.Id,
-                                                                                                       getUserId());
-            if (complexSearchModel == null || complexSearchModel.Conditions == null || !complexSearchModel.Conditions.Any())
-                return new EmptyResult();
-
-            List<ISpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(complexSearchModel.Conditions,
-                                                                                                 getUserId());
-            if (spectraFilesInfo == null || !spectraFilesInfo.Any())
-                return new EmptyResult();
-
-            return new JsonResult(spectraFilesInfo);
+            bool isOk = await dbHandlerHyperLabData.deleteComplexSearchAsync(model.Id,
+                                                                             getUserId());
+            return new JsonResult(new GenericResponseModel() { IsOk = isOk });
         }
 
         [HttpGet]

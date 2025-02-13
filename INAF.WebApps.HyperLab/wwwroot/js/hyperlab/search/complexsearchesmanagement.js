@@ -370,7 +370,8 @@ function buildComplexSearchInfo(id, obj) {
             let testItem = obj.Conditions[testItemIndex];
 
             if (testItem.ConditionOperatorType == CONDITION_OPERATOR_NONE) {
-                /* if we're dealing with a conditions-group, then let's' retrieve all items belonging to the group and build-up the info element... */
+                /* if we're dealing with a conditions-group, then let's' retrieve all items belonging to the group 
+                   and build-up the info element... */
                 let items = obj.Conditions.filter(x => x.Index == i);
                 html += getConditionRow(items);
             } else {

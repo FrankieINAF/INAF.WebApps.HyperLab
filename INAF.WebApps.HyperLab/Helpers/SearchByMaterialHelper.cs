@@ -1,4 +1,5 @@
-﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Searches.Interfaces;
+﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Searches;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Searches.Interfaces;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
 using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
@@ -20,11 +21,11 @@ namespace INAF.WebApps.HyperLab.Helpers
             this.logger = logger;
         }
 
-        public List<ISpectraGroupInfoModel>? searchByMaterial(int id,
+        public List<SpectraGroupInfoModel>? searchByMaterial(int id,
                                                               string type,
                                                               int operationUserId)
         {
-            List<ISpectraGroupInfoModel>? spectraGroupInfoModels = null;
+            List<SpectraGroupInfoModel>? spectraGroupInfoModels = null;
 
             MaterialType mineralType = type.ToMaterialType();
 
