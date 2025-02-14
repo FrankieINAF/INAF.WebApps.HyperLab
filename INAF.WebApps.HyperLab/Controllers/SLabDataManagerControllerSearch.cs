@@ -223,7 +223,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveComplexSearchForJwt(ComplexSearchSavingModel model)
+        public async Task<IActionResult> SaveComplexSearchForJwt([FromBody] ComplexSearchSavingModel model)
         {
             GenericValueStringResponseModel? result = await saveComplexSearchAsync(model);
             return new JsonResult(result);
