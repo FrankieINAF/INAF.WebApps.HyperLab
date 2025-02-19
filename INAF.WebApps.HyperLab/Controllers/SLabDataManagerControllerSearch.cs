@@ -222,6 +222,13 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new JsonResult(result);
         }
 
+        [HttpGet]
+        public IActionResult IsComplexSearchNameAvailable(GenericRequestByTextModel model)
+        {
+            bool isAvailable = dbHandlerHyperLabData.isComplexSearchNameAvailable(model.Text, getUserId());
+            return new JsonResult(new GenericResponseModel() { IsOk = isAvailable });
+        }
+
         [HttpPost]
         public async Task<IActionResult> SaveComplexSearchForJwt([FromBody] ComplexSearchSavingModel model)
         {
