@@ -233,22 +233,24 @@ function addConditionsOperators(currentIndex = null) {
         addConditionModel(getConditionModel(_currentIndex, CONDITION_OPERATORS));
     }
 
-    let html = `<div id="${CONDITION_OPERATORS}${_currentIndex}" tag="${_currentIndex}" class="margin-left-4 d-flex flex-row bg-lightGray">`;
+    let html = `<div id="${CONDITION_OPERATORS}${_currentIndex}" tag="${_currentIndex}" class="margin-left-4 d-flex flex-justify-center bg-lightGray">`;
     /* FILLER (ONLY MOBILE) */
-    if (isMobile())
-        html += `<div class="cell-fs-4">&nbsp;</div>`;
+    //if (isMobile())
+    //    html += `<div class="cell-fs-4">&nbsp;</div>`;
 
     /* AND */
-    html += `<div class="cell-fs-2 cell-md-2 cell-lg-1">`;
+    //html += `<div class="cell-fs-2 cell-md-2 cell-lg-1">`;
+    //html += `<div class="d-flex flex-justify-center">`;
+    html += `<div class="margin-right-8">`;
     html += getRadioButton(SearchAndLabel, CONDITION_OPERATOR_AND, 'left', _currentIndex, isAndChecked, false, _groupIndex);
     html += `</div>`;
     /* OR */
-    html += `<div class="cell-fs-2 cell-md-2 cell-lg-1">`;
+    html += `<div class="margin-left-8">`;
     html += getRadioButton(SearchOrLabel, CONDITION_OPERATOR_OR, 'right', _currentIndex, isOrChecked, false, _groupIndex);
     html += `</div>`;
     /* FILLER */
-    html += `<div class="cell-fs-4 cell-md-8 cell-lg-10">&nbsp;</div>`;
-    html += `</div>`;
+    //html += `<div class="cell-fs-4 cell-md-8 cell-lg-10">&nbsp;</div>`;
+    //html += `</div>`;
 
     /* add event on radio-buttons to update the related complexSearchConditions item */
     /* DO NOT USE addRadioButtonAction since it works for and/or belonging to group-conditions
@@ -422,10 +424,10 @@ function getConditionMaterialItem(currentIndex = null, groupIndex = null) {
     let valueText = tryGetValueText(currentIndex, _groupIndex, CONDITION_TYPE_MATERIAL);
     if (valueText == null)
         valueText = '';
-    html += `           <input id="${inputid}" type="text" value="${valueText}" placeholder="${SearchByMaterialPlaceholder}" class="select-item-width" data-role="input" onchange="setMaterialErrorState('${inputid}', false)" data-search-button="true" data-search-button-click="custom" data-on-search-button-click="getMaterialsSuggestions('${inputid}','${selectid}')" />`;
-    html += `           <select id="${selectid}" data-role="select" data-cls-select="overlap select-item-width" data-on-change="manageValueSelection('${selectid}')"></select>`;
+    html += `           <input id="${inputid}" type="text" value="${valueText}" placeholder="${SearchByMaterialPlaceholder}" class="select-item-width-large" data-role="input" onchange="setMaterialErrorState('${inputid}', false)" data-search-button="true" data-search-button-click="custom" data-on-search-button-click="getMaterialsSuggestions('${inputid}','${selectid}')" />`;
+    html += `           <select id="${selectid}" data-role="select" data-cls-select="overlap select-item-width" data-on-change="${manageValueSelection.name}('${selectid}')"></select>`;
     html += '       </div>';
-    html += `       <button class="button dark cycle small outline margin-top-4 margin-left-8" onclick="resetSearchByMaterial('${inputid}')" title="${SearchClearSuggestionsButtonTitle}"><span class="mif-cross-light"></span></button >`;
+    html += `       <button class="button dark cycle small outline margin-top-4 margin-left-8" onclick="${resetSearchByMaterial.name}('${inputid}')" title="${SearchClearSuggestionsButtonTitle}"><span class="mif-cross-light"></span></button >`;
     html += getRemoveButtonHtml(`${selectid}Container`, currentIndex, _groupIndex, `${CONDITION_TYPE_MATERIAL}`);
     html += `   </div>`;
     if (_groupIndex > 0)
@@ -466,26 +468,49 @@ function isMaterialType(object, selectedValue, selectedText) {
 }
 
 function manageValueSelection(id) {
-    let selectedValues = Metro.getPlugin(`#${id}`, 'select').getSelected();
-    let selectedTexts = Metro.getPlugin(`#${id}`, 'select').getSelectedText();
+    let selectedValue = Metro.getPlugin(`#${id}`, 'select').getSelected();
+    //let selectedTexts = Metro.getPlugin(`#${id}`, 'select').getSelectedText();
+    let selectedText = '';
+    let selectedId = 0;
+
+    let suggestionsItem = suggestions[id];
+    let keys = Object.keys(suggestionsItem);
+    let keysNum = keys.length;
+    let continueLoop = true;
+    for (var i = 0; i < keysNum; i++) {
+        if (!continueLoop)
+            break;
+        let item = suggestionsItem[keys[i]];
+        let itemKeys = Object.keys(item);
+        let itemKeysNum = itemKeys.length;
+        for (var j = 0; j < itemKeysNum; j++) {
+            if (itemKeys[j] = selectedValue) {
+                selectedText = item[itemKeys[j]];
+                let tmp = itemKeys[j][0].split('_');
+                selectedId = parseInt(tmp[1]);
+                continueLoop = false;
+                break;
+            }
+        }
+    }
 
     let materialType = '';
     let isMaterialTypeFound = false;
 
     if (suggestions[id].Minerals) {
-        if (isMaterialType(suggestions[id].Minerals, selectedValues[0], selectedTexts[0])) {
+        if (isMaterialType(suggestions[id].Minerals, selectedValue[0], selectedText)) {
             isMaterialTypeFound = true;
             materialType = MATERIAL_TYPE_MINERAL;
         }
     }
     if (!isMaterialTypeFound && suggestions[id].Rocks) {
-        if (isMaterialType(suggestions[id].Rocks, selectedValues[0], selectedTexts[0])) {
+        if (isMaterialType(suggestions[id].Rocks, selectedValue[0], selectedText)) {
             isMaterialTypeFound = true;
             materialType = MATERIAL_TYPE_ROCK;
         }
     }
     if (!isMaterialTypeFound && suggestions[id].MeteorClasses) {
-        if (isMaterialType(suggestions[id].MeteorClasses, selectedValues[0], selectedTexts[0])) {
+        if (isMaterialType(suggestions[id].MeteorClasses, selectedValue[0], selectedText)) {
             isMaterialTypeFound = true;
             materialType = MATERIAL_TYPE_METEORCLASS;
         }
@@ -496,7 +521,7 @@ function manageValueSelection(id) {
     let groupIndex = parseInt(id.charAt(id.length - 1));
 
     /* update condition model */
-    updateConditionModelForMaterial(parseInt(selectedValues[0]), currentIndex, groupIndex, materialType);
+    updateConditionModelForMaterial(selectedId, selectedText, currentIndex, groupIndex, materialType);
 }
 
 function setMaterialItem(currentIndex, groupIndex) {
@@ -903,10 +928,11 @@ function updateConditionModel(index, value) {
     complexSearchConditions[index].ValueId = value;
 }
 
-function updateConditionModelForMaterial(value, currentIndex, groupIndex, materialType) {
+function updateConditionModelForMaterial(valueId, valueText, currentIndex, groupIndex, materialType) {
     let index = complexSearchConditions.findIndex(x => x.Index == currentIndex && x.GroupIndex == groupIndex);
     if (index > -1) {
-        complexSearchConditions[index].ValueId = value;
+        complexSearchConditions[index].ValueId = valueId;
+        complexSearchConditions[index].ValueText = valueText;
         complexSearchConditions[index].MaterialType = materialType
     }
 }
@@ -1149,14 +1175,20 @@ function tryGetValueText(index, groupIndex, conditionType) {
 /* ################################################################################ */
 /* BUILD FROM SAVED ONE */
 /* ################################################################################ */
-async function buildAndRunComplexSearchProcedure(id) {
+async function buildAndRunComplexSearchProcedureAsync(id) {
     let model = {
         Id: id
     };
 
-    let obj = await doAjaxGetAsync(UrlGetSavedComplexSearchInfo, model)
+    let obj = await doAjaxGetAsync(UrlGetSavedComplexSearchInfo, model);
     if (obj) {
-        buildAndRunComplexSearch(obj);
+        //buildAndRunComplexSearch(obj);
+        if (buildComplexSearch(obj)) {
+            setTimeout(() => { search(); }, 2 * DEFAULT_WAIT_ms);
+        } else {
+            setLoadingCircleIsVisible(false);
+            showSimpleDialog(ERROR_LABEL, SavedComplexSearchInfoShowErrorMessage, ALERT);
+        }
 
         setLoadingCircleIsVisible(false);
     } else {
@@ -1165,7 +1197,21 @@ async function buildAndRunComplexSearchProcedure(id) {
     }
 }
 
-function buildAndRunComplexSearch(obj) {
+async function buildComplexSearchProcedureAsync(id) {
+    let model = {
+        Id: id
+    };
+
+    let obj = await doAjaxGetAsync(UrlGetSavedComplexSearchInfo, model);
+    if (obj) {
+        buildComplexSearch(obj);
+    } else {
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(ERROR_LABEL, SavedComplexSearchesRetrieveInfoErrorMessage, ALERT);
+    }
+}
+
+function buildComplexSearch(obj) {
     //console.log(obj);
     let isOk = true;
 
@@ -1236,13 +1282,90 @@ function buildAndRunComplexSearch(obj) {
     if (isOk) {
         let name = obj.Name;
         setTimeout(() => { setSearchName(name); }, DEFAULT_WAIT_ms);
-        setTimeout(() => { search(); }, 2 * DEFAULT_WAIT_ms);
+        //setTimeout(() => { search(); }, 2 * DEFAULT_WAIT_ms);
     }
 
-    if (!isOk) {
-        showSimpleDialog(ERROR_LABEL, SavedComplexSearchInfoShowErrorMessage, ALERT);
-    }
+    return isOk;
 }
+
+//function buildAndRunComplexSearch(obj) {
+//    //console.log(obj);
+//    let isOk = true;
+
+//    /* save id of currently shown complex search */
+//    saveComplexSearchModel.Id = obj.Id;
+
+//    /* find max-value for Index */
+//    let indexMax = Math.max(...obj.Conditions.map(o => o.Index));
+
+//    /* loop on groups */
+//    for (var i = 0; i <= indexMax; i++) {
+//        try {
+//            /* 1) build in-memory models */
+//            let items = obj.Conditions.filter(x => x.Index == i);
+//            items.forEach(x => {
+//                addConditionModel(buildConditionModel(x.Id, x.Index, x.ConditionType, x.MaterialType, x.ValueId, x.ValueText, x.ConditionOperatorType));
+//            });
+
+//            /* 2) build UI items */
+//            items.forEach(x => {
+//                if (x.ConditionOperatorType == CONDITION_OPERATOR_NONE) {
+//                    //console.log(`${x.ConditionType}, index: ${x.Index}, groupIndex: ${x.GroupIndex}`);
+//                    switch (x.ConditionType) {
+//                        case CONDITION_TYPE_MATERIAL:
+//                            if (x.GroupIndex == 0)
+//                                addConditionMaterial(x.ConditionType, x.Index, x.GroupIndex);
+//                            else
+//                                setTimeout(() => { addConditionMaterialItem(x.Index, x.GroupIndex); }, DEFAULT_WAIT_ms);
+//                            break;
+
+//                        case CONDITION_TYPE_MINERAL_TYPE:
+//                            if (x.GroupIndex == 0)
+//                                addConditionSelectItem(x.ConditionType, x.ConditionType, mineralTypes, 'mineralTypes', selectMineralType, 'selectSampleDataType', SearchComplexConditionsOnMineralTypeLabel, x.Index, x.GroupIndex);
+//                            else
+//                                setTimeout(() => { addConditionSelectItemOtherItems(x.ConditionType, mineralTypes, selectMineralType, x.Index, x.GroupIndex); }, DEFAULT_WAIT_ms);
+//                            break;
+
+//                        case CONDITION_TYPE_ORIGIN_TYPE:
+//                            if (x.GroupIndex == 0)
+//                                addConditionSelectItem(x.ConditionType, x.ConditionType, originTypes, 'originTypes', selectOriginType, 'selectSampleDataType', SearchComplexConditionsOnOriginTypeLabel, x.Index, x.GroupIndex);
+//                            else
+//                                setTimeout(() => { addConditionSelectItemOtherItems(x.ConditionType, originTypes, selectOriginType, x.Index, x.GroupIndex); }, DEFAULT_WAIT_ms);
+//                            break;
+
+//                        case CONDITION_TYPE_SAMPLE_NAME:
+//                            if (x.GroupIndex == 0)
+//                                addConditionSampleName(x.ConditionType, x.Index, x.GroupIndex);
+//                            else
+//                                setTimeout(() => { addConditionSampleNameItem(x.Index, x.GroupIndex); }, DEFAULT_WAIT_ms);
+//                            break;
+
+//                        case CONDITION_TYPE_SAMPLE_TYPE:
+//                            if (x.GroupIndex == 0)
+//                                addConditionSelectItem(x.ConditionType, x.ConditionType, sampleTypes, 'sampleTypes', selectSampleDataType, 'selectSampleDataType', SearchComplexConditionsOnSampleDataTypeLabel, x.Index, x.GroupIndex);
+//                            else
+//                                setTimeout(() => { addConditionSelectItemOtherItems(x.ConditionType, sampleTypes, selectSampleDataType, x.Index, x.GroupIndex); }, DEFAULT_WAIT_ms);
+//                            break;
+//                    }
+//                }
+//            });
+//        } catch (e) {
+//            console.log(e);
+//            isOk = false;
+//            continueLoop = false;
+//        }
+//    }
+
+//    if (isOk) {
+//        let name = obj.Name;
+//        setTimeout(() => { setSearchName(name); }, DEFAULT_WAIT_ms);
+//        setTimeout(() => { search(); }, 2 * DEFAULT_WAIT_ms);
+//    }
+
+//    if (!isOk) {
+//        showSimpleDialog(ERROR_LABEL, SavedComplexSearchInfoShowErrorMessage, ALERT);
+//    }
+//}
 
 /* ################################################################################ */
 /* SEARCH */

@@ -231,7 +231,11 @@
 }
 
 .select-item-width {
-    width: 20vw !important;
+    width: 10vw !important;
+}
+
+.select-item-width-large {
+    width: 12vw !important;
 }
 
 @media (min-width: 577px) and (max-width: 768px) {

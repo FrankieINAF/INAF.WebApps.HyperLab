@@ -10,10 +10,10 @@ var saveComplexSearchModel = {
 /* DELETE COMPLEX SEARCH */
 /* ################################################################################ */
 function deleteComplexSearchProcedure(itemId, itemName) {
-    askAndExecute(SearchComplexQueryConditionsManagement, SavedComplexSearchesDeleteQuestion, deleteComplexSearch, [itemId, itemName]);
+    askAndExecute(SearchComplexQueryConditionsManagement, SavedComplexSearchesDeleteQuestion, deleteComplexSearchAsync, [itemId, itemName]);
 }
 
-async function deleteComplexSearch(itemId, itemName) {
+async function deleteComplexSearchAsync(itemId, itemName) {
     setLoadingCircleIsVisible(true);
 
     let model = {
@@ -62,25 +62,25 @@ function tryAddSaveSearchElement() {
     html += `<div id="saveSearchGroup" class="d-flex flex-justify-between complex-search-title">`;
     // add button save search
     html += '   <div class="d-flex flex-start">';
-    html += `       <button id="buttonBackToList" class=" button primary cycle outline margin-top-8 margin-left-8 d-none" title="${ComplexSearchBackToListLabel}" onclick="removeSearch(true)"><span class="mif-arrow-left"></span></button>`;
-    html += `       <button class="button primary cycle outline margin-top-8 margin-left-8" title="${SaveComplexSearchLabel}" onclick="saveSearch()"><span class="mif-floppy-disk"></span></button>`;
+    html += `       <button id="buttonBackToList" class=" button primary cycle outline margin-top-8 margin-left-8 d-none" title="${ComplexSearchBackToListLabel}" onclick="${removeSearch.name}(true)"><span class="mif-arrow-left"></span></button>`;
+    html += `       <button class="button primary cycle outline margin-top-8 margin-left-8" title="${SaveComplexSearchLabel}" onclick="${saveSearchAsync.name}()"><span class="mif-floppy-disk"></span></button>`;
     html += '   </div>';
     // add title
     html += `   <div id='searchTitleInput' class="flex-center flex-row d-none">`;
     html += `       <div class="flex-center flex-column">`;
-    html += `           <input data-role="input" class="search-name-width height-40 margin-top-8" data-val="true" data-val-required="The search name field is required." id="SearchName" name="SearchName" onchange="updateSearchNameErrorStatus()" placeholder="${SaveComplexSearchNamePlaceholder}" type="text" value="" data-role-input="true">`;
+    html += `           <input data-role="input" class="search-name-width height-40 margin-top-8" data-val="true" data-val-required="The search name field is required." id="SearchName" name="SearchName" onchange="${updateSearchNameErrorStatus.name}()" placeholder="${SaveComplexSearchNamePlaceholder}" type="text" value="" data-role-input="true">`;
     html += `           <div><span id="SearchNameValidation" class='field-validation-valid'>${SearchFieldTextRequiredMessage}</span></div>`;
     html += `       </div>`;
     html += `       <span id='searchSavedCheckmark' class='mif-checkmark fg-green margin-top-20 margin-horizontal-8 d-none'></span>`;
-    html += `       <button class="flex-end button dark cycle outline mini margin-top-16 margin-left-8" title="${SearchComplexHideTitle}" onclick="setEnabledSearchTitle(false)"><span class="mif-cross-light"></span></button>`;
+    html += `       <button class="flex-end button dark cycle outline mini margin-top-16 margin-left-8" title="${SearchComplexHideTitle}" onclick="${setEnabledSearchTitle.name}(false)"><span class="mif-cross-light"></span></button>`;
     html += `   </div>`;
     // add search generic title
     html += `   <div id="searchTitleLabel" class="d-flex flex-center flex-row margin-top-16">`;
-    html += `       <button class="flex-start button dark cycle mini outline margin-right-8" title="${SearchComplexEditTitle}" onclick="setEnabledSearchTitle(true)"><span class="mif-pencil"></span></button>`;
+    html += `       <button class="flex-start button dark cycle mini outline margin-right-8" title="${SearchComplexEditTitle}" onclick="${setEnabledSearchTitle.name}(true)"><span class="mif-pencil"></span></button>`;
     html += `       <label class="flex-end text-bold">${SearchComplexTitle}</label>`;
     html += `   </div>`;
     // add button remove search
-    html += `   <button class="flex-end button dark cycle outline margin-top-8 margin-left-8" title="${SearchComplexClearLabel}" onclick="removeSearchProcedure()"><span class="mif-bin"></span></button>`;
+    html += `   <button class="flex-end button dark cycle outline margin-top-8 margin-left-8" title="${SearchComplexClearLabel}" onclick="${removeSearchProcedure.name}()"><span class="mif-bin"></span></button>`;
     html += `</div>`;
 
     $(`#SearchName`).ready(function () {
@@ -173,7 +173,7 @@ function isSearchNameAvailable() {
     return isAvaiable;
 }
 
-async function saveSearch() {
+async function saveSearchAsync() {
     /* check whether a nema for current search has been set or not */
     if (!isSearchNameAvailable()) {
         setInputFieldErrorState(`SearchName`, true);
@@ -255,27 +255,14 @@ function buildSavedComplexSearchesTable(obj) {
             conditionTypes = obj[i].ConditionTypes.join(', ');
         }
 
-        let popoverhtml = ``;
-        popoverhtml += `<button class="button info cycle mini outline" `;
-        popoverhtml += `        data-role="popover" `;
-        popoverhtml += `        data-popover-text="<div id='complexSearch${obj[i].Id}Info'></div>" `;
-        popoverhtml += `        data-popover-position="right" `;
-        popoverhtml += `        data-popover-hide="0" `;
-        popoverhtml += `        title = "${SavedComplexSearchesShowDetailedInfoLabel}" `;
-        popoverhtml += `        data-on-popover-show="expandComplexSearchInfo(${obj[i].Id})"`;
-        popoverhtml += `        data-on-popover-hide="freeCurrentSearchInfoId()" `;
-        popoverhtml += `        data-cls-popover="bg-light drop-shadow" `;
-        popoverhtml += `        data-hide-on-leave="true">`;
-        popoverhtml += `    <span class="mif-list"></span>`;
-        popoverhtml += `</button>`;
         /* main row */
         html += `   <tr class="pointer">`;
-        html += `       <td>${popoverhtml}</td>`;
-        html += `       <td><button class="button primary cycle mini outline" title="${SavedComplexSearchesExecuteLabel}" onclick="buildAndRunComplexSearchProcedure(${obj[i].Id})"><span class="mif-done"></span></button></td>`;
+        html += `       <td><button class="button primary cycle mini outline" title="${SavedComplexSearchesShowDetailedInfoLabel}" onclick="${buildComplexSearchProcedureAsync.name}(${obj[i].Id})"><span class="mif-list"></span></button></td>`;
+        html += `       <td><button class="button primary cycle mini outline" title="${SavedComplexSearchesExecuteLabel}" onclick="${buildAndRunComplexSearchProcedureAsync.name}(${obj[i].Id})"><span class="mif-done"></span></button></td>`;
         html += `       <td>${obj[i].Name}</td>`;
         html += `       <td>${datetime}</td>`;
         html += `       <td>${conditionTypes}</td>`;
-        html += `       <td><button class="button dark cycle mini outline" title="${SavedComplexSearchesDeleteLabel}" onclick="deleteComplexSearchProcedure(${obj[i].Id}, '${obj[i].Name}')"><span class="mif-bin"></span></button></td>`;
+        html += `       <td><button class="button dark cycle mini outline" title="${SavedComplexSearchesDeleteLabel}" onclick="${deleteComplexSearchProcedure.name}(${obj[i].Id}, '${obj[i].Name}')"><span class="mif-bin"></span></button></td>`;
         html += `   </tr>`;
     }
     html += `   </tbody>`;
@@ -315,40 +302,40 @@ async function getSavedComplexSearches(isReloadRequired = false) {
     setLoadingCircleIsVisible(false);
 }
 
-/* ################################################################################ */
-/* COMPLEX SEARCH INFO */
-/* ################################################################################ */
-async function expandComplexSearchInfo(id) {
-    console.log(id);
-    if (currentSearchInfoId == id)
-        return;
+///* ################################################################################ */
+///* COMPLEX SEARCH INFO */
+///* ################################################################################ */
+//async function expandComplexSearchInfo(id) {
+//    console.log(id);
+//    if (currentSearchInfoId == id)
+//        return;
 
-    let model = {
-        Id: id
-    };
+//    let model = {
+//        Id: id
+//    };
 
-    let obj = await doAjaxGetAsync(UrlGetSavedComplexSearchInfo, model)
-    if (obj) {
-        setCurrentSearchInfoId(id);
-        /* build the info panel and show it */
-        buildComplexSearchInfo(id, obj);
+//    let obj = await doAjaxGetAsync(UrlGetSavedComplexSearchInfo, model)
+//    if (obj) {
+//        setCurrentSearchInfoId(id);
+//        /* build the info panel and show it */
+//        buildComplexSearchInfo(id, obj);
 
-        /* show 'shrink' icon and hide 'expand' icon */
-        hideByClass(`complexSearch${id}IconExpand`);
-        showByClass(`complexSearch${id}IconShrink`);
-    } else {
-        showSimpleDialog(ERROR_LABEL, SavedComplexSearchesRetrieveInfoErrorMessage, ALERT);
-    }
-}
+//        /* show 'shrink' icon and hide 'expand' icon */
+//        hideByClass(`complexSearch${id}IconExpand`);
+//        showByClass(`complexSearch${id}IconShrink`);
+//    } else {
+//        showSimpleDialog(ERROR_LABEL, SavedComplexSearchesRetrieveInfoErrorMessage, ALERT);
+//    }
+//}
 
-function shrinkComplexSearchInfo(id) {
-    /* remove info about complex search */
-    $(`#complexSearch${id}Info`).empty();
+//function shrinkComplexSearchInfo(id) {
+//    /* remove info about complex search */
+//    $(`#complexSearch${id}Info`).empty();
 
-    /* hide 'shrink' icon and show 'expand' icon */
-    showByClass(`complexSearch${id}IconExpand`);
-    hideByClass(`complexSearch${id}IconShrink`);
-}
+//    /* hide 'shrink' icon and show 'expand' icon */
+//    showByClass(`complexSearch${id}IconExpand`);
+//    hideByClass(`complexSearch${id}IconShrink`);
+//}
 
 /* -------------------------------------------------------------------------------- */
 /* BUILD COMPLEX SEARCH INFO PANEL */

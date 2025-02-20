@@ -391,7 +391,7 @@ $(function () {
     /* enable search for materials suggestions when 'Enter' is pressed */
     $(`#${selectMaterial}Input`).each(function () {
         $(`#${selectMaterial}Input`).on('keydown', function (evt) {
-            getMaterialForSearchByEnter(evt, `${selectMaterial}Input`, `${selectMaterial}`);
+            getMaterialForSearchByEnter(evt, `${selectMaterial}Input`, `${selectMaterial}`, manageValueSelection);
         });
     });
 
