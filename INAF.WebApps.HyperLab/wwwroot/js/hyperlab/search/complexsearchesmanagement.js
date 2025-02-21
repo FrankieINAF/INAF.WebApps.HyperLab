@@ -3,17 +3,31 @@
 var saveComplexSearchModel = {
     Id: 0,
     Name: '',
-    Conditions: []
+    Conditions: [],
+    IsAnyChange: false
 };
+
+function resetSaveComplexSearchModel() {
+    saveComplexSearchModel = {
+        Id: 0,
+        Name: '',
+        Conditions: [],
+        IsAnyChange: false
+    };
+}
+
+function setSaveComplexSearchModelSaved(isSaved) {
+    saveComplexSearchModel.IsAnyChange = !isSaved;
+}
 
 /* ################################################################################ */
 /* DELETE COMPLEX SEARCH */
 /* ################################################################################ */
-function deleteComplexSearchProcedure(itemId, itemName) {
-    askAndExecute(SearchComplexQueryConditionsManagement, SavedComplexSearchesDeleteQuestion, deleteComplexSearchAsync, [itemId, itemName]);
+function deleteComplexSearchAndBackToListProcedure(itemId) {
+    askAndExecute(SearchComplexQueryConditionsManagement, SavedComplexSearchesDeleteQuestion, deleteComplexSearchAndBackToListAsync, [itemId]);
 }
 
-async function deleteComplexSearchAsync(itemId, itemName) {
+async function deleteComplexSearchAndBackToListAsync(itemId) {
     setLoadingCircleIsVisible(true);
 
     let model = {
@@ -22,10 +36,30 @@ async function deleteComplexSearchAsync(itemId, itemName) {
 
     let obj = await doAjaxPostAsync(UrlDeleteComplexSearch, model);
     if (obj && obj.IsOk) {
-        let plugin = Metro.getPlugin('#retrievedComplexSearchesTable', 'table');
-        plugin.deleteItem(2, itemName); // 2 is index of name in column
-        plugin.resetView();
         setLoadingCircleIsVisible(false);
+        backToList(true);
+    } else {
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(ERROR_LABEL, SavedComplexSearchesDeleteErrorMessage, ALERT);
+    }
+}
+
+/* WITH RELOAD */
+function deleteComplexSearchAndReloadProcedure(itemId) {
+    askAndExecute(SearchComplexQueryConditionsManagement, SavedComplexSearchesDeleteQuestion, deleteComplexSearchAndReloadAsync, [itemId]);
+}
+
+async function deleteComplexSearchAndReloadAsync(itemId) {
+    setLoadingCircleIsVisible(true);
+
+    let model = {
+        Id: itemId
+    };
+
+    let obj = await doAjaxPostAsync(UrlDeleteComplexSearch, model);
+    if (obj && obj.IsOk) {
+        setLoadingCircleIsVisible(false);
+        getSavedComplexSearches(true);
     } else {
         setLoadingCircleIsVisible(false);
         showSimpleDialog(ERROR_LABEL, SavedComplexSearchesDeleteErrorMessage, ALERT);
@@ -38,23 +72,7 @@ async function deleteComplexSearchAsync(itemId, itemName) {
 /* -------------------------------------------------------------------------------- */
 /* UI ELEMENTS OPERATORS */
 /* -------------------------------------------------------------------------------- */
-function setEnabledSearchTitle(isEnabled) {
-    if (isEnabled) {
-        $('#searchTitleInput').addClass('d-flex');
-
-        $('#searchTitleLabel').removeClass('d-flex');
-        hideByClass('searchTitleLabel');
-    } else {
-        $('#searchTitleLabel').addClass('d-flex');
-        showByClass('searchTitleLabel');
-
-        $('#searchTitleInput').removeClass('d-flex');
-
-        $('#SearchName').val('');
-    }
-}
-
-function tryAddSaveSearchElement() {
+function addComplexSearchTopBar(id) {
     if ($('#complexSearchTopBar').children().length > 0)
         return;
 
@@ -62,8 +80,9 @@ function tryAddSaveSearchElement() {
     html += `<div id="saveSearchGroup" class="d-flex flex-justify-between complex-search-title">`;
     // add button save search
     html += '   <div class="d-flex flex-start">';
-    html += `       <button id="buttonBackToList" class=" button primary cycle outline margin-top-8 margin-left-8 d-none" title="${ComplexSearchBackToListLabel}" onclick="${removeSearch.name}(true)"><span class="mif-arrow-left"></span></button>`;
+    html += `       <button id="buttonBackToList" class=" button primary cycle outline margin-top-8 margin-left-8" title="${ComplexSearchBackToListLabel}" onclick="${backToListProcedure.name}(true)"><span class="mif-arrow-left"></span></button>`;
     html += `       <button class="button primary cycle outline margin-top-8 margin-left-8" title="${SaveComplexSearchLabel}" onclick="${saveSearchAsync.name}()"><span class="mif-floppy-disk"></span></button>`;
+    html += `       <button class="button primary cycle outline margin-top-8 margin-left-8" title="${SavedComplexSearchesExecuteLabel}" onclick="${executeComplexSearchAsync.name}()"><span class="mif-checkmark"></span></button>`;
     html += '   </div>';
     // add title
     html += `   <div id='searchTitleInput' class="flex-center flex-row d-none">`;
@@ -80,7 +99,7 @@ function tryAddSaveSearchElement() {
     html += `       <label class="flex-end text-bold">${SearchComplexTitle}</label>`;
     html += `   </div>`;
     // add button remove search
-    html += `   <button class="flex-end button dark cycle outline margin-top-8 margin-left-8" title="${SearchComplexClearLabel}" onclick="${removeSearchProcedure.name}()"><span class="mif-bin"></span></button>`;
+    html += `   <button class="flex-end button primary cycle outline margin-top-8 margin-left-8" title="${SearchComplexClearLabel}" onclick="${deleteComplexSearchAndBackToListProcedure.name}(${id})"><span class="mif-bin"></span></button>`;
     html += `</div>`;
 
     $(`#SearchName`).ready(function () {
@@ -91,6 +110,22 @@ function tryAddSaveSearchElement() {
     });
 
     $('#complexSearchTopBar').html(html);
+}
+
+function setEnabledSearchTitle(isEnabled) {
+    if (isEnabled) {
+        $('#searchTitleInput').addClass('d-flex');
+
+        $('#searchTitleLabel').removeClass('d-flex');
+        hideByClass('searchTitleLabel');
+    } else {
+        $('#searchTitleLabel').addClass('d-flex');
+        showByClass('searchTitleLabel');
+
+        $('#searchTitleInput').removeClass('d-flex');
+
+        $('#SearchName').val('');
+    }
 }
 
 function removeSaveSearchElement() {
@@ -119,11 +154,14 @@ function updateSearchNameErrorStatus() {
 /* -------------------------------------------------------------------------------- */
 /* CLOSE SHOWN COMPLEX SEARCH */
 /* -------------------------------------------------------------------------------- */
-function removeSearchProcedure() {
-    confirmAndExecute(SearchComplexManagementLabel, SearchComplexRemoveQuestion, removeSearch);
+function backToListProcedure() {
+    if (saveComplexSearchModel.IsAnyChange)
+        confirmAndExecute(SearchComplexManagementLabel, ComplexSearchBackToListUnsavedChangesQuestion, backToList);
+    else
+        backToList();
 }
 
-function removeSearch(isReloadRequired = false) {
+function backToList(isReloadRequired = false) {
     let callback = function () {
         /* remove search title */
         $('#complexSearchTopBar').empty();
@@ -142,7 +180,7 @@ function removeSearch(isReloadRequired = false) {
         emptyCurrentlyUsedGroups();
 
         /* empty complex search conditions array */
-        complexSearchConditions = [];
+        resetSaveComplexSearchModel();
 
         /* reset the idex used incondition models */
         conditionsIndex = 0;
@@ -151,7 +189,7 @@ function removeSearch(isReloadRequired = false) {
         if (isReloadRequired) {
             showByClass('retrievedComplexSearchesListContainer');
             getSavedComplexSearches(true);
-        }  else
+        } else
             checkComplexSearchesIntroIsRequired();
 
         /* remove search result, if present */
@@ -190,7 +228,6 @@ async function saveSearchAsync() {
     setLoadingCircleIsVisible(true);
 
     saveComplexSearchModel.Name = $('#SearchName').val();
-    saveComplexSearchModel.Conditions = complexSearchConditions
 
     let isNewSearch = (saveComplexSearchModel.Id == 0);
 
@@ -204,8 +241,8 @@ async function saveSearchAsync() {
             showByClass('searchSavedCheckmark');
             animateCSS('searchSavedCheckmark', 'pulse', FAST);
 
-            /* show button to go back to searches list */
-            showByClass('buttonBackToList');
+            /* set model as updated */
+            setSaveComplexSearchModelSaved(true);
             if (isNewSearch)
                 showSimpleDialog(INFO_LABEL, SaveComplexSearchSavedMessage, SUCCESS);
             else
@@ -262,7 +299,7 @@ function buildSavedComplexSearchesTable(obj) {
         html += `       <td>${obj[i].Name}</td>`;
         html += `       <td>${datetime}</td>`;
         html += `       <td>${conditionTypes}</td>`;
-        html += `       <td><button class="button dark cycle mini outline" title="${SavedComplexSearchesDeleteLabel}" onclick="${deleteComplexSearchProcedure.name}(${obj[i].Id}, '${obj[i].Name}')"><span class="mif-bin"></span></button></td>`;
+        html += `       <td><button class="button primary cycle mini outline" title="${SavedComplexSearchesDeleteLabel}" onclick="${deleteComplexSearchAndReloadProcedure.name}(${obj[i].Id})"><span class="mif-bin"></span></button></td>`;
         html += `   </tr>`;
     }
     html += `   </tbody>`;
@@ -300,134 +337,4 @@ async function getSavedComplexSearches(isReloadRequired = false) {
     }
 
     setLoadingCircleIsVisible(false);
-}
-
-///* ################################################################################ */
-///* COMPLEX SEARCH INFO */
-///* ################################################################################ */
-//async function expandComplexSearchInfo(id) {
-//    console.log(id);
-//    if (currentSearchInfoId == id)
-//        return;
-
-//    let model = {
-//        Id: id
-//    };
-
-//    let obj = await doAjaxGetAsync(UrlGetSavedComplexSearchInfo, model)
-//    if (obj) {
-//        setCurrentSearchInfoId(id);
-//        /* build the info panel and show it */
-//        buildComplexSearchInfo(id, obj);
-
-//        /* show 'shrink' icon and hide 'expand' icon */
-//        hideByClass(`complexSearch${id}IconExpand`);
-//        showByClass(`complexSearch${id}IconShrink`);
-//    } else {
-//        showSimpleDialog(ERROR_LABEL, SavedComplexSearchesRetrieveInfoErrorMessage, ALERT);
-//    }
-//}
-
-//function shrinkComplexSearchInfo(id) {
-//    /* remove info about complex search */
-//    $(`#complexSearch${id}Info`).empty();
-
-//    /* hide 'shrink' icon and show 'expand' icon */
-//    showByClass(`complexSearch${id}IconExpand`);
-//    hideByClass(`complexSearch${id}IconShrink`);
-//}
-
-/* -------------------------------------------------------------------------------- */
-/* BUILD COMPLEX SEARCH INFO PANEL */
-/* -------------------------------------------------------------------------------- */
-function buildComplexSearchInfo(id, obj) {
-    //console.log(obj);
-    let html = ``;
-
-    let isOk = true;
-
-    /* find max-value for Index */
-    let indexMax = Math.max(...obj.Conditions.map(o => o.Index))
-
-    /* build-up complex search UI */
-    for (var i = 0; i <= indexMax; i++) {
-        try {
-            /* test whether next group is a condition-group or a conditions-opertor item */
-            let testItemIndex = obj.Conditions.findIndex(x => x.Index == i && x.GroupIndex == 0);
-            let testItem = obj.Conditions[testItemIndex];
-
-            if (testItem.ConditionOperatorType == CONDITION_OPERATOR_NONE) {
-                /* if we're dealing with a conditions-group, then let's' retrieve all items belonging to the group 
-                   and build-up the info element... */
-                let items = obj.Conditions.filter(x => x.Index == i);
-                html += getConditionRow(items);
-            } else {
-                /* ...otherwise let's add the condition between the previous group and the next one */
-                html += getConditionOperatorsRow(obj.Conditions[i]);
-            }
-        } catch (e) {
-            console.log(e);
-            isOk = false;
-            continueLoop = false;
-        }
-    }
-
-    if (isOk)
-        $(`#complexSearch${id}Info`).html(html);
-    else
-        showComplexSearchInfoError(id);
-}
-
-function getConditionRow(conditionGroupItems) {
-    let html = ``;
-
-    html += `<div class="row cell-fs-12">`;
-
-    /* 1) retrieve condition type */
-    let conditionType = conditionGroupItems[0].ConditionTypeDescription;
-
-    /* 1.1) if condition is of material type, then fix the name */
-    if (conditionGroupItems[0].ConditionType == CONDITION_TYPE_MATERIAL)
-        conditionType = conditionGroupItems[0].MaterialType;
-
-    /* 1.2) set condition type in html */
-    html += `<span class="text-secondary"><strong>${conditionType}</strong>:&nbsp;</span>`;
-
-    /* 2) set values in html */
-    let value = ``;
-    let itemsNum = conditionGroupItems.length;
-    for (var i = 0; i < itemsNum; i++) {
-        if (conditionGroupItems[i].ConditionOperatorType == CONDITION_OPERATOR_NONE)
-            value += `${conditionGroupItems[i].ValueText}`;
-        else
-            value += ` <i>${conditionGroupItems[i].ConditionOperatorType.toLowerCase()}</i> `;
-    }
-    html += `<span class="text-secondary">${value}</span>`;
-
-
-    html += `</div>`;
-
-    return html;
-}
-
-function getConditionOperatorsRow(condition) {
-    return `<span class="text-secondary"><strong>${condition.ConditionOperatorType.toLowerCase()}</strong></span>`;
-}
-
-function showComplexSearchInfoError(id) {
-    let html = '';
-    html += `<div class="remark alert">${SavedComplexSearchesInfoErrorMessage}</div>`;
-
-    $(`#complexSearch${id}Info`).html(html);
-}
-
-/* -------------------------------------------------------------------------------- */
-/* MANAGE currentSearchInfoId */
-/* -------------------------------------------------------------------------------- */
-function freeCurrentSearchInfoId() {
-    currentSearchInfoId = 0;
-}
-
-function setCurrentSearchInfoId(id) {
-    currentSearchInfoId = id;
 }

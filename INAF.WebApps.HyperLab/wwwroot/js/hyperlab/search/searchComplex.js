@@ -3,7 +3,6 @@ var conditionsIndex = 0;
 var complexSearchConditionsContainer;
 
 var currentlyUsedGroups = [];
-var complexSearchConditions = [];
 
 var areSavedComplexSearchesAvailable = false;
 
@@ -22,16 +21,17 @@ function setListviewSearchConditionsUI() {
 /* ################################################################################ */
 /* add a condition model */
 function addConditionModel(model) {
-    complexSearchConditions.push(model);
+    saveComplexSearchModel.Conditions.push(model);
+    setSaveComplexSearchModelSaved(false);
 }
 
 function isFirstConditionGroup(index) {
-    let items = complexSearchConditions.filter(x => x.Index < index);
+    let items = saveComplexSearchModel.Conditions.filter(x => x.Index < index);
     return (items.length == 0);
 }
 
 function isFirstConditionInGroup(conditionType, groupIndex) {
-    let groupItems = complexSearchConditions.filter(x => x.ConditionType == conditionType);
+    let groupItems = saveComplexSearchModel.Conditions.filter(x => x.ConditionType == conditionType);
 
     if (!groupItems)
         return false;
@@ -42,10 +42,10 @@ function isFirstConditionInGroup(conditionType, groupIndex) {
 
 /* try to remove a condition model, if found */
 function tryRemoveConditionModel(conditionType, groupIndex) {
-    let index = complexSearchConditions.findIndex(x => x.ConditionType == conditionType && x.GroupIndex == groupIndex);
+    let index = saveComplexSearchModel.Conditions.findIndex(x => x.ConditionType == conditionType && x.GroupIndex == groupIndex);
 
     if (index > -1)
-        complexSearchConditions.splice(index, 1);
+        saveComplexSearchModel.Conditions.splice(index, 1);
 }
 
 /* remove a condition UI element and, if required, the whole group it belongs to and the previous condition operators group */
@@ -84,7 +84,7 @@ function removeConditionsGroup(conditionType, id, index) {
 function removeConditionsGroupExecute(conditionType, id, index) {
     try {
         /* 1) remove all condition models */
-        let conditions = complexSearchConditions.filter(x => x.Index == index);
+        let conditions = saveComplexSearchModel.Conditions.filter(x => x.Index == index);
 
         let conditionsNum = conditions.length;
         for (var i = 0; i < conditionsNum; i++) {
@@ -131,20 +131,23 @@ function removeConditionOperatorsGroup(index) {
 
     /* ...and model */
     tryRemoveConditionOperatorsModelForGroup(index);
+
+    /* set model as changed */
+    setSaveComplexSearchModelSaved(false);
 }
 
 /* remove operator condition model when removing conditions group */
 function tryRemoveConditionOperatorsModelForGroup(index) {
-    let conditionIndex = complexSearchConditions.findIndex(x => x.Index == index && x.ConditionType == CONDITION_OPERATORS);
+    let conditionIndex = saveComplexSearchModel.Conditions.findIndex(x => x.Index == index && x.ConditionType == CONDITION_OPERATORS);
     if (conditionIndex > -1)
-        complexSearchConditions.splice(conditionIndex, 1);
+        saveComplexSearchModel.Conditions.splice(conditionIndex, 1);
 }
 
 /* remove operator condition model when removing condition within a group */
 function tryRemoveConditionOperatorsModelForItem(groupIndex, conditionType) {
-    let conditionIndex = complexSearchConditions.findIndex(x => x.GroupIndex == groupIndex && x.ConditionType == conditionType);
+    let conditionIndex = saveComplexSearchModel.Conditions.findIndex(x => x.GroupIndex == groupIndex && x.ConditionType == conditionType);
     if (conditionIndex > -1)
-        complexSearchConditions.splice(conditionIndex, 1);
+        saveComplexSearchModel.Conditions.splice(conditionIndex, 1);
 }
 
 /* ################################################################################ */
@@ -179,7 +182,7 @@ function getGroupIndex(key) {
     if (key == CONDITION_OPERATORS)
         return 0;
 
-    let items = complexSearchConditions.filter(x => x.ConditionType == key);
+    let items = saveComplexSearchModel.Conditions.filter(x => x.ConditionType == key);
     if (!items)
         return 0;
     else
@@ -190,7 +193,7 @@ function getStrictGroupIndex(key) {
     if (key == CONDITION_OPERATORS)
         return 0;
 
-    let items = complexSearchConditions.filter(x => x.ConditionType == key && x.ConditionOperatorType == CONDITION_OPERATOR_NONE);
+    let items = saveComplexSearchModel.Conditions.filter(x => x.ConditionType == key && x.ConditionOperatorType == CONDITION_OPERATOR_NONE);
     if (!items)
         return 0;
     else
@@ -198,7 +201,7 @@ function getStrictGroupIndex(key) {
 }
 
 function isAny(key) {
-    let items = complexSearchConditions.filter(x => x.ConditionType == key);
+    let items = saveComplexSearchModel.Conditions.filter(x => x.ConditionType == key);
     if (items.length == 0)
         return false;
     else
@@ -258,9 +261,9 @@ function addConditionsOperators(currentIndex = null) {
     let startid = `${searchTypeRadio}${_currentIndex}`;
     $(`[id^='${startid}']`).ready(function () {
         $(`[id^='${startid}']`).click(function () {
-            let index = complexSearchConditions.findIndex(x => x.Index == _currentIndex);
+            let index = saveComplexSearchModel.Conditions.findIndex(x => x.Index == _currentIndex);
             if (index > -1)
-                complexSearchConditions[index].ConditionOperatorType = $(this).attr('data-tag');
+                saveComplexSearchModel.Conditions[index].ConditionOperatorType = $(this).attr('data-tag');
         });
     });
 
@@ -275,9 +278,9 @@ function addRadioButtonAction(currentIndex, groupIndex) {
     let startid = `${searchTypeRadio}${currentIndex}`;
     $(`[id^='${startid}']`).ready(function () {
         $(`[id^='${startid}']`).click(function () {
-            let index = complexSearchConditions.findIndex(x => x.Index == currentIndex && x.GroupIndex == groupIndex);
+            let index = saveComplexSearchModel.Conditions.findIndex(x => x.Index == currentIndex && x.GroupIndex == groupIndex);
             if (index > -1)
-                complexSearchConditions[index].ConditionOperatorType = $(this).attr('data-tag');
+                saveComplexSearchModel.Conditions[index].ConditionOperatorType = $(this).attr('data-tag');
         });
     });
 }
@@ -309,9 +312,6 @@ function addConditionMaterial(liId, currentIndex = null, groupIndex = null) {
         return;
 
     let callback = function () {
-        /* try to add the top element for saving search */
-        tryAddSaveSearchElement();
-
         /* set this group currently used */
         addCurrentlyUsedGroup(CONDITION_TYPE_MATERIAL);
 
@@ -391,9 +391,9 @@ function getConditionMaterialItem(currentIndex = null, groupIndex = null) {
                 /* retrieve index/groupIndex from last 2 chars of id */
                 let retrievedIndex = parseInt(startid.charAt(startid.length - 2));
                 let retrievedGroupIndex = parseInt(startid.charAt(startid.length - 1));
-                let index = complexSearchConditions.findIndex(x => x.Index == retrievedIndex && x.GroupIndex == retrievedGroupIndex);
+                let index = saveComplexSearchModel.Conditions.findIndex(x => x.Index == retrievedIndex && x.GroupIndex == retrievedGroupIndex);
                 if (index > -1)
-                    complexSearchConditions[index].ConditionOperatorType = $(this).attr('data-tag');
+                    saveComplexSearchModel.Conditions[index].ConditionOperatorType = $(this).attr('data-tag');
             });
         });
 
@@ -562,9 +562,6 @@ function addConditionSampleName(liId, currentIndex = null, groupIndex = null) {
         return;
 
     let callback = function () {
-        /* try to add the top element for saving search */
-        tryAddSaveSearchElement();
-
         /* set this group currently used */
         addCurrentlyUsedGroup(CONDITION_TYPE_SAMPLE_NAME);
 
@@ -595,8 +592,6 @@ function addConditionSampleName(liId, currentIndex = null, groupIndex = null) {
 
         /* append html to create group */
         $(complexSearchConditionsContainer).append(html);
-
-
 
         /* disable caller button and set title 'group already in use' */
         setGroupButtonInUse(liId);
@@ -704,9 +699,9 @@ function updateSampleNameModel(id, currentIndex, groupIndex) {
         setInputFieldErrorState(id, true);
 
     /* update condition model with text */
-    let index = complexSearchConditions.findIndex(x => x.Index == currentIndex && x.GroupIndex == groupIndex);
+    let index = saveComplexSearchModel.Conditions.findIndex(x => x.Index == currentIndex && x.GroupIndex == groupIndex);
     if (index > -1)
-        complexSearchConditions[index].ValueText = text;
+        saveComplexSearchModel.Conditions[index].ValueText = text;
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -725,9 +720,6 @@ function addConditionSelectItem(liId, conditionType, itemsArray, itemsArrayName,
         return;
 
     let callback = function () {
-        /* try to add the top element for saving search */
-        tryAddSaveSearchElement();
-
         /* set this group currently used */
         addCurrentlyUsedGroup(conditionType);
 
@@ -832,6 +824,10 @@ function getSelectItem(arrayItems, currentIndex, groupIndex, selectType, conditi
         $(`#${selectid}`).ready(function () {
             var select = Metro.getPlugin(`#${selectid}`, 'select');
             select.val(_itemValue);
+
+            $(`#${selectid}`).on('change', function () {
+
+            });
         });
     } else {
         addConditionModel(getConditionOperatorModel(currentIndex, _groupIndex, conditionType, CONDITION_OPERATOR_OR, 0));
@@ -924,16 +920,17 @@ function animateSelectItem(conditionType, currentIndex) {
     });
 }
 
-function updateConditionModel(index, value) {
-    complexSearchConditions[index].ValueId = value;
+function updateConditionModel(index, valueId, valueText) {
+    saveComplexSearchModel.Conditions[index].ValueId = valueId;
+    saveComplexSearchModel.Conditions[index].ValueText = valueText;
 }
 
 function updateConditionModelForMaterial(valueId, valueText, currentIndex, groupIndex, materialType) {
-    let index = complexSearchConditions.findIndex(x => x.Index == currentIndex && x.GroupIndex == groupIndex);
+    let index = saveComplexSearchModel.Conditions.findIndex(x => x.Index == currentIndex && x.GroupIndex == groupIndex);
     if (index > -1) {
-        complexSearchConditions[index].ValueId = valueId;
-        complexSearchConditions[index].ValueText = valueText;
-        complexSearchConditions[index].MaterialType = materialType
+        saveComplexSearchModel.Conditions[index].ValueId = valueId;
+        saveComplexSearchModel.Conditions[index].ValueText = valueText;
+        saveComplexSearchModel.Conditions[index].MaterialType = materialType
     }
 }
 
@@ -943,20 +940,24 @@ function updateConditionModelForSelectItem(id, currentIndex, groupIndex) {
         return;
     //console.log(`${id} val: ${plugin.val()}`);
 
-    let index = complexSearchConditions.findIndex(x => x.Index == currentIndex && x.GroupIndex == groupIndex);
+    let index = saveComplexSearchModel.Conditions.findIndex(x => x.Index == currentIndex && x.GroupIndex == groupIndex);
     if (index > -1) {
-        updateConditionModel(index, parseInt(plugin.val()));
+        let valueId = parseInt(plugin.val());
+        let valueText = '';
+        switch (saveComplexSearchModel.Conditions[index].ConditionType) {
+            case CONDITION_TYPE_MINERAL_TYPE:
+                valueText = mineralTypes[valueId];
+                break;
+            case CONDITION_TYPE_ORIGIN_TYPE:
+                valueText = originTypes[valueId];
+                break;
+            case CONDITION_TYPE_SAMPLE_TYPE:
+                valueText = sampleTypes[valueId];
+                break;
+        }
+
+        updateConditionModel(index, valueId, valueText);
     }
-}
-
-function updateConditionModelId(currentIndex, groupIndex, id) {
-    let index = complexSearchConditions.findIndex(x => x.Index == currentIndex && x.GroupIndex == groupIndex);
-    if (index > -1)
-        complexSearchConditions[index].Id = id;
-}
-
-function updateConditionOperatorModel(index, value) {
-    complexSearchConditions[index].ConditionOperatorType = value;
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -980,7 +981,7 @@ function getChildren() {
 }
 
 function getCurrentIndex(conditionType) {
-    let items = complexSearchConditions.filter(x => x.ConditionType == conditionType);
+    let items = saveComplexSearchModel.Conditions.filter(x => x.ConditionType == conditionType);
     if (items && items.length > 0)
         return items[0].Index;
     else
@@ -1069,7 +1070,7 @@ function isConditionsOperatorsItemRequired() {
 }
 
 function isSameGroupAlreadyPresent(conditionType) {
-    let items = complexSearchConditions.filter(x => x.ConditionType == conditionType);
+    let items = saveComplexSearchModel.Conditions.filter(x => x.ConditionType == conditionType);
 
     if (items && items.length > 0)
         return true;
@@ -1147,21 +1148,21 @@ function showRemoveButton(currentIndex, groupIndex) {
 /* RETRIEVE VALUES FROM COMPLEX_SEARCH_CONDITIONS */
 /* -------------------------------------------------------------------------------- */
 function tryGetComplexSearchConditionsItem(index, groupIndex, conditionType) {
-    let _index = complexSearchConditions.findIndex(x => x.ConditionType == conditionType && x.Index == index && x.GroupIndex == groupIndex);
+    let _index = saveComplexSearchModel.Conditions.findIndex(x => x.ConditionType == conditionType && x.Index == index && x.GroupIndex == groupIndex);
 
     if (_index == -1)
         return null;
 
-    return complexSearchConditions[_index];
+    return saveComplexSearchModel.Conditions[_index];
 }
 
 function tryGetConditionOperatorsItem(index) {
-    let _index = complexSearchConditions.findIndex(x => x.Index == index);
+    let _index = saveComplexSearchModel.Conditions.findIndex(x => x.Index == index);
 
     if (_index == -1)
         return null;
 
-    return complexSearchConditions[_index];
+    return saveComplexSearchModel.Conditions[_index];
 }
 
 function tryGetValueText(index, groupIndex, conditionType) {
@@ -1220,6 +1221,9 @@ function buildComplexSearch(obj) {
 
     /* find max-value for Index */
     let indexMax = Math.max(...obj.Conditions.map(o => o.Index));
+
+    /* try to add the top element for saving search */
+    addComplexSearchTopBar(obj.Id);
 
     /* loop on groups */
     for (var i = 0; i <= indexMax; i++) {
@@ -1282,111 +1286,21 @@ function buildComplexSearch(obj) {
     if (isOk) {
         let name = obj.Name;
         setTimeout(() => { setSearchName(name); }, DEFAULT_WAIT_ms);
-        //setTimeout(() => { search(); }, 2 * DEFAULT_WAIT_ms);
+        setTimeout(() => { setSaveComplexSearchModelSaved(true); }, 2 * DEFAULT_WAIT_ms);
     }
 
     return isOk;
 }
 
-//function buildAndRunComplexSearch(obj) {
-//    //console.log(obj);
-//    let isOk = true;
-
-//    /* save id of currently shown complex search */
-//    saveComplexSearchModel.Id = obj.Id;
-
-//    /* find max-value for Index */
-//    let indexMax = Math.max(...obj.Conditions.map(o => o.Index));
-
-//    /* loop on groups */
-//    for (var i = 0; i <= indexMax; i++) {
-//        try {
-//            /* 1) build in-memory models */
-//            let items = obj.Conditions.filter(x => x.Index == i);
-//            items.forEach(x => {
-//                addConditionModel(buildConditionModel(x.Id, x.Index, x.ConditionType, x.MaterialType, x.ValueId, x.ValueText, x.ConditionOperatorType));
-//            });
-
-//            /* 2) build UI items */
-//            items.forEach(x => {
-//                if (x.ConditionOperatorType == CONDITION_OPERATOR_NONE) {
-//                    //console.log(`${x.ConditionType}, index: ${x.Index}, groupIndex: ${x.GroupIndex}`);
-//                    switch (x.ConditionType) {
-//                        case CONDITION_TYPE_MATERIAL:
-//                            if (x.GroupIndex == 0)
-//                                addConditionMaterial(x.ConditionType, x.Index, x.GroupIndex);
-//                            else
-//                                setTimeout(() => { addConditionMaterialItem(x.Index, x.GroupIndex); }, DEFAULT_WAIT_ms);
-//                            break;
-
-//                        case CONDITION_TYPE_MINERAL_TYPE:
-//                            if (x.GroupIndex == 0)
-//                                addConditionSelectItem(x.ConditionType, x.ConditionType, mineralTypes, 'mineralTypes', selectMineralType, 'selectSampleDataType', SearchComplexConditionsOnMineralTypeLabel, x.Index, x.GroupIndex);
-//                            else
-//                                setTimeout(() => { addConditionSelectItemOtherItems(x.ConditionType, mineralTypes, selectMineralType, x.Index, x.GroupIndex); }, DEFAULT_WAIT_ms);
-//                            break;
-
-//                        case CONDITION_TYPE_ORIGIN_TYPE:
-//                            if (x.GroupIndex == 0)
-//                                addConditionSelectItem(x.ConditionType, x.ConditionType, originTypes, 'originTypes', selectOriginType, 'selectSampleDataType', SearchComplexConditionsOnOriginTypeLabel, x.Index, x.GroupIndex);
-//                            else
-//                                setTimeout(() => { addConditionSelectItemOtherItems(x.ConditionType, originTypes, selectOriginType, x.Index, x.GroupIndex); }, DEFAULT_WAIT_ms);
-//                            break;
-
-//                        case CONDITION_TYPE_SAMPLE_NAME:
-//                            if (x.GroupIndex == 0)
-//                                addConditionSampleName(x.ConditionType, x.Index, x.GroupIndex);
-//                            else
-//                                setTimeout(() => { addConditionSampleNameItem(x.Index, x.GroupIndex); }, DEFAULT_WAIT_ms);
-//                            break;
-
-//                        case CONDITION_TYPE_SAMPLE_TYPE:
-//                            if (x.GroupIndex == 0)
-//                                addConditionSelectItem(x.ConditionType, x.ConditionType, sampleTypes, 'sampleTypes', selectSampleDataType, 'selectSampleDataType', SearchComplexConditionsOnSampleDataTypeLabel, x.Index, x.GroupIndex);
-//                            else
-//                                setTimeout(() => { addConditionSelectItemOtherItems(x.ConditionType, sampleTypes, selectSampleDataType, x.Index, x.GroupIndex); }, DEFAULT_WAIT_ms);
-//                            break;
-//                    }
-//                }
-//            });
-//        } catch (e) {
-//            console.log(e);
-//            isOk = false;
-//            continueLoop = false;
-//        }
-//    }
-
-//    if (isOk) {
-//        let name = obj.Name;
-//        setTimeout(() => { setSearchName(name); }, DEFAULT_WAIT_ms);
-//        setTimeout(() => { search(); }, 2 * DEFAULT_WAIT_ms);
-//    }
-
-//    if (!isOk) {
-//        showSimpleDialog(ERROR_LABEL, SavedComplexSearchInfoShowErrorMessage, ALERT);
-//    }
-//}
-
 /* ################################################################################ */
 /* SEARCH */
 /* ################################################################################ */
-async function executeComplexSearch() {
-    let children = getChildren();
-    if (children.length == 0) {
-        showSimpleDialog(WARNING_LABEL, SearchComplexNoConditionsWarningMessage, WARNING);
-        return;
-    }
-
-    if (!validateFields()) {
-        showSimpleDialog(WARNING_LABEL, SearchComplexValidationErrorsMessage, WARNING);
-        return;
-    }
-
+async function executeComplexSearchAsync() {
     let model = {
         Id: saveComplexSearchModel.Id
     };
 
-    loadPartialViewWithAjaxPost(UrlSearchComplex, model, 'searchResultsContainer');
+    loadPartialViewWithAjaxGet(UrlSearchComplex, model, 'searchResultsContainer');
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -1487,7 +1401,7 @@ function validateSampleNameTextFields() {
     };
 
     /* check whether empty text fields are present or not */
-    let items = complexSearchConditions.filter(x => x.ConditionType == CONDITION_TYPE_SAMPLE_NAME && x.ConditionOperatorType == CONDITION_OPERATOR_NONE && x.ValueText == '');
+    let items = saveComplexSearchModel.Conditions.filter(x => x.ConditionType == CONDITION_TYPE_SAMPLE_NAME && x.ConditionOperatorType == CONDITION_OPERATOR_NONE && x.ValueText == '');
     if (items.length == 0)
         return result;
 
