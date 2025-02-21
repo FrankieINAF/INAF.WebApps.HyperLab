@@ -171,6 +171,9 @@
   <data name="ComplexSearchBackToListLabel" xml:space="preserve">
     <value>Back to list</value>
   </data>
+  <data name="ComplexSearchBackToListUnsavedChangesQuestion" xml:space="preserve">
+    <value>Some unsaved changes in search are present, do you want to continue and discard them?</value>
+  </data>
   <data name="ComplexSearchListOfConditions" xml:space="preserve">
     <value>List of available conditions</value>
   </data>

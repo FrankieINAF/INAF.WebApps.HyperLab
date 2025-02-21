@@ -14,23 +14,6 @@ namespace INAF.WebApps.HyperLab.Controllers
     {
         #region SEARCH COMPLEX
         [HttpGet]
-        public IActionResult ExecuteSearchComplex(GenericRequestByIdModel model)
-        {
-            ComplexSearchSavingModel? complexSearchModel = dbHandlerHyperLabData.getSavedComplexSearch(model.Id,
-                                                                                                       getUserId());
-            if (complexSearchModel == null || complexSearchModel.Conditions == null || !complexSearchModel.Conditions.Any())
-                return new EmptyResult();
-
-            List<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(complexSearchModel.Conditions,
-                                                                                                 getUserId());
-            if (spectraFilesInfo == null || !spectraFilesInfo.Any())
-                return new EmptyResult();
-
-            return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult SearchComplex(GenericRequestByIdModel model)
         {
             ComplexSearchSavingModel? complexSearchModel = dbHandlerHyperLabData.getSavedComplexSearch(model.Id,
@@ -40,10 +23,17 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             List<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(complexSearchModel.Conditions,
                                                                                                  getUserId());
-            if (spectraFilesInfo == null || !spectraFilesInfo.Any())
-                return new EmptyResult();
 
-            return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
+            switch (getCallerContext())
+            {
+                case Enums.CallerContext.Web:
+                    return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
+
+                case Enums.CallerContext.App:
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
+            }
+
+            return new EmptyResult();
         }
         #endregion
 

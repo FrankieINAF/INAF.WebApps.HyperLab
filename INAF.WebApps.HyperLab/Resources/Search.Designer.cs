@@ -223,6 +223,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Some unsaved changes in search are present, do you want to continue and discard them?.
+        /// </summary>
+        public static string ComplexSearchBackToListUnsavedChangesQuestion {
+            get {
+                return ResourceManager.GetString("ComplexSearchBackToListUnsavedChangesQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List of available conditions.
         /// </summary>
         public static string ComplexSearchListOfConditions {
