@@ -49,208 +49,245 @@
 <!-- SEARCH -->
 <div id="search" class="container h-100 overflow-x-auto overflow-y-hidden">
     @Html.AntiForgeryToken()
-    <!-- SEARCH -->
+
+    <!-- SEARCH/LOAD -->
     <div data-role="panel"
-         id="panelSearch"
-         data-title-caption="<strong>@Search.SearchPanelTitle</strong>"
+         id="panelSearchLoad"
+         data-title-caption="<strong>@Search.SearchLoadPanelTitle</strong>"
          data-collapsed="false"
          data-collapsible="true"
          data-cls-panel="overflow-y-hidden">
-        <!-- SEARCH TYPE (SIMPLE/COMPLEX) -->
-        <div class="row">
-            <div class="cell-fs-6">
-                <!-- SIMPLE -->
-                <input type="radio"
-                       name="searchTypeRadio"
-                       id="searchTypeRadioSimple"
-                       data-role="radio"
-                       data-style="2"
-                       data-caption="@Search.SearchTypeSimpleLabel"
-                       data-caption-position="left"
-                       data-cls-check="bd-cyan"
-                       class="d-flex flex-justify-right"
-                       checked>
+        <div id="panels">
+            <!-- TABS -->
+            <div id="charmsTabsContainer" class="row cell-fs-12">
+                <ul id="searchTabs"
+                    data-app-bar="false"
+                    data-role="tabs"
+                    data-expand="true"
+                    data-expand-point="fs"
+                    data-cls-tabs="tabs-list flex-justify-center">
+                    <li><a id="searchtitle" href="#panelSearch">@Html.Raw(Search.TabSearchTitle)</a></li>
+                    <li><a id="loadtitle" href="#panelLoad">@Html.Raw(Search.TabLoadTitle)</a></li>
+                </ul>
             </div>
-            <!-- COMPLEX -->
-            <div class="cell-fs-6">
-                <input type="radio"
-                       name="searchTypeRadio"
-                       id="searchTypeRadioComplex"
-                       data-role="radio"
-                       data-style="2"
-                       data-caption="@Search.SearchTypeComplexLabel"
-                       data-caption-position="right"
-                       data-cls-check="bd-cyan">
-            </div>
-        </div>
-
-        <!-- PANEL SEARCH SIMPLE -->
-        <div id="panelSearchSimple" class="h-vh-100-fs h-vh-50-sm">
-            <div class="row">
-                <!-- SAMPLE NAME -->
-                <div class="cell-fs-12 cell-sm-3">
-                    <label id="selectSampleNameSearchTypeLabel" for="selectSampleName" class="text-secondary">@Html.Raw(Search.SearchSimpleBySampleNameLabel)</label>
-                    @Html.TextBoxFor(model => model.SampleName, new Dictionary<string, object> {
-                    { "id", @selectSampleName },
-                    { "placeholder", @Html.Raw(Search.SearchBySampleNamePlaceholder) },
-                    { "data-role", "input" },
-                    { "onfocus", $"setCurrentSearchSimpleType('{@selectSampleName}')" },
-                    })
+            <!-- SEARCH -->
+            <div id="panelSearch">
+                <!-- SEARCH TYPE (SIMPLE/COMPLEX) -->
+                <div class="row">
+                    <div class="cell-fs-6">
+                        <!-- SIMPLE -->
+                        <input type="radio"
+                               name="searchTypeRadio"
+                               id="searchTypeRadioSimple"
+                               data-role="radio"
+                               data-style="2"
+                               data-caption="@Search.SearchTypeSimpleLabel"
+                               data-caption-position="left"
+                               data-cls-check="bd-cyan"
+                               class="d-flex flex-justify-right"
+                               checked>
+                    </div>
+                    <!-- COMPLEX -->
+                    <div class="cell-fs-6">
+                        <input type="radio"
+                               name="searchTypeRadio"
+                               id="searchTypeRadioComplex"
+                               data-role="radio"
+                               data-style="2"
+                               data-caption="@Search.SearchTypeComplexLabel"
+                               data-caption-position="right"
+                               data-cls-check="bd-cyan">
+                    </div>
                 </div>
-                <!-- MATERIALS -->
-                <div class="cell-fs-12 cell-sm-6 cell-lg-4">
-                    <label id="selectMaterialSearchTypeLabel" for="selectMaterialInput" class="text-secondary">@Html.Raw(Search.SearchSimpleByMaterialLabel)</label>
-                    <div class="d-flex flex-content-start">
-                        <input id="@{
-                                                @selectMaterial
+
+                <div class="row cell-fs-12">
+                    <!-- PANEL SEARCH SIMPLE -->
+                    <div id="panelSearchSimple" class="h-vh-100-fs h-vh-25-sm">
+                        <div class="row">
+                            <!-- SAMPLE NAME -->
+                            <div class="cell-fs-12 cell-sm-3">
+                                <label id="selectSampleNameSearchTypeLabel" for="selectSampleName" class="text-secondary">@Html.Raw(Search.SearchSimpleBySampleNameLabel)</label>
+                                @Html.TextBoxFor(model => model.SampleName, new Dictionary<string, object> {
+                                { "id", @selectSampleName },
+                                { "placeholder", @Html.Raw(Search.SearchBySampleNamePlaceholder) },
+                                { "data-role", "input" },
+                                { "onfocus", $"setCurrentSearchSimpleType('{@selectSampleName}')" },
+                                })
+                            </div>
+                            <!-- MATERIALS -->
+                            <div class="cell-fs-12 cell-sm-6 cell-lg-4">
+                                <label id="selectMaterialSearchTypeLabel" for="selectMaterialInput" class="text-secondary">@Html.Raw(Search.SearchSimpleByMaterialLabel)</label>
+                                <div class="d-flex flex-content-start">
+                                    <input id="@{
+                                                                @selectMaterial
 }Input"
-                               type="text"
-                               placeholder="@Html.Raw(Search.SearchByMaterialPlaceholder)"
-                               data-role="input"
-                               data-search-button="true"
-                               onfocus="setCurrentSearchSimpleType('@selectMaterial')"
-                               data-search-button-click="custom"
-                               data-on-search-button-click="getMaterialsSuggestions('@{
+                                           type="text"
+                                           placeholder="@Html.Raw(Search.SearchByMaterialPlaceholder)"
+                                           data-role="input"
+                                           data-search-button="true"
+                                           onfocus="setCurrentSearchSimpleType('@selectMaterial')"
+                                           data-search-button-click="custom"
+                                           data-on-search-button-click="getMaterialsSuggestions('@{
 
-                            @selectMaterial
-                            ;
-                        }Input','@selectMaterial')" />
-                        <select id="@selectMaterial" data-role="select" data-cls-select="overlap" data-on-change="setCurrentSearchSimpleType('@selectMaterial')" data-on-drop="setCurrentSearchSimpleType('@selectMaterial')"></select>
-                        <button class="button dark cycle small outline margin-top-4 margin-left-8"
-                                onclick="resetSearchByMaterial('@{
+                                        @selectMaterial
+                                        ;
+                                    }Input','@selectMaterial')" />
+                                    <select id="@selectMaterial" data-role="select" data-cls-select="overlap" data-on-change="setCurrentSearchSimpleType('@selectMaterial')" data-on-drop="setCurrentSearchSimpleType('@selectMaterial')"></select>
+                                    <button class="button dark cycle small outline margin-top-4 margin-left-8"
+                                            onclick="resetSearchByMaterial('@{
 
-                                                @selectMaterial
+                                                                @selectMaterial
 ;
 }Input')"
-                                title="@Html.Raw(Search.SearchClearSuggestionsButtonTitle)">
-                            <span class="mif-cross-light"></span>
-                        </button>
-                    </div>
-                </div>
-                <!-- EMPTY -->
-                <div class="d-none-fs cell-lg-8">&nbsp;</div>
-            </div>
-            <div class="row">
-                <!-- SAMPLE DATA TYPES -->
-                <div class="cell-fs-12 cell-sm-3">
-                    <label id="selectSampleDataTypeSearchTypeLabel" for="selectSampleDataType" class="text-secondary">@Html.Raw(Search.SearchSimpleBySampleDataTypeLabel)</label>
-                    @Html.DropDownListFor(model => model.SampleDataValueId, new SelectList(Model.SampleDataValues, nameof(SampleTypeModel.Id), nameof(SampleTypeModel.Value), Model.SampleDataValueId),
-                             new Dictionary<string, object> {
-                    { "id", @selectSampleDataType },
-                    { "data-role", "select" },
-                    { "data-on-change", $"setCurrentSearchSimpleType('{@selectSampleDataType}')" },
-                    { "data-on-drop", $"setCurrentSearchSimpleType('{@selectSampleDataType}')" },
-                    })
-                </div>
-
-                <!-- SAMPLE ORIGIN TYPES -->
-                <div class="cell-fs-12 cell-sm-3">
-                    <label id="selectOriginTypeSearchTypeLabel" for="selectOriginType" class="text-secondary">@Html.Raw(Search.SearchSimpleByOriginTypeLabel)</label>
-                    @Html.DropDownListFor(model => model.OriginTypeValueId, new SelectList(Model.OriginTypeValues, nameof(OriginTypeModel.Id), nameof(OriginTypeModel.Value), Model.OriginTypeValueId),
-                             new Dictionary<string, object> {
-                    { "id", @selectOriginType },
-                    { "data-role", "select" },
-                    { "data-on-change", $"setCurrentSearchSimpleType('{@selectOriginType}')" },
-                    { "data-on-drop", $"setCurrentSearchSimpleType('{@selectOriginType}')" },
-                    })
-                </div>
-
-                <!-- SAMPLE MINERAL TYPES -->
-                <div class="cell-fs-12 cell-sm-3">
-                    <label id="selectMineralTypeSearchTypeLabel" for="selectMineralType" class="text-secondary">@Html.Raw(Search.SearchSimpleByMineralTypeLabel)</label>
-                    @Html.DropDownListFor(model => model.MineralTypeValues, new SelectList(Model.MineralTypeValues, nameof(OriginTypeModel.Id), nameof(OriginTypeModel.Value), Model.MineralTypeValueId),
-                             new Dictionary<string, object> {
-                    { "id", @selectMineralType },
-                    { "data-role", "select" },
-                    { "data-on-change", $"setCurrentSearchSimpleType('{@selectMineralType}')" },
-                    { "data-on-drop", $"setCurrentSearchSimpleType('{@selectMineralType}')" },
-                    })
-                </div>
-            </div>
-        </div>
-
-        <!-- PANEL SEARCH COMPLEX -->
-        <div id="panelSearchComplex" class="d-none">
-            <!-- LABELS -->
-            <div class="row">
-                <div class="cell-fs-12">
-                    <span class="text-secondary"><strong>@Html.Raw(Search.ComplexSearchListOfConditions)</strong></span>
-                </div>
-            </div>
-            <!-- BUTTONS LIST + CONDITIONS CONTAINER -->
-            <div class="row">
-                <!-- BUTTONS LIST -->
-                <div class="cell-fs-12 cell-md-3 cell-lg-2">
-                    <ul id="listviewSearchConditions"
-                        data-role="listview"
-                        data-view="list">
-                        <li id="@ConditionSampleName"
-                            data-icon="<span class='mif-comment mif-fs'>"
-                            data-caption="@Html.Raw(Search.SearchComplexBySampleNameLabel)"
-                            class="complex-search-button"
-                            onclick="addConditionSampleName('@ConditionSampleName')"></li>
-                        <li id="@ConditionMaterial"
-                            data-icon="<span class='mif-fingerprint'>"
-                            data-caption="@Html.Raw(Search.SearchComplexByMaterialLabel)"
-                            class="complex-search-button"
-                            onclick="addConditionMaterial('@ConditionMaterial')"></li>
-                        <li id="@ConditionSampleType"
-                            data-icon="<span class='mif-list'>"
-                            data-caption="@Html.Raw(Search.SearchComplexBySampleDataTypeLabel)"
-                            class="complex-search-button"
-                            onclick="addConditionSampleType('@ConditionSampleType')"></li>
-                        <li id="@ConditionOriginType"
-                            data-icon="<span class='mif-earth'>"
-                            data-caption="@Html.Raw(Search.SearchComplexByOriginTypeLabel)"
-                            class="complex-search-button"
-                            onclick="addConditionOriginType('@ConditionOriginType')"></li>
-                        <li id="@ConditionMineralType"
-                            data-icon="<span class='mif-lab'>"
-                            data-caption="@Html.Raw(Search.SearchComplexByMineralTypeLabel)"
-                            onclick="addConditionMineralType('@ConditionMineralType')"
-                            class="complex-search-button"></li>
-                    </ul>
-                </div>
-                <!-- SAVED SEARCHES INFO + SAVED SEARCHES LIST + CONDITIONS + EXPLANATION -->
-                <div id="complexSearchContainer" class="cell-fs-12 cell-md-9 cell-lg-10 border-left">
-                    <!-- SAVED SEARCHES INFO -->
-                    <div id="retrievedComplexSearchesInfo" class="remark info margin-horizontal-8">
-                        <p class="text-leader2">
-                            @Html.Raw(Search.RetrievedComplexSearchesNoItemsTitle)
-                        </p>
+                                            title="@Html.Raw(Search.SearchClearSuggestionsButtonTitle)">
+                                        <span class="mif-cross-light"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- EMPTY -->
+                            <div class="d-none-fs cell-lg-8">&nbsp;</div>
+                        </div>
                         <div class="row">
-                            <!-- image -->
-                            <div class="cell-fs-4 cell-md-2">
-                                <img src="~/images/search/list.png" height="128" />
+                            <!-- SAMPLE DATA TYPES -->
+                            <div class="cell-fs-12 cell-sm-3">
+                                <label id="selectSampleDataTypeSearchTypeLabel" for="selectSampleDataType" class="text-secondary">@Html.Raw(Search.SearchSimpleBySampleDataTypeLabel)</label>
+                                @Html.DropDownListFor(model => model.SampleDataValueId, new SelectList(Model.SampleDataValues, nameof(SampleTypeModel.Id), nameof(SampleTypeModel.Value), Model.SampleDataValueId),
+                                         new Dictionary<string, object> {
+                                { "id", @selectSampleDataType },
+                                { "data-role", "select" },
+                                { "data-on-change", $"setCurrentSearchSimpleType('{@selectSampleDataType}')" },
+                                { "data-on-drop", $"setCurrentSearchSimpleType('{@selectSampleDataType}')" },
+                                })
                             </div>
-                            <!-- text -->
-                            <div class="cell-fs-8 cell-md-10">
-                                <p class="text-secondary margin-top-8">
-                                    @Html.Raw(Search.RetrievedComplexSearchesNoItemsMessage1)
-                                </p>
-                                <p class="text-secondary margin-top-8">
-                                    @Html.Raw(Search.RetrievedComplexSearchesNoItemsMessage2)
-                                </p>
-                                <p class="text-secondary margin-top-8">
-                                    @Html.Raw(Search.RetrievedComplexSearchesNoItemsMessage3)
-                                </p>
-                                <p class="text-secondary margin-top-8">
-                                    @Html.Raw(Search.RetrievedComplexSearchesNoItemsMessage4)
-                                </p>
+
+                            <!-- SAMPLE ORIGIN TYPES -->
+                            <div class="cell-fs-12 cell-sm-3">
+                                <label id="selectOriginTypeSearchTypeLabel" for="selectOriginType" class="text-secondary">@Html.Raw(Search.SearchSimpleByOriginTypeLabel)</label>
+                                @Html.DropDownListFor(model => model.OriginTypeValueId, new SelectList(Model.OriginTypeValues, nameof(OriginTypeModel.Id), nameof(OriginTypeModel.Value), Model.OriginTypeValueId),
+                                         new Dictionary<string, object> {
+                                { "id", @selectOriginType },
+                                { "data-role", "select" },
+                                { "data-on-change", $"setCurrentSearchSimpleType('{@selectOriginType}')" },
+                                { "data-on-drop", $"setCurrentSearchSimpleType('{@selectOriginType}')" },
+                                })
+                            </div>
+
+                            <!-- SAMPLE MINERAL TYPES -->
+                            <div class="cell-fs-12 cell-sm-3">
+                                <label id="selectMineralTypeSearchTypeLabel" for="selectMineralType" class="text-secondary">@Html.Raw(Search.SearchSimpleByMineralTypeLabel)</label>
+                                @Html.DropDownListFor(model => model.MineralTypeValues, new SelectList(Model.MineralTypeValues, nameof(OriginTypeModel.Id), nameof(OriginTypeModel.Value), Model.MineralTypeValueId),
+                                         new Dictionary<string, object> {
+                                { "id", @selectMineralType },
+                                { "data-role", "select" },
+                                { "data-on-change", $"setCurrentSearchSimpleType('{@selectMineralType}')" },
+                                { "data-on-drop", $"setCurrentSearchSimpleType('{@selectMineralType}')" },
+                                })
                             </div>
                         </div>
                     </div>
-                    <!-- SAVED SEARCHES LIST -->
-                    <div id="retrievedComplexSearchesListContainer" class="margin-horizontal-8">
-                        <div class="row cell-fs-12 d-flex flex-justify-center">
-                            <span id="retrievedComplexSearchesListTitle" class="h6 d-none">@Html.Raw(Search.RetrievedComplexSearchesTitle)</span>
+
+                    <!-- PANEL SEARCH COMPLEX -->
+                    <div id="panelSearchComplex" class="h-vh-100-fs h-vh-50-sm d-none overflow-x-hidden overflow-y-auto">
+                        <!-- LABELS -->
+                        <div class="row">
+                            <div class="cell-fs-12">
+                                <span class="text-secondary"><strong>@Html.Raw(Search.ComplexSearchListOfConditions)</strong></span>
+                            </div>
                         </div>
-                        <div id="retrievedComplexSearchesList" class="row cell-fs-12"></div>
+                        <!-- BUTTONS LIST + CONDITIONS CONTAINER -->
+                        <div class="row">
+                            <!-- BUTTONS LIST -->
+                            <div class="cell-fs-12 cell-md-3 cell-lg-2">
+                                <ul id="listviewSearchConditions"
+                                    data-role="listview"
+                                    data-view="list">
+                                    <li id="@ConditionSampleName"
+                                        data-icon="<span class='mif-comment mif-fs'>"
+                                        data-caption="@Html.Raw(Search.SearchComplexBySampleNameLabel)"
+                                        class="complex-search-button"
+                                        onclick="addConditionSampleName('@ConditionSampleName')"></li>
+                                    <li id="@ConditionMaterial"
+                                        data-icon="<span class='mif-fingerprint'>"
+                                        data-caption="@Html.Raw(Search.SearchComplexByMaterialLabel)"
+                                        class="complex-search-button"
+                                        onclick="addConditionMaterial('@ConditionMaterial')"></li>
+                                    <li id="@ConditionSampleType"
+                                        data-icon="<span class='mif-list'>"
+                                        data-caption="@Html.Raw(Search.SearchComplexBySampleDataTypeLabel)"
+                                        class="complex-search-button"
+                                        onclick="addConditionSampleType('@ConditionSampleType')"></li>
+                                    <li id="@ConditionOriginType"
+                                        data-icon="<span class='mif-earth'>"
+                                        data-caption="@Html.Raw(Search.SearchComplexByOriginTypeLabel)"
+                                        class="complex-search-button"
+                                        onclick="addConditionOriginType('@ConditionOriginType')"></li>
+                                    <li id="@ConditionMineralType"
+                                        data-icon="<span class='mif-lab'>"
+                                        data-caption="@Html.Raw(Search.SearchComplexByMineralTypeLabel)"
+                                        onclick="addConditionMineralType('@ConditionMineralType')"
+                                        class="complex-search-button"></li>
+                                </ul>
+                            </div>
+                            <!-- SAVED SEARCHES INFO + SAVED SEARCHES LIST + CONDITIONS + EXPLANATION -->
+                            <div id="complexSearchContainer" class="cell-fs-12 cell-md-9 cell-lg-10 border-left">
+                                <!-- SAVED SEARCHES INFO -->
+                                <div id="retrievedComplexSearchesInfo" class="remark info margin-horizontal-8">
+                                    <p class="text-leader2">
+                                        @Html.Raw(Search.RetrievedComplexSearchesNoItemsTitle)
+                                    </p>
+                                    <div class="row">
+                                        <!-- image -->
+                                        <div class="cell-fs-4 cell-md-2">
+                                            <img src="~/images/search/list.png" height="128" />
+                                        </div>
+                                        <!-- text -->
+                                        <div class="cell-fs-8 cell-md-10">
+                                            <p class="text-secondary margin-top-8">
+                                                @Html.Raw(Search.RetrievedComplexSearchesNoItemsMessage1)
+                                            </p>
+                                            <p class="text-secondary margin-top-8">
+                                                @Html.Raw(Search.RetrievedComplexSearchesNoItemsMessage2)
+                                            </p>
+                                            <p class="text-secondary margin-top-8">
+                                                @Html.Raw(Search.RetrievedComplexSearchesNoItemsMessage3)
+                                            </p>
+                                            <p class="text-secondary margin-top-8">
+                                                @Html.Raw(Search.RetrievedComplexSearchesNoItemsMessage4)
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- SAVED SEARCHES LIST -->
+                                <div id="retrievedComplexSearchesListContainer" class="margin-horizontal-8">
+                                    <div class="row cell-fs-12 d-flex flex-justify-center">
+                                        <span id="retrievedComplexSearchesListTitle" class="h6 d-none">@Html.Raw(Search.RetrievedComplexSearchesTitle)</span>
+                                    </div>
+                                    <div id="retrievedComplexSearchesList" class="row cell-fs-12"></div>
+                                </div>
+                                <!-- TOP BAR -->
+                                <div id="complexSearchTopBar" class="row cell-fs-12"></div>
+                                <!-- CONDITIONS -->
+                                <div id="complexSearchConditionsContainer" class="row cell-fs-12 h-vh-50 overflow-y-auto"></div>
+                            </div>
+                        </div>
                     </div>
-                    <!-- TOP BAR -->
-                    <div id="complexSearchTopBar" class="row cell-fs-12"></div>
-                    <!-- CONDITIONS -->
-                    <div id="complexSearchConditionsContainer" class="row cell-fs-12 h-vh-50 overflow-y-auto"></div>
+                    </div>
+            </div>
+            <!-- LOAD -->
+            <div id="panelLoad">
+                <div class="row">
+                    <div class="row cell-fs-12">
+                        <span class="text-leader2 text-medium margin-left-8">@Html.Raw(Search.LoadFilesExplanation)</span>
+                    </div>
+                    <div id="loadFileGroupsContainer" class="cell-fs-12 cell-sm-4">
+                        <label for="file" class="text-secondary">@Html.Raw(Search.LoadFileLabel)</label>
+                        <div id="fileLoad_0" class="d-flex margin-top-8">
+                            <span id="fileSavedCheckmark_0" class="mif-cloud mif-2x fg-cyan margin-horizontal-8 margin-top-4 d-none"></span>
+                            <input type="file" id="fileInput_0" name="file" data-role="file" data-button-title="<span class='mif-file-upload'></span>" data-cls-button="button primary" class="margin-right-8" data-on-select="loadFileAsync" />
+                            <button class="button primary cycle pointer" title="@Html.Raw(Search.LoadFileAddButtonTitle)" onclick="addLoadFileButton('fileLoad_0','loadFileGroupsContainer')"><span class="mif-plus"></span></button>
+                        </div>
+                        
+                    </div>
                 </div>
             </div>
         </div>
@@ -485,6 +522,7 @@
     <script type="text/javascript" src="~/js/hyperlab/search/complexsearchesmanagement.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/complexsearchesintro.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/info.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/search/load.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">
     <script type="text/javascript" src="~/js/dist/search/searchbundle.min.js" asp-append-version="true"></script>

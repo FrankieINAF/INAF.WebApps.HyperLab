@@ -396,8 +396,8 @@
   <data name="SearchPageTitle" xml:space="preserve">
     <value>Search</value>
   </data>
-  <data name="SearchPanelTitle" xml:space="preserve">
-    <value>Search for data</value>
+  <data name="SearchLoadPanelTitle" xml:space="preserve">
+    <value>Search for data or load from device</value>
   </data>
   <data name="SearchResultClearLabel" xml:space="preserve">
     <value>Clear search results</value>
@@ -518,5 +518,23 @@
   </data>
   <data name="SuggestionTypeRocks" xml:space="preserve">
     <value>Rocks</value>
+  </data>
+  <data name="TabLoadTitle" xml:space="preserve">
+    <value>Load spectrum from device</value>
+  </data>
+  <data name="TabSearchTitle" xml:space="preserve">
+    <value>Search in SLab DB</value>
+  </data>
+  <data name="LoadFileLabel" xml:space="preserve">
+    <value>Load spectrum</value>
+  </data>
+  <data name="LoadFilesExplanation" xml:space="preserve">
+    <value>From this panel, you can upload spectra saved as CSV or XML files that are compatible with the HyperLab application.</value>
+  </data>
+  <data name="LoadFileAddButtonTitle" xml:space="preserve">
+    <value>Add file loader</value>
+  </data>
+  <data name="LoadFileSaveOnCloudErrorMessage" xml:space="preserve">
+    <value>Sorry, an error occurred while trying to save loaded spectrum</value>
   </data>
 </root>

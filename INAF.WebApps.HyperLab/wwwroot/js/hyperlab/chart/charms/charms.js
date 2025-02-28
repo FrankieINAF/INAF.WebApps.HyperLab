@@ -655,13 +655,6 @@ function switchVisibilityOfChildrenSpectraRemovalMessage(id, isVisible) {
 /* ################################################################################ */
 /* MANAGE POINTS */
 /* ################################################################################ */
-function createSimplePoint(x, y) {
-    return {
-        X: x,
-        Y: y
-    };
-}
-
 function extractSpectrumXMax(points) {
     return Math.max(...points.map(p => p.X));
 }

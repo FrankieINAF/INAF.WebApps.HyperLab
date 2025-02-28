@@ -97,8 +97,8 @@ function showSearchResults(resultsNum) {
     let callback;
     if (resultsNum > 0) {
         callback = function () {
-            $('#panelSearch').parent().removeClass('h-vh-50');
-            Metro.getPlugin('#panelSearch', 'panel').collapse();
+            $('#panelSearchLoad').parent().removeClass('h-vh-50');
+            Metro.getPlugin('#panelSearchLoad', 'panel').collapse();
         };
     }
     showByClass('searchResultsContainer');

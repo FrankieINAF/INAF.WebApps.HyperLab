@@ -286,6 +286,42 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add file loader.
+        /// </summary>
+        public static string LoadFileAddButtonTitle {
+            get {
+                return ResourceManager.GetString("LoadFileAddButtonTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load spectrum.
+        /// </summary>
+        public static string LoadFileLabel {
+            get {
+                return ResourceManager.GetString("LoadFileLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, an error occurred while trying to save loaded spectrum.
+        /// </summary>
+        public static string LoadFileSaveOnCloudErrorMessage {
+            get {
+                return ResourceManager.GetString("LoadFileSaveOnCloudErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From this panel, you can upload spectra saved as CSV or XML files that are compatible with the HyperLab application..
+        /// </summary>
+        public static string LoadFilesExplanation {
+            get {
+                return ResourceManager.GetString("LoadFilesExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, something went wrong while trying to retrieve meteor classes.
         /// </summary>
         public static string MeteorClassesSuggestionsErrorMessage {
@@ -871,6 +907,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search for data or load from device.
+        /// </summary>
+        public static string SearchLoadPanelTitle {
+            get {
+                return ResourceManager.GetString("SearchLoadPanelTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, no results found for selected query.
         /// </summary>
         public static string SearchNoResultsMessage {
@@ -894,15 +939,6 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SearchPageTitle {
             get {
                 return ResourceManager.GetString("SearchPageTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Search for data.
-        /// </summary>
-        public static string SearchPanelTitle {
-            get {
-                return ResourceManager.GetString("SearchPanelTitle", resourceCulture);
             }
         }
         
@@ -1263,6 +1299,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SuggestionTypeRocks {
             get {
                 return ResourceManager.GetString("SuggestionTypeRocks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load spectrum from device.
+        /// </summary>
+        public static string TabLoadTitle {
+            get {
+                return ResourceManager.GetString("TabLoadTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search in SLab DB.
+        /// </summary>
+        public static string TabSearchTitle {
+            get {
+                return ResourceManager.GetString("TabSearchTitle", resourceCulture);
             }
         }
     }

@@ -126,7 +126,8 @@
       "wwwroot/js/hyperlab/search/searchComplex.js",
       "wwwroot/js/hyperlab/search/complexsearchesmanagement.js",
       "wwwroot/js/hyperlab/search/complexsearchesintro.js",
-      "wwwroot/js/hyperlab/search/info.js"
+      "wwwroot/js/hyperlab/search/info.js",
+      "wwwroot/js/hyperlab/search/load.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true

@@ -69,6 +69,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             return View(sharedStuffContainer);
         }
 
+        #region ANCILLARY
         private ContentResult buildJsonContentResult(object? inputValue)
         {
             string jsonResult = JsonConvert.SerializeObject(inputValue);
@@ -88,7 +89,6 @@ namespace INAF.WebApps.HyperLab.Controllers
             return spectraFilesInfo;
         }
 
-        #region ANCILLARY
         private IEnumerable<SharedSpectrumModel>? getSharedSpectra(int userId, Func<int, List<SharedSpectrumModel>?> function)
         {
             List<SharedSpectrumModel>? sharedSpectra = function(userId);

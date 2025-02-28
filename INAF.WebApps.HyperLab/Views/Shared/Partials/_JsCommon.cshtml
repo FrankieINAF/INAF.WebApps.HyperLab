@@ -51,6 +51,12 @@
     var CONTROLLER_OPERATION_MODEL_INVALID = @{@((int)ControllerOperationStatus.ModelInvalid);};
     var CONTROLLER_OPERATION_ERROR = @{@((int)ControllerOperationStatus.UpsertError);};
 
+    var SPECTRUM_SOURCE_SLAB = @{@((int)Enums.Enums.SpectrumSource.SLab);};
+    var SPECTRUM_SOURCE_EXTERNAL = @{@((int)Enums.Enums.SpectrumSource.External);};
+
+    var SPECTRUM_LEVEL_SINGLE_ACQUISITION = @{@((int)Enums.Enums.SpectrumLevel.SingleAcquisition);};
+    var SPECTRUM_LEVEL_AVERAGED = @{@((int)Enums.Enums.SpectrumLevel.Averaged);};
+
     function getSpectrumTypeDescription(spectrumType) {
         let spectrumTypeText = 'Raw';
         switch (spectrumType) {

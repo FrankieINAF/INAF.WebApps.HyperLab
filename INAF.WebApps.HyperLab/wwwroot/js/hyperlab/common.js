@@ -133,6 +133,20 @@ function checkScreenDims() {
     };
 }
 
+function cloneUIElement(elementId, elementIdParent) {
+
+    let clonedElement = $(`#${elementId}`).clone();
+
+    $(`#${elementIdParent}`).append(clonedElement);
+}
+
+function createSimplePoint(x, y) {
+    return {
+        X: x,
+        Y: y
+    };
+}
+
 function defineUtcOffset() {
     UTC_OFFSET = 'UTC' + (UTC_OFFSET_HOURS > 0 ? '+' + UTC_OFFSET_HOURS : UTC_OFFSET_HOURS);
 }
@@ -330,8 +344,16 @@ function confirmAndExecute(mytitle, mymessage, mycallback, elemId, status) {
     });
 }
 
+function decimalToHex(decimal) {
+    return (decimal).toString(16);
+}
+
 function disableByClassElem(id) {
     $(`#${id}`).addClass('disabled');
+}
+
+function emptyElem(id) {
+    $(`#${id}`).empty();
 }
 
 function enableByClassElem(id) {
@@ -355,6 +377,10 @@ function firstLetterLowerCase(text) {
 
 function firstLetterUpperCase(text) {
     return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+function hexToDecimal(hex) {
+    return parseInt(hex.replace('#', ''), 16);
 }
 
 function isCheckboxChecked(id) {
@@ -385,20 +411,14 @@ function tryClearAppBar() {
     try { $('#buttonsAppBar').empty(); } catch (ex) { console.log(`tryClearAppBar - ex: ${ex}`); }
 }
 
-function emptyElem(id) {
-    $(`#${id}`).empty();
+function updateUIElemId(oldId, intValue) {
+    let tmp = oldId.split('_');
+    let newId = tmp[0] + '_' + (parseInt(tmp[1]) + intValue);
+    return newId;
 }
 
 function varToString(varObj) {
     return Object.keys(varObj)[0];
-}
-
-function decimalToHex(decimal) {
-    return (decimal).toString(16);
-}
-
-function hexToDecimal(hex) {
-    return parseInt(hex.replace('#', ''), 16);
 }
 
 /* amt > 0 for lighten, amt < 0 for darken */
