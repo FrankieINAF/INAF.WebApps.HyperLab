@@ -537,4 +537,7 @@
   <data name="LoadFileSaveOnCloudErrorMessage" xml:space="preserve">
     <value>Sorry, an error occurred while trying to save loaded spectrum</value>
   </data>
+  <data name="LoadFileSavedOnCloudLabel" xml:space="preserve">
+    <value>Spectrum is available on cloud</value>
+  </data>
 </root>

@@ -27,8 +27,6 @@ function updateChildrenIds(parentId, idToBeSearched, intValue) {
         let item = items[0];
         let itemId = $(item).attr('id');
         let newId = updateUIElemId(itemId, intValue);
-        //let tmp = itemId.split('_');
-        //let newId = tmp[0] + '_' + index;
 
         $(item).attr('id', newId);
     }
@@ -52,13 +50,16 @@ async function loadFileAsync(evt, element) {
 
     let filename = removeFileExtension(file.name);
 
+    let tmp = element.id.split('_');
+    let index = tmp[1];
+
     const reader = new FileReader();
     reader.onload = async function (event) {
         const text = event.target.result;
         numOfLoadedSPectra++;
         let xml = buildSpectrum(filename, text);
         if (xml) {
-            await saveExternalFileAsync(filename, xml);
+            await saveExternalFileAsync(filename, xml, index);
         }
     };
     reader.readAsText(file);
@@ -67,7 +68,7 @@ async function loadFileAsync(evt, element) {
 /* ################################################################################ */
 /* SAVE FILE */
 /* ################################################################################ */
-async function saveExternalFileAsync(filename, xml) {
+async function saveExternalFileAsync(filename, xml, index) {
     let spectrumFile = {
         Id: 0,
         Filename: filename,
@@ -87,7 +88,7 @@ async function saveExternalFileAsync(filename, xml) {
     if (obj) {
         if (obj.IsOk) {
             loadedSpectraIds.push(obj.Id);
-            var items = $(`#${newId}`).find('[id^=fileSavedCheckmark]');
+            showByClass(`fileSavedCheckmark_${index}`);
         } else
             isOk = false;
     } else

@@ -304,6 +304,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Spectrum is available on cloud.
+        /// </summary>
+        public static string LoadFileSavedOnCloudLabel {
+            get {
+                return ResourceManager.GetString("LoadFileSavedOnCloudLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, an error occurred while trying to save loaded spectrum.
         /// </summary>
         public static string LoadFileSaveOnCloudErrorMessage {
