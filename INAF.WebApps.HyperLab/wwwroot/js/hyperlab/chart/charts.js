@@ -145,6 +145,7 @@ async function loadCharts() {
     var model = {
         Ids: selectedSpectra
     };
+    //console.log(selectedSpectra);
 
     let obj = await doAjaxPostAsync(UrlGetSpectra, model);
     if (obj) {

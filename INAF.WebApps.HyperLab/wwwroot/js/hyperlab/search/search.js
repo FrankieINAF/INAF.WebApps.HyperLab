@@ -52,7 +52,7 @@ function addOrRemoveSelectedSpectrum(id) {
 function addSelectedSpectrum(id) {
     selectedSpectra.push(id);
 
-    //addCreateChartsButtonProcedure();
+    addCreateChartsButtonProcedure();
     if (selectedSpectra.length == 1) {
         addShareButton();
         addSetPublicButton();

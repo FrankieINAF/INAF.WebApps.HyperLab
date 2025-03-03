@@ -196,7 +196,6 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new JsonResult(result);
         }
 
-
         [HttpGet]
         public IActionResult GetSavedComplexSearches()
         {

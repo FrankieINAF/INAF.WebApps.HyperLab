@@ -64,6 +64,7 @@
     <Content Remove="wwwroot\js\hyperlab\search\complexsearchesintro.js" />
     <Content Remove="wwwroot\js\hyperlab\search\complexsearchesmanagement.js" />
     <Content Remove="wwwroot\js\hyperlab\search\info.js" />
+    <Content Remove="wwwroot\js\hyperlab\search\load.js" />
     <Content Remove="wwwroot\js\hyperlab\search\search.js" />
     <Content Remove="wwwroot\js\hyperlab\search\searchComplex.js" />
     <Content Remove="wwwroot\js\hyperlab\search\searchSimple.js" />
@@ -138,6 +139,7 @@
     <None Include="wwwroot\js\hyperlab\search\complexsearchesintro.js" />
     <None Include="wwwroot\js\hyperlab\search\complexsearchesmanagement.js" />
     <None Include="wwwroot\js\hyperlab\search\info.js" />
+    <None Include="wwwroot\js\hyperlab\search\load.js" />
     <None Include="wwwroot\js\hyperlab\search\search.js" />
     <None Include="wwwroot\js\hyperlab\search\searchComplex.js" />
     <None Include="wwwroot\js\hyperlab\search\searchSimple.js" />
@@ -255,6 +257,45 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="wwwroot\js\dist\account\loginbundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\dist\account\registrationbundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\dist\chart\chartbundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\dist\commonbundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\dist\devextreme\devextremebundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\dist\home\indexbundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\dist\jquerybundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\dist\materials\mineralsbundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\dist\queue\queuebundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\dist\search\blazorglobalbundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\dist\sharedstuff\sharedstuffbundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\dist\users\upsertuserbundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\dist\users\userslistbundle.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\metro\css\metro.css">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

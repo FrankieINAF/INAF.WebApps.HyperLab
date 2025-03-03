@@ -390,7 +390,6 @@ async function checkIsSpectrumOfTypeSavedOnCloudAsync(name, spectrumType) {
     };
 
     let obj = await doAjaxGetAsync(UrlIsSpectrumTypeSavedOnCloud, model);
-    //let obj = await doAjaxPostAsync(UrlIsSpectrumTypeSavedOnCloud, model);
     if (obj) {
         /* save status of spectrum in 'spectraInfo' */
         saveSavedOnCloudStatus(obj.IsOk, spectrumType);
