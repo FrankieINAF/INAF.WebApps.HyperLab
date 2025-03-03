@@ -304,6 +304,51 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This file is not available on the charts page or for data analysis.
+        /// </summary>
+        public static string LoadFileNotAvailableForDataAnalysisMessage {
+            get {
+                return ResourceManager.GetString("LoadFileNotAvailableForDataAnalysisMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, something went wrong while trying to read selected CSV message.
+        /// </summary>
+        public static string LoadFileReadCsvFileErrorMessage {
+            get {
+                return ResourceManager.GetString("LoadFileReadCsvFileErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, something went wrong while trying to read selected XML file.
+        /// </summary>
+        public static string LoadFileReadXmlFileErrorMessage {
+            get {
+                return ResourceManager.GetString("LoadFileReadXmlFileErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, could not retrieve Id of spectrum saved on cloud from current file..
+        /// </summary>
+        public static string LoadFileReadXmlRetrieveIdErrorMessage {
+            get {
+                return ResourceManager.GetString("LoadFileReadXmlRetrieveIdErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, an error occurred while trying to load selected file.
+        /// </summary>
+        public static string LoadFileRetrieveSpectrumTypeErrorMessage {
+            get {
+                return ResourceManager.GetString("LoadFileRetrieveSpectrumTypeErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Spectrum is available on cloud.
         /// </summary>
         public static string LoadFileSavedOnCloudLabel {

@@ -1,4 +1,7 @@
-﻿var showChartsButtonId = 'buttonShowCharts';
+﻿var selectedSpectra = [];
+
+
+var showChartsButtonId = 'buttonShowCharts';
 
 function isButtonAvailable(buttonId) {
     var item = $('#buttonsAppBar').find(`#${buttonId}`);
@@ -6,4 +9,35 @@ function isButtonAvailable(buttonId) {
         return true;
     else
         return false
+}
+
+function navigateToChart() {
+    var ids = selectedSpectra.join(',');
+    var url = `${UrlChart}?Ids=${ids}`;
+    navigateTo(url);
+}
+
+/* ---------- CHARTS BUTTON ---------- */
+function addCreateChartsButtonProcedure() {
+    if (selectedSpectra.length >= 1)
+        addCreateChartsButton();
+}
+
+function addCreateChartsButton() {
+    if (isButtonAvailable(showChartsButtonId))
+        return;
+
+    addButton(showChartsButtonId, ButtonGraphSelectedSpectraLabel, 'mif-chart-line', navigateToChart);
+}
+
+function removeCreateChartsButtonProcedure() {
+    if (!isButtonAvailable(showChartsButtonId))
+        return;
+
+    /* show the 'create chart' button */
+    animateCSS(`${showChartsButtonId}`, `bounceOutUp`, FAST, removeCreateChartsButton);
+}
+
+function removeCreateChartsButton() {
+    $(`#${showChartsButtonId}`).remove();
 }

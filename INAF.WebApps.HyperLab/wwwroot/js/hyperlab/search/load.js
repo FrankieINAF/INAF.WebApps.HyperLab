@@ -1,8 +1,14 @@
 ﻿var LOADED_SPECTRUM = "loadedSpectrum";
 var EXTERNAL = "External";
-var numOfLoadedSPectra = 0;
 
-var loadedSpectraIds = [];
+var clonedLoadFileButton = null;
+
+/* ################################################################################ */
+/* LOAD FILE BUTTONS MANAGEMENT */
+/* ################################################################################ */
+function cloneLoadFileButton(elementId) {
+    clonedLoadFileButton = $(`#${elementId}`).clone();
+}
 
 function addLoadFileButton(elementId, elementIdParent) {
 
@@ -10,7 +16,7 @@ function addLoadFileButton(elementId, elementIdParent) {
     let itemsCount = $(`[id^='${tmp[0]}']`).length;
     let intValue = itemsCount;
 
-    let clonedElement = $(`#${elementId}`).clone();
+    let clonedElement = clonedLoadFileButton.clone();
 
     let id = clonedElement.attr('id');
     let newId = updateUIElemId(id, intValue);
@@ -18,6 +24,7 @@ function addLoadFileButton(elementId, elementIdParent) {
     $(`#${elementIdParent}`).append(clonedElement);
 
     updateChildrenIds(newId, 'fileSavedCheckmark', intValue);
+    updateChildrenIds(newId, 'fileError', intValue);
     updateChildrenIds(newId, 'fileInput', intValue);
 }
 
@@ -32,15 +39,14 @@ function updateChildrenIds(parentId, idToBeSearched, intValue) {
     }
 }
 
-function createSpectrumElement(xValue, yValue) {
-    return {
-        Wavelength: xValue,
-        Value: yValue
-    };
-}
-
-function removeFileExtension(filename) {
-    return filename.substring(0, filename.lastIndexOf('.')) || filename;
+/* ################################################################################ */
+/* FILES READING */
+/* ################################################################################ */
+function isXML(text) {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(text, "application/xml");
+    const parseError = xmlDoc.getElementsByTagName("parsererror");
+    return parseError.length === 0;
 }
 
 async function loadFileAsync(evt, element) {
@@ -53,29 +59,101 @@ async function loadFileAsync(evt, element) {
     let tmp = element.id.split('_');
     let index = tmp[1];
 
-    const reader = new FileReader();
+    let reader = new FileReader();
     reader.onload = async function (event) {
         const text = event.target.result;
-        numOfLoadedSPectra++;
-        let xml = buildSpectrum(filename, text);
-        if (xml) {
-            await saveExternalFileAsync(filename, xml, index);
+        if (isXML(text)) {
+            await readXmlProcedureAsync(text, filename, index);
+        } else {
+            readCsvProcedure(text, filename, index);
         }
     };
     reader.readAsText(file);
 }
 
+function readCsvProcedure(text, filename, index) {
+    let xml = buildSpectrum(filename, text);
+    if (xml) 
+        saveExternalFileAsync(filename, xml, index);
+    else 
+        showSimpleDialog(ERROR_LABEL, LoadFileReadCsvFileErrorMessage, ALERT);
+}
+
+async function readXmlProcedureAsync(text, filename, index) {
+    let parser = new DOMParser();
+    let xmlDoc = parser.parseFromString(text, "application/xml");
+
+    // Example: Extract data from the XML
+    let type = xmlDoc.getElementsByTagName("Type");
+    if (type && type.length > 0) {
+        console.log(type[0].innerHTML);
+
+        let model = {
+            Text: type[0].innerHTML
+        };
+
+        let isOk = true;
+        let obj = await doAjaxGetAsync(UrlGetSpectrumTypeByTypeLabel, model);
+        if (obj) {
+            isOk = obj.IsOk;
+            if (isOk) {
+                await retrieveExternalFileIdAsync(filename, obj.Id, index)
+            }
+        } else
+            isOk = false;
+
+        if (!isOk)
+            showSimpleDialog(ERROR_LABEL, LoadFileReadXmlFileErrorMessage, ALERT);
+    }
+}
+
+function removeFileExtension(filename) {
+    return filename.substring(0, filename.lastIndexOf('.')) || filename;
+}
+
 /* ################################################################################ */
-/* SAVE FILE */
+/* SAVE/RETRIEVE FILE */
 /* ################################################################################ */
+function addSpectrumIdProcedure(id, index) {
+    selectedSpectra.push(id);
+    addCreateChartsButtonProcedure();
+    showByClass(`fileSavedCheckmark_${index}`);
+}
+
+async function retrieveExternalFileIdAsync(filename, typeId, index) {
+    let spectrumTypeText = getSpectrumTypeDescription(typeId);
+    filename = filename.replace(`_${spectrumTypeText}`, '')
+                       .replace('.xml', '');
+
+    let model = {
+        Text: filename,
+        Type: spectrumTypeText
+    };
+
+    let isOk = true;
+    let obj = await doAjaxGetAsync(UrlGetSpectrumIdByNameAndSpectrumType, model);
+    if (obj) {
+        if (obj.Id > 0)
+            addSpectrumIdProcedure(obj.Id, index);
+        else {
+            showByClass(`fileError_${index}`);
+            showSimpleDialog(ERROR_LABEL, LoadFileReadXmlRetrieveIdErrorMessage, ALERT);
+        }
+    } else
+        isOk = false;
+
+    if (!isOk)
+        showSimpleDialog(ERROR_LABEL, LoadFileRetrieveSpectrumTypeErrorMessage, ALERT);
+}
+
 async function saveExternalFileAsync(filename, xml, index) {
     let spectrumFile = {
         Id: 0,
         Filename: filename,
         ParentId: null,
-        Type: SPECTRUM_TYPE_RAW,
+        Type: SPECTRUM_TYPE_ALIGNED,
         Level: SPECTRUM_LEVEL_AVERAGED,
-        Source: SPECTRUM_SOURCE_SLAB,
+        Source: SPECTRUM_SOURCE_EXTERNAL,
         Xml: xml
     }
 
@@ -84,18 +162,16 @@ async function saveExternalFileAsync(filename, xml, index) {
     };
 
     let isOk = true;
-    let obj = await doAjaxPostAsync(UrlSaveSpectrumOfTypeRaw, saveSpectrumRequest);
+    let obj = await doAjaxPostAsync(UrlSaveExternalSpectrum, saveSpectrumRequest);
     if (obj) {
-        if (obj.IsOk) {
-            loadedSpectraIds.push(obj.Id);
-            showByClass(`fileSavedCheckmark_${index}`);
-        } else
-            isOk = false;
+        isOk = obj.IsOk;
+        if (isOk) 
+            addSpectrumIdProcedure(obj.Id, index);
     } else
         isOk = false;
 
     if (!isOk)
-        showSimpleDialog(WARNING_LABEL, LoadFileSaveOnCloudErrorMessage, WARNING);
+        showSimpleDialog(ERROR_LABEL, LoadFileSaveOnCloudErrorMessage, ALERT);
 }
 
 /* ################################################################################ */
@@ -116,6 +192,14 @@ function buildSpectrum(filename, text) {
     var xml = jsonToXml(spectrum);
 
     return xml;
+}
+
+/* ---------- ANCILLARY ---------- */
+function createSpectrumElement(xValue, yValue) {
+    return {
+        Wavelength: xValue,
+        Value: yValue
+    };
 }
 
 function parseCSV(text) {
@@ -167,3 +251,10 @@ function jsonToXml(jsObject) {
     var xmlString = serializer.serializeToString(doc);
     return xmlString;
 }
+
+/* ################################################################################ */
+/* DOCUMENT READY */
+/* ################################################################################ */
+$(function () {
+    cloneLoadFileButton('fileLoad_0');
+});

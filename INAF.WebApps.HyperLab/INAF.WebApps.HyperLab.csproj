@@ -56,7 +56,6 @@
     <Content Remove="wwwroot\js\hyperlab\commonsearch.js" />
     <Content Remove="wwwroot\js\hyperlab\commonsearchandchart.js" />
     <Content Remove="wwwroot\js\hyperlab\commonsearchandchartsandsharedstuff.js" />
-    <Content Remove="wwwroot\js\hyperlab\commonsearchandsharedstuff.js" />
     <Content Remove="wwwroot\js\hyperlab\home\index.js" />
     <Content Remove="wwwroot\js\hyperlab\layout.js" />
     <Content Remove="wwwroot\js\hyperlab\materials\upsertminerals.js" />
@@ -131,7 +130,6 @@
     <None Include="wwwroot\js\hyperlab\commonsearch.js" />
     <None Include="wwwroot\js\hyperlab\commonsearchandchart.js" />
     <None Include="wwwroot\js\hyperlab\commonsearchandchartsandsharedstuff.js" />
-    <None Include="wwwroot\js\hyperlab\commonsearchandsharedstuff.js" />
     <None Include="wwwroot\js\hyperlab\home\index.js" />
     <None Include="wwwroot\js\hyperlab\layout.js" />
     <None Include="wwwroot\js\hyperlab\materials\upsertminerals.js" />

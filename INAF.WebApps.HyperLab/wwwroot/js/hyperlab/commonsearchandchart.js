@@ -71,7 +71,7 @@ function manageNavigation() {
             removeCharmsColorSelectorButtonProcedure();
             containerFunction = function () {
                 addSearchButton();
-                addCreateChartsButton();
+                addCreateChartsButtonProcedure();
             };
             executeAfter(containerFunction, 500);
             break;

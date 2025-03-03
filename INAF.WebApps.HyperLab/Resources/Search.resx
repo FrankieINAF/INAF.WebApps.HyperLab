@@ -540,4 +540,19 @@
   <data name="LoadFileSavedOnCloudLabel" xml:space="preserve">
     <value>Spectrum is available on cloud</value>
   </data>
+  <data name="LoadFileRetrieveSpectrumTypeErrorMessage" xml:space="preserve">
+    <value>Sorry, an error occurred while trying to load selected file</value>
+  </data>
+  <data name="LoadFileReadXmlFileErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to read selected XML file</value>
+  </data>
+  <data name="LoadFileReadCsvFileErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to read selected CSV message</value>
+  </data>
+  <data name="LoadFileReadXmlRetrieveIdErrorMessage" xml:space="preserve">
+    <value>Sorry, could not retrieve Id of spectrum saved on cloud from current file.</value>
+  </data>
+  <data name="LoadFileNotAvailableForDataAnalysisMessage" xml:space="preserve">
+    <value>This file is not available on the charts page or for data analysis</value>
+  </data>
 </root>

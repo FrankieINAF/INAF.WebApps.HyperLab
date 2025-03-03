@@ -283,12 +283,12 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new EmptyResult();
 
             SpectrumModel? spectrum = dbHandlerHyperLabData.getSpectrumIdByNameAndType(model.Text,
-                                                                          model.Type.ToSpectrumType(),
-                                                                          getUserId());
+                                                                                       model.Type.ToSpectrumType(),
+                                                                                       getUserId());
             if (spectrum != null)
                 return new JsonResult(spectrum);
             else
-                return new EmptyResult();
+                return new JsonResult(GenericResponseModel.CreateSuccessResponse());
         }
 
         [HttpGet]
@@ -310,6 +310,17 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                  getUserId());
 
             return new JsonResult(spectrumModel);
+        }
+
+        [HttpGet]
+        public IActionResult GetSpectrumTypeByTypeLabel(GenericRequestByTextModel model)
+        {
+            if (string.IsNullOrEmpty(model.Text))
+                return new EmptyResult();
+
+            SpectrumType spectrumType = dbHandlerHyperLabData.getSpectrumTypeByTypeLabel(model.Text);
+
+            return new JsonResult(new GenericResponseModel() { IsOk = true, Id = (int)spectrumType });
         }
 
         [HttpGet]
@@ -350,6 +361,22 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         #region SAVE SPECTRUM OF TYPE
+        [HttpPost]
+        public async Task<IActionResult> SaveExternalSpectrum([FromBody] SaveSpectrumOfTypeRawRequestModel model)
+        {
+            if (model == null)
+            {
+                logger.LogError($"{nameof(SaveExternalSpectrum)} - model is null");
+                return new EmptyResult();
+            }
+
+            /* save file */
+            (bool isOk, int id) result = await dbHandlerHyperLabData.saveSpectrumFileOfTypeRawProcedureAsync(model,
+                                                                                                             getUserId(),
+                                                                                                             getScientificResponsibleUserId());
+            return new JsonResult(result.ToGenericValueStringResponse());
+        }
+
         [HttpPost]
         public async Task<IActionResult> SaveSpectrumOfTypeAligned([FromBody] SaveSpectrumOfTypeAlignedRequestModel model)
         {

@@ -22,6 +22,11 @@
     var ChartsUseChartsButtonMessage = "@Html.Raw(Charts.ChartsUseChartsButtonMessage)";
     var ComplexSearchBackToListLabel = "@Html.Raw(Search.ComplexSearchBackToListLabel)";
 
+    var LoadFileReadCsvFileErrorMessage = "@Html.Raw(Search.LoadFileReadCsvFileErrorMessage)";
+    var LoadFileReadXmlFileErrorMessage = "@Html.Raw(Search.LoadFileReadXmlFileErrorMessage)";
+    var LoadFileReadXmlRetrieveIdErrorMessage = "@Html.Raw(Search.LoadFileReadXmlRetrieveIdErrorMessage)";
+    var LoadFileRetrieveSpectrumTypeErrorMessage = "@Html.Raw(Search.LoadFileRetrieveSpectrumTypeErrorMessage)";
+
     var SaveComplexSearchErrorMessage = "@Html.Raw(Search.SaveComplexSearchErrorMessage)";
     var SaveComplexSearchLabel = "@Html.Raw(Search.SaveComplexSearchLabel)";
     var SaveComplexSearchNamePlaceholder = "@Html.Raw(Search.SaveComplexSearchNamePlaceholder)";
@@ -115,6 +120,10 @@
     var UrlSearchSimpleByOriginType = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.SearchSimpleGroupsByOriginType)';
     var UrlSearchSimpleGroupsBySampleName = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.SearchSimpleGroupsBySampleName)';
     var UrlSearchSimpleBySampleType = '/@GenericHelper.GetControllerName(nameof(SLabDataManagerController))/@nameof(SLabDataManagerController.SearchSimpleGroupsBySampleType)';
+
+    /* SpectraFiles */
+    var UrlGetSpectrumIdByNameAndSpectrumType = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetSpectrumIdByNameAndSpectrumType)';
+    var UrlGetSpectrumTypeByTypeLabel = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetSpectrumTypeByTypeLabel)';
 
     /* UsersController */
     var UrlIsUserStrictlyAuthorizedForSpectrum = '/@GenericHelper.GetControllerName(nameof(UsersController))/@nameof(UsersController.IsUserStrictlyAuthorizedForSpectrum)';

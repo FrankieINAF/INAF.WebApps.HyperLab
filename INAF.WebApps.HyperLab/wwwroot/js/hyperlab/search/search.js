@@ -38,7 +38,7 @@ function addOrRemoveSelectedSpectrum(id) {
     var index = selectedSpectra.findIndex(x => x == id);
     //console.log(`addOrRemoveSelectedSpectrum - id: ${id}, index: ${index}`);
     if (index == -1)
-        addSelectedspectrum(id);
+        addSelectedSpectrum(id);
     else {
         removeSelectedSpectrum(index);
         if (selectedSpectra.length == 0) {
@@ -49,11 +49,11 @@ function addOrRemoveSelectedSpectrum(id) {
     }
 }
 
-function addSelectedspectrum(id) {
+function addSelectedSpectrum(id) {
     selectedSpectra.push(id);
 
+    //addCreateChartsButtonProcedure();
     if (selectedSpectra.length == 1) {
-        addCreateChartsButton();
         addShareButton();
         addSetPublicButton();
         showToast(ChartsUseChartsButtonMessage, 3000, INFO);

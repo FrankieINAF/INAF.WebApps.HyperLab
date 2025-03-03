@@ -139,13 +139,13 @@ function showRemoveSharesErrors(removeSharesResults) {
 /* DOCUMENT READY */
 /* ################################################################################ */
 $(function () {
+    /* Add action for checkboxes of spectra shared WITH ME */
     $(`[id^='${checkboxSharedSpectraWithMeBaseId}']`).on('click', function (evt) {
         if (isCheckboxChecked(evt.target.id)) {
             selectedSpectra.push(evt.target.id.replace(checkboxSharedSpectraWithMeBaseId, ''));
             //console.log(`Sharing spectra with me: ${evt.target.id}`);
 
-            if (selectedSpectra.length == 1)
-                addCreateChartsButton();
+            //addCreateChartsButtonProcedure();
         } else {
             selectedSpectra = selectedSpectra.filter(e => e !== evt.target.id.replace(checkboxSharedSpectraWithMeBaseId, ''));
             //console.log(`Unsharing spectra with me: ${evt.target.id}`);
@@ -154,7 +154,8 @@ $(function () {
                 removeCreateChartsButtonProcedure();
         }
     });
-
+    
+    /* Add action for checkboxes of spectra shared BY ME */
     $(`[id^='${checkboxSharedSpectraByMeBaseId}']`).on('click', function (evt) {
         try {
             let temp = evt.target.id.split('_');
@@ -168,10 +169,9 @@ $(function () {
                 selectedShareItems.push(shareItem);
                 selectedSpectra.push(spectrumId);
                 //console.log(`Sharing spectra by me: ${evt.target.id}`);
-                if (selectedShareItems.length == 1) {
-                    addCreateChartsButton();
+                //addCreateChartsButtonProcedure();
+                if (selectedShareItems.length == 1)
                     addRemoveSharesButton();
-                }
             } else {
                 selectedShareItems = selectedShareItems.filter(e => e !== id);
                 selectedSpectra = selectedSpectra.filter(e => e !== spectrumId);

@@ -119,7 +119,6 @@
     "outputFileName": "wwwroot/js/dist/search/searchbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/commonsearchandchartsandsharedstuff.js",
-      "wwwroot/js/hyperlab/commonsearchandchart.js",
       "wwwroot/js/hyperlab/search/search.js",
       "wwwroot/js/hyperlab/commonsearchandsharedstuff.js",
       "wwwroot/js/hyperlab/search/searchSimple.js",

@@ -283,6 +283,7 @@
                         <label for="file" class="text-secondary">@Html.Raw(Search.LoadFileLabel)</label>
                         <div id="fileLoad_0" class="d-flex margin-top-8">
                             <span id="fileSavedCheckmark_0" class="mif-cloud mif-2x fg-cyan margin-horizontal-8 margin-top-4 d-none" title="@Html.Raw(Search.LoadFileSavedOnCloudLabel)"></span>
+                            <span id="fileError_0" class="mif-cross-light mif-2x fg-red margin-horizontal-8 margin-top-4 d-none" title="@Html.Raw(Search.LoadFileNotAvailableForDataAnalysisMessage)"></span>
                             <input type="file" id="fileInput_0" name="file" data-role="file" data-button-title="<span class='mif-file-upload'></span>" data-cls-button="button primary" class="margin-right-8" data-on-select="loadFileAsync" />
                             <button class="button primary cycle pointer" title="@Html.Raw(Search.LoadFileAddButtonTitle)" onclick="addLoadFileButton('fileLoad_0','loadFileGroupsContainer')"><span class="mif-plus"></span></button>
                         </div>
@@ -514,7 +515,6 @@
 <script type="text/javascript" src="~/js/dist/devextreme/devextremebundle.min.js" asp-append-version="true"></script>
 <environment names="Development">
     <script type="text/javascript" src="~/js/hyperlab/commonsearchandchartsandsharedstuff.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/commonsearchandsharedstuff.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/commonsearchandchart.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/search.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/searchSimple.js" asp-append-version="true"></script>
