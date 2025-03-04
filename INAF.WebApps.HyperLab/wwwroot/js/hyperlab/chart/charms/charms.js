@@ -11,6 +11,8 @@ var SPECTRUM_OF_TYPE_SMOOTHED_WHOLE_SPECTRUM_TEMP_ID = 'smoothed_wholeSpectrum_i
 
 var isCharmsResetRequested = true;
 
+var isAnyRawSpectrumAvailable = true;
+
 /* save list of spectra Id to being processed */
 var spectraForProcessingIds = [];
 
@@ -66,7 +68,11 @@ async function initCharmsPhase1Async() {
     showByClassDFlexItem('charmsTabAlignmentStartingMessageContainer');
 
     /* reset all variables and arrays used for alignment */
-    await initAlignmentAsync();
+    if (!isAnyRawSpectrumAvailable)
+    //    await initAlignmentAsync();
+    //else
+        /* enable management of clicked point on aligned spectrum for fitting */
+        setIsPointClickForFitEnabled(true);
 
     /* load from cloud relationships between each spectrum type and its parent */
     getSpectraTypesParentsAsync();
@@ -104,7 +110,7 @@ async function onCharmsOpened() {
         if (isCheckboxChecked('alignmentCheckboxShowLines'))
             $("#alignmentCheckboxShowLines").trigger("click");
 
-        await initCharmsPhase1Async();
+        //await initCharmsPhase1Async();
 
         /* fill selector for available RAW files */
         loadSpectraToBeProcessed();
@@ -171,7 +177,13 @@ function loadSpectraToBeProcessed() {
     /* close other charms, if opened */
     closeCharmsColorSelector();
 
-    spectraForProcessingIds = spectraInfo.filter(x => x.SpectrumType == SPECTRUM_TYPE_RAW).map(x => { return x.Id }); // SpectrumType = 2 means RAW spectra
+    spectraForProcessingIds = spectraInfo.filter(x => x.SpectrumType == SPECTRUM_TYPE_RAW).map(x => { return x.Id });
+
+    if (!spectraForProcessingIds || spectraForProcessingIds.length == 0) {
+        /* manage case when only external files (labeled as 'Aligned') are loaded and no Raw spectrum is available */
+        spectraForProcessingIds = spectraInfo.filter(x => x.SpectrumType == SPECTRUM_TYPE_ALIGNED).map(x => { return x.Id });
+        isAnyRawSpectrumAvailable = false;
+    }
 
     if (spectraForProcessingIds && spectraForProcessingIds.length > 0) {
         let html = ``;
@@ -221,7 +233,7 @@ function onSelectSpectrum(selected) {
             await initCharmsPhase1Async();
 
             /* load info for creating UI of alignment panel  */
-            initCharmsPhase2Async(selectedSpectrumForProcessingId);
+            initCharmsPhase2Async();
         };
         askAndExecute(CharmsSpectraProcessingManagementLabel, CharmsDeleteProcessedSpectraQuestion, callback);
     } else {
@@ -229,20 +241,24 @@ function onSelectSpectrum(selected) {
         hideSpectraToBeHidden();
 
         /* load info for creating UI of alignment panel  */
-        initCharmsPhase2Async(selectedSpectrumForProcessingId);
+        initCharmsPhase2Async();
     }
 }
 
-async function initCharmsPhase2Async(selectedSpectrumForProcessingId) {
-    /* set as selected the alignment tab */
-    setTabEnabled(0, true);
-
+async function initCharmsPhase2Async() {
     /* hide message about RAW file selection */
     hideByClassDFlexItem('charmsTabAlignmentStartingMessageContainer');
 
-    //console.log(`onSelectSpectrum - selected: ${selected}`) // selected is Id, i.e: 5
-    loadPartialViewWithAjaxGetNoModel(UrlLoadAlignmentPanel, 'alignmentOptionsPanel');
+    if (isAnyRawSpectrumAvailable) {
+        /* set as selected the alignment tab */
+        setTabEnabled(0, true);
 
+        //console.log(`onSelectSpectrum - selected: ${selected}`) // selected is Id, i.e: 5
+        loadPartialViewWithAjaxGetNoModel(UrlLoadAlignmentPanel, 'alignmentOptionsPanel', onAlignmentPanelLoaded);
+    } else {
+        /* set as selected the fit tab */
+        setTabEnabled(1, true);
+    }
     /* check whether continuum-removed version is already available on cloud or not */
     if (await callCheckIsSpectrumOfTypeSavedOnCloudForContinuumRemovedAsync())
         setTabEnabled(1, true);

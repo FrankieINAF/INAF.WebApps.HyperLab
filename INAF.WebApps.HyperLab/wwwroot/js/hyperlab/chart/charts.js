@@ -155,7 +155,7 @@ async function loadCharts() {
         createChart(obj.Points, chartSeries, obj.AxisRange);
         isChartLoaded = true;
         setLoadingCircleIsVisible(false);
-        await initCharmsPhase1Async();
+        //await initCharmsPhase1Async();
         if (obj.SpectraInfo.length > 1)
             showToast(ChartColorsDifferentiationMessage, 3000, INFO);
     } else {

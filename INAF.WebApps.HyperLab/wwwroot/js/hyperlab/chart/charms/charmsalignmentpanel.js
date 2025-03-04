@@ -56,11 +56,22 @@ async function initAlignmentAsync() {
         SelectedSegment: 0
     };
 
-    $('#alignmentPanel').remove();
+    //$('#alignmentPanel').remove();
 
     await loadSegmentsAsync();
 
     await tryShowAlignmentSegmentsAsync();
+}
+
+function onAlignmentPanelLoaded() {
+
+    let callback = async function () { // DO NOT ADD 'let' before callback declaration, 'cause it cause error when changing selected spectrum
+        /* load alignment panel items */
+        await loadAlignmentValuesAsync();
+    };
+    /* show tabs with animation */
+    showByClass('charmsTabsContainer');
+    animateCSS('charmsTabsContainer', 'fadeIn', 'FASTER', callback);
 }
 
 function callCheckIsSpectrumOfTypeSavedOnCloudForAligned(filename = null) {
@@ -76,6 +87,8 @@ function callCheckIsSpectrumOfTypeSavedOnCloudForAligned(filename = null) {
 /* RETRIEVE SETTING FOR ALIGNMENT */
 /* ################################################################################ */
 async function loadAlignmentValuesAsync() {
+    await initAlignmentAsync();
+
     /* enable event management for switch for loading whites spectra */
     initSwitchLoadWhiteSpectraForAlignment();
 
@@ -88,11 +101,23 @@ async function loadAlignmentValuesAsync() {
     /* enable event management for switch for auto-loading aligned spectrum */
     await initSwitchLoadAutoDownloadAlignedSpectrumAsync();
 
+    /* enable event when check/uncheck checkbox for showing separator lines */
     initCheckBoxForShowingLines();
 
+    /* build sliders for managing value of separators */
     buildSliders();
+
+    /* load selected segment */
     await loadSelectedSegmentAsync();
+
+    /* load number of points for alignment */
     await loadNumOfPointsForAlignmentAsync();
+
+    /* create chart miniature */
+    createChartMiniatureProcedure();
+
+    /* call method for checking whether a version of aligned file is already saved on cloud or not */
+    callCheckIsSpectrumOfTypeSavedOnCloudForAligned();
 
     /* enable 1st tab */
     setTabEnabled(0, true);

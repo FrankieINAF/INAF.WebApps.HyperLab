@@ -173,22 +173,3 @@
         <button class="button js-dialog-close">@Html.Raw(SharedResources.NoLabel)</button>
     </div>
 </div>
-
-<script type="text/javascript">
-    callback = async function() { // DO NOT ADD 'let' before callback declaration, 'cause it cause error when changing selected spectrum
-        /* create chart miniature */
-        createChartMiniatureProcedure();
-
-        /* enable event management for switch for loading whites spectra */
-        //initSwitchLoadWhiteSpectraForAlignment();
-
-        /* load alignment panel items */
-        await loadAlignmentValuesAsync();
-
-        /* call method for checking whether a version of aligned file is already saved on cloud or not */
-        callCheckIsSpectrumOfTypeSavedOnCloudForAligned();
-    };
-    /* show tabs with animation */
-    showByClass('charmsTabsContainer');
-    animateCSS('charmsTabsContainer', 'fadeIn', 'FASTER', callback);
-</script>
