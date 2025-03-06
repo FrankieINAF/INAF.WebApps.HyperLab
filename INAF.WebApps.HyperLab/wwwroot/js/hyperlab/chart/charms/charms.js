@@ -21,6 +21,9 @@ var spectraTypesParents = {};
 
 var isBuildingUpContinuum = false;
 
+/* ################################################################################ */
+/* MANAGE CHARMS OPENING/CLOSING */
+/* ################################################################################ */
 async function closeCharmsAsync(isUserPermissionRequested = true) {
 
     let callbackAsync = async function () {
@@ -68,11 +71,11 @@ async function initCharmsPhase1Async() {
     showByClassDFlexItem('charmsTabAlignmentStartingMessageContainer');
 
     /* reset all variables and arrays used for alignment */
-    if (!isAnyRawSpectrumAvailable)
+    //if (!isAnyRawSpectrumAvailable)
     //    await initAlignmentAsync();
     //else
-        /* enable management of clicked point on aligned spectrum for fitting */
-        setIsPointClickForFitEnabled(true);
+        ///* enable management of clicked point on aligned spectrum for fitting */
+        //setIsPointClickForFitEnabled(true);
 
     /* load from cloud relationships between each spectrum type and its parent */
     getSpectraTypesParentsAsync();
@@ -131,9 +134,53 @@ function openCharms() {
     Metro.charms.open('#charms');
 }
 
+function setTabsForNoRawSpectra() {
+    showTabsContainer();
+
+    /* set tab for alignment as disabled */
+    setTabEnabled(0, false);
+
+    /* set fit tab as enabled */
+    setTabEnabled(1, true);
+
+    /* set fit tab as selected */
+    setTabSelectedProcedure('charmsTabs', OPTIONS_TITLE_FIT);
+
+    /* load panel for smoothing */
+    loadSmoothingPanel();
+}
+
+function showTabsContainer(callback) {
+    /* show tabs with animation */
+    showByClass('charmsTabsContainer');
+    animateCSS('charmsTabsContainer', 'fadeIn', 'FASTER', callback);
+}
+
 /* ################################################################################ */
-/* COMMON FILES MANAGEMENT */
+/* COMMON PROCEDURES (FOR SLAB/EXTERNAL FILES) */
 /* ################################################################################ */
+function buildSpectrum(id, parentId, name, spectrumLevel, spectrumType, spectrumSource) {
+    return {
+        Id: id,
+        ParentId: parentId,
+        Name: name,
+        SpectrumLevel: spectrumLevel,
+        SpectrumType: spectrumType,
+        SpectrumSource: spectrumSource,
+        InsertDateTimeJs: 0
+    };
+}
+
+function getAlignedSpectrumProcedure() {
+    let alignedSpectrum = null;
+    if (isAnyRawSpectrumAvailable)
+        alignedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+    else
+        alignedSpectrum = getSpectrumBySpectrumType(SPECTRUM_TYPE_ALIGNED);
+
+    return alignedSpectrum;
+}
+
 function getParentFile(id) {
     let parentFile = getSpectrumInfoById(id);
 
@@ -183,6 +230,8 @@ function loadSpectraToBeProcessed() {
         /* manage case when only external files (labeled as 'Aligned') are loaded and no Raw spectrum is available */
         spectraForProcessingIds = spectraInfo.filter(x => x.SpectrumType == SPECTRUM_TYPE_ALIGNED).map(x => { return x.Id });
         isAnyRawSpectrumAvailable = false;
+        /* enable management of clicked point on aligned spectrum for fitting */
+        setIsPointClickForFitEnabled(true);
     }
 
     if (spectraForProcessingIds && spectraForProcessingIds.length > 0) {
@@ -256,8 +305,7 @@ async function initCharmsPhase2Async() {
         //console.log(`onSelectSpectrum - selected: ${selected}`) // selected is Id, i.e: 5
         loadPartialViewWithAjaxGetNoModel(UrlLoadAlignmentPanel, 'alignmentOptionsPanel', onAlignmentPanelLoaded);
     } else {
-        /* set as selected the fit tab */
-        setTabEnabled(1, true);
+        setTabsForNoRawSpectra();
     }
     /* check whether continuum-removed version is already available on cloud or not */
     if (await callCheckIsSpectrumOfTypeSavedOnCloudForContinuumRemovedAsync())
@@ -744,6 +792,8 @@ function getPointAtFromSeriesPoints(seriesPoints, index) {
 function getSeriesPointsProcedure(rawId, spectrumType) {
     //selectedSpectrumTypeForContinuumRemoval
     let spectrum = getChildSpectrumByRawIdAndSpectrumType(rawId, spectrumType);
+    if (!spectrum && !isAnyRawSpectrumAvailable)
+        spectrum = getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
     /* retrieve index of spectrum in spectraInfo */
     let index = getSpectrumIndexById(spectrum.Id);
     /* retrieve series name */
@@ -942,7 +992,7 @@ function setTabEnabled(index, isEnabled) {
     }
 }
 
-function setTabSelectedProcedure(containerId, selectedTabId, isFromUserAction = false) {
+function setTabSelectedProcedure(containerId, selectedTabId) {
     showSelectedTab(containerId, selectedTabId);
 
     manageConstantLinesVisualization(selectedTabId);

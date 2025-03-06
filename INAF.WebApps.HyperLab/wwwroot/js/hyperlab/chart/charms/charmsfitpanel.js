@@ -68,7 +68,8 @@ async function preparePanelForFitPhase1Async(extCallback) {
         loadPartialViewWithAjaxGetNoModel(UrlLoadFitPanel, 'fitOptionsPanel', callback);
 
         /* add raw spectrum to the ones to be hidden */
-        setSpectrumVisibility(selectedSpectrumForProcessingId, false);
+        if (isAnyRawSpectrumAvailable) //when a SLab RAW spectrum is loaded and under processing we hide it in this phase, otherwise avoid to hide it
+            setSpectrumVisibility(selectedSpectrumForProcessingId, false);
 
         isFitTabSelected = true;
     }
@@ -1184,16 +1185,23 @@ function tryAddContinuumSpectrum() {
     }
 
     /* retrieve parent RAW spectrum */
-    let rawSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
+    let selectedSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
 
-    let alignedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+    /* retrieve aligned spectrum:
+       1) when we're processing a SLAB raw spectrum do as usual ;
+       2) when we're processing an external file, aligned spectrum IS selected spectrum */
+    let alignedSpectrum = null;
+    if (isAnyRawSpectrumAvailable)
+        alignedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+    else
+        alignedSpectrum = selectedSpectrum;
 
     /* build spectrum info for being added to 'spectraInfo' */
     let continuumSpectrum = {
         Id: buildTempContinuumId(),
         ParentId: alignedSpectrum.Id,
-        Name: rawSpectrum.Name,
-        SpectrumLevel: rawSpectrum.SpectrumLevel,
+        Name: selectedSpectrum.Name,
+        SpectrumLevel: selectedSpectrum.SpectrumLevel,
         SpectrumType: SPECTRUM_TYPE_CONTINUUM,
         InsertDateTimeJs: 0
     };
@@ -1303,18 +1311,25 @@ function buildContinuumRemovedSpectrum() {
         /* retrieve RAW spectrum */
         let rawSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
 
-        /* retrieve info about parent spectrum */
-        let alignedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+        /* retrieve aligned spectrum */
+        let alignedSpectrum = getAlignedSpectrumProcedure();
 
         /* build spectrum info for being added to 'spactraInfo' */
-        let continuumRemovedSpectrum = {
-            Id: buildTempContinuumRemovedId(),
-            ParentId: alignedSpectrum.Id,
-            Name: rawSpectrum.Name,
-            SpectrumLevel: rawSpectrum.SpectrumLevel,
-            SpectrumType: SPECTRUM_TYPE_CONTINUUM_REMOVED,
-            InsertDateTimeJs: 0
-        };
+        let continuumRemovedSpectrum = buildSpectrum(buildTempContinuumRemovedId(),
+                                                     alignedSpectrum.Id,
+                                                     rawSpectrum.Name,
+                                                     rawSpectrum.SpectrumLevel,
+                                                     SPECTRUM_TYPE_CONTINUUM_REMOVED,
+                                                     alignedSpectrum.SpectrumSource);
+        //let continuumRemovedSpectrum = {
+        //    Id: buildTempContinuumRemovedId(),
+        //    ParentId: alignedSpectrum.Id,
+        //    Name: rawSpectrum.Name,
+        //    SpectrumLevel: rawSpectrum.SpectrumLevel,
+        //    SpectrumType: SPECTRUM_TYPE_CONTINUUM_REMOVED,
+        //    SpectrumSource: alignedSpectrum.SpectrumSource,
+        //    InsertDateTimeJs: 0
+        //};
         addSpectrumInfo(continuumRemovedSpectrum);
 
         return continuumRemovedSpectrum;
@@ -1684,7 +1699,8 @@ async function saveContinuumRemovedSpectrumAsync() {
             await saveAlignedSpectrumAsync(false);
 
         /* retrieve parent file */
-        let alignedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+        /* retrieve aligned spectrum */
+        let alignedSpectrum = getAlignedSpectrumProcedure();
         if (alignedSpectrum.Id == buildTempAlignedId())
             alignedSpectrum.Id = 0;
 
@@ -1705,6 +1721,7 @@ async function saveContinuumRemovedSpectrumAsync() {
             ParentId: alignedSpectrum.Id,
             Type: spectrum.SpectrumType,
             Level: spectrum.SpectrumLevel,
+            Source: spectrum.SpectrumSource,
             Xml: xml
         };
 

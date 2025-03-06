@@ -44,6 +44,11 @@ async function getDestSpectrumTypeAsync(smoothingType, spectrumType) {
         spectrumType);
 }
 
+function loadSmoothingPanel() {
+    /* load panel for smoothing */
+    loadPartialViewWithAjaxGetNoModel(UrlLoadSmoothingPanel, 'smoothingoptions');
+}
+
 /* ################################################################################ */
 /* AUTO SAVE SMOOTHING SETTINGS */
 /* ################################################################################ */
@@ -98,10 +103,17 @@ function getAvailableSrcSpectrumTypesNum() {
     let srcSpectrumTypes = [SPECTRUM_TYPE_ALIGNED, SPECTRUM_TYPE_CONTINUUM_REMOVED];
 
     let availableNum = 0;
-    srcSpectrumTypes.forEach(function (item) {
-        if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, item))
-            availableNum++;
-    });
+    if (isAnyRawSpectrumAvailable) {
+        srcSpectrumTypes.forEach(function (item) {
+            if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, item))
+                availableNum++;
+        });
+    } else {
+        srcSpectrumTypes.forEach(function (item) {
+            if (isSpectrumAvailableByIdAndType(selectedSpectrumForProcessingId, item))
+                availableNum++;
+        });
+    }
 
     return availableNum;
 }
@@ -125,10 +137,17 @@ function getSrcSpectrumType() {
     let availableNum = getAvailableSrcSpectrumTypesNum();
 
     if (availableNum == 1) {
-        if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED))
-            srcSpectrumType = SPECTRUM_TYPE_ALIGNED;
-        else if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED))
-            srcSpectrumType = SPECTRUM_TYPE_CONTINUUM_REMOVED;
+        if (isAnyRawSpectrumAvailable) {
+            if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED))
+                srcSpectrumType = SPECTRUM_TYPE_ALIGNED;
+            else if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED))
+                srcSpectrumType = SPECTRUM_TYPE_CONTINUUM_REMOVED;
+        } else {
+            if (isSpectrumAvailableByType(SPECTRUM_TYPE_ALIGNED))
+                srcSpectrumType = SPECTRUM_TYPE_ALIGNED;
+            else if (isSpectrumAvailableByType(SPECTRUM_TYPE_CONTINUUM_REMOVED))
+                srcSpectrumType = SPECTRUM_TYPE_CONTINUUM_REMOVED;
+        }
     } else if (availableNum > 1) {
         srcSpectrumType = parseInt(Metro.getPlugin('#srcSpectrumTypeList', 'select').val());
     }
@@ -706,16 +725,25 @@ function buildSmoothedSpectrum(smoothingType, srcSpectrumType, destSpectrumType)
 
         /* retrieve info about parent spectrum */
         let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
+        if (!isAnyRawSpectrumAvailable && !srcSpectrum)
+            srcSpectrum = rawSpectrum;
 
         /* build spectrum info for being added to 'spectraInfo' */
-        let smoothedSpectrum = {
-            Id: buildTempSmoothedSpectrumId(srcSpectrumType, smoothingType),
-            ParentId: srcSpectrum.Id,
-            Name: rawSpectrum.Name,
-            SpectrumLevel: rawSpectrum.SpectrumLevel,
-            SpectrumType: destSpectrumType,
-            InsertDateTimeJs: 0
-        };
+        let smoothedSpectrum = buildSpectrum(buildTempSmoothedSpectrumId(srcSpectrumType, smoothingType),
+                                             rawSpectrum.Id,
+                                             rawSpectrum.Name,
+                                             rawSpectrum.SpectrumLevel,
+                                             destSpectrumType,
+                                             srcSpectrum.SpectrumSource);
+        //let smoothedSpectrum = {
+        //    Id: buildTempSmoothedSpectrumId(srcSpectrumType, smoothingType),
+        //    ParentId: srcSpectrum.Id,
+        //    Name: rawSpectrum.Name,
+        //    SpectrumLevel: rawSpectrum.SpectrumLevel,
+        //    SpectrumType: destSpectrumType,
+        //    spectrumSource: srcSpectrum.SpectrumSource,
+        //    InsertDateTimeJs: 0
+        //};
         addSpectrumInfo(smoothedSpectrum);
 
         return smoothedSpectrum;
@@ -783,6 +811,8 @@ async function saveSmoothedSpectrumAsync(smoothingType, showLoadingAndMessage = 
 
         /* retrieve parent file */
         let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
+        if (!isAnyRawSpectrumAvailable && !srcSpectrum)
+            srcSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
         if (srcSpectrum.Id == buildTempSmoothedSpectrumId(srcSpectrumType, smoothingType))
             srcSpectrum.Id = 0;
 
@@ -816,6 +846,7 @@ async function saveSmoothedSpectrumAsync(smoothingType, showLoadingAndMessage = 
             ParentId: srcSpectrum.Id,
             Type: spectrum.SpectrumType,
             Level: spectrum.SpectrumLevel,
+            Source: srcSpectrum.SpectrumSource,
             Xml: xml
         };
 

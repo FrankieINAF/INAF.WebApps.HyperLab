@@ -70,8 +70,7 @@ function onAlignmentPanelLoaded() {
         await loadAlignmentValuesAsync();
     };
     /* show tabs with animation */
-    showByClass('charmsTabsContainer');
-    animateCSS('charmsTabsContainer', 'fadeIn', 'FASTER', callback);
+    showTabsContainer(callback);
 }
 
 function callCheckIsSpectrumOfTypeSavedOnCloudForAligned(filename = null) {
@@ -878,7 +877,7 @@ function buildAlignedSpectrumCompleted() {
     setTabEnabled(1, true);
 
     /* load panel for smoothing */
-    loadPartialViewWithAjaxGetNoModel(UrlLoadSmoothingPanel, 'smoothingoptions');
+    loadSmoothingPanel();
 
     /* enable management of clicked point on aligned spectrum for fitting */
     setIsPointClickForFitEnabled(true);

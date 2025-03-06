@@ -392,14 +392,17 @@ function isAnySpectrumToBeHidden() {
     return true;
 }
 
-function isSpectrumAvailableByType(spectrumType) {
-    return (spectraInfo.findIndex(x => x.SpectrumType == spectrumType) > -1);
-}
-
 function isSpectrumAvailableById(id) {
     return (spectraInfo.findIndex(x => x.Id == id) > -1);
 }
 
+function isSpectrumAvailableByIdAndType(id, spectrumType) {
+    return (spectraInfo.findIndex(x => x.Id == id && x.SpectrumType == spectrumType) > -1);
+}
+
+function isSpectrumAvailableByType(spectrumType) {
+    return (spectraInfo.findIndex(x => x.SpectrumType == spectrumType) > -1);
+}
 function removeSpectrumByIndex(index) {
     return spectraInfo.splice(index, 1);
 }
