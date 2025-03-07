@@ -3,6 +3,7 @@ using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.WebApps.HyperLab.Extensions;
+using Newtonsoft.Json.Linq;
 using System.Dynamic;
 using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
@@ -22,16 +23,67 @@ namespace INAF.WebApps.HyperLab.Helpers
         {
             int idsNum = spectraModels.Count;
 
+            if (spectraModels.Select(x => x.Points).Any(x => x == null || x.Count == 0))
+                return new ExpandoObject();
+
             /* extract min,max for all series and then retrieve absolute min,max */
             (double min, double max) seriesBoundaries = getSeriesBoundaries(spectraModels);
-
-            /* retrieve x values from 1st spectrum */
-            List<double> xValues = spectraModels.First().Points!.Select(x => x.X).ToList();
 
             ExpandoObject resultObject = new ExpandoObject();
             resultObject.AddProperty(nameof(AxisRange), new AxisRange(Enums.Axis.Y, seriesBoundaries.min, seriesBoundaries.max));
             resultObject.AddProperty("SpectraInfo", spectraModels.Select(x => SpectrumInfoModel.Create(x)).ToList());
 
+            /* check if all spectra have the same number of points */
+            bool allPointsHaveSameCount = spectraModels.Select(s => s.Points!.Count).Distinct().Count() == 1;
+            List<ExpandoObject>? Values = null;
+            if (allPointsHaveSameCount)
+            {
+                /* retrieve x values from 1st spectrum */
+                List<double> xValues = spectraModels.First().Points!.Select(x => x.X).ToList();
+                Values = addPointsWhenSameCount(idsNum, xValues, spectraModels);
+            }
+            else
+                Values = addPointsWhenDifferentCount(idsNum, spectraModels);
+
+            resultObject.AddProperty("Points", Values);
+
+            return resultObject;
+        }
+
+        private List<ExpandoObject> addPointsWhenDifferentCount(int idsNum,
+                                                                List<ISpectrumModel> spectraModels)
+        {
+            var spectrumWithMaxPoints = spectraModels.OrderByDescending(s => s.Points!.Count).First();
+
+            List<double> xValues = spectrumWithMaxPoints.Points!.Select(x => x.X).ToList();
+
+            List<ExpandoObject> Values = new List<ExpandoObject>();
+            foreach (var spectrumModel in spectraModels)
+            {
+                var id = spectrumModel.Id;
+                foreach (var xValue in xValues)
+                {
+                    if (!spectrumModel.Points!.Any(x => x.X == xValue))
+                        continue;
+
+                    if (!Values.Any(x => ((IDictionary<string, object>)x!)["X"].Equals(xValue)))
+                    {
+                        ExpandoObject Value = new ExpandoObject();
+                        Value.AddProperty("X", xValue);
+                        Value.AddProperty($"id{id}", spectrumModel.Points!.First(y => y.X == xValue).Y);
+                        Values.Add(Value);
+                    }
+                    else
+                        Values.FirstOrDefault(x => ((IDictionary<string, object>)x!)["X"].Equals(xValue))?.AddProperty($"id{id}", spectrumModel.Points!.First(y => y.X == xValue).Y);
+                }
+            }
+            return Values;
+        }
+
+        private List<ExpandoObject> addPointsWhenSameCount(int idsNum,
+                                                           List<double> xValues,
+                                                           List<ISpectrumModel> spectraModels)
+        {
             List<ExpandoObject> Values = new List<ExpandoObject>();
             foreach (var xValue in xValues)
             {
@@ -44,9 +96,8 @@ namespace INAF.WebApps.HyperLab.Helpers
                 }
                 Values.Add(Value);
             }
-            resultObject.AddProperty("Points", Values);
 
-            return resultObject;
+            return Values;
         }
 
         public ExpandoObject? createSingleSpectrumJson(int parentId,
