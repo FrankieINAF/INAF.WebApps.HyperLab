@@ -103,7 +103,7 @@ function getAvailableSrcSpectrumTypesNum() {
     let srcSpectrumTypes = [SPECTRUM_TYPE_ALIGNED, SPECTRUM_TYPE_CONTINUUM_REMOVED];
 
     let availableNum = 0;
-    if (isAnyRawSpectrumAvailable) {
+    if (isSLabSpectrumCurrentlySelected) {
         srcSpectrumTypes.forEach(function (item) {
             if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, item))
                 availableNum++;
@@ -137,7 +137,7 @@ function getSrcSpectrumType() {
     let availableNum = getAvailableSrcSpectrumTypesNum();
 
     if (availableNum == 1) {
-        if (isAnyRawSpectrumAvailable) {
+        if (isSLabSpectrumCurrentlySelected) {
             if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED))
                 srcSpectrumType = SPECTRUM_TYPE_ALIGNED;
             else if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED))
@@ -725,7 +725,7 @@ function buildSmoothedSpectrum(smoothingType, srcSpectrumType, destSpectrumType)
 
         /* retrieve info about parent spectrum */
         let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
-        if (!isAnyRawSpectrumAvailable && !srcSpectrum)
+        if (!isSLabSpectrumCurrentlySelected && !srcSpectrum)
             srcSpectrum = rawSpectrum;
 
         /* build spectrum info for being added to 'spectraInfo' */
@@ -811,7 +811,7 @@ async function saveSmoothedSpectrumAsync(smoothingType, showLoadingAndMessage = 
 
         /* retrieve parent file */
         let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
-        if (!isAnyRawSpectrumAvailable && !srcSpectrum)
+        if (!isSLabSpectrumCurrentlySelected && !srcSpectrum)
             srcSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
         if (srcSpectrum.Id == buildTempSmoothedSpectrumId(srcSpectrumType, smoothingType))
             srcSpectrum.Id = 0;

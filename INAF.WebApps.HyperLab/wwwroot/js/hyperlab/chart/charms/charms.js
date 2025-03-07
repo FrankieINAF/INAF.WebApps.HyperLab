@@ -11,7 +11,10 @@ var SPECTRUM_OF_TYPE_SMOOTHED_WHOLE_SPECTRUM_TEMP_ID = 'smoothed_wholeSpectrum_i
 
 var isCharmsResetRequested = true;
 
-var isAnyRawSpectrumAvailable = true;
+var isSLabSpectrumCurrentlySelected = true;
+
+var selectedSpectrumForProcessingId = 0;
+var oldSelectedSpectrumForProcessingId = 0;
 
 /* save list of spectra Id to being processed */
 var spectraForProcessingIds = [];
@@ -69,13 +72,6 @@ async function initCharmsPhase1Async() {
 
     /* show explanation message */
     showByClassDFlexItem('charmsTabAlignmentStartingMessageContainer');
-
-    /* reset all variables and arrays used for alignment */
-    //if (!isAnyRawSpectrumAvailable)
-    //    await initAlignmentAsync();
-    //else
-        ///* enable management of clicked point on aligned spectrum for fitting */
-        //setIsPointClickForFitEnabled(true);
 
     /* load from cloud relationships between each spectrum type and its parent */
     getSpectraTypesParentsAsync();
@@ -173,7 +169,7 @@ function buildSpectrum(id, parentId, name, spectrumLevel, spectrumType, spectrum
 
 function getAlignedSpectrumProcedure() {
     let alignedSpectrum = null;
-    if (isAnyRawSpectrumAvailable)
+    if (isSLabSpectrumCurrentlySelected)
         alignedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
     else
         alignedSpectrum = getSpectrumBySpectrumType(SPECTRUM_TYPE_ALIGNED);
@@ -224,13 +220,16 @@ function loadSpectraToBeProcessed() {
     /* close other charms, if opened */
     closeCharmsColorSelector();
 
-    spectraForProcessingIds = spectraInfo.filter(x => x.SpectrumType == SPECTRUM_TYPE_RAW).map(x => { return x.Id });
+    let spectraSLabType = spectraInfo.filter(x => x.SpectrumSource == SPECTRUM_SOURCE_SLAB && x.SpectrumType == SPECTRUM_TYPE_RAW).map(x => { return x.Id });
+    if (spectraSLabType && spectraSLabType.length > 0)
+        spectraForProcessingIds.push(...spectraSLabType);
 
-    if (!spectraForProcessingIds || spectraForProcessingIds.length == 0) {
+    let spectraExternalType = spectraInfo.filter(x => x.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL).map(x => { return x.Id });
+    if (spectraExternalType && spectraExternalType.length > 0)
+        spectraForProcessingIds.push(...spectraExternalType);
+
+    if (spectraSLabType.length === 0 && spectraExternalType.length > 0) {
         /* manage case when only external files (labeled as 'Aligned') are loaded and no Raw spectrum is available */
-        spectraForProcessingIds = spectraInfo.filter(x => x.SpectrumType == SPECTRUM_TYPE_ALIGNED).map(x => { return x.Id });
-        isAnyRawSpectrumAvailable = false;
-        /* enable management of clicked point on aligned spectrum for fitting */
         setIsPointClickForFitEnabled(true);
     }
 
@@ -238,7 +237,7 @@ function loadSpectraToBeProcessed() {
         let html = ``;
         html += `<select id="charmsSpectrumSelector" data-role="select" `
         html += `data-cls-select="charms-select" `;
-        html += `data-on-change="${onSelectSpectrum.name}">`;
+        html += `data-on-item-select="${onSelectSpectrum.name}">`;
         html += `<option value="0">${SelectItemLabel}</option>`;
         let spectraNum = spectraForProcessingIds.length;
         for (var i = 0; i < spectraNum; i++) {
@@ -255,28 +254,30 @@ function loadSpectraToBeProcessed() {
 }
 
 function onSelectSpectrum(selected) {
-    let selectedValue = parseInt(selected[0]);
+    let selectedValue = parseInt(selected);
     if (selectedValue == selectedSpectrumForProcessingId)
         return; // if we're opening charms and the selected spectrum is the already selected one, then do nothing
 
-    /* remember id of selected spectrum */
+    /* remember the previous id value */
+    oldSelectedSpectrumForProcessingId = selectedSpectrumForProcessingId;
+
+    /* remember new id of selected spectrum */
     selectedSpectrumForProcessingId = selectedValue;
 
-    /* find selected raw spectrum children, if available */
-    let familyIds = findSpectrumChildrenById(selectedSpectrumForProcessingId);
+    let selectedSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
+    if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL)
+        isSLabSpectrumCurrentlySelected = false;
 
-    /* find all spectra that are going to be hidden to let user show only selected raw spectrum */
-    let spectraToBeHiddenIds = findAllSpectraToBeHidden(selectedSpectrumForProcessingId);
+    /* find ids of spectra to be removed when changing selected spectrum */
+    let idsToBeRemoved = findChildrenOfIdsOtherThan(selectedSpectrumForProcessingId, selectedSpectrum.SpectrumSource);
+    if (isAnyItem(idsToBeRemoved)) {
+        let callbackYes = async function () {
+            removeChartSeriesByIdsProcedure(chartContainer, idsToBeRemoved);
 
-    /* set visibility for each spectrum for being hidden in next instructions */
-    spectraToBeHiddenIds.forEach(function (id) {
-        setSpectrumVisibility(id, false);
-    });
+            removeSpectraById(idsToBeRemoved);
 
-    if (isAnyItem(familyIds)) {
-        let callback = async function () {
-            /* hide spectra with IsVisible = false */
-            hideSpectraToBeHidden();
+            /* update visibility for all spectra */
+            manageSpectraVisibility(selectedSpectrumForProcessingId);
 
             /* reset charms UI and load segments for alignment */
             await initCharmsPhase1Async();
@@ -284,10 +285,16 @@ function onSelectSpectrum(selected) {
             /* load info for creating UI of alignment panel  */
             initCharmsPhase2Async();
         };
-        askAndExecute(CharmsSpectraProcessingManagementLabel, CharmsDeleteProcessedSpectraQuestion, callback);
+        let callbackNo = function () {
+            selectedSpectrumForProcessingId = oldSelectedSpectrumForProcessingId;
+
+            Metro.getPlugin('#charmsSpectrumSelector', 'select').val(oldSelectedSpectrumForProcessingId);
+        };
+        showDialogWithActions(WARNING_LABEL, CharmsDeleteProcessedSpectraQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);
+        //askAndExecute(CharmsSpectraProcessingManagementLabel, CharmsDeleteProcessedSpectraQuestion, callback);
     } else {
-        /* hide spectra with IsVisible = false */
-        hideSpectraToBeHidden();
+        /* update visibility for all spectra */
+        manageSpectraVisibility(selectedSpectrumForProcessingId);
 
         /* load info for creating UI of alignment panel  */
         initCharmsPhase2Async();
@@ -298,7 +305,7 @@ async function initCharmsPhase2Async() {
     /* hide message about RAW file selection */
     hideByClassDFlexItem('charmsTabAlignmentStartingMessageContainer');
 
-    if (isAnyRawSpectrumAvailable) {
+    if (isSLabSpectrumCurrentlySelected) {
         /* set as selected the alignment tab */
         setTabEnabled(0, true);
 
@@ -310,6 +317,23 @@ async function initCharmsPhase2Async() {
     /* check whether continuum-removed version is already available on cloud or not */
     if (await callCheckIsSpectrumOfTypeSavedOnCloudForContinuumRemovedAsync())
         setTabEnabled(1, true);
+}
+
+function manageSpectraVisibility(selectedSpectrumId) {
+    /* set IsVisible to TRUE for selected spectrum */
+    setSpectrumVisibility(selectedSpectrumId, true);
+    let seriesName = getSpectrumSeriesNameFromIndex(getSpectrumIndexById(selectedSpectrumId));
+    dxChartShowSeries(chartContainer, seriesName);
+
+    /* set IsVisible to FALSE for all other spectra */
+    let spectraNum = spectraInfo.length;
+    for (var i = 0; i < spectraNum; i++) {
+        if (spectraInfo[i].Id != selectedSpectrumId) {
+            setSpectrumVisibility(spectraInfo[i].Id, false);
+            let seriesName = getSpectrumSeriesNameFromIndex(getSpectrumIndexById(spectraInfo[i].Id));
+            dxChartHideSeries(chartContainer, seriesName);
+        }
+    }
 }
 
 /* ################################################################################ */
@@ -761,7 +785,6 @@ function getPointsMaxX(points) {
     return points[points.length - 1].X
 }
 
-
 function getPointsMinX(points) {
     return points[0].X
 }
@@ -792,7 +815,7 @@ function getPointAtFromSeriesPoints(seriesPoints, index) {
 function getSeriesPointsProcedure(rawId, spectrumType) {
     //selectedSpectrumTypeForContinuumRemoval
     let spectrum = getChildSpectrumByRawIdAndSpectrumType(rawId, spectrumType);
-    if (!spectrum && !isAnyRawSpectrumAvailable)
+    if (!spectrum && !isSLabSpectrumCurrentlySelected)
         spectrum = getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
     /* retrieve index of spectrum in spectraInfo */
     let index = getSpectrumIndexById(spectrum.Id);

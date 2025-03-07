@@ -68,7 +68,7 @@ async function preparePanelForFitPhase1Async(extCallback) {
         loadPartialViewWithAjaxGetNoModel(UrlLoadFitPanel, 'fitOptionsPanel', callback);
 
         /* add raw spectrum to the ones to be hidden */
-        if (isAnyRawSpectrumAvailable) //when a SLab RAW spectrum is loaded and under processing we hide it in this phase, otherwise avoid to hide it
+        if (isSLabSpectrumCurrentlySelected) //when a SLab RAW spectrum is loaded and under processing we hide it in this phase, otherwise avoid to hide it
             setSpectrumVisibility(selectedSpectrumForProcessingId, false);
 
         isFitTabSelected = true;
@@ -1191,7 +1191,7 @@ function tryAddContinuumSpectrum() {
        1) when we're processing a SLAB raw spectrum do as usual ;
        2) when we're processing an external file, aligned spectrum IS selected spectrum */
     let alignedSpectrum = null;
-    if (isAnyRawSpectrumAvailable)
+    if (isSLabSpectrumCurrentlySelected)
         alignedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
     else
         alignedSpectrum = selectedSpectrum;

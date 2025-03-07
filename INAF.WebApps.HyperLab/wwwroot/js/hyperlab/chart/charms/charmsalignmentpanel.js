@@ -7,7 +7,6 @@ var timeoutSegments;
 var timeoutSelectedSegment;
 var timeoutSpectrumTypeColor;
 
-var selectedSpectrumForProcessingId = 0;
 var isSavedOnCloudFileRemovalRequested = false;
 var isHidingRefWhitesRequested = false;
 
@@ -853,14 +852,12 @@ function buildAlignedSpectrum() {
         let rawSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
 
         /* build spectrum info for being added to 'spactraInfo' */
-        let alignedSpectrum = {
-            Id: buildTempAlignedId(),
-            ParentId: selectedSpectrumForProcessingId,
-            Name: rawSpectrum.Name,
-            SpectrumLevel: rawSpectrum.SpectrumLevel,
-            SpectrumType: SPECTRUM_TYPE_ALIGNED,
-            InsertDateTimeJs: 0
-        };
+        let alignedSpectrum = buildSpectrum(buildTempAlignedId(),
+                                            selectedSpectrumForProcessingId,
+                                            rawSpectrum.Name,
+                                            rawSpectrum.SpectrumLevel,
+                                            SPECTRUM_TYPE_ALIGNED,
+                                            rawSpectrum.SpectrumSource);
 
         /* save spectrum into 'spoectraInfo' */
         addSpectrumInfo(alignedSpectrum);

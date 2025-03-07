@@ -1,33 +1,31 @@
-﻿/* find all RAW spectra + their children, 
-   DO NOT SEARCH FOR REF WHITES */
-function findAllSpectraToBeHidden(selectedRawId) {
-    let spectraToBeHiddenIds = [];
+﻿///* find all RAW spectra + their children, 
+//   DO NOT SEARCH FOR REF WHITES */
+//function findAllSpectraToBeHidden(selectedRawId) {
+//    let spectraToBeHiddenIds = [];
 
-    /* find all raw spectra */
-    let rawSpectra = getSpectraBySpectrumType(SPECTRUM_TYPE_RAW);
+//    /* find all raw spectra */
+//    let rawSpectra = getSpectraBySpectrumType(SPECTRUM_TYPE_RAW);
 
-    /* find all children of raw spectra */
-    rawSpectra.forEach(function (item) {
-        spectraToBeHiddenIds.push(item.Id);
-        let children = findSpectrumChildrenById(item.Id);
-        if (children && children.length > 0)
-            spectraToBeHiddenIds = spectraToBeHiddenIds.concat(children);
-    });
+//    /* find all children of raw spectra */
+//    rawSpectra.forEach(function (item) {
+//        spectraToBeHiddenIds.push(item.Id);
+//        let children = findSpectrumChildrenById(item.Id);
+//        if (children && children.length > 0)
+//            spectraToBeHiddenIds = spectraToBeHiddenIds.concat(children);
+//    });
 
-    /* remove id of selected spectrum */
-    let index = spectraToBeHiddenIds.findIndex(x => x == selectedRawId);
-    if (index > -1)
-        spectraToBeHiddenIds.splice(index, 1);
+//    /* remove id of selected spectrum */
+//    let index = spectraToBeHiddenIds.findIndex(x => x == selectedRawId);
+//    if (index > -1)
+//        spectraToBeHiddenIds.splice(index, 1);
 
-    return spectraToBeHiddenIds;
-}
+//    return spectraToBeHiddenIds;
+//}
 
 function hideSpectraToBeHidden() {
     let spectraToBeHidden = spectraInfo.filter(x => !x.IsVisible);
     spectraToBeHidden.forEach(function (item) {
-        let index = getSpectrumIndexById(item.Id);
-
-        let seriesname = getSpectrumSeriesNameFromIndex(index);
+        let seriesname = getSpectrumSeriesNameFromIndex(getSpectrumIndexById(item.Id));
 
         dxChartHideSeries(chartContainer, seriesname);
     });
@@ -212,6 +210,27 @@ function updateSpectrumInfoId(index, newId) {
 }
 
 /* ---- GET ----------------------------------------------------------------------- */
+function findChildrenOfIdsOtherThan(id, spectrumSource) {
+    let spectraToBeRemoved = [];
+
+    switch (spectrumSource) {
+        case SPECTRUM_SOURCE_EXTERNAL:
+            spectraToBeRemoved = spectraInfo.filter(x => x.Id != id &&
+                x.SpectrumSource == SPECTRUM_SOURCE_SLAB &&
+                (x.SpectrumType > SPECTRUM_TYPE_RAW &&
+                    x.SpectrumType != SPECTRUM_TYPE_REF &&
+                    x.SpectrumType != SPECTRUM_TYPE_REF_WHITE))
+                .map(x => x.Id);
+            //spectraInfo = spectraInfo.filter(x => !spectraToBeRemoved.includes(x));
+            break;
+
+        default:
+            break;
+    }
+
+    return spectraToBeRemoved;
+}
+
 function findSpectrumChildrenById(id) {
     let continueLoop = true;
 
@@ -403,6 +422,15 @@ function isSpectrumAvailableByIdAndType(id, spectrumType) {
 function isSpectrumAvailableByType(spectrumType) {
     return (spectraInfo.findIndex(x => x.SpectrumType == spectrumType) > -1);
 }
+
+function removeSpectraById(ids) {
+    ids.forEach(function (id) {
+        let index = getSpectrumIndexById(id);
+        if (index > -1)
+            removeSpectrumByIndex(index);
+    });
+}
+
 function removeSpectrumByIndex(index) {
     return spectraInfo.splice(index, 1);
 }
@@ -444,7 +472,7 @@ function getSeriesFromId(id) {
 }
 
 function getSeriesIndexByValueField(valueField) {
-    return chartSeries.findIndex(x => x.valueField == valueField); 
+    return chartSeries.findIndex(x => x.valueField == valueField);
 }
 
 function getSeriesNameFromId(id) {
@@ -486,6 +514,15 @@ function removeChartSeriesByFieldIdProcedure(chartContainer, fieldId) {
         removeChartSeriesAt(index);
         dxChartUpdateSeries(chartContainer, chartSeries);
     }
+}
+
+function removeChartSeriesByIdsProcedure(chartContainer, ids) {
+    dxChartBeginUpdate(chartContainer);
+    ids.forEach(function (id) {
+        let seriesName = getSpectrumSeriesNameFromIndex(getSpectrumIndexById(id));
+        removeChartSeriesByNameProcedure(chartContainer, seriesName);
+    });
+    dxChartEndUpdate(chartContainer);
 }
 
 function removeChartSeriesByNameProcedure(chartContainer, seriesName) {
