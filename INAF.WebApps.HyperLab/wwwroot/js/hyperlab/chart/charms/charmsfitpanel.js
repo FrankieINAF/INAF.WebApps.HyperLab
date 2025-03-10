@@ -93,7 +93,7 @@ function initFit() {
 
     isFitTabSelected = false;
     isFitTabReady = false;
-    isPointClickForFitEnabled = false;
+    setIsPointClickForFitEnabled(false);
 
     /* remove panel with segments */
     $('#fitPanel').remove();

@@ -228,11 +228,6 @@ function loadSpectraToBeProcessed() {
     if (spectraExternalType && spectraExternalType.length > 0)
         spectraForProcessingIds.push(...spectraExternalType);
 
-    if (spectraSLabType.length === 0 && spectraExternalType.length > 0) {
-        /* manage case when only external files (labeled as 'Aligned') are loaded and no Raw spectrum is available */
-        setIsPointClickForFitEnabled(true);
-    }
-
     if (spectraForProcessingIds && spectraForProcessingIds.length > 0) {
         let html = ``;
         html += `<select id="charmsSpectrumSelector" data-role="select" `
@@ -248,8 +243,16 @@ function loadSpectraToBeProcessed() {
 
         $('#spectrumSelectionContainer').html(html);
 
-        if (spectraNum == 1)
+        if (spectraNum == 1) {
+            /* manage case when only external file (labeled as 'Aligned') are loaded and no Raw spectrum is available */
+            if (spectraExternalType.length > 0)
+                setIsPointClickForFitEnabled(true);
+            else 
+                setIsPointClickForFitEnabled(false);
+
+            /* if only one spectrum is available, then select it */
             setTimeout(function () { Metro.getPlugin('#charmsSpectrumSelector', 'select').val(spectraForProcessingIds[0]) }, 1000);
+        }
     }
 }
 
@@ -281,6 +284,9 @@ function onSelectSpectrum(selected) {
 
             /* reset charms UI and load segments for alignment */
             await initCharmsPhase1Async();
+
+            if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL)
+                setIsPointClickForFitEnabled(true);
 
             /* load info for creating UI of alignment panel  */
             initCharmsPhase2Async();
