@@ -577,9 +577,11 @@ function updateSegmentYRange(sourceYValues, destYRangeValues) {
 
     /* create a new y-array with fitvalues mapped to original y-values-interval */
     let fitYValues = [];
+    let sourceYValuesRange = (sourceYValuesMax - sourceYValuesMin);
+    let destYValuesRange = (destYValuesMax - destYValuesMin);
     let destYRangeValuesNum = destYRangeValues.length;
     for (var i = 0; i < destYRangeValuesNum; i++) {
-        fitYValues[i] = ((destYRangeValues[i] - destYValuesMin) / (destYValuesMax - destYValuesMin)) * (sourceYValuesMax - sourceYValuesMin) + sourceYValuesMin;
+        fitYValues[i] = ((destYRangeValues[i] - destYValuesMin) / destYValuesRange) * sourceYValuesRange + sourceYValuesMin;
     }
 
     return fitYValues;

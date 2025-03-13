@@ -251,12 +251,16 @@ function loadSpectraToBeProcessed() {
                 setIsPointClickForFitEnabled(false);
 
             /* if only one spectrum is available, then select it */
-            setTimeout(function () { Metro.getPlugin('#charmsSpectrumSelector', 'select').val(spectraForProcessingIds[0]) }, 1000);
+            setTimeout(function () { setSelectedSpectrumForProcessing(spectraForProcessingIds[0]) }, 1000);
         }
     }
 }
 
 function onSelectSpectrum(selected) {
+    setSelectedSpectrumForProcessing(selected);
+}
+
+function setSelectedSpectrumForProcessing(selected) {
     let selectedValue = parseInt(selected);
     if (selectedValue == selectedSpectrumForProcessingId)
         return; // if we're opening charms and the selected spectrum is the already selected one, then do nothing

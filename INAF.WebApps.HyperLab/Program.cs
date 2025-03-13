@@ -123,6 +123,7 @@ builder.Services
     .AddTransient<ConnectionStringBuilder>()
     .AddTransient<ContinuumRemovalHelper>()
     .AddTransient<EncryptionHelper>()
+    .AddTransient<FitMethodsHelper>()
     .AddTransient<LinearFitHelper>()
     .AddTransient<LinearProcessingHelper>()
     .AddTransient<MenuHelper>()

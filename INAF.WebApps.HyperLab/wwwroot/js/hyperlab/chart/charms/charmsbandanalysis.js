@@ -116,31 +116,6 @@ async function executeBandAnalysisProcedureAsync() {
     isBandDepthCharmsOpened = true;
 }
 
-///* ################################################################################ */
-///* SHOW/HIDE BAND DEPTH PANEL */
-///* ################################################################################ */
-//async function hideBandAnalysisPanelAsync() {
-//    await animateCSSAsync('charmsBandAnalysisMainPanel', 'fadeOut', FASTER);
-//    hideByClass('charmsBandAnalysisMainPanel');
-
-//    showByClass('charmsSpectraProcessingMainPanel');
-//    await animateCSSAsync('charmsSpectraProcessingMainPanel', 'fadeIn', FASTER);
-
-//    /* retrieve all points of all series from chart */
-//    let items = dxChartGetItems(chartContainer);
-
-//    /* remove previous analysis and UI items, if available */
-//    clearBandAnalysisProcedure(items);
-//}
-
-//async function showBandAnalysisPanelAsync() {
-//    await animateCSSAsync('charmsSpectraProcessingMainPanel', 'fadeOut', FASTER);
-//    hideByClass('charmsSpectraProcessingMainPanel');
-
-//    showByClass('charmsBandAnalysisMainPanel');
-//    await animateCSSAsync('charmsBandAnalysisMainPanel', 'fadeIn', FASTER);
-//}
-
 /* ################################################################################ */
 /* BAND DEPTH */
 /* ################################################################################ */
@@ -330,7 +305,7 @@ function showGaussianFit(items, xValues, yValues, fitResult) {
         }
     }
 
-    let normalFitSeries = createSeriesFromSpectrumName(SERIES_NORMAL_FIT_POINT, SERIES_NORMAL_FIT, '#9933ff', true, false);
+    let normalFitSeries = createSeriesFromSpectrumName(SERIES_NORMAL_FIT_POINT, SERIES_NORMAL_FIT, '#ced714', true, false);
     addChartSeries(normalFitSeries);
     dxChartUpdateSeries(chartContainer, chartSeries);
 
@@ -350,7 +325,7 @@ function showFwhm(items, leftMargin, rightMargin) {
     if (indexRightMargin > -1)
         items[indexRightMargin][SERIES_FWHM_POINT] = rightMargin.Y;
 
-    let fwhmSeries = createSeriesFromSpectrumName(SERIES_FWHM_POINT, SERIES_FWHM, '#9933ff', false, false);
+    let fwhmSeries = createSeriesFromSpectrumName(SERIES_FWHM_POINT, SERIES_FWHM, '#ced714', false, false);
     addChartSeries(fwhmSeries);
     dxChartUpdateSeries(chartContainer, chartSeries);
 
@@ -547,7 +522,7 @@ async function highlightBandAsync(seriesName, segmentForFitting, items) {
         rangeValue2Field: SERIES_HIGHLIGHTENED_BAND_MAX_VALUE_POINT,
         name: SERIES_HIGHLIGHTENED_BAND,
         axis: 'valueAxis',
-        color: '#ff00ff',
+        color: '#b21309',
         showInLegend: false
     };
     addChartSeries(bandSeries);
