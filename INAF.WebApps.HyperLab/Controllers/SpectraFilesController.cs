@@ -504,10 +504,10 @@ namespace INAF.WebApps.HyperLab.Controllers
             int bandOverlapRange = dbHandlerHyperLabUsers.getUserSettingsBandOverlapRange(getUserId());
 
             bool isOverlapping = dbHandlerHyperLabData.isBandOverlappingWithExistingOne(model.FileId,
-                                                                                    model.LeftBoundary,
-                                                                                    model.RightBoundary,
-                                                                                    bandOverlapRange,
-                                                                                    getUserId());
+                                                                                        model.BandLeftBoundary,
+                                                                                        model.BandRightBoundary,
+                                                                                        bandOverlapRange,
+                                                                                        getUserId());
             return new JsonResult(new GenericResponseModel() { BoolValue = isOverlapping });
         }
 
@@ -515,15 +515,15 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> SaveBandAnalysisData([FromBody] BandAnalysisModel model)
         {
             (bool isOk, int id) result = await dbHandlerHyperLabData.upsertBandAnalysisDataAsync(model.FileId,
-                                                                                             model.Id,
-                                                                                             model.LeftBoundary,
-                                                                                             model.RightBoundary,
-                                                                                             model.BandCenterX,
-                                                                                             model.BandDepth,
-                                                                                             model.BandArea,
-                                                                                             model.FwhmLeftMargin,
-                                                                                             model.FwhmRightMargin,
-                                                                                             getUserId());
+                                                                                                 model.Id,
+                                                                                                 model.BandLeftBoundary,
+                                                                                                 model.BandRightBoundary,
+                                                                                                 model.BandCenterX,
+                                                                                                 model.BandDepth,
+                                                                                                 model.BandArea,
+                                                                                                 model.FwhmLeftBoundary,
+                                                                                                 model.FwhmRightBoundary,
+                                                                                                 getUserId());
             if (result.isOk)
                 return new JsonResult(new GenericResponseModel() { Id = result.id, IsOk = true });
             else

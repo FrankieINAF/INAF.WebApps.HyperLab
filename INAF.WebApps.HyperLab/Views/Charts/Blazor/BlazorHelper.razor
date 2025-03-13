@@ -123,22 +123,9 @@
     public async Task<ProcessingResult> fitSegmentAsync(List<PointModel> points,
                                                         FitMethodModel fitMethod)
     {
-        IFitProcessingHelper? specializedProcessingHelper = null;
-        double? parameterValue = null;
-        switch (fitMethod.HelperClassName)
-        {
-            case nameof(SplineFitHelper):
-                specializedProcessingHelper = serviceProvider.GetRequiredService<SplineProcessingHelper>();
-                if (fitMethod.ParameterConstraintValue != null)
-                    parameterValue = fitMethod.ParameterConstraintValue.Value;
-                break;
-
-            default:
-                specializedProcessingHelper = serviceProvider.GetRequiredService<LinearProcessingHelper>();
-                break;
-        }
-
-        return await specializedProcessingHelper.fitSpectrumProcedureAsync(points, fitMethod, parameterValue);
+        var fitMethodsHelper = serviceProvider.GetRequiredService<FitMethodsHelper>();
+        return await fitMethodsHelper.fitSelectedSegmentAsync(points,
+                                                              fitMethod);
     }
 
     [JSInvokable]
@@ -217,71 +204,19 @@
     [JSInvokable]
     public double evaluateBandArea(double[] xs, double[] ys)
     {
-        double area = 0;
-
-        var xsNum = xs.Count();
-        for (int i = 1; i < xsNum; i++)
-        {
-            area += ((ys[i] + ys[i - 1]) * (xs[i] - xs[i - 1])) / 2d;
-        }
-
-        return area;
+        return new BandAnalysisHelper().evaluateBandArea(xs, ys);
     }
 
     [JSInvokable]
     public FwhmResultModel? evaluateFwhm(double[] xs, double[] ys, int bandCenterX, double bandDepth)
     {
-        double halfBandDepth = bandDepth / 2d;
-
-        var index = Array.IndexOf(xs, bandCenterX);
-
-        if (index == -1)
-            return null;
-
-        double refValue = ys[index] + halfBandDepth;
-
-        int leftIndex = -1;
-        for (int i = 0; i < index; i++)
-        {
-            if (ys[i] >= refValue && ys[i + 1] <= refValue)
-            {
-                leftIndex = i;
-                break;
-            }
-        }
-
-        int rightIndex = -1;
-        int xsNum = xs.Count();
-        for (int i = index; i < xsNum; i++)
-        {
-            if (ys[i] <= refValue && ys[i + 1] >= refValue)
-            {
-                rightIndex = i;
-                break;
-            }
-        }
-
-        if (leftIndex == -1 || rightIndex == -1)
-            return null;
-
-        double fwhm = xs[rightIndex] - xs[leftIndex];
-
-        FwhmResultModel fwhmResult = new FwhmResultModel(fwhm, new PointModel(xs[leftIndex], ys[leftIndex]), new PointModel(xs[rightIndex], ys[rightIndex]));
-
-        return fwhmResult;
+        return new BandAnalysisHelper().evaluateFwhm(xs, ys, bandCenterX, bandDepth);
     }
 
     [JSInvokable]
     public FwhmResultModel rebuildFwhm(double[] xs, double[] ys, int leftMargin, int rightMargin)
     {
-        int leftIndex = Array.IndexOf(xs, leftMargin);
-        int rightIndex = Array.IndexOf(xs, rightMargin);
-
-        double fwhm = rightMargin - leftMargin;
-
-        FwhmResultModel fwhmResult = new FwhmResultModel(fwhm, new PointModel(xs[leftIndex], ys[leftIndex]), new PointModel(xs[rightIndex], ys[rightIndex]));
-
-        return fwhmResult;
+        return new BandAnalysisHelper().rebuildFwhm(xs, ys, leftMargin, rightMargin);
     }
 
     [JSInvokable]

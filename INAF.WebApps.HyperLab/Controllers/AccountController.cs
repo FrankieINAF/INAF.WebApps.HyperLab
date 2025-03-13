@@ -116,6 +116,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult Login(string? returnUrl,
                                    string? caller = null)
         {
+            //new Libraries.Net.HyperLab.CommonWebAppHelpers.TokenValidationParametersHelper(configuration).exportKey();
             ViewBag.ReturnUrl = returnUrl;
             if (!string.IsNullOrEmpty(caller))
                 ViewBag.Caller = caller;
