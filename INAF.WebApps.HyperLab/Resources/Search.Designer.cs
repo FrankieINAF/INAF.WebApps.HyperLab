@@ -133,6 +133,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load external spectra.
+        /// </summary>
+        public static string ButtonLoadExternalTitle {
+            get {
+                return ResourceManager.GetString("ButtonLoadExternalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load SLab spectra.
+        /// </summary>
+        public static string ButtonLoadSLabTitle {
+            get {
+                return ResourceManager.GetString("ButtonLoadSLabTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open panel for spectra processing.
         /// </summary>
         public static string ButtonOpenCharmsLabel {
@@ -295,15 +313,6 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Through this panel, you can upload EXTERNAL spectra stored as CSV or XML files, provided they are compatible with the HyperLab application.
-        /// </summary>
-        public static string LoadExternalFilesExplanation {
-            get {
-                return ResourceManager.GetString("LoadExternalFilesExplanation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add file loader.
         /// </summary>
         public static string LoadFileAddButtonTitle {
@@ -313,7 +322,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load spectrum.
+        ///   Looks up a localized string similar to Load spectra.
         /// </summary>
         public static string LoadFileLabel {
             get {
@@ -340,20 +349,20 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorry, something went wrong while trying to read selected CSV message.
+        ///   Looks up a localized string similar to Sorry, something went wrong while trying to read selected file.
         /// </summary>
-        public static string LoadFileReadCsvFileErrorMessage {
+        public static string LoadFileReadFileErrorMessage {
             get {
-                return ResourceManager.GetString("LoadFileReadCsvFileErrorMessage", resourceCulture);
+                return ResourceManager.GetString("LoadFileReadFileErrorMessage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorry, something went wrong while trying to read selected XML file.
+        ///   Looks up a localized string similar to File successfully loaded.
         /// </summary>
-        public static string LoadFileReadXmlFileErrorMessage {
+        public static string LoadFileReadFileSuccessMessage {
             get {
-                return ResourceManager.GetString("LoadFileReadXmlFileErrorMessage", resourceCulture);
+                return ResourceManager.GetString("LoadFileReadFileSuccessMessage", resourceCulture);
             }
         }
         
@@ -394,11 +403,11 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Through this panel, you can upload SLAB spectra stored as CSV or XML files, provided they are compatible with the HyperLab application.
+        ///   Looks up a localized string similar to Through this panel, you can upload SLAB spectra stored as CSV or XML files, with compatibility with the HyperLab application required only for the latter type.
         /// </summary>
-        public static string LoadSLabFilesExplanation {
+        public static string LoadFilesExplanation {
             get {
-                return ResourceManager.GetString("LoadSLabFilesExplanation", resourceCulture);
+                return ResourceManager.GetString("LoadFilesExplanation", resourceCulture);
             }
         }
         
@@ -1384,25 +1393,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load external spectra.
-        /// </summary>
-        public static string TabLoadExternalTitle {
-            get {
-                return ResourceManager.GetString("TabLoadExternalTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Load SLab spectra.
-        /// </summary>
-        public static string TabLoadSLabTitle {
-            get {
-                return ResourceManager.GetString("TabLoadSLabTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Load spectrum from device.
+        ///   Looks up a localized string similar to Load spectra from device.
         /// </summary>
         public static string TabLoadTitle {
             get {

@@ -42,14 +42,14 @@
 <link rel="stylesheet" href="~/css/dist/speechbubble.min.css" asp-append-version="true" />
 <style>
     .button-on-bottom {
-        position: absolute;
-        bottom: 12px;
+    position: absolute;
+    bottom: 12px;
     }
 
     .overlap {
-        position: absolute;
-        width: 290px;
-        top: 0px;
+    position: absolute;
+    width: 290px;
+    top: 0px;
     }
 </style>
 <!-- SEARCH -->
@@ -58,20 +58,20 @@
 
     <!-- SEARCH/LOAD -->
     <div data-role="panel"
-         id="panelSearchLoad"
-         data-title-caption="<strong>@Search.SearchLoadPanelTitle</strong>"
-         data-collapsed="false"
-         data-collapsible="true"
-         data-cls-panel="overflow-y-hidden h-100">
+    id="panelSearchLoad"
+    data-title-caption="<strong>@Search.SearchLoadPanelTitle</strong>"
+    data-collapsed="false"
+    data-collapsible="true"
+    data-cls-panel="overflow-y-hidden h-100">
         <div id="panels">
             <!-- TABS -->
             <div id="charmsTabsContainer" class="row cell-fs-12">
                 <ul id="searchTabs"
-                    data-app-bar="false"
-                    data-role="tabs"
-                    data-expand="true"
-                    data-expand-point="fs"
-                    data-cls-tabs="tabs-list flex-justify-center">
+                data-app-bar="false"
+                data-role="tabs"
+                data-expand="true"
+                data-expand-point="fs"
+                data-cls-tabs="tabs-list flex-justify-center">
                     <li><a id="searchtitle" href="#panelSearch">@Html.Raw(Search.TabSearchTitle)</a></li>
                     <li><a id="loadtitle" href="#panelLoad">@Html.Raw(Search.TabLoadTitle)</a></li>
                 </ul>
@@ -83,26 +83,26 @@
                     <div class="cell-fs-6">
                         <!-- SIMPLE -->
                         <input type="radio"
-                               name="searchTypeRadio"
-                               id="searchTypeRadioSimple"
-                               data-role="radio"
-                               data-style="2"
-                               data-caption="@Search.SearchTypeSimpleLabel"
-                               data-caption-position="left"
-                               data-cls-check="bd-cyan"
-                               class="d-flex flex-justify-right"
-                               checked>
+                        name="searchTypeRadio"
+                        id="searchTypeRadioSimple"
+                        data-role="radio"
+                        data-style="2"
+                        data-caption="@Search.SearchTypeSimpleLabel"
+                        data-caption-position="left"
+                        data-cls-check="bd-cyan"
+                        class="d-flex flex-justify-right"
+                        checked>
                     </div>
                     <!-- COMPLEX -->
                     <div class="cell-fs-6">
                         <input type="radio"
-                               name="searchTypeRadio"
-                               id="searchTypeRadioComplex"
-                               data-role="radio"
-                               data-style="2"
-                               data-caption="@Search.SearchTypeComplexLabel"
-                               data-caption-position="right"
-                               data-cls-check="bd-cyan">
+                        name="searchTypeRadio"
+                        id="searchTypeRadioComplex"
+                        data-role="radio"
+                        data-style="2"
+                        data-caption="@Search.SearchTypeComplexLabel"
+                        data-caption-position="right"
+                        data-cls-check="bd-cyan">
                     </div>
                 </div>
 
@@ -127,25 +127,25 @@
                                     <input id="@{
                                                                             @selectMaterial
 }Input"
-                                           type="text"
-                                           placeholder="@Html.Raw(Search.SearchByMaterialPlaceholder)"
-                                           data-role="input"
-                                           data-search-button="true"
-                                           onfocus="setCurrentSearchSimpleType('@selectMaterial')"
-                                           data-search-button-click="custom"
-                                           data-on-search-button-click="getMaterialsSuggestions('@{
+                                    type="text"
+                                    placeholder="@Html.Raw(Search.SearchByMaterialPlaceholder)"
+                                    data-role="input"
+                                    data-search-button="true"
+                                    onfocus="setCurrentSearchSimpleType('@selectMaterial')"
+                                    data-search-button-click="custom"
+                                    data-on-search-button-click="getMaterialsSuggestions('@{
 
                                         @selectMaterial
                                         ;
                                     }Input','@selectMaterial')" />
                                     <select id="@selectMaterial" data-role="select" data-cls-select="overlap" data-on-change="setCurrentSearchSimpleType('@selectMaterial')" data-on-drop="setCurrentSearchSimpleType('@selectMaterial')"></select>
                                     <button class="button dark cycle small outline margin-top-4 margin-left-8"
-                                            onclick="resetSearchByMaterial('@{
+                                    onclick="resetSearchByMaterial('@{
 
                                                                             @selectMaterial
 ;
 }Input')"
-                                            title="@Html.Raw(Search.SearchClearSuggestionsButtonTitle)">
+                                    title="@Html.Raw(Search.SearchClearSuggestionsButtonTitle)">
                                         <span class="mif-cross-light"></span>
                                     </button>
                                 </div>
@@ -158,7 +158,7 @@
                             <div class="cell-fs-12 cell-sm-3">
                                 <label id="selectSampleDataTypeSearchTypeLabel" for="selectSampleDataType" class="text-secondary">@Html.Raw(Search.SearchSimpleBySampleDataTypeLabel)</label>
                                 @Html.DropDownListFor(model => model.SampleTypeValuesContainerExtended.SampleDataValueId, new SelectList(Model.SampleTypeValuesContainerExtended.SampleDataValues, nameof(SampleTypeModel.Id), nameof(SampleTypeModel.Value), Model.SampleTypeValuesContainerExtended.SampleDataValueId),
-                                         new Dictionary<string, object> {
+                                                  new Dictionary<string, object> {
                                 { "id", @selectSampleDataType },
                                 { "data-role", "select" },
                                 { "data-on-change", $"setCurrentSearchSimpleType('{@selectSampleDataType}')" },
@@ -170,7 +170,7 @@
                             <div class="cell-fs-12 cell-sm-3">
                                 <label id="selectOriginTypeSearchTypeLabel" for="selectOriginType" class="text-secondary">@Html.Raw(Search.SearchSimpleByOriginTypeLabel)</label>
                                 @Html.DropDownListFor(model => model.SampleTypeValuesContainerExtended.OriginTypeValueId, new SelectList(Model.SampleTypeValuesContainerExtended.OriginTypeValues, nameof(OriginTypeModel.Id), nameof(OriginTypeModel.Value), Model.SampleTypeValuesContainerExtended.OriginTypeValueId),
-                                         new Dictionary<string, object> {
+                                                  new Dictionary<string, object> {
                                 { "id", @selectOriginType },
                                 { "data-role", "select" },
                                 { "data-on-change", $"setCurrentSearchSimpleType('{@selectOriginType}')" },
@@ -182,7 +182,7 @@
                             <div class="cell-fs-12 cell-sm-3">
                                 <label id="selectMineralTypeSearchTypeLabel" for="selectMineralType" class="text-secondary">@Html.Raw(Search.SearchSimpleByMineralTypeLabel)</label>
                                 @Html.DropDownListFor(model => model.SampleTypeValuesContainerExtended.MineralTypeValues, new SelectList(Model.SampleTypeValuesContainerExtended.MineralTypeValues, nameof(OriginTypeModel.Id), nameof(OriginTypeModel.Value), Model.SampleTypeValuesContainerExtended.MineralTypeValueId),
-                                         new Dictionary<string, object> {
+                                                  new Dictionary<string, object> {
                                 { "id", @selectMineralType },
                                 { "data-role", "select" },
                                 { "data-on-change", $"setCurrentSearchSimpleType('{@selectMineralType}')" },
@@ -205,33 +205,33 @@
                             <!-- BUTTONS LIST -->
                             <div class="cell-fs-12 cell-md-3 cell-lg-2">
                                 <ul id="listviewSearchConditions"
-                                    data-role="listview"
-                                    data-view="list">
+                                data-role="listview"
+                                data-view="list">
                                     <li id="@ConditionSampleName"
-                                        data-icon="<span class='mif-comment mif-fs'>"
-                                        data-caption="@Html.Raw(Search.SearchComplexBySampleNameLabel)"
-                                        class="complex-search-button"
-                                        onclick="addConditionSampleName('@ConditionSampleName')"></li>
+                                    data-icon="<span class='mif-comment mif-fs'>"
+                                    data-caption="@Html.Raw(Search.SearchComplexBySampleNameLabel)"
+                                    class="complex-search-button"
+                                    onclick="addConditionSampleName('@ConditionSampleName')"></li>
                                     <li id="@ConditionMaterial"
-                                        data-icon="<span class='mif-fingerprint'>"
-                                        data-caption="@Html.Raw(Search.SearchComplexByMaterialLabel)"
-                                        class="complex-search-button"
-                                        onclick="addConditionMaterial('@ConditionMaterial')"></li>
+                                    data-icon="<span class='mif-fingerprint'>"
+                                    data-caption="@Html.Raw(Search.SearchComplexByMaterialLabel)"
+                                    class="complex-search-button"
+                                    onclick="addConditionMaterial('@ConditionMaterial')"></li>
                                     <li id="@ConditionSampleType"
-                                        data-icon="<span class='mif-list'>"
-                                        data-caption="@Html.Raw(Search.SearchComplexBySampleDataTypeLabel)"
-                                        class="complex-search-button"
-                                        onclick="addConditionSampleType('@ConditionSampleType')"></li>
+                                    data-icon="<span class='mif-list'>"
+                                    data-caption="@Html.Raw(Search.SearchComplexBySampleDataTypeLabel)"
+                                    class="complex-search-button"
+                                    onclick="addConditionSampleType('@ConditionSampleType')"></li>
                                     <li id="@ConditionOriginType"
-                                        data-icon="<span class='mif-earth'>"
-                                        data-caption="@Html.Raw(Search.SearchComplexByOriginTypeLabel)"
-                                        class="complex-search-button"
-                                        onclick="addConditionOriginType('@ConditionOriginType')"></li>
+                                    data-icon="<span class='mif-earth'>"
+                                    data-caption="@Html.Raw(Search.SearchComplexByOriginTypeLabel)"
+                                    class="complex-search-button"
+                                    onclick="addConditionOriginType('@ConditionOriginType')"></li>
                                     <li id="@ConditionMineralType"
-                                        data-icon="<span class='mif-lab'>"
-                                        data-caption="@Html.Raw(Search.SearchComplexByMineralTypeLabel)"
-                                        onclick="addConditionMineralType('@ConditionMineralType')"
-                                        class="complex-search-button"></li>
+                                    data-icon="<span class='mif-lab'>"
+                                    data-caption="@Html.Raw(Search.SearchComplexByMineralTypeLabel)"
+                                    onclick="addConditionMineralType('@ConditionMineralType')"
+                                    class="complex-search-button"></li>
                                 </ul>
                             </div>
                             <!-- SAVED SEARCHES INFO + SAVED SEARCHES LIST + CONDITIONS + EXPLANATION -->
@@ -281,23 +281,52 @@
             </div>
             <!-- LOAD PANEL -->
             <div id="panelLoad">
-                <div class="row">
+                <div class="row margin-top-32">
                     @if (IsSLabDataManagerAllowed)
                     {
-                        <!-- LOAD TABS -->
-                        <div id="loadTabsContainer" class="row cell-fs-12">
-                            <ul id="loadTabs"
-                                data-tabs-position="vertical"
-                                data-role="tabs">
-                                <li><a id="loadslabtitle" href="#panelLoadSLab">@Html.Raw(Search.TabLoadSLabTitle)</a></li>
-                                <li><a id="loadexternaltitle" href="#panelLoadExternal">@Html.Raw(Search.TabLoadExternalTitle)</a></li>
-                            </ul>
+                        <input type="file" multiple id="fileInputSLab" class="d-none" data-on-select="loadSLabFilesAsync"/>
+                    }
+                    <input type="file" multiple id="fileInputExternal" class="d-none" onclick="loadExternalFilesAsync"/>
+
+                    <div class="d-flex flex-row flex-justify-center w-100">
+                        @if (IsSLabDataManagerAllowed)
+                        {
+                            <!-- LOAD SLAB FILES -->
+                            <div class="margin-horizontal-16">
+                                <button class="image-button" onclick="document.getElementById('fileInputSLab').click();">
+                                    <span class="mif-lab icon"></span>
+                                    <span class="caption">@Html.Raw(Search.ButtonLoadSLabTitle)</span>
+                                </button>
+                            </div>
+                        }
+                        <!-- LOAD EXTERNAL FILES-->
+                        <div class="margin-horizontal-16">
+                            <button class="image-button" onclick="document.getElementById('fileInputExternal').click();">
+                                <span class="mif-external icon"></span>
+                                <span class="caption">@Html.Raw(Search.ButtonLoadExternalTitle)</span>
+                            </button>
                         </div>
+                    </div>
+
+                    <!-- LIST OF LOADED FILES -->
+                    <div id="loadedFilesSLabContainer" class="d-flex flex-column margin-top-32 w-100">
+                        <div class="flex-self-center">
+                            <span class="text-leader2 text-bold">@Html.Raw(Search.LoadedFilesLabel)</span>
+                        </div>
+                        <div id="loadedFilesList" class="d-flex flex-align-center flex-column w-100"></div>
+                    </div>
+
+
+
+
+                    @* @if (IsSLabDataManagerAllowed)
+                    {
+
                         <!-- LOAD SLAB PANEL -->
                         <div id="panelLoadSLab" class="d-flex flex-column w-100">
                             <!-- EXPLANATION -->
                             <div class="w-100 text-just-fs text-center-sm">
-                                <span class="text-leader2-sm text-medium">@Html.Raw(Search.LoadSLabFilesExplanation)</span>
+                                <span class="text-leader2-sm text-medium">@Html.Raw(Search.LoadFilesExplanation)</span>
                             </div>
                             <!-- FILES READER -->
                             <div class="d-flex flex-self-center w-100-fs w-50-sm">
@@ -317,8 +346,8 @@
                             </div>
 
                         </div>
-                    }
-                    <!-- LOAD EXTERNAL PANEL -->
+                    } *@
+                    @* <!-- LOAD EXTERNAL PANEL -->
                     <div id="panelLoadExternal" class="row cell-fs-12">
                         <div class="row cell-fs-12">
                             <span class="text-leader2 text-medium margin-left-8">@Html.Raw(Search.LoadExternalFilesExplanation)</span>
@@ -332,7 +361,7 @@
                                 <button class="button primary cycle pointer" title="@Html.Raw(Search.LoadFileAddButtonTitle)" onclick="addLoadFileButton('fileExternalLoad_0','loadFileExternalGroupsContainer')"><span class="mif-plus"></span></button>
                             </div>
                         </div>
-                    </div>
+                    </div> *@
 
                 </div>
             </div>

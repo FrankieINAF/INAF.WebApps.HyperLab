@@ -26,6 +26,18 @@ function updateParsedFileSpectrumType(filename, spectrumType) {
 }
 
 /* ################################################################################ */
+/* FILES READING */
+/* ################################################################################ */
+async function loadSLabFilesAsync(evt, element) {
+    console.log(evt);
+
+    if (evt == null)
+        return;
+
+    await loadFilesAsync(evt, SLAB_FILE)
+}
+
+/* ################################################################################ */
 /* SAVE FILE */
 /* ################################################################################ */
 function saveSLabFile(filename) {
@@ -66,23 +78,8 @@ async function saveSLabFileAsync(filename, xml, spectrumType) {
 }
 
 /* ################################################################################ */
-/* BUILD LIST ITEM */
+/* BUILD LIST ITEM - SLAB */
 /* ################################################################################ */
-function addListItem(filename) {
-    $('#loadedFilesSLabList').append(getListItem(filename));
-}
-
-function getListItem(filename) {
-    let html = ``;
-    html += `<div class="d-flex flex-column-fs flex-row-sm margin-vertical-8">`;
-    html += `<div class="flex-self-center-fs"><span class="text-secondary-sm text-light" >${filename}</span></div>`;
-    html += `<div class="flex-self-center-fs margin-horizontal-8" style="width: 260px">${getSpectrumTypeSelect(filename)}</div>`;
-    html += getToSaveOnCloudIcon(filename);
-    html += `</div>`;
-
-    return html;
-}
-
 function getSpectrumTypeSelect(filename) {
     let html = `<select data-role="select" data-on-change="${onSpectrumTypeChange.name}">`;
     html += `<option value="${filename}_${SPECTRUM_TYPE_RAW}" selected>${getSpectrumTypeDescription(2)}</option>`;
@@ -99,7 +96,7 @@ function getSpectrumTypeSelect(filename) {
 }
 
 function getToSaveOnCloudIcon(filename) {
-    return `<div id="upload${filename}" class="pointer" onclick="${saveSLabFile.name}('${filename}')"><span class="mif mif-cloud-upload mif-3x fg-orange pointer" title="${LoadFileNotSavedOnCloudMessage}"></span></div>`;
+    return `<div id="upload_${filename}" class="pointer" onclick="${saveSLabFile.name}('${filename}')"><span class="mif mif-cloud-upload mif-3x fg-orange pointer" title="${LoadFileNotSavedOnCloudMessage}"></span></div>`;
 }
 
 function onSpectrumTypeChange(evt) {

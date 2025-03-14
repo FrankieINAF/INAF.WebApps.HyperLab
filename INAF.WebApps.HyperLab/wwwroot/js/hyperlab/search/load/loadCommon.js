@@ -11,15 +11,10 @@ function isXML(text) {
 /* ################################################################################ */
 /* FILES READING */
 /* ################################################################################ */
-async function loadFilesAsync(evt, element) {
-    console.log(evt);
-
-    if (evt == null)
-        return;
-
-    let filesNum = evt.length;
+async function loadFilesAsync(files, type) {
+    let filesNum = files.length;
     for (var i = 0; i < filesNum; i++) {
-        let file = evt[i];
+        let file = files[i];
         //let filename = removeFileExtension(file.name);
         let filename = file.name;
         //console.log(`LOOP, ${filename}, ${i}`);
@@ -36,7 +31,7 @@ async function loadFilesAsync(evt, element) {
                 //await readXmlProcedureAsync(text, filename, index);
             } else {
                 console.log(`CSV, ${filename}`);
-                manageCsvProcedure(text, filename, SLAB_FILE);
+                manageCsvProcedure(text, filename, type);
             }
         };
 
@@ -67,18 +62,54 @@ function parseCSV(text) {
 
 function manageCsvProcedure(text, filename, type) {
     let xml = buildSpectrum(filename, text);
-    if (xml) {
-        switch (type) {
-            case EXTERNAL_FILE:
-                saveExternalFileAsync(filename, xml, index);
-                break;
-            case SLAB_FILE:
-                addListItem(filename);
-                addParsedSpectrum(filename, xml, SPECTRUM_TYPE_RAW);
-                break;
-            default:
-        }
-    }
-    else
-        showSimpleDialog(ERROR_LABEL, LoadFileReadCsvFileErrorMessage, ALERT);
+    let isLoaded = xml != null;
+    addListItem(filename, type, isLoaded);
+    addParsedSpectrum(filename, xml, SPECTRUM_TYPE_RAW);
+    //if (xml) {
+        
+    //}
+    //else
+    //    showSimpleDialog(ERROR_LABEL, LoadFileReadCsvFileErrorMessage, ALERT);
 }
+
+
+/* ################################################################################ */
+/* BUILD LIST ITEM */
+/* ################################################################################ */
+function addListItem(filename, type, isLoaded) {
+    $('#loadedFilesList').append(getListItem(filename, type, isLoaded));
+}
+
+function getListItem(filename, type, isLoaded) {
+    let html = ``;
+    html += `<div class="d-flex flex-column-fs flex-row-sm margin-vertical-8">`;
+    let color = 'fg-green';
+    let icon = 'mif-checkmark';
+    let message = LoadFileReadFileSuccessMessage;
+    if (!isLoaded) {
+        color = 'fg-red';
+        icon = 'mif-cancel';
+        message = LoadFileReadFileErrorMessage;
+    }
+    html += `<div class="flex-self-center-fs margin-right-8 margin-top-4"><span class="mif ${icon} ${color} mif-2x" title="${message}"></span></div>`;
+    html += `<div class="flex-self-center-fs w-50-sm"><span class="text-secondary-sm text-light">${filename}</span></div>`;
+    if (type == SLAB_FILE)
+        html += `<div class="flex-self-center-fs margin-horizontal-16" style="width: 260px">${getSpectrumTypeSelect(filename)}</div>`;
+    html += getToSaveOnCloudIcon(filename);
+    html += `</div>`;
+
+    return html;
+}
+
+/* ################################################################################ */
+/* DOCUMENT READY */
+/* ################################################################################ */
+$(function () {
+    $('[id^="fileInput"]').on('change', function (e) {
+        var files = e.target.files;
+        if (this.id === "fileInputSLab")
+            loadFilesAsync(files, SLAB_FILE);
+        else
+            loadFilesAsync(files, EXTERNAL_FILE);
+    });
+});

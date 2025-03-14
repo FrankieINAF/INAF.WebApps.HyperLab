@@ -520,19 +520,16 @@
     <value>Rocks</value>
   </data>
   <data name="TabLoadTitle" xml:space="preserve">
-    <value>Load spectrum from device</value>
+    <value>Load spectra from device</value>
   </data>
   <data name="TabSearchTitle" xml:space="preserve">
     <value>Search in SLab DB</value>
   </data>
   <data name="LoadFileLabel" xml:space="preserve">
-    <value>Load spectrum</value>
+    <value>Load spectra</value>
   </data>
-  <data name="LoadExternalFilesExplanation" xml:space="preserve">
-    <value>Through this panel, you can upload EXTERNAL spectra stored as CSV or XML files, provided they are compatible with the HyperLab application</value>
-  </data>
-  <data name="LoadSLabFilesExplanation" xml:space="preserve">
-    <value>Through this panel, you can upload SLAB spectra stored as CSV or XML files, provided they are compatible with the HyperLab application</value>
+  <data name="LoadFilesExplanation" xml:space="preserve">
+    <value>Through this panel, you can upload SLAB spectra stored as CSV or XML files, with compatibility with the HyperLab application required only for the latter type</value>
   </data>
   <data name="LoadFileAddButtonTitle" xml:space="preserve">
     <value>Add file loader</value>
@@ -546,11 +543,11 @@
   <data name="LoadFileRetrieveSpectrumTypeErrorMessage" xml:space="preserve">
     <value>Sorry, an error occurred while trying to load selected file</value>
   </data>
-  <data name="LoadFileReadXmlFileErrorMessage" xml:space="preserve">
-    <value>Sorry, something went wrong while trying to read selected XML file</value>
+  <data name="LoadFileReadFileErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to read selected file</value>
   </data>
-  <data name="LoadFileReadCsvFileErrorMessage" xml:space="preserve">
-    <value>Sorry, something went wrong while trying to read selected CSV message</value>
+  <data name="LoadFileReadFileSuccessMessage" xml:space="preserve">
+    <value>File successfully loaded</value>
   </data>
   <data name="LoadFileReadXmlRetrieveIdErrorMessage" xml:space="preserve">
     <value>Sorry, could not retrieve Id of spectrum saved on cloud from current file.</value>
@@ -558,16 +555,16 @@
   <data name="LoadFileNotAvailableForDataAnalysisMessage" xml:space="preserve">
     <value>This file is not available on the charts page or for data analysis</value>
   </data>
-  <data name="TabLoadSLabTitle" xml:space="preserve">
-    <value>Load SLab spectra</value>
-  </data>
-  <data name="TabLoadExternalTitle" xml:space="preserve">
-    <value>Load external spectra</value>
-  </data>
   <data name="LoadedFilesLabel" xml:space="preserve">
     <value>List of loaded files</value>
   </data>
   <data name="LoadFileNotSavedOnCloudMessage" xml:space="preserve">
     <value>Click to save file on cloud and use it on chart</value>
+  </data>
+  <data name="ButtonLoadSLabTitle" xml:space="preserve">
+    <value>Load SLab spectra</value>
+  </data>
+  <data name="ButtonLoadExternalTitle" xml:space="preserve">
+    <value>Load external spectra</value>
   </data>
 </root>
