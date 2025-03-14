@@ -1,4 +1,4 @@
-﻿@model SampleTypeValuesContainerExtended
+﻿@model SearchPageModel
 
 @using INAF.Libraries.Net.CommonWebAppModels.Models.Info
 @using INAF.Libraries.Net.HyperLab.CommonModels.Values;
@@ -29,6 +29,12 @@
     string materialTypeMineral = Enums.MaterialType.Mineral.ToString();
     string materialTypeRock = Enums.MaterialType.Rock.ToString();
     string materialTypeMeteorClass = Enums.MaterialType.MeteorClass.ToString();
+
+    bool IsSLabDataManagerAllowed = false;
+    if (Model.Permissions != null && Model.Permissions.Any())
+    {
+        IsSLabDataManagerAllowed = Model.Permissions.Any(p => p.Id == (int)INAF.WebApps.HyperLab.Values.Enums.Permissions.SLabManager);
+    }
 }
 
 <link rel="stylesheet" href="~/css/dist/searchandchart/searchandchartbundle.css" asp-append-version="true" />
@@ -70,7 +76,7 @@
                     <li><a id="loadtitle" href="#panelLoad">@Html.Raw(Search.TabLoadTitle)</a></li>
                 </ul>
             </div>
-            <!-- SEARCH -->
+            <!-- SEARCH PANEL -->
             <div id="panelSearch">
                 <!-- SEARCH TYPE (SIMPLE/COMPLEX) -->
                 <div class="row">
@@ -107,7 +113,7 @@
                             <!-- SAMPLE NAME -->
                             <div class="cell-fs-12 cell-sm-3">
                                 <label id="selectSampleNameSearchTypeLabel" for="selectSampleName" class="text-secondary">@Html.Raw(Search.SearchSimpleBySampleNameLabel)</label>
-                                @Html.TextBoxFor(model => model.SampleName, new Dictionary<string, object> {
+                                @Html.TextBoxFor(model => model.SampleTypeValuesContainerExtended.SampleName, new Dictionary<string, object> {
                                 { "id", @selectSampleName },
                                 { "placeholder", @Html.Raw(Search.SearchBySampleNamePlaceholder) },
                                 { "data-role", "input" },
@@ -119,7 +125,7 @@
                                 <label id="selectMaterialSearchTypeLabel" for="selectMaterialInput" class="text-secondary">@Html.Raw(Search.SearchSimpleByMaterialLabel)</label>
                                 <div class="d-flex flex-content-start">
                                     <input id="@{
-                                                                @selectMaterial
+                                                                    @selectMaterial
 }Input"
                                            type="text"
                                            placeholder="@Html.Raw(Search.SearchByMaterialPlaceholder)"
@@ -136,7 +142,7 @@
                                     <button class="button dark cycle small outline margin-top-4 margin-left-8"
                                             onclick="resetSearchByMaterial('@{
 
-                                                                @selectMaterial
+                                                                    @selectMaterial
 ;
 }Input')"
                                             title="@Html.Raw(Search.SearchClearSuggestionsButtonTitle)">
@@ -151,7 +157,7 @@
                             <!-- SAMPLE DATA TYPES -->
                             <div class="cell-fs-12 cell-sm-3">
                                 <label id="selectSampleDataTypeSearchTypeLabel" for="selectSampleDataType" class="text-secondary">@Html.Raw(Search.SearchSimpleBySampleDataTypeLabel)</label>
-                                @Html.DropDownListFor(model => model.SampleDataValueId, new SelectList(Model.SampleDataValues, nameof(SampleTypeModel.Id), nameof(SampleTypeModel.Value), Model.SampleDataValueId),
+                                @Html.DropDownListFor(model => model.SampleTypeValuesContainerExtended.SampleDataValueId, new SelectList(Model.SampleTypeValuesContainerExtended.SampleDataValues, nameof(SampleTypeModel.Id), nameof(SampleTypeModel.Value), Model.SampleTypeValuesContainerExtended.SampleDataValueId),
                                          new Dictionary<string, object> {
                                 { "id", @selectSampleDataType },
                                 { "data-role", "select" },
@@ -163,7 +169,7 @@
                             <!-- SAMPLE ORIGIN TYPES -->
                             <div class="cell-fs-12 cell-sm-3">
                                 <label id="selectOriginTypeSearchTypeLabel" for="selectOriginType" class="text-secondary">@Html.Raw(Search.SearchSimpleByOriginTypeLabel)</label>
-                                @Html.DropDownListFor(model => model.OriginTypeValueId, new SelectList(Model.OriginTypeValues, nameof(OriginTypeModel.Id), nameof(OriginTypeModel.Value), Model.OriginTypeValueId),
+                                @Html.DropDownListFor(model => model.SampleTypeValuesContainerExtended.OriginTypeValueId, new SelectList(Model.SampleTypeValuesContainerExtended.OriginTypeValues, nameof(OriginTypeModel.Id), nameof(OriginTypeModel.Value), Model.SampleTypeValuesContainerExtended.OriginTypeValueId),
                                          new Dictionary<string, object> {
                                 { "id", @selectOriginType },
                                 { "data-role", "select" },
@@ -175,7 +181,7 @@
                             <!-- SAMPLE MINERAL TYPES -->
                             <div class="cell-fs-12 cell-sm-3">
                                 <label id="selectMineralTypeSearchTypeLabel" for="selectMineralType" class="text-secondary">@Html.Raw(Search.SearchSimpleByMineralTypeLabel)</label>
-                                @Html.DropDownListFor(model => model.MineralTypeValues, new SelectList(Model.MineralTypeValues, nameof(OriginTypeModel.Id), nameof(OriginTypeModel.Value), Model.MineralTypeValueId),
+                                @Html.DropDownListFor(model => model.SampleTypeValuesContainerExtended.MineralTypeValues, new SelectList(Model.SampleTypeValuesContainerExtended.MineralTypeValues, nameof(OriginTypeModel.Id), nameof(OriginTypeModel.Value), Model.SampleTypeValuesContainerExtended.MineralTypeValueId),
                                          new Dictionary<string, object> {
                                 { "id", @selectMineralType },
                                 { "data-role", "select" },
@@ -271,24 +277,42 @@
                             </div>
                         </div>
                     </div>
-                    </div>
+                </div>
             </div>
-            <!-- LOAD -->
+            <!-- LOAD PANEL -->
             <div id="panelLoad">
                 <div class="row">
-                    <div class="row cell-fs-12">
-                        <span class="text-leader2 text-medium margin-left-8">@Html.Raw(Search.LoadFilesExplanation)</span>
-                    </div>
-                    <div id="loadFileGroupsContainer" class="cell-fs-12 cell-sm-4">
-                        <label for="file" class="text-secondary">@Html.Raw(Search.LoadFileLabel)</label>
-                        <div id="fileLoad_0" class="d-flex margin-top-8">
-                            <span id="fileSavedCheckmark_0" class="mif-cloud mif-2x fg-cyan margin-horizontal-8 margin-top-4 d-none" title="@Html.Raw(Search.LoadFileSavedOnCloudLabel)"></span>
-                            <span id="fileError_0" class="mif-cross-light mif-2x fg-red margin-horizontal-8 margin-top-4 d-none" title="@Html.Raw(Search.LoadFileNotAvailableForDataAnalysisMessage)"></span>
-                            <input type="file" id="fileInput_0" name="file" data-role="file" data-button-title="<span class='mif-file-upload'></span>" data-cls-button="button primary" class="margin-right-8" data-on-select="loadFileAsync" />
-                            <button class="button primary cycle pointer" title="@Html.Raw(Search.LoadFileAddButtonTitle)" onclick="addLoadFileButton('fileLoad_0','loadFileGroupsContainer')"><span class="mif-plus"></span></button>
+                    @if (IsSLabDataManagerAllowed)
+                    {
+                        <!-- LOAD TABS -->
+                        <div id="loadTabsContainer" class="row cell-fs-12">
+                            <ul id="loadTabs"
+                                data-tabs-position="vertical"
+                                data-role="tabs">
+                                <li><a id="loadslabtitle" href="#panelLoadSLab">@Html.Raw(Search.TabLoadSLabTitle)</a></li>
+                                <li><a id="loadexternaltitle" href="#panelLoadExternal">@Html.Raw(Search.TabLoadExternalTitle)</a></li>
+                            </ul>
                         </div>
-                        
+                        <!-- LOAD SLAB PANEL -->
+                        <div id="panelLoadSLab" class="row cell-fs-12">
+                        </div>
+                    }
+                    <!-- LOAD EXTERNAL PANEL -->
+                    <div id="panelLoadExternal" class="row cell-fs-12">
+                        <div class="row cell-fs-12">
+                            <span class="text-leader2 text-medium margin-left-8">@Html.Raw(Search.LoadFilesExplanation)</span>
+                        </div>
+                        <div id="loadFileGroupsContainer" class="cell-fs-12 cell-sm-4">
+                            <label for="file" class="text-secondary">@Html.Raw(Search.LoadFileLabel)</label>
+                            <div id="fileLoad_0" class="d-flex margin-top-8">
+                                <span id="fileSavedCheckmark_0" class="mif-cloud mif-2x fg-cyan margin-horizontal-8 margin-top-4 d-none" title="@Html.Raw(Search.LoadFileSavedOnCloudLabel)"></span>
+                                <span id="fileError_0" class="mif-cross-light mif-2x fg-red margin-horizontal-8 margin-top-4 d-none" title="@Html.Raw(Search.LoadFileNotAvailableForDataAnalysisMessage)"></span>
+                                <input type="file" id="fileInput_0" name="file" data-role="file" data-button-title="<span class='mif-file-upload'></span>" data-cls-button="button primary" class="margin-right-8" data-on-select="loadFileAsync" />
+                                <button class="button primary cycle pointer" title="@Html.Raw(Search.LoadFileAddButtonTitle)" onclick="addLoadFileButton('fileLoad_0','loadFileGroupsContainer')"><span class="mif-plus"></span></button>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -460,13 +484,13 @@
 
     function fillSampleTypes() {
     @{
-        if (Model.SampleDataValues != null && Model.SampleDataValues.Any())
+        if (Model.SampleTypeValuesContainerExtended.SampleDataValues != null && Model.SampleTypeValuesContainerExtended.SampleDataValues.Any())
         {
             StringBuilder sb = new StringBuilder();
-            int sampleTypesNum = Model.SampleDataValues.Count;
+            int sampleTypesNum = Model.SampleTypeValuesContainerExtended.SampleDataValues.Count;
             for (int i = 0; i < sampleTypesNum; i++)
             {
-                sb.AppendLine($"sampleTypes.push({{key: {Model.SampleDataValues[i].Id}, value: '{Model.SampleDataValues[i].Value}' }});");
+                sb.AppendLine($"sampleTypes.push({{key: {Model.SampleTypeValuesContainerExtended.SampleDataValues[i].Id}, value: '{Model.SampleTypeValuesContainerExtended.SampleDataValues[i].Value}' }});");
             }
             @Html.Raw(sb.ToString())
             ;
@@ -476,13 +500,13 @@
 
     function fillMineralTypes() {
     @{
-        if (Model.MineralTypeValues != null && Model.MineralTypeValues.Any())
+        if (Model.SampleTypeValuesContainerExtended.MineralTypeValues != null && Model.SampleTypeValuesContainerExtended.MineralTypeValues.Any())
         {
             StringBuilder sb = new StringBuilder();
-            int mineralTypesNum = Model.MineralTypeValues.Count;
+            int mineralTypesNum = Model.SampleTypeValuesContainerExtended.MineralTypeValues.Count;
             for (int i = 0; i < mineralTypesNum; i++)
             {
-                sb.AppendLine($"mineralTypes.push({{key: {Model.MineralTypeValues[i].Id}, value: '{Model.MineralTypeValues[i].Value}' }});");
+                sb.AppendLine($"mineralTypes.push({{key: {Model.SampleTypeValuesContainerExtended.MineralTypeValues[i].Id}, value: '{Model.SampleTypeValuesContainerExtended.MineralTypeValues[i].Value}' }});");
             }
             @Html.Raw(sb.ToString())
             ;
@@ -492,13 +516,13 @@
 
     function fillOriginTypes() {
     @{
-        if (Model.OriginTypeValues != null && Model.OriginTypeValues.Any())
+        if (Model.SampleTypeValuesContainerExtended.OriginTypeValues != null && Model.SampleTypeValuesContainerExtended.OriginTypeValues.Any())
         {
             StringBuilder sb = new StringBuilder();
-            int originTypesNum = Model.OriginTypeValues.Count;
+            int originTypesNum = Model.SampleTypeValuesContainerExtended.OriginTypeValues.Count;
             for (int i = 0; i < originTypesNum; i++)
             {
-                sb.AppendLine($"originTypes.push({{key: {Model.OriginTypeValues[i].Id}, value: '{Model.OriginTypeValues[i].Value}' }});");
+                sb.AppendLine($"originTypes.push({{key: {Model.SampleTypeValuesContainerExtended.OriginTypeValues[i].Id}, value: '{Model.SampleTypeValuesContainerExtended.OriginTypeValues[i].Value}' }});");
             }
             @Html.Raw(sb.ToString())
             ;

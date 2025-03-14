@@ -22,15 +22,21 @@
             UsersManagement = 3,
             UpsertUser = 4,
             RemoveUser = 5,
-            SaveOnCloud = 6,
             SaveOnCloudFromWeb = 7,
             SaveOnCloudFromApp = 8,
-            Search = 9,
+            Searches = 9,
             SaveChart = 10,
             SaveDataAsFile = 11,
             SaveChartAsFile = 12,
             ResetPassword = 13,
             UsersList = 14,
+            Database = 15,
+            UpsertMinerals = 16,
+            SLabManager = 17,
+            Stats = 18,
+            GMode = 19,
+            KMeans = 20,
+            QubesAnalysis = 21,
         }
     }
 }

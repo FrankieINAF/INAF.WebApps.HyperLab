@@ -4,6 +4,8 @@ using INAF.Libraries.Net.CommonWebAppModels.Models.Searches.Interfaces;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Shares;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Permissions;
+using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Helpers;
@@ -47,9 +49,12 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult Search()
         {
+            List<PermissionModel>? permissions = dbHandlerHyperLabUsers.getUserPermissions(getUserId(), Enums.CallerContext.Web);
+
             var sampleTypesHelper = serviceProvider.GetRequiredService<SampleTypesHelper>();
             SampleTypeValuesContainerExtended sampleTypeValuesContainerExtended = SampleTypeValuesContainerExtended.Create(sampleTypesHelper.getSampleTypeValuesContainer());
-            return View(sampleTypeValuesContainerExtended);
+            var searchPageModel = new SearchPageModel(permissions, sampleTypeValuesContainerExtended);
+            return View(searchPageModel);
         }
 
         [HttpGet]

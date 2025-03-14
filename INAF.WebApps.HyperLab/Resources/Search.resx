@@ -529,7 +529,7 @@
     <value>Load spectrum</value>
   </data>
   <data name="LoadFilesExplanation" xml:space="preserve">
-    <value>From this panel, you can upload spectra saved as CSV or XML files that are compatible with the HyperLab application.</value>
+    <value>Through this panel, you can upload spectra stored as CSV or XML files, provided they are compatible with the HyperLab application</value>
   </data>
   <data name="LoadFileAddButtonTitle" xml:space="preserve">
     <value>Add file loader</value>
@@ -554,5 +554,11 @@
   </data>
   <data name="LoadFileNotAvailableForDataAnalysisMessage" xml:space="preserve">
     <value>This file is not available on the charts page or for data analysis</value>
+  </data>
+  <data name="TabLoadSLabTitle" xml:space="preserve">
+    <value>Load SLab spectra</value>
+  </data>
+  <data name="TabLoadExternalTitle" xml:space="preserve">
+    <value>Load external spectra</value>
   </data>
 </root>

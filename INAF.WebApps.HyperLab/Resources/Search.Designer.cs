@@ -367,7 +367,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to From this panel, you can upload spectra saved as CSV or XML files that are compatible with the HyperLab application..
+        ///   Looks up a localized string similar to Through this panel, you can upload spectra stored as CSV or XML files, provided they are compatible with the HyperLab application.
         /// </summary>
         public static string LoadFilesExplanation {
             get {
@@ -1353,6 +1353,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SuggestionTypeRocks {
             get {
                 return ResourceManager.GetString("SuggestionTypeRocks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load external spectra.
+        /// </summary>
+        public static string TabLoadExternalTitle {
+            get {
+                return ResourceManager.GetString("TabLoadExternalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load SLab spectra.
+        /// </summary>
+        public static string TabLoadSLabTitle {
+            get {
+                return ResourceManager.GetString("TabLoadSLabTitle", resourceCulture);
             }
         }
         
