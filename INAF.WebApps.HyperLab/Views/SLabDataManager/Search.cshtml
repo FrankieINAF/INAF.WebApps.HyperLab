@@ -62,7 +62,7 @@
          data-title-caption="<strong>@Search.SearchLoadPanelTitle</strong>"
          data-collapsed="false"
          data-collapsible="true"
-         data-cls-panel="overflow-y-hidden">
+         data-cls-panel="overflow-y-hidden h-100">
         <div id="panels">
             <!-- TABS -->
             <div id="charmsTabsContainer" class="row cell-fs-12">
@@ -125,7 +125,7 @@
                                 <label id="selectMaterialSearchTypeLabel" for="selectMaterialInput" class="text-secondary">@Html.Raw(Search.SearchSimpleByMaterialLabel)</label>
                                 <div class="d-flex flex-content-start">
                                     <input id="@{
-                                                                    @selectMaterial
+                                                                            @selectMaterial
 }Input"
                                            type="text"
                                            placeholder="@Html.Raw(Search.SearchByMaterialPlaceholder)"
@@ -142,7 +142,7 @@
                                     <button class="button dark cycle small outline margin-top-4 margin-left-8"
                                             onclick="resetSearchByMaterial('@{
 
-                                                                    @selectMaterial
+                                                                            @selectMaterial
 ;
 }Input')"
                                             title="@Html.Raw(Search.SearchClearSuggestionsButtonTitle)">
@@ -294,21 +294,42 @@
                             </ul>
                         </div>
                         <!-- LOAD SLAB PANEL -->
-                        <div id="panelLoadSLab" class="row cell-fs-12">
+                        <div id="panelLoadSLab" class="d-flex flex-column w-100">
+                            <!-- EXPLANATION -->
+                            <div class="w-100 text-just-fs text-center-sm">
+                                <span class="text-leader2-sm text-medium">@Html.Raw(Search.LoadSLabFilesExplanation)</span>
+                            </div>
+                            <!-- FILES READER -->
+                            <div class="d-flex flex-self-center w-100-fs w-50-sm">
+                                <div id="loadFileSLabGroupsContainer" class="w-100">
+                                    <label for="file" class="text-secondary">@Html.Raw(Search.LoadFileLabel)</label>
+                                    <div id="fileSLabLoad" class="d-flex margin-top-8">
+                                        <input type="file" id="fileSLabInput" name="file" multiple data-role="file" data-button-title="<span class='mif-file-upload'></span>" data-cls-button="button primary" class="margin-right-8" data-on-select="loadFilesAsync" />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- LIST OF LOADED FILES -->
+                            <div id="loadedFilesSLabContainer" class="d-flex flex-column margin-vertical-16">
+                                <div class="flex-self-center">
+                                    <span class="text-leader2 text-bold">@Html.Raw(Search.LoadedFilesLabel)</span>
+                                </div>
+                                <div id="loadedFilesSLabList" class="flex-self-center"></div>
+                            </div>
+
                         </div>
                     }
                     <!-- LOAD EXTERNAL PANEL -->
                     <div id="panelLoadExternal" class="row cell-fs-12">
                         <div class="row cell-fs-12">
-                            <span class="text-leader2 text-medium margin-left-8">@Html.Raw(Search.LoadFilesExplanation)</span>
+                            <span class="text-leader2 text-medium margin-left-8">@Html.Raw(Search.LoadExternalFilesExplanation)</span>
                         </div>
-                        <div id="loadFileGroupsContainer" class="cell-fs-12 cell-sm-4">
+                        <div id="loadFileExternalGroupsContainer" class="cell-fs-12 cell-sm-4">
                             <label for="file" class="text-secondary">@Html.Raw(Search.LoadFileLabel)</label>
-                            <div id="fileLoad_0" class="d-flex margin-top-8">
-                                <span id="fileSavedCheckmark_0" class="mif-cloud mif-2x fg-cyan margin-horizontal-8 margin-top-4 d-none" title="@Html.Raw(Search.LoadFileSavedOnCloudLabel)"></span>
-                                <span id="fileError_0" class="mif-cross-light mif-2x fg-red margin-horizontal-8 margin-top-4 d-none" title="@Html.Raw(Search.LoadFileNotAvailableForDataAnalysisMessage)"></span>
-                                <input type="file" id="fileInput_0" name="file" data-role="file" data-button-title="<span class='mif-file-upload'></span>" data-cls-button="button primary" class="margin-right-8" data-on-select="loadFileAsync" />
-                                <button class="button primary cycle pointer" title="@Html.Raw(Search.LoadFileAddButtonTitle)" onclick="addLoadFileButton('fileLoad_0','loadFileGroupsContainer')"><span class="mif-plus"></span></button>
+                            <div id="fileExternalLoad_0" class="d-flex margin-top-8">
+                                <span id="fileExternalSavedCheckmark_0" class="mif-cloud mif-2x fg-cyan margin-horizontal-8 margin-top-4 d-none" title="@Html.Raw(Search.LoadFileSavedOnCloudLabel)"></span>
+                                <span id="fileExternalError_0" class="mif-cross-light mif-2x fg-red margin-horizontal-8 margin-top-4 d-none" title="@Html.Raw(Search.LoadFileNotAvailableForDataAnalysisMessage)"></span>
+                                <input type="file" id="fileExternalInput_0" name="file" data-role="file" data-button-title="<span class='mif-file-upload'></span>" data-cls-button="button primary" class="margin-right-8" data-on-select="loadExternalFileAsync" />
+                                <button class="button primary cycle pointer" title="@Html.Raw(Search.LoadFileAddButtonTitle)" onclick="addLoadFileButton('fileExternalLoad_0','loadFileExternalGroupsContainer')"><span class="mif-plus"></span></button>
                             </div>
                         </div>
                     </div>
@@ -546,7 +567,9 @@
     <script type="text/javascript" src="~/js/hyperlab/search/complexsearchesmanagement.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/complexsearchesintro.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/info.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/load.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/search/load/loadCommon.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/search/load/loadExternal.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/search/load/loadSLab.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">
     <script type="text/javascript" src="~/js/dist/search/searchbundle.min.js" asp-append-version="true"></script>

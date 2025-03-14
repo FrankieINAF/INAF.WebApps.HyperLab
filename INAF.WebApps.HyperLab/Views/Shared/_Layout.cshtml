@@ -37,16 +37,20 @@
         <link rel="stylesheet" href="~/css/dist/commonbundle.min.css" asp-append-version="true" />
     </environment>
 
-    <link rel="stylesheet" href="~/metro/css/dist/metrobundle.min.css" asp-append-version="true" />
+    @* <link rel="stylesheet" href="https://cdn.metroui.org.ua/current/metro.css"> *@
+    <link rel="stylesheet" href="~/css/dist/metro/metrobundle.min.css" asp-append-version="true" />
 
     <script type="text/javascript" src="~/js/dist/jquerybundle.min.js"></script>
+    @* <script src="https://cdn.metroui.org.ua/current/metro.js"></script>
+    <script type="text/javascript" src="~/metro/js/commonformetro.js"></script>
+    <script type="text/javascript" src="~/metro/js/index.js"></script> *@
     <environment names="Development">
         <script type="text/javascript" src="~/js/hyperlab/queue/queue.js" asp-append-version="true"></script>
         <script type="text/javascript" src="~/js/hyperlab/queue/commonsaveusersettings.js" asp-append-version="true"></script>
-        <script type="text/javascript" src="~/metro/js/dist/metrobundle.js"></script>
+        <script type="text/javascript" src="~/js/dist/metro/metrobundle.min.js"></script>
     </environment>
     <environment names="Production">
-        <script type="text/javascript" src="~/metro/js/dist/metrobundle.min.js"></script>
+        <script type="text/javascript" src="~/js/dist/metro/metrobundle.min.js"></script>
         <script type="text/javascript" src="~/js/dist/queue/queuebundle.js" asp-append-version="true"></script>
     </environment>
 

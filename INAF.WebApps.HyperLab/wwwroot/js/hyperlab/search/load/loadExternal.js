@@ -42,19 +42,13 @@ function updateChildrenIds(parentId, idToBeSearched, intValue) {
 /* ################################################################################ */
 /* FILES READING */
 /* ################################################################################ */
-function isXML(text) {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(text, "application/xml");
-    const parseError = xmlDoc.getElementsByTagName("parsererror");
-    return parseError.length === 0;
-}
-
 async function loadExternalFileAsync(evt, element) {
     const file = evt[0];
     if (!file)
         return;
 
-    let filename = removeFileExtension(file.name);
+    //let filename = removeFileExtension(file.name);
+    let filename = file.name;
 
     let tmp = element.id.split('_');
     let index = tmp[1];
@@ -63,22 +57,22 @@ async function loadExternalFileAsync(evt, element) {
     reader.onload = async function (event) {
         const text = event.target.result;
         if (isXML(text)) {
-            await readXmlProcedureAsync(text, filename, index);
+            await manageXmlProcedureAsync(text, filename, index);
         } else {
-            readCsvProcedure(text, filename, index);
+            manageCsvProcedure(text, filename, index, EXTERNAL_FILE);
         }
     };
     reader.readAsText(file);
 }
 
-async function readXmlProcedureAsync(text, filename, index) {
+async function manageXmlProcedureAsync(text, filename, index) {
     let parser = new DOMParser();
     let xmlDoc = parser.parseFromString(text, "application/xml");
 
     // Example: Extract data from the XML
     let type = xmlDoc.getElementsByTagName("Type");
     if (type && type.length > 0) {
-        console.log(type[0].innerHTML);
+        //console.log(type[0].innerHTML);
 
         let model = {
             Text: type[0].innerHTML
@@ -234,5 +228,5 @@ function jsonToXml(jsObject) {
 /* DOCUMENT READY */
 /* ################################################################################ */
 $(function () {
-    cloneLoadFileButton('fileLoad_0');
+    cloneLoadFileButton('fileExternalLoad_0');
 });

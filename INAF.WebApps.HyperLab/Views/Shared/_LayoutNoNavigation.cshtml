@@ -27,15 +27,16 @@
     <meta name="metro4:locale" content="en-us">
     <title>@Html.Raw(SharedResources.HyperLabLabel) | @ViewBag.Title</title>
 
-    <link rel="stylesheet" href="~/metro/css/dist/metrobundle.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/dist/metro/metrobundle.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/dist/account/commonlayoutnonavigationbundle.min.css" asp-append-version="true" />
 
-    <environment names="Development">
+    <script type="text/javascript" src="~/js/dist/metro/metrobundle.min.js"></script>
+@*     <environment names="Development">
         <script type="text/javascript" src="~/metro/js/dist/metrobundle.js"></script>
     </environment>
     <environment names="Production">
         <script type="text/javascript" src="~/metro/js/dist/metrobundle.min.js"></script>
-    </environment>
+    </environment> *@
     <script type="text/javascript" src="~/js/dist/jquerybundle.min.js"></script>
     <script type="text/javascript" src="~/js/dist/commonbundle.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Detect.js/2.2.2/detect.min.js"></script>

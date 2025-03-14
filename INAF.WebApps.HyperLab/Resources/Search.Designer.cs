@@ -286,6 +286,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to List of loaded files.
+        /// </summary>
+        public static string LoadedFilesLabel {
+            get {
+                return ResourceManager.GetString("LoadedFilesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Through this panel, you can upload EXTERNAL spectra stored as CSV or XML files, provided they are compatible with the HyperLab application.
+        /// </summary>
+        public static string LoadExternalFilesExplanation {
+            get {
+                return ResourceManager.GetString("LoadExternalFilesExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add file loader.
         /// </summary>
         public static string LoadFileAddButtonTitle {
@@ -309,6 +327,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string LoadFileNotAvailableForDataAnalysisMessage {
             get {
                 return ResourceManager.GetString("LoadFileNotAvailableForDataAnalysisMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to save file on cloud and use it on chart.
+        /// </summary>
+        public static string LoadFileNotSavedOnCloudMessage {
+            get {
+                return ResourceManager.GetString("LoadFileNotSavedOnCloudMessage", resourceCulture);
             }
         }
         
@@ -367,11 +394,11 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Through this panel, you can upload spectra stored as CSV or XML files, provided they are compatible with the HyperLab application.
+        ///   Looks up a localized string similar to Through this panel, you can upload SLAB spectra stored as CSV or XML files, provided they are compatible with the HyperLab application.
         /// </summary>
-        public static string LoadFilesExplanation {
+        public static string LoadSLabFilesExplanation {
             get {
-                return ResourceManager.GetString("LoadFilesExplanation", resourceCulture);
+                return ResourceManager.GetString("LoadSLabFilesExplanation", resourceCulture);
             }
         }
         

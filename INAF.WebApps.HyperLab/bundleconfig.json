@@ -88,11 +88,11 @@
     "includeInProject": true
   },
   {
-    "outputFileName": "wwwroot/metro/js/dist/metrobundle.js",
+    "outputFileName": "wwwroot/js/dist/metro/metrobundle.js",
     "inputFiles": [
-      "wwwroot/metro/js/metro.js",
-      "wwwroot/metro/js/commonformetro.js",
-      "wwwroot/metro/js/index.js"
+      "wwwroot/lib/metro/js/metro.js",
+      "wwwroot/lib/metro/js/commonformetro.js",
+      "wwwroot/lib/metro/js/index.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -126,7 +126,9 @@
       "wwwroot/js/hyperlab/search/complexsearchesmanagement.js",
       "wwwroot/js/hyperlab/search/complexsearchesintro.js",
       "wwwroot/js/hyperlab/search/info.js",
-      "wwwroot/js/hyperlab/search/load.js"
+      "wwwroot/js/hyperlab/search/load/loadCommon.js",
+      "wwwroot/js/hyperlab/search/load/loadExternal.js",
+      "wwwroot/js/hyperlab/search/load/loadSLab.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -247,15 +249,15 @@
     "minify": { "enabled": true }
   },
   {
-    "outputFileName": "wwwroot/metro/css/dist/metrobundle.css",
+    "outputFileName": "wwwroot/css/dist/metro/metrobundle.css",
     "inputFiles": [
-      "wwwroot/metro/css/index.css",
-      "wwwroot/metro/css/metro.css",
-      "wwwroot/metro/css/metro-colors.css",
-      "wwwroot/metro/css/metro-common.css",
-      "wwwroot/metro/css/metro-components.css",
-      "wwwroot/metro/css/metro-icons.css",
-      "wwwroot/metro/css/metro-reset.css"
+      "wwwroot/lib/metro/css/index.css",
+      "wwwroot/lib/metro/css/metro.css",
+      "wwwroot/lib/metro/css/metro-colors.css",
+      "wwwroot/lib/metro/css/metro-common.css",
+      "wwwroot/lib/metro/css/metro-components.css",
+      "wwwroot/lib/metro/css/metro-icons.css",
+      "wwwroot/lib/metro/css/metro-reset.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
