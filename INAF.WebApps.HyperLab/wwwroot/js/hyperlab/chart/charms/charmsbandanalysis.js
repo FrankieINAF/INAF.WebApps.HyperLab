@@ -14,6 +14,9 @@ var SERIES_NORMAL_FIT_POINT = 'NormalFitPoint';
 var SERIES_INVERTED_BAND = 'InvertedBandSeries';
 var SERIES_INVERTED_BAND_POINT = 'InvertedBandSeriesPoint';
 
+var BAND_AREA_COLOR = '#b21309';
+var BAND_LINES_COLOR = '#1496d7';
+
 var lastSelectedSegmentForBand;
 
 var isBandDepthCharmsOpened = false;
@@ -305,7 +308,7 @@ function showGaussianFit(items, xValues, yValues, fitResult) {
         }
     }
 
-    let normalFitSeries = createSeriesFromSpectrumName(SERIES_NORMAL_FIT_POINT, SERIES_NORMAL_FIT, '#ced714', true, false);
+    let normalFitSeries = createSeriesFromSpectrumName(SERIES_NORMAL_FIT_POINT, SERIES_NORMAL_FIT, BAND_LINES_COLOR, true, false);
     addChartSeries(normalFitSeries);
     dxChartUpdateSeries(chartContainer, chartSeries);
 
@@ -325,7 +328,7 @@ function showFwhm(items, leftMargin, rightMargin) {
     if (indexRightMargin > -1)
         items[indexRightMargin][SERIES_FWHM_POINT] = rightMargin.Y;
 
-    let fwhmSeries = createSeriesFromSpectrumName(SERIES_FWHM_POINT, SERIES_FWHM, '#ced714', false, false);
+    let fwhmSeries = createSeriesFromSpectrumName(SERIES_FWHM_POINT, SERIES_FWHM, BAND_LINES_COLOR, false, false);
     addChartSeries(fwhmSeries);
     dxChartUpdateSeries(chartContainer, chartSeries);
 
@@ -522,7 +525,7 @@ async function highlightBandAsync(seriesName, segmentForFitting, items) {
         rangeValue2Field: SERIES_HIGHLIGHTENED_BAND_MAX_VALUE_POINT,
         name: SERIES_HIGHLIGHTENED_BAND,
         axis: 'valueAxis',
-        color: '#b21309',
+        color: BAND_AREA_COLOR,
         showInLegend: false
     };
     addChartSeries(bandSeries);
