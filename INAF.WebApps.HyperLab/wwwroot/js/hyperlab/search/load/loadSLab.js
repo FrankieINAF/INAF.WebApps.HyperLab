@@ -1,31 +1,4 @@
-﻿var parsedSpectra = [];
-
-function addParsedSpectrum(filename, xml, spectrumType) {
-    parsedSpectra.push(getParsedSpectrum(filename, xml, spectrumType));
-}
-
-function getParsedSpectrum(filename, xml, spectrumType) {
-    if (spectrumType == null)
-        spectrumType = SPECTRUM_TYPE_RAW;
-
-    return {
-        Filename: filename,
-        Xml: xml,
-        SpectrumType: spectrumType
-    };
-}
-
-function isAlreadyParsed(filename) {
-    return parsedSpectra.some(spectrum => spectrum.Filename === filename);
-}
-
-function updateParsedFileSpectrumType(filename, spectrumType) {
-    let index = parsedSpectra.findIndex(spectrum => spectrum.Filename === filename);
-    if (index >= 0)
-        parsedSpectra[index].SpectrumType = spectrumType;
-}
-
-/* ################################################################################ */
+﻿/* ################################################################################ */
 /* FILES READING */
 /* ################################################################################ */
 async function loadSLabFilesAsync(evt, element) {
@@ -34,21 +7,12 @@ async function loadSLabFilesAsync(evt, element) {
     if (evt == null)
         return;
 
-    await loadFilesAsync(evt, SLAB_FILE)
+    await loadFilesAsync(evt, SpectrumSourceSLab)
 }
 
 /* ################################################################################ */
 /* SAVE FILE */
 /* ################################################################################ */
-function saveSLabFile(filename) {
-    let index = parsedSpectra.findIndex(spectrum => spectrum.Filename === filename);
-    if (index >= 0) {
-        let spectrum = parsedSpectra[index];
-        //saveSLabFileAsync(spectrum.Filename, spectrum.Xml, spectrum.SpectrumType);
-        console.log(filename);
-    }
-}
-
 async function saveSLabFileAsync(filename, xml, spectrumType) {
     let spectrumFile = {
         Id: 0,
@@ -68,8 +32,7 @@ async function saveSLabFileAsync(filename, xml, spectrumType) {
     let obj = await doAjaxPostAsync(UrlSaveExternalSpectrum, saveSpectrumRequest);
     if (obj) {
         isOk = obj.IsOk;
-        if (isOk)
-            addSpectrumIdProcedure(obj.Id, index);
+        updateListItem(filename, isOk);
     } else
         isOk = false;
 
@@ -93,10 +56,6 @@ function getSpectrumTypeSelect(filename) {
     html += `<option value="${filename}_${SPECTRUM_TYPE_REF_WHITE}">${getSpectrumTypeDescription(4)}</option>`;
     html += `</select>`;
     return html;
-}
-
-function getToSaveOnCloudIcon(filename) {
-    return `<div id="upload_${filename}" class="pointer" onclick="${saveSLabFile.name}('${filename}')"><span class="mif mif-cloud-upload mif-3x fg-orange pointer" title="${LoadFileNotSavedOnCloudMessage}"></span></div>`;
 }
 
 function onSpectrumTypeChange(evt) {

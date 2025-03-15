@@ -42,7 +42,7 @@
     <div class="row margin-top-8">
         <div class="cell-fs-2 cell-md-4">&nbsp;</div>
         <div class="cell-fs-8 cell-md-4 margin-top-8">
-            <input id="newUserToShare" type="email" data-role="input" placeholder="@Html.Raw(Charms.CharmsShareInputPlaceholder)" data-prevent-submit="true" data-custom-buttons="customButtons">
+            <input id="newUserToShare" type="email" data-role="input" placeholder="@Html.Raw(Charms.CharmsShareInputPlaceholder)" data-prevent-submit="true" data-custom-buttons="shareCustomButtons">
         </div>
         <div>&nbsp;</div>
     </div>
@@ -82,7 +82,7 @@
     var CharmsShareSpectraSharedErrorMessage = "@Html.Raw(Charms.CharmsShareSpectraSharedErrorMessage)";
     var CharmsShareUserNotExistantMessage = "@Html.Raw(Charms.CharmsShareUserNotExistantMessage)";
 
-    var customButtons = [
+    var shareCustomButtons = [
         {
             html: "<span class='mif-add'></span>",
             cls: 'primary',

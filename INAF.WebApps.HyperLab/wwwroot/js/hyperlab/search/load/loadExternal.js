@@ -59,7 +59,7 @@ async function loadExternalFileAsync(evt, element) {
         if (isXML(text)) {
             await manageXmlProcedureAsync(text, filename, index);
         } else {
-            manageCsvProcedure(text, filename, index, EXTERNAL_FILE);
+            manageCsvProcedure(text, filename, index, SpectrumSourceExternal);
         }
     };
     reader.readAsText(file);

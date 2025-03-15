@@ -151,7 +151,10 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (string.IsNullOrEmpty(model.Filename))
                 return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
 
-            (bool isSaved, int id) result = dbHandlerHyperLabData.isSpectrumTypeSaved(model.Filename, model.SpectrumType, getUserId());
+            (bool isSaved, int id) result = dbHandlerHyperLabData.isSpectrumTypeSaved(model.Filename, 
+                                                                                      model.SpectrumType, 
+                                                                                      model.SpectrumSource, 
+                                                                                      getUserId());
             return new JsonResult(result.ToGenericValueStringResponse());
         }
 
@@ -284,6 +287,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             SpectrumModel? spectrum = dbHandlerHyperLabData.getSpectrumIdByNameAndType(model.Text,
                                                                                        model.Type.ToSpectrumType(),
+                                                                                       model.Source.ToSpectrumSource(),
                                                                                        getUserId());
             if (spectrum != null)
                 return new JsonResult(spectrum);
@@ -331,6 +335,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             IEnumerable<SpectrumVersionModel>? spectrumVersions = dbHandlerHyperLabData.getSpectrumVersions(model.Filename,
                                                                                                             model.SpectrumType,
+                                                                                                            model.SpectrumSource,
                                                                                                             getUserId());
 
             if (spectrumVersions != null && spectrumVersions.Any())

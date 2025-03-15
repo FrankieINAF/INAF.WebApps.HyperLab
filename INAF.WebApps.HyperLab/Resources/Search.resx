@@ -528,8 +528,8 @@
   <data name="LoadFileLabel" xml:space="preserve">
     <value>Load spectra</value>
   </data>
-  <data name="LoadFilesExplanation" xml:space="preserve">
-    <value>Through this panel, you can upload SLAB spectra stored as CSV or XML files, with compatibility with the HyperLab application required only for the latter type</value>
+  <data name="LoadFilesSLabAndExternalExplanation" xml:space="preserve">
+    <value>The panel features two buttons: "Load SLab Spectra" and "Load External Spectra." The first button allows you to upload spectra from SLab stored on your device, while the second lets you import spectra from external sources. Both types of spectra can be saved to the HyperLab cloud and used for data analysis on the graphs page. Files can be uploaded in either CSV or XML format, as long as they are compatible with the HyperLab app</value>
   </data>
   <data name="LoadFileAddButtonTitle" xml:space="preserve">
     <value>Add file loader</value>
@@ -566,5 +566,14 @@
   </data>
   <data name="ButtonLoadExternalTitle" xml:space="preserve">
     <value>Load external spectra</value>
+  </data>
+  <data name="LoadFileRemoveSelectedFileMessage" xml:space="preserve">
+    <value>Remove file from the list</value>
+  </data>
+  <data name="LoadFileRemoveFileErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong trying to remove file from list</value>
+  </data>
+  <data name="LoadFilesExternalExplanation" xml:space="preserve">
+    <value>The panel features a button labeled "Load External Spectra," which allows you to import spectra from external sources. These spectra can be uploaded in CSV format and must be compatible with the HyperLab app. Once imported, they can be saved to the HyperLab cloud and utilized for data analysis on the graphs page</value>
   </data>
 </root>

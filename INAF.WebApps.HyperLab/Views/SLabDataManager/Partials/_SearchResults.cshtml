@@ -16,7 +16,7 @@
      data-cls-title-caption="margin-horizontal-4"
      data-collapsed="false"
      data-collapsible="false"
-     data-custom-buttons="customButtons"
+     data-custom-buttons="searchCustomButton"
      data-on-panel-create="showSearchResultsCaller">
     @{
         if (Model?.Results?.Count() > 0)
@@ -122,6 +122,16 @@
 </div>
 
 <script type="text/javascript">
+    var searchCustomButton = [
+        {
+            html: "<span class='mif-bin'></span>",
+            cls: 'primary',
+            onclick: function() {
+                clearSearchResults();
+            }
+        }
+    ]
+
     function showSearchResultsCaller() {
         showSearchResults(@resultsNum);
     }

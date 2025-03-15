@@ -376,6 +376,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, something went wrong trying to remove file from list.
+        /// </summary>
+        public static string LoadFileRemoveFileErrorMessage {
+            get {
+                return ResourceManager.GetString("LoadFileRemoveFileErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove file from the list.
+        /// </summary>
+        public static string LoadFileRemoveSelectedFileMessage {
+            get {
+                return ResourceManager.GetString("LoadFileRemoveSelectedFileMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, an error occurred while trying to load selected file.
         /// </summary>
         public static string LoadFileRetrieveSpectrumTypeErrorMessage {
@@ -403,11 +421,20 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Through this panel, you can upload SLAB spectra stored as CSV or XML files, with compatibility with the HyperLab application required only for the latter type.
+        ///   Looks up a localized string similar to The panel features a button labeled &quot;Load External Spectra,&quot; which allows you to import spectra from external sources. These spectra can be uploaded in CSV format and must be compatible with the HyperLab app. Once imported, they can be saved to the HyperLab cloud and utilized for data analysis on the graphs page.
         /// </summary>
-        public static string LoadFilesExplanation {
+        public static string LoadFilesExternalExplanation {
             get {
-                return ResourceManager.GetString("LoadFilesExplanation", resourceCulture);
+                return ResourceManager.GetString("LoadFilesExternalExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The panel features two buttons: &quot;Load SLab Spectra&quot; and &quot;Load External Spectra.&quot; The first button allows you to upload spectra from SLab stored on your device, while the second lets you import spectra from external sources. Both types of spectra can be saved to the HyperLab cloud and used for data analysis on the graphs page. Files can be uploaded in either CSV or XML format, as long as they are compatible with the HyperLab app.
+        /// </summary>
+        public static string LoadFilesSLabAndExternalExplanation {
+            get {
+                return ResourceManager.GetString("LoadFilesSLabAndExternalExplanation", resourceCulture);
             }
         }
         
