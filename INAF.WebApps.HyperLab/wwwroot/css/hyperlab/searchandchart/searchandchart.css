@@ -220,6 +220,10 @@
     width: 28px !important;
 }
 
+.width-250 {
+    width: 250px !important;
+}
+
 .search-name-width {
     width: 300px !important;
 }

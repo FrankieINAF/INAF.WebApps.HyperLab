@@ -538,7 +538,7 @@
     <value>Sorry, an error occurred while trying to save loaded spectrum</value>
   </data>
   <data name="LoadFileSavedOnCloudLabel" xml:space="preserve">
-    <value>Spectrum is available on cloud</value>
+    <value>Spectrum is available on cloud. Click to update</value>
   </data>
   <data name="LoadFileRetrieveSpectrumTypeErrorMessage" xml:space="preserve">
     <value>Sorry, an error occurred while trying to load selected file</value>
@@ -575,5 +575,14 @@
   </data>
   <data name="LoadFilesExternalExplanation" xml:space="preserve">
     <value>The panel features a button labeled "Load External Spectra," which allows you to import spectra from external sources. These spectra can be uploaded in CSV format and must be compatible with the HyperLab app. Once imported, they can be saved to the HyperLab cloud and utilized for data analysis on the graphs page</value>
+  </data>
+  <data name="LoadFileMissingAlignmentSettingsWarningMessage" xml:space="preserve">
+    <value>Since the spectrum was loaded from a CSV file, the alignment settings are missing. Do you still want to save it?</value>
+  </data>
+  <data name="LoadFileMissingContinuumRemovalSettingsWarningMessage" xml:space="preserve">
+    <value>Since the spectrum was loaded from a CSV file, the continuum-removal settings are missing. Do you still want to save it?</value>
+  </data>
+  <data name="LoadFileMissingSmoothingSettingsWarningMessage" xml:space="preserve">
+    <value>Since the spectrum was loaded from a CSV file, the smoothing settings are missing. Do you still want to save it?</value>
   </data>
 </root>

@@ -482,7 +482,7 @@ function setCloudTextAndIconStatus(spectrumType, isSpectrumFromCloud) {
 /* ################################################################################ */
 async function checkIsSpectrumOfTypeSavedOnCloudAsync(name, spectrumType, spectrumSource) {
     if (spectrumSource == null)
-        spectrumSource = SpectrumSourceSLab;
+        spectrumSource = SPECTRUM_SOURCE_SLAB;
 
     let model = {
         Filename: name,

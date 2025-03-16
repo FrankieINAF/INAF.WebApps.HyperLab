@@ -59,7 +59,7 @@ async function loadExternalFileAsync(evt, element) {
         if (isXML(text)) {
             await manageXmlProcedureAsync(text, filename, index);
         } else {
-            manageCsvProcedure(text, filename, index, SpectrumSourceExternal);
+            manageCsvProcedure(text, filename, index, SPECTRUM_SOURCE_EXTERNAL);
         }
     };
     reader.readAsText(file);
@@ -160,69 +160,7 @@ async function saveExternalFileAsync(filename, xml, index) {
         showSimpleDialog(ERROR_LABEL, LoadFileSaveOnCloudErrorMessage, ALERT);
 }
 
-/* ################################################################################ */
-/* BUILD XML */
-/* ################################################################################ */
 
-function buildSpectrum(filename, text) {
-    let info = {
-        RawFilename: filename,
-        Type: EXTERNAL
-    };
-
-    let spectrum = {
-        Info: info,
-        Elements: parseCSV(text)
-    };
-
-    var xml = jsonToXml(spectrum);
-
-    return xml;
-}
-
-/* ---------- ANCILLARY ---------- */
-function createSpectrumElement(xValue, yValue) {
-    return {
-        Wavelength: xValue,
-        Value: yValue
-    };
-}
-
-function createXmlNode(doc, key, value) {
-    var element = doc.createElement(key);
-
-    if (typeof value === 'object' && !Array.isArray(value)) {
-        for (var prop in value) {
-            element.appendChild(createXmlNode(doc, prop, value[prop]));
-        }
-    } else if (Array.isArray(value)) {
-        value.forEach(function (item) {
-            var child = doc.createElement('Element');
-            let keys = Object.keys(item);
-            for (let i = 0; i < keys.length; i++) {
-                child.setAttribute(keys[i], item[keys[i]]);
-            }
-            element.appendChild(child);
-        });
-    } else {
-        element.textContent = value;
-    }
-    return element;
-}
-
-function jsonToXml(jsObject) {
-    var parser = new DOMParser();
-    var doc = parser.parseFromString("<Spectrum/>", "application/xml");
-    var root = doc.documentElement;
-
-    for (var key in jsObject) {
-        root.appendChild(createXmlNode(doc, key, jsObject[key]));
-    }
-
-    var serializer = new XMLSerializer();
-    var xmlString = serializer.serializeToString(doc);
-    return xmlString;
-}
 
 /* ################################################################################ */
 /* DOCUMENT READY */

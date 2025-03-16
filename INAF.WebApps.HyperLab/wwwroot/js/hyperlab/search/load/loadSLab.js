@@ -7,13 +7,47 @@ async function loadSLabFilesAsync(evt, element) {
     if (evt == null)
         return;
 
-    await loadFilesAsync(evt, SpectrumSourceSLab)
+    await loadFilesAsync(evt, SPECTRUM_SOURCE_SLAB)
 }
 
 /* ################################################################################ */
 /* SAVE FILE */
 /* ################################################################################ */
-async function saveSLabFileAsync(filename, xml, spectrumType) {
+function saveSLabFileProcedure(filename, xml, spectrumType, fileType) {
+    /* when a file is saved from a CSV, for spectra with type different from RAW, alignment, smoothing, continuum-removal
+       settings are not available and user must be warned about it */
+    let isWarningRequested = fileType != XML;
+    if (spectrumType == SPECTRUM_TYPE_RAW)
+        isWarningRequested = false;
+
+    if (isWarningRequested) {
+        let message = '';
+        switch (spectrumType) {
+            case SPECTRUM_TYPE_ALIGNED:
+                message = LoadFileMissingAlignmentSettingsWarningMessage;
+                break;
+
+            case SPECTRUM_TYPE_CONTINUUM_REMOVED:
+                message = LoadFileMissingContinuumRemovalSettingsWarningMessage;
+                break;
+
+            case SPECTRUM_TYPE_ALIGNED_SMOOTHED:
+            case SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_SEGMENTS:
+            case SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED:
+            case SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED_BY_SEGMENTS:
+                message = LoadFileMissingSmoothingSettingsWarningMessage;
+                break;
+        }
+
+        let args = [filename, xml, spectrumType, true];
+        askAndExecute(CharmsSpectraProcessingManagementLabel, message, saveSLabFileAsync, args);
+    } else 
+        saveSLabFileAsync(filename, xml, spectrumType, false);
+}
+
+async function saveSLabFileAsync(filename, xml, spectrumType, isRawUrlRequested) {
+    xml = updateNodeValue(xml, 'Type', getSpectrumTypeString(spectrumType));
+
     let spectrumFile = {
         Id: 0,
         Filename: filename,
@@ -29,7 +63,33 @@ async function saveSLabFileAsync(filename, xml, spectrumType) {
     };
 
     let isOk = true;
-    let obj = await doAjaxPostAsync(UrlSaveExternalSpectrum, saveSpectrumRequest);
+
+    let url = UrlSaveSpectrumOfTypeRaw;
+    if (!isRawUrlRequested) {
+
+        switch (spectrumType) {
+            case SPECTRUM_TYPE_ALIGNED:
+                url = UrlSaveSpectrumOfTypeAligned;
+                break;
+
+            case SPECTRUM_TYPE_CONTINUUM_REMOVED:
+                url = UrlSaveSpectrumOfTypeContinuumRemoved;
+                break;
+
+            case SPECTRUM_TYPE_ALIGNED_SMOOTHED:
+            case SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_SEGMENTS:
+            case SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED:
+            case SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED_BY_SEGMENTS:
+                url = UrlSaveSpectrumOfTypeSmoothed;
+                break;
+
+            default:
+                url = UrlSaveSpectrumOfTypeRaw
+                break;
+        }
+    }
+
+    let obj = await doAjaxPostAsync(url, saveSpectrumRequest);
     if (obj) {
         isOk = obj.IsOk;
         updateListItem(filename, isOk);
@@ -67,4 +127,7 @@ function onSpectrumTypeChange(evt) {
     let spectrumType = tmp[1];
 
     updateParsedFileSpectrumType(filename, parseInt(spectrumType));
+
+    let parsedSpectrum = getParsedSpectrum(filename);
+    checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, spectrumType, parsedSpectrum.Source);
 }

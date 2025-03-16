@@ -283,7 +283,7 @@
             <div id="panelLoad">
                 <div class="row cell-fs-12 margin-top-32">
                     <div class="remark info">
-                        <p class="text-leader2 text-just">
+                        <p class="text-leader2-sm text-just">
                             @if (IsSLabDataManagerAllowed)
                             {
                                 @Html.Raw(Search.LoadFilesSLabAndExternalExplanation)
@@ -307,7 +307,7 @@
                         {
                             <!-- LOAD SLAB FILES -->
                             <div class="margin-horizontal-16">
-                                <button class="image-button" onclick="document.getElementById('fileInputSLab').click();">
+                                <button class="image-button primary" onclick="document.getElementById('fileInputSLab').click();">
                                     <span class="mif-lab icon"></span>
                                     <span class="caption">@Html.Raw(Search.ButtonLoadSLabTitle)</span>
                                 </button>
@@ -315,7 +315,7 @@
                         }
                         <!-- LOAD EXTERNAL FILES-->
                         <div class="margin-horizontal-16">
-                            <button class="image-button" onclick="document.getElementById('fileInputExternal').click();">
+                            <button class="image-button warning" onclick="document.getElementById('fileInputExternal').click();">
                                 <span class="mif-external icon"></span>
                                 <span class="caption">@Html.Raw(Search.ButtonLoadExternalTitle)</span>
                             </button>
@@ -327,7 +327,7 @@
                         <div class="flex-self-center">
                             <span class="text-leader2 text-bold">@Html.Raw(Search.LoadedFilesLabel)</span>
                         </div>
-                        <div id="loadedFilesList" class="d-flex flex-align-center flex-column w-100"></div>
+                        <div id="loadedFilesList" class="d-flex flex-align-center flex-column w-100 h-vh-50 overflow-y-auto"></div>
                     </div>
                 </div>
             </div>

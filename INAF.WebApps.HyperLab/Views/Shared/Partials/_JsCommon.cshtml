@@ -57,6 +57,39 @@
     var SPECTRUM_LEVEL_SINGLE_ACQUISITION = @{@((int)Enums.Enums.SpectrumLevel.SingleAcquisition);};
     var SPECTRUM_LEVEL_AVERAGED = @{@((int)Enums.Enums.SpectrumLevel.Averaged);};
 
+    var SPECTRUM_SOURCE_EXTERNAL = @{@((int)Enums.Enums.SpectrumSource.External);};
+    var SPECTRUM_SOURCE_SLAB = @{@((int)Enums.Enums.SpectrumSource.SLab);};
+
+    function getSpectrumLevelString(spectrumLevel) {
+        let spectrumLevelText = 'SLab';
+        switch (spectrumLevel) {
+            case 1:
+                spectrumLevelText = '@Enums.Enums.SpectrumLevel.SingleAcquisition.ToString()';
+            break;
+
+            case 2:
+                spectrumLevelText = '@Enums.Enums.SpectrumLevel.Averaged.ToString()';
+            break;
+        }
+
+        return spectrumLevelText;
+    }
+
+    function getSpectrumSourceString(spectrumSource) {
+        let spectrumSourceText = 'SLab';
+        switch (spectrumSource) {
+            case 1:
+                spectrumSourceText = '@Enums.Enums.SpectrumSource.SLab.ToString()';
+            break;
+
+            case 2:
+                spectrumSourceText = '@Enums.Enums.SpectrumSource.External.ToString()';
+            break;
+        }
+
+        return spectrumSourceText;
+    }
+
     function getSpectrumTypeDescription(spectrumType) {
         let spectrumTypeText = 'Raw';
         switch (spectrumType) {

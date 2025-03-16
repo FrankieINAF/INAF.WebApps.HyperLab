@@ -331,6 +331,33 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Since the spectrum was loaded from a CSV file, the alignment settings are missing. Do you still want to save it?.
+        /// </summary>
+        public static string LoadFileMissingAlignmentSettingsWarningMessage {
+            get {
+                return ResourceManager.GetString("LoadFileMissingAlignmentSettingsWarningMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Since the spectrum was loaded from a CSV file, the continuum-removal settings are missing. Do you still want to save it?.
+        /// </summary>
+        public static string LoadFileMissingContinuumRemovalSettingsWarningMessage {
+            get {
+                return ResourceManager.GetString("LoadFileMissingContinuumRemovalSettingsWarningMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Since the spectrum was loaded from a CSV file, the smoothing settings are missing. Do you still want to save it?.
+        /// </summary>
+        public static string LoadFileMissingSmoothingSettingsWarningMessage {
+            get {
+                return ResourceManager.GetString("LoadFileMissingSmoothingSettingsWarningMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This file is not available on the charts page or for data analysis.
         /// </summary>
         public static string LoadFileNotAvailableForDataAnalysisMessage {
@@ -403,7 +430,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Spectrum is available on cloud.
+        ///   Looks up a localized string similar to Spectrum is available on cloud. Click to update.
         /// </summary>
         public static string LoadFileSavedOnCloudLabel {
             get {
