@@ -311,6 +311,8 @@ function addConditionMaterial(liId, currentIndex = null, groupIndex = null) {
     if (isGroupCurrentlyUsed(CONDITION_TYPE_MATERIAL))
         return;
 
+    tryAddComplexSearchTopBar();
+
     let callback = function () {
         /* set this group currently used */
         addCurrentlyUsedGroup(CONDITION_TYPE_MATERIAL);
@@ -547,6 +549,8 @@ function addConditionFilename(liId, currentIndex = null, groupIndex = null) {
     if (isGroupCurrentlyUsed(CONDITION_TYPE_FILENAME))
         return;
 
+    tryAddComplexSearchTopBar();
+
     let callback = function () {
         /* set this group currently used */
         addCurrentlyUsedGroup(CONDITION_TYPE_FILENAME);
@@ -569,7 +573,7 @@ function addConditionFilename(liId, currentIndex = null, groupIndex = null) {
         html += `       <button class="flex-start button dark cycle mini outline" title="${SearchComplexGroupRemoveGroup}" onclick="removeConditionsGroup('${CONDITION_TYPE_FILENAME}', '${id}', ${currentIndex})"><span class="mif-bin"></span></button>`;
         html += `   </div>`;
         html += `   <div id="${CONDITION_TYPE_FILENAME}${CONDITIONS_ITEMS}" class="row">`;
-        html += getConditionSampleNameItem(currentIndex, groupIndex);
+        html += getConditionFilenameItem(currentIndex, groupIndex);
         html += `   </div>`;
         html += `</div>`;
 
@@ -692,6 +696,8 @@ function updateFilenameModel(id, currentIndex, groupIndex) {
 /* MINERAL CONDITION */
 /* -------------------------------------------------------------------------------- */
 function addConditionMineralType(liId, groupIndex = null) {
+    tryAddComplexSearchTopBar();
+
     addConditionSelectItem(liId, CONDITION_TYPE_MINERAL_TYPE, mineralTypes, 'mineralTypes', selectMineralType, 'selectMineralType', SearchComplexConditionsOnMineralTypeLabel, groupIndex);
 }
 
@@ -699,6 +705,8 @@ function addConditionMineralType(liId, groupIndex = null) {
 /* ORIGIN TYPE CONDITION */
 /* -------------------------------------------------------------------------------- */
 function addConditionOriginType(liId, groupIndex = null) {
+    tryAddComplexSearchTopBar();
+
     addConditionSelectItem(liId, CONDITION_TYPE_ORIGIN_TYPE, originTypes, 'originTypes', selectOriginType, 'selectOriginType', SearchComplexConditionsOnOriginTypeLabel, groupIndex);
 }
 
@@ -709,6 +717,8 @@ function addConditionSampleName(liId, currentIndex = null, groupIndex = null) {
     /* only 1 group per type is allowed, if already present then return */
     if (isGroupCurrentlyUsed(CONDITION_TYPE_SAMPLE_NAME))
         return;
+
+    tryAddComplexSearchTopBar();
 
     let callback = function () {
         /* set this group currently used */
@@ -857,6 +867,8 @@ function updateSampleNameModel(id, currentIndex, groupIndex) {
 /* SAMPLE TYPE CONDITION */
 /* -------------------------------------------------------------------------------- */
 function addConditionSampleType(liId, groupIndex = null) {
+    tryAddComplexSearchTopBar();
+
     addConditionSelectItem(liId, CONDITION_TYPE_SAMPLE_TYPE, sampleTypes, 'sampleTypes', selectSampleDataType, 'selectSampleDataType', SearchComplexConditionsOnSampleDataTypeLabel, groupIndex);
 }
 
@@ -1372,7 +1384,7 @@ function buildComplexSearch(obj) {
     let indexMax = Math.max(...obj.Conditions.map(o => o.Index));
 
     /* try to add the top element for saving search */
-    addComplexSearchTopBar(obj.Id);
+    tryAddComplexSearchTopBar(obj.Id);
 
     /* loop on groups */
     for (var i = 0; i <= indexMax; i++) {
@@ -1388,6 +1400,13 @@ function buildComplexSearch(obj) {
                 if (x.ConditionOperatorType == CONDITION_OPERATOR_NONE) {
                     //console.log(`${x.ConditionType}, index: ${x.Index}, groupIndex: ${x.GroupIndex}`);
                     switch (x.ConditionType) {
+                        case CONDITION_TYPE_FILENAME:
+                            if (x.GroupIndex == 0)
+                                addConditionFilename(x.ConditionType, x.Index, x.GroupIndex);
+                            else
+                                setTimeout(() => { addConditionFilenameItem(x.Index, x.GroupIndex); }, DEFAULT_WAIT_ms);
+                            break;
+
                         case CONDITION_TYPE_MATERIAL:
                             if (x.GroupIndex == 0)
                                 addConditionMaterial(x.ConditionType, x.Index, x.GroupIndex);

@@ -1,5 +1,8 @@
 ﻿var currentSearchInfoId = 0;
 
+var requestedLevelsComplex = [];
+
+
 var saveComplexSearchModel = {
     Id: 0,
     Name: '',
@@ -72,11 +75,14 @@ async function deleteComplexSearchAndReloadAsync(itemId) {
 /* -------------------------------------------------------------------------------- */
 /* UI ELEMENTS OPERATORS */
 /* -------------------------------------------------------------------------------- */
-function addComplexSearchTopBar(id) {
+function tryAddComplexSearchTopBar(id = -1) {
     if ($('#complexSearchTopBar').children().length > 0)
         return;
 
     let html = '';
+    html += `<div class="d-flex flex-column">`;
+
+    /* SEARCH TOP BAR */
     html += `<div id="saveSearchGroup" class="d-flex flex-justify-between complex-search-title">`;
     // add button save search
     html += '   <div class="d-flex flex-start">';
@@ -99,14 +105,56 @@ function addComplexSearchTopBar(id) {
     html += `       <label class="flex-end text-bold">${SearchComplexTitle}</label>`;
     html += `   </div>`;
     // add button remove search
-    html += `   <button class="flex-end button primary cycle outline margin-top-8 margin-left-8" title="${SearchComplexClearLabel}" onclick="${deleteComplexSearchAndBackToListProcedure.name}(${id})"><span class="mif-bin"></span></button>`;
+    let disabledText = (id > 0) ? '' : 'disabled';
+    html += `   <button class="flex-end button primary cycle outline margin-top-8 margin-left-8" ${disabledText} title="${SearchComplexClearLabel}" onclick="${deleteComplexSearchAndBackToListProcedure.name}(${id})"><span class="mif-bin"></span></button>`;
     html += `</div>`;
 
-    $(`#SearchName`).ready(function () {
+    /* REQUESTED LEVELS */
+    html += '<div class="d-flex flex-column margin-top-8">';
+    html += `   <input id="selectLevelAveragedComplex"`;
+    html += `          value = "2" `;
+    html += `          type="checkbox" `;
+    html += `          data-role="checkbox" `;
+    html += `          data-caption="${SearchShowAveragedAcquisitionLabel}" `;
+    html += `          data-cls-check="bd-cyan" `;
+    html += `          data-style="2" >`;
+    html += `   <input id="selectLevelSingleAcquisitionComplex" `;
+    html += `          value="1" `;
+    html += `          type = "checkbox" `;
+    html += `          data-role="checkbox" `;
+    html += `          data-caption="${SearchShowSingleAcquisitionLabel}" `;
+    html += `          data-cls-check="bd-cyan" `;
+    html += `          data-style="2" >`;
+    html += `</div>`;
+
+    html += `</div>`;
+
+    $(function () {
         /* create Metro plugin for current html element */
         Metro.makePlugin(`#SearchName`, 'input');
         /* animate the ui items container */
         animateCSS(`SearchName`, `bounceIn`, FAST);
+
+        $('#selectLevelAveragedComplex, #selectLevelSingleAcquisitionComplex').on('change', function (evt) {
+            var checkbox = $(this);
+            var value = parseInt(checkbox.val());
+
+            if (checkbox.is(':checked')) {
+                // Add item to the array if checked
+                if (!requestedLevelsComplex.includes(value)) {
+                    requestedLevelsComplex.push(value);
+                }
+            } else {
+                // Remove item from the array if unchecked
+                var index = requestedLevelsComplex.indexOf(value);
+                if (index > -1) {
+                    requestedLevelsComplex.splice(index, 1);
+                }
+            }
+        });
+
+        // Programmatically set the checkbox as checked
+        executeAfter(function () { $('#selectLevelAveragedComplex').prop('checked', true).trigger('change'); }, 500);
     });
 
     $('#complexSearchTopBar').html(html);
@@ -154,11 +202,11 @@ function updateSearchNameErrorStatus() {
 /* -------------------------------------------------------------------------------- */
 /* CLOSE SHOWN COMPLEX SEARCH */
 /* -------------------------------------------------------------------------------- */
-function backToListProcedure() {
+function backToListProcedure(isReloadRequired) {
     if (saveComplexSearchModel.IsAnyChange)
-        confirmAndExecute(SearchComplexManagementLabel, ComplexSearchBackToListUnsavedChangesQuestion, backToList);
+        confirmAndExecute(SearchComplexManagementLabel, ComplexSearchBackToListUnsavedChangesQuestion, backToList, [isReloadRequired]);
     else
-        backToList();
+        backToList(isReloadRequired);
 }
 
 function backToList(isReloadRequired = false) {
@@ -228,6 +276,8 @@ async function saveSearchAsync() {
     setLoadingCircleIsVisible(true);
 
     saveComplexSearchModel.Name = $('#SearchName').val();
+
+    saveComplexSearchModel.RequestedLevels = requestedLevelsComplex;
 
     let isNewSearch = (saveComplexSearchModel.Id == 0);
 

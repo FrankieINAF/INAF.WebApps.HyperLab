@@ -420,26 +420,26 @@ $(function () {
             search();
     });
 
-    $('#selectLevelAveraged, #selectLevelSingleAcquisition').on('change', function (evt) {
+    $('#selectLevelAveragedSimple, #selectLevelSingleAcquisitionSimple').on('change', function (evt) {
         var checkbox = $(this);
         var value = parseInt(checkbox.val());
 
         if (checkbox.is(':checked')) {
             // Add item to the array if checked
-            if (!requestedLevels.includes(value)) {
-                requestedLevels.push(value);
+            if (!requestedLevelsSimple.includes(value)) {
+                requestedLevelsSimple.push(value);
             }
         } else {
             // Remove item from the array if unchecked
-            var index = requestedLevels.indexOf(value);
+            var index = requestedLevelsSimple.indexOf(value);
             if (index > -1) {
-                requestedLevels.splice(index, 1);
+                requestedLevelsSimple.splice(index, 1);
             }
         }
     });
 
     // Programmatically set the checkbox as checked
-    executeAfter(function () { $('#selectLevelAveraged').prop('checked', true).trigger('change'); }, 500);
+    executeAfter(function () { $('#selectLevelAveragedSimple').prop('checked', true).trigger('change'); }, 500);
 
 });
 

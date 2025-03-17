@@ -282,11 +282,14 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             if (ModelState.IsValid)
             {
-                if (string.IsNullOrEmpty(model.Name) || model.Conditions == null)
+                if (string.IsNullOrEmpty(model.Name) || 
+                    model.RequestedLevels == null || !model.RequestedLevels.Any() ||
+                    model.Conditions == null)
                     return errorResult;
 
                 var saveSearchResult = await dbHandlerHyperLabData.saveComplexSearchAsync((int)model.Id,
                                                                                           model.Name,
+                                                                                          model.RequestedLevels,
                                                                                           model.Conditions,
                                                                                           getUserId());
 

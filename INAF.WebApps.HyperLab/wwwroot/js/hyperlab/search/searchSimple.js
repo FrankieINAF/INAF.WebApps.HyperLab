@@ -1,4 +1,4 @@
-﻿var requestedLevels = [];
+﻿var requestedLevelsSimple = [];
 
 /* ################################################################################ */
 /* ANCILLARY FOR SEARCH-BY-MATERIAL */
@@ -44,7 +44,7 @@ async function searchSimpleByFilename() {
 
     let model = {
         Text: text,
-        RequestedLevels: requestedLevels
+        RequestedLevels: requestedLevelsSimple
     };
 
     setLoadingCircleIsVisible(true);
@@ -98,7 +98,7 @@ async function searchSimpleBySampleName() {
 
     let model = {
         Text: text,
-        RequestedLevels: requestedLevels
+        RequestedLevels: requestedLevelsSimple
     };
 
     setLoadingCircleIsVisible(true);
