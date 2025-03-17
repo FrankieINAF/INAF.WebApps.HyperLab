@@ -415,10 +415,31 @@ $(function () {
 
     showPageItems();
 
-    $('#selectSampleName').on('keydown', function (evt) {
+    $('#selectSampleName, #selectFilename').on('keydown', function (evt) {
         if (evt.originalEvent.code == 'Enter')
             search();
     });
+
+    $('#selectLevelAveraged, #selectLevelSingleAcquisition').on('change', function (evt) {
+        var checkbox = $(this);
+        var value = parseInt(checkbox.val());
+
+        if (checkbox.is(':checked')) {
+            // Add item to the array if checked
+            if (!requestedLevels.includes(value)) {
+                requestedLevels.push(value);
+            }
+        } else {
+            // Remove item from the array if unchecked
+            var index = requestedLevels.indexOf(value);
+            if (index > -1) {
+                requestedLevels.splice(index, 1);
+            }
+        }
+    });
+
+    // Programmatically set the checkbox as checked
+    executeAfter(function () { $('#selectLevelAveraged').prop('checked', true).trigger('change'); }, 500);
 
 });
 

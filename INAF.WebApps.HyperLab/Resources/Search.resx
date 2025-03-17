@@ -288,8 +288,14 @@
   <data name="SearchBySampleNameEmptyErrorMessage" xml:space="preserve">
     <value>Insert a name for starting search</value>
   </data>
+  <data name="SearchByFilenameEmptyErrorMessage" xml:space="preserve">
+    <value>Insert a filename for starting search</value>
+  </data>
   <data name="SearchBySampleNamePlaceholder" xml:space="preserve">
     <value>Insert a name...</value>
+  </data>
+  <data name="SearchByFilenamePlaceholder" xml:space="preserve">
+    <value>Insert a file name...</value>
   </data>
   <data name="SearchClearSuggestionsButtonTitle" xml:space="preserve">
     <value>Clear suggestions</value>
@@ -323,6 +329,9 @@
   </data>
   <data name="SearchComplexConditionsOnSampleDataTypeLabel" xml:space="preserve">
     <value>Condition(s) on sample type</value>
+  </data>
+  <data name="SearchComplexConditionsOnFilenameLabel" xml:space="preserve">
+    <value>Condition(s) on filename</value>
   </data>
   <data name="SearchComplexConditionsOnSampleNameLabel" xml:space="preserve">
     <value>Condition(s) on sample name</value>
@@ -437,6 +446,9 @@
   </data>
   <data name="SearchSimpleBySampleNameLabel" xml:space="preserve">
     <value>Search by sample name</value>
+  </data>
+  <data name="SearchSimpleByFilenameLabel" xml:space="preserve">
+    <value>Search by file name</value>
   </data>
   <data name="SearchSuggestionsNotRetrievedMessage" xml:space="preserve">
     <value>Suggestion not selected, please press 'Enter' to retrieve suggestions</value>
@@ -584,5 +596,14 @@
   </data>
   <data name="LoadFileMissingSmoothingSettingsWarningMessage" xml:space="preserve">
     <value>Since the spectrum was loaded from a CSV file, the smoothing settings are missing. Do you still want to save it?</value>
+  </data>
+  <data name="SearchShowSingleAcquisitionLabel" xml:space="preserve">
+    <value>Show single acquisitions</value>
+  </data>
+  <data name="SearchShowAveragedAcquisitionLabel" xml:space="preserve">
+    <value>Show averaged acquisitions</value>
+  </data>
+  <data name="SearchComplexByFilenameLabel" xml:space="preserve">
+    <value>Filename</value>
   </data>
 </root>

@@ -274,9 +274,6 @@
     <Content Update="wwwroot\js\dist\chart\chartbundle.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\js\dist\commonbundle.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Update="wwwroot\js\dist\devextreme\devextremebundle.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

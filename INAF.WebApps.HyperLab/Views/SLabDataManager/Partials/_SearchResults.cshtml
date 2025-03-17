@@ -3,6 +3,7 @@
 @using INAF.Libraries.Net.CommonWebAppModels.Models.Searches;
 @using INAF.Libraries.Net.CommonWebAppModels.Models.SpectraFiles
 @using INAF.WebApps.HyperLab.Resources
+@using INAF.Libraries.Net.Extensions
 @using Microsoft.AspNetCore.Html;
 @using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
@@ -99,7 +100,7 @@
                                     <td>&nbsp;</td>
                                     break;
                             }
-                            <td>@Html.Raw(Model.Results.ElementAt(i).SpectrumLevel)</td>
+                            <td>@Html.Raw(Model.Results.ElementAt(i).SpectrumLevel.GetDescription())</td>
                         </tr>
                         <tr id="tr@{@index;}">
                             <td colspan="6">

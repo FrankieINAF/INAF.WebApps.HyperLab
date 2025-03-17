@@ -1,4 +1,6 @@
-﻿/* ################################################################################ */
+﻿var requestedLevels = [];
+
+/* ################################################################################ */
 /* ANCILLARY FOR SEARCH-BY-MATERIAL */
 /* ################################################################################ */
 function getMaterialForSearch() {
@@ -32,6 +34,25 @@ function getMaterialForSearch() {
 /* ################################################################################ */
 /* SEARCH */
 /* ################################################################################ */
+async function searchSimpleByFilename() {
+    let text = $('#selectFilename').val();
+
+    if (!text) {
+        showSimpleDialog(WARNING_LABEL, SearchByFilenameEmptyErrorMessage, WARNING);
+        return;
+    }
+
+    let model = {
+        Text: text,
+        RequestedLevels: requestedLevels
+    };
+
+    setLoadingCircleIsVisible(true);
+
+    loadPartialViewWithAjaxPost(UrlSearchSimpleGroupsByFilename, model, 'searchResultsContainer');
+
+}
+
 async function searchSimpleByMaterial() {
     let model = getMaterialForSearch();
 
@@ -40,7 +61,7 @@ async function searchSimpleByMaterial() {
 
     setLoadingCircleIsVisible(true);
 
-    loadPartialViewWithAjaxGet(UrlSearchSimpleGroupsByMaterial, model, 'searchResultsContainer');
+    loadPartialViewWithAjaxPost(UrlSearchSimpleGroupsByMaterial, model, 'searchResultsContainer');
 }
 
 async function searchSimpleByMineralType() {
@@ -52,7 +73,7 @@ async function searchSimpleByMineralType() {
 
     setLoadingCircleIsVisible(true);
 
-    loadPartialViewWithAjaxGet(UrlSearchSimpleByMineralType, model, 'searchResultsContainer');
+    loadPartialViewWithAjaxPost(UrlSearchSimpleByMineralType, model, 'searchResultsContainer');
 }
 
 async function searchSimpleByOriginType() {
@@ -64,7 +85,7 @@ async function searchSimpleByOriginType() {
 
     setLoadingCircleIsVisible(true);
 
-    loadPartialViewWithAjaxGet(UrlSearchSimpleByOriginType, model, 'searchResultsContainer');
+    loadPartialViewWithAjaxPost(UrlSearchSimpleByOriginType, model, 'searchResultsContainer');
 }
 
 async function searchSimpleBySampleName() {
@@ -76,12 +97,13 @@ async function searchSimpleBySampleName() {
     }
 
     let model = {
-        Text: text
+        Text: text,
+        RequestedLevels: requestedLevels
     };
 
     setLoadingCircleIsVisible(true);
 
-    loadPartialViewWithAjaxGet(UrlSearchSimpleGroupsBySampleName, model, 'searchResultsContainer');
+    loadPartialViewWithAjaxPost(UrlSearchSimpleGroupsBySampleName, model, 'searchResultsContainer');
 }
 
 async function searchSimpleBySampleType() {
@@ -93,5 +115,5 @@ async function searchSimpleBySampleType() {
 
     setLoadingCircleIsVisible(true);
 
-    loadPartialViewWithAjaxGet(UrlSearchSimpleBySampleType, model, 'searchResultsContainer');
+    loadPartialViewWithAjaxPost(UrlSearchSimpleBySampleType, model, 'searchResultsContainer');
 }

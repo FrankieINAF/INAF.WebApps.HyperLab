@@ -38,16 +38,43 @@ namespace INAF.WebApps.HyperLab.Controllers
         #endregion
 
         #region SEARCH SIMPLE
-        [HttpGet]
-        public IActionResult SearchSimpleGroupsByMaterial(GenericRequestByParametersModel model)
+        [HttpPost]
+        public IActionResult SearchSimpleGroupsByFilename(SearchRequestByTextModel model)
         {
-            if (model.Type == null)
+            if (string.IsNullOrEmpty(model.Text) || 
+                model.Text.Length < 3 || 
+                model.RequestedLevels == null || 
+                !model.RequestedLevels.Any())
+                return new EmptyResult();
+
+            IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByFilename(model.Text,
+                                                                                                                      model.RequestedLevels,
+                                                                                                                      getUserId());
+            switch (getCallerContext())
+            {
+                case Enums.CallerContext.Web:
+                    return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
+
+                case Enums.CallerContext.App:
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
+            }
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public IActionResult SearchSimpleGroupsByMaterial(SearchRequestByParametersModel model)
+        {
+            if (model.Type == null ||
+                model.RequestedLevels == null ||
+                !model.RequestedLevels.Any())
                 return new EmptyResult();
 
             var searchByMaterialHelper = serviceProvider.GetRequiredService<SearchByMaterialHelper>();
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = searchByMaterialHelper.searchByMaterial(model.Id,
-                                                                                                            model.Type,
-                                                                                                            getUserId());
+                                                                                                           model.Type,
+                                                                                                           model.RequestedLevels,
+                                                                                                           getUserId());
 
             switch (getCallerContext())
             {
@@ -61,11 +88,16 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new EmptyResult();
         }
 
-        [HttpGet]
-        public IActionResult SearchSimpleGroupsByMineralType(GenericRequestByIdModel model)
+        [HttpPost]
+        public IActionResult SearchSimpleGroupsByMineralType(SearchRequestByIdModel model)
         {
+            if (model.RequestedLevels == null ||
+                !model.RequestedLevels.Any())
+                return new EmptyResult();
+
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByMineralType(model.Id,
-                                                                                                                          getUserId());
+                                                                                                                         model.RequestedLevels,
+                                                                                                                         getUserId());
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
@@ -78,11 +110,16 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new EmptyResult();
         }
 
-        [HttpGet]
-        public IActionResult SearchSimpleGroupsByOriginType(GenericRequestByIdModel model)
+        [HttpPost]
+        public IActionResult SearchSimpleGroupsByOriginType(SearchRequestByIdModel model)
         {
+            if (model.RequestedLevels == null ||
+                !model.RequestedLevels.Any())
+                return new EmptyResult();
+
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByOriginType(model.Id,
-                                                                                                                         getUserId());
+                                                                                                                        model.RequestedLevels,
+                                                                                                                        getUserId());
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
@@ -95,11 +132,18 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new EmptyResult();
         }
 
-        [HttpGet]
-        public IActionResult SearchSimpleGroupsBySampleName(GenericRequestByTextModel model)
+        [HttpPost]
+        public IActionResult SearchSimpleGroupsBySampleName(SearchRequestByTextModel model)
         {
+            if (string.IsNullOrEmpty(model.Text) ||
+                model.Text.Length < 3 ||
+                model.RequestedLevels == null ||
+                !model.RequestedLevels.Any())
+                return new EmptyResult();
+
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleName(model.Text,
-                                                                                                                         getUserId());
+                                                                                                                        model.RequestedLevels,
+                                                                                                                        getUserId());
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
@@ -112,11 +156,16 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new EmptyResult();
         }
 
-        [HttpGet]
-        public IActionResult SearchSimpleGroupsBySampleType(GenericRequestByIdModel model)
+        [HttpPost]
+        public IActionResult SearchSimpleGroupsBySampleType(SearchRequestByIdModel model)
         {
+            if (model.RequestedLevels == null ||
+                !model.RequestedLevels.Any())
+                return new EmptyResult();
+
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleType(model.Id,
-                                                                                                                         getUserId());
+                                                                                                                        model.RequestedLevels,
+                                                                                                                        getUserId());
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:

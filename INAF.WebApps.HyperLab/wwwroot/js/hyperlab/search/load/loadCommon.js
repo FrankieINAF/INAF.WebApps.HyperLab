@@ -376,7 +376,8 @@ function getFilesListItemMobile(filename, spectrumType, source, isLoaded) {
         message = LoadFileReadFileErrorMessage;
     }
     html += `<div class="flex-self-center-fs margin-right-8 margin-top-4"><span class="mif ${icon} ${color} mif-2x" title="${message}"></span></div>`;
-    html += `<div class="flex-self-center-fs loaded-file-width"><p class="text-secondary-sm text-light text-ellipsis">${filename}</p></div>`;
+    let filenameClass = (source == SPECTRUM_SOURCE_SLAB) ? 'primary' : 'secondary';
+    html += `<div class="flex-self-center-fs loaded-file-width"><p class="text-secondary-sm text-light text-ellipsis tally ${filenameClass}">${filename}</p></div>`;
     html += getToSaveOnCloudIcon(filename);
     html += `</div>`;
     if (source == SPECTRUM_SOURCE_SLAB)

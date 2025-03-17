@@ -727,6 +727,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insert a filename for starting search.
+        /// </summary>
+        public static string SearchByFilenameEmptyErrorMessage {
+            get {
+                return ResourceManager.GetString("SearchByFilenameEmptyErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert a file name....
+        /// </summary>
+        public static string SearchByFilenamePlaceholder {
+            get {
+                return ResourceManager.GetString("SearchByFilenamePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, something went wrong while trying to search spectra by selected material.
         /// </summary>
         public static string SearchByMaterialErrorMessage {
@@ -768,6 +786,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SearchClearSuggestionsButtonTitle {
             get {
                 return ResourceManager.GetString("SearchClearSuggestionsButtonTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filename.
+        /// </summary>
+        public static string SearchComplexByFilenameLabel {
+            get {
+                return ResourceManager.GetString("SearchComplexByFilenameLabel", resourceCulture);
             }
         }
         
@@ -822,6 +849,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SearchComplexClearLabel {
             get {
                 return ResourceManager.GetString("SearchComplexClearLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Condition(s) on filename.
+        /// </summary>
+        public static string SearchComplexConditionsOnFilenameLabel {
+            get {
+                return ResourceManager.GetString("SearchComplexConditionsOnFilenameLabel", resourceCulture);
             }
         }
         
@@ -1155,6 +1191,33 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SearchResultColSpectrumLevelLabel {
             get {
                 return ResourceManager.GetString("SearchResultColSpectrumLevelLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show averaged acquisitions.
+        /// </summary>
+        public static string SearchShowAveragedAcquisitionLabel {
+            get {
+                return ResourceManager.GetString("SearchShowAveragedAcquisitionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show single acquisitions.
+        /// </summary>
+        public static string SearchShowSingleAcquisitionLabel {
+            get {
+                return ResourceManager.GetString("SearchShowSingleAcquisitionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search by file name.
+        /// </summary>
+        public static string SearchSimpleByFilenameLabel {
+            get {
+                return ResourceManager.GetString("SearchSimpleByFilenameLabel", resourceCulture);
             }
         }
         
