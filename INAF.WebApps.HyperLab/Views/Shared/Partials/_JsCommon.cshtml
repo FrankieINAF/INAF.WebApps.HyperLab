@@ -51,9 +51,6 @@
     var CONTROLLER_OPERATION_MODEL_INVALID = @{@((int)ControllerOperationStatus.ModelInvalid);};
     var CONTROLLER_OPERATION_ERROR = @{@((int)ControllerOperationStatus.UpsertError);};
 
-    var SPECTRUM_SOURCE_SLAB = @{@((int)Enums.Enums.SpectrumSource.SLab);};
-    var SPECTRUM_SOURCE_EXTERNAL = @{@((int)Enums.Enums.SpectrumSource.External);};
-
     var SPECTRUM_LEVEL_SINGLE_ACQUISITION = @{@((int)Enums.Enums.SpectrumLevel.SingleAcquisition);};
     var SPECTRUM_LEVEL_AVERAGED = @{@((int)Enums.Enums.SpectrumLevel.Averaged);};
 
@@ -186,6 +183,57 @@
         }
 
         return spectrumTypeText;
+    }
+
+    function getSpectrumTypeValue(spectrumTypeString) {
+        let spectrumTypeValue = 'Raw';
+        switch (spectrumTypeString) {
+            case 1:
+                spectrumTypeValue = SPECTRUM_TYPE_NONE;
+                break;
+
+            case '@Enums.Enums.SpectrumType.Raw.ToString()':
+                spectrumTypeValue = SPECTRUM_TYPE_RAW;
+                break;
+
+            case '@Enums.Enums.SpectrumType.Ref.ToString()':
+                spectrumTypeValue = SPECTRUM_TYPE_REF;
+                break;
+
+            case '@Enums.Enums.SpectrumType.RefWhite.ToString()':
+                spectrumTypeValue = SPECTRUM_TYPE_REF_WHITE;
+                break;
+
+            case '@Enums.Enums.SpectrumType.Aligned.ToString()':
+                spectrumTypeValue = SPECTRUM_TYPE_ALIGNED;
+                break;
+
+            case '@Enums.Enums.SpectrumType.AlignedSmoothedBySegments.ToString()':
+                spectrumTypeValue = SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_SEGMENTS;
+                break;
+
+            case '@Enums.Enums.SpectrumType.AlignedSmoothed.ToString()':
+                spectrumTypeValue = SPECTRUM_TYPE_ALIGNED_SMOOTHED;
+                break;
+
+            case '@Enums.Enums.SpectrumType.Continuum.ToString()':
+                spectrumTypeValue = SPECTRUM_TYPE_CONTINUUM;
+                break;
+
+            case '@Enums.Enums.SpectrumType.ContinuumRemoved.ToString()':
+                spectrumTypeValue = SPECTRUM_TYPE_CONTINUUM_REMOVED;
+                break;
+
+            case '@Enums.Enums.SpectrumType.ContinuumRemovedSmoothedBySegments.ToString()':
+                spectrumTypeValue = SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED_BY_SEGMENTS;
+                break;
+
+            case '@Enums.Enums.SpectrumType.ContinuumRemovedSmoothed.ToString()':
+                spectrumTypeValue = SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED;
+                break;
+        }
+
+        return spectrumTypeValue;
     }
 
     function navigateToHome() {

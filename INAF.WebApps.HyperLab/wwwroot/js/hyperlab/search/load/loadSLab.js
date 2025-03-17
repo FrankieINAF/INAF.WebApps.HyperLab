@@ -92,6 +92,7 @@ async function saveSLabFileAsync(filename, xml, spectrumType, isRawUrlRequested)
     let obj = await doAjaxPostAsync(url, saveSpectrumRequest);
     if (obj) {
         isOk = obj.IsOk;
+        /* update the list item on UI by changing the cloud icon color */
         updateListItem(filename, isOk);
     } else
         isOk = false;
@@ -103,19 +104,24 @@ async function saveSLabFileAsync(filename, xml, spectrumType, isRawUrlRequested)
 /* ################################################################################ */
 /* BUILD LIST ITEM - SLAB */
 /* ################################################################################ */
-function getSpectrumTypeSelect(filename) {
+function getSpectrumTypeSelect(filename, spectrumType) {
+
     let html = `<select data-role="select" data-on-change="${onSpectrumTypeChange.name}">`;
-    html += `<option value="${filename}_${SPECTRUM_TYPE_RAW}" selected>${getSpectrumTypeDescription(2)}</option>`;
-    html += `<option value="${filename}_${SPECTRUM_TYPE_ALIGNED}">${getSpectrumTypeDescription(5)}</option>`;
-    html += `<option value="${filename}_${SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_SEGMENTS}">${getSpectrumTypeDescription(6)}</option>`;
-    html += `<option value="${filename}_${SPECTRUM_TYPE_ALIGNED_SMOOTHED}">${getSpectrumTypeDescription(7)}</option>`;
-    html += `<option value="${filename}_${SPECTRUM_TYPE_CONTINUUM_REMOVED}">${getSpectrumTypeDescription(9)}</option>`;
-    html += `<option value="${filename}_${SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED_BY_SEGMENTS}">${getSpectrumTypeDescription(10)}</option>`;
-    html += `<option value="${filename}_${SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED}">${getSpectrumTypeDescription(11)}</option>`;
-    html += `<option value="${filename}_${SPECTRUM_TYPE_REF}">${getSpectrumTypeDescription(3)}</option>`;
-    html += `<option value="${filename}_${SPECTRUM_TYPE_REF_WHITE}">${getSpectrumTypeDescription(4)}</option>`;
+    html += `<option value="${filename}_${SPECTRUM_TYPE_RAW}" ${getSpectrumTypeSelectString(SPECTRUM_TYPE_RAW, spectrumType)}>${getSpectrumTypeDescription(2)}</option>`;
+    html += `<option value="${filename}_${SPECTRUM_TYPE_ALIGNED}" ${getSpectrumTypeSelectString(SPECTRUM_TYPE_ALIGNED, spectrumType)}>${getSpectrumTypeDescription(5)}</option>`;
+    html += `<option value="${filename}_${SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_SEGMENTS}" ${getSpectrumTypeSelectString(SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_SEGMENTS, spectrumType)}>${getSpectrumTypeDescription(6)}</option>`;
+    html += `<option value="${filename}_${SPECTRUM_TYPE_ALIGNED_SMOOTHED}" ${getSpectrumTypeSelectString(SPECTRUM_TYPE_ALIGNED_SMOOTHED, spectrumType)}>${getSpectrumTypeDescription(7)}</option>`;
+    html += `<option value="${filename}_${SPECTRUM_TYPE_CONTINUUM_REMOVED}" ${getSpectrumTypeSelectString(SPECTRUM_TYPE_CONTINUUM_REMOVED, spectrumType)}>${getSpectrumTypeDescription(9)}</option>`;
+    html += `<option value="${filename}_${SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED_BY_SEGMENTS}" ${getSpectrumTypeSelectString(SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED_BY_SEGMENTS, spectrumType)}>${getSpectrumTypeDescription(10)}</option>`;
+    html += `<option value="${filename}_${SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED}" ${getSpectrumTypeSelectString(SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED, spectrumType)}>${getSpectrumTypeDescription(11)}</option>`;
+    html += `<option value="${filename}_${SPECTRUM_TYPE_REF}" ${getSpectrumTypeSelectString(SPECTRUM_TYPE_REF, spectrumType)}>${getSpectrumTypeDescription(3)}</option>`;
+    html += `<option value="${filename}_${SPECTRUM_TYPE_REF_WHITE}" ${getSpectrumTypeSelectString(SPECTRUM_TYPE_REF_WHITE, spectrumType)}>${getSpectrumTypeDescription(4)}</option>`;
     html += `</select>`;
     return html;
+}
+
+function getSpectrumTypeSelectString(testSpectrumType, spectrumType) {
+    return (testSpectrumType == spectrumType) ? 'selected' : '';
 }
 
 function onSpectrumTypeChange(evt) {

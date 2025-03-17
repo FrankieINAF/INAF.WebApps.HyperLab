@@ -274,6 +274,7 @@
   {
     "outputFileName": "wwwroot/css/dist/searchandchart/searchandchartbundle.css",
     "inputFiles": [
+      "wwwroot/css/hyperlab/searchandchart/searches.css",
       "wwwroot/css/hyperlab/searchandchart/searchandchart.css",
       "wwwroot/css/hyperlab/searchandchart/charms.css"
     ],

@@ -25,7 +25,7 @@ function createParsedSpectrum(filename, xml, spectrumType, source, fileType) {
 }
 
 function getParsedSpectrum(filename) {
-    return parsedSpectra.find(spectrum => spectrum.Filename == filename);
+    return parsedSpectra.find(spectrum => spectrum.Filename == filename || spectrum.Filename.startsWith(filename));
 }
 
 function isAlreadyParsed(filename) {
@@ -73,7 +73,6 @@ async function loadFilesAsync(files, source) {
     let filesNum = files.length;
     for (var i = 0; i < filesNum; i++) {
         let file = files[i];
-        //let filename = removeFileExtension(file.name);
         let filename = file.name;
         //console.log(`LOOP, ${filename}, ${i}`);
 
@@ -84,14 +83,14 @@ async function loadFilesAsync(files, source) {
 
         reader.onload = async function (event) {
             const text = event.target.result;
-            let fileType = CSV;
+            let fileExt = CSV;
             if (isXML(text)) {
-                fileType = XML;
-                console.log("XML");
-                //await readXmlProcedureAsync(text, filename, index);
+                fileExt = XML;
+                //console.log("XML");
+                await manageXmlProcedureAsync(text, filename, source, fileExt);
             } else {
-                console.log(`CSV, ${filename}`);
-                manageCsvProcedure(text, filename, source, fileType);
+                //console.log(`CSV, ${filename}`);
+                manageCsvProcedure(text, filename, source, fileExt);
             }
         };
 
@@ -112,7 +111,7 @@ function removeFileFromList(filename) {
         removeSelectedSpectrum(parsedSpectrum.Id);
         /* remove the spectrum from the list of loaded spectra on UI */
         $(`#item_${$.escapeSelector(filename)}`).remove(); // escapeSelector is a jQuery function for escaping special characters (.,-,etc)
-    }  else
+    } else
         showSimpleDialog(ERROR_LABEL, LoadFileRemoveFileErrorMessage, ALERT);
 }
 
@@ -137,23 +136,27 @@ function parseCSV(text) {
     return points;
 }
 
-function manageCsvProcedure(text, filename, source, fileType) {
+function manageCsvProcedure(text, filename, source, fileExt) {
     let xml = buildSpectrumXml(filename, text, source);
     let isLoaded = xml != null;
-    addListItem(filename, source, isLoaded);
-    addParsedSpectrum(filename, xml, SPECTRUM_TYPE_RAW, source, fileType);
+    /* add file item to list of loaded files on UI */
+    addFilesListItem(filename, SPECTRUM_TYPE_RAW, source, isLoaded);
+    /* save parse spectrum on the in-memory list */
+    addParsedSpectrum(filename, xml, SPECTRUM_TYPE_RAW, source, fileExt);
 }
 
-/* ################################################################################ */
+/* -------------------------------------------------------------------------------- */
 /* BUILD XML */
-/* ################################################################################ */
+/* -------------------------------------------------------------------------------- */
 
 function buildSpectrumXml(filename, text, source) {
+    let spectrumType = (source == SPECTRUM_SOURCE_SLAB) ? SPECTRUM_TYPE_RAW : SPECTRUM_TYPE_ALIGNED;
+
     let info = {
         RawFilename: filename,
         Source: getSpectrumSourceString(source), // defined in _JsCommon.cshtml
         Level: getSpectrumLevelString(SPECTRUM_LEVEL_AVERAGED), // defined in _JsCommon.cshtml
-        Type: getSpectrumTypeString(SPECTRUM_TYPE_RAW), // defined in _JsCommon.cshtml
+        Type: getSpectrumTypeString(spectrumType), // defined in _JsCommon.cshtml
     };
 
     let spectrum = {
@@ -233,6 +236,26 @@ function updateNodeValue(xmlString, nodeName, newValue) {
 }
 
 /* ################################################################################ */
+/* READ XML FILE */
+/* ################################################################################ */
+async function manageXmlProcedureAsync(xml, filename, source, fileExt) {
+    let parser = new DOMParser();
+    let xmlDoc = parser.parseFromString(xml, "application/xml");
+
+    // Example: Extract data from the XML
+    let type = xmlDoc.getElementsByTagName("Type");
+    if (type && type.length > 0) {
+        /* retrieve spectrumType text and value */
+        let spectrumTypeText = type[0].innerHTML;
+        let spectrumType = getSpectrumTypeValue(spectrumTypeText);
+        /* add file item to list of loaded files on UI */
+        addFilesListItem(filename, spectrumType, source, true);
+        /* save parse spectrum on the in-memory list */
+        addParsedSpectrum(filename, xml, spectrumType, source, fileExt);
+    }
+}
+
+/* ################################################################################ */
 /* FILES SAVING COMMON */
 /* ################################################################################ */
 
@@ -244,7 +267,7 @@ async function saveFileAsync(filename) {
     let spectrum = parsedSpectra[index];
     switch (spectrum.Source) {
         case SPECTRUM_SOURCE_EXTERNAL:
-            await saveExternalSpectrumAsync(spectrum.Filename, spectrum.Xml, spectrum.SpectrumType);
+            await saveExternalFileAsync(spectrum.Filename, spectrum.Xml);
             break;
 
         case SPECTRUM_SOURCE_SLAB:
@@ -258,15 +281,34 @@ async function saveFileAsync(filename) {
 /* ################################################################################ */
 /* BUILD LIST ITEM */
 /* ################################################################################ */
-function addListItem(filename, source, isLoaded) {
-    $('#loadedFilesList').append(getListItem(filename, source, isLoaded));
+function addFilesListItem(filename, spectrumType, source, isLoaded) {
+    $('#loadedFilesList').append(getFilesListItem(filename, spectrumType, source, isLoaded));
 
-    if (isLoaded && source == SPECTRUM_SOURCE_SLAB) {
-        checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, SPECTRUM_TYPE_RAW, source);
+    if (isLoaded) {
+        switch (source) {
+            case SPECTRUM_SOURCE_EXTERNAL:
+                checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, SPECTRUM_TYPE_ALIGNED, source);
+                break;
+
+            default:
+                let spectrumTypeText = getSpectrumTypeDescription(spectrumType);
+                checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, spectrumType, source);
+                break;
+        }
     }
 }
 
 async function checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, spectrumType, source) {
+    /* check on cloud is executed by using only the meaningfull part of the filename */
+    let tmp = filename.split('.');
+    if (tmp.length > 1) {
+        filename = tmp[0];
+        /* when we're dealing with XML files we also need to remove the part of filename
+           containing the SpectrumType */
+        let spectrumTypeText = getSpectrumTypeDescription(spectrumType);
+        filename = filename.replace(`_${spectrumTypeText}`, '')
+    }
+
     let model = {
         Filename: filename,
         SpectrumType: spectrumType,
@@ -287,14 +329,15 @@ async function checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, spect
     }
 }
 
-function getListItem(filename, source, isLoaded) {
+function getFilesListItem(filename, spectrumType, source, isLoaded) {
+    console.log(`isModbile, ${isMobile()}`);
     if (isMobile())
-        return getListItemMobile(filename, source, isLoaded);
+        return getFilesListItemMobile(filename, spectrumType, source, isLoaded);
     else
-        return getListItemDesktop(filename, source, isLoaded);
+        return getFilesListItemDesktop(filename, spectrumType, source, isLoaded);
 }
 
-function getListItemDesktop(filename, source, isLoaded) {
+function getFilesListItemDesktop(filename, spectrumType, source, isLoaded) {
     let html = ``;
     html += `<div id="item_${filename}" class="d-flex flex-column-fs flex-row-sm margin-vertical-8">`;
     html += `<div class="flex-self-center-fs margin-right-8 pointer"><span class="mif mif-bin pointer" title="${LoadFileRemoveSelectedFileMessage}" onclick="${removeFileFromList.name}('${filename}')"></span></div>`;
@@ -307,16 +350,19 @@ function getListItemDesktop(filename, source, isLoaded) {
         message = LoadFileReadFileErrorMessage;
     }
     html += `<div class="flex-self-center-fs margin-right-8 margin-top-4"><span class="mif ${icon} ${color} mif-2x" title="${message}"></span></div>`;
-    html += `<div class="flex-self-center-fs width-250"><span class="text-secondary-sm text-light">${filename}</span></div>`;
+    let filenameClass = (source == SPECTRUM_SOURCE_SLAB) ? 'primary' : 'secondary';
+    html += `<div class="flex-self-center-fs loaded-file-width"><p class="text-secondary-sm text-light text-ellipsis tally ${filenameClass}">${filename}</p></div>`;
     if (source == SPECTRUM_SOURCE_SLAB)
-        html += `<div class="flex-self-center-fs margin-horizontal-16" style="width: 260px">${getSpectrumTypeSelect(filename)}</div>`;
+        html += `<div class="flex-self-center-fs margin-horizontal-16" style="width: 260px">${getSpectrumTypeSelect(filename, spectrumType)}</div>`;
+    else
+        html += `<div class="margin-horizontal-16" style="width: 260px">&nbsp;</div>`;
     html += getToSaveOnCloudIcon(filename);
     html += `</div>`;
 
     return html;
 }
 
-function getListItemMobile(filename, source, isLoaded) {
+function getFilesListItemMobile(filename, spectrumType, source, isLoaded) {
     let html = ``;
     html += `<div id="item_${filename}" class="d-flex flex-column-fs flex-row-sm margin-vertical-8">`;
     html += `<div id="item_${filename}" class="d-flex flex-row margin-vertical-8">`;
@@ -330,7 +376,7 @@ function getListItemMobile(filename, source, isLoaded) {
         message = LoadFileReadFileErrorMessage;
     }
     html += `<div class="flex-self-center-fs margin-right-8 margin-top-4"><span class="mif ${icon} ${color} mif-2x" title="${message}"></span></div>`;
-    html += `<div class="flex-self-center-fs width-250"><span class="text-secondary-sm text-light">${filename}</span></div>`;
+    html += `<div class="flex-self-center-fs loaded-file-width"><p class="text-secondary-sm text-light text-ellipsis">${filename}</p></div>`;
     html += getToSaveOnCloudIcon(filename);
     html += `</div>`;
     if (source == SPECTRUM_SOURCE_SLAB)
@@ -356,10 +402,11 @@ function getToSaveOnCloudIcon(filename, color) {
 }
 
 function updateListItem(filename, isSaved) {
+    let spectrum = getParsedSpectrum(filename);
     if (isSaved)
-        $(`#upload_${$.escapeSelector(filename)}`).replaceWith(getSavedOnCloudIcon(filename));
+        $(`#upload_${$.escapeSelector(spectrum.Filename)}`).replaceWith(getSavedOnCloudIcon(spectrum.Filename));
     else
-        $(`#uploaded_${$.escapeSelector(filename) }`).replaceWith(getToSaveOnCloudIcon(filename, 'orange'));
+        $(`#uploaded_${$.escapeSelector(spectrum.Filename)}`).replaceWith(getToSaveOnCloudIcon(spectrum.Filename, 'orange'));
 }
 
 /* ################################################################################ */
