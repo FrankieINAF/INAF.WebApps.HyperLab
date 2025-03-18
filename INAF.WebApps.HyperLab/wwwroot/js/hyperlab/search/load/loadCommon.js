@@ -86,6 +86,9 @@ async function loadFilesAsync(files, source) {
             let fileExt = CSV;
             if (isXML(text)) {
                 fileExt = XML;
+                /*  check whether a SLab xml file is being loaded as external file */
+                if (source == SPECTRUM_SOURCE_EXTERNAL && isSLabXmlStructure(text))
+                    source = SPECTRUM_SOURCE_SLAB;
                 //console.log("XML");
                 await manageXmlProcedureAsync(text, filename, source, fileExt);
             } else {

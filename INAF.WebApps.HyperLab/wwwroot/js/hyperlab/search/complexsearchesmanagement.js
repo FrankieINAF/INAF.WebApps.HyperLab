@@ -75,7 +75,7 @@ async function deleteComplexSearchAndReloadAsync(itemId) {
 /* -------------------------------------------------------------------------------- */
 /* UI ELEMENTS OPERATORS */
 /* -------------------------------------------------------------------------------- */
-function tryAddComplexSearchTopBar(id = -1) {
+function tryAddComplexSearchTopBar(id = -1, requestedLevels = null) {
     if ($('#complexSearchTopBar').children().length > 0)
         return;
 
@@ -153,8 +153,15 @@ function tryAddComplexSearchTopBar(id = -1) {
             }
         });
 
-        // Programmatically set the checkbox as checked
-        executeAfter(function () { $('#selectLevelAveragedComplex').prop('checked', true).trigger('change'); }, 500);
+        if (requestedLevels == null)
+            // Programmatically set the checkbox as checked
+            executeAfter(function () { $('#selectLevelAveragedComplex').prop('checked', true).trigger('change'); }, 500);
+        else {
+            requestedLevelsComplex = requestedLevels;
+            requestedLevelsComplex.forEach(function (item) {
+                $(`#selectLevel${item == 2 ? 'Averaged' : 'SingleAcquisition'}Complex`).prop('checked', true).trigger('change');
+            });
+        }
     });
 
     $('#complexSearchTopBar').html(html);

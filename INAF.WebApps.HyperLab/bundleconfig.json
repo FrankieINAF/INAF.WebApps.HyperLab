@@ -126,9 +126,10 @@
       "wwwroot/js/hyperlab/search/complexsearchesmanagement.js",
       "wwwroot/js/hyperlab/search/complexsearchesintro.js",
       "wwwroot/js/hyperlab/search/info.js",
-      "wwwroot/js/hyperlab/search/load/loadCommon.js",
-      "wwwroot/js/hyperlab/search/load/loadExternal.js",
-      "wwwroot/js/hyperlab/search/load/loadSLab.js"
+      "wwwroot/js/hyperlab/search/load/loadcommoncheckxml.js",
+      "wwwroot/js/hyperlab/search/load/loadcommon.js",
+      "wwwroot/js/hyperlab/search/load/loadexternal.js",
+      "wwwroot/js/hyperlab/search/load/loadslab.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true

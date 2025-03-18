@@ -480,6 +480,7 @@
 
 <!-- common js variables -->
 @{
+    await Html.RenderPartialAsync("Partials/_JsCommon");
     await Html.RenderPartialAsync("Partials/_SearchAndShareJsCommon");
     await Html.RenderPartialAsync("Partials/_SearchAndChartJsCommon");
     await Html.RenderPartialAsync("Partials/_SearchJsCommon");
@@ -601,9 +602,10 @@
     <script type="text/javascript" src="~/js/hyperlab/search/complexsearchesmanagement.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/complexsearchesintro.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/search/info.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/load/loadCommon.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/load/loadExternal.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/load/loadSLab.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/search/load/loadcommoncheckxml.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/search/load/loadcommon.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/search/load/loadexternal.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/search/load/loadslab.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">
     <script type="text/javascript" src="~/js/dist/search/searchbundle.min.js" asp-append-version="true"></script>

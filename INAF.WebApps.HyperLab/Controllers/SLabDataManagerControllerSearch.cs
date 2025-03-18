@@ -22,7 +22,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new EmptyResult();
 
             List<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(complexSearchModel.Conditions,
-                                                                                                 getUserId());
+                                                                                                getUserId());
 
             switch (getCallerContext())
             {
@@ -226,16 +226,16 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new JsonResult(new GenericResponseModel() { IsOk = isOk });
         }
 
-        [HttpGet]
-        public IActionResult GetSavedComplexSearch(GenericRequestByIdModel model)
-        {
-            ComplexSearchSavingModel? complexSearchModel = dbHandlerHyperLabData.getSavedComplexSearch(model.Id,
-                                                                                                       getUserId());
-            if (complexSearchModel == null || complexSearchModel.Conditions == null || !complexSearchModel.Conditions.Any())
-                return new EmptyResult();
+        //[HttpGet]
+        //public IActionResult GetSavedComplexSearch(GenericRequestByIdModel model)
+        //{
+        //    ComplexSearchSavingModel? complexSearchModel = dbHandlerHyperLabData.getSavedComplexSearch(model.Id,
+        //                                                                                               getUserId());
+        //    if (complexSearchModel == null || complexSearchModel.Conditions == null || !complexSearchModel.Conditions.Any())
+        //        return new EmptyResult();
 
-            return new JsonResult(complexSearchModel);
-        }
+        //    return new JsonResult(complexSearchModel);
+        //}
 
         [HttpGet]
         public IActionResult GetSavedComplexSearchInfo(GenericRequestByIdModel model)

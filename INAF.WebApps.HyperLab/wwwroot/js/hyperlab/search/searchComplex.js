@@ -304,6 +304,159 @@ function getRadioButton(label, conditionOperator, captionPosition, currentIndex,
 }
 
 /* -------------------------------------------------------------------------------- */
+/* FILENAME CONDITION */
+/* -------------------------------------------------------------------------------- */
+function addConditionFilename(liId, currentIndex = null, groupIndex = null) {
+    /* only 1 group per type is allowed, if already present then return */
+    if (isGroupCurrentlyUsed(CONDITION_TYPE_FILENAME))
+        return;
+
+    tryAddComplexSearchTopBar();
+
+    let callback = function () {
+        /* set this group currently used */
+        addCurrentlyUsedGroup(CONDITION_TYPE_FILENAME);
+
+        /* add and/or operators between 2 different condition gorups, if needed */
+        if (isConditionsOperatorsItemRequired())
+            addConditionsOperators(currentIndex);
+
+        /* begin building up condition group */
+        if (currentIndex == null)
+            currentIndex = conditionsIndex;
+
+        let id = `${CONDITION_TYPE_FILENAME}${CONDITIONS_CONTAINER}`;
+
+        let html = ``;
+        html += `<div id="${id}" tag="${currentIndex}" class="conditions-group">`;
+        html += `   <div class="row cell-fs-12 d-flex flex-justify-between flex-wrap">`;
+        html += `       <button class="flex-start button dark cycle mini outline" title="${SearchComplexGroupAddItem}" onclick="addConditionFilenameItem()"><span class="mif-plus"></span></button>`;
+        html += `       <label class="flex-center"><span class="text-secondary text-medium">${SearchComplexConditionsOnFilenameLabel}</span></label>`;
+        html += `       <button class="flex-start button dark cycle mini outline" title="${SearchComplexGroupRemoveGroup}" onclick="removeConditionsGroup('${CONDITION_TYPE_FILENAME}', '${id}', ${currentIndex})"><span class="mif-bin"></span></button>`;
+        html += `   </div>`;
+        html += `   <div id="${CONDITION_TYPE_FILENAME}${CONDITIONS_ITEMS}" class="row">`;
+        html += getConditionFilenameItem(currentIndex, groupIndex);
+        html += `   </div>`;
+        html += `</div>`;
+
+        /* realize metro plugin when item has been created */
+        setFilenameItem(currentIndex, groupIndex);
+
+        /* append html to create group */
+        $(complexSearchConditionsContainer).append(html);
+
+        /* disable caller button and set title 'group already in use' */
+        setGroupButtonInUse(liId);
+
+        /* increment index for grouping conditions */
+        conditionsIndex++;
+    };
+
+    manageAddedCondition(callback);
+}
+
+function addConditionFilenameItem(currentIndex = null, groupIndex = null) {
+    let _currentIndex = currentIndex;
+    if (_currentIndex == null)
+        _currentIndex = getCurrentIndex(CONDITION_TYPE_FILENAME);
+
+    let html = getConditionFilenameItem(_currentIndex, groupIndex);
+
+    /* realize metro plugin when item has been created */
+    setFilenameItem(_currentIndex, groupIndex);
+
+    /* add actions for and/or radio buttons */
+    addRadioButtonAction(_currentIndex, groupIndex - 1);
+
+    /* append html to create item */
+    $(`#${CONDITION_TYPE_FILENAME}${CONDITIONS_ITEMS}`).append(html);
+}
+
+function getConditionFilenameItem(currentIndex, groupIndex) {
+    let isBuildingFromExistingConditions = true;
+
+    let _groupIndex = groupIndex;
+    if (groupIndex == null) {
+        isBuildingFromExistingConditions = false;
+        _groupIndex = getGroupIndex(CONDITION_TYPE_FILENAME);
+    }
+
+    /* if a condition is already existing, then we need to link the old one and the new one with a condition operator and/or */
+    let htmloperators = '';
+    if (_groupIndex > 0) {
+        htmloperators = buildConditionOperatorsGroup(currentIndex, _groupIndex - 1, CONDITION_TYPE_FILENAME);
+        /* update the groupIndex value for next condition model (only if no groupIndex value is passed) */
+        if (groupIndex == null)
+            _groupIndex = getGroupIndex(CONDITION_TYPE_FILENAME);
+    }
+
+    /* if we're not building up from existings conditions, then add new condition to models */
+    if (!isBuildingFromExistingConditions) {
+        if (_groupIndex > 0) {
+            addConditionModel(getConditionOperatorModel(currentIndex, _groupIndex, CONDITION_TYPE_FILENAME, CONDITION_OPERATOR_OR, 0));
+            _groupIndex = getGroupIndex(CONDITION_TYPE_FILENAME);
+        }
+        addConditionModel(getConditionModelWithValueText(currentIndex, CONDITION_TYPE_FILENAME));
+    }
+
+    /* create id */
+    let id = `${CONDITION_TYPE_FILENAME}${currentIndex}${_groupIndex}`;
+
+    let html = '';
+
+    html += `<div id="${id}Container" class="row margin-horizontal-4 d-flex flex-column" ${getRemoveButtonOpacityActionsHtml(currentIndex, _groupIndex)}>`;
+    html += `   <div class="d-flex flex-row">`;
+    /* add radio button condition if required */
+    if (_groupIndex > 0) {
+        html += htmloperators;
+    }
+    /* try to retrieve value from complexSearchConditions */
+    let valueText = tryGetValueText(currentIndex, _groupIndex, CONDITION_TYPE_FILENAME);
+    if (valueText == null)
+        valueText = '';
+    html += `       <input data-role="input" class="height-40 select-item-width" data-val="true" data-val-required="The Filename field is required." `;
+    html += `onchange="updateFilenameModel('${id}', ${currentIndex}, ${_groupIndex})" id="${id}" name="Filename${currentIndex}${_groupIndex}"  `;
+    html += `placeholder="${SearchByFilenamePlaceholder}" type="text" value="${valueText}"  class="" >`;
+    html += getRemoveButtonHtml(`${id}Container`, currentIndex, _groupIndex, `${CONDITION_TYPE_FILENAME}`);
+    html += `   </div>`;
+    let spanclass = 'field-validation-valid';
+    if (_groupIndex > 0)
+        spanclass += ' field-validation-text';
+    html += `<div><span id="${id}Validation" class='${spanclass}'>${SearchFieldTextRequiredMessage}</span></div>`;
+    html += '</div>';
+
+    return html;
+}
+
+function setFilenameItem(currentIndex, groupIndex = null) {
+    let _groupIndex = groupIndex;
+    if (_groupIndex == null)
+        _groupIndex = getStrictGroupIndex(CONDITION_TYPE_FILENAME) - 1;
+
+    let id = `${CONDITION_TYPE_FILENAME}${currentIndex}${_groupIndex}`;
+    $(`#${id}`).ready(function () {
+        /* animate the ui items container */
+        animateCSS(`${id}`, `bounceIn`, FAST);
+    });
+}
+
+function updateFilenameModel(id, currentIndex, groupIndex) {
+    /* retrieve text */
+    let text = $(`#${id}`).val();
+
+    /* update UI */
+    if (text.length > 0)
+        setInputFieldErrorState(id, false);
+    else
+        setInputFieldErrorState(id, true);
+
+    /* update condition model with text */
+    let index = saveComplexSearchModel.Conditions.findIndex(x => x.Index == currentIndex && x.GroupIndex == groupIndex);
+    if (index > -1)
+        saveComplexSearchModel.Conditions[index].ValueText = text;
+}
+
+/* -------------------------------------------------------------------------------- */
 /* MATERIAL CONDITION */
 /* -------------------------------------------------------------------------------- */
 function addConditionMaterial(liId, currentIndex = null, groupIndex = null) {
@@ -406,8 +559,10 @@ function getConditionMaterialItem(currentIndex = null, groupIndex = null) {
 
     /* if we're not building up from existings conditions, then add new condition to models */
     if (!isBuildingFromExistingConditions) {
-        addConditionModel(getConditionOperatorModel(currentIndex, _groupIndex, CONDITION_TYPE_MATERIAL, CONDITION_OPERATOR_OR, 0));
-        _groupIndex = getGroupIndex(CONDITION_TYPE_MATERIAL);
+        if (_groupIndex > 0) {
+            addConditionModel(getConditionOperatorModel(currentIndex, _groupIndex, CONDITION_TYPE_MATERIAL, CONDITION_OPERATOR_OR, 0));
+            _groupIndex = getGroupIndex(CONDITION_TYPE_MATERIAL);
+        }
         addConditionModel(getConditionModelWithValueText(currentIndex, CONDITION_TYPE_MATERIAL));
     }
 
@@ -541,156 +696,6 @@ function setMaterialItem(currentIndex, groupIndex) {
     });
 }
 
-/* -------------------------------------------------------------------------------- */
-/* FILENAME CONDITION */
-/* -------------------------------------------------------------------------------- */
-function addConditionFilename(liId, currentIndex = null, groupIndex = null) {
-    /* only 1 group per type is allowed, if already present then return */
-    if (isGroupCurrentlyUsed(CONDITION_TYPE_FILENAME))
-        return;
-
-    tryAddComplexSearchTopBar();
-
-    let callback = function () {
-        /* set this group currently used */
-        addCurrentlyUsedGroup(CONDITION_TYPE_FILENAME);
-
-        /* add and/or operators between 2 different condition gorups, if needed */
-        if (isConditionsOperatorsItemRequired())
-            addConditionsOperators(currentIndex);
-
-        /* begin building up condition group */
-        if (currentIndex == null)
-            currentIndex = conditionsIndex;
-
-        let id = `${CONDITION_TYPE_FILENAME}${CONDITIONS_CONTAINER}`;
-
-        let html = ``;
-        html += `<div id="${id}" tag="${currentIndex}" class="conditions-group">`;
-        html += `   <div class="row cell-fs-12 d-flex flex-justify-between flex-wrap">`;
-        html += `       <button class="flex-start button dark cycle mini outline" title="${SearchComplexGroupAddItem}" onclick="addConditionFilenameItem()"><span class="mif-plus"></span></button>`;
-        html += `       <label class="flex-center"><span class="text-secondary text-medium">${SearchComplexConditionsOnFilenameLabel}</span></label>`;
-        html += `       <button class="flex-start button dark cycle mini outline" title="${SearchComplexGroupRemoveGroup}" onclick="removeConditionsGroup('${CONDITION_TYPE_FILENAME}', '${id}', ${currentIndex})"><span class="mif-bin"></span></button>`;
-        html += `   </div>`;
-        html += `   <div id="${CONDITION_TYPE_FILENAME}${CONDITIONS_ITEMS}" class="row">`;
-        html += getConditionFilenameItem(currentIndex, groupIndex);
-        html += `   </div>`;
-        html += `</div>`;
-
-        /* realize metro plugin when item has been created */
-        setFilenameItem(currentIndex, groupIndex);
-
-        /* append html to create group */
-        $(complexSearchConditionsContainer).append(html);
-
-        /* disable caller button and set title 'group already in use' */
-        setGroupButtonInUse(liId);
-
-        /* increment index for grouping conditions */
-        conditionsIndex++;
-    };
-
-    manageAddedCondition(callback);
-}
-
-function addConditionFilenameItem(currentIndex = null, groupIndex = null) {
-    let _currentIndex = currentIndex;
-    if (_currentIndex == null)
-        _currentIndex = getCurrentIndex(CONDITION_TYPE_FILENAME);
-
-    let html = getConditionFilenameItem(_currentIndex, groupIndex);
-
-    /* realize metro plugin when item has been created */
-    setFilenameItem(_currentIndex, groupIndex);
-
-    /* add actions for and/or radio buttons */
-    addRadioButtonAction(_currentIndex, groupIndex - 1);
-
-    /* append html to create item */
-    $(`#${CONDITION_TYPE_FILENAME}${CONDITIONS_ITEMS}`).append(html);
-}
-
-function getConditionFilenameItem(currentIndex, groupIndex) {
-    let isBuildingFromExistingConditions = true;
-
-    let _groupIndex = groupIndex;
-    if (groupIndex == null) {
-        isBuildingFromExistingConditions = false;
-        _groupIndex = getGroupIndex(CONDITION_TYPE_FILENAME);
-    }
-
-    /* if a condition is already existing, then we need to link the old one and the new one with a condition operator and/or */
-    let htmloperators = '';
-    if (_groupIndex > 0) {
-        htmloperators = buildConditionOperatorsGroup(currentIndex, _groupIndex - 1, CONDITION_TYPE_FILENAME);
-        /* update the groupIndex value for next condition model (only if no groupIndex value is passed) */
-        if (groupIndex == null)
-            _groupIndex = getGroupIndex(CONDITION_TYPE_FILENAME);
-    }
-
-    /* if we're not building up from existings conditions, then add new condition to models */
-    if (!isBuildingFromExistingConditions) {
-        addConditionModel(getConditionOperatorModel(currentIndex, _groupIndex, CONDITION_TYPE_FILENAME, CONDITION_OPERATOR_OR, 0));
-        _groupIndex = getGroupIndex(CONDITION_TYPE_FILENAME);
-        addConditionModel(getConditionModelWithValueText(currentIndex, CONDITION_TYPE_FILENAME));
-    }
-
-    /* create id */
-    let id = `${CONDITION_TYPE_FILENAME}${currentIndex}${_groupIndex}`;
-
-    let html = '';
-
-    html += `<div id="${id}Container" class="row margin-horizontal-4 d-flex flex-column" ${getRemoveButtonOpacityActionsHtml(currentIndex, _groupIndex)}>`;
-    html += `   <div class="d-flex flex-row">`;
-    /* add radio button condition if required */
-    if (_groupIndex > 0) {
-        html += htmloperators;
-    }
-    /* try to retrieve value from complexSearchConditions */
-    let valueText = tryGetValueText(currentIndex, _groupIndex, CONDITION_TYPE_FILENAME);
-    if (valueText == null)
-        valueText = '';
-    html += `       <input data-role="input" class="height-40 select-item-width" data-val="true" data-val-required="The Filename field is required." `;
-    html += `onchange="updateFilenameModel('${id}', ${currentIndex}, ${_groupIndex})" id="${id}" name="Filename${currentIndex}${_groupIndex}"  `;
-    html += `placeholder="${SearchByFilenamePlaceholder}" type="text" value="${valueText}"  class="" >`;
-    html += getRemoveButtonHtml(`${id}Container`, currentIndex, _groupIndex, `${CONDITION_TYPE_FILENAME}`);
-    html += `   </div>`;
-    let spanclass = 'field-validation-valid';
-    if (_groupIndex > 0)
-        spanclass += ' field-validation-text';
-    html += `<div><span id="${id}Validation" class='${spanclass}'>${SearchFieldTextRequiredMessage}</span></div>`;
-    html += '</div>';
-
-    return html;
-}
-
-function setFilenameItem(currentIndex, groupIndex = null) {
-    let _groupIndex = groupIndex;
-    if (_groupIndex == null)
-        _groupIndex = getStrictGroupIndex(CONDITION_TYPE_FILENAME) - 1;
-
-    let id = `${CONDITION_TYPE_FILENAME}${currentIndex}${_groupIndex}`;
-    $(`#${id}`).ready(function () {
-        /* animate the ui items container */
-        animateCSS(`${id}`, `bounceIn`, FAST);
-    });
-}
-
-function updateFilenameModel(id, currentIndex, groupIndex) {
-    /* retrieve text */
-    let text = $(`#${id}`).val();
-
-    /* update UI */
-    if (text.length > 0)
-        setInputFieldErrorState(id, false);
-    else
-        setInputFieldErrorState(id, true);
-
-    /* update condition model with text */
-    let index = saveComplexSearchModel.Conditions.findIndex(x => x.Index == currentIndex && x.GroupIndex == groupIndex);
-    if (index > -1)
-        saveComplexSearchModel.Conditions[index].ValueText = text;
-}
 
 /* -------------------------------------------------------------------------------- */
 /* MINERAL CONDITION */
@@ -799,8 +804,10 @@ function getConditionSampleNameItem(currentIndex, groupIndex) {
 
     /* if we're not building up from existings conditions, then add new condition to models */
     if (!isBuildingFromExistingConditions) {
-        addConditionModel(getConditionOperatorModel(currentIndex, _groupIndex, CONDITION_TYPE_SAMPLE_NAME, CONDITION_OPERATOR_OR, 0));
-        _groupIndex = getGroupIndex(CONDITION_TYPE_SAMPLE_NAME);
+        if (_groupIndex > 0) {
+            addConditionModel(getConditionOperatorModel(currentIndex, _groupIndex, CONDITION_TYPE_SAMPLE_NAME, CONDITION_OPERATOR_OR, 0));
+            _groupIndex = getGroupIndex(CONDITION_TYPE_SAMPLE_NAME);
+        }
         addConditionModel(getConditionModelWithValueText(currentIndex, CONDITION_TYPE_SAMPLE_NAME));
     }
 
@@ -991,8 +998,10 @@ function getSelectItem(arrayItems, currentIndex, groupIndex, selectType, conditi
             });
         });
     } else {
-        addConditionModel(getConditionOperatorModel(currentIndex, _groupIndex, conditionType, CONDITION_OPERATOR_OR, 0));
-        _groupIndex = getGroupIndex(conditionType);
+        if (_groupIndex > 0) {
+            addConditionModel(getConditionOperatorModel(currentIndex, _groupIndex, conditionType, CONDITION_OPERATOR_OR, 0));
+            _groupIndex = getGroupIndex(conditionType);
+        }
         addConditionModel(getConditionModelWithValueId(currentIndex, conditionType, _itemValue, _itemId));
     }
 
@@ -1384,7 +1393,7 @@ function buildComplexSearch(obj) {
     let indexMax = Math.max(...obj.Conditions.map(o => o.Index));
 
     /* try to add the top element for saving search */
-    tryAddComplexSearchTopBar(obj.Id);
+    tryAddComplexSearchTopBar(obj.Id, obj.RequestedLevels);
 
     /* loop on groups */
     for (var i = 0; i <= indexMax; i++) {
@@ -1494,8 +1503,17 @@ function showErrors(errors) {
             case CONDITION_TYPE_SAMPLE_NAME:
                 showErrorSampleName(errors[i]);
                 break;
+
+            case CONDITION_TYPE_FILENAME:
+                showErrorFilename(errors[i]);
+                break;
         }
     }
+}
+
+function showErrorFilename(error) {
+    let id = `${error.ConditionType}${error.Index}${error.GroupIndex}`;
+    setInputFieldErrorState(id, true)
 }
 
 function showErrorSampleName(error) {
@@ -1569,7 +1587,7 @@ function validateSampleNameTextFields() {
     };
 
     /* check whether empty text fields are present or not */
-    let items = saveComplexSearchModel.Conditions.filter(x => x.ConditionType == CONDITION_TYPE_SAMPLE_NAME && x.ConditionOperatorType == CONDITION_OPERATOR_NONE && x.ValueText == '');
+    let items = saveComplexSearchModel.Conditions.filter(x => (x.ConditionType == CONDITION_TYPE_SAMPLE_NAME || x.ConditionType == CONDITION_TYPE_FILENAME) && x.ConditionOperatorType == CONDITION_OPERATOR_NONE && x.ValueText == '');
     if (items.length == 0)
         return result;
 
@@ -1577,6 +1595,7 @@ function validateSampleNameTextFields() {
     let itemsNum = items.length;
     for (var i = 0; i < itemsNum; i++) {
 
+        result.Errors.push(getError(CONDITION_TYPE_FILENAME, items[i].Index, items[i].GroupIndex, SearchSuggestionsNotRetrievedMessage));
         result.Errors.push(getError(CONDITION_TYPE_SAMPLE_NAME, items[i].Index, items[i].GroupIndex, SearchSuggestionsNotRetrievedMessage));
         result.IsOk = false;
     }
