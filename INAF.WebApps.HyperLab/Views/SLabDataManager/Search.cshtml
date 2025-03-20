@@ -486,6 +486,7 @@
     await Html.RenderPartialAsync("Partials/_SearchJsCommon");
 }
 <script type="text/javascript">
+    var isSLabDataManagerAllowed = @IsSLabDataManagerAllowed.ToJsString();
     var CONDITION_OPERATORS = '@ConditionsOperators';
     var CONDITION_TYPE_FILENAME = '@ConditionFilename';
     var CONDITION_TYPE_MATERIAL = '@ConditionMaterial';

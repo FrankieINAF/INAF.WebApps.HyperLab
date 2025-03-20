@@ -99,7 +99,7 @@
                 <!-- TEMPLATE APPBAR -->
                 <div id="appBarContainer" class="app-bar-container ml-auto">
                     <!-- LOGOUT -->
-                    <a id="logoutButton" href="@Url.Action(nameof(AccountController.Logout), GenericHelper.GetControllerName(nameof(AccountController)))" class="app-bar-item" title="@Html.Raw(SharedResources.LogOutLabel)">
+                    <a id="logoutButton" href="@Url.Action(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)))" class="app-bar-item" title="@Html.Raw(SharedResources.LogOutLabel)">
                         <span class="mif-exit"></span>
                     </a>
                 </div>
