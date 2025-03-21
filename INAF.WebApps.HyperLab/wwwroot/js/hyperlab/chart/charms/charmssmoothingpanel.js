@@ -735,15 +735,6 @@ function buildSmoothedSpectrum(smoothingType, srcSpectrumType, destSpectrumType)
                                              rawSpectrum.SpectrumLevel,
                                              destSpectrumType,
                                              srcSpectrum.SpectrumSource);
-        //let smoothedSpectrum = {
-        //    Id: buildTempSmoothedSpectrumId(srcSpectrumType, smoothingType),
-        //    ParentId: srcSpectrum.Id,
-        //    Name: rawSpectrum.Name,
-        //    SpectrumLevel: rawSpectrum.SpectrumLevel,
-        //    SpectrumType: destSpectrumType,
-        //    spectrumSource: srcSpectrum.SpectrumSource,
-        //    InsertDateTimeJs: 0
-        //};
         addSpectrumInfo(smoothedSpectrum);
 
         return smoothedSpectrum;

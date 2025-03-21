@@ -16,6 +16,7 @@ var DELAY_4S = 'delay-4s';
 var DELAY_5S = 'delay-5s';
 
 var isFirstLoading = true;
+var metroActivity;
 
 function showPageItems(callback) {
     showByClass('leftMenu');
@@ -173,8 +174,6 @@ $(document).ready(function () {
     /* check screen dimensions */
     checkScreenDims();
 });
-
-var isLoadingVisible = false;
 
 function navigateTo(url) {
     window.location.href = url;
@@ -390,17 +389,17 @@ function isCheckboxChecked(id) {
 function setLoadingCircleIsVisible(isVisible) {
     try {
         if (isVisible) {
-            if (!isLoadingVisible) {
-                metroActivity = Metro.activity.open({
-                    style: 'light',
-                    type: 'ring',
-                    overlayClickClose: false
-                });
-                isLoadingVisible = true;
-            }
+            if (metroActivity)
+                return;
+
+            metroActivity = Metro.activity.open({
+                style: 'light',
+                type: 'ring',
+                overlayClickClose: false
+            });
         } else {
             Metro.activity.close(metroActivity);
-            isLoadingVisible = false;
+            metroActivity = null;
         }
     } catch (e) {
         console.log('setLoadingCircleIsVisible - ex:' + e.message);

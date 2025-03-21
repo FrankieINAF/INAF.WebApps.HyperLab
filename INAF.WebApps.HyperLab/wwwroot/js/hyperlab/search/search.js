@@ -353,6 +353,18 @@ function removeSearchButton() {
     $(`#${searchButtonId}`).remove();
 }
 
+/* ################################################################################ */
+/* SCREEN ORIENTATION */
+/* ################################################################################ */
+function checkOrientation() {
+    if (screen.orientation.type.startsWith("portrait")) {
+        //console.log("Portrait mode");
+        $('#panelSearchSimple').removeClass('h-vh-50-sm').addClass('h-vh-25-sm');
+    } else if (screen.orientation.type.startsWith("landscape")) {
+        //console.log("Landscape mode");
+        $('#panelSearchSimple').removeClass('h-vh-25-sm').addClass('h-vh-50-sm');
+    }
+}
 
 /* ################################################################################ */
 /* DOCUMENT READY */
@@ -441,6 +453,9 @@ $(function () {
     // Programmatically set the checkbox as checked
     executeAfter(function () { $('#selectLevelAveragedSimple').prop('checked', true).trigger('change'); }, 500);
 
+    /* check for screen orientation */
+    screen.orientation.addEventListener("change", checkOrientation);
+    checkOrientation(); // Initial check
 });
 
 $(document).on('beforeunload', function () {

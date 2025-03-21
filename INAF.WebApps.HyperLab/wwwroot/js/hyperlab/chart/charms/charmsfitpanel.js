@@ -386,8 +386,8 @@ function switchToProMode() {
 function tryRemoveSeriesAndPoints(items) {
     initFitArrays();
 
-    /* start updating chart */
-    dxChartBeginUpdate(chartContainer);
+    ///* start updating chart */
+    //dxChartBeginUpdate(chartContainer);
 
     /* remove continuum */
     tryRemoveContinuumSeriesAndPoints(items);
@@ -395,8 +395,8 @@ function tryRemoveSeriesAndPoints(items) {
     /* remove user-defied fit points */
     tryRemoveFitSeriesAndPoints(items);
 
-    /* end updating chart */
-    dxChartEndUpdate(chartContainer);
+    ///* end updating chart */
+    //dxChartEndUpdate(chartContainer);
 
     dxChartRefresh(chartContainer);
 
@@ -411,44 +411,44 @@ function tryRemoveContinuumSeriesAndPoints(items) {
 
     let id = buildTempContinuumId();
 
-    /* remove points */
-    let continuumPointsNum = continuumPoints.length;
-    for (var i = 0; i < continuumPointsNum; i++) {
-        let x = continuumPoints[i].X;
-        let index = items.findIndex(p => p.X == x);
-        if (index < 0)
-            continue;
+    ///* remove points */
+    //let continuumPointsNum = continuumPoints.length;
+    //for (var i = 0; i < continuumPointsNum; i++) {
+    //    let x = continuumPoints[i].X;
+    //    let index = items.findIndex(p => p.X == x);
+    //    if (index < 0)
+    //        continue;
 
-        if (items[index][id])
-            delete items[index][id];
-    }
+    //    if (items[index][id])
+    //        delete items[index][id];
+    //}
 
     resetShownConstantLines();
 
     /* remove series */
-    removeChartSeriesByFieldIdProcedure(chartContainer, id);
+    removeChartSeriesByFieldIdProcedure(chartContainer, items, id);
 }
 
 function tryRemoveFitSeriesAndPoints(items) {
-    let fitPoints = items.filter(function (item) { return Object.keys(item).includes(SERIES_FIT_POINT); });
+    //let fitPoints = items.filter(function (item) { return Object.keys(item).includes(SERIES_FIT_POINT); });
 
-    if (!fitPoints || (fitPoints && fitPoints.length == 0))
-        return;
+    //if (!fitPoints || (fitPoints && fitPoints.length == 0))
+    //    return;
 
-    /* remove points */
-    let fitPointsNum = fitPoints.length;
-    for (var i = 0; i < fitPointsNum; i++) {
-        let x = fitPoints[i].X;
-        let index = items.findIndex(p => p.X == x);
-        if (index < 0)
-            continue;
+    ///* remove points */
+    //let fitPointsNum = fitPoints.length;
+    //for (var i = 0; i < fitPointsNum; i++) {
+    //    let x = fitPoints[i].X;
+    //    let index = items.findIndex(p => p.X == x);
+    //    if (index < 0)
+    //        continue;
 
-        if (items[index][SERIES_FIT_POINT])
-            delete items[index][SERIES_FIT_POINT];
-    }
+    //    if (items[index][SERIES_FIT_POINT])
+    //        delete items[index][SERIES_FIT_POINT];
+    //}
 
     /* remove series */
-    removeChartSeriesByFieldIdProcedure(chartContainer, SERIES_FIT_POINT);
+    removeChartSeriesByFieldIdProcedure(chartContainer, items, SERIES_FIT_POINT);
 }
 
 /* ################################################################################ */
@@ -600,6 +600,7 @@ function tryAddFitPointsSeries() {
     let isChartSeriesUpdateDone = false;
 
     if (!isChartSeriesAvailableByName(SERIES_FIT_POINTS)) {
+        /* add series of points for fitting */
         let fitSeries = {
             valueField: SERIES_FIT_POINT,
             name: SERIES_FIT_POINTS,
@@ -626,8 +627,14 @@ function tryAddFitPointsSeries() {
 function tryRemoveFitPointsSeries() {
     let index = findChartSeriesIndexByName(SERIES_FIT_POINTS);
     if (index > -1) {
+        dxChartBeginUpdate(chartContainer);
+
+        deleteChartSeriesItems(dxChartGetItems(chartContainer), SERIES_FIT_POINT);
+
         removeChartSeriesAt(index);
         dxChartUpdateSeries(chartContainer, chartSeries);
+
+        dxChartEndUpdate(chartContainer);
     }
 }
 
@@ -1129,16 +1136,17 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1) {
 
     /* retrieve current items */
     let items = dxChartGetItems(chartContainer);
-    ///* get id of raw spectrum */
-    //let rawId = buildId(selectedSpectrumForProcessingId);
-    /* loop over items to add aligned point */
-    let pointsNum = processingResult.Points.length;
-    for (var i = 0; i < pointsNum; i++) {
-        let x = processingResult.Points[i].X;
-        let index = items.findIndex(p => p.X == x);
-        if (index > -1)
-            items[index][continuumSpectrum.Id] = processingResult.Points[i].Y;
-    }
+    /* add continuum-spectrum points */
+    let xValues = processingResult.Points.map(p => p.X);
+    let yValues = processingResult.Points.map(p => p.Y);
+    addChartSeriesItems(items, xValues, yValues, continuumSpectrum.Id);
+    //let pointsNum = processingResult.Points.length;
+    //for (var i = 0; i < pointsNum; i++) {
+    //    let x = processingResult.Points[i].X;
+    //    let index = items.findIndex(p => p.X == x);
+    //    if (index > -1)
+    //        items[index][continuumSpectrum.Id] = processingResult.Points[i].Y;
+    //}
 
     //console.log(`buildContinuumSegmentAsync - pointsNum: ${pointsNum}`);
 
@@ -1197,14 +1205,13 @@ function tryAddContinuumSpectrum() {
         alignedSpectrum = selectedSpectrum;
 
     /* build spectrum info for being added to 'spectraInfo' */
-    let continuumSpectrum = {
-        Id: buildTempContinuumId(),
-        ParentId: alignedSpectrum.Id,
-        Name: selectedSpectrum.Name,
-        SpectrumLevel: selectedSpectrum.SpectrumLevel,
-        SpectrumType: SPECTRUM_TYPE_CONTINUUM,
-        InsertDateTimeJs: 0
-    };
+    let continuumSpectrum = buildSpectrum(
+        buildTempContinuumId(),
+        alignedSpectrum.Id,
+        alignedSpectrum.Name,
+        alignedSpectrum.SpectrumLevel,
+        SPECTRUM_TYPE_CONTINUUM,
+        alignedSpectrum.SpectrumSource);
     addSpectrumInfo(continuumSpectrum);
 
     return continuumSpectrum;
@@ -1315,21 +1322,13 @@ function buildContinuumRemovedSpectrum() {
         let alignedSpectrum = getAlignedSpectrumProcedure();
 
         /* build spectrum info for being added to 'spactraInfo' */
-        let continuumRemovedSpectrum = buildSpectrum(buildTempContinuumRemovedId(),
-                                                     alignedSpectrum.Id,
-                                                     rawSpectrum.Name,
-                                                     rawSpectrum.SpectrumLevel,
-                                                     SPECTRUM_TYPE_CONTINUUM_REMOVED,
-                                                     alignedSpectrum.SpectrumSource);
-        //let continuumRemovedSpectrum = {
-        //    Id: buildTempContinuumRemovedId(),
-        //    ParentId: alignedSpectrum.Id,
-        //    Name: rawSpectrum.Name,
-        //    SpectrumLevel: rawSpectrum.SpectrumLevel,
-        //    SpectrumType: SPECTRUM_TYPE_CONTINUUM_REMOVED,
-        //    SpectrumSource: alignedSpectrum.SpectrumSource,
-        //    InsertDateTimeJs: 0
-        //};
+        let continuumRemovedSpectrum = buildSpectrum(
+            buildTempContinuumRemovedId(),
+            alignedSpectrum.Id,
+            rawSpectrum.Name,
+            rawSpectrum.SpectrumLevel,
+            SPECTRUM_TYPE_CONTINUUM_REMOVED,
+            alignedSpectrum.SpectrumSource);
         addSpectrumInfo(continuumRemovedSpectrum);
 
         return continuumRemovedSpectrum;
@@ -1498,7 +1497,7 @@ async function tryCalculateContinuumRemovedAsync() {
             /* set text of cloud icon */
             setCloudTextAndIconStatus(SPECTRUM_TYPE_CONTINUUM_REMOVED, false);
 
-            removeClass('bandanalysistitle', 'disabled');
+            setTabEnabled(3, true);
         }
         else
             isOk = false;
@@ -1820,8 +1819,8 @@ async function removeContinuumRemovedSpectrumAsync(continuumRemovedSpectrum, isR
         await removeSpectrumOnCloudAsync(continuumRemovedSpectrum.Id, ContinuumRemovedRemovalSuccessMessage, ContinuumRemovedRemovalErrorMessage);
     }
 
-    /* if a highlightened band is available, it is removed */
-    removeHighlightenedBandProcedure();
+    /* if a band analysis is available, it is removed */
+    clearBandAnalysisProcedureCaller();
 
     /* disable buttons for saving/removing since aligned spectrum is not present anymore */
     setMetroUIButtonEnabled('fitButtonSave', false);

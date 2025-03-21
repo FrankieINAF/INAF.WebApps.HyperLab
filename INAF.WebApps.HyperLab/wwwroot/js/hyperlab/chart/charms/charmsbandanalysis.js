@@ -19,6 +19,8 @@ var BAND_LINES_COLOR = '#1496d7';
 
 var lastSelectedSegmentForBand;
 
+var isBandAnalysisAvailable;
+
 var isBandDepthCharmsOpened = false;
 var fitPoints;
 
@@ -192,6 +194,8 @@ async function executeBandAnalysisAsync() {
     removeClass('bandAnalysisResultsContainer', 'd-none');
     addClass('bandAnalysisResultsContainer', 'd-flex');
     addClass('bandAnalysisResultsContainer', 'flex-column');
+
+    isBandAnalysisAvailable = true;
 }
 
 async function evaluateBandAreaAsync(xs, ys) {
@@ -300,13 +304,7 @@ function showGaussianFit(items, xValues, yValues, fitResult) {
 
     dxChartBeginUpdate(chartContainer);
 
-    let xValuesNum = xValues.length;
-    for (var i = 0; i < xValuesNum; i++) {
-        let index = items.findIndex(p => p.X == xValues[i]);
-        if (index > -1) {
-            items[index][SERIES_NORMAL_FIT_POINT] = invertedFitResultYValues[i];
-        }
-    }
+    addChartSeriesItems(items, xValues, invertedFitResultYValues, SERIES_NORMAL_FIT_POINT);
 
     let normalFitSeries = createSeriesFromSpectrumName(SERIES_NORMAL_FIT_POINT, SERIES_NORMAL_FIT, BAND_LINES_COLOR, true, false);
     addChartSeries(normalFitSeries);
@@ -342,13 +340,7 @@ function showFwhm(items, leftMargin, rightMargin) {
 function showInvertedBand(items, xValues, invertedYValues) {
     dxChartBeginUpdate(chartContainer);
 
-    let xValuesNum = xValues.length;
-    for (var i = 0; i < xValuesNum; i++) {
-        let index = items.findIndex(p => p.X == xValues[i]);
-        if (index > -1) {
-            items[index][SERIES_INVERTED_BAND_POINT] = invertedYValues[i];
-        }
-    }
+    addChartSeriesItems(items, xValues, invertedYValues, SERIES_INVERTED_BAND_POINT);
 
     let invertedBandSeries = createSeriesFromSpectrumName(SERIES_INVERTED_BAND_POINT, SERIES_INVERTED_BAND, '#9933ff', true, false);
     addChartSeries(invertedBandSeries);
@@ -362,85 +354,64 @@ function showInvertedBand(items, xValues, invertedYValues) {
 /* -------------------------------------------------------------------------------- */
 /* CLEAR BAND ANALYSIS */
 /* -------------------------------------------------------------------------------- */
+function clearBandAnalysisProcedureCaller() {
+    if (!isBandAnalysisAvailable)
+        return;
+
+    /* retrieve all points of all series from chart */
+    let items = dxChartGetItems(chartContainer);
+
+    clearBandAnalysisProcedure(items);
+}
+
 function clearBandAnalysisProcedure(items) {
+    if (!isBandAnalysisAvailable)
+        return;
+
     disableByClassElem('bandAnalysisDataButtonSave');
     hideByClass('bandAnalysisButtonDownload');
 
+    /* remove highlitened band */
+    removeHighlightenedBand(items);
+
+    /* remove band center */
     clearBandCenter(items);
 
+    /* remove gaussian fit */
     clearBandAnalysisNormalFit(items);
 
+    /* remove fwhm fit */
     clearFwhm(items);
 
     clearTextFields();
 
     hideSpectraToBeHidden();
+
+    isBandAnalysisAvailable = false;
 }
 
 function clearBandAnalysisNormalFit(items) {
-    /* remove gaussian fit points */
-    let itemsFitNormal = dxChartGetItems(chartContainer).filter(function (item) { return Object.keys(item).includes(SERIES_NORMAL_FIT_POINT) });
-
-    let itemsFitNormalNum = itemsFitNormal.length;
-
-    if (itemsFitNormalNum == 0)
+    if (items.length == 0)
         return;
 
-    dxChartBeginUpdate(chartContainer);
-
-    for (var i = 0; i < itemsFitNormalNum; i++) {
-        let index = items.findIndex(p => p.X == itemsFitNormal[i].X);
-        delete items[index][SERIES_NORMAL_FIT_POINT];
-    }
-
     /* remove chart series */
-    removeChartSeriesByFieldIdProcedure(chartContainer, SERIES_NORMAL_FIT_POINT);
-
-    dxChartEndUpdate(chartContainer);
+    removeChartSeriesByFieldIdProcedure(chartContainer, items, SERIES_NORMAL_FIT_POINT);
 }
 
 function clearBandCenter(items) {
-    /* remove gaussian fit points */
-    let itemsBandCenter = dxChartGetItems(chartContainer).filter(function (item) { return Object.keys(item).includes(SERIES_BAND_CENTER_POINT) });
-
-    let itemsBandCenterNum = itemsBandCenter.length;
-
-    if (itemsBandCenterNum == 0)
+    if (items.length == 0)
         return;
 
-    dxChartBeginUpdate(chartContainer);
-
-    for (var i = 0; i < itemsBandCenterNum; i++) {
-        let index = items.findIndex(p => p.X == itemsBandCenter[i].X);
-        delete items[index][SERIES_BAND_CENTER_POINT];
-    }
-
     /* remove chart series */
-    removeChartSeriesByFieldIdProcedure(chartContainer, SERIES_BAND_CENTER_POINT);
-
-    dxChartEndUpdate(chartContainer);
+    removeChartSeriesByFieldIdProcedure(chartContainer, items, SERIES_BAND_CENTER_POINT);
 }
 
 function clearFwhm(items) {
-    /* remove gaussian fit points */
-    let itemsFwhm = dxChartGetItems(chartContainer).filter(function (item) { return Object.keys(item).includes(SERIES_FWHM_POINT) });
-
-    let itemsFwhmNum = itemsFwhm.length;
-
-    if (itemsFwhmNum == 0)
+    if (items.length == 0)
         return;
 
-    dxChartBeginUpdate(chartContainer);
-
-    for (var i = 0; i < itemsFwhmNum; i++) {
-        let index = items.findIndex(p => p.X == itemsFwhm[i].X);
-        delete items[index][SERIES_FWHM_POINT];
-    }
-
     /* remove chart series */
-    removeChartSeriesByFieldIdProcedure(chartContainer, SERIES_FWHM_POINT);
-
-    dxChartEndUpdate(chartContainer);
+    removeChartSeriesByFieldIdProcedure(chartContainer, items, SERIES_FWHM_POINT);
 }
 
 function clearTextFields() {
@@ -562,19 +533,6 @@ function removeHighlightenedBand(items) {
 
     /* reset visual range to make ref whites appear in chart */
     //dxChartResetVisualRange(chartContainer);
-}
-
-/* called when continuum-removed is deleted  */
-function removeHighlightenedBandProcedure() {
-    if (!lastSelectedSegmentForBand)
-        return;
-
-    /* retrieve all points of all series from chart */
-    let items = dxChartGetItems(chartContainer);
-
-    removeHighlightenedBand(items);
-
-    initLastSelectedSegmentForBand();
 }
 
 /* ################################################################################ */

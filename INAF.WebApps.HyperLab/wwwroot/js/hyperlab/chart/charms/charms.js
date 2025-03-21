@@ -256,61 +256,6 @@ function loadSpectraToBeProcessed() {
     }
 }
 
-function onSelectSpectrum(selected) {
-    setSelectedSpectrumForProcessing(selected);
-}
-
-function setSelectedSpectrumForProcessing(selected) {
-    let selectedValue = parseInt(selected);
-    if (selectedValue == selectedSpectrumForProcessingId)
-        return; // if we're opening charms and the selected spectrum is the already selected one, then do nothing
-
-    /* remember the previous id value */
-    oldSelectedSpectrumForProcessingId = selectedSpectrumForProcessingId;
-
-    /* remember new id of selected spectrum */
-    selectedSpectrumForProcessingId = selectedValue;
-
-    let selectedSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
-    if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL)
-        isSLabSpectrumCurrentlySelected = false;
-
-    /* find ids of spectra to be removed when changing selected spectrum */
-    let idsToBeRemoved = findChildrenOfIdsOtherThan(selectedSpectrumForProcessingId, selectedSpectrum.SpectrumSource);
-    if (isAnyItem(idsToBeRemoved)) {
-        let callbackYes = async function () {
-            removeChartSeriesByIdsProcedure(chartContainer, idsToBeRemoved);
-
-            removeSpectraById(idsToBeRemoved);
-
-            /* update visibility for all spectra */
-            manageSpectraVisibility(selectedSpectrumForProcessingId);
-
-            /* reset charms UI and load segments for alignment */
-            await initCharmsPhase1Async();
-
-            if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL)
-                setIsPointClickForFitEnabled(true);
-
-            /* load info for creating UI of alignment panel  */
-            initCharmsPhase2Async();
-        };
-        let callbackNo = function () {
-            selectedSpectrumForProcessingId = oldSelectedSpectrumForProcessingId;
-
-            Metro.getPlugin('#charmsSpectrumSelector', 'select').val(oldSelectedSpectrumForProcessingId);
-        };
-        showDialogWithActions(WARNING_LABEL, CharmsDeleteProcessedSpectraQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);
-        //askAndExecute(CharmsSpectraProcessingManagementLabel, CharmsDeleteProcessedSpectraQuestion, callback);
-    } else {
-        /* update visibility for all spectra */
-        manageSpectraVisibility(selectedSpectrumForProcessingId);
-
-        /* load info for creating UI of alignment panel  */
-        initCharmsPhase2Async();
-    }
-}
-
 async function initCharmsPhase2Async() {
     /* hide message about RAW file selection */
     hideByClassDFlexItem('charmsTabAlignmentStartingMessageContainer');
@@ -343,6 +288,85 @@ function manageSpectraVisibility(selectedSpectrumId) {
             let seriesName = getSpectrumSeriesNameFromIndex(getSpectrumIndexById(spectraInfo[i].Id));
             dxChartHideSeries(chartContainer, seriesName);
         }
+    }
+}
+
+/* -------------------------------------------------------------------------------- */
+/* SPECTRUM SELECTION MANGEMENT */
+/* -------------------------------------------------------------------------------- */
+async function callbackYesForSpectrumSelectionManagementAsync(selectedSpectrum, idsToBeRemoved) {
+    setLoadingCircleIsVisible(true);
+
+    setTimeout(async function () {
+        /* remove previous analysis and UI items, if available */
+        clearBandAnalysisProcedureCaller();
+
+        /* disable tab for band analysis */
+        setTabEnabled(3, false);
+
+        /* remove previous fit points series */
+        tryRemoveFitPointsSeries();
+
+        /* remove spectra from chart */
+        removeChartSeriesByFieldsIdProcedure(chartContainer, idsToBeRemoved);
+
+        /* remove spectra from 'spectraInfo' */
+        removeSpectraById(idsToBeRemoved);
+
+        /* update visibility for all spectra */
+        manageSpectraVisibility(selectedSpectrumForProcessingId);
+
+        /* reset charms UI and load segments for alignment */
+        await initCharmsPhase1Async();
+
+        if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL)
+            setIsPointClickForFitEnabled(true);
+
+        /* load info for creating UI of alignment panel  */
+        await initCharmsPhase2Async();
+
+        setLoadingCircleIsVisible(false);
+    }, 250);
+}
+
+function onSelectSpectrum(selected) {
+    setSelectedSpectrumForProcessing(selected);
+}
+
+function setSelectedSpectrumForProcessing(selected) {
+    let selectedValue = parseInt(selected);
+    if (selectedValue == selectedSpectrumForProcessingId)
+        return; // if we're opening charms and the selected spectrum is the already selected one, then do nothing
+
+    /* remember the previous id value */
+    oldSelectedSpectrumForProcessingId = selectedSpectrumForProcessingId;
+
+    /* remember new id of selected spectrum */
+    selectedSpectrumForProcessingId = selectedValue;
+
+    let selectedSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
+    if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL)
+        isSLabSpectrumCurrentlySelected = false;
+
+    /* find ids of spectra to be removed when changing selected spectrum */
+    let idsToBeRemoved = findChildrenOfIdsOtherThan(selectedSpectrumForProcessingId, selectedSpectrum.SpectrumSource);
+    if (isAnyItem(idsToBeRemoved)) {
+        let callbackYes = async function () {
+            await callbackYesForSpectrumSelectionManagementAsync(selectedSpectrum, idsToBeRemoved);
+        };
+        let callbackNo = function () {
+            selectedSpectrumForProcessingId = oldSelectedSpectrumForProcessingId;
+
+            Metro.getPlugin('#charmsSpectrumSelector', 'select').val(oldSelectedSpectrumForProcessingId);
+        };
+        showDialogWithActions(WARNING_LABEL, CharmsDeleteProcessedSpectraQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);
+        //askAndExecute(CharmsSpectraProcessingManagementLabel, CharmsDeleteProcessedSpectraQuestion, callback);
+    } else {
+        /* update visibility for all spectra */
+        manageSpectraVisibility(selectedSpectrumForProcessingId);
+
+        /* load info for creating UI of alignment panel  */
+        initCharmsPhase2Async();
     }
 }
 
