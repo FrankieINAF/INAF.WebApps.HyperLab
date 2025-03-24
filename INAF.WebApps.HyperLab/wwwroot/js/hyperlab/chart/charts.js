@@ -537,7 +537,8 @@ $(function () {
     /* init chartContainer */
     chartContainer = $('#charts');
 
-    addClass('bandanalysistitle', 'disabled');
+    /* disable tab for band analysis, it will be re-enabled when continuum-removed is created */
+    setTabEnabled(3, false);
 
     fillSelectedSpectra();
 
