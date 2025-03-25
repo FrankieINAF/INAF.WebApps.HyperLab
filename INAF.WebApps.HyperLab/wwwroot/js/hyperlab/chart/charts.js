@@ -151,7 +151,8 @@ async function loadChartsAsync() {
     if (obj) {
         //console.log(obj);
         setSpectraInfo(obj.SpectraInfo);
-        chartSeries = createSeriesFromPoint(obj.Points[0]);
+        chartSeries = createSeriesFromPoints(obj.Points);
+        //chartSeries = createSeriesFromPoint(obj.Points[0]);
         createChart(obj.Points, chartSeries, obj.AxisRange);
         isChartLoaded = true;
         setLoadingCircleIsVisible(false);
@@ -373,6 +374,59 @@ function createSeriesFromPoint(firstPoint) {
             color: color,
             isVisible: true,
         });
+    }
+
+    return series;
+}
+
+function createSeriesFromPoints(points) {
+    var series = [];
+
+    let ids = [];
+
+    let lastRawColor;
+    let foundRawSpectra = 0;
+
+    let pointsNum = points.length;
+    for (var i = 0; i < pointsNum; i++) {
+        let point = points[i];
+        let keys = Object.keys(point);
+        let keysNum = keys.length;
+        for (var j = 0; j < keysNum; j++) {
+
+            if (!keys[j].startsWith('id'))
+                continue;
+
+            if (ids.indexOf(keys[j]) == -1) {
+                ids.push(keys[j]);
+                let keyId = getIdValue(keys[j]);
+                var index = getSpectrumIndexById(keyId);
+                let name = getSpectrumSeriesNameFromIndex(index);
+                let color = getSpectrumTypeColor(getSpectrumTypeString(spectraInfo[index].SpectrumType));
+
+                let isRaw = spectraInfo[index].SpectrumType == SPECTRUM_TYPE_RAW;
+                if (isRaw && foundRawSpectra == 0) {
+                    lastRawColor = color;
+                    foundRawSpectra++;
+                }
+
+                if (i > 0 && isRaw) {
+                    /* create a slight differentiation in colors of multiple RAW spectra */
+                    color = lightenDarkenColor(lastRawColor, 30); // defined in common.js
+                    spectraInfo[index].Color = color;
+                    lastRawColor = color; // remember the last RAW color for using it the next time
+                    foundRawSpectra++;
+                }
+
+                series.push({
+                    valueField: keys[j],
+                    name: name,
+                    axis: 'valueAxis',
+                    color: color,
+                    isVisible: true,
+                });
+            }
+        }
     }
 
     return series;
