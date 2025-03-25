@@ -1,8 +1,14 @@
-﻿@using INAF.Libraries.Net.CommonWebAppModels.Models.Menu
+﻿@using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.Libraries.Net.CommonWebAppModels.Models.Menu
+@using INAF.WebApps.HyperLab.Controllers
 
 @inject INAF.WebApps.HyperLab.Helpers.MenuHelper menuHelper
 
 @{
+    bool isUserAuthenticated = false;
+    if (Context.User.Identity != null)
+        isUserAuthenticated = Context.User.Identity.IsAuthenticated;
+
     Menu? menu = menuHelper.GetMenu(Context);
     int index = 0;
 
@@ -47,5 +53,15 @@
 
             index++;
         }
+    }
+
+    if (!isUserAuthenticated)
+    {
+        <li>
+            <a class="menuitem" href="@Url.Action(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)))">
+                <span class="icon"><span class="mif mif-unlock"></span></span>
+                <span class="caption fg-white">@Html.Raw(INAF.WebApps.HyperLab.Resources.Account.LoginSLabLabel)</span>
+            </a>
+        </li>
     }
 }

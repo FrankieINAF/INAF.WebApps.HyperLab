@@ -165,7 +165,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)));
+            return RedirectToAction(nameof(SpectraManagerController.Hub), GenericHelper.GetControllerName(nameof(SpectraManagerController)));
         }
 
         public async Task<IActionResult> LogoutForJwt()

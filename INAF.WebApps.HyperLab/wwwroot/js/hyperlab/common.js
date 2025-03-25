@@ -514,15 +514,18 @@ function showInlineFlexElem(elem) {
 
 /* MANAGE METRO UI ELEMENTS */
 function addCLassToMetroUIElem(id, classname) {
-    $(`#${id}`).parent().addClass(classname);
+    if (($(`#${id}`)).length > 0)
+        $(`#${id}`).parent().addClass(classname);
 }
 
 function hideElemMetroUIElem(id) {
-    hideElem($(`#${id}`).parent()[0]);
+    if (($(`#${id}`)).length > 0)
+        hideElem($(`#${id}`).parent()[0]);
 }
 
 function hideMetroUIElem(id) {
-    hide($(`#${id}`).parent()[0].id);
+    if (($(`#${id}`)).length > 0)
+        hide($(`#${id}`).parent()[0].id);
 }
 
 function removeMetroUIElemByName(name) {

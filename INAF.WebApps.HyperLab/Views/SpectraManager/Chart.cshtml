@@ -1,6 +1,7 @@
-﻿@model SelectedSpectraModel
+﻿@model ChartPageModel
 
 @using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Pages
 @using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches
 @using INAF.WebApps.HyperLab.Controllers
 @using INAF.WebApps.HyperLab.Resources
@@ -10,12 +11,18 @@
     ViewBag.Title = Search.ChartPageTitle;
 
     IEnumerable<int>? spectraIds = null;
-    if (Model != null && Model.Ids != null && Model.Ids.Any())
+    if (Model.SelectedSpectraModel != null && Model.SelectedSpectraModel.Ids != null && Model.SelectedSpectraModel.Ids.Any())
     {
-        spectraIds = Model.Ids;
+        spectraIds = Model.SelectedSpectraModel.Ids;
     }
 
-    var UrlSearch = $"/{GenericHelper.GetControllerName(nameof(SpectraManagerController))}/{nameof(SpectraManagerController.Hub)}";
+    bool IsSLabDataManagerAllowed = false;
+	if (Model.Permissions != null && Model.Permissions.Any())
+	{
+		IsSLabDataManagerAllowed = Model.Permissions.Any(p => p.Id == (int)INAF.WebApps.HyperLab.Values.Enums.Permissions.SLabManager);
+	}
+
+    var UrlHub = $"/{GenericHelper.GetControllerName(nameof(SpectraManagerController))}/{nameof(SpectraManagerController.Hub)}";
 }
 
 <link rel="stylesheet" href="~/css/dist/devextreme/devextremebundle.min.css" asp-append-version="true" />
@@ -283,8 +290,11 @@
 </environment>
 
 <script type="text/javascript">
-    var UrlSearch = '@UrlSearch';
+    var isSLabDataManagerAllowed = @IsSLabDataManagerAllowed.ToJsString();
+    var isUserAuthenticated = @Model.IsUserAuthenticated.ToJsString();
+    var UrlHub = '@UrlHub';
 
+    /* fill 'selectedSpectra' array with ids retrieved by back-end */
     function fillSelectedSpectra() {
         selectedSpectra = @Html.Raw(Json.Serialize(spectraIds));
     }

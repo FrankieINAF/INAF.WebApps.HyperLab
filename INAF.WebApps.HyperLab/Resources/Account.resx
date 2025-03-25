@@ -132,4 +132,7 @@
   <data name="ConfirmationSuccessfullyCompleted" xml:space="preserve">
     <value>Your account confirmation has been successfully completed! Now you can login &lt;b&gt;Hyperlab&lt;/b&gt;</value>
   </data>
+  <data name="LoginSLabLabel" xml:space="preserve">
+    <value>Login SLab</value>
+  </data>
 </root>

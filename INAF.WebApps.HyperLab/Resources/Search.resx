@@ -406,7 +406,10 @@
     <value>Search</value>
   </data>
   <data name="SearchLoadPanelTitle" xml:space="preserve">
-    <value>Search for data or load from device</value>
+    <value>Search for data in SLab database or load spectra from device</value>
+  </data>
+  <data name="LoadPanelTitle" xml:space="preserve">
+    <value>Load spectra from device</value>
   </data>
   <data name="SearchResultClearLabel" xml:space="preserve">
     <value>Clear search results</value>

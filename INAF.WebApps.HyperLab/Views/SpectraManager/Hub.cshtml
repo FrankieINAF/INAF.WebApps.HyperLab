@@ -1,609 +1,622 @@
 ﻿@model SearchPageModel
 
-@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Info
-@using INAF.Libraries.Net.HyperLab.CommonModels.Values;
-@using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData
+@using System.Text;
 @using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Info
+@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Pages
+@using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData
+@using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 @using INAF.WebApps.HyperLab.Controllers
 @using INAF.WebApps.HyperLab.Resources
-@using System.Text;
 
 @{
-    ViewBag.Title = Search.SearchPageTitle;
+	ViewBag.Title = Search.SearchPageTitle;
 
-    string searchTypeRadio = "searchTypeRadio";
-    string selectFilename = "selectFilename";
-    string selectSampleName = "selectSampleName";
-    string selectMaterial = "selectMaterial";
-    string selectSampleDataType = "selectSampleDataType";
-    string selectMineralType = "selectMineralType";
-    string selectOriginType = "selectOriginType";
+	string searchTypeRadio = "searchTypeRadio";
+	string selectFilename = "selectFilename";
+	string selectSampleName = "selectSampleName";
+	string selectMaterial = "selectMaterial";
+	string selectSampleDataType = "selectSampleDataType";
+	string selectMineralType = "selectMineralType";
+	string selectOriginType = "selectOriginType";
 
-    string ConditionFilename = @Enums.ConditionType.ConditionFilename.ToString();
-    string ConditionMaterial = @Enums.ConditionType.ConditionMaterial.ToString();
-    string ConditionMineralType = @Enums.ConditionType.ConditionMineralType.ToString();
-    string ConditionsOperators = @Enums.ConditionType.ConditionsOperators.ToString();
-    string ConditionOriginType = @Enums.ConditionType.ConditionOriginType.ToString();
-    string ConditionSampleName = @Enums.ConditionType.ConditionSampleName.ToString();
-    string ConditionSampleType = @Enums.ConditionType.ConditionSampleType.ToString();
+	string ConditionFilename = @Enums.ConditionType.ConditionFilename.ToString();
+	string ConditionMaterial = @Enums.ConditionType.ConditionMaterial.ToString();
+	string ConditionMineralType = @Enums.ConditionType.ConditionMineralType.ToString();
+	string ConditionsOperators = @Enums.ConditionType.ConditionsOperators.ToString();
+	string ConditionOriginType = @Enums.ConditionType.ConditionOriginType.ToString();
+	string ConditionSampleName = @Enums.ConditionType.ConditionSampleName.ToString();
+	string ConditionSampleType = @Enums.ConditionType.ConditionSampleType.ToString();
 
-    string materialTypeNone = Enums.MaterialType.None.ToString();
-    string materialTypeMineral = Enums.MaterialType.Mineral.ToString();
-    string materialTypeRock = Enums.MaterialType.Rock.ToString();
-    string materialTypeMeteorClass = Enums.MaterialType.MeteorClass.ToString();
+	string materialTypeNone = Enums.MaterialType.None.ToString();
+	string materialTypeMineral = Enums.MaterialType.Mineral.ToString();
+	string materialTypeRock = Enums.MaterialType.Rock.ToString();
+	string materialTypeMeteorClass = Enums.MaterialType.MeteorClass.ToString();
 
-    bool IsSLabDataManagerAllowed = false;
-    if (Model.Permissions != null && Model.Permissions.Any())
-    {
-        IsSLabDataManagerAllowed = Model.Permissions.Any(p => p.Id == (int)INAF.WebApps.HyperLab.Values.Enums.Permissions.SLabManager);
-    }
+	bool IsSLabDataManagerAllowed = false;
+	if (Model.Permissions != null && Model.Permissions.Any())
+	{
+		IsSLabDataManagerAllowed = Model.Permissions.Any(p => p.Id == (int)INAF.WebApps.HyperLab.Values.Enums.Permissions.SLabManager);
+	}
 }
 
 <link rel="stylesheet" href="~/css/dist/searchandchart/searchandchartbundle.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/dist/jqueryuibundle.min.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/dist/speechbubble.min.css" asp-append-version="true" />
 <style>
-    .button-on-bottom {
-    position: absolute;
-    bottom: 12px;
-    }
+	.button-on-bottom {
+	position: absolute;
+	bottom: 12px;
+	}
 
-    .overlap {
-    position: absolute;
-    width: 290px;
-    top: 0px;
-    }
+	.overlap {
+	position: absolute;
+	width: 290px;
+	top: 0px;
+	}
 </style>
 <!-- SEARCH -->
 <div id="search" class="container h-100 overflow-x-auto overflow-y-hidden">
-    @Html.AntiForgeryToken()
+	@Html.AntiForgeryToken()
 
-    <!-- SEARCH/LOAD -->
-    <div data-role="panel"
-    id="panelSearchLoad"
-    data-title-caption="<strong>@Search.SearchLoadPanelTitle</strong>"
-    data-collapsed="false"
-    data-collapsible="true"
-    data-cls-panel="overflow-y-hidden">
-        <div id="panels">
-            <!-- TABS -->
-            <div id="charmsTabsContainer" class="row cell-fs-12">
-                <ul id="searchTabs"
-                data-app-bar="false"
-                data-role="tabs"
-                data-expand="true"
-                data-expand-point="fs"
-                data-cls-tabs="tabs-list flex-justify-center">
-                    <li><a id="searchtitle" href="#panelSearch">@Html.Raw(Search.TabSearchTitle)</a></li>
-                    <li><a id="loadtitle" href="#panelLoad">@Html.Raw(Search.TabLoadTitle)</a></li>
-                </ul>
-            </div>
-            <!-- SEARCH PANEL -->
-            <div id="panelSearch">
-                <!-- SEARCH TYPE (SIMPLE/COMPLEX) -->
-                <div class="row">
-                    <div class="cell-fs-6">
-                        <!-- SIMPLE -->
-                        <input type="radio"
-                        name="searchTypeRadio"
-                        id="searchTypeRadioSimple"
-                        data-role="radio"
-                        data-style="2"
-                        data-caption="@Search.SearchTypeSimpleLabel"
-                        data-caption-position="left"
-                        data-cls-check="bd-cyan"
-                        class="d-flex flex-justify-right"
-                        checked>
-                    </div>
-                    <!-- COMPLEX -->
-                    <div class="cell-fs-6">
-                        <input type="radio"
-                        name="searchTypeRadio"
-                        id="searchTypeRadioComplex"
-                        data-role="radio"
-                        data-style="2"
-                        data-caption="@Search.SearchTypeComplexLabel"
-                        data-caption-position="right"
-                        data-cls-check="bd-cyan">
-                    </div>
-                </div>
+	@{
+		string panelTitle = Search.SearchLoadPanelTitle;
+		if (!Model.IsUserAuthenticated)
+		{
+			panelTitle = Search.LoadPanelTitle;
+		}
+	}
+	<!-- SEARCH/LOAD -->
+	<div data-role="panel"
+	id="panelSearchLoad"
+	data-title-caption="<strong>@panelTitle</strong>"
+	data-collapsed="false"
+	data-collapsible="true"
+	data-cls-panel="overflow-y-hidden">
+		<div id="panels">
+			<!-- TABS -->
+			@if (Model.IsUserAuthenticated)
+			{
+				<div id="charmsTabsContainer" class="row cell-fs-12">
+					<ul id="searchTabs"
+					data-app-bar="false"
+					data-role="tabs"
+					data-expand="true"
+					data-expand-point="fs"
+					data-cls-tabs="tabs-list flex-justify-center">
+						<li><a id="searchtitle" href="#panelSearch">@Html.Raw(Search.TabSearchTitle)</a></li>
+						<li><a id="loadtitle" href="#panelLoad">@Html.Raw(Search.TabLoadTitle)</a></li>
+					</ul>
+				</div>
 
-                <div class="row cell-fs-12">
-                    <!-- PANEL SEARCH SIMPLE -->
-                    <div id="panelSearchSimple" class="h-vh-100-fs h-vh-25-sm">
-                        <div class="row">
-                            <!-- FILENAME NAME -->
-                            <div class="cell-fs-12 cell-sm-3">
-                                <label id="selectFilenameSearchTypeLabel" for="selectFilename" class="text-secondary">@Html.Raw(Search.SearchSimpleByFilenameLabel)</label>
-                                @Html.TextBoxFor(model => model.Filename, new Dictionary<string, object> {
-                                { "id", @selectFilename },
-                                { "placeholder", @Html.Raw(Search.SearchByFilenamePlaceholder) },
-                                { "data-role", "input" },
-                                { "onfocus", $"setCurrentSearchSimpleType('{@selectFilename}')" },
-                                })
-                            </div>
-                            <!-- SAMPLE NAME -->
-                            <div class="cell-fs-12 cell-sm-3">
-                                <label id="selectSampleNameSearchTypeLabel" for="selectSampleName" class="text-secondary">@Html.Raw(Search.SearchSimpleBySampleNameLabel)</label>
-                                @Html.TextBoxFor(model => model.SampleTypeValuesContainerExtended.SampleName, new Dictionary<string, object> {
-                                { "id", @selectSampleName },
-                                { "placeholder", @Html.Raw(Search.SearchBySampleNamePlaceholder) },
-                                { "data-role", "input" },
-                                { "onfocus", $"setCurrentSearchSimpleType('{@selectSampleName}')" },
-                                })
-                            </div>
-                            <!-- MATERIALS -->
-                            <div class="cell-fs-12 cell-sm-6 cell-lg-4">
-                                <label id="selectMaterialSearchTypeLabel" for="selectMaterialInput" class="text-secondary">@Html.Raw(Search.SearchSimpleByMaterialLabel)</label>
-                                <div class="d-flex flex-content-start">
-                                    <input id="@{
-                                                                            @selectMaterial
-}Input"
-                                    type="text"
-                                    placeholder="@Html.Raw(Search.SearchByMaterialPlaceholder)"
-                                    data-role="input"
-                                    data-search-button="true"
-                                    onfocus="setCurrentSearchSimpleType('@selectMaterial')"
-                                    data-search-button-click="custom"
-                                    data-on-search-button-click="getMaterialsSuggestions('@{
+				<!-- SEARCH PANEL -->
+				<div id="panelSearch">
+					<!-- SEARCH TYPE (SIMPLE/COMPLEX) -->
+					<div class="row">
+						<div class="cell-fs-6">
+							<!-- SIMPLE -->
+							<input type="radio"
+							name="searchTypeRadio"
+							id="searchTypeRadioSimple"
+							data-role="radio"
+							data-style="2"
+							data-caption="@Search.SearchTypeSimpleLabel"
+							data-caption-position="left"
+							data-cls-check="bd-cyan"
+							class="d-flex flex-justify-right"
+							checked>
+						</div>
+						<!-- COMPLEX -->
+						<div class="cell-fs-6">
+							<input type="radio"
+							name="searchTypeRadio"
+							id="searchTypeRadioComplex"
+							data-role="radio"
+							data-style="2"
+							data-caption="@Search.SearchTypeComplexLabel"
+							data-caption-position="right"
+							data-cls-check="bd-cyan">
+						</div>
+					</div>
 
-                                        @selectMaterial
-                                        ;
-                                    }Input','@selectMaterial')" />
-                                    <select id="@selectMaterial" data-role="select" data-cls-select="overlap" data-on-change="setCurrentSearchSimpleType('@selectMaterial')" data-on-drop="setCurrentSearchSimpleType('@selectMaterial')"></select>
-                                    <button class="button dark cycle small outline margin-top-4 margin-left-8"
-                                    onclick="resetSearchByMaterial('@{
+					<div class="row cell-fs-12">
+						<!-- PANEL SEARCH SIMPLE -->
+						<div id="panelSearchSimple" class="h-vh-100-fs h-vh-25-sm">
+							<div class="row">
+								<!-- FILENAME NAME -->
+								<div class="cell-fs-12 cell-sm-3">
+									<label id="selectFilenameSearchTypeLabel" for="selectFilename" class="text-secondary">@Html.Raw(Search.SearchSimpleByFilenameLabel)</label>
+									@Html.TextBoxFor(model => model.Filename, new Dictionary<string, object> {
+								{ "id", @selectFilename },
+								{ "placeholder", @Html.Raw(Search.SearchByFilenamePlaceholder) },
+								{ "data-role", "input" },
+								{ "onfocus", $"setCurrentSearchSimpleType('{@selectFilename}')" },
+								})
+								</div>
+								<!-- SAMPLE NAME -->
+								<div class="cell-fs-12 cell-sm-3">
+									<label id="selectSampleNameSearchTypeLabel" for="selectSampleName" class="text-secondary">@Html.Raw(Search.SearchSimpleBySampleNameLabel)</label>
+									@Html.TextBoxFor(model => model.SampleTypeValuesContainerExtended.SampleName, new Dictionary<string, object> {
+								{ "id", @selectSampleName },
+								{ "placeholder", @Html.Raw(Search.SearchBySampleNamePlaceholder) },
+								{ "data-role", "input" },
+								{ "onfocus", $"setCurrentSearchSimpleType('{@selectSampleName}')" },
+								})
+								</div>
+								<!-- MATERIALS -->
+								<div class="cell-fs-12 cell-sm-6 cell-lg-4">
+									<label id="selectMaterialSearchTypeLabel" for="selectMaterialInput" class="text-secondary">@Html.Raw(Search.SearchSimpleByMaterialLabel)</label>
+									<div class="d-flex flex-content-start">
+										<input id="@{
+																						@selectMaterial
+	}Input"
+										type="text"
+										placeholder="@Html.Raw(Search.SearchByMaterialPlaceholder)"
+										data-role="input"
+										data-search-button="true"
+										onfocus="setCurrentSearchSimpleType('@selectMaterial')"
+										data-search-button-click="custom"
+										data-on-search-button-click="getMaterialsSuggestions('@{
 
-                                                                            @selectMaterial
+											@selectMaterial
+											;
+										}Input','@selectMaterial')" />
+										<select id="@selectMaterial" data-role="select" data-cls-select="overlap" data-on-change="setCurrentSearchSimpleType('@selectMaterial')" data-on-drop="setCurrentSearchSimpleType('@selectMaterial')"></select>
+										<button class="button dark cycle small outline margin-top-4 margin-left-8"
+										onclick="resetSearchByMaterial('@{
+
+																						@selectMaterial
 ;
-}Input')"
-                                    title="@Html.Raw(Search.SearchClearSuggestionsButtonTitle)">
-                                        <span class="mif-cross-light"></span>
-                                    </button>
-                                </div>
-                            </div>
-                            <!-- EMPTY -->
-                            <div class="d-none-fs cell-lg-8">&nbsp;</div>
-                        </div>
-                        <div class="row">
-                            <!-- SAMPLE DATA TYPES -->
-                            <div class="cell-fs-12 cell-sm-3">
-                                <label id="selectSampleDataTypeSearchTypeLabel" for="selectSampleDataType" class="text-secondary">@Html.Raw(Search.SearchSimpleBySampleDataTypeLabel)</label>
-                                @Html.DropDownListFor(model => model.SampleTypeValuesContainerExtended.SampleDataValueId, new SelectList(Model.SampleTypeValuesContainerExtended.SampleDataValues, nameof(SampleTypeModel.Id), nameof(SampleTypeModel.Value), Model.SampleTypeValuesContainerExtended.SampleDataValueId),
-                                                                    new Dictionary<string, object> {
-                                { "id", @selectSampleDataType },
-                                { "data-role", "select" },
-                                { "data-on-change", $"setCurrentSearchSimpleType('{@selectSampleDataType}')" },
-                                { "data-on-drop", $"setCurrentSearchSimpleType('{@selectSampleDataType}')" },
-                                })
-                            </div>
+	}Input')"
+										title="@Html.Raw(Search.SearchClearSuggestionsButtonTitle)">
+											<span class="mif-cross-light"></span>
+										</button>
+									</div>
+								</div>
+								<!-- EMPTY -->
+								<div class="d-none-fs cell-lg-8">&nbsp;</div>
+							</div>
+							<div class="row">
+								<!-- SAMPLE DATA TYPES -->
+								<div class="cell-fs-12 cell-sm-3">
+									<label id="selectSampleDataTypeSearchTypeLabel" for="selectSampleDataType" class="text-secondary">@Html.Raw(Search.SearchSimpleBySampleDataTypeLabel)</label>
+									@Html.DropDownListFor(model => model.SampleTypeValuesContainerExtended.SampleDataValueId, new SelectList(Model.SampleTypeValuesContainerExtended.SampleDataValues, nameof(SampleTypeModel.Id), nameof(SampleTypeModel.Value), Model.SampleTypeValuesContainerExtended.SampleDataValueId),
+																											new Dictionary<string, object> {
+								{ "id", @selectSampleDataType },
+								{ "data-role", "select" },
+								{ "data-on-change", $"setCurrentSearchSimpleType('{@selectSampleDataType}')" },
+								{ "data-on-drop", $"setCurrentSearchSimpleType('{@selectSampleDataType}')" },
+								})
+								</div>
 
-                            <!-- SAMPLE ORIGIN TYPES -->
-                            <div class="cell-fs-12 cell-sm-3">
-                                <label id="selectOriginTypeSearchTypeLabel" for="selectOriginType" class="text-secondary">@Html.Raw(Search.SearchSimpleByOriginTypeLabel)</label>
-                                @Html.DropDownListFor(model => model.SampleTypeValuesContainerExtended.OriginTypeValueId, new SelectList(Model.SampleTypeValuesContainerExtended.OriginTypeValues, nameof(OriginTypeModel.Id), nameof(OriginTypeModel.Value), Model.SampleTypeValuesContainerExtended.OriginTypeValueId),
-                                                                    new Dictionary<string, object> {
-                                { "id", @selectOriginType },
-                                { "data-role", "select" },
-                                { "data-on-change", $"setCurrentSearchSimpleType('{@selectOriginType}')" },
-                                { "data-on-drop", $"setCurrentSearchSimpleType('{@selectOriginType}')" },
-                                })
-                            </div>
+								<!-- SAMPLE ORIGIN TYPES -->
+								<div class="cell-fs-12 cell-sm-3">
+									<label id="selectOriginTypeSearchTypeLabel" for="selectOriginType" class="text-secondary">@Html.Raw(Search.SearchSimpleByOriginTypeLabel)</label>
+									@Html.DropDownListFor(model => model.SampleTypeValuesContainerExtended.OriginTypeValueId, new SelectList(Model.SampleTypeValuesContainerExtended.OriginTypeValues, nameof(OriginTypeModel.Id), nameof(OriginTypeModel.Value), Model.SampleTypeValuesContainerExtended.OriginTypeValueId),
+																											new Dictionary<string, object> {
+								{ "id", @selectOriginType },
+								{ "data-role", "select" },
+								{ "data-on-change", $"setCurrentSearchSimpleType('{@selectOriginType}')" },
+								{ "data-on-drop", $"setCurrentSearchSimpleType('{@selectOriginType}')" },
+								})
+								</div>
 
-                            <!-- SAMPLE MINERAL TYPES -->
-                            <div class="cell-fs-12 cell-sm-3">
-                                <label id="selectMineralTypeSearchTypeLabel" for="selectMineralType" class="text-secondary">@Html.Raw(Search.SearchSimpleByMineralTypeLabel)</label>
-                                @Html.DropDownListFor(model => model.SampleTypeValuesContainerExtended.MineralTypeValues, new SelectList(Model.SampleTypeValuesContainerExtended.MineralTypeValues, nameof(OriginTypeModel.Id), nameof(OriginTypeModel.Value), Model.SampleTypeValuesContainerExtended.MineralTypeValueId),
-                                                                    new Dictionary<string, object> {
-                                { "id", @selectMineralType },
-                                { "data-role", "select" },
-                                { "data-on-change", $"setCurrentSearchSimpleType('{@selectMineralType}')" },
-                                { "data-on-drop", $"setCurrentSearchSimpleType('{@selectMineralType}')" },
-                                })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="d-flex flex-column">
-                                <input id="selectLevelAveragedSimple"
-                                       value="2"
-                                       type="checkbox" 
-                                       data-role="checkbox"
-                                       data-caption="@Html.Raw(Search.SearchShowAveragedAcquisitionLabel)"
-                                       data-cls-check="bd-cyan"
-                                       data-style="2" >
-                                <input id ="selectLevelSingleAcquisitionSimple"
-                                       value="1"
-                                       type="checkbox"
-                                       data-role="checkbox"
-                                       data-caption="@Html.Raw(Search.SearchShowSingleAcquisitionLabel)"
-                                       data-cls-check="bd-cyan"
-                                       data-style="2">
-                            </div>
-                        </div>
-                    </div>
+								<!-- SAMPLE MINERAL TYPES -->
+								<div class="cell-fs-12 cell-sm-3">
+									<label id="selectMineralTypeSearchTypeLabel" for="selectMineralType" class="text-secondary">@Html.Raw(Search.SearchSimpleByMineralTypeLabel)</label>
+									@Html.DropDownListFor(model => model.SampleTypeValuesContainerExtended.MineralTypeValues, new SelectList(Model.SampleTypeValuesContainerExtended.MineralTypeValues, nameof(OriginTypeModel.Id), nameof(OriginTypeModel.Value), Model.SampleTypeValuesContainerExtended.MineralTypeValueId),
+																											new Dictionary<string, object> {
+								{ "id", @selectMineralType },
+								{ "data-role", "select" },
+								{ "data-on-change", $"setCurrentSearchSimpleType('{@selectMineralType}')" },
+								{ "data-on-drop", $"setCurrentSearchSimpleType('{@selectMineralType}')" },
+								})
+								</div>
+							</div>
+							<div class="row">
+								<div class="d-flex flex-column">
+									<input id="selectLevelAveragedSimple"
+									value="2"
+									type="checkbox"
+									data-role="checkbox"
+									data-caption="@Html.Raw(Search.SearchShowAveragedAcquisitionLabel)"
+									data-cls-check="bd-cyan"
+									data-style="2">
+									<input id="selectLevelSingleAcquisitionSimple"
+									value="1"
+									type="checkbox"
+									data-role="checkbox"
+									data-caption="@Html.Raw(Search.SearchShowSingleAcquisitionLabel)"
+									data-cls-check="bd-cyan"
+									data-style="2">
+								</div>
+							</div>
+						</div>
 
-                    <!-- PANEL SEARCH COMPLEX -->
-                    <div id="panelSearchComplex" class="h-vh-100-fs h-vh-50-sm d-none overflow-x-hidden overflow-y-auto">
-                        <!-- LABELS -->
-                        <div class="row">
-                            <div class="cell-fs-12">
-                                <span class="text-secondary"><strong>@Html.Raw(Search.ComplexSearchListOfConditions)</strong></span>
-                            </div>
-                        </div>
-                        <!-- BUTTONS LIST + CONDITIONS CONTAINER -->
-                        <div class="row">
-                            <!-- BUTTONS LIST -->
-                            <div class="cell-fs-12 cell-md-3 cell-lg-2">
-                                <ul id="listviewSearchConditions"
-                                data-role="listview"
-                                data-view="list">
-                                    <li id="@ConditionFilename"
-                                        data-icon="<span class='mif-open-book mif-fs'>"
-                                        data-caption="@Html.Raw(Search.SearchComplexByFilenameLabel)"
-                                        class="complex-search-button"
-                                        onclick="addConditionFilename('@ConditionFilename')"></li>
-                                    <li id="@ConditionSampleName"
-                                    data-icon="<span class='mif-comment mif-fs'>"
-                                    data-caption="@Html.Raw(Search.SearchComplexBySampleNameLabel)"
-                                    class="complex-search-button"
-                                    onclick="addConditionSampleName('@ConditionSampleName')"></li>
-                                    <li id="@ConditionMaterial"
-                                    data-icon="<span class='mif-fingerprint'>"
-                                    data-caption="@Html.Raw(Search.SearchComplexByMaterialLabel)"
-                                    class="complex-search-button"
-                                    onclick="addConditionMaterial('@ConditionMaterial')"></li>
-                                    <li id="@ConditionSampleType"
-                                    data-icon="<span class='mif-list'>"
-                                    data-caption="@Html.Raw(Search.SearchComplexBySampleDataTypeLabel)"
-                                    class="complex-search-button"
-                                    onclick="addConditionSampleType('@ConditionSampleType')"></li>
-                                    <li id="@ConditionOriginType"
-                                    data-icon="<span class='mif-earth'>"
-                                    data-caption="@Html.Raw(Search.SearchComplexByOriginTypeLabel)"
-                                    class="complex-search-button"
-                                    onclick="addConditionOriginType('@ConditionOriginType')"></li>
-                                    <li id="@ConditionMineralType"
-                                    data-icon="<span class='mif-lab'>"
-                                    data-caption="@Html.Raw(Search.SearchComplexByMineralTypeLabel)"
-                                    onclick="addConditionMineralType('@ConditionMineralType')"
-                                    class="complex-search-button"></li>
-                                </ul>
-                            </div>
-                            <!-- SAVED SEARCHES INFO + SAVED SEARCHES LIST + CONDITIONS + EXPLANATION -->
-                            <div id="complexSearchContainer" class="cell-fs-12 cell-md-9 cell-lg-10 border-left">
-                                <!-- SAVED SEARCHES INFO -->
-                                <div id="retrievedComplexSearchesInfo" class="remark info margin-horizontal-8">
-                                    <p class="text-leader2">
-                                        @Html.Raw(Search.RetrievedComplexSearchesNoItemsTitle)
-                                    </p>
-                                    <div class="row">
-                                        <!-- image -->
-                                        <div class="cell-fs-4 cell-md-2">
-                                            <img src="~/images/search/list.png" height="128" />
-                                        </div>
-                                        <!-- text -->
-                                        <div class="cell-fs-8 cell-md-10">
-                                            <p class="text-secondary margin-top-8">
-                                                @Html.Raw(Search.RetrievedComplexSearchesNoItemsMessage1)
-                                            </p>
-                                            <p class="text-secondary margin-top-8">
-                                                @Html.Raw(Search.RetrievedComplexSearchesNoItemsMessage2)
-                                            </p>
-                                            <p class="text-secondary margin-top-8">
-                                                @Html.Raw(Search.RetrievedComplexSearchesNoItemsMessage3)
-                                            </p>
-                                            <p class="text-secondary margin-top-8">
-                                                @Html.Raw(Search.RetrievedComplexSearchesNoItemsMessage4)
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- SAVED SEARCHES LIST -->
-                                <div id="retrievedComplexSearchesListContainer" class="margin-horizontal-8">
-                                    <div class="row cell-fs-12 d-flex flex-justify-center">
-                                        <span id="retrievedComplexSearchesListTitle" class="h6 d-none">@Html.Raw(Search.RetrievedComplexSearchesTitle)</span>
-                                    </div>
-                                    <div id="retrievedComplexSearchesList" class="row cell-fs-12"></div>
-                                </div>
-                                <!-- TOP BAR -->
-                                <div id="complexSearchTopBar" class="row cell-fs-12"></div>
-                                <!-- CONDITIONS -->
-                                <div id="complexSearchConditionsContainer" class="row cell-fs-12 h-vh-50 overflow-y-auto"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- LOAD PANEL -->
-            <div id="panelLoad">
-                <div class="row cell-fs-12 margin-top-32">
-                    <div class="remark info">
-                        <p class="text-leader2-sm text-just">
-                            @if (IsSLabDataManagerAllowed)
-                            {
-                                @Html.Raw(Search.LoadFilesSLabAndExternalExplanation)
-                            }
-                            else
-                            {
-                                @Html.Raw(Search.LoadFilesExternalExplanation)
-                            }
-                        </p>
-                    </div>
-                </div>
-                <div class="row margin-top-16">
-                    @if (IsSLabDataManagerAllowed)
-                    {
-                        <input type="file" multiple id="fileInputSLab" class="d-none" data-on-select="loadSLabFilesAsync"/>
-                    }
-                    <input type="file" multiple id="fileInputExternal" class="d-none" onclick="loadExternalFilesAsync"/>
+						<!-- PANEL SEARCH COMPLEX -->
+						<div id="panelSearchComplex" class="h-vh-100-fs h-vh-50-sm d-none overflow-x-hidden overflow-y-auto">
+							<!-- LABELS -->
+							<div class="row">
+								<div class="cell-fs-12">
+									<span class="text-secondary"><strong>@Html.Raw(Search.ComplexSearchListOfConditions)</strong></span>
+								</div>
+							</div>
+							<!-- BUTTONS LIST + CONDITIONS CONTAINER -->
+							<div class="row">
+								<!-- BUTTONS LIST -->
+								<div class="cell-fs-12 cell-md-3 cell-lg-2">
+									<ul id="listviewSearchConditions"
+									data-role="listview"
+									data-view="list">
+										<li id="@ConditionFilename"
+										data-icon="<span class='mif-open-book mif-fs'>"
+										data-caption="@Html.Raw(Search.SearchComplexByFilenameLabel)"
+										class="complex-search-button"
+										onclick="addConditionFilename('@ConditionFilename')"></li>
+										<li id="@ConditionSampleName"
+										data-icon="<span class='mif-comment mif-fs'>"
+										data-caption="@Html.Raw(Search.SearchComplexBySampleNameLabel)"
+										class="complex-search-button"
+										onclick="addConditionSampleName('@ConditionSampleName')"></li>
+										<li id="@ConditionMaterial"
+										data-icon="<span class='mif-fingerprint'>"
+										data-caption="@Html.Raw(Search.SearchComplexByMaterialLabel)"
+										class="complex-search-button"
+										onclick="addConditionMaterial('@ConditionMaterial')"></li>
+										<li id="@ConditionSampleType"
+										data-icon="<span class='mif-list'>"
+										data-caption="@Html.Raw(Search.SearchComplexBySampleDataTypeLabel)"
+										class="complex-search-button"
+										onclick="addConditionSampleType('@ConditionSampleType')"></li>
+										<li id="@ConditionOriginType"
+										data-icon="<span class='mif-earth'>"
+										data-caption="@Html.Raw(Search.SearchComplexByOriginTypeLabel)"
+										class="complex-search-button"
+										onclick="addConditionOriginType('@ConditionOriginType')"></li>
+										<li id="@ConditionMineralType"
+										data-icon="<span class='mif-lab'>"
+										data-caption="@Html.Raw(Search.SearchComplexByMineralTypeLabel)"
+										onclick="addConditionMineralType('@ConditionMineralType')"
+										class="complex-search-button"></li>
+									</ul>
+								</div>
+								<!-- SAVED SEARCHES INFO + SAVED SEARCHES LIST + CONDITIONS + EXPLANATION -->
+								<div id="complexSearchContainer" class="cell-fs-12 cell-md-9 cell-lg-10 border-left">
+									<!-- SAVED SEARCHES INFO -->
+									<div id="retrievedComplexSearchesInfo" class="remark info margin-horizontal-8">
+										<p class="text-leader2">
+											@Html.Raw(Search.RetrievedComplexSearchesNoItemsTitle)
+										</p>
+										<div class="row">
+											<!-- image -->
+											<div class="cell-fs-4 cell-md-2">
+												<img src="~/images/search/list.png" height="128" />
+											</div>
+											<!-- text -->
+											<div class="cell-fs-8 cell-md-10">
+												<p class="text-secondary margin-top-8">
+													@Html.Raw(Search.RetrievedComplexSearchesNoItemsMessage1)
+												</p>
+												<p class="text-secondary margin-top-8">
+													@Html.Raw(Search.RetrievedComplexSearchesNoItemsMessage2)
+												</p>
+												<p class="text-secondary margin-top-8">
+													@Html.Raw(Search.RetrievedComplexSearchesNoItemsMessage3)
+												</p>
+												<p class="text-secondary margin-top-8">
+													@Html.Raw(Search.RetrievedComplexSearchesNoItemsMessage4)
+												</p>
+											</div>
+										</div>
+									</div>
+									<!-- SAVED SEARCHES LIST -->
+									<div id="retrievedComplexSearchesListContainer" class="margin-horizontal-8">
+										<div class="row cell-fs-12 d-flex flex-justify-center">
+											<span id="retrievedComplexSearchesListTitle" class="h6 d-none">@Html.Raw(Search.RetrievedComplexSearchesTitle)</span>
+										</div>
+										<div id="retrievedComplexSearchesList" class="row cell-fs-12"></div>
+									</div>
+									<!-- TOP BAR -->
+									<div id="complexSearchTopBar" class="row cell-fs-12"></div>
+									<!-- CONDITIONS -->
+									<div id="complexSearchConditionsContainer" class="row cell-fs-12 h-vh-50 overflow-y-auto"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+			<!-- LOAD PANEL -->
+			<div id="panelLoad">
+				<div class="row cell-fs-12 margin-top-32">
+					<div class="remark info">
+						<p class="text-leader2-sm text-just">
+							@if (IsSLabDataManagerAllowed)
+							{
+								@Html.Raw(Search.LoadFilesSLabAndExternalExplanation)
+							}
+							else
+							{
+								@Html.Raw(Search.LoadFilesExternalExplanation)
+							}
+						</p>
+					</div>
+				</div>
+				<div class="row margin-top-16">
+					@if (IsSLabDataManagerAllowed)
+					{
+						<input type="file" multiple id="fileInputSLab" class="d-none" data-on-select="loadSLabFilesAsync" />
+					}
+					<input type="file" multiple id="fileInputExternal" class="d-none" onclick="loadExternalFilesAsync" />
 
-                    <div class="d-flex flex-row flex-justify-center w-100">
-                        @if (IsSLabDataManagerAllowed)
-                        {
-                            <!-- LOAD SLAB FILES -->
-                            <div class="margin-horizontal-16">
-                                <button class="image-button primary" onclick="document.getElementById('fileInputSLab').click();">
-                                    <span class="mif-lab icon"></span>
-                                    <span class="caption">@Html.Raw(Search.ButtonLoadSLabTitle)</span>
-                                </button>
-                            </div>
-                        }
-                        <!-- LOAD EXTERNAL FILES-->
-                        <div class="margin-horizontal-16">
-                            <button class="image-button secondary" onclick="document.getElementById('fileInputExternal').click();">
-                                <span class="mif-external icon"></span>
-                                <span class="caption">@Html.Raw(Search.ButtonLoadExternalTitle)</span>
-                            </button>
-                        </div>
-                    </div>
+					<div class="d-flex flex-row flex-justify-center w-100">
+						@if (IsSLabDataManagerAllowed)
+						{
+							<!-- LOAD SLAB FILES -->
+							<div class="margin-horizontal-16">
+								<button class="image-button primary" onclick="document.getElementById('fileInputSLab').click();">
+									<span class="mif-lab icon"></span>
+									<span class="caption">@Html.Raw(Search.ButtonLoadSLabTitle)</span>
+								</button>
+							</div>
+						}
+						<!-- LOAD EXTERNAL FILES-->
+						<div class="margin-horizontal-16">
+							<button class="image-button secondary" onclick="document.getElementById('fileInputExternal').click();">
+								<span class="mif-external icon"></span>
+								<span class="caption">@Html.Raw(Search.ButtonLoadExternalTitle)</span>
+							</button>
+						</div>
+					</div>
 
-                    <!-- LIST OF LOADED FILES -->
-                    <div id="loadedFilesContainer" class="d-none flex-column margin-top-32 w-100">
-                        <div class="flex-self-center">
-                            <span class="text-leader2 text-bold">@Html.Raw(Search.LoadedFilesLabel)</span>
-                        </div>
-                        <div id="loadedFilesList" class="d-flex flex-align-center flex-column w-100 h-vh-50 overflow-y-auto"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+					<!-- LIST OF LOADED FILES -->
+					<div id="loadedFilesContainer" class="d-none flex-column margin-top-32 w-100">
+						<div class="flex-self-center">
+							<span class="text-leader2 text-bold">@Html.Raw(Search.LoadedFilesLabel)</span>
+						</div>
+						<div id="loadedFilesList" class="d-flex flex-align-center flex-column w-100 h-vh-50 overflow-y-auto"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <!-- RESULTS -->
-    <div class="row">
-        <div class="cell-fs-12">
-            <div id="searchResultsContainer" class="d-none overflow-x-hidden overflow-y-auto"></div>
-        </div>
-    </div>
+	<!-- RESULTS -->
+	<div class="row">
+		<div class="cell-fs-12">
+			<div id="searchResultsContainer" class="d-none overflow-x-hidden overflow-y-auto"></div>
+		</div>
+	</div>
 </div>
 
 <!-- SPECTRUM INFO -->
 <div id="info" class="container mywrapper overflow-x-auto overflow-y-auto bg-light zindex-10">
-    <!-- CLOSE BUTTON -->
-    <div class="row cell-fs-12">
-        <div onclick="hideInfo()" class="button primary cycle float-right margin-right-8 margin-top-8">
-            <span class="mif-cross-light"></span>
-        </div>
-    </div>
-    <!-- FILE INFO -->
-    <!-- filename -->
-    <div class="row">
-        <div class="cell-fs-12 d-flex flex-justify-start margin-left-8 margin-top-8">
-            <label for="filename" class="control-label">@Html.Raw(Info.FilenameLabel)</label>
-            <span id="filename" class="margin-left-8"></span>
-            <span id="type" class="margin-left-8"></span>
-        </div>
-    </div>
-    <!-- INFO -->
-    <div class="row">
-        <div class="cell-fs-12">
-            <ul data-role="tabs" data-expand="true">
-                <li><a href="#infoSampleData">@Html.Raw(Info.TabSampleDataTitle)</a></li>
-                <li><a href="#infoMeasurement">@Html.Raw(Info.TabMeasurementTitle)</a></li>
-            </ul>
-            <!-- SAMPLE DATA -->
-            <div id="infoSampleData" class="border bd-default no-border-top p-2">
-            </div>
-            <!-- MEASUREMENT -->
-            <div id="infoMeasurement" class="border bd-default no-border-top p-2">
-            </div>
-        </div>
-    </div>
-    <!-- SAVE -->
+	<!-- CLOSE BUTTON -->
+	<div class="row cell-fs-12">
+		<div onclick="hideInfo()" class="button primary cycle float-right margin-right-8 margin-top-8">
+			<span class="mif-cross-light"></span>
+		</div>
+	</div>
+	<!-- FILE INFO -->
+	<!-- filename -->
+	<div class="row">
+		<div class="cell-fs-12 d-flex flex-justify-start margin-left-8 margin-top-8">
+			<label for="filename" class="control-label">@Html.Raw(Info.FilenameLabel)</label>
+			<span id="filename" class="margin-left-8"></span>
+			<span id="type" class="margin-left-8"></span>
+		</div>
+	</div>
+	<!-- INFO -->
+	<div class="row">
+		<div class="cell-fs-12">
+			<ul data-role="tabs" data-expand="true">
+				<li><a href="#infoSampleData">@Html.Raw(Info.TabSampleDataTitle)</a></li>
+				<li><a href="#infoMeasurement">@Html.Raw(Info.TabMeasurementTitle)</a></li>
+			</ul>
+			<!-- SAMPLE DATA -->
+			<div id="infoSampleData" class="border bd-default no-border-top p-2">
+			</div>
+			<!-- MEASUREMENT -->
+			<div id="infoMeasurement" class="border bd-default no-border-top p-2">
+			</div>
+		</div>
+	</div>
+	<!-- SAVE -->
 
-    <div class="row button-on-bottom">
-        <div class="cell-fs-12">
-            <div id="saveInfo" onclick="saveInfo()" class="button primary cycle large d-none">
-                <span class="mif-floppy-disk"></span>
-            </div>
-            <div id="refreshInfo" onclick="refreshInfo()" class="button primary cycle large d-none">
-                <span class="mif-refresh"></span>
-            </div>
-        </div>
-    </div>
+	<div class="row button-on-bottom">
+		<div class="cell-fs-12">
+			<div id="saveInfo" onclick="saveInfo()" class="button primary cycle large d-none">
+				<span class="mif-floppy-disk"></span>
+			</div>
+			<div id="refreshInfo" onclick="refreshInfo()" class="button primary cycle large d-none">
+				<span class="mif-refresh"></span>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- GENERAL INFO ABOUT SEARCH -->
 <div id="searchInfoContainer" class="mywrapper search-info-container flex-justify-center" style="display: none">
-    <!-- CLOSE BUTTON -->
-    <div class="row cell-fs-12">
-        <div onclick="hideSearchInfo()" class="button info cycle float-right margin-right-8 margin-top-8">
-            <span class="mif-cross-light"></span>
-        </div>
-    </div>
+	<!-- CLOSE BUTTON -->
+	<div class="row cell-fs-12">
+		<div onclick="hideSearchInfo()" class="button info cycle float-right margin-right-8 margin-top-8">
+			<span class="mif-cross-light"></span>
+		</div>
+	</div>
 
-    <!-- EXPLANATION -->
-    <div class="search-info fg-white overflow-y-auto">
-        <div class="row cell-fs-12">
-            <span class="h6">@Html.Raw(Search.SearchHelpTitle)</span>
-        </div>
-        <div class="row cell-fs-12">
-            <ul data-app-bar="false" data-role="materialtabs">
-                <li><a href="#simplesearch">@Html.Raw(Search.SearchTypeSimpleLabel)</a></li>
-                <li><a href="#complexsearch">@Html.Raw(Search.SearchTypeComplexLabel)</a></li>
-            </ul>
-            <div class="margin-top-16">
-                <div id="simplesearch">
-                    <p class="text-just">@Html.Raw(Search.SearchTypeSimpleExplanation)</p>
-                    <p class="margin-top-8">@Html.Raw(Search.SearchTypeSimpleHowToTitle)</p>
-                    <ol>
-                        <li>@Html.Raw(Search.SearchTypeSimpleHowTo1)</li>
-                        <li>@Html.Raw(Search.SearchTypeSimpleHowTo2)</li>
-                        <li>@Html.Raw(Search.SearchHowToFinal)</li>
-                    </ol>
-                    <p>@Html.Raw(Search.SearchTypeSimpleHowTo2NbTitle)</p>
-                    <ul>
-                        <li>@Html.Raw(Search.SearchTypeSimpleHowTo2Nb1)</li>
-                        <li>@Html.Raw(Search.SearchTypeSimpleHowTo2Nb2)</li>
-                        <li>@Html.Raw(Search.SearchTypeSimpleHowTo2Nb3)</li>
-                    </ul>
-                </div>
-                <div id="complexsearch">
-                    <p class="text-just">@Html.Raw(Search.SearchTypeComplexExplanation)</p>
-                    <p class="margin-top-8">@Html.Raw(Search.SearchTypeComplexHowToTitle)</p>
-                    <ol>
-                        <li>@Html.Raw(Search.SearchTypeComplexHowTo11)&nbsp;<small>@Html.Raw(Search.SearchTypeComplexHowTo12)</small></li>
-                        <li>@Html.Raw(Search.SearchTypeComplexHowTo21)&nbsp;<small>@Html.Raw(Search.SearchTypeComplexHowTo22)</small></li>
-                        <li>@Html.Raw(Search.SearchTypeComplexHowTo31)&nbsp;<small>@Html.Raw(Search.SearchTypeComplexHowTo32)</small></li>
-                        <li>@Html.Raw(Search.SearchHowToFinal)</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
+	<!-- EXPLANATION -->
+	<div class="search-info fg-white overflow-y-auto">
+		<div class="row cell-fs-12">
+			<span class="h6">@Html.Raw(Search.SearchHelpTitle)</span>
+		</div>
+		<div class="row cell-fs-12">
+			<ul data-app-bar="false" data-role="materialtabs">
+				<li><a href="#simplesearch">@Html.Raw(Search.SearchTypeSimpleLabel)</a></li>
+				<li><a href="#complexsearch">@Html.Raw(Search.SearchTypeComplexLabel)</a></li>
+			</ul>
+			<div class="margin-top-16">
+				<div id="simplesearch">
+					<p class="text-just">@Html.Raw(Search.SearchTypeSimpleExplanation)</p>
+					<p class="margin-top-8">@Html.Raw(Search.SearchTypeSimpleHowToTitle)</p>
+					<ol>
+						<li>@Html.Raw(Search.SearchTypeSimpleHowTo1)</li>
+						<li>@Html.Raw(Search.SearchTypeSimpleHowTo2)</li>
+						<li>@Html.Raw(Search.SearchHowToFinal)</li>
+					</ol>
+					<p>@Html.Raw(Search.SearchTypeSimpleHowTo2NbTitle)</p>
+					<ul>
+						<li>@Html.Raw(Search.SearchTypeSimpleHowTo2Nb1)</li>
+						<li>@Html.Raw(Search.SearchTypeSimpleHowTo2Nb2)</li>
+						<li>@Html.Raw(Search.SearchTypeSimpleHowTo2Nb3)</li>
+					</ul>
+				</div>
+				<div id="complexsearch">
+					<p class="text-just">@Html.Raw(Search.SearchTypeComplexExplanation)</p>
+					<p class="margin-top-8">@Html.Raw(Search.SearchTypeComplexHowToTitle)</p>
+					<ol>
+						<li>@Html.Raw(Search.SearchTypeComplexHowTo11)&nbsp;<small>@Html.Raw(Search.SearchTypeComplexHowTo12)</small></li>
+						<li>@Html.Raw(Search.SearchTypeComplexHowTo21)&nbsp;<small>@Html.Raw(Search.SearchTypeComplexHowTo22)</small></li>
+						<li>@Html.Raw(Search.SearchTypeComplexHowTo31)&nbsp;<small>@Html.Raw(Search.SearchTypeComplexHowTo32)</small></li>
+						<li>@Html.Raw(Search.SearchHowToFinal)</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- CHARMS SHARE -->
 @{
-    await Html.RenderPartialAsync("Partials/_Share");
+	await Html.RenderPartialAsync("Partials/_Share");
 }
 
 <!-- common js variables -->
 @{
-    await Html.RenderPartialAsync("Partials/_JsCommon");
-    await Html.RenderPartialAsync("Partials/_SearchAndShareJsCommon");
-    await Html.RenderPartialAsync("Partials/_SearchAndChartJsCommon");
-    await Html.RenderPartialAsync("Partials/_SearchJsCommon");
+	await Html.RenderPartialAsync("Partials/_JsCommon");
+	await Html.RenderPartialAsync("Partials/_SearchAndShareJsCommon");
+	await Html.RenderPartialAsync("Partials/_SearchAndChartJsCommon");
+	await Html.RenderPartialAsync("Partials/_SearchJsCommon");
 }
 <script type="text/javascript">
-    var isSLabDataManagerAllowed = @IsSLabDataManagerAllowed.ToJsString();
-    var CONDITION_OPERATORS = '@ConditionsOperators';
-    var CONDITION_TYPE_FILENAME = '@ConditionFilename';
-    var CONDITION_TYPE_MATERIAL = '@ConditionMaterial';
-    var CONDITION_TYPE_MINERAL_TYPE = '@ConditionMineralType';
-    var CONDITION_TYPE_ORIGIN_TYPE = '@ConditionOriginType';
-    var CONDITION_TYPE_SAMPLE_NAME = '@ConditionSampleName';
-    var CONDITION_TYPE_SAMPLE_TYPE = '@ConditionSampleType';
+	var isSLabDataManagerAllowed = @IsSLabDataManagerAllowed.ToJsString();
+	var isUserAuthenticated = @Model.IsUserAuthenticated.ToJsString();
+	var CONDITION_OPERATORS = '@ConditionsOperators';
+	var CONDITION_TYPE_FILENAME = '@ConditionFilename';
+	var CONDITION_TYPE_MATERIAL = '@ConditionMaterial';
+	var CONDITION_TYPE_MINERAL_TYPE = '@ConditionMineralType';
+	var CONDITION_TYPE_ORIGIN_TYPE = '@ConditionOriginType';
+	var CONDITION_TYPE_SAMPLE_NAME = '@ConditionSampleName';
+	var CONDITION_TYPE_SAMPLE_TYPE = '@ConditionSampleType';
 
-    var CONDITION_OPERATOR_NONE = '@Enums.ConditionOperatorType.None.ToString()';
-    var CONDITION_OPERATOR_AND = '@Enums.ConditionOperatorType.And.ToString()';
-    var CONDITION_OPERATOR_OR = '@Enums.ConditionOperatorType.Or.ToString()';
+	var CONDITION_OPERATOR_NONE = '@Enums.ConditionOperatorType.None.ToString()';
+	var CONDITION_OPERATOR_AND = '@Enums.ConditionOperatorType.And.ToString()';
+	var CONDITION_OPERATOR_OR = '@Enums.ConditionOperatorType.Or.ToString()';
 
-    var MATERIAL_TYPE_NONE = '@materialTypeNone';
-    var MATERIAL_TYPE_MINERAL = '@materialTypeMineral';
-    var MATERIAL_TYPE_ROCK = '@materialTypeRock';
-    var MATERIAL_TYPE_METEORCLASS = '@materialTypeMeteorClass';
+	var MATERIAL_TYPE_NONE = '@materialTypeNone';
+	var MATERIAL_TYPE_MINERAL = '@materialTypeMineral';
+	var MATERIAL_TYPE_ROCK = '@materialTypeRock';
+	var MATERIAL_TYPE_METEORCLASS = '@materialTypeMeteorClass';
 
-    var searchTypeRadio = '@searchTypeRadio';
-    var selectFilename = '@selectFilename';
-    var selectMaterial = '@selectMaterial';
-    var selectMineralType = '@selectMineralType';
-    var selectSampleDataType = '@selectSampleDataType';
-    var selectSampleName = '@selectSampleName';
-    var selectOriginType = '@selectOriginType';
+	var searchTypeRadio = '@searchTypeRadio';
+	var selectFilename = '@selectFilename';
+	var selectMaterial = '@selectMaterial';
+	var selectMineralType = '@selectMineralType';
+	var selectSampleDataType = '@selectSampleDataType';
+	var selectSampleName = '@selectSampleName';
+	var selectOriginType = '@selectOriginType';
 
-    function search() {
-        /* reset array */
-        selectedSpectra = [];
+	function search() {
+	/* reset array */
+	selectedSpectra = [];
 
-        /* remove 'show chart' button, if available */
-        //removeCreateChartsButtonProcedure();
+	/* remove 'show chart' button, if available */
+	//removeCreateChartsButtonProcedure();
 
-        /* execute selected search */
-        if (SELECTED_SEARCH_TYPE == SEARCH_SIMPLE_TYPE) {
-            if (selectedSearchSimpleType == '@selectFilename') {
-                searchSimpleByFilename();
-            } else if (selectedSearchSimpleType == '@selectMaterial') {
-                searchSimpleByMaterial();
-            } else if (selectedSearchSimpleType == '@selectSampleName') {
-                searchSimpleBySampleName();
-            } else if (selectedSearchSimpleType == '@selectMineralType') {
-                searchSimpleByMineralType();
-            } else if (selectedSearchSimpleType == '@selectOriginType') {
-                searchSimpleByOriginType();
-            } else if (selectedSearchSimpleType == '@selectSampleDataType') {
-                searchSimpleBySampleType();
-            }
-        } else {
-            executeComplexSearchAsync();
-        }
-    }
+	/* execute selected search */
+	if (SELECTED_SEARCH_TYPE == SEARCH_SIMPLE_TYPE) {
+	if (selectedSearchSimpleType == '@selectFilename') {
+	searchSimpleByFilename();
+	} else if (selectedSearchSimpleType == '@selectMaterial') {
+	searchSimpleByMaterial();
+	} else if (selectedSearchSimpleType == '@selectSampleName') {
+	searchSimpleBySampleName();
+	} else if (selectedSearchSimpleType == '@selectMineralType') {
+	searchSimpleByMineralType();
+	} else if (selectedSearchSimpleType == '@selectOriginType') {
+	searchSimpleByOriginType();
+	} else if (selectedSearchSimpleType == '@selectSampleDataType') {
+	searchSimpleBySampleType();
+	}
+	} else {
+	executeComplexSearchAsync();
+	}
+	}
 
-    function fillSampleTypes() {
-    @{
-        if (Model.SampleTypeValuesContainerExtended.SampleDataValues != null && Model.SampleTypeValuesContainerExtended.SampleDataValues.Any())
-        {
-            StringBuilder sb = new StringBuilder();
-            int sampleTypesNum = Model.SampleTypeValuesContainerExtended.SampleDataValues.Count;
-            for (int i = 0; i < sampleTypesNum; i++)
-            {
-                sb.AppendLine($"sampleTypes.push({{key: {Model.SampleTypeValuesContainerExtended.SampleDataValues[i].Id}, value: '{Model.SampleTypeValuesContainerExtended.SampleDataValues[i].Value}' }});");
-            }
-            @Html.Raw(sb.ToString())
-            ;
-        }
-    }
-    }
+	function fillSampleTypes() {
+	@{
+		if (Model.SampleTypeValuesContainerExtended.SampleDataValues != null && Model.SampleTypeValuesContainerExtended.SampleDataValues.Any())
+		{
+			StringBuilder sb = new StringBuilder();
+			int sampleTypesNum = Model.SampleTypeValuesContainerExtended.SampleDataValues.Count;
+			for (int i = 0; i < sampleTypesNum; i++)
+			{
+				sb.AppendLine($"sampleTypes.push({{key: {Model.SampleTypeValuesContainerExtended.SampleDataValues[i].Id}, value: '{Model.SampleTypeValuesContainerExtended.SampleDataValues[i].Value}' }});");
+			}
+			@Html.Raw(sb.ToString())
+			;
+		}
+	}
+	}
 
-    function fillMineralTypes() {
-    @{
-        if (Model.SampleTypeValuesContainerExtended.MineralTypeValues != null && Model.SampleTypeValuesContainerExtended.MineralTypeValues.Any())
-        {
-            StringBuilder sb = new StringBuilder();
-            int mineralTypesNum = Model.SampleTypeValuesContainerExtended.MineralTypeValues.Count;
-            for (int i = 0; i < mineralTypesNum; i++)
-            {
-                sb.AppendLine($"mineralTypes.push({{key: {Model.SampleTypeValuesContainerExtended.MineralTypeValues[i].Id}, value: '{Model.SampleTypeValuesContainerExtended.MineralTypeValues[i].Value}' }});");
-            }
-            @Html.Raw(sb.ToString())
-            ;
-        }
-    }
-    }
+	function fillMineralTypes() {
+	@{
+		if (Model.SampleTypeValuesContainerExtended.MineralTypeValues != null && Model.SampleTypeValuesContainerExtended.MineralTypeValues.Any())
+		{
+			StringBuilder sb = new StringBuilder();
+			int mineralTypesNum = Model.SampleTypeValuesContainerExtended.MineralTypeValues.Count;
+			for (int i = 0; i < mineralTypesNum; i++)
+			{
+				sb.AppendLine($"mineralTypes.push({{key: {Model.SampleTypeValuesContainerExtended.MineralTypeValues[i].Id}, value: '{Model.SampleTypeValuesContainerExtended.MineralTypeValues[i].Value}' }});");
+			}
+			@Html.Raw(sb.ToString())
+			;
+		}
+	}
+	}
 
-    function fillOriginTypes() {
-    @{
-        if (Model.SampleTypeValuesContainerExtended.OriginTypeValues != null && Model.SampleTypeValuesContainerExtended.OriginTypeValues.Any())
-        {
-            StringBuilder sb = new StringBuilder();
-            int originTypesNum = Model.SampleTypeValuesContainerExtended.OriginTypeValues.Count;
-            for (int i = 0; i < originTypesNum; i++)
-            {
-                sb.AppendLine($"originTypes.push({{key: {Model.SampleTypeValuesContainerExtended.OriginTypeValues[i].Id}, value: '{Model.SampleTypeValuesContainerExtended.OriginTypeValues[i].Value}' }});");
-            }
-            @Html.Raw(sb.ToString())
-            ;
-        }
-    }
-    }
+	function fillOriginTypes() {
+	@{
+		if (Model.SampleTypeValuesContainerExtended.OriginTypeValues != null && Model.SampleTypeValuesContainerExtended.OriginTypeValues.Any())
+		{
+			StringBuilder sb = new StringBuilder();
+			int originTypesNum = Model.SampleTypeValuesContainerExtended.OriginTypeValues.Count;
+			for (int i = 0; i < originTypesNum; i++)
+			{
+				sb.AppendLine($"originTypes.push({{key: {Model.SampleTypeValuesContainerExtended.OriginTypeValues[i].Id}, value: '{Model.SampleTypeValuesContainerExtended.OriginTypeValues[i].Value}' }});");
+			}
+			@Html.Raw(sb.ToString())
+			;
+		}
+	}
+	}
 
 
 </script>
 <script type="text/javascript" src="~/js/dist/devextreme/devextremebundle.min.js" asp-append-version="true"></script>
 <environment names="Development">
-    <script type="text/javascript" src="~/js/hyperlab/commonsearchandchartsandsharedstuff.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/commonsearchandchart.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/search.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/searchSimple.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/searchComplex.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/complexsearchesmanagement.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/complexsearchesintro.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/info.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/load/loadcommoncheckxml.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/load/loadcommon.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/load/loadexternal.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/search/load/loadslab.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/commonsearchandchartsandsharedstuff.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/commonsearchandchart.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/search/search.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/search/searchSimple.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/search/searchComplex.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/search/complexsearchesmanagement.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/search/complexsearchesintro.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/search/info.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/search/load/loadcommoncheckxml.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/search/load/loadcommon.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/search/load/loadexternalauthenticated.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/search/load/loadslab.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">
-    <script type="text/javascript" src="~/js/dist/search/searchbundle.min.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/dist/search/searchbundle.min.js" asp-append-version="true"></script>
 </environment>

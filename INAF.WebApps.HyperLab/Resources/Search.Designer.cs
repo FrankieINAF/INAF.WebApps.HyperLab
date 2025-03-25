@@ -466,6 +466,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load spectra from device.
+        /// </summary>
+        public static string LoadPanelTitle {
+            get {
+                return ResourceManager.GetString("LoadPanelTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, something went wrong while trying to retrieve meteor classes.
         /// </summary>
         public static string MeteorClassesSuggestionsErrorMessage {
@@ -1087,7 +1096,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search for data or load from device.
+        ///   Looks up a localized string similar to Search for data in SLab database or load spectra from device.
         /// </summary>
         public static string SearchLoadPanelTitle {
             get {

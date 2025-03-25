@@ -10,148 +10,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - HyperLab</title>
-    <link rel="apple-touch-icon" sizes="57x57" href="/images/favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/images/favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/images/favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/images/favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/images/favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/images/favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/images/favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/images/favicon/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/images/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
-    <link rel="manifest" href="/images/favicon/manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/images/favicon/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
-    <environment names="Development">
-        <link rel="stylesheet" href="~/css/dist/commonbundle.css" asp-append-version="true" />
-    </environment>
-    <environment names="Production">
-        <link rel="stylesheet" href="~/css/dist/commonbundle.min.css" asp-append-version="true" />
-    </environment>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - HyperLab</title>
+	<link rel="apple-touch-icon" sizes="57x57" href="/images/favicon/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/images/favicon/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/images/favicon/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/images/favicon/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/images/favicon/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/images/favicon/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/images/favicon/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/images/favicon/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="/images/favicon/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/images/favicon/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+	<link rel="manifest" href="/images/favicon/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/images/favicon/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	<environment names="Development">
+		<link rel="stylesheet" href="~/css/dist/commonbundle.css" asp-append-version="true" />
+	</environment>
+	<environment names="Production">
+		<link rel="stylesheet" href="~/css/dist/commonbundle.min.css" asp-append-version="true" />
+	</environment>
 
-    @* <link rel="stylesheet" href="https://cdn.metroui.org.ua/current/metro.css"> *@
-    <link rel="stylesheet" href="~/css/dist/metro/metrobundle.min.css" asp-append-version="true" />
+	@* <link rel="stylesheet" href="https://cdn.metroui.org.ua/current/metro.css"> *@
+	<link rel="stylesheet" href="~/css/dist/metro/metrobundle.min.css" asp-append-version="true" />
 
-    <script type="text/javascript" src="~/js/dist/jquerybundle.min.js"></script>
-    @* <script src="https://cdn.metroui.org.ua/current/metro.js"></script>
+	<script type="text/javascript" src="~/js/dist/jquerybundle.min.js"></script>
+	@* <script src="https://cdn.metroui.org.ua/current/metro.js"></script>
     <script type="text/javascript" src="~/metro/js/commonformetro.js"></script>
     <script type="text/javascript" src="~/metro/js/index.js"></script> *@
-    <environment names="Development">
-        <script type="text/javascript" src="~/js/hyperlab/queue/queue.js" asp-append-version="true"></script>
-        <script type="text/javascript" src="~/js/hyperlab/queue/commonsaveusersettings.js" asp-append-version="true"></script>
-        <script type="text/javascript" src="~/js/dist/metro/metrobundle.min.js"></script>
-    </environment>
-    <environment names="Production">
-        <script type="text/javascript" src="~/js/dist/metro/metrobundle.min.js"></script>
-        <script type="text/javascript" src="~/js/dist/queue/queuebundle.js" asp-append-version="true"></script>
-    </environment>
+	<environment names="Development">
+		<script type="text/javascript" src="~/js/hyperlab/queue/queue.js" asp-append-version="true"></script>
+		<script type="text/javascript" src="~/js/hyperlab/queue/commonsaveusersettings.js" asp-append-version="true"></script>
+		<script type="text/javascript" src="~/js/dist/metro/metrobundle.min.js"></script>
+	</environment>
+	<environment names="Production">
+		<script type="text/javascript" src="~/js/dist/metro/metrobundle.min.js"></script>
+		<script type="text/javascript" src="~/js/dist/queue/queuebundle.js" asp-append-version="true"></script>
+	</environment>
 
 </head>
 <body id="body" class="overflow-y-auto" style="opacity: 1;">
-    <div id="mainContainer" class="h-vh-100" data-role="navview" data-toggle="#paneToggle" data-expand="xl" data-compact="lg" data-active-state="true">
-        <div id="leftMenu" class="navview-pane d-none">
-            <div class="bg-cyan d-flex flex-align-center">
-                <button class="pull-button">
-                    <span class="mif-menu fg-white"></span>
-                </button>
-                <img src="~/images/em_spectrum_400x400.png" width="52" height="52" class="margin-left-16" />
-                @*<span class="text-light m-0 fg-white pl-7" style="line-height: 52px">@Html.Raw(SharedResources.SlabLabel)</span>*@
-            </div>
-            <!-- USER -->
-            <div class="suggest-box bg-darkGrayBlue">
-                <div class="data-box">
-                    @{
-                        string roleName = dbHandler.getUserRoleName(Context.GetUserId());
-                        string img = $"/images/appbars/{roleName}.png";
-                    }
-                    <img src="@img" class="avatar">
-                    <div class="ml-4 avatar-title flex-column">
-                        <a href="#" class="d-block fg-white text-medium no-decor"><span class="reduce-1">@Context.GetUserName()</span></a>
-                        <p class="m-0"><span class="fg-green mr-2">●</span><span class="text-small navview-pane-text">online</span></p>
-                    </div>
-                </div>
-                <img src="~/images/appbars/AppAdmin.png" class="avatar holder ml-2">
-            </div>
-            <!-- MENU -->
-            <div id="divMenu" class="navview-menu-container bg-darkGrayBlue">
-                <ul class="navview-menu mt-4 bg-darkGrayBlue">
-                    @{
-                        await Html.RenderPartialAsync("Partials/_Menu");
-                    }
-                </ul>
-            </div>
-        </div>
-        <div class="navview-content d-flex flex-align-center flex-justify-center h-100" style="text-align: left">
-            <div id="appbar" data-role="appbar" class="pos-absolute bg-darkCyan fg-white app-bar d-none" data-role-appbar="true">
-                <!-- HAMBURGER MENU BUTTON-->
-                <button type="button" class="hamburger menu-down hidden" style="display: none;"><span class="line"></span><span class="line"></span><span class="line"></span></button>
-                <a href="#" class="app-bar-item d-block d-none-lg" id="paneToggle"><span class="mif-menu"></span></a>
-                <!-- MY APPBAR -->
-                <div id="buttonsAppBar"></div>
-                <!-- TEMPLATE APPBAR -->
-                <div id="appBarContainer" class="app-bar-container ml-auto">
-                    <!-- LOGOUT -->
-                    <a id="logoutButton" href="@Url.Action(nameof(AccountController.Logout), GenericHelper.GetControllerName(nameof(AccountController)))" class="app-bar-item pointer" title="@Html.Raw(SharedResources.LogOutLabel)">
-                        <span class="mif-exit"></span>
-                    </a>
-                </div>
-            </div>
+	<div id="mainContainer" class="h-vh-100" data-role="navview" data-toggle="#paneToggle" data-expand="xl" data-compact="lg" data-active-state="true">
+		<div id="leftMenu" class="navview-pane d-none">
+			<div class="bg-cyan d-flex flex-align-center">
+				<button class="pull-button">
+					<span class="mif-menu fg-white"></span>
+				</button>
+				<img src="~/images/em_spectrum_400x400.png" width="52" height="52" class="margin-left-16" />
+				@*<span class="text-light m-0 fg-white pl-7" style="line-height: 52px">@Html.Raw(SharedResources.SlabLabel)</span>*@
+			</div>
+			<!-- USER -->
+			<div class="suggest-box bg-darkGrayBlue">
+				<div class="data-box">
+					@{
+						string? userName = @Context.GetUserName();
+						if (string.IsNullOrEmpty(userName))
+						{
+							userName = "Guest";
+						}
+						string roleName = dbHandler.getUserRoleName(Context.GetUserId());
+						if (string.IsNullOrEmpty(roleName))
+						{ 
+							roleName = "Guest";
+						}
+						string img = $"/images/appbars/{roleName}.png";
+					}
+					<img src="@img" class="avatar">
+					<div class="ml-4 avatar-title flex-column">
+						<a href="#" class="d-block fg-white text-medium no-decor"><span class="reduce-1">@userName</span></a>
+						<p class="m-0"><span class="fg-green mr-2">●</span><span class="text-small navview-pane-text">online</span></p>
+					</div>
+				</div>
+				<img src="~/images/appbars/AppAdmin.png" class="avatar holder ml-2">
+			</div>
+			<!-- MENU -->
+			<div id="divMenu" class="navview-menu-container bg-darkGrayBlue">
+				<ul class="navview-menu mt-4 bg-darkGrayBlue">
+					@{
+						await Html.RenderPartialAsync("Partials/_Menu");
+					}
+				</ul>
+			</div>
+		</div>
+		<div class="navview-content d-flex flex-align-center flex-justify-center h-100" style="text-align: left">
+			<div id="appbar" data-role="appbar" class="pos-absolute bg-darkCyan fg-white app-bar d-none" data-role-appbar="true">
+				<!-- HAMBURGER MENU BUTTON-->
+				<button type="button" class="hamburger menu-down hidden" style="display: none;"><span class="line"></span><span class="line"></span><span class="line"></span></button>
+				<a href="#" class="app-bar-item d-block d-none-lg" id="paneToggle"><span class="mif-menu"></span></a>
+				<!-- MY APPBAR -->
+				<div id="buttonsAppBar"></div>
+				<!-- TEMPLATE APPBAR -->
+				<div id="appBarContainer" class="app-bar-container ml-auto">
+					<!-- LOGOUT -->
+					<a id="logoutButton" href="@Url.Action(nameof(AccountController.Logout), GenericHelper.GetControllerName(nameof(AccountController)))" class="app-bar-item pointer" title="@Html.Raw(SharedResources.LogOutLabel)">
+						<span class="mif-exit"></span>
+					</a>
+				</div>
+			</div>
 
-            <div id="renderbody" class="h-100 w-100 d-none">
-                @RenderBody()
-                @{
-                    await Html.RenderPartialAsync("Partials/_CookieConsentPartial");
-                }
-            </div>
-        </div>
-    </div>
+			<div id="renderbody" class="h-100 w-100 d-none">
+				@RenderBody()
+				@{
+					await Html.RenderPartialAsync("Partials/_CookieConsentPartial");
+				}
+			</div>
+		</div>
+	</div>
 
-    <div id="pageCover" class="d-none flex-align-center page-cover">
-        <div id="pageCoverLogo" class="row cell-fs-12">
-            <div class="d-flex flex-column flex-align-center">
-                <img src="~/images/em_spectrum_400x400.png" class="intro-logo" />
-                <span class="h2 fg-white text-bold text-center">@Html.Raw(SharedResources.WelcomeMessage)</span>
-                <div data-role="activity" data-type="ring" data-style="light"></div>
-            </div>
-        </div>
-    </div>
+	<div id="pageCover" class="d-none flex-align-center page-cover">
+		<div id="pageCoverLogo" class="row cell-fs-12">
+			<div class="d-flex flex-column flex-align-center">
+				<img src="~/images/em_spectrum_400x400.png" class="intro-logo" />
+				<span class="h2 fg-white text-bold text-center">@Html.Raw(SharedResources.WelcomeMessage)</span>
+				<div data-role="activity" data-type="ring" data-style="light"></div>
+			</div>
+		</div>
+	</div>
 
-    @*<footer class="border-top footer text-muted">
+	@*<footer class="border-top footer text-muted">
     <div class="container">
     &copy; @DateTime.Now.Year - @Html.Raw(SharedResources.SlabLabel) - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </div>
     </footer>*@
-    @{
-        await Html.RenderPartialAsync("Partials/_JsCommon");
-    }
-    <environment names="Development">
-        <script type="text/javascript" src="~/js/dist/commonbundle.js" asp-append-version="false"></script>
-    </environment>
-    <environment names="Production">
-        <script type="text/javascript" src="~/js/dist/commonbundle.min.js" asp-append-version="true"></script>
-    </environment>
-    <script type="text/javascript">
+	@{
+		await Html.RenderPartialAsync("Partials/_JsCommon");
+	}
+	<environment names="Development">
+		<script type="text/javascript" src="~/js/dist/commonbundle.js" asp-append-version="false"></script>
+	</environment>
+	<environment names="Production">
+		<script type="text/javascript" src="~/js/dist/commonbundle.min.js" asp-append-version="true"></script>
+	</environment>
+	<script type="text/javascript">
 
-        $(document).ready(function () {
-            $('.pull-button').on(Metro.events.click, function () {
-                console.log('resize!');
-                setTimeout(function() {
-                    if ($('#mainContainer').hasClass('compacted'))
-                        setLogoHidden();
-                    else
-                        setLogoVisible();
-                }, 200);
-            });
-        });
-    </script>
-    @await RenderSectionAsync("Scripts", required: false)
+		$(document).ready(function () {
+			$('.pull-button').on(Metro.events.click, function () {
+				console.log('resize!');
+				setTimeout(function() {
+					if ($('#mainContainer').hasClass('compacted'))
+						setLogoHidden();
+					else
+						setLogoVisible();
+				}, 200);
+			});
+		});
+	</script>
+	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

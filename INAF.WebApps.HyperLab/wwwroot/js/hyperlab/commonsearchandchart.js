@@ -20,6 +20,8 @@ var NAVIGATION_INIT = 'navigationinit';
 var NAVIGATION_SHOW_CHART = 'navigationshowchart';
 var navigationStatus = NAVIGATION_INIT;
 
+var STORAGE_ITEM = "storageItem";
+
 var pageW, pageH;
 
 var lightGreen = '#90ee90';

@@ -90,14 +90,14 @@ function removeExitFullScreenButton() {
 /* BACK TO SEARCH */
 /* ################################################################################ */
 async function backClearToSearchProcedureAsync() {
-    navigateTo(UrlSearch);
+    navigateTo(UrlHub);
 }
 
 function createChartsProcedure() {
     setMenuCollapsed();
 
     navigationStatus = NAVIGATION_CREATE_CHART;
-    executeAfter(loadChartsProcedure, 500);
+    executeAfter(loadChartsProcedureAsync, 500);
 }
 
 function createChartsProcedureCaller() {
@@ -130,16 +130,16 @@ function disposeChart() {
     isChartLoaded = false;
 }
 
-async function loadChartsProcedure() {
+async function loadChartsProcedureAsync() {
     manageNavigation();
 
     await loadSpectraTypeColors();
 
     /* load data and show charts */
-    loadCharts();
+    loadChartsAsync();
 }
 
-async function loadCharts() {
+async function loadChartsAsync() {
     setLoadingCircleIsVisible(true);
 
     var model = {
@@ -528,6 +528,7 @@ function initChartPanel() {
 $(function () {
     /* set y-overflow for page */
     setOverflowYAuto();
+
     /* set starting position for panels */
     initChartPanel();
 

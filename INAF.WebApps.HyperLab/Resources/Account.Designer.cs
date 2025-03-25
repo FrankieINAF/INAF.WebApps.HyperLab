@@ -104,5 +104,14 @@ namespace INAF.WebApps.HyperLab.Resources {
                 return ResourceManager.GetString("ConfirmationSuccessfullyCompleted", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login SLab.
+        /// </summary>
+        public static string LoginSLabLabel {
+            get {
+                return ResourceManager.GetString("LoginSLabLabel", resourceCulture);
+            }
+        }
     }
 }

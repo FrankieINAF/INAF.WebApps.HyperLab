@@ -128,7 +128,8 @@
       "wwwroot/js/hyperlab/search/info.js",
       "wwwroot/js/hyperlab/search/load/loadcommoncheckxml.js",
       "wwwroot/js/hyperlab/search/load/loadcommon.js",
-      "wwwroot/js/hyperlab/search/load/loadexternal.js",
+      "wwwroot/js/hyperlab/search/load/loadexternalauthenticated.js",
+      "wwwroot/js/hyperlab/search/load/loadexternalunauthenticated.js",
       "wwwroot/js/hyperlab/search/load/loadslab.js"
     ],
     "minify": { "enabled": true },

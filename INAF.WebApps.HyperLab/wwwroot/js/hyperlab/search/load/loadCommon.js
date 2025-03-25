@@ -270,7 +270,10 @@ async function saveFileAsync(filename) {
     let spectrum = parsedSpectra[index];
     switch (spectrum.Source) {
         case SPECTRUM_SOURCE_EXTERNAL:
-            await saveExternalFileAsync(spectrum.Filename, spectrum.Xml);
+            if (isAuthenticated)
+                await saveExternalFileAuthenticatedAsync(spectrum.Filename, spectrum.Xml);
+            else
+                saveExternalFileUnauthenticated(spectrum.Filename, spectrum.Xml);
             break;
 
         case SPECTRUM_SOURCE_SLAB:

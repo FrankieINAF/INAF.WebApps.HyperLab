@@ -24,8 +24,8 @@
             <p class="text-leader2 text-just padding-16 fg-white">@Html.Raw(Home.WelcomeExplanation)</p>
         </div>
         <div id="tilesContainer" class="tiles-grid d-flex flex-justify-center">
-            <!-- SLAB -->
-            <div data-role="tile" data-size="large" data-effect="hover-slide-up" class="flex-self-center" onclick="navigateTo('@Url.Action(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)))')">
+            <!-- HUB -->
+            <div data-role="tile" data-size="large" data-effect="hover-slide-up" class="flex-self-center" onclick="navigateTo('@Url.Action(nameof(SpectraManagerController.Hub), GenericHelper.GetControllerName(nameof(SpectraManagerController)))')">
                 <div class="slide-front"><img src="~/images/home/slabdatamanager.png" /></div>
                 <div class="slide-back">
                     <p class="tile-description-text text-just">@Html.Raw(Home.TileSLabDataManagerDescription)</p>

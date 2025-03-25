@@ -147,7 +147,7 @@
     <None Include="wwwroot\js\hyperlab\search\complexsearchesintro.js" />
     <None Include="wwwroot\js\hyperlab\search\complexsearchesmanagement.js" />
     <None Include="wwwroot\js\hyperlab\search\info.js" />
-    <None Include="wwwroot\js\hyperlab\search\load\loadexternal.js" />
+    <None Include="wwwroot\js\hyperlab\search\load\loadexternalauthenticated.js" />
     <None Include="wwwroot\js\hyperlab\search\search.js" />
     <None Include="wwwroot\js\hyperlab\search\searchComplex.js" />
     <None Include="wwwroot\js\hyperlab\search\searchSimple.js" />
