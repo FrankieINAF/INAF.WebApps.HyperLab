@@ -1,7 +1,6 @@
-﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Searches;
-using INAF.Libraries.Net.CommonWebAppModels.Models.Searches.Interfaces;
-using INAF.Libraries.Net.DB.HyperLabData;
+﻿using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
 using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Helpers

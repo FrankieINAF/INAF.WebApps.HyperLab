@@ -1,6 +1,7 @@
 ﻿using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
+using static INAF.Libraries.Net.CommonWebAppModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Helpers.Factories
 {
@@ -19,7 +20,7 @@ namespace INAF.WebApps.HyperLab.Helpers.Factories
             {
                 new ContactModel()
                 {
-                    ContactType = Enums.ContactType.Email
+                    ContactType = ContactType.Email
                 }
             };
             return new UserModel()

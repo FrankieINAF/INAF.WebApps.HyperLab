@@ -1,10 +1,10 @@
-﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Info;
-using INAF.Libraries.Net.CommonWebAppModels.Models.Searches;
-using INAF.Libraries.Net.CommonWebAppModels.Models.Searches.Interfaces;
+﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Permissions;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Info;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches.Interfaces;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Shares;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Permissions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;

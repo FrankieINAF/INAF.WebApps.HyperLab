@@ -1,12 +1,11 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
-using INAF.Libraries.Net.CommonWebAppModels.Models.Searches.Interfaces;
-using INAF.Libraries.Net.CommonWebAppModels.Models.Searches;
-using INAF.Libraries.Net.CommonWebAppModels.Models.SpectraFiles;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.SearchesManagement;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
+using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.WebApps.HyperLab.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {

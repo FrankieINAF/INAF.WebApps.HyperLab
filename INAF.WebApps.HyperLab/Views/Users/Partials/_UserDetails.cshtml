@@ -5,6 +5,7 @@
 @using INAF.Libraries.Net.HyperLab.CommonModels.Values
 @using INAF.Libraries.Net.HyperLab.CommonModels.Extensions
 @using INAF.Libraries.Net.Extensions
+@using static INAF.Libraries.Net.CommonWebAppModels.Values.Enums
 
 <div class="row">
     <div class="cell-fs-12 margin-left-8">
@@ -39,7 +40,7 @@
                         try
                         {
                             int addedPhonesNum = 0;
-                            var phones = Model.Contacts.Where(x => x.ContactType == Enums.ContactType.Phone).ToList();
+                            var phones = Model.Contacts.Where(x => x.ContactType == ContactType.Phone).ToList();
                             if (phones?.Count > 0)
                             {
                                 for (int i = 0; i < phones.Count; i++)
@@ -79,7 +80,7 @@
                         try
                         {
                             int addedEmailsNum = 0;
-                            var emails = Model.Contacts.Where(x => x.ContactType == Enums.ContactType.Email).ToList();
+                            var emails = Model.Contacts.Where(x => x.ContactType == ContactType.Email).ToList();
                             if (emails?.Count > 0)
                             {
                                 for (int i = 0; i < emails.Count; i++)

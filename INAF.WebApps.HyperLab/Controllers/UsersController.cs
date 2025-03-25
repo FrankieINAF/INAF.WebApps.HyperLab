@@ -1,18 +1,16 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Menu;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Permissions;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
 using INAF.Libraries.Net.DB.HyperLabUsers;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Permissions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Users;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Extensions;
 using INAF.WebApps.HyperLab.Helpers.Factories;
 using INAF.WebApps.HyperLab.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace INAF.WebApps.HyperLab.Controllers
@@ -156,7 +154,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             if (ModelState.IsValid)
             {
-                var email = model.Contacts.FirstOrDefault(x => x.ContactType == Libraries.Net.HyperLab.CommonModels.Values.Enums.ContactType.Email);
+                var email = model.Contacts.FirstOrDefault(x => x.ContactType == INAF.Libraries.Net.CommonWebAppModels.Values.Enums.ContactType.Email);
 
                 /* user-name overwritten by 1st part of email */
                 string[] temp = email.Value.Split('@');

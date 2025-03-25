@@ -1,9 +1,8 @@
-﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Searches;
-using INAF.Libraries.Net.DB.HyperLabData;
+﻿using INAF.Libraries.Net.DB.HyperLabData;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.WebApps.HyperLab.Extensions;
-using Newtonsoft.Json.Linq;
 using System.Dynamic;
 using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
