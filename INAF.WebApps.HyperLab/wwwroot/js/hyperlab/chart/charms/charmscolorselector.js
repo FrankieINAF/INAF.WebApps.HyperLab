@@ -18,7 +18,7 @@ async function createSpectraTypesColorList() {
     $('#spectraTypesColorsListContainer').empty();
 
     /* load spectra types-colors relationship values */
-    await loadSpectraTypeColors();
+    await loadSpectraTypeColorsAsync();
 
     /* create new list */
     let spectraTypeColorsNum = spectraTypeColors.length;

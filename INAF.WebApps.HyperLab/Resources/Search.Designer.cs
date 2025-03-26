@@ -304,6 +304,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hub.
+        /// </summary>
+        public static string HubPageTitle {
+            get {
+                return ResourceManager.GetString("HubPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List of loaded files.
         /// </summary>
         public static string LoadedFilesLabel {
@@ -363,6 +372,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string LoadFileNotAvailableForDataAnalysisMessage {
             get {
                 return ResourceManager.GetString("LoadFileNotAvailableForDataAnalysisMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to save file and use it on chart.
+        /// </summary>
+        public static string LoadFileNotSavedLocallyMessage {
+            get {
+                return ResourceManager.GetString("LoadFileNotSavedLocallyMessage", resourceCulture);
             }
         }
         
@@ -440,6 +458,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to Sorry, an error occurred while trying to save loaded spectrum.
+        /// </summary>
+        public static string LoadFileSaveLocallyErrorMessage {
+            get {
+                return ResourceManager.GetString("LoadFileSaveLocallyErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, an error occurred while trying to save on cloud loaded spectrum.
         /// </summary>
         public static string LoadFileSaveOnCloudErrorMessage {
             get {
@@ -1119,15 +1146,6 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SearchOrLabel {
             get {
                 return ResourceManager.GetString("SearchOrLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Search.
-        /// </summary>
-        public static string SearchPageTitle {
-            get {
-                return ResourceManager.GetString("SearchPageTitle", resourceCulture);
             }
         }
         

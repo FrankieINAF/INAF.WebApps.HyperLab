@@ -10,7 +10,7 @@
 @using INAF.WebApps.HyperLab.Resources
 
 @{
-	ViewBag.Title = Search.SearchPageTitle;
+	ViewBag.Title = Search.HubPageTitle;
 
 	string searchTypeRadio = "searchTypeRadio";
 	string selectFilename = "selectFilename";
@@ -493,9 +493,9 @@
 <!-- common js variables -->
 @{
 	await Html.RenderPartialAsync("Partials/_JsCommon");
-	await Html.RenderPartialAsync("Partials/_SearchAndShareJsCommon");
-	await Html.RenderPartialAsync("Partials/_SearchAndChartJsCommon");
-	await Html.RenderPartialAsync("Partials/_SearchJsCommon");
+	await Html.RenderPartialAsync("Partials/_HubAndShareJsCommon");
+	await Html.RenderPartialAsync("Partials/_HubAndChartJsCommon");
+	await Html.RenderPartialAsync("Partials/_HubJsCommon");
 }
 <script type="text/javascript">
 	var isSLabDataManagerAllowed = @IsSLabDataManagerAllowed.ToJsString();
@@ -612,9 +612,11 @@
 	<script type="text/javascript" src="~/js/hyperlab/search/complexsearchesmanagement.js" asp-append-version="true"></script>
 	<script type="text/javascript" src="~/js/hyperlab/search/complexsearchesintro.js" asp-append-version="true"></script>
 	<script type="text/javascript" src="~/js/hyperlab/search/info.js" asp-append-version="true"></script>
-	<script type="text/javascript" src="~/js/hyperlab/search/load/loadcommoncheckxml.js" asp-append-version="true"></script>
-	<script type="text/javascript" src="~/js/hyperlab/search/load/loadcommon.js" asp-append-version="true"></script>
 	<script type="text/javascript" src="~/js/hyperlab/search/load/loadexternalauthenticated.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/search/load/loadexternalunauthenticated.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/search/load/loadcommoncheckxml.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/search/load/loadgetfileslistitemancillary.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/search/load/loadcommon.js" asp-append-version="true"></script>
 	<script type="text/javascript" src="~/js/hyperlab/search/load/loadslab.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">

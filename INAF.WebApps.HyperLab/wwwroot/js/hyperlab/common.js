@@ -180,6 +180,33 @@ function navigateTo(url) {
 }
 
 /* -------------------------------------------------------------------------------- */
+/* ---------- SESSION STORAGE ---------- */
+/* -------------------------------------------------------------------------------- */
+function getItemsFromSessionStorage(requestedKey) {
+    let items = [];
+    for (let i = 0; i < sessionStorage.length; i++) {
+        let key = sessionStorage.key(i);
+        if (key.startsWith(requestedKey)) {
+            let value = sessionStorage.getItem(key);
+            items.push(JSON.parse(value));
+        }
+    }
+
+    return items;
+}
+
+function removeItemsFromSessionStorage(requestedKey) {
+    for (let i = 0; i < sessionStorage.length; i++) {
+        let key = sessionStorage.key(i);
+        if (key.startsWith(requestedKey)) {
+            sessionStorage.removeItem(key);
+            i--; // Decrementa l'indice per compensare la rimozione dell'elemento
+        }
+    }
+
+}
+
+/* -------------------------------------------------------------------------------- */
 /* ---------- DIALOGS/NOTIFICATIONS ---------- */
 /* -------------------------------------------------------------------------------- */
 var ALERT = 'alert';

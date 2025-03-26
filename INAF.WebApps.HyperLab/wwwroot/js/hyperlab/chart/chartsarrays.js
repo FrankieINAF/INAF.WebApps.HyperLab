@@ -94,12 +94,15 @@ function manageConstantLinesVisualization(selectedTabId) {
 /* ################################################################################ */
 /* SPECTRA COLORS */
 /* ################################################################################ */
-async function loadSpectraTypeColors() {
+async function loadSpectraTypeColorsAsync() {
     let model = {
         Key: COLOR_WILDCARD
     };
 
-    let obj = await doAjaxGetAsync(UrlGetUserSettingsByWildcard, model);
+    let url = UrlGetUserSettingsByWildcard;
+    if (!isUserAuthenticated)
+        url = UrlGetDefaultColors;
+    let obj = await doAjaxGetAsync(url, model);
     if (obj && obj.Responses && obj.IsOk) {
         spectraTypeColors = [];
 

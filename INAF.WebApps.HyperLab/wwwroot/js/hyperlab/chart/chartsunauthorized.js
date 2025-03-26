@@ -1,28 +1,4 @@
-﻿function getItemsFromSessionStorage() {
-    let items = [];
-    for (let i = 0; i < sessionStorage.length; i++) {
-        let key = sessionStorage.key(i);
-        if (key.startsWith(STORAGE_ITEM)) {
-            let value = sessionStorage.getItem(key);
-            items.push(JSON.parse(value));
-        }
-    }
-
-    return items;
-}
-
-function removeItemsFromSessionStorage() {
-    for (let i = 0; i < sessionStorage.length; i++) {
-        let key = sessionStorage.key(i);
-        if (key.startsWith(STORAGE_ITEM)) {
-            sessionStorage.removeItem(key);
-            i--; // Decrementa l'indice per compensare la rimozione dell'elemento
-        }
-    }
-
-}
-
-/* ################################################################################ */
+﻿/* ################################################################################ */
 /* CREATE SPECTRA */
 /* ################################################################################ */
 function getItemIdFromFilename(filename) {
@@ -55,8 +31,8 @@ function getValuesFromXml(id, xml) {
     for (let element of elements) {
         let wavelength = element.getAttribute("Wavelength");
         let value = element.getAttribute("Value");
-        let item = { X: wavelength };
-        item[id] = value;
+        let item = { X: parseFloat(wavelength) };
+        item[id] = parseFloat(value);
         results.push(item);
     }
 

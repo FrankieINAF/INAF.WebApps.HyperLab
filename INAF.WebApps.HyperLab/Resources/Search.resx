@@ -402,8 +402,8 @@
   <data name="SearchOrLabel" xml:space="preserve">
     <value>or</value>
   </data>
-  <data name="SearchPageTitle" xml:space="preserve">
-    <value>Search</value>
+  <data name="HubPageTitle" xml:space="preserve">
+    <value>Hub</value>
   </data>
   <data name="SearchLoadPanelTitle" xml:space="preserve">
     <value>Search for data in SLab database or load spectra from device</value>
@@ -550,6 +550,9 @@
     <value>Add file loader</value>
   </data>
   <data name="LoadFileSaveOnCloudErrorMessage" xml:space="preserve">
+    <value>Sorry, an error occurred while trying to save on cloud loaded spectrum</value>
+  </data>
+  <data name="LoadFileSaveLocallyErrorMessage" xml:space="preserve">
     <value>Sorry, an error occurred while trying to save loaded spectrum</value>
   </data>
   <data name="LoadFileSavedOnCloudLabel" xml:space="preserve">
@@ -575,6 +578,9 @@
   </data>
   <data name="LoadFileNotSavedOnCloudMessage" xml:space="preserve">
     <value>Click to save file on cloud and use it on chart</value>
+  </data>
+  <data name="LoadFileNotSavedLocallyMessage" xml:space="preserve">
+    <value>Click to save file and use it on chart</value>
   </data>
   <data name="ButtonLoadSLabTitle" xml:space="preserve">
     <value>Load SLab spectra</value>

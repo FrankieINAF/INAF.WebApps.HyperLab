@@ -14,7 +14,8 @@ function saveExternalFileUnauthenticated(filename, xml) {
 
     let isOk = true;
     try {
-        sessionStorage.setItem(`${STORAGE_ITEM}_filename`, JSON.stringify(spectrumFile));
+        sessionStorage.setItem(`${STORAGE_ITEM}_${filename}`, JSON.stringify(spectrumFile));
+        addCreateChartsButton();
     } catch (e) {
         isOk = false;
     }
