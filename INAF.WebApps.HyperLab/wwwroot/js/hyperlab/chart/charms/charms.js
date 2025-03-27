@@ -257,7 +257,12 @@ function loadSpectraToBeProcessed() {
                 setIsPointClickForFitEnabled(false);
 
             /* if only one spectrum is available, then select it */
-            setTimeout(function () { setSelectedSpectrumForProcessing(spectraForProcessingIds[0]) }, 1000);
+            setTimeout(function () {
+                /* set selected file on UI */
+                Metro.getPlugin('#charmsSpectrumSelector', 'select').val(spectraForProcessingIds[0]);
+                /* start actions for selected spectrum */
+                setSelectedSpectrumForProcessing(spectraForProcessingIds[0]);
+            }, 1000);
         }
     }
 }
@@ -366,7 +371,6 @@ function setSelectedSpectrumForProcessing(selected) {
             Metro.getPlugin('#charmsSpectrumSelector', 'select').val(oldSelectedSpectrumForProcessingId);
         };
         showDialogWithActions(WARNING_LABEL, CharmsDeleteProcessedSpectraQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);
-        //askAndExecute(CharmsSpectraProcessingManagementLabel, CharmsDeleteProcessedSpectraQuestion, callback);
     } else {
         setTimeout(async function () {
             /* update visibility for all spectra */
