@@ -87,6 +87,9 @@ function onCharmsClosed() {
     /* resize chart */
     updateChartSize();
 
+    /* restore logout button original position */
+    $('#logoutButton').removeClass('margin-right-500');
+
     if (!isCharmsResetRequested)
         return;
 
@@ -113,6 +116,9 @@ async function onCharmsOpened() {
 
         /* fill selector for available RAW files */
         loadSpectraToBeProcessed();
+
+        /* move logout button to make it visible */
+        $('#logoutButton').addClass('margin-right-500');
 
         isCharmsResetRequested = false;
     }
@@ -247,7 +253,7 @@ function loadSpectraToBeProcessed() {
             /* manage case when only external file (labeled as 'Aligned') are loaded and no Raw spectrum is available */
             if (spectraExternalType.length > 0)
                 setIsPointClickForFitEnabled(true);
-            else 
+            else
                 setIsPointClickForFitEnabled(false);
 
             /* if only one spectrum is available, then select it */
@@ -334,7 +340,7 @@ function onSelectSpectrum(selected) {
 }
 
 function setSelectedSpectrumForProcessing(selected) {
-    let selectedValue = parseInt(selected);
+    let selectedValue = Number.isFinite(selected) ? parseInt(selected) : selected;
     if (selectedValue == selectedSpectrumForProcessingId)
         return; // if we're opening charms and the selected spectrum is the already selected one, then do nothing
 
@@ -349,7 +355,7 @@ function setSelectedSpectrumForProcessing(selected) {
         isSLabSpectrumCurrentlySelected = false;
 
     /* find ids of spectra to be removed when changing selected spectrum */
-    let idsToBeRemoved = findChildrenOfIdsOtherThan(selectedSpectrumForProcessingId, selectedSpectrum.SpectrumSource);
+    let idsToBeRemoved = findChildrenOf(selectedSpectrumForProcessingId, selectedSpectrum.SpectrumType, selectedSpectrum.SpectrumSource);
     if (isAnyItem(idsToBeRemoved)) {
         let callbackYes = async function () {
             await callbackYesForSpectrumSelectionManagementAsync(selectedSpectrum, idsToBeRemoved);
@@ -364,6 +370,9 @@ function setSelectedSpectrumForProcessing(selected) {
     } else {
         /* update visibility for all spectra */
         manageSpectraVisibility(selectedSpectrumForProcessingId);
+
+        if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL)
+            setIsPointClickForFitEnabled(true);
 
         /* load info for creating UI of alignment panel  */
         initCharmsPhase2Async();
@@ -505,6 +514,9 @@ function setCloudTextAndIconStatus(spectrumType, isSpectrumFromCloud) {
 /* CHECK IS SAVED ON CLOUD */
 /* ################################################################################ */
 async function checkIsSpectrumOfTypeSavedOnCloudAsync(name, spectrumType, spectrumSource) {
+    if (!isUserAuthenticated)
+        return false;
+
     if (spectrumSource == null)
         spectrumSource = SPECTRUM_SOURCE_SLAB;
 

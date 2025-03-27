@@ -18,6 +18,10 @@ var DELAY_5S = 'delay-5s';
 var isFirstLoading = true;
 var metroActivity;
 
+function isNumber(str) {
+    return !isNaN(str);
+}
+
 function showPageItems(callback) {
     showByClass('leftMenu');
     animateCSS('leftMenu', 'fadeIn', FASTER);

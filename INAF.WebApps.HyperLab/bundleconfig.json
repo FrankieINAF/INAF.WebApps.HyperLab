@@ -198,7 +198,8 @@
   {
     "outputFileName": "wwwroot/css/dist/account/commonlayoutnonavigationbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/commonlayoutnonavigation.css"
+      "wwwroot/css/hyperlab/commonlayoutnonavigation.css",
+      "wwwroot/css/hyperlab/common.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }

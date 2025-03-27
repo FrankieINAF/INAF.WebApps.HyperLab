@@ -126,6 +126,12 @@
   <data name="CookiePolicyTitle" xml:space="preserve">
     <value>Cookie Policy and User Registration Information</value>
   </data>
+  <data name="ErrorPageText" xml:space="preserve">
+    <value>We encountered an issue while trying to load the requested page. If the problem persists, please reach out to the &lt;i&gt;HyperLab Team&lt;/i&gt; for assistance. We appreciate your patience!</value>
+  </data>
+  <data name="ErrorPageTitle" xml:space="preserve">
+    <value>Ooooops.......something went wrong!</value>
+  </data>
   <data name="TileGModeAppDescription" xml:space="preserve">
     <value>GModeApp is a multi-platform console application based on an advanced algorithm for unsupervised clusterization and developed to explore a wide variety of datasets</value>
   </data>

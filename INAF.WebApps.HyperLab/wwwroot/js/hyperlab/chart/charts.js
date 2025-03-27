@@ -453,7 +453,7 @@ function createSeriesFromPoints(points) {
             if (ids.indexOf(keys[j]) == -1) {
                 ids.push(keys[j]);
                 let keyId = getIdValue(keys[j]);
-                if (isNaN(keyId)) // for local spectra used by unauthorized users
+                if (isNaN(keyId)) // for local spectra used by unauthenticated users
                     keyId = keys[j];
                 var index = getSpectrumIndexById(keyId);
                 let name = getSpectrumSeriesNameFromIndex(index);
@@ -597,6 +597,8 @@ function initChartPanel() {
 /* DOCUMENT READY */
 /* ################################################################################ */
 $(function () {
+    tryHideLogoutButton();
+
     /* set y-overflow for page */
     setOverflowYAuto();
 

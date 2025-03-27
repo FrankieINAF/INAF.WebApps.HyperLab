@@ -1,4 +1,6 @@
-﻿@using INAF.WebApps.HyperLab.Resources
+﻿@model PartialViewModel
+
+@using INAF.WebApps.HyperLab.Resources
 
 <!-- CONTAINER FOR FIT SETTINGS -->
 <div id="fitPanel" class="d-none">
@@ -6,29 +8,29 @@
     <div id="fitNumOfPointsValueContainer">
         <label for="inputNumOfPointsForFit">@Html.Raw(Charms.FitNumOfPointsForMissingPointsLabel)</label>
         <input id="inputNumOfPointsForFit"
-               type="text"
-               data-role="spinner"
-               data-buttons-position="right"
-               data-cls-spinner="spinner margin-top-4"
-               data-step="1"
-               data-min-value="3"
-               data-max-value="100"
-               data-plus-icon="<span class='mif-chevron-thin-up'></span>"
-               data-minus-icon="<span class='mif-chevron-thin-down'></span>"
-               data-cls-spinner-button-plus="bg-cyan"
-               data-cls-spinner-button-minus="bg-cyan"
-               data-on-plus-click="onFitNumOfPointsForMissingPointsChange"
-               data-on-minus-click="onFitNumOfPointsForMissingPointsChange"
-               data-cls-spinner-button="fg-white">
+        type="text"
+        data-role="spinner"
+        data-buttons-position="right"
+        data-cls-spinner="spinner margin-top-4"
+        data-step="1"
+        data-min-value="3"
+        data-max-value="100"
+        data-plus-icon="<span class='mif-chevron-thin-up'></span>"
+        data-minus-icon="<span class='mif-chevron-thin-down'></span>"
+        data-cls-spinner-button-plus="bg-cyan"
+        data-cls-spinner-button-minus="bg-cyan"
+        data-on-plus-click="onFitNumOfPointsForMissingPointsChange"
+        data-on-minus-click="onFitNumOfPointsForMissingPointsChange"
+        data-cls-spinner-button="fg-white">
     </div>
 
     <!-- SEGMENTS (CORE) -->
     <div id="fitSegmentsListContainerCore" class="flex-column margin-top-24 d-none">
         <ul data-role="tabs"
-            data-app-bar="false"
-            data-expand="true"
-            data-expand-point="fs"
-            data-cls-tabs="tabs-list flex-justify-center">
+        data-app-bar="false"
+        data-expand="true"
+        data-expand-point="fs"
+        data-cls-tabs="tabs-list flex-justify-center">
             <li class="active"><a href="#fitSegmentsListCoreContainer">@Html.Raw(Charms.FitManageSegmentsListLabel)</a></li>
             <li><a href="#fitPointsListCoreContainer">@Html.Raw(Charms.FitManagePointsListLabel)</a></li>
         </ul>
@@ -60,8 +62,11 @@
     <div class="row cell-fs-12">
         <!-- BUTTON CREATE CONTINUUM -->
         <button id="fitButtonExecute" class="button primary cycle pointer disabled large" title="@Html.Raw(Charms.FitButtonDisabledMessage)" onclick="startRemoveContinuumProcedureAsync()"><span class="mif-checkmark"></span></button>
-        <!-- BUTTON SAVE -->
-        <button id="fitButtonSave" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.FitButtonSaveLabel)" onclick="saveContinuumRemovedSpectrumProcedureAsync()"><span class="mif-floppy-disk"></span></button>
+        @if (Model.IsUserAuthenticated)
+        {
+            <!-- BUTTON SAVE -->
+            <button id="fitButtonSave" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.FitButtonSaveLabel)" onclick="saveContinuumRemovedSpectrumProcedureAsync()"><span class="mif-floppy-disk"></span></button>
+        }
         <!-- BUTTON REMOVE -->
         <button id="fitButtonRemove" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.FitButtonRemoveLabel)" onclick="removeContinuumRemovedSpectrumProcedure()"><span class="mif-bin"></span></button>
         <!-- BUTTON DOWNLOAD -->

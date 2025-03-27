@@ -30,6 +30,11 @@ var red = '#a8071e';
 
 var usersToShare = [];
 
+function tryHideLogoutButton() {
+    if (!isUserAuthenticated)
+        hideByClass('logoutButton');
+}
+
 function initPageDims() {
     pageW = $('#renderbody').width();
     pageH = $('#renderbody').height();
@@ -501,7 +506,7 @@ function setOverflowYHidden() {
 /* OTHER */
 /* ################################################################################ */
 function buildId(id) {
-    if (Number.isInteger(id))
+    if (isNumber(id))
         return `id${id}`;
     else
         return id;

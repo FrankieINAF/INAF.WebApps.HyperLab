@@ -121,20 +121,5 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return sharedSpectra.OrderBy(x => x.Filename);
         }
         #endregion
-
-        private (bool isUserAuthenticated, List<PermissionModel>? permissions) getUserStatus()
-        {
-            bool isUserAuthenticated = false;
-            var cookieValue = HttpContext.Request.Cookies[Values.Constants.HYPERLAB_WEB_APP_COOKIES];
-            if (!string.IsNullOrEmpty(cookieValue))
-            {
-                if (HttpContext.User.Identity != null)
-                    isUserAuthenticated = HttpContext.User.Identity.IsAuthenticated;
-            }
-
-            List<PermissionModel>? permissions = dbHandlerHyperLabUsers.getUserPermissions(getUserId(), Enums.CallerContext.Web);
-
-            return (isUserAuthenticated, permissions);
-        }
     }
 }

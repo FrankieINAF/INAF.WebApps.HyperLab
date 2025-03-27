@@ -1,27 +1,27 @@
 ﻿@model ErrorViewModel
+
+@using INAF.WebApps.HyperLab.Resources
+
 @{
-    ViewData["Title"] = "Error";
+	ViewData["Title"] = "Error";
 
-    Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
+	Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
-
-@if (Model != null && Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
-
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+<div id="search" class="container h-100 overflow-x-auto overflow-y-hidden d-flex flex-column bg-crimson">
+	<div class="h-25 d-flex flex-column flex-justify-center">
+		<div>
+			<p class="error-title text-strong text-center fg-white">@Html.Raw(Home.ErrorPageTitle)</p>
+		</div>
+	</div>
+	<div class="h-75 w-100 d-flex flex-column-fs flex-row-md">
+		<!-- IMAGE -->
+		<div class="h-50-fs h-100-md  w-100-fs w-50-md d-flex flex-self-center">
+			<div style="margin:auto"><img src="~/images/em_spectrum_400x400.png" /></div>
+		</div>
+		<!-- TEXT -->
+		<div class="h-50-fs h-100-md w-100-fs w-50-md d-flex flex-row">
+			<div class="flex-self-center"><p class="error-text text-just fg-white margin-horizontal-16">@Html.Raw(Home.ErrorPageText)</p></div>
+		</div>
+	</div>
+</div>

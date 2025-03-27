@@ -41,7 +41,7 @@
     vertical-align: middle;
 }
 
-h1,
+/*h1,
 h2,
 h3,
 h4,
@@ -82,7 +82,7 @@ h4 {
 h5 {
     line-height: 1.1em;
     font-size: 1.3em;
-}
+}*/
 
 #details {
     display: flex;
@@ -109,4 +109,26 @@ h5 {
 #stopcode {
     padding-left: 10px;
     flex: 1 1 auto;
+}
+
+.error-title {
+    font-size: 48px;
+}
+
+.error-text {
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+@media (max-width: 576px) {
+    .error-title {
+        font-size: 32px;
+    }
+
+    .error-text {
+        font-size: 1.2rem;
+        font-weight: 200;
+        line-height: 1.2;
+    }
 }

@@ -11,19 +11,19 @@
     </div>
     <div class="pos-relative">
         <div id="smoothingSettingsDropdown"
-             class="fg-white"
-             data-role="dropdown"
-             data-no-close="true"
-             data-toggle-element="#smoothingSettings">
+        class="fg-white"
+        data-role="dropdown"
+        data-no-close="true"
+        data-toggle-element="#smoothingSettings">
             <!-- SET VARIABLE TO AUTOMATICALLY SAVE SEGMENTS SETTINGS ON CLOUD AFTER EACH VALUE CHANGES -->
             <div class="row cell-fs-12 margin-vertical-4">
                 <input id="charmsSwitchAutoSaveSmoothingSegments"
-                       type="checkbox"
-                       data-role="switch"
-                       data-caption="@Html.Raw(Charms.SmoothingAutoSaveSegmentsLabel)"
-                       data-cls-switch="charmsSwitch"
-                       data-cls-caption="fg-white"
-                       data-cls-check="bd-cyan charmsSwitch">
+                type="checkbox"
+                data-role="switch"
+                data-caption="@Html.Raw(Charms.SmoothingAutoSaveSegmentsLabel)"
+                data-cls-switch="charmsSwitch"
+                data-cls-caption="fg-white"
+                data-cls-check="bd-cyan charmsSwitch">
             </div>
 
             <div id="charmsSwitchAutoSaveSmoothingSegmentsBubble" speech-bubble pleft atop style="--bbColor:#f05142; z-index: 10; position: absolute; top: 35px; left: 50px; display: none">
@@ -61,11 +61,11 @@
     <!-- TABS FOR SMOOTHING TYPE SELECTION -->
     <div class="row cell-fs-12">
         <ul id="smoothingTypeTabs"
-            data-role="tabs"
-            data-app-bar="false"
-            data-expand="true"
-            data-expand-point="fs"
-            data-cls-tabs="tabs-list flex-justify-center">
+        data-role="tabs"
+        data-app-bar="false"
+        data-expand="true"
+        data-expand-point="fs"
+        data-cls-tabs="tabs-list flex-justify-center">
             <li><a id="bysegmentstitle" href="#bysegmentsoptions">@Html.Raw(Charms.SmoothingBySegmentsTabTitle)</a></li>
             <li><a id="wholespectrum" href="#wholespectrumoptions">@Html.Raw(Charms.SmoothingWholeSpectrumTabTitle)</a></li>
         </ul>
@@ -84,14 +84,17 @@
             <div class="row cell-fs-12">
                 <!-- BUTTON ALIGN -->
                 <button id="smoothingBySegmentsButtonExecute" class="button primary cycle pointer disabled large" title="@Html.Raw(Charms.SmoothingButtonExecuteLabel)" onclick="applySmoothingAsync(BY_SEGMENTS)"><span class="mif-checkmark"></span></button>
-                <!-- BUTTON SAVE -->
-                <button id="smoothingBySegmentsButtonSave" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.SmoothingButtonSaveLabel)" onclick="saveSmoothedSpectrumProcedureAsync(BY_SEGMENTS)"><span class="mif-floppy-disk"></span></button>
+                @if (Model.IsUserAuthenticated)
+                {
+                    <!-- BUTTON SAVE -->
+                    <button id="smoothingBySegmentsButtonSave" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.SmoothingButtonSaveLabel)" onclick="saveSmoothedSpectrumProcedureAsync(BY_SEGMENTS)"><span class="mif-floppy-disk"></span></button>
+                }
                 <!-- BUTTON REMOVE -->
                 <button id="smoothingBySegmentsButtonRemove" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.SmoothingButtonRemoveLabel)" onclick="removeSmoothedSpectrumProcedure(BY_SEGMENTS)"><span class="mif-bin"></span></button>
                 <!-- BUTTON DOWNLOAD -->
                 <div id="smoothingButtonDownload" class="multi-action d-none margin-left-16">
                     <button class="action-button rotate-minus primary fg-white"
-                            onclick="$(this).toggleClass('active')">
+                    onclick="$(this).toggleClass('active')">
                         <span class="icon"><span class="mif-file-download"></span></span>
                     </button>
                     <ul class="actions drop-bottom">
@@ -115,8 +118,11 @@
             <div class="row cell-fs-12">
                 <!-- BUTTON ALIGN -->
                 <button id="smoothingByWholeSpectrumButtonExecute" class="button primary cycle pointer disabled" title="@Html.Raw(Charms.SmoothingButtonExecuteLabel)" onclick="applySmoothingAsync(BY_WHOLE_SPECTRUM)"><span class="mif-checkmark"></span></button>
-                <!-- BUTTON SAVE -->
-                <button id="smoothingByWholeSpectrumButtonSave" class="button primary cycle pointer disabled margin-left-16" title="@Html.Raw(Charms.SmoothingButtonSaveLabel)" onclick="saveSmoothedSpectrumProcedureAsync(BY_WHOLE_SPECTRUM)"><span class="mif-floppy-disk"></span></button>
+                @if (Model.IsUserAuthenticated)
+                {
+                    <!-- BUTTON SAVE -->
+                    <button id="smoothingByWholeSpectrumButtonSave" class="button primary cycle pointer disabled margin-left-16" title="@Html.Raw(Charms.SmoothingButtonSaveLabel)" onclick="saveSmoothedSpectrumProcedureAsync(BY_WHOLE_SPECTRUM)"><span class="mif-floppy-disk"></span></button>
+                }
                 <!-- BUTTON REMOVE -->
                 <button id="smoothingByWholeSpectrumButtonRemove" class="button primary cycle pointer disabled margin-left-16" title="@Html.Raw(Charms.SmoothingButtonRemoveLabel)" onclick="removeSmoothedSpectrumProcedure(BY_WHOLE_SPECTRUM)"><span class="mif-bin"></span></button>
             </div>

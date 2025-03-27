@@ -8,19 +8,19 @@
     </div>
     <div class="pos-relative">
         <div id="alignmentSettingsDropdown"
-             class="fg-white"
-             data-role="dropdown"
-             data-no-close="true"
-             data-toggle-element="#alignmentSettings">
+        class="fg-white"
+        data-role="dropdown"
+        data-no-close="true"
+        data-toggle-element="#alignmentSettings">
             <!-- AUTOMATICALLY ALIGN LOCALLY SPECTRUM WHEN RAW IS SELECTED -->
             <div class="row cell-fs-12 margin-vertical-4">
                 <input id="charmsSwitchAutoAlignSpectrum"
-                       type="checkbox"
-                       data-role="switch"
-                       data-caption="@Html.Raw(Charms.AlignmentAutoAlignSelectedSpectrumLabel)"
-                       data-cls-switch="charmsSwitch"
-                       data-cls-caption="fg-white"
-                       data-cls-check="bd-cyan charmsSwitch">
+                type="checkbox"
+                data-role="switch"
+                data-caption="@Html.Raw(Charms.AlignmentAutoAlignSelectedSpectrumLabel)"
+                data-cls-switch="charmsSwitch"
+                data-cls-caption="fg-white"
+                data-cls-check="bd-cyan charmsSwitch">
             </div>
 
             <div id="charmsSwitchAutoAlignSpectrumBubble" speech-bubble pleft atop style="--bbColor:#f05142; z-index: 10; position: absolute; top: 35px; left: 50px; display: none">
@@ -30,12 +30,12 @@
             <!-- AUTOMATICALLY DOWNLOAD ALIGNED SPECTRUM WHEN RAW IS SELECTED -->
             <div class="row cell-fs-12 margin-vertical-4">
                 <input id="charmsSwitchAutoDownloadAlignedSpectrum"
-                       type="checkbox"
-                       data-role="switch"
-                       data-caption="@Html.Raw(Charms.AlignmentAutoDownloadAlignedSelectedSpectrumLabel)"
-                       data-cls-switch="charmsSwitch"
-                       data-cls-caption="fg-white"
-                       data-cls-check="bd-cyan charmsSwitch">
+                type="checkbox"
+                data-role="switch"
+                data-caption="@Html.Raw(Charms.AlignmentAutoDownloadAlignedSelectedSpectrumLabel)"
+                data-cls-switch="charmsSwitch"
+                data-cls-caption="fg-white"
+                data-cls-check="bd-cyan charmsSwitch">
             </div>
 
             <div id="charmsSwitchAutoDownloadAlignedSpectrumBubble" speech-bubble pleft atop style="--bbColor:#f05142; z-index: 10; position: absolute; top: 80px; left: 50px; display: none">
@@ -45,11 +45,11 @@
             <!-- CHECKBOX SHOW/HIDE LINES -->
             <div class="row cell-fs-12 margin-vertical-8">
                 <input id="alignmentCheckboxShowLines"
-                       type="checkbox"
-                       data-role="checkbox"
-                       data-cls-check="fg-cyan bd-cyan"
-                       data-style="2"
-                       data-caption="@Html.Raw(Charms.AlignmentCheckboxShowLinesLabel)">
+                type="checkbox"
+                data-role="checkbox"
+                data-cls-check="fg-cyan bd-cyan"
+                data-style="2"
+                data-caption="@Html.Raw(Charms.AlignmentCheckboxShowLinesLabel)">
 
                 <button class="button light cycle small outline margin-bottom-4 float-right" onclick="loadSegmentsAsync()" title="@Html.Raw(Charms.AlignmentRefreshSegmentsLabel)"><span class="mif-refresh"></span></button>
             </div>
@@ -57,12 +57,12 @@
             <!-- LOAD WHITE SPECTRA -->
             <div class="row cell-fs-12 margin-vertical-4">
                 <input id="charmsSwitchLoadWhiteSpectraForAlignment"
-                       type="checkbox"
-                       data-role="switch"
-                       data-caption="@Html.Raw(Charms.AlignmentLoadWhiteSpectraForAlignmentLabel)"
-                       data-cls-switch="charmsSwitch"
-                       data-cls-caption="fg-white"
-                       data-cls-check="bd-cyan charmsSwitch">
+                type="checkbox"
+                data-role="switch"
+                data-caption="@Html.Raw(Charms.AlignmentLoadWhiteSpectraForAlignmentLabel)"
+                data-cls-switch="charmsSwitch"
+                data-cls-caption="fg-white"
+                data-cls-check="bd-cyan charmsSwitch">
             </div>
         </div>
     </div>
@@ -80,10 +80,10 @@
     </div>
     <div class="pos-relative">
         <div id="alignmentSlidersDropdown"
-             class="fg-white"
-             data-role="dropdown"
-             data-no-close="true"
-             data-toggle-element="#alignmentSliders">
+        class="fg-white"
+        data-role="dropdown"
+        data-no-close="true"
+        data-toggle-element="#alignmentSliders">
             <div id="slider0Container" class="row cell-fs-12 d-none"></div>
             <div id="slider1Container" class="row cell-fs-12 d-none"></div>
             <div id="slider2Container" class="row cell-fs-12 d-none"></div>
@@ -104,28 +104,31 @@
     <div id="alignedNumOfPointsForAlignment" class="row cell-fs-12 d-none">
         <label for="inputNumOfPointsForAlignment">@Html.Raw(Charms.AlignmentNumOfPointsLabel)</label>
         <input id="inputNumOfPointsForAlignment"
-               type="text"
-               data-role="spinner"
-               data-buttons-position="right"
-               data-cls-spinner="spinner margin-top-4"
-               data-step="1"
-               data-min-value="3"
-               data-max-value="100"
-               data-plus-icon="<span class='mif-chevron-thin-up'></span>"
-               data-minus-icon="<span class='mif-chevron-thin-down'></span>"
-               data-cls-spinner-button-plus="bg-cyan"
-               data-cls-spinner-button-minus="bg-cyan"
-               data-on-plus-click="onChangeNumOfPoints"
-               data-on-minus-click="onChangeNumOfPoints"
-               data-cls-spinner-button="fg-white">
+        type="text"
+        data-role="spinner"
+        data-buttons-position="right"
+        data-cls-spinner="spinner margin-top-4"
+        data-step="1"
+        data-min-value="3"
+        data-max-value="100"
+        data-plus-icon="<span class='mif-chevron-thin-up'></span>"
+        data-minus-icon="<span class='mif-chevron-thin-down'></span>"
+        data-cls-spinner-button-plus="bg-cyan"
+        data-cls-spinner-button-minus="bg-cyan"
+        data-on-plus-click="onChangeNumOfPoints"
+        data-on-minus-click="onChangeNumOfPoints"
+        data-cls-spinner-button="fg-white">
     </div>
 
     <!-- BUTTONS -->
     <div class="row cell-fs-12">
         <!-- BUTTON ALIGN -->
         <button id="alignmentButtonExecute" class="button primary cycle pointer disabled large" title="@Html.Raw(Charms.AlignmentButtonDisabledMessage)" onclick="alignSpectrumAsync()"><span class="mif-checkmark"></span></button>
-        <!-- BUTTON SAVE -->
-        <button id="alignmentButtonSave" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.AlignmentButtonSaveLabel)" onclick="saveAlignedSpectrumProcedureAsync()"><span class="mif-floppy-disk"></span></button>
+        @if (Model.IsUserAuthenticated)
+        {
+            <!-- BUTTON SAVE -->
+            <button id="alignmentButtonSave" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.AlignmentButtonSaveLabel)" onclick="saveAlignedSpectrumProcedureAsync()"><span class="mif-floppy-disk"></span></button>
+        }
         <!-- BUTTON REMOVE -->
         <button id="alignmentButtonRemove" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.AlignmentButtonRemoveLabel)" onclick="removeAlignedSpectrumProcedure()"><span class="mif-bin"></span></button>
         <!-- BUTTON DOWNLOAD -->

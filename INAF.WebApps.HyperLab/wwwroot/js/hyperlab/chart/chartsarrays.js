@@ -213,6 +213,28 @@ function updateSpectrumInfoId(index, newId) {
 }
 
 /* ---- GET ----------------------------------------------------------------------- */
+function findChildrenOf(id, spectrumType, spectrumSource) {
+    let spectraToBeRemoved = spectraInfo.filter(x => x.Id != id);
+
+    switch (spectrumSource) {
+        case SPECTRUM_SOURCE_EXTERNAL:
+            spectraToBeRemoved = spectraToBeRemoved.filter(x => x.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL);
+            break;
+
+        default:
+            spectraToBeRemoved = spectraToBeRemoved.filter(x => x.SpectrumSource == SPECTRUM_SOURCE_SLAB);
+            break;
+    }
+
+    spectraToBeRemoved = spectraToBeRemoved.filter(x =>
+        x.SpectrumType > spectrumType &&
+        x.SpectrumType != SPECTRUM_TYPE_REF &&
+        x.SpectrumType != SPECTRUM_TYPE_REF_WHITE)
+        .map(x => x.Id);
+
+    return spectraToBeRemoved;
+}
+
 function findChildrenOfIdsOtherThan(id, spectrumSource) {
     let spectraToBeRemoved = spectraInfo.filter(x => x.Id != id);
 

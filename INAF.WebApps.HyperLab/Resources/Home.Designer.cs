@@ -88,6 +88,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We encountered an issue while trying to load the requested page. If the problem persists, please reach out to the &lt;i&gt;HyperLab Team&lt;/i&gt; for assistance. We appreciate your patience!.
+        /// </summary>
+        public static string ErrorPageText {
+            get {
+                return ResourceManager.GetString("ErrorPageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ooooops.......something went wrong!.
+        /// </summary>
+        public static string ErrorPageTitle {
+            get {
+                return ResourceManager.GetString("ErrorPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GModeApp is a multi-platform console application based on an advanced algorithm for unsupervised clusterization and developed to explore a wide variety of datasets.
         /// </summary>
         public static string TileGModeAppDescription {
