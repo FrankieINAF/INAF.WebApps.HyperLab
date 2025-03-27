@@ -368,14 +368,19 @@ function setSelectedSpectrumForProcessing(selected) {
         showDialogWithActions(WARNING_LABEL, CharmsDeleteProcessedSpectraQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);
         //askAndExecute(CharmsSpectraProcessingManagementLabel, CharmsDeleteProcessedSpectraQuestion, callback);
     } else {
-        /* update visibility for all spectra */
-        manageSpectraVisibility(selectedSpectrumForProcessingId);
+        setTimeout(async function () {
+            /* update visibility for all spectra */
+            manageSpectraVisibility(selectedSpectrumForProcessingId);
 
-        if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL)
-            setIsPointClickForFitEnabled(true);
+            /* reset charms UI and load segments for alignment */
+            await initCharmsPhase1Async();
 
-        /* load info for creating UI of alignment panel  */
-        initCharmsPhase2Async();
+            if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL)
+                setIsPointClickForFitEnabled(true);
+
+            /* load info for creating UI of alignment panel  */
+            initCharmsPhase2Async();
+        }, 250);
     }
 }
 

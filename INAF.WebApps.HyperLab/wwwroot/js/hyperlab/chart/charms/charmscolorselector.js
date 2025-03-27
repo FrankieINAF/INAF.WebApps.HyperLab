@@ -79,7 +79,7 @@ function saveColorOnCloud(key, color) {
     let fixedKey = uppercaseKey.slice(0, 5) + "_" + uppercaseKey.slice(5);
 
     /* enque command for saving this setting */
-    callEnqueueSaveSetting(timeoutSpectrumTypeColor, fixedKey, color, JS_DELAY_200);
+    tryCallEnqueueSaveSetting(fixedKey, color, timeoutSpectrumTypeColor);
 }
 
 function setSpectrumTypeSelected(spectrumType) {

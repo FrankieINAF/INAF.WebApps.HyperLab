@@ -14,13 +14,26 @@ function getQueueItem(key, value) {
     return saveUserSettingPromise({ url: UrlSetUserSetting, model: { Key: key, Value: value } });
 }
 
-function callEnqueueSaveSetting(timeout, key, value, jsDelay) {
+function enqueueSaveSetting(saveSettingData) {
+    aQueue.enqueue(saveSettingData);
+}
+
+/* -------------------------------------------------------------------------------- */
+/* CALLERS */
+/* -------------------------------------------------------------------------------- */
+function callEnqueueSaveSetting(key, value, jsDelay, timeout) {
     if (timeout)
         clearTimeout(timeout);
 
     timeout = setTimeout(function () { enqueueSaveSetting(getQueueItem(key, value)); }, jsDelay);
 }
 
-function enqueueSaveSetting(saveSettingData) {
-    aQueue.enqueue(saveSettingData);
+function tryCallEnqueueSaveSetting(key, value, jsDelay = JS_DELAY_200, timeout = null) {
+    if (isUserAuthenticated)
+        callEnqueueSaveSetting(key, value, jsDelay, timeout);
+}
+
+function tryCallEnqueueSaveSetting(key, value, timeout = null) {
+    if (isUserAuthenticated)
+        callEnqueueSaveSetting(key, value, JS_DELAY_200, timeout);
 }

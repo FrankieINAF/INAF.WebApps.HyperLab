@@ -149,13 +149,22 @@ async function initSwitchCoreProModeAsync() {
     $('#fitCheckboxCoreProMode').on('click', function (event) {
         let isChecked = isCheckboxChecked('fitCheckboxCoreProMode');
 
+        /* set current fit mode, to manage which kind of point is added to chart */
+        currentFitMode = getFitMode(isChecked);
+
+        /* update label showing current fit mode */
+        setSwitchCoreProModeLabel(isChecked);
+
+        /* check whether any point for fitting already exists. If no point is available it's ok */
+        if (isPointsForFittingArrayEmpty())
+            return;
+
+        /* if any point exists, then ask for resetting points and segment */
         let callbackYes = function () {
-            enqueueSaveSetting(getQueueItem(FIT_SET_CORE_PRO_MODE, (isChecked ? FIT_PRO_MODE : FIT_CORE_MODE)));
+            tryCallEnqueueSaveSetting(FIT_SET_CORE_PRO_MODE, (isChecked ? FIT_PRO_MODE : FIT_CORE_MODE));
 
             /* trick to let switch button changing status on UI, without wating for in-memory operations completion  */
             setTimeout(function () {
-                currentFitMode = getFitMode(isChecked);
-
                 switch (currentFitMode) {
                     case FIT_CORE_MODE:
                         switchToCoreMode();
@@ -170,6 +179,7 @@ async function initSwitchCoreProModeAsync() {
 
         let callbackNo = function () {
             $('#fitCheckboxCoreProMode').prop('checked', !isChecked);
+            setSwitchCoreProModeLabel(!isChecked);
         };
 
         showDialogWithActions(WARNING_LABEL, FitSwitchModeResetQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);
@@ -193,7 +203,12 @@ async function loadFitCoreProModeAsync() {
         currentFitMode = obj.Value;
         /* save retrieved value and show it */
         let isChecked = (obj.Value == FIT_PRO_MODE);
+
+        /* set switch button to the right status */
         setSwitchCoreProMode(isChecked);
+
+        /* update label showing current fit mode */
+        setSwitchCoreProModeLabel(isChecked);
     } else
         setSwitchCoreProMode(false);
 }
@@ -202,6 +217,10 @@ function setSwitchCoreProMode(isChecked) {
     $('#fitCheckboxCoreProMode').prop('checked', isChecked);
 
     currentFitMode = getFitMode(isChecked);
+}
+
+function setSwitchCoreProModeLabel(isChecked) {
+    $('#currentFitMode').text(isChecked ? FitProModeLabel : FitCoreModeLabel);
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -232,7 +251,7 @@ async function initSwitchShowHideVerticalLinesForFitPointsAsync() {
     $('#fitChechboxShowLines').on('change', async function () {
         let isChecked = isCheckboxChecked('fitChechboxShowLines');
 
-        enqueueSaveSetting(getQueueItem(FIT_SHOW_HIDE_VERTICAL_LINES_FIT_POINTS, (isChecked ? '1' : '0')));
+        tryCallEnqueueSaveSetting(FIT_SHOW_HIDE_VERTICAL_LINES_FIT_POINTS, (isChecked ? '1' : '0'));
 
         isShowChartConstantLinesForFitPointsAllowed = isChecked;
 
@@ -271,7 +290,7 @@ async function initSwitchAutoRecalculateContinuumRemovedOnChangingFitPointsAsync
     $('#charmsAutoRecalculateContinuumRemovedOnChangingFitPoints').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsAutoRecalculateContinuumRemovedOnChangingFitPoints');
 
-        enqueueSaveSetting(getQueueItem(FIT_AUTO_RECALCULATE_ON_CHANGING_FIT_POINTS, (isChecked ? '1' : '0')));
+        tryCallEnqueueSaveSetting(FIT_AUTO_RECALCULATE_ON_CHANGING_FIT_POINTS, (isChecked ? '1' : '0'));
 
         isAutoRecalculateContinuumRemovedAllowed = isChecked;
     });
@@ -302,7 +321,7 @@ async function initShowHideBreaksOnValueAxisAsync() {
     $('#charmsShowHideBreaksOnValueAxis').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsShowHideBreaksOnValueAxis');
 
-        enqueueSaveSetting(getQueueItem(FIT_SHOW_HIDE_BREAKS_ON_VALUE_AXIS, (isChecked ? '1' : '0')));
+        tryCallEnqueueSaveSetting(FIT_SHOW_HIDE_BREAKS_ON_VALUE_AXIS, (isChecked ? '1' : '0'));
 
         isShowBreaksOnValueAxisForContinuumRemovedRequested = isChecked;
 
@@ -430,25 +449,11 @@ function tryRemoveContinuumSeriesAndPoints(items) {
 }
 
 function tryRemoveFitSeriesAndPoints(items) {
-    //let fitPoints = items.filter(function (item) { return Object.keys(item).includes(SERIES_FIT_POINT); });
-
-    //if (!fitPoints || (fitPoints && fitPoints.length == 0))
-    //    return;
-
-    ///* remove points */
-    //let fitPointsNum = fitPoints.length;
-    //for (var i = 0; i < fitPointsNum; i++) {
-    //    let x = fitPoints[i].X;
-    //    let index = items.findIndex(p => p.X == x);
-    //    if (index < 0)
-    //        continue;
-
-    //    if (items[index][SERIES_FIT_POINT])
-    //        delete items[index][SERIES_FIT_POINT];
-    //}
-
     /* remove series */
     removeChartSeriesByFieldIdProcedure(chartContainer, items, SERIES_FIT_POINT);
+
+    deleteChartSeriesItems(items, MIN_Y);
+    deleteChartSeriesItems(items, MAX_Y);
 }
 
 /* ################################################################################ */
@@ -506,7 +511,7 @@ function onFitNumOfPointsForMissingPointsChange(curr, request, real) {
     if (curr == parseFloat(real))
         return;
     //console.log(`onFitNumOfPointsForMissingPointsChange - curr: ${curr}, request: ${request}, real: ${real}`);
-    callEnqueueSaveSetting(timeoutNumOfPointsForMissingPoints, FIT_NUM_OF_POINTS_FOR_MISSING_POINTS, real, JS_DELAY_500);
+    tryCallEnqueueSaveSetting(FIT_NUM_OF_POINTS_FOR_MISSING_POINTS, real, timeoutNumOfPointsForMissingPoints);
 }
 
 function setNumOfPointsForMissingPoints(value) {

@@ -195,13 +195,6 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSpectraTypesParents()
-        {
-            var keyValuePairs = dbHandlerHyperLabData.getSpectraTypesParents();
-            return new JsonResult(keyValuePairs);
-        }
-
-        [HttpGet]
         public IActionResult GetSpectrumAsCsv(GenericRequestByIdModel model)
         {
             SpectrumModel? spectrumMinimalInfo = dbHandlerHyperLabData.getSpectrumMinimalInfo(model.Id,

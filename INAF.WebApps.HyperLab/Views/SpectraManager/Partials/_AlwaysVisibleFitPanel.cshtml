@@ -12,16 +12,19 @@
          data-no-close="true"
          data-toggle-element="#fitSettings">
         <!-- CORE/PRO MODE -->
-        <div class="row cell-fs-12 margin-vertical-4">
-            <input id="fitCheckboxCoreProMode"
-                   type="checkbox"
-                   data-role="switch"
-                   data-caption="@Html.Raw(Charms.FitSetCoreOrProModeLabel)"
-                   data-off="@Html.Raw(Charms.FitCoreModelLabel)"
-                   data-on="@Html.Raw(Charms.FitProModeLabel)"
-                   data-cls-switch="charmsSwitch"
-                   data-cls-caption="fg-white"
-                   data-cls-check="bd-cyan charmsSwitch">
+        <div class="row cell-fs-12 margin-vertical-4 d-flex flex-row">
+            <div>
+                <input id="fitCheckboxCoreProMode"
+                       type="checkbox"
+                       data-role="switch"
+                       data-caption="@Html.Raw(Charms.FitSetCoreOrProModeLabel)"
+                       data-off="@Html.Raw(Charms.FitCoreModeLabel)"
+                       data-on="@Html.Raw(Charms.FitProModeLabel)"
+                       data-cls-switch="charmsSwitch"
+                       data-cls-caption="fg-white"
+                       data-cls-check="bd-cyan charmsSwitch">
+            </div>
+            <div class="margin-left-16 margin-top-6"><p id="currentFitMode" class="text-bold"></p></div>
         </div>
         <!-- SHOW/HIDE VERTICAL LINES FOR FIT POINTS -->
         <div class="row cell-fs-12 margin-vertical-4">

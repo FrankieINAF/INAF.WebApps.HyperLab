@@ -17,10 +17,10 @@
     }
 
     bool IsSLabDataManagerAllowed = false;
-	if (Model.Permissions != null && Model.Permissions.Any())
-	{
-		IsSLabDataManagerAllowed = Model.Permissions.Any(p => p.Id == (int)INAF.WebApps.HyperLab.Values.Enums.Permissions.SLabManager);
-	}
+    if (Model.Permissions != null && Model.Permissions.Any())
+    {
+        IsSLabDataManagerAllowed = Model.Permissions.Any(p => p.Id == (int)INAF.WebApps.HyperLab.Values.Enums.Permissions.SLabManager);
+    }
 
     var UrlHub = $"/{GenericHelper.GetControllerName(nameof(SpectraManagerController))}/{nameof(SpectraManagerController.Hub)}";
 }
@@ -102,11 +102,11 @@
         <!-- TABS -->
         <div id="charmsTabsContainer" class="row cell-fs-12 d-none">
             <ul id="charmsTabs"
-                data-app-bar="false"
-                data-role="tabs"
-                data-expand="true"
-                data-expand-point="fs"
-                data-cls-tabs="tabs-list flex-justify-center">
+            data-app-bar="false"
+            data-role="tabs"
+            data-expand="true"
+            data-expand-point="fs"
+            data-cls-tabs="tabs-list flex-justify-center">
                 <li><a id="alignmentoptionstitle" href="#alignmentoptions">@Html.Raw(Charms.TabsAlignmentTitle)</a></li>
                 <li><a id="fitoptionstitle" href="#fitoptions">@Html.Raw(Charms.TabsFitTitle)</a></li>
                 <li><a id="smoothingoptionstitle" href="#smoothingoptions" onclick="selectTargetSpectrumType()">@Html.Raw(Charms.TabsSmoothingTitle)</a></li>
@@ -147,10 +147,10 @@
                         </div>
                         <div class="pos-relative">
                             <div id="availableBandsAnalysisDataDropdown"
-                                 class="fg-white"
-                                 data-role="dropdown"
-                                 data-no-close="true"
-                                 data-toggle-element="#availableBandsAnalysisData">
+                            class="fg-white"
+                            data-role="dropdown"
+                            data-no-close="true"
+                            data-toggle-element="#availableBandsAnalysisData">
                                 <!-- LIST OF AVAILABLE BANDS ANALYSIS DATA -->
                                 <div id="bandsAnalysisDataList"></div>
                             </div>
@@ -197,8 +197,11 @@
 
                         <!-- BUTTONS -->
                         <div class="d-flex flex-row margin-top-16">
-                            <!-- BUTTON SAVE -->
-                            <button id="bandAnalysisDataButtonSave" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(CharmsBandAnalysis.BandAnalysisSaveOnCloudLabel)" onclick="saveBandAnalysisDataProcedureAsync()"><span class="mif-cloud-upload"></span></button>
+                            @if (Model.IsUserAuthenticated)
+                            {
+                                <!-- BUTTON SAVE -->
+                                <button id="bandAnalysisDataButtonSave" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(CharmsBandAnalysis.BandAnalysisSaveOnCloudLabel)" onclick="saveBandAnalysisDataProcedureAsync()"><span class="mif-cloud-upload"></span></button>
+                            }
                             <!-- BUTTON DOWNLOAD -->
                             <div id="bandAnalysisButtonDownload" class="multi-action d-none margin-left-16">
                                 <button class="action-button rotate-minus primary fg-white"

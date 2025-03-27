@@ -58,7 +58,7 @@ async function initSwitchAutoSaveSmoothingSegmentsAsync() {
     $('#charmsSwitchAutoSaveSmoothingSegments').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsSwitchAutoSaveSmoothingSegments');
 
-        enqueueSaveSetting(getQueueItem(SMOOTHING_AUTO_SAVE_SEGMENTS_SETTINGS, (isChecked ? '1' : '0')));
+        tryCallEnqueueSaveSetting(SMOOTHING_AUTO_SAVE_SEGMENTS_SETTINGS, (isChecked ? '1' : '0'));
 
         if (isChecked)
             /* show message for saved settings */
@@ -612,7 +612,7 @@ async function trySaveSmoothingSettingsAsync(segmentType, isForced = false) {
                 break;
         }
 
-        callEnqueueSaveSetting(timeoutSmoothingSettings, key, xml, JS_DELAY_200);
+        tryCallEnqueueSaveSetting(timeoutSmoothingSettings, key, xml);
     }
 }
 
