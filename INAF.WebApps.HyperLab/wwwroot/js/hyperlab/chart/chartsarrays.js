@@ -299,6 +299,32 @@ function getChildrenIdsForSpectrum(id) {
     return children;
 }
 
+function getChildSpectrumByIdAndSpectrumType(spectrumId, spectrumType) {
+    let childSpectrum;
+    let continueLoop = true;
+
+    let id = spectrumId;
+    while (continueLoop) {
+        let spectra = getSpectraByParentId(id);
+        spectra.push(getSpectrumByIdAndSpectrumType(id, spectrumType));
+        if (spectra.length == 0)
+            continueLoop = false;
+        else {
+            let spectraNum = spectra.length;
+            for (var i = 0; i < spectraNum; i++) {
+                if (spectra[i].SpectrumType == spectrumType) {
+                    childSpectrum = spectra[i];
+                    continueLoop = false;
+                }
+                else
+                    id = spectra[i].Id;
+            }
+        }
+    }
+
+    return childSpectrum;
+}
+
 function getChildSpectrumByRawIdAndSpectrumType(rawId, spectrumType) {
     let childSpectrum;
     let continueLoop = true;

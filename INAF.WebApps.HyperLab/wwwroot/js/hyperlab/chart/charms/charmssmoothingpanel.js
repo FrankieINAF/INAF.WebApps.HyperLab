@@ -991,13 +991,28 @@ async function downloadSmoothedSpectrumAsXmlAsync() {
         return;
 
     /* retrieve parent file */
-    let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
+    let srcSpectrum = null;
+    switch (spectrum.SpectrumSource) {
+        case SPECTRUM_SOURCE_SLAB:
+            srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
+            break;
+
+        case SPECTRUM_SOURCE_EXTERNAL:
+            srcSpectrum = getChildSpectrumByIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
+            break;
+
+        default:
+    }
     if (srcSpectrum.Id == buildTempSmoothedSpectrumId(srcSpectrumType, currentSmoothingType))
         srcSpectrum.Id = 0;
 
-    let parentFiles = getSmoothedParentFiles(srcSpectrum.Id);
-    if (!Number.isInteger(parentFiles.ParentFile.Id))
-        parentFiles.ParentFile.Id = 0;
+    /* un-authenticated users do not save spectra on cloud so they cannot have parent files with valid Id */
+    let parentFiles = null;
+    if (isUserAuthenticated)
+        parentFiles = getSmoothedParentFiles(srcSpectrum.Id);
+    //let parentFiles = getSmoothedParentFiles(srcSpectrum.Id);
+    //if (!Number.isInteger(parentFiles.ParentFile.Id))
+    //    parentFiles.ParentFile.Id = 0;
 
     let smoothingOptions;
     switch (currentSmoothingType) {

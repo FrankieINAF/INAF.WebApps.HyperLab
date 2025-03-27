@@ -253,7 +253,7 @@
                                                      SpectrumType spectrumType,
                                                      List<PointModel> points,
                                                      AlignmentSettingsModel alignmentSettings,
-                                                     ParentFilesModel parentFiles)
+                                                     ParentFilesModel? parentFiles)
     {
         return new SpectrumOfTypeAlignedModel(filename, spectrumType, points, alignmentSettings, parentFiles).ToXmlString();
     }
@@ -263,7 +263,7 @@
                                                               SpectrumType spectrumType,
                                                               List<PointModel> points,
                                                               ContinuumRemovalSettingsModel continuumRemovalSettings,
-                                                              ParentFilesModel parentFiles)
+                                                              ParentFilesModel? parentFiles)
     {
         return new SpectrumOfTypeContinuumRemovedModel(filename, spectrumType, points, continuumRemovalSettings, parentFiles).ToXmlString();
     }
@@ -273,7 +273,7 @@
                                                       SpectrumType spectrumType,
                                                       List<PointModel> points,
                                                       SmoothingSettingsModel smoothingSettingsModel,
-                                                      ParentFilesModel parentFiles)
+                                                      ParentFilesModel? parentFiles)
     {
         return new SpectrumOfTypeSmoothedModel(filename, spectrumType, points, smoothingSettingsModel, parentFiles).ToXmlString();
     }
