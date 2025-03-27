@@ -555,4 +555,10 @@
   <data name="TabsSmoothingTitle" xml:space="preserve">
     <value>Smoothing options</value>
   </data>
+  <data name="DownloadAsCSVLabel" xml:space="preserve">
+    <value>CSV</value>
+  </data>
+  <data name="DownloadAsXMLLabel" xml:space="preserve">
+    <value>XML</value>
+  </data>
 </root>

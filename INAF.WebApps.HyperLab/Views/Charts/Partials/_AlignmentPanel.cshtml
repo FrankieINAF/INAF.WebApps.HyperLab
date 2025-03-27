@@ -1,178 +1,182 @@
 ﻿@using INAF.WebApps.HyperLab.Resources
 
 <div id="alignmentPanel" class="row cell-fs-12">
-    <!-- DROPDOWN SETTINGS -->
-    <div class="d-flex flex-row margin-vertical-4">
-        <button id="alignmentSettings" class="button cycle bg-transparent bg-cyan-hover pointer" onclick="toggleDropDown('alignmentSettingsDropdown')"><span class="mif-cogs mif-2x fg-white"></span></button>
-        <span class="text-secondary margin-left-8 margin-top-4">@Html.Raw(Charms.AlignmentSettingsLabel)</span>
-    </div>
-    <div class="pos-relative">
-        <div id="alignmentSettingsDropdown"
-        class="fg-white"
-        data-role="dropdown"
-        data-no-close="true"
-        data-toggle-element="#alignmentSettings">
-            <!-- AUTOMATICALLY ALIGN LOCALLY SPECTRUM WHEN RAW IS SELECTED -->
-            <div class="row cell-fs-12 margin-vertical-4">
-                <input id="charmsSwitchAutoAlignSpectrum"
-                type="checkbox"
-                data-role="switch"
-                data-caption="@Html.Raw(Charms.AlignmentAutoAlignSelectedSpectrumLabel)"
-                data-cls-switch="charmsSwitch"
-                data-cls-caption="fg-white"
-                data-cls-check="bd-cyan charmsSwitch">
-            </div>
+	<!-- DROPDOWN SETTINGS -->
+	<div class="d-flex flex-row margin-vertical-4">
+		<button id="alignmentSettings" class="button cycle bg-transparent bg-cyan-hover pointer" onclick="toggleDropDown('alignmentSettingsDropdown')"><span class="mif-cogs mif-2x fg-white"></span></button>
+		<span class="text-secondary margin-left-8 margin-top-4">@Html.Raw(Charms.AlignmentSettingsLabel)</span>
+	</div>
+	<div class="pos-relative">
+		<div id="alignmentSettingsDropdown"
+			 class="fg-white"
+			 data-role="dropdown"
+			 data-no-close="true"
+			 data-toggle-element="#alignmentSettings">
+			<!-- AUTOMATICALLY ALIGN LOCALLY SPECTRUM WHEN RAW IS SELECTED -->
+			<div class="row cell-fs-12 margin-vertical-4">
+				<input id="charmsSwitchAutoAlignSpectrum"
+					   type="checkbox"
+					   data-role="switch"
+					   data-caption="@Html.Raw(Charms.AlignmentAutoAlignSelectedSpectrumLabel)"
+					   data-cls-switch="charmsSwitch"
+					   data-cls-caption="fg-white"
+					   data-cls-check="bd-cyan charmsSwitch">
+			</div>
 
-            <div id="charmsSwitchAutoAlignSpectrumBubble" speech-bubble pleft atop style="--bbColor:#f05142; z-index: 10; position: absolute; top: 35px; left: 50px; display: none">
-                <span>@Html.Raw(Charms.AlignmentAutoAlignSelectedSpectrumMessage)</span>
-            </div>
+			<div id="charmsSwitchAutoAlignSpectrumBubble" speech-bubble pleft atop style="--bbColor:#f05142; z-index: 10; position: absolute; top: 35px; left: 50px; display: none">
+				<span>@Html.Raw(Charms.AlignmentAutoAlignSelectedSpectrumMessage)</span>
+			</div>
 
-            <!-- AUTOMATICALLY DOWNLOAD ALIGNED SPECTRUM WHEN RAW IS SELECTED -->
-            <div class="row cell-fs-12 margin-vertical-4">
-                <input id="charmsSwitchAutoDownloadAlignedSpectrum"
-                type="checkbox"
-                data-role="switch"
-                data-caption="@Html.Raw(Charms.AlignmentAutoDownloadAlignedSelectedSpectrumLabel)"
-                data-cls-switch="charmsSwitch"
-                data-cls-caption="fg-white"
-                data-cls-check="bd-cyan charmsSwitch">
-            </div>
+			<!-- AUTOMATICALLY DOWNLOAD ALIGNED SPECTRUM WHEN RAW IS SELECTED -->
+			<div class="row cell-fs-12 margin-vertical-4">
+				<input id="charmsSwitchAutoDownloadAlignedSpectrum"
+					   type="checkbox"
+					   data-role="switch"
+					   data-caption="@Html.Raw(Charms.AlignmentAutoDownloadAlignedSelectedSpectrumLabel)"
+					   data-cls-switch="charmsSwitch"
+					   data-cls-caption="fg-white"
+					   data-cls-check="bd-cyan charmsSwitch">
+			</div>
 
-            <div id="charmsSwitchAutoDownloadAlignedSpectrumBubble" speech-bubble pleft atop style="--bbColor:#f05142; z-index: 10; position: absolute; top: 80px; left: 50px; display: none">
-                <span>@Html.Raw(Charms.AlignmentAutoDownloadAlignedSelectedSpectrumMessage)</span>
-            </div>
+			<div id="charmsSwitchAutoDownloadAlignedSpectrumBubble" speech-bubble pleft atop style="--bbColor:#f05142; z-index: 10; position: absolute; top: 80px; left: 50px; display: none">
+				<span>@Html.Raw(Charms.AlignmentAutoDownloadAlignedSelectedSpectrumMessage)</span>
+			</div>
 
-            <!-- CHECKBOX SHOW/HIDE LINES -->
-            <div class="row cell-fs-12 margin-vertical-8">
-                <input id="alignmentCheckboxShowLines"
-                type="checkbox"
-                data-role="checkbox"
-                data-cls-check="fg-cyan bd-cyan"
-                data-style="2"
-                data-caption="@Html.Raw(Charms.AlignmentCheckboxShowLinesLabel)">
+			<!-- CHECKBOX SHOW/HIDE LINES -->
+			<div class="row cell-fs-12 margin-vertical-8">
+				<input id="alignmentCheckboxShowLines"
+					   type="checkbox"
+					   data-role="checkbox"
+					   data-cls-check="fg-cyan bd-cyan"
+					   data-style="2"
+					   data-caption="@Html.Raw(Charms.AlignmentCheckboxShowLinesLabel)">
 
-                <button class="button light cycle small outline margin-bottom-4 float-right" onclick="loadSegmentsAsync()" title="@Html.Raw(Charms.AlignmentRefreshSegmentsLabel)"><span class="mif-refresh"></span></button>
-            </div>
+				<button class="button light cycle small outline margin-bottom-4 float-right" onclick="loadSegmentsAsync()" title="@Html.Raw(Charms.AlignmentRefreshSegmentsLabel)"><span class="mif-refresh"></span></button>
+			</div>
 
-            <!-- LOAD WHITE SPECTRA -->
-            <div class="row cell-fs-12 margin-vertical-4">
-                <input id="charmsSwitchLoadWhiteSpectraForAlignment"
-                type="checkbox"
-                data-role="switch"
-                data-caption="@Html.Raw(Charms.AlignmentLoadWhiteSpectraForAlignmentLabel)"
-                data-cls-switch="charmsSwitch"
-                data-cls-caption="fg-white"
-                data-cls-check="bd-cyan charmsSwitch">
-            </div>
-        </div>
-    </div>
+			<!-- LOAD WHITE SPECTRA -->
+			<div class="row cell-fs-12 margin-vertical-4">
+				<input id="charmsSwitchLoadWhiteSpectraForAlignment"
+					   type="checkbox"
+					   data-role="switch"
+					   data-caption="@Html.Raw(Charms.AlignmentLoadWhiteSpectraForAlignmentLabel)"
+					   data-cls-switch="charmsSwitch"
+					   data-cls-caption="fg-white"
+					   data-cls-check="bd-cyan charmsSwitch">
+			</div>
+		</div>
+	</div>
 
-    <!-- ICONS SAVED ON CLOUD -->
-    <div id="alignedSavedOnCloud" class="margin-left-4 margin-vertical-8" style="display: none">
-        <div><span id="alignedCloudIcon" class="mif-cloud-download mif-2x fg-cyan pointer" title="@Html.Raw(Charms.CharmsCloudDownloadLabel)" onclick="downloadProcessedSpectrumAsync(SPECTRUM_TYPE_ALIGNED)"></span></div>
-        <div><span id="alignedCloudText" class="margin-left-8 text-small margin-top-4">@Html.Raw(Charms.CharmsAlreadySavedOnCloudMessage)</span></div>
-    </div>
+	<!-- ICONS SAVED ON CLOUD -->
+	<div id="alignedSavedOnCloud" class="margin-left-4 margin-vertical-8" style="display: none">
+		<div><span id="alignedCloudIcon" class="mif-cloud-download mif-2x fg-cyan pointer" title="@Html.Raw(Charms.CharmsCloudDownloadLabel)" onclick="downloadProcessedSpectrumAsync(SPECTRUM_TYPE_ALIGNED)"></span></div>
+		<div><span id="alignedCloudText" class="margin-left-8 text-small margin-top-4">@Html.Raw(Charms.CharmsAlreadySavedOnCloudMessage)</span></div>
+	</div>
 
-    <!-- SLIDERS -->
-    <div class="d-flex flex-row margin-vertical-4">
-        <button id="alignmentSliders" class="button cycle bg-transparent bg-cyan-hover pointer" onclick="toggleDropDown('alignmentSlidersDropdown')"><span class="mif-equalizer-v mif-2x fg-white"></span></button>
-        <span class="text-secondary margin-left-8 margin-top-4">@Html.Raw(Charms.AlignmentShowHideSlidersLabel)</span>
-    </div>
-    <div class="pos-relative">
-        <div id="alignmentSlidersDropdown"
-        class="fg-white"
-        data-role="dropdown"
-        data-no-close="true"
-        data-toggle-element="#alignmentSliders">
-            <div id="slider0Container" class="row cell-fs-12 d-none"></div>
-            <div id="slider1Container" class="row cell-fs-12 d-none"></div>
-            <div id="slider2Container" class="row cell-fs-12 d-none"></div>
-            <div id="slider3Container" class="row cell-fs-12 d-none"></div>
-        </div>
-    </div>
+	<!-- SLIDERS -->
+	<div class="d-flex flex-row margin-vertical-4">
+		<button id="alignmentSliders" class="button cycle bg-transparent bg-cyan-hover pointer" onclick="toggleDropDown('alignmentSlidersDropdown')"><span class="mif-equalizer-v mif-2x fg-white"></span></button>
+		<span class="text-secondary margin-left-8 margin-top-4">@Html.Raw(Charms.AlignmentShowHideSlidersLabel)</span>
+	</div>
+	<div class="pos-relative">
+		<div id="alignmentSlidersDropdown"
+			 class="fg-white"
+			 data-role="dropdown"
+			 data-no-close="true"
+			 data-toggle-element="#alignmentSliders">
+			<div id="slider0Container" class="row cell-fs-12 d-none"></div>
+			<div id="slider1Container" class="row cell-fs-12 d-none"></div>
+			<div id="slider2Container" class="row cell-fs-12 d-none"></div>
+			<div id="slider3Container" class="row cell-fs-12 d-none"></div>
+		</div>
+	</div>
 
-    <!-- CHART MINIATURE -->
-    <div id="chartMiniatureLabelContainer" class="row cell-fs-12 margin-top-4 d-none">
-        <p class="text-small">@Html.Raw(Charms.AlignmentChartMiniatureLabel)</p>
-    </div>
-    <div id="chartMiniature"></div>
-    <div id="chartMiniatureSelectedSegmentContainer" class="row cell-fs-12 margin-top-4 d-none">
-        <p id="chartMiniatureSelectedSegment" class="text-small"></p>
-    </div>
+	<!-- CHART MINIATURE -->
+	<div id="chartMiniatureLabelContainer" class="row cell-fs-12 margin-top-4 d-none">
+		<p class="text-small">@Html.Raw(Charms.AlignmentChartMiniatureLabel)</p>
+	</div>
+	<div id="chartMiniature"></div>
+	<div id="chartMiniatureSelectedSegmentContainer" class="row cell-fs-12 margin-top-4 d-none">
+		<p id="chartMiniatureSelectedSegment" class="text-small"></p>
+	</div>
 
-    <!-- NUM OF POINTS FOR ALIGNMENT-->
-    <div id="alignedNumOfPointsForAlignment" class="row cell-fs-12 d-none">
-        <label for="inputNumOfPointsForAlignment">@Html.Raw(Charms.AlignmentNumOfPointsLabel)</label>
-        <input id="inputNumOfPointsForAlignment"
-        type="text"
-        data-role="spinner"
-        data-buttons-position="right"
-        data-cls-spinner="spinner margin-top-4"
-        data-step="1"
-        data-min-value="3"
-        data-max-value="100"
-        data-plus-icon="<span class='mif-chevron-thin-up'></span>"
-        data-minus-icon="<span class='mif-chevron-thin-down'></span>"
-        data-cls-spinner-button-plus="bg-cyan"
-        data-cls-spinner-button-minus="bg-cyan"
-        data-on-plus-click="onChangeNumOfPoints"
-        data-on-minus-click="onChangeNumOfPoints"
-        data-cls-spinner-button="fg-white">
-    </div>
+	<!-- NUM OF POINTS FOR ALIGNMENT-->
+	<div id="alignedNumOfPointsForAlignment" class="row cell-fs-12 d-none">
+		<label for="inputNumOfPointsForAlignment">@Html.Raw(Charms.AlignmentNumOfPointsLabel)</label>
+		<input id="inputNumOfPointsForAlignment"
+			   type="text"
+			   data-role="spinner"
+			   data-buttons-position="right"
+			   data-cls-spinner="spinner margin-top-4"
+			   data-step="1"
+			   data-min-value="3"
+			   data-max-value="100"
+			   data-plus-icon="<span class='mif-chevron-thin-up'></span>"
+			   data-minus-icon="<span class='mif-chevron-thin-down'></span>"
+			   data-cls-spinner-button-plus="bg-cyan"
+			   data-cls-spinner-button-minus="bg-cyan"
+			   data-on-plus-click="onChangeNumOfPoints"
+			   data-on-minus-click="onChangeNumOfPoints"
+			   data-cls-spinner-button="fg-white">
+	</div>
 
-    <!-- BUTTONS -->
-    <div class="row cell-fs-12">
-        <!-- BUTTON ALIGN -->
-        <button id="alignmentButtonExecute" class="button primary cycle pointer disabled large" title="@Html.Raw(Charms.AlignmentButtonDisabledMessage)" onclick="alignSpectrumAsync()"><span class="mif-checkmark"></span></button>
-        @if (Model.IsUserAuthenticated)
-        {
-            <!-- BUTTON SAVE -->
-            <button id="alignmentButtonSave" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.AlignmentButtonSaveLabel)" onclick="saveAlignedSpectrumProcedureAsync()"><span class="mif-floppy-disk"></span></button>
-        }
-        <!-- BUTTON REMOVE -->
-        <button id="alignmentButtonRemove" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.AlignmentButtonRemoveLabel)" onclick="removeAlignedSpectrumProcedure()"><span class="mif-bin"></span></button>
-        <!-- BUTTON DOWNLOAD -->
-        <div id="alignmentButtonDownload" class="multi-action d-none margin-left-16">
-            <button class="action-button rotate-minus primary fg-white"
-                    onclick="$(this).toggleClass('active')">
-                <span class="icon"><span class="mif-file-download"></span></span>
-            </button>
-            <ul class="actions drop-bottom">
-                <li class="bg-cyan" title="@Html.Raw(Charms.AlignmentButtonDownloadAsCsvLabel)" onclick="downloadAlignedSpectrumAsCsvAsync()"><span class="mif-file-text margin-left-8"></span></li>
-                <li class="bg-cyan" title="@Html.Raw(Charms.AlignmentButtonDownloadAsXmlLabel)" onclick="downloadAlignedSpectrumAsXmlAsync()"><span class="mif-library margin-left-8"></span></li>
-            </ul>
-        </div>
-    </div>
+	<!-- BUTTONS -->
+	<div class="row cell-fs-12">
+		<!-- BUTTON ALIGN -->
+		<button id="alignmentButtonExecute" class="button primary cycle pointer disabled large" title="@Html.Raw(Charms.AlignmentButtonDisabledMessage)" onclick="alignSpectrumAsync()"><span class="mif-checkmark"></span></button>
+		@if (Model.IsUserAuthenticated)
+		{
+			<!-- BUTTON SAVE -->
+			<button id="alignmentButtonSave" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.AlignmentButtonSaveLabel)" onclick="saveAlignedSpectrumProcedureAsync()"><span class="mif-floppy-disk"></span></button>
+		}
+		<!-- BUTTON REMOVE -->
+		<button id="alignmentButtonRemove" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.AlignmentButtonRemoveLabel)" onclick="removeAlignedSpectrumProcedure()"><span class="mif-bin"></span></button>
+		<!-- BUTTON DOWNLOAD -->
+		<div id="alignmentButtonDownload" class="multi-action d-none margin-left-16">
+			<button class="action-button rotate-minus primary fg-white"
+					onclick="$(this).toggleClass('active')">
+				<span class="icon"><span class="mif-file-download"></span></span>
+			</button>
+			<ul class="actions drop-bottom">
+				<li class="bg-cyan" title="@Html.Raw(Charms.AlignmentButtonDownloadAsCsvLabel)" onclick="downloadAlignedSpectrumAsCsvAsync()">
+					<p class="text-small fg-white text-center text-bold">@Html.Raw(Charms.DownloadAsCSVLabel)</p>
+				</li>
+				<li class="bg-cyan" title="@Html.Raw(Charms.AlignmentButtonDownloadAsXmlLabel)" onclick="downloadAlignedSpectrumAsXmlAsync()">
+					<p class="text-small fg-white text-center text-bold">@Html.Raw(Charms.DownloadAsXMLLabel)</p>
+				</li>
+			</ul>
+		</div>
+	</div>
 </div>
 
 <div id="alignedDialogRemove" class="dialog" data-role="dialog">
-    <div class="dialog-title">@Html.Raw(Charms.AlignmentManagementTitle)</div>
-    <div class="dialog-content">
-        <div class="d-flex flex-row">
-            <span class="mif-bin mif-5x"></span>
-            <div class="d-flex flex-column margin-left-24">
-                <!-- MAIN MESSAGE -->
-                <div><span>@Html.Raw(Charms.AlignmentRemoveQuestion)</span></div>
-                <!-- MESSAGE REMOVALOF CHILDREN SPECTRA -->
-                <div id="alignedChildrenRemovalWarning" class="margin-top-16 d-none flex-row">
-                    <span class="mif-warning mif-2x fg-lightOrange margin-top-8"></span>
-                    <div class="margin-horizontal-8"><span class="text-medium text-secondary text-just">@Html.Raw(Charms.SpectrumChildrenRemovalWarningMessage)</span></div>
-                </div>
-                <!-- CHECKBOX CLOUD -->
-                <div class="d-flex flex-column margin-top-16">
-                    <input id="checkboxRemoveAlignedSpectrumOnCloud"
-                           type="checkbox"
-                           data-role="checkbox"
-                           data-caption="@Html.Raw(Charms.CharmsRemoveOnCloudQuestion)"
-                           data-style="2"
-                           data-cls-caption="fg-black"
-                           data-cls-check="bd-cyan charmsSwitch" />
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="dialog-actions">
-        <button class="button primary" onclick="removeSpectraProcedureAsync(SPECTRUM_TYPE_ALIGNED, 'alignedDialogRemove', 'checkboxRemoveAlignedSpectrumOnCloud')">@Html.Raw(SharedResources.YesLabel)</button>
-        <button class="button js-dialog-close">@Html.Raw(SharedResources.NoLabel)</button>
-    </div>
+	<div class="dialog-title">@Html.Raw(Charms.AlignmentManagementTitle)</div>
+	<div class="dialog-content">
+		<div class="d-flex flex-row">
+			<span class="mif-bin mif-5x"></span>
+			<div class="d-flex flex-column margin-left-24">
+				<!-- MAIN MESSAGE -->
+				<div><span>@Html.Raw(Charms.AlignmentRemoveQuestion)</span></div>
+				<!-- MESSAGE REMOVALOF CHILDREN SPECTRA -->
+				<div id="alignedChildrenRemovalWarning" class="margin-top-16 d-none flex-row">
+					<span class="mif-warning mif-2x fg-lightOrange margin-top-8"></span>
+					<div class="margin-horizontal-8"><span class="text-medium text-secondary text-just">@Html.Raw(Charms.SpectrumChildrenRemovalWarningMessage)</span></div>
+				</div>
+				<!-- CHECKBOX CLOUD -->
+				<div class="d-flex flex-column margin-top-16">
+					<input id="checkboxRemoveAlignedSpectrumOnCloud"
+						   type="checkbox"
+						   data-role="checkbox"
+						   data-caption="@Html.Raw(Charms.CharmsRemoveOnCloudQuestion)"
+						   data-style="2"
+						   data-cls-caption="fg-black"
+						   data-cls-check="bd-cyan charmsSwitch" />
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="dialog-actions">
+		<button class="button primary" onclick="removeSpectraProcedureAsync(SPECTRUM_TYPE_ALIGNED, 'alignedDialogRemove', 'checkboxRemoveAlignedSpectrumOnCloud')">@Html.Raw(SharedResources.YesLabel)</button>
+		<button class="button js-dialog-close">@Html.Raw(SharedResources.NoLabel)</button>
+	</div>
 </div>
