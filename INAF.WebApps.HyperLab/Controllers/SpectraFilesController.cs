@@ -170,31 +170,6 @@ namespace INAF.WebApps.HyperLab.Controllers
         #endregion
 
         [HttpGet]
-        public IActionResult GetChildrenSpectraTypes(int SpectrumTypeId)
-        {
-            var dbHandlerHyperLabData = serviceProvider.GetRequiredService<DbHandlerHyperLabData>();
-            List<SpectrumType> childrenSpectraTypes = dbHandlerHyperLabData.getChildrenSpectraTypes(SpectrumTypeId.ToSpectrumType());
-            if (childrenSpectraTypes.Any())
-            {
-                childrenSpectraTypes.Add(SpectrumTypeId.ToSpectrumType());
-                return new JsonResult(childrenSpectraTypes);
-            }
-            else
-                return new EmptyResult();
-        }
-
-        [HttpGet]
-        public IActionResult GetRefSpectrumByType(SpectrumRequestByTypeModel model)
-        {
-            ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getCommonRefSpectrumByType(model.SpectrumType);
-
-            if (spectrumModel != null)
-                return new JsonResult(spectrumModel);
-            else
-                return new EmptyResult();
-        }
-
-        [HttpGet]
         public IActionResult GetSpectrumAsCsv(GenericRequestByIdModel model)
         {
             SpectrumModel? spectrumMinimalInfo = dbHandlerHyperLabData.getSpectrumMinimalInfo(model.Id,
@@ -254,7 +229,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult GetSpectrumData(GenericRequestByIdModel model)
         {
             RawRefSpectrumDataModel? rawRefSpectrumData = dbHandlerHyperLabData.getSpectrumDataInfo(model.Id,
-                                                                                                getUserId());
+                                                                                                    getUserId());
             if (rawRefSpectrumData != null)
                 return new JsonResult(rawRefSpectrumData);
             else
@@ -335,13 +310,6 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new JsonResult(spectrumVersions);
             else
                 return new EmptyResult();
-        }
-
-        [HttpGet]
-        public IActionResult IsWhiteSpectrum(GenericRequestByTextModel model)
-        {
-            var isWhiteResponse = dbHandlerHyperLabData.isWhiteSpectrum(model.Text);
-            return new JsonResult(isWhiteResponse);
         }
         #endregion
 

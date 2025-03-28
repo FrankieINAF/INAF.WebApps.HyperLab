@@ -403,6 +403,8 @@ function createSeriesFromPoint(firstPoint) {
     let keysNum = keys.length;
     for (var i = 0; i < keysNum; i++) {
         let keyId = getIdValue(keys[i]);
+        if (isNaN(keyId)) // for local spectra used by unauthenticated users
+            keyId = keys[i];
         var index = getSpectrumIndexById(keyId);
         let name = getSpectrumSeriesNameFromIndex(index);
         let color = getSpectrumTypeColor(getSpectrumTypeString(spectraInfo[index].SpectrumType));
