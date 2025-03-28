@@ -1,8 +1,8 @@
 [
   {
-    "outputFileName": "wwwroot/js/dist/search/blazorglobalbundle.js",
+    "outputFileName": "wwwroot/js/dist/hub/blazorglobalbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/search/blazorglobal.js"
+      "wwwroot/js/hyperlab/hub/blazorglobal.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -50,6 +50,27 @@
       "wwwroot/lib/devextreme/js/localization/dx.messages.*.js",
       "wwwroot/lib/devextreme/js/localization/supplemental.js",
       "wwwroot/lib/devextreme/js/dx.aspnet.mvc.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/hub/hubbundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/commonhubandchart.js",
+      "wwwroot/js/hyperlab/commonhubandchartsandsharedstuff.js",
+      "wwwroot/js/hyperlab/hub/hub.js",
+      "wwwroot/js/hyperlab/hub/hubSearchSimple.js",
+      "wwwroot/js/hyperlab/hub/hubSearchComplex.js",
+      "wwwroot/js/hyperlab/hub/complexsearchesmanagement.js",
+      "wwwroot/js/hyperlab/hub/complexsearchesintro.js",
+      "wwwroot/js/hyperlab/hub/info.js",
+      "wwwroot/js/hyperlab/hub/load/loadcommoncheckxml.js",
+      "wwwroot/js/hyperlab/hub/load/loadgetfileslistitemancillary.js",
+      "wwwroot/js/hyperlab/hub/load/loadcommon.js",
+      "wwwroot/js/hyperlab/hub/load/loadexternalauthenticated.js",
+      "wwwroot/js/hyperlab/hub/load/loadexternalunauthenticated.js",
+      "wwwroot/js/hyperlab/hub/load/loadslab.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -117,31 +138,10 @@
     "includeInProject": true
   },
   {
-    "outputFileName": "wwwroot/js/dist/search/searchbundle.js",
-    "inputFiles": [
-      "wwwroot/js/hyperlab/commonsearchandchart.js",
-      "wwwroot/js/hyperlab/commonsearchandchartsandsharedstuff.js",
-      "wwwroot/js/hyperlab/search/search.js",
-      "wwwroot/js/hyperlab/search/searchSimple.js",
-      "wwwroot/js/hyperlab/search/searchComplex.js",
-      "wwwroot/js/hyperlab/search/complexsearchesmanagement.js",
-      "wwwroot/js/hyperlab/search/complexsearchesintro.js",
-      "wwwroot/js/hyperlab/search/info.js",
-      "wwwroot/js/hyperlab/search/load/loadcommoncheckxml.js",
-      "wwwroot/js/hyperlab/search/load/loadgetfileslistitemancillary.js",
-      "wwwroot/js/hyperlab/search/load/loadcommon.js",
-      "wwwroot/js/hyperlab/search/load/loadexternalauthenticated.js",
-      "wwwroot/js/hyperlab/search/load/loadexternalunauthenticated.js",
-      "wwwroot/js/hyperlab/search/load/loadslab.js"
-    ],
-    "minify": { "enabled": true },
-    "includeInProject": true
-  },
-  {
     "outputFileName": "wwwroot/js/dist/sharedstuff/sharedstuffbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/commonsearchandchartsandsharedstuff.js",
-      "wwwroot/js/hyperlab/commonsearchandsharedstuff.js",
+      "wwwroot/js/hyperlab/commonhubandchartsandsharedstuff.js",
+      "wwwroot/js/hyperlab/commonhubandsharedstuff.js",
       "wwwroot/js/hyperlab/sharedstuff/sharedstuff.js"
     ],
     "minify": { "enabled": true },
@@ -277,19 +277,19 @@
     "minify": { "enabled": true }
   },
   {
-    "outputFileName": "wwwroot/css/dist/searchandchart/searchandchartbundle.css",
+    "outputFileName": "wwwroot/css/dist/hubandchart/hubandchartbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/searchandchart/searches.css",
-      "wwwroot/css/hyperlab/searchandchart/searchandchart.css",
-      "wwwroot/css/hyperlab/searchandchart/charms.css"
+      "wwwroot/css/hyperlab/hubandchart/searches.css",
+      "wwwroot/css/hyperlab/hubandchart/hubandchart.css",
+      "wwwroot/css/hyperlab/hubandchart/charms.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
   },
   {
-    "outputFileName": "wwwroot/css/dist/searchandchart/sharebundle.css",
+    "outputFileName": "wwwroot/css/dist/hubandchart/sharebundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/searchandchart/share.css"
+      "wwwroot/css/hyperlab/hubandchart/share.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }

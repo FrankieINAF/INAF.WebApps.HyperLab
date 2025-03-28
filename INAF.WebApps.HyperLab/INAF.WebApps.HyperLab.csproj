@@ -24,6 +24,13 @@
 	</Target>
 
 	<ItemGroup>
+	  <Compile Remove="wwwroot\js\hyperlab\search\**" />
+	  <Content Remove="wwwroot\js\hyperlab\search\**" />
+	  <EmbeddedResource Remove="wwwroot\js\hyperlab\search\**" />
+	  <None Remove="wwwroot\js\hyperlab\search\**" />
+	</ItemGroup>
+
+	<ItemGroup>
     <Content Remove="appsettings.development.json" />
     <Content Remove="wwwroot\css\hyperlab\account\confirmationcompleted.css" />
     <Content Remove="wwwroot\css\hyperlab\account\confirmationerror.css" />
@@ -37,9 +44,9 @@
     <Content Remove="wwwroot\css\hyperlab\errorpage.css" />
     <Content Remove="wwwroot\css\hyperlab\home\cookiebanner.css" />
     <Content Remove="wwwroot\css\hyperlab\home\index.css" />
+    <Content Remove="wwwroot\css\hyperlab\hubandchart\hubandchart.css" />
     <Content Remove="wwwroot\css\hyperlab\materials\minerals.css" />
-    <Content Remove="wwwroot\css\hyperlab\searchandchart\charms.css" />
-    <Content Remove="wwwroot\css\hyperlab\searchandchart\searchandchart.css" />
+    <Content Remove="wwwroot\css\hyperlab\hubandchart\charms.css" />
     <Content Remove="wwwroot\css\site.css" />
     <Content Remove="wwwroot\css\speechbubble\speechbubble.css" />
     <Content Remove="wwwroot\js\hyperlab\account\login.js" />
@@ -60,22 +67,14 @@
     <Content Remove="wwwroot\js\hyperlab\common.js" />
     <Content Remove="wwwroot\js\hyperlab\commonbuttons.js" />
     <Content Remove="wwwroot\js\hyperlab\commondxchart.js" />
+    <Content Remove="wwwroot\js\hyperlab\commonhub.js" />
+    <Content Remove="wwwroot\js\hyperlab\commonhubandchart.js" />
+    <Content Remove="wwwroot\js\hyperlab\commonhubandchartsandsharedstuff.js" />
     <Content Remove="wwwroot\js\hyperlab\commonlists.js" />
-    <Content Remove="wwwroot\js\hyperlab\commonsearch.js" />
-    <Content Remove="wwwroot\js\hyperlab\commonsearchandchart.js" />
-    <Content Remove="wwwroot\js\hyperlab\commonsearchandchartsandsharedstuff.js" />
     <Content Remove="wwwroot\js\hyperlab\home\index.js" />
     <Content Remove="wwwroot\js\hyperlab\layout.js" />
     <Content Remove="wwwroot\js\hyperlab\materials\upsertminerals.js" />
     <Content Remove="wwwroot\js\hyperlab\queue.js" />
-    <Content Remove="wwwroot\js\hyperlab\search\blazorglobal.js" />
-    <Content Remove="wwwroot\js\hyperlab\search\complexsearchesintro.js" />
-    <Content Remove="wwwroot\js\hyperlab\search\complexsearchesmanagement.js" />
-    <Content Remove="wwwroot\js\hyperlab\search\info.js" />
-    <Content Remove="wwwroot\js\hyperlab\search\loadExternal.js" />
-    <Content Remove="wwwroot\js\hyperlab\search\search.js" />
-    <Content Remove="wwwroot\js\hyperlab\search\searchComplex.js" />
-    <Content Remove="wwwroot\js\hyperlab\search\searchSimple.js" />
     <Content Remove="wwwroot\js\hyperlab\sharedstuff\sharedstuff.js" />
     <Content Remove="wwwroot\js\hyperlab\users\commonsaveusersettings.js" />
     <Content Remove="wwwroot\js\hyperlab\users\upsertuser.js" />
@@ -113,8 +112,8 @@
     <None Include="wwwroot\css\hyperlab\home\cookiebanner.css" />
     <None Include="wwwroot\css\hyperlab\home\index.css" />
     <None Include="wwwroot\css\hyperlab\materials\minerals.css" />
-    <None Include="wwwroot\css\hyperlab\searchandchart\charms.css" />
-    <None Include="wwwroot\css\hyperlab\searchandchart\searchandchart.css" />
+    <None Include="wwwroot\css\hyperlab\hubandchart\charms.css" />
+    <None Include="wwwroot\css\hyperlab\hubandchart\hubandchart.css" />
     <None Include="wwwroot\css\site.css" />
     <None Include="wwwroot\css\speechbubble\speechbubble.css" />
     <None Include="wwwroot\js\hyperlab\account\login.js" />
@@ -136,21 +135,13 @@
     <None Include="wwwroot\js\hyperlab\commonbuttons.js" />
     <None Include="wwwroot\js\hyperlab\commondxchart.js" />
     <None Include="wwwroot\js\hyperlab\commonlists.js" />
-    <None Include="wwwroot\js\hyperlab\commonsearch.js" />
-    <None Include="wwwroot\js\hyperlab\commonsearchandchart.js" />
-    <None Include="wwwroot\js\hyperlab\commonsearchandchartsandsharedstuff.js" />
+    <None Include="wwwroot\js\hyperlab\commonhub.js" />
+    <None Include="wwwroot\js\hyperlab\commonhubandchart.js" />
+    <None Include="wwwroot\js\hyperlab\commonhubandchartsandsharedstuff.js" />
     <None Include="wwwroot\js\hyperlab\home\index.js" />
     <None Include="wwwroot\js\hyperlab\layout.js" />
     <None Include="wwwroot\js\hyperlab\materials\upsertminerals.js" />
     <None Include="wwwroot\js\hyperlab\queue\queue.js" />
-    <None Include="wwwroot\js\hyperlab\search\blazorglobal.js" />
-    <None Include="wwwroot\js\hyperlab\search\complexsearchesintro.js" />
-    <None Include="wwwroot\js\hyperlab\search\complexsearchesmanagement.js" />
-    <None Include="wwwroot\js\hyperlab\search\info.js" />
-    <None Include="wwwroot\js\hyperlab\search\load\loadexternalauthenticated.js" />
-    <None Include="wwwroot\js\hyperlab\search\search.js" />
-    <None Include="wwwroot\js\hyperlab\search\searchComplex.js" />
-    <None Include="wwwroot\js\hyperlab\search\searchSimple.js" />
     <None Include="wwwroot\js\hyperlab\sharedstuff\sharedstuff.js" />
     <None Include="wwwroot\js\hyperlab\queue\commonsaveusersettings.js" />
     <None Include="wwwroot\js\hyperlab\users\upsertuser.js" />
@@ -287,9 +278,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\js\dist\queue\queuebundle.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\js\dist\search\blazorglobalbundle.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\js\dist\sharedstuff\sharedstuffbundle.js">
