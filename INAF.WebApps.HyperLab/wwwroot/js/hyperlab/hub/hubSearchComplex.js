@@ -9,6 +9,9 @@ var areSavedComplexSearchesAvailable = false;
 var DEFAULT_WAIT_ms = 1000;
 
 function setListviewSearchConditionsUI() {
+    if (!isUserAuthenticated)
+        return;
+
     if (isMobile()) {
         $("#listviewSearchConditions").data("listview").view('icons');
     } else {

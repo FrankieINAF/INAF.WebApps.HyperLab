@@ -140,8 +140,10 @@
     
     var ContinuumRemovalExecutionErrorMessage = "@Html.Raw(Charms.ContinuumRemovalExecutionErrorMessage)";
 
+	var FitCoreModeLabel = "@Html.Raw(Charms.FitCoreModeLabel)";
     var FitPointAtLabel = "@Html.Raw(Charms.FitPointAtLabel)";
     var FitPointAtRemoveLabel = "@Html.Raw(Charms.FitPointAtRemoveLabel)";
+	var FitProModeLabel = "@Html.Raw(Charms.FitProModeLabel)";
 
     var LegendLabel = "@Html.Raw(Charts.LegendLabel)";
 
@@ -172,10 +174,13 @@
     var UrlIsBandOverlappingWithExistingOne = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.IsBandOverlappingWithExistingOne)';
     var UrlSaveBandAnalysisData = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.SaveBandAnalysisData)';
     
+    /* SpectraPublicActionsController */
+    var UrlGetSpectraTypesParents = '/@GenericHelper.GetControllerName(nameof(SpectraPublicActionsController))/@nameof(SpectraPublicActionsController.GetSpectraTypesParents)';
+
     /* UserSettingsController */
+    var UrlGetDefaultColors = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetDefaultColors)';
     var UrlGetFitFunctions = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetFitFunctions)';
     var UrlGetPXMinPXMaxMaxValueFunctions = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetPXMinPXMaxMaxValueFunctions)';
-    var UrlGetSpectraTypesParents = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetSpectraTypesParents)';
     var UrlGetUserSetting = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetUserSetting)';
     var UrlGetUserSettingsByWildcard = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetUserSettingsByWildcard)';
     var UrlSetUserSetting = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.SetUserSetting)';

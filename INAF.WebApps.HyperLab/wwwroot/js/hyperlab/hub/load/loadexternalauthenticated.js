@@ -16,7 +16,7 @@ async function loadExternalFilesAsync(evt, element) {
 /* ################################################################################ */
 /* SAVE FILE */
 /* ################################################################################ */
-async function saveExternalFileAsync(filename, xml) {
+async function saveExternalFileAuthenticatedAsync(filename, xml) {
     let spectrumFile = {
         Id: 0,
         Filename: filename,
@@ -25,7 +25,7 @@ async function saveExternalFileAsync(filename, xml) {
         Level: SPECTRUM_LEVEL_AVERAGED,
         Source: SPECTRUM_SOURCE_EXTERNAL,
         Xml: xml
-    }
+    };
 
     let saveSpectrumRequest = {
         spectrumFile: spectrumFile,

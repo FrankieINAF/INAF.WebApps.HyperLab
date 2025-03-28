@@ -1,3 +1,4 @@
+using BundlerMinifier;
 using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
@@ -8,6 +9,7 @@ using INAF.Libraries.Net.HyperLabCommonHelpers.ProcessingHelpers;
 using INAF.Libraries.Net.Math.Fit.Linear;
 using INAF.Libraries.Net.Math.Fit.Spline;
 using INAF.WebApps.HyperLab.Attributes;
+using INAF.WebApps.HyperLab.Controllers;
 using INAF.WebApps.HyperLab.Helpers;
 using INAF.WebApps.HyperLab.Helpers.Factories;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -38,6 +40,7 @@ builder.Services.AddControllersWithViews()
 
 builder.Services.AddHttpContextAccessor(); // to access HttpContext from everywhere
 
+string loginPath = $"/{GenericHelper.GetControllerName(nameof(AccountController)) }/{nameof(AccountController.Login)}";
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultScheme = "JWT_OR_COOKIE";
@@ -45,10 +48,10 @@ builder.Services.AddAuthentication(options =>
     })
     .AddCookie(options =>
     {
-        options.Cookie.Name = "HyperLabWebAppCookies";
-        options.LoginPath = new PathString("/Account/Login");
-        options.LogoutPath = new PathString("/Account/Login");
-        options.AccessDeniedPath = new PathString("/Account/Login");
+        options.Cookie.Name = INAF.WebApps.HyperLab.Values.Constants.HYPERLAB_WEB_APP_COOKIES;
+        options.LoginPath = new PathString(loginPath);
+        options.LogoutPath = new PathString(loginPath);
+        options.AccessDeniedPath = new PathString(loginPath);
         options.SlidingExpiration = true; // the cookie would be re-issued on any request half way through the ExpireTimeSpan
         options.ExpireTimeSpan = TimeSpan.FromDays(30);
     })
@@ -148,6 +151,7 @@ builder.Logging.AddLog4Net(loggingOptions);
 
 var app = builder.Build();
 
+app.UseExceptionHandler("/Home/Error");
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
@@ -161,7 +165,7 @@ if (app.Environment.IsDevelopment())
 else
 {
     // Configure the HTTP request pipeline.
-    app.UseExceptionHandler("/Home/Error");
+    //app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }

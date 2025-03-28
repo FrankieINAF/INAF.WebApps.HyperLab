@@ -18,6 +18,10 @@ var DELAY_5S = 'delay-5s';
 var isFirstLoading = true;
 var metroActivity;
 
+function isNumber(str) {
+    return !isNaN(str);
+}
+
 function showPageItems(callback) {
     showByClass('leftMenu');
     animateCSS('leftMenu', 'fadeIn', FASTER);
@@ -177,6 +181,33 @@ $(document).ready(function () {
 
 function navigateTo(url) {
     window.location.href = url;
+}
+
+/* -------------------------------------------------------------------------------- */
+/* ---------- SESSION STORAGE ---------- */
+/* -------------------------------------------------------------------------------- */
+function getItemsFromSessionStorage(requestedKey) {
+    let items = [];
+    for (let i = 0; i < sessionStorage.length; i++) {
+        let key = sessionStorage.key(i);
+        if (key.startsWith(requestedKey)) {
+            let value = sessionStorage.getItem(key);
+            items.push(JSON.parse(value));
+        }
+    }
+
+    return items;
+}
+
+function removeItemsFromSessionStorage(requestedKey) {
+    for (let i = 0; i < sessionStorage.length; i++) {
+        let key = sessionStorage.key(i);
+        if (key.startsWith(requestedKey)) {
+            sessionStorage.removeItem(key);
+            i--; // Decrementa l'indice per compensare la rimozione dell'elemento
+        }
+    }
+
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -514,15 +545,18 @@ function showInlineFlexElem(elem) {
 
 /* MANAGE METRO UI ELEMENTS */
 function addCLassToMetroUIElem(id, classname) {
-    $(`#${id}`).parent().addClass(classname);
+    if (($(`#${id}`)).length > 0)
+        $(`#${id}`).parent().addClass(classname);
 }
 
 function hideElemMetroUIElem(id) {
-    hideElem($(`#${id}`).parent()[0]);
+    if (($(`#${id}`)).length > 0)
+        hideElem($(`#${id}`).parent()[0]);
 }
 
 function hideMetroUIElem(id) {
-    hide($(`#${id}`).parent()[0].id);
+    if (($(`#${id}`)).length > 0)
+        hide($(`#${id}`).parent()[0].id);
 }
 
 function removeMetroUIElemByName(name) {

@@ -357,7 +357,7 @@
   <data name="FitContinuumRemovalErrorMessage" xml:space="preserve">
     <value>Sorry, something went wrong while trying to remove continuum</value>
   </data>
-  <data name="FitCoreModelLabel" xml:space="preserve">
+  <data name="FitCoreModeLabel" xml:space="preserve">
     <value>Core</value>
   </data>
   <data name="FitDownloadContinuumRemovalSettingsErrorMessage" xml:space="preserve">
@@ -554,5 +554,11 @@
   </data>
   <data name="TabsSmoothingTitle" xml:space="preserve">
     <value>Smoothing options</value>
+  </data>
+  <data name="DownloadAsCSVLabel" xml:space="preserve">
+    <value>CSV</value>
+  </data>
+  <data name="DownloadAsXMLLabel" xml:space="preserve">
+    <value>XML</value>
   </data>
 </root>

@@ -126,6 +126,12 @@
   <data name="CookiePolicyTitle" xml:space="preserve">
     <value>Cookie Policy and User Registration Information</value>
   </data>
+  <data name="ErrorPageText" xml:space="preserve">
+    <value>We encountered an issue while trying to load the requested page. If the problem persists, please reach out to the &lt;i&gt;HyperLab Team&lt;/i&gt; for assistance. We appreciate your patience!</value>
+  </data>
+  <data name="ErrorPageTitle" xml:space="preserve">
+    <value>Ooooops.......something went wrong!</value>
+  </data>
   <data name="TileGModeAppDescription" xml:space="preserve">
     <value>GModeApp is a multi-platform console application based on an advanced algorithm for unsupervised clusterization and developed to explore a wide variety of datasets</value>
   </data>
@@ -138,11 +144,11 @@
   <data name="TileMLAppTitle" xml:space="preserve">
     <value>MLApp</value>
   </data>
-  <data name="TileSLabDataManagerDescription" xml:space="preserve">
-    <value>The SLab Data Manager is a web tool that simplifies the retrieval and analysis of spectra at SLab@IAPS, enhancing workflow efficiency and accelerating data analysis for swift, accurate insights.</value>
+  <data name="TileSpectraHubDescription" xml:space="preserve">
+    <value>The Spectra Hub is a web tool designed to simplify the retrieval and analysis of spectra, whether sourced from SLab@IAPS or uploaded directly from the user's device. By enhancing workflow efficiency and enabling seamless integration of diverse data, it accelerates analysis to deliver swift and precise insights</value>
   </data>
-  <data name="TileSLabDataManagerTitle" xml:space="preserve">
-    <value>SLab Data Manager</value>
+  <data name="TileSpectraHubTitle" xml:space="preserve">
+    <value>Spectra Hub</value>
   </data>
   <data name="WelcomeExplanation" xml:space="preserve">
     <value>HyperLab provides access tool for research and data analysis of spectra acquired at SLab@IAPS. Additionally, it offers advanced tools for spectroscopic data analysis through statistical analysis tools, empowering researchers with comprehensive insights.</value>

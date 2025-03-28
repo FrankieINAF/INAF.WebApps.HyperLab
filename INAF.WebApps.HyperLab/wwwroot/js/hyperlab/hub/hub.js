@@ -379,6 +379,8 @@ function onWindowResize() {
 }
 
 $(function () {
+    tryHideLogoutButton();
+
     /* fill arrays for search */
     fillSampleTypes();
     fillMineralTypes();

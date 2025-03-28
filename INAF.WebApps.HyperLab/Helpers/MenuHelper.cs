@@ -54,7 +54,7 @@ namespace INAF.WebApps.HyperLab.Helpers
                     Label = Resources.SharedStuff.SharedStuffPageTitle,
                     Icon = "mif-shareable",
                     AppIcon = "mif-shareable",
-                    LinkText = $"/{GenericHelper.GetControllerName(nameof(SLabDataManagerController))}/{nameof(SLabDataManagerController.SharedStuff)}",
+                    LinkText = $"/{GenericHelper.GetControllerName(nameof(SpectraManagerController))}/{nameof(SpectraManagerController.SharedStuff)}",
                     ParentId = 0
                 };
                 (string controllerName, string actionName) values = getAction(menuItem);

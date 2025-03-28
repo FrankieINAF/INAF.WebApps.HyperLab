@@ -88,6 +88,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We encountered an issue while trying to load the requested page. If the problem persists, please reach out to the &lt;i&gt;HyperLab Team&lt;/i&gt; for assistance. We appreciate your patience!.
+        /// </summary>
+        public static string ErrorPageText {
+            get {
+                return ResourceManager.GetString("ErrorPageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ooooops.......something went wrong!.
+        /// </summary>
+        public static string ErrorPageTitle {
+            get {
+                return ResourceManager.GetString("ErrorPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GModeApp is a multi-platform console application based on an advanced algorithm for unsupervised clusterization and developed to explore a wide variety of datasets.
         /// </summary>
         public static string TileGModeAppDescription {
@@ -124,20 +142,20 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The SLab Data Manager is a web tool that simplifies the retrieval and analysis of spectra at SLab@IAPS, enhancing workflow efficiency and accelerating data analysis for swift, accurate insights..
+        ///   Looks up a localized string similar to The Spectra Hub is a web tool designed to simplify the retrieval and analysis of spectra, whether sourced from SLab@IAPS or uploaded directly from the user&apos;s device. By enhancing workflow efficiency and enabling seamless integration of diverse data, it accelerates analysis to deliver swift and precise insights.
         /// </summary>
-        public static string TileSLabDataManagerDescription {
+        public static string TileSpectraHubDescription {
             get {
-                return ResourceManager.GetString("TileSLabDataManagerDescription", resourceCulture);
+                return ResourceManager.GetString("TileSpectraHubDescription", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SLab Data Manager.
+        ///   Looks up a localized string similar to Spectra Hub.
         /// </summary>
-        public static string TileSLabDataManagerTitle {
+        public static string TileSpectraHubTitle {
             get {
-                return ResourceManager.GetString("TileSLabDataManagerTitle", resourceCulture);
+                return ResourceManager.GetString("TileSpectraHubTitle", resourceCulture);
             }
         }
         

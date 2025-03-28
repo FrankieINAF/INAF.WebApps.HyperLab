@@ -94,12 +94,15 @@ function manageConstantLinesVisualization(selectedTabId) {
 /* ################################################################################ */
 /* SPECTRA COLORS */
 /* ################################################################################ */
-async function loadSpectraTypeColors() {
+async function loadSpectraTypeColorsAsync() {
     let model = {
         Key: COLOR_WILDCARD
     };
 
-    let obj = await doAjaxGetAsync(UrlGetUserSettingsByWildcard, model);
+    let url = UrlGetUserSettingsByWildcard;
+    if (!isUserAuthenticated)
+        url = UrlGetDefaultColors;
+    let obj = await doAjaxGetAsync(url, model);
     if (obj && obj.Responses && obj.IsOk) {
         spectraTypeColors = [];
 
@@ -210,6 +213,28 @@ function updateSpectrumInfoId(index, newId) {
 }
 
 /* ---- GET ----------------------------------------------------------------------- */
+function findChildrenOf(id, spectrumType, spectrumSource) {
+    let spectraToBeRemoved = spectraInfo.filter(x => x.Id != id);
+
+    switch (spectrumSource) {
+        case SPECTRUM_SOURCE_EXTERNAL:
+            spectraToBeRemoved = spectraToBeRemoved.filter(x => x.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL);
+            break;
+
+        default:
+            spectraToBeRemoved = spectraToBeRemoved.filter(x => x.SpectrumSource == SPECTRUM_SOURCE_SLAB);
+            break;
+    }
+
+    spectraToBeRemoved = spectraToBeRemoved.filter(x =>
+        x.SpectrumType > spectrumType &&
+        x.SpectrumType != SPECTRUM_TYPE_REF &&
+        x.SpectrumType != SPECTRUM_TYPE_REF_WHITE)
+        .map(x => x.Id);
+
+    return spectraToBeRemoved;
+}
+
 function findChildrenOfIdsOtherThan(id, spectrumSource) {
     let spectraToBeRemoved = spectraInfo.filter(x => x.Id != id);
 
@@ -272,6 +297,32 @@ function getChildrenIdsForSpectrum(id) {
     }
 
     return children;
+}
+
+function getChildSpectrumByIdAndSpectrumType(spectrumId, spectrumType) {
+    let childSpectrum;
+    let continueLoop = true;
+
+    let id = spectrumId;
+    while (continueLoop) {
+        let spectra = getSpectraByParentId(id);
+        spectra.push(getSpectrumByIdAndSpectrumType(id, spectrumType));
+        if (spectra.length == 0)
+            continueLoop = false;
+        else {
+            let spectraNum = spectra.length;
+            for (var i = 0; i < spectraNum; i++) {
+                if (spectra[i].SpectrumType == spectrumType) {
+                    childSpectrum = spectra[i];
+                    continueLoop = false;
+                }
+                else
+                    id = spectra[i].Id;
+            }
+        }
+    }
+
+    return childSpectrum;
 }
 
 function getChildSpectrumByRawIdAndSpectrumType(rawId, spectrumType) {

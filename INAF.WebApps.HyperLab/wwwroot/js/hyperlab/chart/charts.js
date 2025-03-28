@@ -90,14 +90,15 @@ function removeExitFullScreenButton() {
 /* BACK TO SEARCH */
 /* ################################################################################ */
 async function backClearToSearchProcedureAsync() {
-    navigateTo(UrlSearch);
+    navigateTo(UrlHub);
 }
 
 function createChartsProcedure() {
     setMenuCollapsed();
 
     navigationStatus = NAVIGATION_CREATE_CHART;
-    executeAfter(loadChartsProcedure, 500);
+
+    executeAfter(loadChartsProcedureAsync, 500);
 }
 
 function createChartsProcedureCaller() {
@@ -130,16 +131,20 @@ function disposeChart() {
     isChartLoaded = false;
 }
 
-async function loadChartsProcedure() {
+async function loadChartsProcedureAsync() {
     manageNavigation();
 
-    await loadSpectraTypeColors();
+    await loadSpectraTypeColorsAsync();
 
-    /* load data and show charts */
-    loadCharts();
+    if (isUserAuthenticated)
+        /* load data and show charts */
+        loadChartsFromCloudAsync();
+    else
+        loadChartsFromSessionStorage();
 }
 
-async function loadCharts() {
+/* load spectra from cloud */
+async function loadChartsFromCloudAsync() {
     setLoadingCircleIsVisible(true);
 
     var model = {
@@ -151,7 +156,8 @@ async function loadCharts() {
     if (obj) {
         //console.log(obj);
         setSpectraInfo(obj.SpectraInfo);
-        chartSeries = createSeriesFromPoint(obj.Points[0]);
+        chartSeries = createSeriesFromPoints(obj.Points);
+        //chartSeries = createSeriesFromPoint(obj.Points[0]);
         createChart(obj.Points, chartSeries, obj.AxisRange);
         isChartLoaded = true;
         setLoadingCircleIsVisible(false);
@@ -164,6 +170,54 @@ async function loadCharts() {
         addClass('charts', 'no-spectra-background');
         showSimpleDialog(ERROR_LABEL, NoSpectraFoundForSelectedIdsMessage, ALERT);
     }
+}
+
+/* load spectra from sessionStorage */
+function loadChartsFromSessionStorage() {
+    let items = getItemsFromSessionStorage(STORAGE_ITEM);
+
+    if (!items || items.length == 0)
+        return;
+
+    setLoadingCircleIsVisible(true);
+
+    try {
+        let points = [];
+
+        let itemsNum = items.length;
+        for (var i = 0; i < itemsNum; i++) {
+            let values = parseItemToSpectrum(items[i]);
+            let valuesNum = values.length;
+            for (var j = 0; j < valuesNum; j++) {
+                let foundPoint = points.find(p => p.X == values[j].X);
+                if (foundPoint) {
+                    let index = points.indexOf(foundPoint);
+                    let keysFiltrate = Object.keys(values[j]).filter(key => key != 'X');
+                    points[index][keysFiltrate[0]] = values[j][keysFiltrate[0]];
+                } else {
+                    points.push(values[j]);
+                }
+            }
+        }
+
+        /* retrieve x values for extracting min and max values */
+        const xValues = points.map(point => point.x);
+        const minX = Math.min(...xValues);
+        const maxX = Math.max(...xValues);
+        const axisRange = { Axis:1, Min: minX, Max: maxX };
+
+        //console.log(points);
+        chartSeries = createSeriesFromPoints(points);
+
+        createChart(points, chartSeries, axisRange);
+        isChartLoaded = true;
+    } catch (e) {
+        isChartLoaded = false;
+        addClass('charts', 'no-spectra-background');
+        showSimpleDialog(ERROR_LABEL, NoSpectraFoundForSelectedIdsMessage, ALERT);
+    }
+   
+    setLoadingCircleIsVisible(false);
 }
 
 function createChart(dataSource, series, axisRange) {
@@ -378,6 +432,61 @@ function createSeriesFromPoint(firstPoint) {
     return series;
 }
 
+function createSeriesFromPoints(points) {
+    var series = [];
+
+    let ids = [];
+
+    let lastRawColor;
+    let foundRawSpectra = 0;
+
+    let pointsNum = points.length;
+    for (var i = 0; i < pointsNum; i++) {
+        let point = points[i];
+        let keys = Object.keys(point);
+        let keysNum = keys.length;
+        for (var j = 0; j < keysNum; j++) {
+
+            if (!keys[j].startsWith('id'))
+                continue;
+
+            if (ids.indexOf(keys[j]) == -1) {
+                ids.push(keys[j]);
+                let keyId = getIdValue(keys[j]);
+                if (isNaN(keyId)) // for local spectra used by unauthenticated users
+                    keyId = keys[j];
+                var index = getSpectrumIndexById(keyId);
+                let name = getSpectrumSeriesNameFromIndex(index);
+                let color = getSpectrumTypeColor(getSpectrumTypeString(spectraInfo[index].SpectrumType));
+
+                let isRaw = spectraInfo[index].SpectrumType == SPECTRUM_TYPE_RAW;
+                if (isRaw && foundRawSpectra == 0) {
+                    lastRawColor = color;
+                    foundRawSpectra++;
+                }
+
+                if (i > 0 && isRaw) {
+                    /* create a slight differentiation in colors of multiple RAW spectra */
+                    color = lightenDarkenColor(lastRawColor, 30); // defined in common.js
+                    spectraInfo[index].Color = color;
+                    lastRawColor = color; // remember the last RAW color for using it the next time
+                    foundRawSpectra++;
+                }
+
+                series.push({
+                    valueField: keys[j],
+                    name: name,
+                    axis: 'valueAxis',
+                    color: color,
+                    isVisible: true,
+                });
+            }
+        }
+    }
+
+    return series;
+}
+
 function extractVisualRangesFromDataSource(axisRange) {
     chartContainer.dxChart("getValueAxis", "valueAxis").visualRange(axisRange.Min, axisRange.Max)
 }
@@ -485,49 +594,14 @@ function initChartPanel() {
 }
 
 /* ################################################################################ */
-/* MANAGE CHART DIM/POS FOR ORIENTATION CHANGE */
-/* ################################################################################ */
-//function tryAddOrientationEventHandler() {
-//    setTimeout(function () { window.addEventListener("deviceorientation", handleOrientation); }, 500);
-//}
-
-//function handleOrientation(evt) {
-//    let alpha = evt.alpha;
-//    //console.log(`alpha: ${alpha}`);
-
-//    if (!chartContainer || !isChartLoaded)
-//        return;
-
-//    /* re-set the chart size */
-//    $(`#charts`).css({ transition: TRANSITION_SHORTHAND });
-
-//    /* handle chart position/orientation */
-//    if (alpha > 70 && alpha < 120) {
-//        console.log('HORIZONTAL');
-//        if (isMobile()) {
-//            let w = $('#renderbody').width();
-//            let h = $('#renderbody').height();
-
-//            $("#charts").css({ transform: 'rotate(90deg) translateX(80%)' });
-//            $(chartContainer).dxChart("instance").option("width", h * 0.9);
-//            $(chartContainer).dxChart("instance").option("height", w * 0.9);
-//        } else
-//            $("#charts").css({ transform: 'rotate(0deg) translateY(50%)' });
-//    } else {
-//        console.log('VERTICAL');
-//        if (isMobile())
-//            $("#charts").css({ transform: 'rotate(0deg) translateY(0%) translateX(0%)' });
-//        else
-//            $("#charts").css({ transform: 'rotate(0deg) translateY(0%)' });
-//    }
-//}
-
-/* ################################################################################ */
 /* DOCUMENT READY */
 /* ################################################################################ */
 $(function () {
+    tryHideLogoutButton();
+
     /* set y-overflow for page */
     setOverflowYAuto();
+
     /* set starting position for panels */
     initChartPanel();
 

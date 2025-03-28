@@ -142,6 +142,16 @@ div.mandatory {
     margin-right: 16px;
 }
 
+.margin-horizontal-32 {
+    margin-left: 32px;
+    margin-right: 32px;
+}
+
+.margin-horizontal-48 {
+    margin-left: 48px;
+    margin-right: 48px;
+}
+
 .margin-left-4 {
     margin-left: 4px !important;
 }
@@ -168,6 +178,10 @@ div.mandatory {
 
 .margin-right-16 {
     margin-right: 16px;
+}
+
+.margin-right-500 {
+    margin-right: 500px !important;
 }
 
 .margin-top-4 {

@@ -20,6 +20,8 @@ var NAVIGATION_INIT = 'navigationinit';
 var NAVIGATION_SHOW_CHART = 'navigationshowchart';
 var navigationStatus = NAVIGATION_INIT;
 
+var STORAGE_ITEM = "storageItem";
+
 var pageW, pageH;
 
 var lightGreen = '#90ee90';
@@ -27,6 +29,11 @@ var lightGreenTransparent = '#90ee9099';
 var red = '#a8071e';
 
 var usersToShare = [];
+
+function tryHideLogoutButton() {
+    if (!isUserAuthenticated)
+        hideByClass('logoutButton');
+}
 
 function initPageDims() {
     pageW = $('#renderbody').width();
@@ -499,7 +506,7 @@ function setOverflowYHidden() {
 /* OTHER */
 /* ################################################################################ */
 function buildId(id) {
-    if (Number.isInteger(id))
+    if (isNumber(id))
         return `id${id}`;
     else
         return id;

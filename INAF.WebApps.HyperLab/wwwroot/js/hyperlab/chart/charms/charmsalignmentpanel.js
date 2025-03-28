@@ -197,7 +197,7 @@ function initCheckBoxForShowingLines() {
         /* append an item to queue of settings to be saved */
         if (isCheckboxForShowSegmentsValueToBeSavedOnCloud) {
             let value = (isChecked ? '1' : '0');
-            enqueueSaveSetting(getQueueItem(ALIGNMENT_SHOW_LINES, value));
+            tryCallEnqueueSaveSetting(ALIGNMENT_SHOW_LINES, value);
         }
 
         /* reset variable to true to allow saving on cloud if checked manually */
@@ -283,7 +283,7 @@ function onChangeSegmentCenter(val, slider) {
 
         let segmentsstring = alignmentModel.Segments.join();
 
-        callEnqueueSaveSetting(timeoutSegments, ALIGNMENT_SEGMENTS_BOUNDARIES, segmentsstring, JS_DELAY_500);
+        tryCallEnqueueSaveSetting(ALIGNMENT_SEGMENTS_BOUNDARIES, segmentsstring, timeoutSegments);
 
         setAlignmentSegmentsVisible();
     } catch (e) {
@@ -314,7 +314,7 @@ function setSelectedSegment(xValue, isSaveSettingRequired = true) {
 
     /* enque command for saving this setting */
     if (isSaveSettingRequired)
-        callEnqueueSaveSetting(timeoutSelectedSegment, ALIGNMENT_SELECTED_SEGMENT, index.toString(), JS_DELAY_200);
+        tryCallEnqueueSaveSetting(ALIGNMENT_SELECTED_SEGMENT, index.toString(), timeoutSelectedSegment);
 }
 
 function setSelectedSegmentMessage(makeVisible = true) {
@@ -361,7 +361,7 @@ function onChangeNumOfPoints(curr, request, real) {
     alignmentModel.NumOfPoints = curr;
 
     //console.log(`onChangeNumOfPoints - curr: ${curr}, request: ${request}, real: ${real}`);
-    callEnqueueSaveSetting(timeoutNumOfPoints, ALIGNMENT_NUM_OF_POINTS, real, JS_DELAY_500);
+    tryCallEnqueueSaveSetting(ALIGNMENT_NUM_OF_POINTS, real, timeoutNumOfPoints);
 }
 
 function setNumOfPointsForAlignment(value) {
@@ -378,7 +378,7 @@ async function initSwitchLoadAutoAlignSpectrumAsync() {
     $('#charmsSwitchAutoAlignSpectrum').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsSwitchAutoAlignSpectrum');
 
-        enqueueSaveSetting(getQueueItem(ALIGNMENT_AUTO_ALIGN_SPECTRUM, (isChecked ? '1' : '0')));
+        tryCallEnqueueSaveSetting(ALIGNMENT_AUTO_ALIGN_SPECTRUM, (isChecked ? '1' : '0'));
 
         if (isChecked) {
             /* show message for saved settings */
@@ -386,7 +386,7 @@ async function initSwitchLoadAutoAlignSpectrumAsync() {
 
             /* if auto align is enabled, then disable auto download */
             setSwitchAutoDownloadAlignedSpectrumAsync(false);
-            enqueueSaveSetting(getQueueItem(ALIGNMENT_AUTO_DOWNLOAD_ALIGNED_SPECTRUM, '0'));
+            tryCallEnqueueSaveSetting(ALIGNMENT_AUTO_DOWNLOAD_ALIGNED_SPECTRUM, '0');
         }
     });
 }
@@ -417,7 +417,7 @@ async function initSwitchLoadAutoDownloadAlignedSpectrumAsync() {
     $('#charmsSwitchAutoDownloadAlignedSpectrum').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsSwitchAutoDownloadAlignedSpectrum');
 
-        enqueueSaveSetting(getQueueItem(ALIGNMENT_AUTO_DOWNLOAD_ALIGNED_SPECTRUM, (isChecked ? '1' : '0')));
+        tryCallEnqueueSaveSetting(ALIGNMENT_AUTO_DOWNLOAD_ALIGNED_SPECTRUM, (isChecked ? '1' : '0'));
 
         if (isChecked) {
             /* show message for saved settings */
@@ -425,7 +425,7 @@ async function initSwitchLoadAutoDownloadAlignedSpectrumAsync() {
 
             /* if auto download is enabled, then disable auto align */
             setSwitchAutoAlignSpectrum(false);
-            enqueueSaveSetting(getQueueItem(ALIGNMENT_AUTO_ALIGN_SPECTRUM, '0'));
+            tryCallEnqueueSaveSetting(ALIGNMENT_AUTO_ALIGN_SPECTRUM, '0');
         }
     });
 }

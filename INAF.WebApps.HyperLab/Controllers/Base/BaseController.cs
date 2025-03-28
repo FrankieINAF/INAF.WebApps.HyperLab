@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using static INAF.WebApps.HyperLab.Values.Enums;
 using static Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary;
 using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Permissions;
+using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 
 namespace INAF.WebApps.HyperLab.Controllers.Base
 {
@@ -107,6 +109,22 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
                 var dbHandlerHyperLabUsers = serviceProvider.GetRequiredService<DbHandlerHyperLabUsers>();
                 return dbHandlerHyperLabUsers.getUserIdFromToken(token);
             }
+        }
+
+        protected (bool isUserAuthenticated, List<PermissionModel>? permissions) getUserStatus()
+        {
+            bool isUserAuthenticated = false;
+            var cookieValue = HttpContext.Request.Cookies[Values.Constants.HYPERLAB_WEB_APP_COOKIES];
+            if (!string.IsNullOrEmpty(cookieValue))
+            {
+                if (HttpContext.User.Identity != null)
+                    isUserAuthenticated = HttpContext.User.Identity.IsAuthenticated;
+            }
+
+            var dbHandlerHyperLabUsers = serviceProvider.GetRequiredService<DbHandlerHyperLabUsers>();
+            List<PermissionModel>? permissions = dbHandlerHyperLabUsers.getUserPermissions(getUserId(), Enums.CallerContext.Web);
+
+            return (isUserAuthenticated, permissions);
         }
 
         protected bool isRemoteCheckInEditMode(string field1, string field2)

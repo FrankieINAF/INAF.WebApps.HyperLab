@@ -116,7 +116,6 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult Login(string? returnUrl,
                                    string? caller = null)
         {
-            //new Libraries.Net.HyperLab.CommonWebAppHelpers.TokenValidationParametersHelper(configuration).exportKey();
             ViewBag.ReturnUrl = returnUrl;
             if (!string.IsNullOrEmpty(caller))
                 ViewBag.Caller = caller;
@@ -136,7 +135,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 (bool isAuthenticated, UserModel? user) result = await tryAuthenticateForWebAsync(model.UserName!, model.Password!, model.RememberMe);
                 logger.LogInformation($"{nameof(Login)} - isAuthenticated: {result.isAuthenticated}");
                 if (result.isAuthenticated)
-                    return RedirectToAction(nameof(SLabDataManagerController.Search), GenericHelper.GetControllerName(nameof(SLabDataManagerController)));
+                    return RedirectToAction(nameof(SpectraManagerController.Hub), GenericHelper.GetControllerName(nameof(SpectraManagerController)));
             }
             else
             {
@@ -166,7 +165,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)));
+            return RedirectToAction(nameof(SpectraManagerController.Hub), GenericHelper.GetControllerName(nameof(SpectraManagerController)));
         }
 
         public async Task<IActionResult> LogoutForJwt()

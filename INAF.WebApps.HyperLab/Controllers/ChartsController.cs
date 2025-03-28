@@ -1,17 +1,17 @@
-﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
+﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Permissions;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Helpers;
+using INAF.WebApps.HyperLab.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
-    [Authorize]
-    [CheckIsLoginValid]
     public class ChartsController : BaseController
     {
         private readonly DbHandlerHyperLabData dbHandlerHyperLabData;
@@ -26,22 +26,33 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult LoadAlignmentPanel()
         {
-            return PartialView("Partials/_AlignmentPanel");
+            (bool isUserAuthenticated, List<PermissionModel>? permissions) userStatus = getUserStatus();
+
+            PartialViewModel partialViewModel = new PartialViewModel(userStatus.isUserAuthenticated);
+            return PartialView("Partials/_AlignmentPanel", partialViewModel);
         }
 
         [HttpGet]
         public IActionResult LoadFitPanel()
         {
-            return PartialView("Partials/_FitPanel");
+            (bool isUserAuthenticated, List<PermissionModel>? permissions) userStatus = getUserStatus();
+            PartialViewModel partialViewModel = new PartialViewModel(userStatus.isUserAuthenticated);
+
+            return PartialView("Partials/_FitPanel", partialViewModel);
         }
 
         [HttpGet]
         public IActionResult LoadSmoothingPanel()
         {
-            return PartialView("Partials/_SmoothingPanel");
+            (bool isUserAuthenticated, List<PermissionModel>? permissions) userStatus = getUserStatus();
+            PartialViewModel partialViewModel = new PartialViewModel(userStatus.isUserAuthenticated);
+
+            return PartialView("Partials/_SmoothingPanel", partialViewModel);
         }
 
         #region GET
+        [Authorize]
+        [CheckIsLoginValid]
         [HttpGet]
         public IActionResult GetSpectrumById(GenericRequestByIdModel model)
         {
@@ -53,6 +64,8 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new JsonResult(spectrumModel);
         }
 
+        [Authorize]
+        [CheckIsLoginValid]
         [HttpGet]
         public IActionResult GetSpectrumByParentIdAndSpectrumType(GenericRequestByParentIdAndSpectrumTypeModel model)
         {
@@ -79,6 +92,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         #endregion
 
         #region POST
+        [Authorize]
+        [CheckIsLoginValid]
         [HttpPost]
         public IActionResult GetSpectra([FromBody] GenericRequestByIdsModel model)
         {
@@ -105,6 +120,8 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new EmptyResult();
         }
 
+        [Authorize]
+        [CheckIsLoginValid]
         [HttpPost]
         public IActionResult GetProcessedSpectrum([FromBody] GenericRequestByParentIdAndSpectrumTypeModel model)
         {

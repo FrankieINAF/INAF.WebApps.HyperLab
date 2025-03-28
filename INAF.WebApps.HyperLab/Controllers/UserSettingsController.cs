@@ -10,8 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
-    [Authorize]
-    [CheckIsLoginValid]
     public class UserSettingsController : BaseController
     {
         private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
@@ -34,7 +32,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                          searchForDefaults);
 
             if (result.Any())
-                return new JsonResult(result);
+                return new JsonResult(new KeysValuesResponseModel() { Responses = result });
             else
                 return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
         }
@@ -51,9 +49,14 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
         }
 
+        [Authorize]
+        [CheckIsLoginValid]
         [HttpGet]
         public IActionResult GetUserSettingsByWildcard(KeyRequestModel model)
         {
+            if (string.IsNullOrEmpty(model.Key))
+                return new JsonResult(KeysValuesResponseModel.CreateErrorResponse());
+
             (bool isOk, List<KeyValueResponseModel>? values) result = dbHandlerHyperLabUsers.getUserSettingsValuesByWildcard(getUserId(),
                                                                                                                              model.Key);
 
@@ -65,6 +68,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         #endregion
 
         #region POST
+        [Authorize]
+        [CheckIsLoginValid]
         [HttpPost]
         public async Task<IActionResult> SetUserSetting([FromBody] KeyValueRequestModel model)
         {

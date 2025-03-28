@@ -70,6 +70,10 @@ async function loadFilesAsync(files, source) {
 
     showByClassDFlexItem('loadedFilesContainer', true);
 
+    /* remove locally saved files, if any is available */
+    removeItemsFromSessionStorage(STORAGE_ITEM);
+
+    /* read all selected files */
     let filesNum = files.length;
     for (var i = 0; i < filesNum; i++) {
         let file = files[i];
@@ -142,15 +146,15 @@ function parseCSV(text) {
 function manageCsvProcedure(text, filename, source, fileExt) {
     let xml = buildSpectrumXml(filename, text, source);
     let isLoaded = xml != null;
-    /* add file item to list of loaded files on UI */
-    addFilesListItem(filename, SPECTRUM_TYPE_RAW, source, isLoaded);
     /* save parse spectrum on the in-memory list */
     addParsedSpectrum(filename, xml, SPECTRUM_TYPE_RAW, source, fileExt);
+    /* add file item to list of loaded files on UI */
+    addFilesListItemAsync(filename, SPECTRUM_TYPE_RAW, source, isLoaded);
 }
 
-/* -------------------------------------------------------------------------------- */
+/* ################################################################################ */
 /* BUILD XML */
-/* -------------------------------------------------------------------------------- */
+/* ################################################################################ */
 
 function buildSpectrumXml(filename, text, source) {
     let spectrumType = (source == SPECTRUM_SOURCE_SLAB) ? SPECTRUM_TYPE_RAW : SPECTRUM_TYPE_ALIGNED;
@@ -251,10 +255,10 @@ async function manageXmlProcedureAsync(xml, filename, source, fileExt) {
         /* retrieve spectrumType text and value */
         let spectrumTypeText = type[0].innerHTML;
         let spectrumType = getSpectrumTypeValue(spectrumTypeText);
-        /* add file item to list of loaded files on UI */
-        addFilesListItem(filename, spectrumType, source, true);
         /* save parse spectrum on the in-memory list */
         addParsedSpectrum(filename, xml, spectrumType, source, fileExt);
+        /* add file item to list of loaded files on UI */
+        addFilesListItemAsync(filename, spectrumType, source, true);
     }
 }
 
@@ -270,11 +274,14 @@ async function saveFileAsync(filename) {
     let spectrum = parsedSpectra[index];
     switch (spectrum.Source) {
         case SPECTRUM_SOURCE_EXTERNAL:
-            await saveExternalFileAsync(spectrum.Filename, spectrum.Xml);
+            if (isUserAuthenticated)
+                await saveExternalFileAuthenticatedAsync(spectrum.Filename, spectrum.Xml);
+            else
+                saveExternalFileUnauthenticated(spectrum.Filename, spectrum.Xml);
             break;
 
         case SPECTRUM_SOURCE_SLAB:
-            await saveSLabFileProcedure(spectrum.Filename, spectrum.Xml, spectrum.SpectrumType, spectrum.FileType);
+            saveSLabFileProcedure(spectrum.Filename, spectrum.Xml, spectrum.SpectrumType, spectrum.FileType);
             break;
 
         default:
@@ -284,21 +291,25 @@ async function saveFileAsync(filename) {
 /* ################################################################################ */
 /* BUILD LIST ITEM */
 /* ################################################################################ */
-function addFilesListItem(filename, spectrumType, source, isLoaded) {
+async function addFilesListItemAsync(filename, spectrumType, source, isLoaded) {
     $('#loadedFilesList').append(getFilesListItem(filename, spectrumType, source, isLoaded));
 
-    if (isLoaded) {
-        switch (source) {
-            case SPECTRUM_SOURCE_EXTERNAL:
-                checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, SPECTRUM_TYPE_ALIGNED, source);
-                break;
+    if (!isLoaded)
+        return;
 
-            default:
-                let spectrumTypeText = getSpectrumTypeDescription(spectrumType);
-                checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, spectrumType, source);
-                break;
-        }
-    }
+    saveFileAsync(filename);
+    //if (isLoaded) {
+    //    switch (source) {
+    //        case SPECTRUM_SOURCE_EXTERNAL:
+    //            if (isUserAuthenticated)
+    //                checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, SPECTRUM_TYPE_ALIGNED, source);
+    //            break;
+
+    //        default:
+    //            checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, spectrumType, source);
+    //            break;
+    //    }
+    //}
 }
 
 async function checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, spectrumType, source) {
@@ -333,7 +344,7 @@ async function checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, spect
 }
 
 function getFilesListItem(filename, spectrumType, source, isLoaded) {
-    console.log(`isModbile, ${isMobile()}`);
+    //console.log(`isMobile, ${isMobile()}`);
     if (isMobile())
         return getFilesListItemMobile(filename, spectrumType, source, isLoaded);
     else
@@ -342,24 +353,15 @@ function getFilesListItem(filename, spectrumType, source, isLoaded) {
 
 function getFilesListItemDesktop(filename, spectrumType, source, isLoaded) {
     let html = ``;
-    html += `<div id="item_${filename}" class="d-flex flex-column-fs flex-row-sm margin-vertical-8">`;
-    html += `<div class="flex-self-center-fs margin-right-8 pointer"><span class="mif mif-bin pointer" title="${LoadFileRemoveSelectedFileMessage}" onclick="${removeFileFromList.name}('${filename}')"></span></div>`;
-    let color = 'fg-green';
-    let icon = 'mif-checkmark';
-    let message = LoadFileReadFileSuccessMessage;
-    if (!isLoaded) {
-        color = 'fg-red';
-        icon = 'mif-cancel';
-        message = LoadFileReadFileErrorMessage;
-    }
-    html += `<div class="flex-self-center-fs margin-right-8 margin-top-4"><span class="mif ${icon} ${color} mif-2x" title="${message}"></span></div>`;
-    let filenameClass = (source == SPECTRUM_SOURCE_SLAB) ? 'primary' : 'secondary';
-    html += `<div class="flex-self-center-fs loaded-file-width"><p class="text-secondary-sm text-light text-ellipsis tally ${filenameClass}">${filename}</p></div>`;
+    html += getContainerDiv(filename);
+    html += getBinIconDiv(filename);
+    html += getLoadResultIcon(isLoaded);
+    html += getFilenameDiv(source, filename);
     if (source == SPECTRUM_SOURCE_SLAB)
-        html += `<div class="flex-self-center-fs margin-horizontal-16" style="width: 260px">${getSpectrumTypeSelect(filename, spectrumType)}</div>`;
+        html += getSpectrumTypeDiv(filename, spectrumType, '260');
     else
         html += `<div class="margin-horizontal-16" style="width: 260px">&nbsp;</div>`;
-    html += getToSaveOnCloudIcon(filename);
+    html += getToSaveIcon(filename);
     html += `</div>`;
 
     return html;
@@ -367,32 +369,57 @@ function getFilesListItemDesktop(filename, spectrumType, source, isLoaded) {
 
 function getFilesListItemMobile(filename, spectrumType, source, isLoaded) {
     let html = ``;
-    html += `<div id="item_${filename}" class="d-flex flex-column-fs flex-row-sm margin-vertical-8">`;
+    html += getContainerDiv(filename);
     html += `<div id="item_${filename}" class="d-flex flex-row margin-vertical-8">`;
-    html += `<div class="flex-self-center-fs margin-right-8 pointer"><span class="mif mif-bin pointer" title="${LoadFileRemoveSelectedFileMessage}" onclick="${removeFileFromList.name}('${filename}')"></span></div>`;
-    let color = 'fg-green';
-    let icon = 'mif-checkmark';
-    let message = LoadFileReadFileSuccessMessage;
-    if (!isLoaded) {
-        color = 'fg-red';
-        icon = 'mif-cancel';
-        message = LoadFileReadFileErrorMessage;
-    }
-    html += `<div class="flex-self-center-fs margin-right-8 margin-top-4"><span class="mif ${icon} ${color} mif-2x" title="${message}"></span></div>`;
-    let filenameClass = (source == SPECTRUM_SOURCE_SLAB) ? 'primary' : 'secondary';
-    html += `<div class="flex-self-center-fs loaded-file-width"><p class="text-secondary-sm text-light text-ellipsis tally ${filenameClass}">${filename}</p></div>`;
-    html += getToSaveOnCloudIcon(filename);
+    html += getBinIconDiv(filename);
+    html += getLoadResultIcon(isLoaded);
+    html += getFilenameDiv(source, filename);
+    html += getToSaveIcon(filename);
     html += `</div>`;
     if (source == SPECTRUM_SOURCE_SLAB)
-        html += `<div class="flex-self-center-fs margin-horizontal-16" style="width: 250px">${getSpectrumTypeSelect(filename)}</div>`;
+        html += getSpectrumTypeDiv(filename, spectrumType, '250');
     html += '<div><hr style="border: 0; height: 1px;" class="bg-cyan margin-top-4"></div>'
     html += `</div>`;
 
     return html;
 }
 
+/* -------------------------------------------------------------------------------- */
+/* SAVED */
+/* -------------------------------------------------------------------------------- */
+function getSavedIcon(filename) {
+    if (isUserAuthenticated)
+        return getSavedOnCloudIcon(filename);
+    else
+        return getSavedLocallyIcon(filename);
+}
+
+function getSavedLocallyIcon(filename) {
+    return `<div id="uploaded_${filename}" class="pointer"><span class="mif mif-drive mif-3x fg-cyan pointer" onclick="${saveFileAsync.name}('${filename}')" title="${LoadFileSavedOnCloudLabel}"></span></div>`;
+}
+
 function getSavedOnCloudIcon(filename) {
     return `<div id="uploaded_${filename}" class="pointer"><span class="mif mif-cloud-upload mif-3x fg-cyan pointer" onclick="${saveFileAsync.name}('${filename}')" title="${LoadFileSavedOnCloudLabel}"></span></div>`;
+}
+
+/* -------------------------------------------------------------------------------- */
+/* TO SAVE */
+/* -------------------------------------------------------------------------------- */
+function getToSaveIcon(filename, color) {
+    if (isUserAuthenticated)
+        return getToSaveOnCloudIcon(filename, color);
+    else
+        return getToSaveLocallyIcon(filename, color);
+}
+
+function getToSaveLocallyIcon(filename, color) {
+    let message = '';
+    if (color == null || color == 'orange') {
+        color = 'orange';
+        message = LoadFileNotSavedLocallyMessage;
+    } else if (color == 'red')
+        message = LoadFileSaveLocallyErrorMessage;
+    return `<div id="upload_${filename}" class="pointer" onclick="${saveFileAsync.name}('${filename}')"><span class="mif mif-drive mif-3x fg-${color} pointer" title="${message}"></span></div>`;
 }
 
 function getToSaveOnCloudIcon(filename, color) {
@@ -405,12 +432,15 @@ function getToSaveOnCloudIcon(filename, color) {
     return `<div id="upload_${filename}" class="pointer" onclick="${saveFileAsync.name}('${filename}')"><span class="mif mif-cloud-upload mif-3x fg-${color} pointer" title="${message}"></span></div>`;
 }
 
+/* -------------------------------------------------------------------------------- */
+/* UPDATE */
+/* -------------------------------------------------------------------------------- */
 function updateListItem(filename, isSaved) {
     let spectrum = getParsedSpectrum(filename);
     if (isSaved)
-        $(`#upload_${$.escapeSelector(spectrum.Filename)}`).replaceWith(getSavedOnCloudIcon(spectrum.Filename));
+        $(`#upload_${$.escapeSelector(spectrum.Filename)}`).replaceWith(getSavedIcon(spectrum.Filename));
     else
-        $(`#uploaded_${$.escapeSelector(spectrum.Filename)}`).replaceWith(getToSaveOnCloudIcon(spectrum.Filename, 'orange'));
+        $(`#uploaded_${$.escapeSelector(spectrum.Filename)}`).replaceWith(getToSaveIcon(spectrum.Filename, 'orange'));
 }
 
 /* ################################################################################ */

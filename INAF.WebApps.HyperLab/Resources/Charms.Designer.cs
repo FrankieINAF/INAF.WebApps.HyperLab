@@ -673,6 +673,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CSV.
+        /// </summary>
+        public static string DownloadAsCSVLabel {
+            get {
+                return ResourceManager.GetString("DownloadAsCSVLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XML.
+        /// </summary>
+        public static string DownloadAsXMLLabel {
+            get {
+                return ResourceManager.GetString("DownloadAsXMLLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto recalculate on adding/removing any fit point.
         /// </summary>
         public static string FitAutoRecalculateContinuumRemovedLabel {
@@ -765,9 +783,9 @@ namespace INAF.WebApps.HyperLab.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Core.
         /// </summary>
-        public static string FitCoreModelLabel {
+        public static string FitCoreModeLabel {
             get {
-                return ResourceManager.GetString("FitCoreModelLabel", resourceCulture);
+                return ResourceManager.GetString("FitCoreModeLabel", resourceCulture);
             }
         }
         

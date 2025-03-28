@@ -2,6 +2,7 @@
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Info;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Pages;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches.Interfaces;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Shares;
@@ -16,15 +17,13 @@ using Newtonsoft.Json;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
-    [Authorize]
-    [CheckIsLoginValid]
-    public partial class SLabDataManagerController : BaseController
+    public partial class SpectraManagerController : BaseController
     {
         private readonly DbHandlerHyperLabData dbHandlerHyperLabData;
         private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
 
-        public SLabDataManagerController(IServiceProvider serviceProvider,
-                                         ILogger<SLabDataManagerController> logger,
+        public SpectraManagerController(IServiceProvider serviceProvider,
+                                         ILogger<SpectraManagerController> logger,
                                          DbHandlerHyperLabData dbHandlerHyperLabData,
                                          DbHandlerHyperLabUsers dbHandlerHyperLabUsers) : base(serviceProvider, logger)
         {
@@ -32,31 +31,41 @@ namespace INAF.WebApps.HyperLab.Controllers
             this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
         }
 
+        #region VIEWS
+        //[Authorize]
+        //[CheckIsLoginValid]
         [HttpGet]
         public IActionResult Chart([FromQuery] string ids)
         {
+            (bool isUserAuthenticated, List<PermissionModel>? permissions) status = getUserStatus();
+
             IEnumerable<int>? Ids = null;
+            SelectedSpectraModel? selectedSpectra = null;
             if (!string.IsNullOrEmpty(ids))
             {
                 Ids = ids.Split(',').Select(int.Parse);
-                SelectedSpectraModel model = new SelectedSpectraModel() { Ids = Ids };
-                return View(model);
+                selectedSpectra = new SelectedSpectraModel() { Ids = Ids };
             }
 
-            return RedirectToAction("Error", "Home");
+            ChartPageModel chartPageModel = new ChartPageModel(status.isUserAuthenticated, status.permissions, selectedSpectra);
+
+            return View(chartPageModel);
         }
 
         [HttpGet]
-        public IActionResult Search()
+        public IActionResult Hub()
         {
-            List<PermissionModel>? permissions = dbHandlerHyperLabUsers.getUserPermissions(getUserId(), Enums.CallerContext.Web);
+            (bool isUserAuthenticated, List<PermissionModel>? permissions) status = getUserStatus();
 
             var sampleTypesHelper = serviceProvider.GetRequiredService<SampleTypesHelper>();
             SampleTypeValuesContainerExtended sampleTypeValuesContainerExtended = SampleTypeValuesContainerExtended.Create(sampleTypesHelper.getSampleTypeValuesContainer());
-            var searchPageModel = new SearchPageModel(permissions, sampleTypeValuesContainerExtended);
+            var searchPageModel = new SearchPageModel(status.isUserAuthenticated, status.permissions, sampleTypeValuesContainerExtended);
             return View(searchPageModel);
         }
+        #endregion
 
+        [Authorize]
+        [CheckIsLoginValid]
         [HttpGet]
         public async Task<IActionResult> SharedStuff()
         {

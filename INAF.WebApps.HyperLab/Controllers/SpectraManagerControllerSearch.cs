@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
-    public partial class SLabDataManagerController
+    public partial class SpectraManagerController
     {
         #region SEARCH COMPLEX
         [HttpGet]
