@@ -1,0 +1,55 @@
+﻿.dot {
+    height: 12px;
+    width: 12px;
+    background-color: darkred;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.select-segment-rectangle {
+    width: 20px;
+    height: 80px;
+    margin-top: 10px;
+    margin-left: 4px;
+    margin-right: 4px;
+    background: darkred;
+}
+
+.square {
+    height: 24px;
+    width: 24px;
+}
+
+
+.slider-target {
+    width: 60px;
+    margin-top: 16px;
+}
+
+.spinner {
+    width: 140px;
+}
+
+.charms-select {
+    width: 300px;
+}
+
+.charmsSwitch .check::after {
+    background: #0a87c1 !important;
+    border-color: #0a87c1 !important;
+}
+
+.charmsSwitch input[type="checkbox"]:checked ~ .check {
+    background: #0a87c1 !important;
+}
+
+    .charmsSwitch input[type="checkbox"]:checked ~ .check::after {
+        border-color: #ffffff !important;
+        background: #ffffff !important;
+    }
+
+/* redefine class in metro.css */
+.active {
+    background-color: #1ba1e2 !important;
+    color: white !important;
+}
