@@ -106,6 +106,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string HomeLabel {
+            get {
+                return ResourceManager.GetString("HomeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GModeApp is a multi-platform console application based on an advanced algorithm for unsupervised clusterization and developed to explore a wide variety of datasets.
         /// </summary>
         public static string TileGModeAppDescription {
@@ -142,7 +151,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Spectra Hub is a web tool designed to simplify the retrieval and analysis of spectra, whether sourced from SLab@IAPS or uploaded directly from the user&apos;s device. By enhancing workflow efficiency and enabling seamless integration of diverse data, it accelerates analysis to deliver swift and precise insights.
+        ///   Looks up a localized string similar to The Spectra Hub is a web tool that allows the analysis of spectra stored locally on users&apos; devices, providing advanced spectroscopic capabilities. It also grants the retrieval and analysis of spectra at SLab@IAPS, enhancing workflow efficiency and accelerating data analysis for swift, accurate insights..
         /// </summary>
         public static string TileSpectraHubDescription {
             get {
@@ -160,7 +169,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HyperLab provides access tool for research and data analysis of spectra acquired at SLab@IAPS. Additionally, it offers advanced tools for spectroscopic data analysis through statistical analysis tools, empowering researchers with comprehensive insights..
+        ///   Looks up a localized string similar to HyperLab integrates the capabilities of web applications, console tools, and cross-platform software to provide a comprehensive and efficient platform for data analysis. Equipped with a robust suite of foundational spectral analysis methods and advanced statistical tools, HyperLab enables researchers to extract meaningful insights with accuracy and reliability. .
         /// </summary>
         public static string WelcomeExplanation {
             get {

@@ -3,11 +3,12 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    background-color: rgba(0, 0, 0, 0.8);
     /*transition: background-image 0.2s ease-in;*/
 }
 
 .grid-image-item {
-    height: 100px;
+    height: 150px;
     object-fit: contain;
 }
 
