@@ -64,18 +64,21 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult CheckUser(GenericRequestByTextModel model)
         {
+            if (string.IsNullOrEmpty(model.Text))
+                return new JsonResult(GenericResponseModel.CreateErrorResponse());
+
             LoginModel? loginModel = dbHandlerHyperLabUsers.getLogin(model.Text);
             if (loginModel != null)
                 return new JsonResult(new GenericResponseModel() { IsOk = true, ResponseObject = loginModel.Id });
             else
-                return new JsonResult(new GenericResponseModel() { IsOk = false });
+                return new JsonResult(GenericResponseModel.CreateErrorResponse());
         }
 
         [HttpGet]
         public IActionResult GetMenu()
         {
             List<MenuItem>? menuItems = dbHandlerHyperLabUsers.getMenuItems(getUserId(),
-                                                                       getCallerContext());
+                                                                            getCallerContext());
             if (menuItems?.Count > 0)
                 return new JsonResult(menuItems);
             else
