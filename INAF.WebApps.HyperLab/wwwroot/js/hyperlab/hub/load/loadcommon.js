@@ -146,15 +146,15 @@ function parseCSV(text) {
 function manageCsvProcedure(text, filename, source, fileExt) {
     let xml = buildSpectrumXml(filename, text, source);
     let isLoaded = xml != null;
-    /* add file item to list of loaded files on UI */
-    addFilesListItem(filename, SPECTRUM_TYPE_RAW, source, isLoaded);
     /* save parse spectrum on the in-memory list */
     addParsedSpectrum(filename, xml, SPECTRUM_TYPE_RAW, source, fileExt);
+    /* add file item to list of loaded files on UI */
+    addFilesListItemAsync(filename, SPECTRUM_TYPE_RAW, source, isLoaded);
 }
 
-/* -------------------------------------------------------------------------------- */
+/* ################################################################################ */
 /* BUILD XML */
-/* -------------------------------------------------------------------------------- */
+/* ################################################################################ */
 
 function buildSpectrumXml(filename, text, source) {
     let spectrumType = (source == SPECTRUM_SOURCE_SLAB) ? SPECTRUM_TYPE_RAW : SPECTRUM_TYPE_ALIGNED;
@@ -255,10 +255,10 @@ async function manageXmlProcedureAsync(xml, filename, source, fileExt) {
         /* retrieve spectrumType text and value */
         let spectrumTypeText = type[0].innerHTML;
         let spectrumType = getSpectrumTypeValue(spectrumTypeText);
-        /* add file item to list of loaded files on UI */
-        addFilesListItem(filename, spectrumType, source, true);
         /* save parse spectrum on the in-memory list */
         addParsedSpectrum(filename, xml, spectrumType, source, fileExt);
+        /* add file item to list of loaded files on UI */
+        addFilesListItemAsync(filename, spectrumType, source, true);
     }
 }
 
@@ -291,21 +291,25 @@ async function saveFileAsync(filename) {
 /* ################################################################################ */
 /* BUILD LIST ITEM */
 /* ################################################################################ */
-function addFilesListItem(filename, spectrumType, source, isLoaded) {
+async function addFilesListItemAsync(filename, spectrumType, source, isLoaded) {
     $('#loadedFilesList').append(getFilesListItem(filename, spectrumType, source, isLoaded));
 
-    if (isLoaded) {
-        switch (source) {
-            case SPECTRUM_SOURCE_EXTERNAL:
-                if (isUserAuthenticated)
-                    checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, SPECTRUM_TYPE_ALIGNED, source);
-                break;
+    if (!isLoaded)
+        return;
 
-            default:
-                checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, spectrumType, source);
-                break;
-        }
-    }
+    saveFileAsync(filename);
+    //if (isLoaded) {
+    //    switch (source) {
+    //        case SPECTRUM_SOURCE_EXTERNAL:
+    //            if (isUserAuthenticated)
+    //                checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, SPECTRUM_TYPE_ALIGNED, source);
+    //            break;
+
+    //        default:
+    //            checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, spectrumType, source);
+    //            break;
+    //    }
+    //}
 }
 
 async function checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, spectrumType, source) {
