@@ -1,5 +1,6 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Menu;
 using INAF.Libraries.Net.DB.HyperLabUsers;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,9 +18,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetMenu()
+        public IActionResult GetMenu(SearchRequestByNullableIdModel model)
         {
-            List<MenuItem>? menuItems = dbHandlerHyperLabUsers.getMenuItemsForApp();
+            int userId = getUserId();
+            List<MenuItem>? menuItems = dbHandlerHyperLabUsers.getMenuItemsForApp(userId, model.Id);
             if (menuItems?.Count > 0)
                 return new JsonResult(menuItems);
             else

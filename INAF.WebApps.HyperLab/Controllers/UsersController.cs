@@ -74,16 +74,16 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
         }
 
-        [HttpGet]
-        public IActionResult GetMenu()
-        {
-            List<MenuItem>? menuItems = dbHandlerHyperLabUsers.getMenuItems(getUserId(),
-                                                                            getCallerContext());
-            if (menuItems?.Count > 0)
-                return new JsonResult(menuItems);
-            else
-                return new EmptyResult();
-        }
+        //[HttpGet]
+        //public IActionResult GetMenu()
+        //{
+        //    List<MenuItem>? menuItems = dbHandlerHyperLabUsers.getMenuItems(getUserId(),
+        //                                                                    getCallerContext());
+        //    if (menuItems?.Count > 0)
+        //        return new JsonResult(menuItems);
+        //    else
+        //        return new EmptyResult();
+        //}
 
         [HttpGet]
         public IActionResult GetUserDetailsSimple()
