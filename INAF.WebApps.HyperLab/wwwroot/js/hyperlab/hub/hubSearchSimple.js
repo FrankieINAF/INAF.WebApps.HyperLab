@@ -22,6 +22,7 @@ function getMaterialForSearch() {
             Id: parseInt(tmp[1]),
             Text: text,
             Type: type,
+            RequestedLevels: requestedLevelsSimple
         };
     } catch (e) {
         console.log(`getMaterialForSearch - ex: ${e}`);
@@ -67,25 +68,17 @@ async function searchSimpleByMaterial() {
 async function searchSimpleByMineralType() {
     let plugin = Metro.getPlugin('#selectMineralType', 'select');
 
-    let model = {
-        Id: parseInt(plugin.val())
-    };
-
     setLoadingCircleIsVisible(true);
 
-    loadPartialViewWithAjaxPost(UrlSearchSimpleByMineralType, model, 'searchResultsContainer');
+    loadPartialViewWithAjaxPost(UrlSearchSimpleByMineralType, getModelFromPlugin(plugin), 'searchResultsContainer');
 }
 
 async function searchSimpleByOriginType() {
     let plugin = Metro.getPlugin('#selectOriginType', 'select');
 
-    let model = {
-        Id: parseInt(plugin.val())
-    };
-
     setLoadingCircleIsVisible(true);
 
-    loadPartialViewWithAjaxPost(UrlSearchSimpleByOriginType, model, 'searchResultsContainer');
+    loadPartialViewWithAjaxPost(UrlSearchSimpleByOriginType, getModelFromPlugin(plugin), 'searchResultsContainer');
 }
 
 async function searchSimpleBySampleName() {
@@ -109,11 +102,17 @@ async function searchSimpleBySampleName() {
 async function searchSimpleBySampleType() {
     var plugin = Metro.getPlugin('#selectSampleDataType', 'select');
 
-    var model = {
-        Id: parseInt(plugin.val())
-    };
-
     setLoadingCircleIsVisible(true);
 
-    loadPartialViewWithAjaxPost(UrlSearchSimpleBySampleType, model, 'searchResultsContainer');
+    loadPartialViewWithAjaxPost(UrlSearchSimpleBySampleType, getModelFromPlugin(plugin), 'searchResultsContainer');
+}
+
+/* -------------------------------------------------------------------------------- */
+/* COMMON */
+/* -------------------------------------------------------------------------------- */
+function getModelFromPlugin(plugin) {
+    return {
+        Id: parseInt(plugin.val()),
+        RequestedLevels: requestedLevelsSimple
+    };
 }

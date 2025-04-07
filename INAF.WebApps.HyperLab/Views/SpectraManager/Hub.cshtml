@@ -68,22 +68,23 @@
 	}
 	<!-- SEARCH/LOAD -->
 	<div data-role="panel"
-	id="panelSearchLoad"
-	data-title-caption="<strong>@panelTitle</strong>"
-	data-collapsed="false"
-	data-collapsible="true"
-	data-cls-panel="overflow-y-hidden">
+		 id="panelSearchLoad"
+		 data-title-caption="<strong>@panelTitle</strong>"
+		 data-collapsed="false"
+		 data-collapsible="true"
+		 data-cls-panel="overflow-y-hidden"
+		 data-cls-collapse-toggle="bg-cyan fg-white marker-light">
 		<div id="panels">
 			<!-- TABS -->
 			@if (Model.IsUserAuthenticated)
 			{
 				<div id="charmsTabsContainer" class="row cell-fs-12">
 					<ul id="searchTabs"
-					data-app-bar="false"
-					data-role="tabs"
-					data-expand="true"
-					data-expand-point="fs"
-					data-cls-tabs="tabs-list flex-justify-center">
+						data-app-bar="false"
+						data-role="tabs"
+						data-expand="true"
+						data-expand-point="fs"
+						data-cls-tabs="tabs-list flex-justify-center">
 						<li><a id="searchtitle" href="#panelSearch">@Html.Raw(Search.TabSearchTitle)</a></li>
 						<li><a id="loadtitle" href="#panelLoad">@Html.Raw(Search.TabLoadTitle)</a></li>
 					</ul>

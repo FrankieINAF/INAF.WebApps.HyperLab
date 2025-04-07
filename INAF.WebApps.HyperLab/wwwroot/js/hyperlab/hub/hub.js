@@ -28,6 +28,10 @@ function setUIForChart(isChartVisible) {
     //setTimeout(function () { setChartAreaWidth(isChartVisible); }, 300);
 }
 
+function expandSearchPanel() {
+    Metro.getPlugin('#panelSearchLoad', 'panel').expand();
+}
+
 /* ################################################################################ */
 /* SELECTED SPECTRA */
 /* ################################################################################ */
