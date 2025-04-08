@@ -10,8 +10,26 @@
 <link rel="stylesheet" href="~/css/dist/commonbundle.min.css" />
 <link rel="stylesheet" href="~/css/dist/home/indexbundle.min.css" />
 
-<div class="h-vh-100 w-vw-100 page-background d-flex flex-justify-center">
-    <div class="tiles-container d-flex flex-column">
+<style>
+    /* Nascondi la scrollbar, ma mantieni lo scroll abilitato */
+    .no-scrollbar {
+      overflow: scroll;
+    }
+
+    /* Stile specifico per WebKit */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Compatibilità con altri browser */
+    .no-scrollbar {
+      scrollbar-width: none; /* Per Firefox */
+    }
+  </style>
+
+
+<div class="h-vh-100 w-vw-100 page-background d-flex flex-justify-center overflow-y-hidden">
+    <div class="tiles-container d-flex flex-column overflow-y-auto no-scrollbar">
         <div class="margin-vertical-24">
             <p class="h1 text-center padding-vertical-16 fg-white">@Html.Raw(Home.WelcomeMessage)</p>
         </div>

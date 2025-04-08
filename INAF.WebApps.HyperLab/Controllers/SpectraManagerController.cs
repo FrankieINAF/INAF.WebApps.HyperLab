@@ -6,7 +6,6 @@ using INAF.Libraries.Net.HyperLab.CommonModels.Models.Pages;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches.Interfaces;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Shares;
-using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Helpers;
