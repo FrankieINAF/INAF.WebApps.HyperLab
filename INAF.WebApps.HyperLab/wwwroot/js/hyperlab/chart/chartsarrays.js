@@ -1,28 +1,4 @@
-﻿///* find all RAW spectra + their children, 
-//   DO NOT SEARCH FOR REF WHITES */
-//function findAllSpectraToBeHidden(selectedRawId) {
-//    let spectraToBeHiddenIds = [];
-
-//    /* find all raw spectra */
-//    let rawSpectra = getSpectraBySpectrumType(SPECTRUM_TYPE_RAW);
-
-//    /* find all children of raw spectra */
-//    rawSpectra.forEach(function (item) {
-//        spectraToBeHiddenIds.push(item.Id);
-//        let children = findSpectrumChildrenById(item.Id);
-//        if (children && children.length > 0)
-//            spectraToBeHiddenIds = spectraToBeHiddenIds.concat(children);
-//    });
-
-//    /* remove id of selected spectrum */
-//    let index = spectraToBeHiddenIds.findIndex(x => x == selectedRawId);
-//    if (index > -1)
-//        spectraToBeHiddenIds.splice(index, 1);
-
-//    return spectraToBeHiddenIds;
-//}
-
-function hideSpectraToBeHidden() {
+﻿function hideSpectraToBeHidden() {
     let spectraToBeHidden = spectraInfo.filter(x => !x.IsVisible);
     spectraToBeHidden.forEach(function (item) {
         let seriesname = getSpectrumSeriesNameFromIndex(getSpectrumIndexById(item.Id));

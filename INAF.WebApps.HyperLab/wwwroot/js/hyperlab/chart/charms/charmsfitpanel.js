@@ -68,7 +68,7 @@ async function preparePanelForFitPhase1Async(extCallback) {
         loadPartialViewWithAjaxGetNoModel(UrlLoadFitPanel, 'fitOptionsPanel', callback);
 
         /* add raw spectrum to the ones to be hidden */
-        if (isSLabSpectrumCurrentlySelected) //when a SLab RAW spectrum is loaded and under processing we hide it in this phase, otherwise avoid to hide it
+        if (!isSLabConditionForSpectrumTypeHigherThanRaw()) //when a SLab RAW spectrum is loaded and under processing we hide it in this phase, otherwise avoid to hide it
             setSpectrumVisibility(selectedSpectrumForProcessingId, false);
 
         isFitTabSelected = true;
@@ -705,7 +705,8 @@ async function addSelectedPointForFittingAsync(point, isFromUserAction = false, 
             setTimeout(callback, PULSE_TIMEOUT / 4);
         else
             callback();
-    }
+    } else
+        setLoadingCircleIsVisible(false); // avoid loading circle remaining visible when no point is added
 }
 
 /* clean panel on charms from points settings */
@@ -1204,7 +1205,7 @@ function tryAddContinuumSpectrum() {
        1) when we're processing a SLAB raw spectrum do as usual ;
        2) when we're processing an external file, aligned spectrum IS selected spectrum */
     let alignedSpectrum = null;
-    if (isSLabSpectrumCurrentlySelected)
+    if (!isSLabConditionForSpectrumTypeHigherThanRaw())
         alignedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
     else
         alignedSpectrum = selectedSpectrum;
@@ -1325,6 +1326,8 @@ function buildContinuumRemovedSpectrum() {
 
         /* retrieve aligned spectrum */
         let alignedSpectrum = getAlignedSpectrumProcedure();
+        if (alignedSpectrum == null)
+            return null;
 
         /* build spectrum info for being added to 'spactraInfo' */
         let continuumRemovedSpectrum = buildSpectrum(

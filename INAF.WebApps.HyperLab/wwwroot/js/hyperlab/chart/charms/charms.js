@@ -12,6 +12,7 @@ var SPECTRUM_OF_TYPE_SMOOTHED_WHOLE_SPECTRUM_TEMP_ID = 'smoothed_wholeSpectrum_i
 var isCharmsResetRequested = true;
 
 var isSLabSpectrumCurrentlySelected = true;
+var isSLabLowerSpectrumTypeHigherThanRaw = false;
 
 var selectedSpectrumForProcessingId = 0;
 var oldSelectedSpectrumForProcessingId = 0;
@@ -23,6 +24,10 @@ var spectraForProcessingIds = [];
 var spectraTypesParents = {};
 
 var isBuildingUpContinuum = false;
+
+function isSLabConditionForSpectrumTypeHigherThanRaw() {
+    return isSLabSpectrumCurrentlySelected && isSLabLowerSpectrumTypeHigherThanRaw;
+}
 
 /* ################################################################################ */
 /* MANAGE CHARMS OPENING/CLOSING */
@@ -175,7 +180,7 @@ function buildSpectrum(id, parentId, name, spectrumLevel, spectrumType, spectrum
 
 function getAlignedSpectrumProcedure() {
     let alignedSpectrum = null;
-    if (isSLabSpectrumCurrentlySelected)
+    if (!isSLabConditionForSpectrumTypeHigherThanRaw())
         alignedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
     else
         alignedSpectrum = getSpectrumBySpectrumType(SPECTRUM_TYPE_ALIGNED);
@@ -226,7 +231,11 @@ function loadSpectraToBeProcessed() {
     /* close other charms, if opened */
     closeCharmsColorSelector();
 
-    let spectraSLabType = spectraInfo.filter(x => x.SpectrumSource == SPECTRUM_SOURCE_SLAB && x.SpectrumType == SPECTRUM_TYPE_RAW).map(x => { return x.Id });
+    const lowerSpectrumType = Math.min(...spectraInfo.map(x => x.SpectrumType));
+    if (lowerSpectrumType > SPECTRUM_TYPE_RAW)
+        isSLabLowerSpectrumTypeHigherThanRaw = true;
+
+    let spectraSLabType = spectraInfo.filter(x => x.SpectrumSource == SPECTRUM_SOURCE_SLAB && x.SpectrumType == lowerSpectrumType).map(x => { return x.Id });
     if (spectraSLabType && spectraSLabType.length > 0)
         spectraForProcessingIds.push(...spectraSLabType);
 
@@ -251,7 +260,10 @@ function loadSpectraToBeProcessed() {
 
         if (spectraNum == 1) {
             /* manage case when only external file (labeled as 'Aligned') are loaded and no Raw spectrum is available */
-            if (spectraExternalType.length > 0)
+            const cond1 = spectraExternalType.length > 0;
+            const cond2 = isSLabConditionForSpectrumTypeHigherThanRaw();
+            //if (spectraExternalType.length > 0)
+            if (cond1 || cond2)
                 setIsPointClickForFitEnabled(true);
             else
                 setIsPointClickForFitEnabled(false);
@@ -271,7 +283,7 @@ async function initCharmsPhase2Async() {
     /* hide message about RAW file selection */
     hideByClassDFlexItem('charmsTabAlignmentStartingMessageContainer');
 
-    if (isSLabSpectrumCurrentlySelected) {
+    if (!isSLabConditionForSpectrumTypeHigherThanRaw()) {
         /* set as selected the alignment tab */
         setTabEnabled(0, true);
 
@@ -379,7 +391,7 @@ function setSelectedSpectrumForProcessing(selected) {
             /* reset charms UI and load segments for alignment */
             await initCharmsPhase1Async();
 
-            if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL)
+            if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL || isSLabLowerSpectrumTypeHigherThanRaw)
                 setIsPointClickForFitEnabled(true);
 
             /* load info for creating UI of alignment panel  */
@@ -873,7 +885,7 @@ function getPointAtFromSeriesPoints(seriesPoints, index) {
 function getSeriesPointsProcedure(rawId, spectrumType) {
     //selectedSpectrumTypeForContinuumRemoval
     let spectrum = getChildSpectrumByRawIdAndSpectrumType(rawId, spectrumType);
-    if (!spectrum && !isSLabSpectrumCurrentlySelected)
+    if (!spectrum && (!isSLabSpectrumCurrentlySelected || isSLabLowerSpectrumTypeHigherThanRaw))
         spectrum = getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
     /* retrieve index of spectrum in spectraInfo */
     let index = getSpectrumIndexById(spectrum.Id);
