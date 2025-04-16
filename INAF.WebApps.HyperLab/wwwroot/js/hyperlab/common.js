@@ -429,8 +429,10 @@ function setLoadingCircleIsVisible(isVisible) {
                 overlayClickClose: false
             });
         } else {
-            Metro.activity.close(metroActivity);
-            metroActivity = null;
+            if (metroActivity) {
+                Metro.activity.close(metroActivity);
+                metroActivity = null;
+            }
         }
     } catch (e) {
         console.log('setLoadingCircleIsVisible - ex:' + e.message);

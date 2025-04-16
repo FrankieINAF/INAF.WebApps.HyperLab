@@ -24,6 +24,7 @@ var SERIES_FIT_POINTS = 'FitPointsSeries';
 var SERIES_HIGHLIGHTED_SEGMENT = 'HighlightedSegmentSeries';
 
 var FIT_NUM_OF_POINTS_FOR_MISSING_POINTS_VALUE = 'fitnumofpointsvalue'
+var FIT_SEGMENT = 'fitsegment';
 var FIT_SEGMENT_CORE = 'fitsegmentcore';
 var FIT_SEGMENT_PRO = 'fitsegmentpro';
 var FIT_SEGMENT_CORE_VALUE = 'fitsegmentcorevalue';
@@ -940,8 +941,8 @@ async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isL
     segmentsForFitting[segment.Index].uiId = result.SegmentId;
 
     /* update id of list of segments on charms */
-    if (segmentsForFitting.length > 1)
-        orderSegmentForFittingUIsIds(currentFitMode);
+    //if (segmentsForFitting.length > 1)
+    //    orderSegmentForFittingUIsIds(currentFitMode);
 
     if (segmentsForFitting.length == 1 && segment.Index == 0) {
         switch (currentFitMode) {
@@ -1802,7 +1803,7 @@ function removeContinuumRemovedSpectrumProcedure() {
     switchVisibilityOfChildrenSpectraRemovalMessage('continuumRemovedChildrenRemovalWarning', false);
 
     /* check whether children removal warning message is to be shown or not  */
-    let childSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+    let childSpectrum = getSpectrumWithSLabConditionForSpectrumTypeHigherThanRaw(SPECTRUM_TYPE_ALIGNED);
     if (isAnySpectrumChildById(childSpectrum.Id))
         switchVisibilityOfChildrenSpectraRemovalMessage('continuumRemovedChildrenRemovalWarning', true);
 

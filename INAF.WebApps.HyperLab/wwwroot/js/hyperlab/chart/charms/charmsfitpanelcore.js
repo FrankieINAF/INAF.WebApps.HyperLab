@@ -118,7 +118,7 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
 async function onSegmentFunctionSelectCoreAsync(val, option, item) {
     //console.log(`onSegmentFunctionSelectCoreAsync ${val}`);
 
-    let result = onSegmentFunctionSelectBase(this.id, val, FIT_SEGMENT_CORE, FIT_SEGMENT_CORE_VALUE);
+    let result = onSegmentFunctionSelectBase(val, FIT_SEGMENT_CORE, FIT_SEGMENT_CORE_VALUE);
     if (!result)
         return;
 

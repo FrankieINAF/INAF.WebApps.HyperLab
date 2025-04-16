@@ -179,13 +179,13 @@ function buildSpectrum(id, parentId, name, spectrumLevel, spectrumType, spectrum
 }
 
 function getAlignedSpectrumProcedure() {
-    let alignedSpectrum = null;
-    if (!isSLabConditionForSpectrumTypeHigherThanRaw())
-        alignedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
-    else
-        alignedSpectrum = getSpectrumBySpectrumType(SPECTRUM_TYPE_ALIGNED);
+    //let alignedSpectrum = null;
+    //if (!isSLabConditionForSpectrumTypeHigherThanRaw())
+    //    alignedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+    //else
+    //    alignedSpectrum = getSpectrumBySpectrumType(SPECTRUM_TYPE_ALIGNED);
 
-    return alignedSpectrum;
+    return getSpectrumWithSLabConditionForSpectrumTypeHigherThanRaw(SPECTRUM_TYPE_ALIGNED);
 }
 
 function getParentFile(id) {
@@ -1119,4 +1119,11 @@ function toggleDropDown(id) {
 
         setTimeout(function () { $(`#${id}`).addClass('keep-open') }, 500);
     }
+}
+
+function getSpectrumWithSLabConditionForSpectrumTypeHigherThanRaw(spectrumType) {
+    if (!isSLabConditionForSpectrumTypeHigherThanRaw())
+        return getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, spectrumType);
+    else
+        return getSpectrumBySpectrumType(spectrumType);
 }

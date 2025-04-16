@@ -94,6 +94,10 @@ async function saveSLabFileAsync(filename, xml, spectrumType, isRawUrlRequested)
         isOk = obj.IsOk;
         /* update the list item on UI by changing the cloud icon color */
         updateListItem(filename, isOk);
+        /* update the parsed spectrum id */
+        updateParsedSpectrumId(filename, obj.Id);
+        /* add the spectrum to the selected spectra */
+        addSelectedSpectrum(obj.Id);
     } else
         isOk = false;
 

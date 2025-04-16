@@ -21,6 +21,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new EmptyResult();
 
             List<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(complexSearchModel.Conditions,
+                                                                                                complexSearchModel.RequestedLevels!,
                                                                                                 getUserId());
 
             switch (getCallerContext())
@@ -29,7 +30,8 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
+
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, complexSearchModel.RequestedLevels!));
             }
 
             return new EmptyResult();
@@ -40,9 +42,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpPost]
         public IActionResult SearchSimpleGroupsByFilename(SearchRequestByTextModel model)
         {
-            if (string.IsNullOrEmpty(model.Text) || 
-                model.Text.Length < 3 || 
-                model.RequestedLevels == null || 
+            if (string.IsNullOrEmpty(model.Text) ||
+                model.Text.Length < 3 ||
+                model.RequestedLevels == null ||
                 !model.RequestedLevels.Any())
                 return new EmptyResult();
 
@@ -55,7 +57,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels));
             }
 
             return new EmptyResult();
@@ -81,7 +83,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels));
             }
 
             return new EmptyResult();
@@ -103,7 +105,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels));
             }
 
             return new EmptyResult();
@@ -125,7 +127,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels));
             }
 
             return new EmptyResult();
@@ -149,7 +151,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo));
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels));
             }
 
             return new EmptyResult();
@@ -281,7 +283,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             if (ModelState.IsValid)
             {
-                if (string.IsNullOrEmpty(model.Name) || 
+                if (string.IsNullOrEmpty(model.Name) ||
                     model.RequestedLevels == null || !model.RequestedLevels.Any() ||
                     model.Conditions == null)
                     return errorResult;

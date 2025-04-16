@@ -89,11 +89,13 @@ namespace INAF.WebApps.HyperLab.Controllers
             return Content(jsonResult, "application/json");
         }
 
-        private IEnumerable<ISpectraGroupInfoModel>? retrieveSpectraFilesForGroups(IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo)
+        private IEnumerable<ISpectraGroupInfoModel>? retrieveSpectraFilesForGroups(IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo,
+                                                                                   int[] levelIds)
         {
             spectraFilesInfo?.ForEach(spectraGroupInfo =>
             {
                 List<SpectrumInfoModel>? spectrumInfoModels = dbHandlerHyperLabData.searchGroupItems(spectraGroupInfo.Id,
+                                                                                                     levelIds,
                                                                                                      getUserId());
                 if (spectrumInfoModels?.Count > 0)
                     spectraGroupInfo.Spectra = spectrumInfoModels;
