@@ -91,6 +91,8 @@ function preparePanelForFitPhase2() {
 function initFit() {
     initFitArrays();
     initFitFunctions();
+    /* init dictionary for ordering segmnents */
+    initSegmentsDictionary();
 
     isFitTabSelected = false;
     isFitTabReady = false;
@@ -922,7 +924,7 @@ async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isL
 
     /* order segments by X0 */
     if (segmentsForFitting.length > 1)
-        orderSegmentsForFitting(); // DOPO QUESTO BISOGNA RIORDINARE GLI ELEMENTI SULLA UI!!!!!!!!!!!!!!!!!!ì
+        orderSegmentsForFitting();
 
     /* add segment-related UI item  */
     let result;
@@ -930,6 +932,7 @@ async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isL
         case FIT_CORE_MODE:
             /* create UI element on charms and build the continuum segment on chart */
             result = createSegmentFittingUICore(segment, isFromUserAction, isLast);
+            addSegmentToDictionary(FIT_SEGMENT_CORE, result.Guid, segment.Index);
             break;
 
         case FIT_PRO_MODE:
@@ -939,10 +942,6 @@ async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isL
     }
 
     segmentsForFitting[segment.Index].uiId = result.SegmentId;
-
-    /* update id of list of segments on charms */
-    //if (segmentsForFitting.length > 1)
-    //    orderSegmentForFittingUIsIds(currentFitMode);
 
     if (segmentsForFitting.length == 1 && segment.Index == 0) {
         switch (currentFitMode) {
@@ -956,8 +955,6 @@ async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isL
                 setPanelForFitProVisible();
                 break;
         }
-        //animateCSS(segmentId, 'bounceIn', FASTER);
-        //return;
     } else {
         /* check whether a segment with lower index exists,
            if exists, then append the ui item after it, otherwise append as 1st item */
@@ -980,8 +977,6 @@ async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isL
             let firstId = getFirstSegmentId(currentFitMode);
             $(result.Html).insertBefore(`#${firstId}`);
         }
-
-        //animateCSS(segmentId, 'bounceIn', FASTER);
     }
 
     /* enable button for removing continuum and change title */
@@ -1311,6 +1306,9 @@ function removeFitPointsSeriesPoints() {
 
     /* clear 'segmentsForFitting' array */
     clearSegmentsForFitting();
+
+    /* reset dictionary for ordering segmnents */
+    resetSegmentsDictionary();
 
     /* remove fit points series and clean panel on charms with points/segments settings */
     cleanPointsPanel();

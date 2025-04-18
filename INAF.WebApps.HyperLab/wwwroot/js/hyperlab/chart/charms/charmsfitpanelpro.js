@@ -46,19 +46,20 @@ async function calculateMaxValuePointAsync(points, pointForFitting, pMinPMaxMaxV
 }
 
 async function createSegmentFittingUIProAsync(segment, isFromUserAction = false, isLast = false) {
-    let segmentId = getUIElementId(FIT_SEGMENT_PRO, segment.Index);
-    let segmentSelectId = getUIElementId(FIT_SEGMENT_PRO, segment.Index, 'Select');
-    let segmentContainerId = getUIElementId(FIT_SEGMENT_PRO_VALUE, segment.Index, 'Container');
+
+    const segmentWithGuidResult = buildUIElementIdWithGuid(FIT_SEGMENT_PRO);
+    const segmentSelectId = buildUIElementId(FIT_SEGMENT_PRO, segment.Index, 'Select');
+    const segmentContainerId = buildUIElementId(FIT_SEGMENT_PRO_VALUE, segment.Index, 'Container');
 
     let points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
 
-    let buttonP0Id = `${segmentId}_${P0Button}`;
-    let buttonP1Id = `${segmentId}_${P1Button}`;
+    let buttonP0Id = `${segmentWithGuidResult.ElementId}_${P0Button}`;
+    let buttonP1Id = `${segmentWithGuidResult.ElementId}_${P1Button}`;
 
     let html = ``;
 
     /* segment info */
-    html += `<div id="${segmentId}" class="d-flex flex-row margin-bottom-8 border-bottom">`;
+    html += `<div id="${segmentWithGuidResult.ElementId}" class="d-flex flex-row margin-bottom-8 border-bottom">`;
 
     html += `<div class="d-flex flex-column">`;
 
@@ -79,7 +80,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
         html += `   <div class="margin-vertical-4 margin-horizontal-4" style="width: 20px; height: 30px"></div>`;
     html += `   <div class="d-flex flex-justify-between">`;
 
-    let idP0PMin = `${segmentId}${P0}${PXMin}`;
+    let idP0PMin = `${segmentWithGuidResult.ElementId}${P0}${PXMin}`;
     let p0PMax = (segment.P0.P.X - 1);
     if (!isFromUserAction)
         p0PMax = segment.P0.P.X;
@@ -89,13 +90,13 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
 
     let topSpinnerTextElem;
     if (topPMinPMaxResult)
-        topSpinnerTextElem = `<p class="text-secondary">${FitProModeCenterLabel}<span id="${segmentId}${P0}Text" class="margin-left-4 text-secondary">${(topPMinPMaxResult.maxValuePoint.X)}</span></p>`;
+        topSpinnerTextElem = `<p class="text-secondary">${FitProModeCenterLabel}<span id="${segmentWithGuidResult.ElementId}${P0}Text" class="margin-left-4 text-secondary">${(topPMinPMaxResult.maxValuePoint.X)}</span></p>`;
     else
         topSpinnerTextElem = `<p class="text-secondary">${FitBoundaryLabel}</p>`;
     html += topSpinnerTextElem;
     html += `   </div>`;
 
-    let idP0PMax = `${segmentId}${P0}${PXMax}`;
+    let idP0PMax = `${segmentWithGuidResult.ElementId}${P0}${PXMax}`;
     html += createSpinner(idP0PMax, segment.P0.PXMax.X, segment.P0.P.X + 1, true, false, isFromUserAction);
 
     html += `   </div>`;
@@ -109,7 +110,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     html += `      <select id="${segmentSelectId}" data-role="select" data-on-item-select="${onSegmentFunctionSelectProAsync.name}">`;
     let fitFunctionsNum = fitFunctions.length;
     for (var i = 0; i < fitFunctionsNum; i++) {
-        let value = getUIElementId(segmentId, fitFunctions[i].Id);
+        let value = buildUIElementId(segmentWithGuidResult.ElementId, fitFunctions[i].Id);
         html += `<option value="${value}">${fitFunctions[i].Name}</option>`;
     }
     html += `      </select>`;
@@ -136,20 +137,20 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
         html += `   <div class="margin-horizontal-4" style="width: 20px; height: 30px"></div>`;
     html += `   <div class="d-flex flex-justify-between">`;
 
-    let idP1PMin = `${segmentId}${P1}${PXMin}`;
+    let idP1PMin = `${segmentWithGuidResult.ElementId}${P1}${PXMin}`;
     html += createSpinner(idP1PMin, segment.P1.PXMin.X, segment.P1.P.X - 1, false, true);
 
     html += `   <div class="margin-horizontal-8" style="width: 80px;">`;
 
     let bottomSpinnerTextElem;
     if (bottomPMinPMaxResult)
-        bottomSpinnerTextElem = `<p class="text-secondary">${FitProModeCenterLabel}<span id="${segmentId}${P1}Text" class="margin-left-4 text-secondary">${(bottomPMinPMaxResult.maxValuePoint.X)}</span></p>`;
+        bottomSpinnerTextElem = `<p class="text-secondary">${FitProModeCenterLabel}<span id="${segmentWithGuidResult.ElementId}${P1}Text" class="margin-left-4 text-secondary">${(bottomPMinPMaxResult.maxValuePoint.X)}</span></p>`;
     else
         bottomSpinnerTextElem = `<p class="text-secondary">${FitBoundaryLabel}</p>`;
     html += bottomSpinnerTextElem;
     html += `   </div>`;
 
-    let idP1PMax = `${segmentId}${P1}${PXMax}`;
+    let idP1PMax = `${segmentWithGuidResult.ElementId}${P1}${PXMax}`;
     let p1PMax = (segment.P1.P.X + 1);
     if (!isFromUserAction)
         p1PMax = segment.P1.P.X;
@@ -159,13 +160,6 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     html += `</div>`;
 
     html += `</div>`;
-
-    ///* button for starting band analysis */
-    //if (topPMinPMaxResult) {
-    //    html += `<div id="${segmentId}BandAnalysisButton" class="flex-align-center d-none">`;
-    //    html += `<button class="button light cycle small outline pointer" onclick="${startBandAnalysisProcedureAsync.name}(${segment.P0.P.X}, ${segment.P1.P.X})" title=""><span class="mif-calculator2"></span></button>`;
-    //    html += `</div>`;
-    //}
 
     html += `</div>`;
 
@@ -208,7 +202,8 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     });
 
     return {
-        SegmentId: segmentId,
+        SegmentId: segmentWithGuidResult.ElementId,
+        Guid: segmentWithGuidResult.Guid,
         Html: html
     };
 }
@@ -300,10 +295,17 @@ async function onSegmentFunctionSelectProAsync(val, option, item) {
 }
 
 function removeSegmentForFittingUIPro(segment) {
-    let segmentId = `${FIT_SEGMENT_PRO}${segment.Index}`;
-    $(`#${segmentId}`).remove();
-    //let callback = function () { $(`#${segmentId}`).remove(); };
-    //animateCSS(segmentId, 'slideOutRight', FASTER, callback);
+    const guid = getSegmentGuidFromDictionary(FIT_SEGMENT_PRO, segment.Index);
+
+    if (!guid)
+        return;
+
+    removeSegmentFromDictionary(FIT_SEGMENT_PRO, segment.Index)
+    //$(`#${getUIElementIdWithGuid(FIT_SEGMENT_PRO, guid)}`).remove();
+
+    let segmentId = getUIElementIdWithGuid(FIT_SEGMENT_PRO, guid);
+    let callback = function () { $(`#${segmentId}`).remove(); };
+    animateCSS(segmentId, 'slideOutRight', FASTER, callback);
 }
 
 function setIconForPXMinXMaxFit(id, isIconForShowRequired) {

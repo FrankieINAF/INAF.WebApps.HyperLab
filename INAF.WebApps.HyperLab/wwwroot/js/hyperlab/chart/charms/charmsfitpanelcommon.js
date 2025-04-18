@@ -1,7 +1,4 @@
-﻿var SegmentsDictionary = {
-    CoreSegments: [],
-    ProSegments: []
-}
+﻿var SegmentsDictionary;
 
 /* ################################################################################ */
 /* MANAGE SEGMENTS ORDER WITH DICTIONARY */
@@ -12,6 +9,7 @@ function addSegmentToDictionary(segmentType, guid, index) {
     if (!isAnySegmentWithIndexInDictionary(segmentType, index))
         SegmentsDictionary[dictionaryObject].push(getSegmentDictionaryItem(guid, index));
     else {
+        SegmentsDictionary.IsReorderRequired = true;
         /* when an item with current index is already present, then we need to update all index
            values and then we can insert the new item */
         const items = SegmentsDictionary[dictionaryObject].filter(x => x.Index >= index);
@@ -24,6 +22,8 @@ function addSegmentToDictionary(segmentType, guid, index) {
             addSegmentToDictionary(segmentType, guid, index);
         }
     }
+
+    tryOrderSegmentsInDictionary(segmentType);
 }
 
 function getSegmentDictionaryItem(guid, index) {
@@ -33,25 +33,86 @@ function getSegmentDictionaryItem(guid, index) {
     };
 }
 
-function getSegmentFromDictionary(segmentType, guid) {
+function getSegmentFromDictionaryByGuid(segmentType, guid) {
     const dictionaryObject = getDictionaryObject(segmentType);
 
     return SegmentsDictionary[dictionaryObject].find(x => x.Guid == guid);
 }
 
+function getSegmentFromDictionaryByIndex(segmentType, index) {
+    const dictionaryObject = getDictionaryObject(segmentType);
+
+    return SegmentsDictionary[dictionaryObject].find(x => x.Index == index);
+}
+
+function getSegmentGuidFromDictionary(segmentType, index) {
+    let item = getSegmentFromDictionaryByIndex(segmentType, index);
+    if (item)
+        return item.Guid;
+
+    return null;
+}
 
 function getSegmentIndexFromDictionary(segmentType, guid) {
-    let item = getSegmentFromDictionary(segmentType, guid);
+    let item = getSegmentFromDictionaryByGuid(segmentType, guid);
     if (item)
         return item.Index;
 
     return -1;
 }
 
+function initSegmentsDictionary() {
+    SegmentsDictionary = {
+        CoreSegments: [],
+        ProSegments: [],
+        IsReorderRequired: false
+    };
+}
+
 function isAnySegmentWithIndexInDictionary(segmentType, index) {
     const dictionaryObject = getDictionaryObject(segmentType);
 
     return SegmentsDictionary[dictionaryObject].some(x => x.Index == index);
+}
+
+function tryOrderSegmentsInDictionary(segmentType) {
+    if (!SegmentsDictionary.IsReorderRequired)
+        return;
+
+    const dictionaryObject = getDictionaryObject(segmentType);
+    SegmentsDictionary[dictionaryObject].sort((s0, s1) => {
+        return s0.Index - s1.Index;
+    });
+
+    SegmentsDictionary.IsReorderRequired = false;
+}
+
+function removeSegmentFromDictionary(segmentType, index) {
+    const dictionaryObject = getDictionaryObject(segmentType);
+
+    let item = SegmentsDictionary[dictionaryObject].find(x => x.Index == index);
+    if (item) {
+        SegmentsDictionary[dictionaryObject].splice(item.Index, 1);
+        const itemsToBeUpdated = SegmentsDictionary[dictionaryObject].filter(x => x.Index > item.Index);
+        if (itemsToBeUpdated) {
+            SegmentsDictionary.IsReorderRequired = true;
+
+            const itemsNum = itemsToBeUpdated.length;
+            for (let i = 0; i < itemsNum; i++) {
+                itemsToBeUpdated[i].Index--;
+            }
+        }
+
+        tryOrderSegmentsInDictionary(segmentType);
+
+        return true;
+    }
+
+    return false;
+}
+
+function resetSegmentsDictionary() {
+    initSegmentsDictionary();
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -110,7 +171,7 @@ function onSegmentFunctionSelectBase(val, fitSegmentType, fitSegmentValueType) {
     const segmentIndex = getFunctionIndexFromValue(val, fitSegmentType);
 
     /* clear the div */
-    let segmentContainerId = getUIElementId(fitSegmentValueType, segmentIndex, 'Container');
+    let segmentContainerId = buildUIElementId(fitSegmentValueType, segmentIndex, 'Container');
     $(`#${segmentContainerId}`).empty();
 
     /* retrieve the selected fit function */
@@ -178,20 +239,25 @@ async function onFitMethodFunctionParameterChange(curr, request, real) {
 /* ################################################################################ */
 /* CREATE/REORDER SEGMENTS */
 /* ################################################################################ */
-function getUIElementId(prefix, segmentIndex, elementType) {
+function buildUIElementId(prefix, segmentIndex, elementType) {
     if (elementType) {
         return `${prefix}_${segmentIndex}_${elementType}`;
     } else {
-        let guid;
-        if (prefix == FIT_SEGMENT_CORE || prefix == FIT_SEGMENT_PRO) {
-            guid = generateShortGUID();
-            addSegmentToDictionary(prefix, guid, segmentIndex);
-        }
-        if (guid)
-            return `${prefix}_${guid}`;
-        else
-            return `${prefix}_${segmentIndex}`;
+        return `${prefix}_${segmentIndex}`;
     }
+}
+
+function buildUIElementIdWithGuid(prefix) {
+    const guid = generateShortGUID();
+
+    return {
+        ElementId: `${prefix}_${guid}`,
+        Guid: guid
+    };
+}
+
+function getUIElementIdWithGuid(prefix, guid) {
+    return `${prefix}_${guid}`;
 }
 
 function setParameterSpinner(id, parameter, segmentIndex, fitFunction, onFitMethodFunctionParameterChangeFunctionName) {

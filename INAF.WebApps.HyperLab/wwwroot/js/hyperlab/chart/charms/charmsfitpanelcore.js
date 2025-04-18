@@ -10,7 +10,7 @@ function addPointUI(point) {
         return;
 
     let wl = parseInt(point.P.X);
-    let pointUIId = getUIElementId(FIT_POINT_CORE, wl);
+    let pointUIId = buildUIElementId(FIT_POINT_CORE, wl);
     let html = ``;
     html += `<div id="${pointUIId}" class="d-flex padding-bottom-8 margin-top-8 border-bottom">`;
     html += `<div class="pointer"><span class="mif mif-bin" title="${FitPointAtRemoveLabel}" onclick="${removePointUICore.name}(${index})"></span></div>`;
@@ -28,7 +28,7 @@ function removePointUICore(index) {
 
     removeSelectedPointFromFitting(point);
 
-    let id = getUIElementId(FIT_POINT_CORE, parseInt(pointComplex.P.X));
+    let id = buildUIElementId(FIT_POINT_CORE, parseInt(pointComplex.P.X));
     $(`#${id}`).remove();
 }
 
@@ -65,12 +65,12 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
         .replace('rv_1', segment.P0.P.X)
         .replace('rv_2', segment.P1.P.X);
 
-    let segmentId = getUIElementId(FIT_SEGMENT_CORE, segment.Index);
-    let rangeLabelId = getUIElementId(FIT_SEGMENT_CORE, segment.Index, 'RangeLabel');
-    let segmentSelectId = getUIElementId(FIT_SEGMENT_CORE, segment.Index, 'Select');
-    let segmentContainerId = getUIElementId(FIT_SEGMENT_CORE_VALUE, segment.Index, 'Container');
+    const segmentWithGuidResult = buildUIElementIdWithGuid(FIT_SEGMENT_CORE);
+    const rangeLabelId = buildUIElementId(FIT_SEGMENT_CORE, segment.Index, 'RangeLabel');
+    const segmentSelectId = buildUIElementId(FIT_SEGMENT_CORE, segment.Index, 'Select');
+    const segmentContainerId = buildUIElementId(FIT_SEGMENT_CORE_VALUE, segment.Index, 'Container');
     let html = ``;
-    html += `<div id="${segmentId}" class="d-flex flex-column padding-bottom-8 margin-top-16 border-bottom">`;
+    html += `<div id="${segmentWithGuidResult.ElementId}" class="d-flex flex-column padding-bottom-8 margin-top-16 border-bottom">`;
     html += `    <div><span id="${rangeLabelId}">${rangeLabel}</span></div>`;
     html += `    <div class="d-flex flex-row">`;
     /*              rectangle for highlighting segment */
@@ -83,7 +83,7 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
     html += `           <select id="${segmentSelectId}" data-role="select" data-on-item-select="${onSegmentFunctionSelectCoreAsync.name}">`;
     let fitFunctionsNum = fitFunctions.length;
     for (var i = 0; i < fitFunctionsNum; i++) {
-        let value = getUIElementId(segmentId, fitFunctions[i].Id);
+        let value = buildUIElementId(segmentWithGuidResult.ElementId, fitFunctions[i].Id);
         html += `<option value="${value}">${fitFunctions[i].Name}</option>`;
     }
     html += `           </select>`;
@@ -110,7 +110,8 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
     });
 
     return {
-        SegmentId: segmentId,
+        SegmentId: segmentWithGuidResult.ElementId,
+        Guid: segmentWithGuidResult.Guid,
         Html: html
     };
 }
@@ -127,10 +128,15 @@ async function onSegmentFunctionSelectCoreAsync(val, option, item) {
 }
 
 function removeSegmentForFittingUICore(segment) {
-    let segmentId = `${FIT_SEGMENT_CORE}${segment.Index}`;
+    const guid = getSegmentGuidFromDictionary(FIT_SEGMENT_CORE, segment.Index);
 
-    $(`#${segmentId}`).remove();
+    if (!guid)
+        return;
 
-    //let callback = function () { $(`#${segmentId}`).remove(); };
-    //animateCSS(segmentId, 'slideOutRight', FASTER, callback);
+    removeSegmentFromDictionary(FIT_SEGMENT_CORE, segment.Index)
+    //$(`#${getUIElementIdWithGuid(FIT_SEGMENT_CORE, guid)}`).remove();
+
+    const segmentId = getUIElementIdWithGuid(FIT_SEGMENT_CORE, guid);
+    let callback = function () { $(`#${segmentId}`).remove(); };
+    animateCSS(segmentId, 'slideOutRight', FASTER, callback);
 }
