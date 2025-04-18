@@ -129,7 +129,7 @@ function onSegmentFunctionSelectBase(val, fitSegmentType, fitSegmentValueType) {
 
     let parameter = selectedFitFunction.ParameterConstraintValue;
     if (parameter) {
-        let segmentId = `${fitSegmentValueType}${segmentIndex}`;
+        let segmentId = `${fitSegmentValueType}_${segmentIndex}`;
         setParameterSpinner(segmentId, parameter, segmentIndex, fitFunction, onFitMethodFunctionParameterChange.name);
     }
 
@@ -194,57 +194,6 @@ function getUIElementId(prefix, segmentIndex, elementType) {
     }
 }
 
-//function orderSegmentForFittingUIsIds(currentFitMode) {
-
-//    let fitSegmentType = FIT_SEGMENT_CORE;
-//    let fitSegmentValueType = FIT_SEGMENT_CORE_VALUE;
-//    if (currentFitMode == FIT_PRO_MODE) {
-//        fitSegmentType = FIT_SEGMENT_PRO;
-//        fitSegmentValueType = FIT_SEGMENT_PRO_VALUE;
-//    }
-
-//    let segmentsForFittingNum = segmentsForFitting.length;
-//    for (var i = segmentsForFittingNum - 1; i >= 0; i--) {
-//        let newId = `${fitSegmentType}_${segmentsForFitting[i].Index}`;
-//        $(`#${segmentsForFitting[i].uiId}`).attr('id', newId);
-//        segmentsForFitting[i].uiId = newId;
-//        /* update id of select */
-//        $(`#${newId}`).find('select').attr('id', getUIElementId(fitSegmentType, segmentsForFitting[i].Index, 'Select'));
-//        /* update id of div containing param value */
-//        let newFitSegmentValueContainerId = getUIElementId(fitSegmentValueType, segmentsForFitting[i].Index, 'Container');
-//        $(`#${newId}`).find('div[id$="Container"]').attr('id', newFitSegmentValueContainerId);
-//        /* update id of P0Button */
-//        let button0 = $(`#${newId}`).find(`div[id$=${P0Button}]`);
-//        if (button0 && button0.length > 0) {
-//            $(`#${button0[0].id}`).off();
-
-//            let buttonP0Id = getUIElementId(fitSegmentType, segmentsForFitting[i].Index, P0Button);
-//            $(`#${button0[0].id}`).attr('id', buttonP0Id);
-//            let segment = segmentsForFitting[i];
-//            setPButtonAction(buttonP0Id, P0, segment.Index, segment.P0);
-//        }
-//        let button1 = $(`#${newId}`).find(`div[id$="${P1Button}"]`);
-//        if (button1 && button1.length > 0) {
-//            $(`#${button1[0].id}`).off();
-
-//            let buttonP1Id = getUIElementId(fitSegmentType, segmentsForFitting[i].Index, P1Button);
-//            $(`#${button1[0].id}`).attr('id', buttonP1Id);
-//            let segment = segmentsForFitting[i];
-//            setPButtonAction(buttonP1Id, P1, segment.Index, segment.P1);
-//        }
-//        let P0ButtonIcon = `${P0Button}Icon`;
-//        let P1ButtonIcon = `${P1Button}Icon`;
-//        $(`#${newId}`).find(`span[id$="${P0ButtonIcon}"]`).attr('id', getUIElementId(fitSegmentType, segmentsForFitting[i].Index, P0ButtonIcon));
-//        /* update id of P1Button */
-//        $(`#${newId}`).find(`div[id$="${P1Button}"]`).attr('id', getUIElementId(fitSegmentType, segmentsForFitting[i].Index, P1Button));
-//        $(`#${newId}`).find(`span[id$="${P1ButtonIcon}"]`).attr('id', getUIElementId(fitSegmentType, segmentsForFitting[i].Index, P1ButtonIcon));
-//        /* update spinner id, if available */
-//        let spinner = $(`#${newFitSegmentValueContainerId}`).find('input[type=text]');
-//        if (spinner)
-//            $(spinner).attr('id', getUIElementId(fitSegmentValueType, segmentsForFitting[i].Index));
-//    }
-//}
-
 function setParameterSpinner(id, parameter, segmentIndex, fitFunction, onFitMethodFunctionParameterChangeFunctionName) {
     let html = `<label>${FitSegmentFunctionParameterLabel}</label>`;
     html += `<input id="${id}" `;
@@ -257,7 +206,7 @@ function setParameterSpinner(id, parameter, segmentIndex, fitFunction, onFitMeth
     html += `data-on-minus-click="${onFitMethodFunctionParameterChangeFunctionName}" `;
     html += `data-repeat-threshold="1000" `;
     html += `type="text" data-role="spinner" data-buttons-position="right">`;
-    $(`#${id}Container`).html(html);
+    $(`#${id}_Container`).html(html);
     $(function () {
         segmentsForFitting[segmentIndex].FitFunctionParameterValue = fitFunction.ParameterConstraintValue.Value;
         /* required to set value to default value, otherwise value = 0 */

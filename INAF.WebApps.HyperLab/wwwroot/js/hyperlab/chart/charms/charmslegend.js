@@ -11,7 +11,8 @@ function createCharmsLegend() {
     closeCharmsColorSelector();
 
     /* find raw spectra */
-    let rawSpectra = getSpectraBySpectrumType(SPECTRUM_TYPE_RAW);
+    const lowerSpectrumType = Math.min(...spectraInfo.map(x => x.SpectrumType));
+    let rawSpectra = getSpectraBySpectrumType(lowerSpectrumType);
 
     if (!rawSpectra || rawSpectra.length == 0)
         return;

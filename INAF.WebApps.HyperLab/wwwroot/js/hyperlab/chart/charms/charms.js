@@ -179,12 +179,6 @@ function buildSpectrum(id, parentId, name, spectrumLevel, spectrumType, spectrum
 }
 
 function getAlignedSpectrumProcedure() {
-    //let alignedSpectrum = null;
-    //if (!isSLabConditionForSpectrumTypeHigherThanRaw())
-    //    alignedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
-    //else
-    //    alignedSpectrum = getSpectrumBySpectrumType(SPECTRUM_TYPE_ALIGNED);
-
     return getSpectrumWithSLabConditionForSpectrumTypeHigherThanRaw(SPECTRUM_TYPE_ALIGNED);
 }
 
@@ -333,10 +327,10 @@ async function callbackYesForSpectrumSelectionManagementAsync(selectedSpectrum, 
         /* remove spectra from chart */
         removeChartSeriesByFieldsIdProcedure(chartContainer, idsToBeRemoved);
 
-        /* remove spectra from 'spectraInfo' */
+        /* remove spectra from 'spectraInfo' (children of the selected one) */
         removeSpectraById(idsToBeRemoved);
 
-        /* update visibility for all spectra */
+        /* update visibility for all spectra (set visible the selected one, invisible all the other ones) */
         manageSpectraVisibility(selectedSpectrumForProcessingId);
 
         /* reset charms UI and load segments for alignment */
@@ -372,7 +366,12 @@ function setSelectedSpectrumForProcessing(selected) {
         isSLabSpectrumCurrentlySelected = false;
 
     /* find ids of spectra to be removed when changing selected spectrum */
-    let idsToBeRemoved = findChildrenOf(selectedSpectrumForProcessingId, selectedSpectrum.SpectrumType, selectedSpectrum.SpectrumSource);
+    const idsToBeRemoved = getChildrenIdsForSpectrum(selectedSpectrumForProcessingId);
+    //if (childrenIds && childrenIds.length > 0) {
+    //    idsToBeRemoved.push(...childrenIds);
+    //}
+    /*  */
+    //let idsToBeRemoved = findChildrenOf(selectedSpectrumForProcessingId, selectedSpectrum.SpectrumType, selectedSpectrum.SpectrumSource);
     if (isAnyItem(idsToBeRemoved)) {
         let callbackYes = async function () {
             await callbackYesForSpectrumSelectionManagementAsync(selectedSpectrum, idsToBeRemoved);

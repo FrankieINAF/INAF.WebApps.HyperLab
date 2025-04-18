@@ -189,6 +189,10 @@ function updateSpectrumInfoId(index, newId) {
 }
 
 /* ---- GET ----------------------------------------------------------------------- */
+function findIdFromSpectrumTypeAndSpectrumSource(spectrumType) {
+    return spectraInfo.filter(x => x.SpectrumType == spectrumType )
+}
+
 function findChildrenOf(id, spectrumType, spectrumSource) {
     let spectraToBeRemoved = spectraInfo.filter(x => x.Id != id);
 
@@ -454,8 +458,14 @@ function isSpectrumAvailableByType(spectrumType) {
 function removeSpectraById(ids) {
     ids.forEach(function (id) {
         let index = getSpectrumIndexById(id);
-        if (index > -1)
+        if (index > -1) {
+            /* retrieve id on chart series */
+            const seriesId = buildId(id);
+            /* remove chart series */
+            removeChartSeriesByFieldId(chartContainer, seriesId);
+            /* remove spectrum info */
             removeSpectrumByIndex(index);
+        }
     });
 }
 
@@ -554,6 +564,22 @@ function isChartSeriesAvailableByName(name) {
 /* ################################################################################ */
 /* COMPLEX OPERATIONS ON CHARTS SERIES */
 /* ################################################################################ */
+function removeChartSeriesByFieldId(chartContainer, fieldId) {
+    let items = dxChartGetItems(chartContainer);
+
+    dxChartBeginUpdate(chartContainer);
+
+    /* remove series */
+    let index = findChartSeriesIndexByValueFieldId(fieldId);
+    if (index > -1) {
+        removeChartSeriesAt(index);
+        deleteChartSeriesItems(items, fieldId);
+        dxChartUpdateSeries(chartContainer, chartSeries);
+    }
+
+    dxChartEndUpdate(chartContainer);
+}
+
 function removeChartSeriesByFieldIdProcedure(chartContainer, items, fieldId) {
     dxChartBeginUpdate(chartContainer);
 
