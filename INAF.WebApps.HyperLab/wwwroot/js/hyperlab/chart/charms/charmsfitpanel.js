@@ -377,8 +377,6 @@ function switchToCommon() {
 
 function switchToCoreMode() {
     let items = dxChartGetItems(chartContainer);
-    if (items == null || !items.some(obj => Object.keys(obj).includes(buildTempContinuumId())))
-        return;
 
     /* remove continuum-series and fit points */
     tryRemoveSeriesAndPoints(items);
@@ -392,8 +390,6 @@ function switchToCoreMode() {
 
 function switchToProMode() {
     let items = dxChartGetItems(chartContainer);
-    if (items == null || !items.some(obj => Object.keys(obj).includes(buildTempContinuumId())))
-        return;
 
     /* remove continuum-series and fit points */
     tryRemoveSeriesAndPoints(items);
@@ -938,6 +934,7 @@ async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isL
         case FIT_PRO_MODE:
             /* create UI element on charms and build the continuum segment on chart */
             result = await createSegmentFittingUIProAsync(segment, isFromUserAction, isLast);
+            addSegmentToDictionary(FIT_SEGMENT_PRO, result.Guid, segment.Index);
             break;
     }
 
@@ -1694,7 +1691,7 @@ async function saveContinuumRemovedSpectrumAsync() {
     let isSavingOk = true;
 
     try {
-        let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+        const spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED);
         if (!spectrum)
             return;
 
@@ -1710,29 +1707,26 @@ async function saveContinuumRemovedSpectrumAsync() {
         if (alignedSpectrum.Id == buildTempAlignedId())
             alignedSpectrum.Id = 0;
 
-        let parentFiles = getContinuumRemovedParentFiles(selectedSpectrumForProcessingId);
+        const parentFiles = getContinuumRemovedParentFiles(selectedSpectrumForProcessingId);
 
-        let continuumRemovalSettings = getContinuumRemovalSettings();
+        const continuumRemovalSettings = getContinuumRemovalSettings();
 
-        let xml = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeContinuumRemovedModelAsXml",
+        const xml = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeContinuumRemovedModelAsXml",
             spectrum.Name,
             spectrum.SpectrumType,
             getSpectrumPointsById(spectrum.Id),
             continuumRemovalSettings,
             parentFiles);
 
-        let spectrumFile = {
-            Id: 0,
-            Filename: spectrum.Name,
-            ParentId: alignedSpectrum.Id,
-            Type: spectrum.SpectrumType,
-            Level: spectrum.SpectrumLevel,
-            Source: spectrum.SpectrumSource,
-            Xml: xml
-        };
+        const spectrumFile = buildSpectrumFile(alignedSpectrum.Id,
+            spectrum.Name,
+            spectrum.SpectrumLevel,
+            spectrum.SpectrumType,
+            spectrum.SpectrumSource,
+            xml);
 
         /* create model for request */
-        let saveSpectrumRequest = {
+        const saveSpectrumRequest = {
             SpectrumFile: spectrumFile,
             ContinuumRemovalSettings: continuumRemovalSettings,
             ParentFiles: parentFiles, // defined in charms.js
@@ -1759,6 +1753,12 @@ async function saveContinuumRemovedSpectrumAsync() {
 
                 /* 4) update series in chart to ensure correspondance between series and valueField of aligned spectrum */
                 updateProcessedSpectrumSeries(buildTempContinuumId(), buildId(obj.Id), obj.Id);
+
+
+                dxChartResetVisualRange(chartContainer);
+
+                /* mantain hidden unwanted spectra */
+                hideSpectraToBeHidden();
 
                 /* call method for checking whether a version of aligned file is already saved on cloud or not */
                 callCheckIsSpectrumOfTypeSavedOnCloudForContinuumRemovedAsync(spectraInfo[index].Name);

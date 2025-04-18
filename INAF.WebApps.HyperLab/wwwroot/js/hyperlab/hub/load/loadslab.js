@@ -48,17 +48,14 @@ function saveSLabFileProcedure(filename, xml, spectrumType, fileType) {
 async function saveSLabFileAsync(filename, xml, spectrumType, isRawUrlRequested) {
     xml = updateNodeValue(xml, 'Type', getSpectrumTypeString(spectrumType));
 
-    let spectrumFile = {
-        Id: 0,
-        Filename: filename,
-        ParentId: null,
-        Type: spectrumType,
-        Level: SPECTRUM_LEVEL_AVERAGED,
-        Source: SPECTRUM_SOURCE_SLAB,
-        Xml: xml
-    }
+    const spectrumFile = buildSpectrumFile(null,
+        filename,
+        SPECTRUM_LEVEL_AVERAGED,
+        spectrumType,
+        SPECTRUM_SOURCE_SLAB,
+        xml);
 
-    let saveSpectrumRequest = {
+    const saveSpectrumRequest = {
         spectrumFile: spectrumFile,
     };
 

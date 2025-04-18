@@ -788,12 +788,12 @@ async function saveSmoothedSpectrumAsync(smoothingType, showLoadingAndMessage = 
     let isSavingOk = true;
 
     try {
-        let srcSpectrumType = getSrcSpectrumType();
+        const srcSpectrumType = getSrcSpectrumType();
 
         /* retrieve spectrumType of processed spectrum */
-        let destSpectrumType = await getDestSpectrumTypeAsync(smoothingType, srcSpectrumType);
+        const destSpectrumType = await getDestSpectrumTypeAsync(smoothingType, srcSpectrumType);
 
-        let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, destSpectrumType);
+        const spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, destSpectrumType);
         if (!spectrum)
             return;
 
@@ -801,15 +801,15 @@ async function saveSmoothedSpectrumAsync(smoothingType, showLoadingAndMessage = 
             setLoadingCircleIsVisible(true);
 
         /* retrieve parent file */
-        let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
+        const srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
         if (!isSLabSpectrumCurrentlySelected && !srcSpectrum)
             srcSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
         if (srcSpectrum.Id == buildTempSmoothedSpectrumId(srcSpectrumType, smoothingType))
             srcSpectrum.Id = 0;
 
-        let parentFiles = getSmoothedParentFiles(srcSpectrum.Id);
+        const parentFiles = getSmoothedParentFiles(srcSpectrum.Id);
 
-        let smoothingOptions;
+        const smoothingOptions;
         switch (smoothingType) {
             case BY_SEGMENTS:
                 smoothingOptions = smoothingSegmentsOptions;
@@ -820,39 +820,36 @@ async function saveSmoothedSpectrumAsync(smoothingType, showLoadingAndMessage = 
                 break;
         }
 
-        let smoothingSettings = {
+        const smoothingSettings = {
             Segments: smoothingOptions
         };
 
-        let xml = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeSmoothedModelAsXml",
+        const xml = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeSmoothedModelAsXml",
             spectrum.Name,
             spectrum.SpectrumType,
             getSpectrumPointsById(spectrum.Id),
             smoothingSettings,
             parentFiles);
 
-        let spectrumFile = {
-            Id: 0,
-            Filename: spectrum.Name,
-            ParentId: srcSpectrum.Id,
-            Type: spectrum.SpectrumType,
-            Level: spectrum.SpectrumLevel,
-            Source: srcSpectrum.SpectrumSource,
-            Xml: xml
-        };
+        const spectrumFile = buildSpectrumFile(srcSpectrum.Id,
+            spectrum.Name,
+            spectrum.SpectrumLevel,
+            spectrum.SpectrumType,
+            spectrum.SpectrumSource,
+            xml);
 
         /* create model for request */
-        let saveSpectrumRequest = {
+        const saveSpectrumRequest = {
             SpectrumFile: spectrumFile,
             SmoothingSettings: smoothingSettings,
             ParentFiles: parentFiles, // defined in charms.js
         };
 
         /* execute request and process response */
-        let obj = await doAjaxPostAsync(UrlSaveSpectrumOfTypeSmoothed, saveSpectrumRequest);
+        const obj = await doAjaxPostAsync(UrlSaveSpectrumOfTypeSmoothed, saveSpectrumRequest);
         if (obj) {
             if (obj.IsOk) {
-                let index = getSpectrumIndexById(spectrum.Id);
+                const index = getSpectrumIndexById(spectrum.Id);
 
                 /* add ParentId property to aligned spectrum */
                 spectraInfo[index][PARENT_ID] = srcSpectrum.Id;

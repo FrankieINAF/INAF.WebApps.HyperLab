@@ -2,15 +2,12 @@
 /* SAVE FILE */
 /* ################################################################################ */
 function saveExternalFileUnauthenticated(filename, xml) {
-    let spectrumFile = {
-        Id: 0,
-        Filename: filename,
-        ParentId: null,
-        Type: SPECTRUM_TYPE_ALIGNED,
-        Level: SPECTRUM_LEVEL_AVERAGED,
-        Source: SPECTRUM_SOURCE_EXTERNAL,
-        Xml: xml
-    };
+    const spectrumFile = buildSpectrumFile(null,
+        filename,
+        SPECTRUM_LEVEL_AVERAGED,
+        SPECTRUM_TYPE_ALIGNED,
+        SPECTRUM_SOURCE_EXTERNAL,
+        xml);
 
     let isOk = true;
     try {

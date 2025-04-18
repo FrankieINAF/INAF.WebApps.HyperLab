@@ -178,6 +178,12 @@ function buildSpectrum(id, parentId, name, spectrumLevel, spectrumType, spectrum
     };
 }
 
+function buildSpectrumFile(parentId, name, spectrumLevel, spectrumType, spectrumSource, xml) {
+    let spectrum = buildSpectrum(0, parentId, name, spectrumLevel, spectrumType, spectrumSource);
+    spectrum.Xml = xml;
+    return spectrum;
+}
+
 function getAlignedSpectrumProcedure() {
     return getSpectrumWithSLabConditionForSpectrumTypeHigherThanRaw(SPECTRUM_TYPE_ALIGNED);
 }

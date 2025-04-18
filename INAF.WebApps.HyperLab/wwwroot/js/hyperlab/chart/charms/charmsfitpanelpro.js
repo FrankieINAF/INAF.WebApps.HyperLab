@@ -286,7 +286,7 @@ async function onBoundaryValueChangedProcedureAsync(id, spinnerId, curr, request
 async function onSegmentFunctionSelectProAsync(val, option, item) {
     //console.log(`onSegmentFunctionSelectProAsync ${val}`);
 
-    let result = onSegmentFunctionSelectBase(this.id, val, FIT_SEGMENT_PRO, FIT_SEGMENT_PRO_VALUE);
+    let result = onSegmentFunctionSelectBase(val, FIT_SEGMENT_PRO, FIT_SEGMENT_PRO_VALUE);
     if (!result)
         return;
 

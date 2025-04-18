@@ -962,7 +962,7 @@ async function saveAlignedSpectrumAsync(showLoadingAndMessage = true) {
     let isSavingOk = true;
 
     try {
-        let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+        const spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
         if (!spectrum)
             return;
 
@@ -970,36 +970,34 @@ async function saveAlignedSpectrumAsync(showLoadingAndMessage = true) {
             setLoadingCircleIsVisible(true);
 
         /* retrieve parent file */
-        let rawSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
+        const rawSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
 
-        let alignmentSettings = getAlignmentSettings();
-        let parentFiles = getAlignedParentFiles(selectedSpectrumForProcessingId);
+        const alignmentSettings = getAlignmentSettings();
+        const parentFiles = getAlignedParentFiles(selectedSpectrumForProcessingId);
 
-        let xml = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAlignedModelAsXml",
+        const xml = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAlignedModelAsXml",
             spectrum.Name,
             spectrum.SpectrumType,
             getSpectrumPointsById(spectrum.Id),
             alignmentSettings,
             parentFiles);
 
-        let spectrumFile = {
-            Id: 0,
-            Filename: spectrum.Name,
-            ParentId: rawSpectrum.Id,
-            Type: spectrum.SpectrumType,
-            Level: spectrum.SpectrumLevel,
-            Xml: xml
-        };
+        const spectrumFile = buildSpectrumFile(rawSpectrum.Id,
+            spectrum.Name,
+            spectrum.SpectrumLevel,
+            spectrum.SpectrumType,
+            spectrum.SpectrumSource,
+            xml);
 
         /* create model for request */
-        let saveSpectrumRequest = {
+        const saveSpectrumRequest = {
             SpectrumFile: spectrumFile,
             AlignmentSettings: alignmentSettings,
             ParentFiles: parentFiles, // defined in charms.js
         };
 
         /* execute request and process response */
-        let obj = await doAjaxPostAsync(UrlSaveSpectrumOfTypeAligned, saveSpectrumRequest);
+        const obj = await doAjaxPostAsync(UrlSaveSpectrumOfTypeAligned, saveSpectrumRequest);
         if (obj) {
             if (obj.IsOk) {
                 let index = getSpectrumIndexById(spectrum.Id);
