@@ -400,10 +400,10 @@ function setSelectedSpectrumForProcessing(selected) {
         isSLabSpectrumCurrentlySelected = false;
 
     /* find ids of spectra to be removed when changing selected spectrum */
-    const idsToBeRemoved = getChildrenIdsForSpectrum(selectedSpectrumForProcessingId);
-    if (isAnyItem(idsToBeRemoved)) {
+    findSpectrumChildrenByIdProcedure(selectedSpectrumForProcessingId);
+    if (isAnyItem(familyIds)) {
         let callbackYes = async function () {
-            await callbackYesForSpectrumSelectionManagementAsync(selectedSpectrum, idsToBeRemoved);
+            await callbackYesForSpectrumSelectionManagementAsync(selectedSpectrum, familyIds);
         };
         let callbackNo = function () {
             selectedSpectrumForProcessingId = oldSelectedSpectrumForProcessingId;
@@ -711,10 +711,10 @@ async function removeSpectrumProcedureAsync(spectrumToBeRemoved, isRemovalOnClou
 }
 
 function buildFamilyTreeForSpectrum(id) {
-    let ids = getChildrenIdsForSpectrum(id);
+    findSpectrumChildrenByIdProcedure(id);
 
     let spectra = [];
-    ids.forEach(function (id) {
+    familyIds.forEach(function (id) {
         spectra.push(getSpectrumInfoById(id));
     });
 

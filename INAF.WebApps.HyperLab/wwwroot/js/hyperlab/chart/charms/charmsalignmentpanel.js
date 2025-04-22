@@ -764,10 +764,6 @@ function disposeChartMiniature() {
 /* ALIGN SPECTRUM */
 /* ################################################################################ */
 async function alignSpectrumAsync() {
-    //if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED)) {
-    //    showSimpleDialog(WARNING_LABEL, AlignedNoProcessBecauseAlreadyPresentMessage, WARNING);
-    //    return;
-    //}
     setLoadingCircleIsVisible(true);
 
     if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED))
@@ -1052,8 +1048,9 @@ function removeAlignedSpectrumProcedure() {
     switchVisibilityOfChildrenSpectraRemovalMessage('alignedChildrenRemovalWarning', false);
 
     /* check whether children removal warning message is to be shown or not  */
-    let childSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
-    if (isAnySpectrumChildById(childSpectrum.Id))
+    let spectrum = getAlignedSpectrumProcedure();
+    //let childSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+    if (isAnySpectrumChildById(spectrum.Id))
         switchVisibilityOfChildrenSpectraRemovalMessage('alignedChildrenRemovalWarning', true);
 
     /* start removal procedure */

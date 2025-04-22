@@ -103,17 +103,22 @@ function getAvailableSrcSpectrumTypesNum() {
     let srcSpectrumTypes = [SPECTRUM_TYPE_ALIGNED, SPECTRUM_TYPE_CONTINUUM_REMOVED];
 
     let availableNum = 0;
-    if (isSLabSpectrumCurrentlySelected) {
-        srcSpectrumTypes.forEach(function (item) {
-            if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, item))
+
+    findSpectrumChildrenByIdProcedure(selectedSpectrumForProcessingId);
+    if (!isSLabSpectrumCurrentlySelected || isSLabConditionForSpectrumTypeHigherThanRaw())
+        familyIds.push(selectedSpectrumForProcessingId);
+
+    familyIds.forEach(function (item) {
+        const spectrumInfo = getSpectrumInfoById(item);
+        if (!spectrumInfo)
+            return;
+        /* check if the spectrum is available by id and type */
+
+        srcSpectrumTypes.forEach(function (item2) {
+            if (spectrumInfo.SpectrumType == item2)
                 availableNum++;
         });
-    } else {
-        srcSpectrumTypes.forEach(function (item) {
-            if (isSpectrumAvailableByIdAndType(selectedSpectrumForProcessingId, item))
-                availableNum++;
-        });
-    }
+    });
 
     return availableNum;
 }
@@ -721,20 +726,20 @@ async function applySmoothingAsync(smoothingType) {
 function buildSmoothedSpectrum(smoothingType, srcSpectrumType, destSpectrumType) {
     try {
         /* retrieve RAW spectrum */
-        let rawSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
+        let baseSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
 
         /* retrieve info about parent spectrum */
         let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
-        if (!isSLabSpectrumCurrentlySelected && !srcSpectrum)
-            srcSpectrum = rawSpectrum;
+        if (isSLabConditionForSpectrumTypeHigherThanRaw() || (!isSLabSpectrumCurrentlySelected && !srcSpectrum))
+            srcSpectrum = baseSpectrum;
 
         /* build spectrum info for being added to 'spectraInfo' */
         let smoothedSpectrum = buildSpectrum(buildTempSmoothedSpectrumId(srcSpectrumType, smoothingType),
             srcSpectrum.Id,
-            rawSpectrum.Name,
-            rawSpectrum.SpectrumLevel,
+            baseSpectrum.Name,
+            baseSpectrum.SpectrumLevel,
             destSpectrumType,
-            srcSpectrum.SpectrumSource);
+            baseSpectrum.SpectrumSource);
         addSpectrumInfo(smoothedSpectrum);
 
         return smoothedSpectrum;

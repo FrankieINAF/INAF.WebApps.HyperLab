@@ -1,4 +1,6 @@
-﻿function hideSpectraToBeHidden() {
+﻿var familyIds = [];
+
+function hideSpectraToBeHidden() {
     let spectraToBeHidden = spectraInfo.filter(x => !x.IsVisible);
     spectraToBeHidden.forEach(function (item) {
         let seriesname = getSpectrumSeriesNameFromIndex(getSpectrumIndexById(item.Id));
@@ -190,7 +192,7 @@ function updateSpectrumInfoId(index, newId) {
 
 /* ---- GET ----------------------------------------------------------------------- */
 function findIdFromSpectrumTypeAndSpectrumSource(spectrumType) {
-    return spectraInfo.filter(x => x.SpectrumType == spectrumType )
+    return spectraInfo.filter(x => x.SpectrumType == spectrumType)
 }
 
 function findChildrenOf(id, spectrumType, spectrumSource) {
@@ -237,46 +239,28 @@ function findChildrenOfIdsOtherThan(id, spectrumSource) {
     return spectraToBeRemoved;
 }
 
+function findSpectrumChildrenByIdProcedure(id) {
+    familyIds = [];
+    findSpectrumChildrenById(id);
+}
+
 function findSpectrumChildrenById(id) {
-    let continueLoop = true;
+    let spectra = getSpectraByParentId(id);
+    //console.log(`id: ${id} - found ${spectra.length} spectra`);
+    if (spectra.length == 0)
+        return;
 
-    let familyIds = [];
-    while (continueLoop) {
-        let index = getSpectrumIndexByParentId(id);
-        if (index == -1)
-            continueLoop = false;
-        else {
-            familyIds.push(spectraInfo[index].Id);
-            id = spectraInfo[index].Id;
-        }
+    let spectraNum = spectra.length;
+    for (var i = 0; i < spectraNum; i++) {
+        familyIds.push(spectra[i].Id);
+        findSpectrumChildrenById(spectra[i].Id)
     }
-
-    return familyIds;
 }
 
 function getAllSpectraHavingSameNameByRawId(rawId) {
     let rawSpectrum = spectraInfo.find(x => x.Id == rawId);
 
     return spectraInfo.filter(x => x.Name == rawSpectrum.Name);
-}
-
-function getChildrenIdsForSpectrum(id) {
-    let children = [];
-
-    let continueLoop = true;
-    while (continueLoop) {
-        let spectra = getSpectraByParentId(id);
-        if (spectra.length == 0)
-            continueLoop = false;
-        else {
-            spectra.forEach(function (item) {
-                children.push(item.Id);
-                id = item.Id;
-            });
-        }
-    }
-
-    return children;
 }
 
 function getChildSpectrumByIdAndSpectrumType(spectrumId, spectrumType) {
@@ -398,9 +382,9 @@ function getSpectrumIndexByIdAndSpectrumType(id, spectrumType) {
     return spectraInfo.findIndex(x => x.Id == id && x.SpectrumType == spectrumType);
 }
 
-function getSpectrumIndexByParentId(parentId) {
-    return spectraInfo.findIndex(x => x.ParentId == parentId);
-}
+//function getSpectrumIndexByParentId(parentId) {
+//    return spectraInfo.findIndex(x => x.ParentId == parentId);
+//}
 
 function getSpectrumIndexByParentIdAndSpectrumType(parentId, spectrumType) {
     return spectraInfo.findIndex(x => x.ParentId == parentId && x.SpectrumType == spectrumType);
@@ -449,8 +433,8 @@ function initSpectraInfo() {
 }
 
 function isAnySpectrumChildById(id) {
-    let children = findSpectrumChildrenById(id);
-    return (children.length > 0);
+    findSpectrumChildrenByIdProcedure(id);
+    return (familyIds.length > 0);
 }
 
 function isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(rawId, spectrumType) {
