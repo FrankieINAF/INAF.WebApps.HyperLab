@@ -730,7 +730,7 @@ function buildSmoothedSpectrum(smoothingType, srcSpectrumType, destSpectrumType)
 
         /* retrieve info about parent spectrum */
         let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
-        if (isSLabConditionForSpectrumTypeHigherThanRaw() || (!isSLabSpectrumCurrentlySelected && !srcSpectrum))
+        if (srcSpectrum == null && srcSpectrumType == SPECTRUM_TYPE_ALIGNED)
             srcSpectrum = baseSpectrum;
 
         /* build spectrum info for being added to 'spectraInfo' */

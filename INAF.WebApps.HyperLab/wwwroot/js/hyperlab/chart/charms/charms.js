@@ -213,18 +213,6 @@ function fixId(id) {
     return id;
 }
 
-function getAlignedSpectrumProcedure() {
-    if (isSLabSpectrumCurrentlySelected) {
-        if (isSLabLowerSpectrumTypeHigherThanRaw) {
-            return getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
-        } else {
-            return getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
-        }
-    } else {
-        return getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
-    }
-}
-
 function getRefWhiteFile(type) {
     let parentFile = getSpectrumBySpectrumType(type);
 
@@ -236,11 +224,24 @@ function getRefWhiteFile(type) {
     };
 }
 
-function getSpectrumWithSLabConditionForSpectrumTypeHigherThanRaw(spectrumType) {
-    if (!isSLabConditionForSpectrumTypeHigherThanRaw())
-        return getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, spectrumType);
-    else
-        return getSpectrumBySpectrumType(spectrumType);
+function getSpectrumAlignedProcedure() {
+    if (isSLabSpectrumCurrentlySelected) {
+        if (isSLabLowerSpectrumTypeHigherThanRaw) {
+            return getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+        } else {
+            return getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+        }
+    } else {
+        return getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+    }
+}
+
+function getSpectrumContinuumRemovedProcedure() {
+    if (isSLabSpectrumCurrentlySelected) {
+        return getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    } else {
+        return getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+    }
 }
 
 /* ################################################################################ */

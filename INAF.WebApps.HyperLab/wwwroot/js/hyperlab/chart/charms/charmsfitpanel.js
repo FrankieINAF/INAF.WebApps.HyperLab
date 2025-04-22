@@ -1312,7 +1312,7 @@ function buildContinuumRemovedSpectrum() {
         let rawSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
 
         /* retrieve aligned spectrum */
-        let alignedSpectrum = getAlignedSpectrumProcedure();
+        let alignedSpectrum = getSpectrumAlignedProcedure();
         if (alignedSpectrum == null)
             return null;
 
@@ -1669,9 +1669,7 @@ function getSegments() {
 }
 
 async function saveContinuumRemovedSpectrumProcedureAsync() {
-    let spectrum = getSpectrumInfoById(buildTempContinuumRemovedId());
-    if (!spectrum)
-        spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    let spectrum = getSpectrumContinuumRemovedProcedure();
 
     if (!spectrum) {
         showSimpleDialog(ERROR_LABEL, FitSaveErrorMessage, ALERT);
@@ -1704,7 +1702,7 @@ async function saveContinuumRemovedSpectrumAsync(spectrum) {
         /* retrieve parent file */
         /* retrieve aligned spectrum */
         let isAlignedSaved = true;
-        let alignedSpectrum = getAlignedSpectrumProcedure();
+        let alignedSpectrum = getSpectrumAlignedProcedure();
         if (!Number.isFinite(alignedSpectrum.Id))
             /* if aligned has not been already saved, save it for building the parent-child chain */
             isAlignedSaved = await saveAlignedSpectrumAsync(false);
@@ -1809,7 +1807,7 @@ function removeContinuumRemovedSpectrumProcedure() {
     switchVisibilityOfChildrenSpectraRemovalMessage('continuumRemovedChildrenRemovalWarning', false);
 
     /* check whether children removal warning message is to be shown or not  */
-    let childSpectrum = getSpectrumWithSLabConditionForSpectrumTypeHigherThanRaw(SPECTRUM_TYPE_ALIGNED);
+    let childSpectrum = getSpectrumContinuumRemovedProcedure();
     if (isAnySpectrumChildById(childSpectrum.Id))
         switchVisibilityOfChildrenSpectraRemovalMessage('continuumRemovedChildrenRemovalWarning', true);
 

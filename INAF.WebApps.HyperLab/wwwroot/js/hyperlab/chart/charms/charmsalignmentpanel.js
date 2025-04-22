@@ -1048,7 +1048,7 @@ function removeAlignedSpectrumProcedure() {
     switchVisibilityOfChildrenSpectraRemovalMessage('alignedChildrenRemovalWarning', false);
 
     /* check whether children removal warning message is to be shown or not  */
-    let spectrum = getAlignedSpectrumProcedure();
+    let spectrum = getSpectrumAlignedProcedure();
     //let childSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
     if (isAnySpectrumChildById(spectrum.Id))
         switchVisibilityOfChildrenSpectraRemovalMessage('alignedChildrenRemovalWarning', true);
