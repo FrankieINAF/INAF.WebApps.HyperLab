@@ -930,7 +930,7 @@ function setRefWhitesHidden() {
 /* ################################################################################ */
 function getAlignedParentFiles(parentId) {
     return {
-        ParentFile: getParentFile(parentId),
+        ParentFile: buildParentFile(parentId),
         RefFile: getRefWhiteFile(SPECTRUM_TYPE_REF),
         RefWhiteFile: getRefWhiteFile(SPECTRUM_TYPE_REF_WHITE)
     };
@@ -962,7 +962,7 @@ async function saveAlignedSpectrumAsync(showLoadingAndMessage = true) {
     let isSavingOk = true;
 
     try {
-        const spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+        const spectrum = getSpectrumInfoById(buildTempAlignedId());
         if (!spectrum)
             return;
 
@@ -1040,6 +1040,8 @@ async function saveAlignedSpectrumAsync(showLoadingAndMessage = true) {
         else
             showSimpleDialog(ERROR_LABEL, AlignmentSaveErrorMessage, ALERT);
     }
+    else
+        return isSavingOk;
 }
 
 /* ################################################################################ */

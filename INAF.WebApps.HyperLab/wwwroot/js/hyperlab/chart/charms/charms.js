@@ -29,6 +29,10 @@ function isSLabConditionForSpectrumTypeHigherThanRaw() {
     return isSLabSpectrumCurrentlySelected && isSLabLowerSpectrumTypeHigherThanRaw;
 }
 
+function isSLabConditionForSpectrumTypeNotHigherThanRaw() {
+    return isSLabSpectrumCurrentlySelected && !isSLabLowerSpectrumTypeHigherThanRaw;
+}
+
 /* ################################################################################ */
 /* MANAGE CHARMS OPENING/CLOSING */
 /* ################################################################################ */
@@ -82,7 +86,7 @@ async function initCharmsPhase1Async() {
     getSpectraTypesParentsAsync();
 
     /* show 1st tab */
-    showSelectedTab('charmsTabs', OPTIONS_TITLE_ALIGNMENT);
+    setTabSelectedProcedure('charmsTabs', OPTIONS_TITLE_ALIGNMENT);
 
     /* reset all variables and arrays used for fitting */
     initFit();
@@ -179,24 +183,46 @@ function buildSpectrum(id, parentId, name, spectrumLevel, spectrumType, spectrum
 }
 
 function buildSpectrumFile(parentId, name, spectrumLevel, spectrumType, spectrumSource, xml) {
-    let spectrum = buildSpectrum(0, parentId, name, spectrumLevel, spectrumType, spectrumSource);
-    spectrum.Xml = xml;
-    return spectrum;
+    return  {
+        Id: 0,
+        Filename: name,
+        ParentId: fixId(parentId),
+        Type: spectrumType,
+        Level: spectrumLevel,
+        Source: spectrumSource,
+        Xml: xml
+    };
 }
 
-function getAlignedSpectrumProcedure() {
-    return getSpectrumWithSLabConditionForSpectrumTypeHigherThanRaw(SPECTRUM_TYPE_ALIGNED);
-}
-
-function getParentFile(id) {
+function buildParentFile(id) {
     let parentFile = getSpectrumInfoById(id);
 
+    let parentFileId = fixId(parentFile.Id);
     return {
-        Id: parentFile.Id,
+        Id: parentFileId,
         Filename: parentFile.Name,
         Type: parentFile.SpectrumType,
         Level: parentFile.SpectrumLevel
     };
+}
+
+function fixId(id) {
+    if (!Number.isFinite(id))
+        id = 0;
+
+    return id;
+}
+
+function getAlignedSpectrumProcedure() {
+    if (isSLabSpectrumCurrentlySelected) {
+        if (isSLabLowerSpectrumTypeHigherThanRaw) {
+            return getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+        } else {
+            return getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+        }
+    } else {
+        return getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+    }
 }
 
 function getRefWhiteFile(type) {
@@ -208,6 +234,13 @@ function getRefWhiteFile(type) {
         Type: type,
         Level: parentFile.SpectrumLevel
     };
+}
+
+function getSpectrumWithSLabConditionForSpectrumTypeHigherThanRaw(spectrumType) {
+    if (!isSLabConditionForSpectrumTypeHigherThanRaw())
+        return getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, spectrumType);
+    else
+        return getSpectrumBySpectrumType(spectrumType);
 }
 
 /* ################################################################################ */
@@ -231,9 +264,13 @@ function loadSpectraToBeProcessed() {
     /* close other charms, if opened */
     closeCharmsColorSelector();
 
-    const lowerSpectrumType = Math.min(...spectraInfo.map(x => x.SpectrumType));
-    if (lowerSpectrumType > SPECTRUM_TYPE_RAW)
-        isSLabLowerSpectrumTypeHigherThanRaw = true;
+    let lowerSpectrumType = SPECTRUM_TYPE_RAW;
+    const slabSpectraForCheck = spectraInfo.filter(x => x.SpectrumSource == SPECTRUM_SOURCE_SLAB).map(x => x.SpectrumType);
+    if (slabSpectraForCheck.length > 0) {
+        lowerSpectrumType = Math.min(...slabSpectraForCheck);
+        if (lowerSpectrumType > SPECTRUM_TYPE_RAW)
+            isSLabLowerSpectrumTypeHigherThanRaw = true;
+    }
 
     let spectraSLabType = spectraInfo.filter(x => x.SpectrumSource == SPECTRUM_SOURCE_SLAB && x.SpectrumType == lowerSpectrumType).map(x => { return x.Id });
     if (spectraSLabType && spectraSLabType.length > 0)
@@ -259,15 +296,6 @@ function loadSpectraToBeProcessed() {
         $('#spectrumSelectionContainer').html(html);
 
         if (spectraNum == 1) {
-            /* manage case when only external file (labeled as 'Aligned') are loaded and no Raw spectrum is available */
-            const cond1 = spectraExternalType.length > 0;
-            const cond2 = isSLabConditionForSpectrumTypeHigherThanRaw();
-            //if (spectraExternalType.length > 0)
-            if (cond1 || cond2)
-                setIsPointClickForFitEnabled(true);
-            else
-                setIsPointClickForFitEnabled(false);
-
             /* if only one spectrum is available, then select it */
             setTimeout(function () {
                 /* set selected file on UI */
@@ -283,7 +311,7 @@ async function initCharmsPhase2Async() {
     /* hide message about RAW file selection */
     hideByClassDFlexItem('charmsTabAlignmentStartingMessageContainer');
 
-    if (!isSLabConditionForSpectrumTypeHigherThanRaw()) {
+    if (isSLabConditionForSpectrumTypeNotHigherThanRaw()) {
         /* set as selected the alignment tab */
         setTabEnabled(0, true);
 
@@ -373,11 +401,6 @@ function setSelectedSpectrumForProcessing(selected) {
 
     /* find ids of spectra to be removed when changing selected spectrum */
     const idsToBeRemoved = getChildrenIdsForSpectrum(selectedSpectrumForProcessingId);
-    //if (childrenIds && childrenIds.length > 0) {
-    //    idsToBeRemoved.push(...childrenIds);
-    //}
-    /*  */
-    //let idsToBeRemoved = findChildrenOf(selectedSpectrumForProcessingId, selectedSpectrum.SpectrumType, selectedSpectrum.SpectrumSource);
     if (isAnyItem(idsToBeRemoved)) {
         let callbackYes = async function () {
             await callbackYesForSpectrumSelectionManagementAsync(selectedSpectrum, idsToBeRemoved);
@@ -1124,11 +1147,4 @@ function toggleDropDown(id) {
 
         setTimeout(function () { $(`#${id}`).addClass('keep-open') }, 500);
     }
-}
-
-function getSpectrumWithSLabConditionForSpectrumTypeHigherThanRaw(spectrumType) {
-    if (!isSLabConditionForSpectrumTypeHigherThanRaw())
-        return getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, spectrumType);
-    else
-        return getSpectrumBySpectrumType(spectrumType);
 }

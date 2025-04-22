@@ -730,11 +730,11 @@ function buildSmoothedSpectrum(smoothingType, srcSpectrumType, destSpectrumType)
 
         /* build spectrum info for being added to 'spectraInfo' */
         let smoothedSpectrum = buildSpectrum(buildTempSmoothedSpectrumId(srcSpectrumType, smoothingType),
-                                             rawSpectrum.Id,
-                                             rawSpectrum.Name,
-                                             rawSpectrum.SpectrumLevel,
-                                             destSpectrumType,
-                                             srcSpectrum.SpectrumSource);
+            srcSpectrum.Id,
+            rawSpectrum.Name,
+            rawSpectrum.SpectrumLevel,
+            destSpectrumType,
+            srcSpectrum.SpectrumSource);
         addSpectrumInfo(smoothedSpectrum);
 
         return smoothedSpectrum;
@@ -765,7 +765,7 @@ function buildSmoothedSpectrumCompleted(smoothingType) {
 /* ################################################################################ */
 function getSmoothedParentFiles(parentId) {
     return {
-        ParentFile: getParentFile(parentId),
+        ParentFile: buildParentFile(parentId),
         RefFile: null,
         RefWhiteFile: null
     };
@@ -775,33 +775,34 @@ async function saveSmoothedSpectrumProcedureAsync(smoothingType) {
     /* retrieve spectrumType of processed spectrum */
     let destSpectrumType = await getDestSpectrumTypeAsync(smoothingType, getSrcSpectrumType());
 
-    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, destSpectrumType);
+    let spectrum = getSpectrumInfoById(buildTempSmoothedSpectrumId(getSrcSpectrumType(), smoothingType));
+    if (!spectrum)
+        spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, getSrcSpectrumType());
+
+    if (!spectrum) {
+        showSimpleDialog(ERROR_LABEL, SmoothedSaveErrorMessage, ALERT);
+        return;
+    }
+
     let cond1 = await checkIsSpectrumOfTypeSavedOnCloudAsync(spectrum.Name, destSpectrumType);
     let cond2 = isSpectrumOfTypeSavedOnCloud(destSpectrumType);
     if (cond1 || cond2)
-        askAndExecute(CharmsSpectraProcessingManagementLabel, OverwriteSavedSpectrumQuestion, saveSmoothedSpectrumAsync, [smoothingType, true]);
+        askAndExecute(CharmsSpectraProcessingManagementLabel, OverwriteSavedSpectrumQuestion, saveSmoothedSpectrumAsync, [spectrum, smoothingType, destSpectrumType, true]);
     else
-        saveSmoothedSpectrumAsync(smoothingType);
+        saveSmoothedSpectrumAsync(spectrum, smoothingType, destSpectrumType);
 }
 
-async function saveSmoothedSpectrumAsync(smoothingType, showLoadingAndMessage = true) {
+async function saveSmoothedSpectrumAsync(spectrum, smoothingType, destSpectrumType, showLoadingAndMessage = true) {
     let isSavingOk = true;
 
     try {
         const srcSpectrumType = getSrcSpectrumType();
 
-        /* retrieve spectrumType of processed spectrum */
-        const destSpectrumType = await getDestSpectrumTypeAsync(smoothingType, srcSpectrumType);
-
-        const spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, destSpectrumType);
-        if (!spectrum)
-            return;
-
         if (showLoadingAndMessage)
             setLoadingCircleIsVisible(true);
 
         /* retrieve parent file */
-        const srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
+        let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
         if (!isSLabSpectrumCurrentlySelected && !srcSpectrum)
             srcSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
         if (srcSpectrum.Id == buildTempSmoothedSpectrumId(srcSpectrumType, smoothingType))
@@ -809,7 +810,7 @@ async function saveSmoothedSpectrumAsync(smoothingType, showLoadingAndMessage = 
 
         const parentFiles = getSmoothedParentFiles(srcSpectrum.Id);
 
-        const smoothingOptions;
+        let smoothingOptions;
         switch (smoothingType) {
             case BY_SEGMENTS:
                 smoothingOptions = smoothingSegmentsOptions;

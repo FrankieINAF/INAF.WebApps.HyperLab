@@ -69,7 +69,7 @@ async function preparePanelForFitPhase1Async(extCallback) {
         loadPartialViewWithAjaxGetNoModel(UrlLoadFitPanel, 'fitOptionsPanel', callback);
 
         /* add raw spectrum to the ones to be hidden */
-        if (!isSLabConditionForSpectrumTypeHigherThanRaw()) //when a SLab RAW spectrum is loaded and under processing we hide it in this phase, otherwise avoid to hide it
+        if (isSLabConditionForSpectrumTypeNotHigherThanRaw()) //when a SLab RAW spectrum is loaded and under processing we hide it in this phase, otherwise avoid to hide it
             setSpectrumVisibility(selectedSpectrumForProcessingId, false);
 
         isFitTabSelected = true;
@@ -1194,23 +1194,14 @@ function tryAddContinuumSpectrum() {
     /* retrieve parent RAW spectrum */
     let selectedSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
 
-    /* retrieve aligned spectrum:
-       1) when we're processing a SLAB raw spectrum do as usual ;
-       2) when we're processing an external file, aligned spectrum IS selected spectrum */
-    let alignedSpectrum = null;
-    if (!isSLabConditionForSpectrumTypeHigherThanRaw())
-        alignedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
-    else
-        alignedSpectrum = selectedSpectrum;
-
     /* build spectrum info for being added to 'spectraInfo' */
     let continuumSpectrum = buildSpectrum(
         buildTempContinuumId(),
-        alignedSpectrum.Id,
-        alignedSpectrum.Name,
-        alignedSpectrum.SpectrumLevel,
+        0,
+        selectedSpectrum.Name,
+        selectedSpectrum.SpectrumLevel,
         SPECTRUM_TYPE_CONTINUUM,
-        alignedSpectrum.SpectrumSource);
+        selectedSpectrum.SpectrumSource);
     addSpectrumInfo(continuumSpectrum);
 
     return continuumSpectrum;
@@ -1645,7 +1636,7 @@ function trySaveMissingPoint(missingPoint) {
 /* ################################################################################ */
 function getContinuumRemovedParentFiles(parentId) {
     return {
-        ParentFile: getParentFile(parentId),
+        ParentFile: buildParentFile(parentId),
         RefFile: null,
         RefWhiteFile: null
     };
@@ -1678,34 +1669,51 @@ function getSegments() {
 }
 
 async function saveContinuumRemovedSpectrumProcedureAsync() {
-    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    let spectrum = getSpectrumInfoById(buildTempContinuumRemovedId());
+    if (!spectrum)
+        spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+
+    if (!spectrum) {
+        showSimpleDialog(ERROR_LABEL, FitSaveErrorMessage, ALERT);
+        return;
+    }
+
     let cond1 = await checkIsSpectrumOfTypeSavedOnCloudAsync(spectrum.Name, SPECTRUM_TYPE_CONTINUUM_REMOVED);
     let cond2 = isSpectrumOfTypeSavedOnCloud(SPECTRUM_TYPE_CONTINUUM_REMOVED);
     if (cond1 || cond2)
-        askAndExecute(CharmsSpectraProcessingManagementLabel, OverwriteSavedSpectrumQuestion, saveContinuumRemovedSpectrumAsync);
+        askAndExecute(CharmsSpectraProcessingManagementLabel, OverwriteSavedSpectrumQuestion, saveContinuumRemovedSpectrumAsync, [spectrum]);
     else
-        saveContinuumRemovedSpectrumAsync();
+        saveContinuumRemovedSpectrumAsync(spectrum);
 }
 
-async function saveContinuumRemovedSpectrumAsync() {
+async function saveContinuumRemovedSpectrumAsync(spectrum) {
     let isSavingOk = true;
 
     try {
-        const spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED);
-        if (!spectrum)
-            return;
-
         setLoadingCircleIsVisible(true);
 
         /* save aligned for building the parent-child chain */
-        if (!isSpectrumOfTypeSavedOnCloud(SPECTRUM_TYPE_ALIGNED))
-            await saveAlignedSpectrumAsync(false);
+        //if (!isSpectrumOfTypeSavedOnCloud(SPECTRUM_TYPE_ALIGNED)) {
+        //    if (! await saveAlignedSpectrumAsync(false)) {
+        //        setLoadingCircleIsVisible(false);
+        //        showSimpleDialog(ERROR_LABEL, AlignmentSaveErrorMessage, ALERT);
+        //        return;
+        //    }
+        //}
 
         /* retrieve parent file */
         /* retrieve aligned spectrum */
+        let isAlignedSaved = true;
         let alignedSpectrum = getAlignedSpectrumProcedure();
-        if (alignedSpectrum.Id == buildTempAlignedId())
-            alignedSpectrum.Id = 0;
+        if (!Number.isFinite(alignedSpectrum.Id))
+            /* if aligned has not been already saved, save it for building the parent-child chain */
+            isAlignedSaved = await saveAlignedSpectrumAsync(false);
+
+        if (!isAlignedSaved) {
+            setLoadingCircleIsVisible(false);
+            showSimpleDialog(ERROR_LABEL, AlignmentSaveErrorMessage, ALERT);
+            return;
+        }
 
         const parentFiles = getContinuumRemovedParentFiles(selectedSpectrumForProcessingId);
 

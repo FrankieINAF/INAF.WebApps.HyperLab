@@ -315,7 +315,7 @@ function getChildSpectrumByRawIdAndSpectrumType(rawId, spectrumType) {
         if (spectra.length == 0)
             continueLoop = false;
         else {
-            let spectraNum = spectra.length;
+            const spectraNum = spectra.length;
             for (var i = 0; i < spectraNum; i++) {
                 if (spectra[i].SpectrumType == spectrumType) {
                     childSpectrum = spectra[i];
@@ -328,6 +328,24 @@ function getChildSpectrumByRawIdAndSpectrumType(rawId, spectrumType) {
     }
 
     return childSpectrum;
+}
+
+function getAncestorSpectrumByIdAndSpectrumType(id, spectrumType) {
+    let continueLoop = true;
+    let spectrum = getSpectrumByIdAndSpectrumType(id, spectrumType);
+    let ancestorSpectrumId = spectrum.ParentId;
+    while (continueLoop) {
+        let ancestorSpectrum = getParentSpectrumById(ancestorSpectrumId);
+        if (ancestorSpectrum == null)
+            continueLoop = false;
+        else {
+            ancestorSpectrumId = ancestorSpectrum.Id;
+            if (ancestorSpectrumId == selectedSpectrumForProcessingId)
+                continueLoop = false;
+        }
+    }
+
+    return ancestorSpectrumId;
 }
 
 function getSpectraBySpectrumType(spectrumType) {
@@ -344,6 +362,17 @@ function getSpectrumInfoById(id) {
 
 function getSpectrumByIdAndSpectrumType(id, spectrumType) {
     return spectraInfo.find(x => x.Id == id && x.SpectrumType == spectrumType);
+}
+
+function getParentSpectrumById(id) {
+    let spectrum = spectraInfo.find(x => x.Id == id);
+    if (spectrum == null)
+        return null;
+
+    if (spectrum.ParentId == null)
+        return null;
+
+    return spectraInfo.find(x => x.Id == spectrum.ParentId);
 }
 
 function getSpectrumByRawIdAndSpectrumType(rawId, spectrumType) {
