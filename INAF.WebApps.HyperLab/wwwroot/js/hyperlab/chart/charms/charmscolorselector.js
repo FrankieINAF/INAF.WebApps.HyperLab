@@ -75,7 +75,6 @@ function saveColorOnCloud(spectrumType, color) {
         return;
 
     const key = ['COLOR', spectrumType].join('_').toUpperCase();
-    //console.log(`${spectrumType}:${color}:${key}`);
 
     /* enque command for saving this setting */
     tryCallEnqueueSaveSetting(key, color, timeoutSpectrumTypeColor);

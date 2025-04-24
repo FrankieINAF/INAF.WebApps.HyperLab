@@ -1094,10 +1094,22 @@ function updateProcessedSpectrumValueField(oldId, newId) {
 /* ################################################################################ */
 /* TABS */
 /* ################################################################################ */
+function isTabEnabled(index) {
+    let children = $('#charmsTabs').children('li');
+    if (children && children.length > 0) {
+        let tab = $(children[index]);
+        if (tab.hasClass('disabled'))
+            return false;
+        else
+            return true;
+    }
+    return false;
+}
+
 function setTabEnabled(index, isEnabled) {
     let children = $('#charmsTabs').children('li');
 
-    function setEnabled(item, isItemEnabled) {
+    function setEnabled(item) {
         if (isEnabled)
             $(item).removeClass('disabled');
         else
@@ -1106,11 +1118,11 @@ function setTabEnabled(index, isEnabled) {
 
     let childrenNum = children.length;
     for (var i = 0; i < childrenNum; i++) {
-        let isItemEnabled = isEnabled;
-        if (i != index)
-            isItemEnabled = !isEnabled;
+        //let isItemEnabled = isEnabled;
+        //if (i != index)
+        //    isItemEnabled = !isEnabled;
 
-        setEnabled(children[index], isItemEnabled);
+        setEnabled(children[index]);
     }
 }
 

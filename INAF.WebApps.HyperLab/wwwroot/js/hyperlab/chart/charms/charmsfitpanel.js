@@ -358,13 +358,18 @@ function setShowHideBreaksOnValueAxis(isChecked) {
 /* SWITCH CORE-PRO MODE  */
 /* ################################################################################ */
 function emptyListOfSegmentsOnCharms(divId, containerDivId) {
-
     let callback = function () {
         $(`#${divId}`).empty();
 
         hideByClassDFlexItem(`${containerDivId}`);
     };
-    animateCSS(divId, 'fadeOut', FASTER, callback);
+
+    /* when fit-tab is enabled, then remove items with animation, 
+       otherwise remove them without animation to avoid issued related to UI */
+    if (isTabEnabled(1))
+        animateCSS(divId, 'fadeOut', FASTER, callback);
+    else
+        callback();
 }
 
 function switchToCommon() {
@@ -711,15 +716,17 @@ async function addSelectedPointForFittingAsync(point, isFromUserAction = false, 
 /* clean panel on charms from points settings */
 function cleanPointsPanel() {
     if (currentFitMode == FIT_CORE_MODE) {
-        let callback = function () {
-            $('#fitSegmentsListCore').empty();
-        };
-        animateCSS('fitSegmentsListCore', 'fadeOut', FASTER, callback);
+        //let callback = function () {
+        //    $('#fitSegmentsListCore').empty();
+        //};
+        //animateCSS('fitSegmentsListCore', 'fadeOut', FASTER, callback);
+        emptyListOfSegmentsOnCharms('fitSegmentsListCore', 'fitSegmentsListContainerCore');
     } else if (currentFitMode == FIT_PRO_MODE) {
-        let callback = function () {
-            $('#fitSegmentsListPro').empty();
-        };
-        animateCSS('fitSegmentsListPro', 'fadeOut', FASTER, callback);
+        //let callback = function () {
+        //    $('#fitSegmentsListPro').empty();
+        //};
+        //animateCSS('fitSegmentsListPro', 'fadeOut', FASTER, callback);
+        emptyListOfSegmentsOnCharms('fitSegmentsListPro', 'fitSegmentsListContainerPro');
     }
 }
 
