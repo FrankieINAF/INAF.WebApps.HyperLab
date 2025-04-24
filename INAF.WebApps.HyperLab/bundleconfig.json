@@ -1,5 +1,13 @@
 [
   {
+    "outputFileName": "wwwroot/js/dist/apps/appsbundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/apps/apps.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
     "outputFileName": "wwwroot/js/dist/hub/blazorglobalbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/hub/blazorglobal.js"

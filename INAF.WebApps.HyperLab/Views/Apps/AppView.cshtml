@@ -61,7 +61,7 @@
         }
 
         <!-- DOWNLOAD -->
-        <button class="download-button command-button primary rounded m-1" onclick="downloadApp()">
+        <button id="buttonDownload" class="download-button command-button primary rounded m-1" onclick="downloadApp()">
             <span class="mif-download icon"></span>
             <span class="caption">
                 Download
@@ -112,21 +112,13 @@
     </div>
 </div>
 
+<environment names="Development">
+    <script type="text/javascript" src="~/js/hyperlab/apps/apps.js" asp-append-version="true"></script>
+</environment>
+<environment names="Production">
+    <script type="text/javascript" src="~/js/dist/apps/appsbundle.min.js" asp-append-version="true"></script>
+</environment>
+
 <script type="text/javascript">
-    var osName = '';
-
-    document.addEventListener('DOMContentLoaded', function () {
-        console.log('os:' + ua.os.family);
-        osName = ua.os.family;
-        osName = osName.replace(/\d+/g, '').trim();
-        console.log('osName:"' + osName + '"');
-        var text = `Detected ${osName} OS`;
-        console.log('text:' + text);
-        document.getElementById('downloadCaption').innerText = text;
-    });
-
-    function downloadApp() {
-        const url = `/Apps/Download?appName=${encodeURIComponent('@appName')}&osName=${encodeURIComponent(osName)}`;
-        window.location.href = url;
-    }
+    var TemporaryOnlyWindowsSupportedMessage = "@Html.Raw(Apps.TemporaryOnlyWindowsSupportedMessage)";
 </script>

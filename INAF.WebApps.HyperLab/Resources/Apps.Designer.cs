@@ -141,5 +141,14 @@ namespace INAF.WebApps.HyperLab.Resources {
                 return ResourceManager.GetString("MLAppDescription2", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currently, only Windows is supported. Other desktop operating systems will be supported soon..
+        /// </summary>
+        public static string TemporaryOnlyWindowsSupportedMessage {
+            get {
+                return ResourceManager.GetString("TemporaryOnlyWindowsSupportedMessage", resourceCulture);
+            }
+        }
     }
 }
