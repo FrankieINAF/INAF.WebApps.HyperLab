@@ -62,6 +62,9 @@ function dxChartGetSeriesPoints(container, seriesName) {
 
 function dxChartHideSeries(container, seriesName) {
     try {
+    if (dxChartGetSeriesByName(container, seriesName) == null)
+            return;
+
         if (container.dxChart("getSeriesByName", seriesName).isVisible())
             container.dxChart("getSeriesByName", seriesName).hide();
     } catch (e) {

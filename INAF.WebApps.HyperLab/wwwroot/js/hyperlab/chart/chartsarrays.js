@@ -143,15 +143,12 @@ function getSpectraTypeColorsValueFromSpectrumType(spectrumType) {
 
 function getSpectrumTypeColor(spectrumTypeDescription) {
     try {
-        let fixedSpectrumTypeDescription = spectrumTypeDescription.replace(/\s/g, '').toLowerCase(); // fix spectrumType description, if needed
-
-        let values = ['color', fixedSpectrumTypeDescription];
-        let key = values.join('').toLowerCase();
+        let key = spectrumTypeDescription.replace(/\s/g, '').toLowerCase(); // fix spectrumType description, if needed
 
         let item = spectraTypeColors.find(x => x.Key == key);
         return item.Value;
     } catch (e) {
-        console.log(`getSpectraTypeColor - ex: ${e}`);
+        console.log(`${getSpectraTypeColor.name} - ex: ${e}`);
         return null;
     }
 }
