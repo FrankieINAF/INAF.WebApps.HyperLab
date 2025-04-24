@@ -70,16 +70,15 @@ function onSelectColor(color) {
     }
 }
 
-function saveColorOnCloud(key, color) {
+function saveColorOnCloud(spectrumType, color) {
     if (isOnlyShowingColor)
         return;
 
-    /* fix keyword for being saved  setting on cloud */
-    let uppercaseKey = key.toUpperCase();
-    let fixedKey = uppercaseKey.slice(0, 5) + "_" + uppercaseKey.slice(5);
+    const key = ['COLOR', spectrumType].join('_').toUpperCase();
+    //console.log(`${spectrumType}:${color}:${key}`);
 
     /* enque command for saving this setting */
-    tryCallEnqueueSaveSetting(fixedKey, color, timeoutSpectrumTypeColor);
+    tryCallEnqueueSaveSetting(key, color, timeoutSpectrumTypeColor);
 }
 
 function setSpectrumTypeSelected(spectrumType) {
