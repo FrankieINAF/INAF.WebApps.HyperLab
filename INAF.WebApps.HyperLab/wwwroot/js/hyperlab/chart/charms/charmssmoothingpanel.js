@@ -18,6 +18,38 @@ var smoothingWholeSpectrumOptions;
 var INCREASE = 'increase';
 var DECREASE = 'decrease';
 
+async function onSrcSpectrumTypeSelected(selected) {
+    console.log(`onSrcSpectrumTypeSelected - selected: ${selected}`);
+
+    const smoothingType = getSmoothingType();
+    let destSpectrumType = await getDestSpectrumTypeAsync(smoothingType, getSrcSpectrumType());
+
+    let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, destSpectrumType);
+    setButtonsEnabled(srcSpectrum != null, smoothingType);
+}
+
+function setButtonsEnabled(areEnabled, smoothingType) {
+    switch (smoothingType) {
+        case BY_SEGMENTS:
+            setMetroUIButtonEnabled('smoothingBySegmentsButtonSave', areEnabled);
+            setMetroUIButtonEnabled('smoothingBySegmentsButtonRemove', areEnabled);
+            const buttonDownloadBySegments = $('#smoothingBySegmentsButtonDownload').children('button')[0];
+            if (($(buttonDownloadBySegments)).hasClass('active'))
+                $(buttonDownloadBySegments).toggleClass('active');
+            setMetroUIButtonEnabled('smoothingBySegmentsButtonDownload', areEnabled);
+            break;
+        case BY_WHOLE_SPECTRUM:
+            setMetroUIButtonEnabled('smoothingByWholeSpectrumButtonSave', areEnabled);
+            setMetroUIButtonEnabled('smoothingByWholeSpectrumButtonRemove', areEnabled);
+            const buttonDownloadByWholeSpectrum = $('#smoothingByWholeSpectrumButtonDownload').children('button')[0];
+            if (($(buttonDownloadByWholeSpectrum)).hasClass('active'))
+                $(buttonDownloadByWholeSpectrum).toggleClass('active');
+            $('#smoothingByWholeSpectrumButtonDownload').toggleClass('active');
+            setMetroUIButtonEnabled('smoothingByWholeSpectrumButtonDownload', areEnabled);
+            break;
+    }
+}
+
 async function callCheckIsSpectrumOfTypeSavedOnCloudForSmoothedAsync(filename = null, spectrumType) {
     if (filename == null) {
         let file = getSpectrumInfoById(selectedSpectrumForProcessingId);
@@ -425,6 +457,15 @@ function getSmoothingSegmentUISpinner(segmentType, propertyName, index, onValueC
     return html;
 }
 
+function getSmoothingType() {
+    let children = $('#smoothingTypeTabs').children();
+    if ($(children[0]).hasClass('active'))
+        return BY_SEGMENTS;
+    else
+        return BY_WHOLE_SPECTRUM;
+
+}
+
 async function loadSmoothingSegmentsOptionsAsync() {
     let obj = await getUserSettingAsync(SMOOTHING_SEGMENTS_SETTINGS);
     if (obj && obj.IsOk) {
@@ -753,7 +794,7 @@ function buildSmoothedSpectrumCompleted(smoothingType) {
     /* enable buttons for saving/removing aligned spectrum */
     setMetroUIButtonEnabled(`smoothing${smoothingType}ButtonSave`, true);
     setMetroUIButtonEnabled(`smoothing${smoothingType}ButtonRemove`, true);
-    showByClass(`smoothingButtonDownload`);
+    showByClass(`smoothing${smoothingType}ButtonDownload`);
 
     /* set hidden the checkbox for removing file on cloud (because of the used HTML & css, we need to do it manually, since the 'd-none' class doesn't work) */
     hideElemMetroUIElem('checkboxRemoveSmoothedSpectrumOnCloud');
@@ -807,8 +848,10 @@ async function saveSmoothedSpectrumAsync(spectrum, smoothingType, destSpectrumTy
             setLoadingCircleIsVisible(true);
 
         /* retrieve parent file */
+        /* usually the 1st method works... */
         let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
-        if (!isSLabSpectrumCurrentlySelected && !srcSpectrum)
+        /* but when an aligned spectrum is the main parent, we need this second search to get info */
+        if (!srcSpectrum)
             srcSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
         if (srcSpectrum.Id == buildTempSmoothedSpectrumId(srcSpectrumType, smoothingType))
             srcSpectrum.Id = 0;
@@ -946,7 +989,7 @@ async function removeSmoothedSpectrumAsync(smoothedSpectrum, isRemovalOnCloudReq
     }
     setMetroUIButtonEnabled(`smoothing${smoothingType}ButtonSave`, false);
     setMetroUIButtonEnabled(`smoothing${smoothingType}ButtonRemove`, false);
-    hideByClass(`smoothingButtonDownload`);
+    hideByClass(`smoothing${smoothingType}ButtonDownload`);
 
     /* refresh legend, if opened */
     refreshCharmsLegend();

@@ -340,10 +340,6 @@ function getSpectraByParentId(parentId) {
     return spectraInfo.filter(x => x.ParentId == parentId);
 }
 
-function getSpectrumInfoById(id) {
-    return spectraInfo.find(x => x.Id == id);
-}
-
 function getSpectrumByIdAndSpectrumType(id, spectrumType) {
     return spectraInfo.find(x => x.Id == id && x.SpectrumType == spectrumType);
 }
@@ -382,12 +378,12 @@ function getSpectrumIndexByIdAndSpectrumType(id, spectrumType) {
     return spectraInfo.findIndex(x => x.Id == id && x.SpectrumType == spectrumType);
 }
 
-//function getSpectrumIndexByParentId(parentId) {
-//    return spectraInfo.findIndex(x => x.ParentId == parentId);
-//}
-
 function getSpectrumIndexByParentIdAndSpectrumType(parentId, spectrumType) {
     return spectraInfo.findIndex(x => x.ParentId == parentId && x.SpectrumType == spectrumType);
+}
+
+function getSpectrumInfoById(id) {
+    return spectraInfo.find(x => x.Id == id);
 }
 
 function getSpectrumNameById(id) {
