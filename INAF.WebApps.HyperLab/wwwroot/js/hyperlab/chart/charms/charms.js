@@ -639,37 +639,39 @@ async function removeSpectraProcedureAsync(spectrumType, dialogId, checkboxId) {
     if (dialogId)
         Metro.dialog.close(`#${dialogId}`);
 
-    /* retrieve all spectra, children of selected RAW spectrum, ordered in descending order */
-    let spectra = buildFamilyTreeForSpectrum(selectedSpectrumForProcessingId);
-
-    if (spectra.length == 0)
-        return;
-
-    /* filter only spectra with spectrumType greater than or equal to the selected one for being removed */
-    let spectraToBeRemoved = spectra.filter(x => x.SpectrumType >= spectrumType);
-
-    if (spectraToBeRemoved.length == 0) {
-        setLoadingCircleIsVisible(true);
-        return;
-    }
-
-    /* check whether removal on cloud is requested or not */
-    let isRemovalOnCloudRequested = false;
-    if (checkboxId)
-        isRemovalOnCloudRequested = isCheckboxChecked(checkboxId);
-
     setLoadingCircleIsVisible(true);
 
-    /* loop on spectraToBeRemoved for removing them */
-    spectraToBeRemoved.forEach(async function (spectrumToBeRemoved) {
-        await removeSpectrumProcedureAsync(spectrumToBeRemoved, isRemovalOnCloudRequested);
-    });
+    executeAfter(async function () {
+        /* retrieve all spectra, children of selected RAW spectrum, ordered in descending order */
+        let spectra = buildFamilyTreeForSpectrum(selectedSpectrumForProcessingId);
 
-    /* if removal on cloud is requested, then we have to remove all spectra obtained by next processing steps */
-    if (isRemovalOnCloudRequested)
-        await deleteRecursivelySpectrumChildrenOnCloudAsync(selectedSpectrumForProcessingId, spectrumType);
+        if (spectra.length == 0)
+            return;
 
-    setLoadingCircleIsVisible(false);
+        /* filter only spectra with spectrumType greater than or equal to the selected one for being removed */
+        let spectraToBeRemoved = spectra.filter(x => x.SpectrumType >= spectrumType);
+
+        if (spectraToBeRemoved.length == 0) {
+            setLoadingCircleIsVisible(false);
+            return;
+        }
+
+        /* check whether removal on cloud is requested or not */
+        let isRemovalOnCloudRequested = false;
+        if (checkboxId)
+            isRemovalOnCloudRequested = isCheckboxChecked(checkboxId);
+
+        /* loop on spectraToBeRemoved for removing them */
+        spectraToBeRemoved.forEach(async function (spectrumToBeRemoved) {
+            await removeSpectrumProcedureAsync(spectrumToBeRemoved, isRemovalOnCloudRequested);
+        });
+
+        /* if removal on cloud is requested, then we have to remove all spectra obtained by next processing steps */
+        if (isRemovalOnCloudRequested)
+            await deleteRecursivelySpectrumChildrenOnCloudAsync(selectedSpectrumForProcessingId, spectrumType);
+
+        setLoadingCircleIsVisible(false);
+    }, JS_DELAY_200);
 }
 
 async function removeSpectraProcedureSimpleAsync() {

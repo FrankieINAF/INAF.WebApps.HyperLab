@@ -661,7 +661,7 @@ function addRemoveSelectedPointForFittingProcedure(seriesId, seriesName, point, 
     else if (isSpectrumOfType(seriesId, SPECTRUM_TYPE_ALIGNED)) {
         insertPulse(mousePosX, mousePosY, 'pulse-ring-add');
         selectedSpectrumTypeForContinuumRemoval = SPECTRUM_TYPE_ALIGNED;
-        addSelectedPointForFittingAsync(createPointForFitting(point), true, true);
+        executeAfter(function () { addSelectedPointForFittingAsync(createPointForFitting(point), true, true); }, JS_DELAY_200);
     }
 }
 
@@ -796,7 +796,7 @@ function insertPulse(left, top, className) {
     $('body').append(html);
     $('#pulseRing').css({ position: 'absolute', left: `${left}px`, top: `${top}px` });
 
-    setTimeout(function () { $('#pulseRing').remove(); }, PULSE_TIMEOUT);
+    executeAfter(function () { $('#pulseRing').remove(); }, PULSE_TIMEOUT);
 }
 
 /* ################################################################################ */
