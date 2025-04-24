@@ -86,9 +86,12 @@ async function loadSpectraTypeColorsAsync() {
 
         let colorsNum = obj.Responses.length;
         for (var i = 0; i < colorsNum; i++) {
-            let key = obj.Responses[i].Key.replace('_', '').replace('_DEFAULT', '').toLowerCase();
-            let spectrumTypeValue = await getSpectrumTypeValue(key);
-
+            let key = obj.Responses[i].Key
+                .replace('COLOR_', '')
+                .replace('_DEFAULT', '')
+                .toLowerCase();
+            let spectrumTypeValue = await retrieveSpectrumTypeFromStringAsync(key);
+            //console.log(`spectrumTypeValue: ${spectrumTypeValue} - key: ${key} - color: ${obj.Responses[i].Value}`);
             let item = createSpectraTypeColorKeyValueItem(spectrumTypeValue, key, obj.Responses[i].Value);
 
             addOrUpdateSpectraTypeColoKeyValueItem(item);
@@ -153,8 +156,8 @@ function getSpectrumTypeColor(spectrumTypeDescription) {
     }
 }
 
-async function getSpectrumTypeValue(key) {
-    return await window.dotNetHelper.invokeMethodAsync("retrieveSpectrumTypeFromString", key.replace('color', ''));
+async function retrieveSpectrumTypeFromStringAsync(key) {
+    return await window.dotNetHelper.invokeMethodAsync("retrieveSpectrumTypeFromString", key);
 }
 
 

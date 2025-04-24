@@ -712,14 +712,14 @@ async function addSelectedPointForFittingAsync(point, isFromUserAction = false, 
 function cleanPointsPanel() {
     if (currentFitMode == FIT_CORE_MODE) {
         let callback = function () {
-            $('#fitSegmentsListContainerCore').empty();
+            $('#fitSegmentsListCore').empty();
         };
-        animateCSS('fitSegmentsListContainerCore', 'fadeOut', FASTER, callback);
+        animateCSS('fitSegmentsListCore', 'fadeOut', FASTER, callback);
     } else if (currentFitMode == FIT_PRO_MODE) {
         let callback = function () {
-            $('#fitSegmentsListContainerPro').empty();
+            $('#fitSegmentsListPro').empty();
         };
-        animateCSS('fitSegmentsListContainerPro', 'fadeOut', FASTER, callback);
+        animateCSS('fitSegmentsListPro', 'fadeOut', FASTER, callback);
     }
 }
 

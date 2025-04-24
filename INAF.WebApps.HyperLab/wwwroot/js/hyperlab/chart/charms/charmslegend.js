@@ -34,10 +34,11 @@ function createCharmsLegend() {
     for (var i = 0; i < rawSpectraNum; i++) {
         addSpectrumToSpectraTree(rawSpectra[i].Id);
 
-        let children = getChildrenIdsForSpectrum(rawSpectra[i].Id);
-        if (children && children.length > 0) {
+        findSpectrumChildrenByIdProcedure(rawSpectra[i].Id);
+        //let children = getChildrenIdsForSpectrum(rawSpectra[i].Id);
+        if (familyIds && familyIds.length > 0) {
             //console.log(children);
-            children.forEach(function (id) {
+            familyIds.forEach(function (id) {
                 addSpectrumChildToSpectraTree(rawSpectra[i].Id, id);
             });
         }
