@@ -1,9 +1,9 @@
 ﻿var osName = '';
 
 function downloadApp() {
-    if (osName != 'xWindows')
+    if (osName != 'Windows')
         return;
-    const url = `/Apps/Download?appName=${encodeURIComponent('@appName')}&osName=${encodeURIComponent(osName)}`;
+    const url = `/Apps/Download?appName=${encodeURIComponent(appName)}&osName=${encodeURIComponent(osName)}`;
     window.location.href = url;
 }
 
@@ -18,7 +18,7 @@ function checkOsName() {
 }
 
 function disableDownloadButtonDependingOnOS() {
-    if (osName != 'xWindows') {
+    if (osName != 'Windows') {
         $('#buttonDownload').attr('title', TemporaryOnlyWindowsSupportedMessage);
     }
 }
