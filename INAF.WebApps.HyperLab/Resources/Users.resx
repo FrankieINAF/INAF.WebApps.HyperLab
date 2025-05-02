@@ -183,6 +183,9 @@
   <data name="UserChangesDiscardQuestion" xml:space="preserve">
     <value>Do you really want to close and discard changes?</value>
   </data>
+  <data name="UserNotExistantErrorMessage" xml:space="preserve">
+    <value>The email entered does not match any existing user.</value>
+  </data>
   <data name="UserPermissions" xml:space="preserve">
     <value>Permissions:</value>
   </data>

@@ -32,6 +32,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
         }
 
+        #region CHECK LOGIN/TOKEN
         [HttpGet]
         public JsonResult IsLoginValid()
         {
@@ -64,52 +65,9 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             return new JsonResult(isValid);
         }
+        #endregion
 
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> Confirmation(IncomingLoginConfirmationModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                logger.LogInformation($"{nameof(Confirmation)} - IsValid - user: {model.Id}");
-                /* if login has already been confirmed, then send user to registration completed page */
-                if (dbHandlerHyperLabUsers.isLoginAlreadyConfirmed(model.Id))
-                    return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
-
-                (bool isOk, string exMsg) confirmationResult = await dbHandlerHyperLabUsers.tryConfirmLoginAsync(model.Id,
-                                                                                                                 model.Token!);
-
-                logger.LogInformation($"{nameof(Confirmation)} - IsValid - confirmationResult: isOk:{confirmationResult.isOk}, exMsg: {confirmationResult.exMsg}");
-                /* if confirmation is ok, then send user to registration completed page */
-                if (confirmationResult.isOk)
-                {
-                    /* retrieve user data to fix userId in shares and then fix them, when existant */
-                    LoginModel? loginModel = dbHandlerHyperLabUsers.getUserDataForShareFromLoginId(model.Id);
-                    if (loginModel != null)
-                    {
-                        var dbHandlerHyperLabData = serviceProvider.GetRequiredService<DbHandlerHyperLabData>();
-                        await dbHandlerHyperLabData.fixSharesForNewUser(loginModel.Id, loginModel.UserName!);
-                    }
-
-                    ViewBag.Confirmation = 1;
-                    return RedirectToAction(nameof(RegistrationConfirmed), GenericHelper.GetControllerName(nameof(AccountController)));
-                }
-
-                /* if confirmation is not ok, then send user to confirmation error page */
-                return RedirectToAction(nameof(ConfirmationError), GenericHelper.GetControllerName(nameof(AccountController)));
-            }
-
-            logger.LogInformation($"{nameof(Confirmation)} - NOT VALID - user: {model.Id}");
-            return RedirectToAction(nameof(ConfirmationError), GenericHelper.GetControllerName(nameof(AccountController)));
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ConfirmationError()
-        {
-            return View();
-        }
-
+        #region LOGIN/LOGOUT
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login(string? returnUrl,
@@ -172,6 +130,93 @@ namespace INAF.WebApps.HyperLab.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)));
         }
+        #endregion
+
+        #region CONFIRMATION
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Confirmation(IncomingLoginConfirmationModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                logger.LogInformation($"{nameof(Confirmation)} - IsValid - user: {model.Id}");
+                /* if login has already been confirmed, then send user to registration completed page */
+                if (dbHandlerHyperLabUsers.isLoginAlreadyConfirmed(model.Id))
+                    return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
+
+                (bool isOk, string exMsg) confirmationResult = await dbHandlerHyperLabUsers.tryConfirmLoginAsync(model.Id,
+                                                                                                                 model.Token!);
+
+                logger.LogInformation($"{nameof(Confirmation)} - IsValid - confirmationResult: isOk:{confirmationResult.isOk}, exMsg: {confirmationResult.exMsg}");
+                /* if confirmation is ok, then send user to registration completed page */
+                if (confirmationResult.isOk)
+                {
+                    /* retrieve user data to fix userId in shares and then fix them, when existant */
+                    LoginModel? loginModel = dbHandlerHyperLabUsers.getUserDataForShareFromLoginId(model.Id);
+                    if (loginModel != null)
+                    {
+                        var dbHandlerHyperLabData = serviceProvider.GetRequiredService<DbHandlerHyperLabData>();
+                        await dbHandlerHyperLabData.fixSharesForNewUser(loginModel.Id, loginModel.UserName!);
+                    }
+
+                    ViewBag.Confirmation = 1;
+                    return RedirectToAction(nameof(RegistrationConfirmed), GenericHelper.GetControllerName(nameof(AccountController)));
+                }
+
+                /* if confirmation is not ok, then send user to confirmation error page */
+                return RedirectToAction(nameof(ConfirmationError), GenericHelper.GetControllerName(nameof(AccountController)));
+            }
+
+            logger.LogInformation($"{nameof(Confirmation)} - NOT VALID - user: {model.Id}");
+            return RedirectToAction(nameof(ConfirmationError), GenericHelper.GetControllerName(nameof(AccountController)));
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ConfirmationError()
+        {
+            return View();
+        }
+        #endregion
+
+        #region PASSWORD RESET
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult PasswordResetRequest()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> PasswordReset([FromForm] PasswordResetModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                logger.LogInformation($"{nameof(PasswordReset)} - email: {model.Email}");
+                GenericValueStringResponseModel response = await resetPasswordAsync(model);
+                if (response.IsOk)
+                    return RedirectToAction(nameof(PasswordResetCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
+                else
+                    return new JsonResult(response);
+            }
+            else
+            {
+                logErrorMessage(ModelState.Values);
+            }
+
+            ModelState.Clear();
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult PasswordResetCompleted()
+        {
+            return View();
+        }
+        #endregion
 
         [HttpGet]
         [AllowAnonymous]
@@ -386,6 +431,9 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         private async Task<GenericValueStringResponseModel> registerAsync(RegistrationModel model)
         {
+            if (string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.LastName) || string.IsNullOrEmpty(model.Email))
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = INAF.Libraries.Net.CommonWebAppModels.Resources.Login.RegistrationBadRequest };
+
             if (dbHandlerHyperLabUsers.isUserExistant(model.Email!))
                 return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Users.UserAlreadyExistantMessage };
 
@@ -401,8 +449,8 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* save new user */
             if (await dbHandlerHyperLabUsers.upsertUserProcedureAsync(id: model.Id,
-                                                                      name: model.Name!.ToLowerInvariant().FirstCharToUpperCase(),
-                                                                      lastName: model.LastName!.ToLowerInvariant().FirstCharToUpperCase(),
+                                                                      name: model.Name.ToLowerInvariant().FirstCharToUpperCase(),
+                                                                      lastName: model.LastName.ToLowerInvariant().FirstCharToUpperCase(),
                                                                       userName: model.Email.ToLowerInvariant(),
                                                                       email: model.Email.ToLowerInvariant(),
                                                                       encryptedPassword: encryptedPassword,
@@ -411,9 +459,33 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                       roleId: (int)INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums.RoleType.User,
                                                                       operationUserId: getUserId()))
                 return new GenericValueStringResponseModel() { IsOk = true };
-            //return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
             else
                 return new GenericValueStringResponseModel() { IsOk = false, ExMsg = INAF.Libraries.Net.CommonWebAppModels.Resources.Login.RegistrationBadRequest };
+        }
+
+        private async Task<GenericValueStringResponseModel> resetPasswordAsync(PasswordResetModel model)
+        {
+            if (string.IsNullOrEmpty(model.Email))
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Account.PasswordResetRequestBadRequest };
+
+            if (!dbHandlerHyperLabUsers.isUserExistant(model.Email!))
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Users.UserNotExistantErrorMessage };
+
+            /* encrypt password */
+            string encryptedPassword = getEncrypted(model.Password!);
+
+            /* generate confirmation token */
+            string passwordResetToken = Guid.NewGuid().ToString();
+
+            DateTime tokenExpirationDateTime = DateTime.UtcNow.AddMinutes(15);
+
+            if (await dbHandlerHyperLabUsers.resetPasswordAsync(model.Email,
+                                                                encryptedPassword,
+                                                                passwordResetToken,
+                                                                tokenExpirationDateTime))
+                return new GenericValueStringResponseModel() { IsOk = true };
+            else
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Account.PasswordResetRequestBadModel };
         }
         #endregion
     }

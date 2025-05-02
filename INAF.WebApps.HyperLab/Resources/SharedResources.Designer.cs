@@ -151,6 +151,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Best regards,&lt;/br&gt; The &lt;i&gt;HyperLab&lt;/i&gt; team.
+        /// </summary>
+        public static string HyperLabTeamSignature {
+            get {
+                return ResourceManager.GetString("HyperLabTeamSignature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Info.
         /// </summary>
         public static string InfoLabel {

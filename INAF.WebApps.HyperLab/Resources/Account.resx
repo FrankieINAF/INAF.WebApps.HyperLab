@@ -135,4 +135,34 @@
   <data name="LoginSLabLabel" xml:space="preserve">
     <value>Login SLab</value>
   </data>
+  <data name="PasswordResetRequestBadRequest" xml:space="preserve">
+    <value>Required fileds are missing in the reset password request</value>
+  </data>
+  <data name="PasswordResetRequestPageTitle" xml:space="preserve">
+    <value>Password reset request</value>
+  </data>
+  <data name="PasswordResetTitle" xml:space="preserve">
+    <value>Password reset</value>
+  </data>
+  <data name="RegistrationPageTitle" xml:space="preserve">
+    <value>Registration</value>
+  </data>
+  <data name="PasswordResetRequestBadModel" xml:space="preserve">
+    <value>Sorry, something went wrong. Password reset couldn't be completed</value>
+  </data>
+  <data name="RegistrationBadModel" xml:space="preserve">
+    <value>Sorry, something went wrong. Registration couldn't be completed</value>
+  </data>
+  <data name="PasswordResetCompletedPageTitle" xml:space="preserve">
+    <value>Password reset completed</value>
+  </data>
+  <data name="PasswordResetCompletedMessage1" xml:space="preserve">
+    <value>For security reasons, please &lt;b&gt;make sure to keep your new password safe&lt;/b&gt; and &lt;b&gt;do not share it with anyone&lt;/b&gt;. You can now log in with your new credentials. </value>
+  </data>
+  <data name="PasswordResetCompletedMessage2" xml:space="preserve">
+    <value>If you encounter any issues, feel free to reach out to our support team.</value>
+  </data>
+  <data name="PasswordResetCompletedTitle" xml:space="preserve">
+    <value>Your password has been successfully updated. </value>
+  </data>
 </root>

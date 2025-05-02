@@ -259,6 +259,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The email entered does not match any existing user..
+        /// </summary>
+        public static string UserNotExistantErrorMessage {
+            get {
+                return ResourceManager.GetString("UserNotExistantErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Permissions:.
         /// </summary>
         public static string UserPermissions {

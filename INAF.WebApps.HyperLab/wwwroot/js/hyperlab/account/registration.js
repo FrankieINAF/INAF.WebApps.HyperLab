@@ -4,7 +4,7 @@
 formRegistration.data('validator', null);
 $.validator.unobtrusive.parse(formRegistration);
 
-$("#submitButton").click(function () {
+$("#submitButton").on('click', function () {
     if (!$(formRegistration).valid()) {
         formRegistration.addClass("ani-ring");
         setTimeout(function () {
@@ -23,13 +23,13 @@ $("#submitButton").click(function () {
     }
 
     setLoadingCircleIsVisible(true);
-    $(formRegistration).submit();
+    $(formRegistration).trigger('submit');
 });
 
 /* ################################################################################ */
 /* DOCUMENT READY */
 /* ################################################################################ */
-$(document).ready(function () {
+$(function () {
     Metro.makePlugin("#Name", "input");
     Metro.makePlugin("#LastName", "input");
     Metro.makePlugin("#Email", "input");

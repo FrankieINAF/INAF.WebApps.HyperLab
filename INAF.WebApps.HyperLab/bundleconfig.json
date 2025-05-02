@@ -138,6 +138,14 @@
     "includeInProject": true
   },
   {
+    "outputFileName": "wwwroot/js/dist/account/passwordresetrequestbundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/account/passwordresetrequest.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
     "outputFileName": "wwwroot/js/dist/account/registrationbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/account/registration.js"
@@ -290,6 +298,16 @@
       "wwwroot/css/hyperlab/hubandchart/searches.css",
       "wwwroot/css/hyperlab/hubandchart/hubandchart.css",
       "wwwroot/css/hyperlab/hubandchart/charms.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/account/registrationconfirmedbundle.css",
+    "inputFiles": [
+      "wwwroot/css/hyperlab/common.css",
+      "wwwroot/css/hyperlab/account/login.css",
+      "wwwroot/css/hyperlab/account/registrationconfirmed.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }

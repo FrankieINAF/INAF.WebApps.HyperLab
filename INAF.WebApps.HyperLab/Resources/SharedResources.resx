@@ -147,6 +147,9 @@
   <data name="HyperLabLabel" xml:space="preserve">
     <value>HyperLab</value>
   </data>
+  <data name="HyperLabTeamSignature" xml:space="preserve">
+    <value>Best regards,&lt;/br&gt; The &lt;i&gt;HyperLab&lt;/i&gt; team</value>
+  </data>
   <data name="InfoLabel" xml:space="preserve">
     <value>Info</value>
   </data>

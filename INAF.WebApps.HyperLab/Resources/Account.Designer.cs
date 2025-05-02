@@ -113,5 +113,95 @@ namespace INAF.WebApps.HyperLab.Resources {
                 return ResourceManager.GetString("LoginSLabLabel", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For security reasons, please &lt;b&gt;make sure to keep your new password safe&lt;/b&gt; and &lt;b&gt;do not share it with anyone&lt;/b&gt;. You can now log in with your new credentials. .
+        /// </summary>
+        public static string PasswordResetCompletedMessage1 {
+            get {
+                return ResourceManager.GetString("PasswordResetCompletedMessage1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If you encounter any issues, feel free to reach out to our support team..
+        /// </summary>
+        public static string PasswordResetCompletedMessage2 {
+            get {
+                return ResourceManager.GetString("PasswordResetCompletedMessage2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password reset completed.
+        /// </summary>
+        public static string PasswordResetCompletedPageTitle {
+            get {
+                return ResourceManager.GetString("PasswordResetCompletedPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your password has been successfully updated. .
+        /// </summary>
+        public static string PasswordResetCompletedTitle {
+            get {
+                return ResourceManager.GetString("PasswordResetCompletedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, something went wrong. Password reset couldn&apos;t be completed.
+        /// </summary>
+        public static string PasswordResetRequestBadModel {
+            get {
+                return ResourceManager.GetString("PasswordResetRequestBadModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Required fileds are missing in the reset password request.
+        /// </summary>
+        public static string PasswordResetRequestBadRequest {
+            get {
+                return ResourceManager.GetString("PasswordResetRequestBadRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password reset request.
+        /// </summary>
+        public static string PasswordResetRequestPageTitle {
+            get {
+                return ResourceManager.GetString("PasswordResetRequestPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password reset.
+        /// </summary>
+        public static string PasswordResetTitle {
+            get {
+                return ResourceManager.GetString("PasswordResetTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, something went wrong. Registration couldn&apos;t be completed.
+        /// </summary>
+        public static string RegistrationBadModel {
+            get {
+                return ResourceManager.GetString("RegistrationBadModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration.
+        /// </summary>
+        public static string RegistrationPageTitle {
+            get {
+                return ResourceManager.GetString("RegistrationPageTitle", resourceCulture);
+            }
+        }
     }
 }
