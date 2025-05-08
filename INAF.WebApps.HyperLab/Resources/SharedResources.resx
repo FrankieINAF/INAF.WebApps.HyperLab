@@ -132,6 +132,9 @@
   <data name="CloseWizardLabel" xml:space="preserve">
     <value>Close wizard</value>
   </data>
+  <data name="ContactUs" xml:space="preserve">
+    <value>Contact HyperLab Team</value>
+  </data>
   <data name="DeleteLabel" xml:space="preserve">
     <value>Delete</value>
   </data>

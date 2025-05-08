@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -152,7 +153,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 if (confirmationResult.isOk)
                 {
                     /* retrieve user data to fix userId in shares and then fix them, when existant */
-                    LoginModel? loginModel = dbHandlerHyperLabUsers.getUserDataForShareFromLoginId(model.Id);
+                    LoginModel? loginModel = dbHandlerHyperLabUsers.getLoginFromLoginId(model.Id);
                     if (loginModel != null)
                     {
                         var dbHandlerHyperLabData = serviceProvider.GetRequiredService<DbHandlerHyperLabData>();
@@ -180,6 +181,11 @@ namespace INAF.WebApps.HyperLab.Controllers
         #endregion
 
         #region PASSWORD RESET
+        // STEP 0
+        /// <summary>
+        /// Page for requesting password reset
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         public IActionResult PasswordResetRequest()
@@ -187,19 +193,102 @@ namespace INAF.WebApps.HyperLab.Controllers
             return View();
         }
 
+        // STEP 0.5
+        /// <summary>
+        /// Set DB to enable sending email to user for password reset
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> PasswordResetSendEmail([FromForm] PasswordResetRequestModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                logger.LogInformation($"{nameof(PasswordResetSendEmail)} - email: {model.Email}");
+                GenericValueStringResponseModel response = await setUserLoginForPasswordResetAsync(model);
+
+                if (response.IsOk)
+                    return RedirectToAction(nameof(PasswordResetStarted), GenericHelper.GetControllerName(nameof(AccountController)));
+            }
+            else
+            {
+                logErrorMessage(ModelState.Values);
+            }
+
+            ModelState.Clear();
+            return RedirectToAction(nameof(PasswordResetError), GenericHelper.GetControllerName(nameof(AccountController)));
+        }
+
+        // STEP 1
+        /// <summary>
+        /// Page for warn user that an email will be sent to set the new password
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult PasswordResetStarted()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult PasswordResetError()
+        {
+            return View();
+        }
+
+        // STEP 2
+        /// <summary>
+        /// Page for inserting the new password
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult PasswordResetExecute(IncomingLoginConfirmationModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                logger.LogInformation($"{nameof(Confirmation)} - IsValid - user: {model.Id}");
+                if (!dbHandlerHyperLabUsers.isLoginWaitingForPasswordReset(model.Id))
+                    return RedirectToAction(nameof(PasswordResetCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
+
+                LoginModel? loginModel = dbHandlerHyperLabUsers.getLoginFromLoginId(model.Id);
+                if (loginModel == null)
+                {
+                    logger.LogError($"{nameof(PasswordResetExecute)} - loginModel is null - user: {model.Id}");
+                    return RedirectToAction(nameof(PasswordResetError), GenericHelper.GetControllerName(nameof(AccountController)));
+                }
+
+                return View(new PasswordResetModel() { Email = loginModel.UserName });
+            }
+
+            logger.LogInformation($"{nameof(PasswordResetExecute)} - NOT VALID - user: {model.Id}");
+            return RedirectToAction(nameof(PasswordResetError), GenericHelper.GetControllerName(nameof(AccountController)));
+        }
+
+        // STEP 2.5
+        /// <summary>
+        /// Set new password for user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [AllowAnonymous]
         public async Task<IActionResult> PasswordReset([FromForm] PasswordResetModel model)
         {
+            clearErrorsForKey(nameof(PasswordResetModel.Email));
+            //ModelState.ClearValidationState(nameof(PasswordResetModel.Email));
+
             if (ModelState.IsValid)
             {
                 logger.LogInformation($"{nameof(PasswordReset)} - email: {model.Email}");
                 GenericValueStringResponseModel response = await resetPasswordAsync(model);
                 if (response.IsOk)
                     return RedirectToAction(nameof(PasswordResetCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
-                else
-                    return new JsonResult(response);
             }
             else
             {
@@ -210,6 +299,11 @@ namespace INAF.WebApps.HyperLab.Controllers
             return View();
         }
 
+        // STEP 3
+        /// <summary>
+        /// Page to warn user about password change completed
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         public IActionResult PasswordResetCompleted()
@@ -218,6 +312,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
         #endregion
 
+        #region REGISTRATION
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Registration()
@@ -274,6 +369,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             return View();
         }
+        #endregion
 
         #region PRIVATE
         private async Task<JwtTokenModel> createNewTokenForUserAsync(UserModel user)
@@ -474,15 +570,34 @@ namespace INAF.WebApps.HyperLab.Controllers
             /* encrypt password */
             string encryptedPassword = getEncrypted(model.Password!);
 
-            /* generate confirmation token */
+            /* generate confirmation token and set token expiration date-time */
             string passwordResetToken = Guid.NewGuid().ToString();
 
-            DateTime tokenExpirationDateTime = DateTime.UtcNow.AddMinutes(15);
-
+            /* update db */
             if (await dbHandlerHyperLabUsers.resetPasswordAsync(model.Email,
-                                                                encryptedPassword,
-                                                                passwordResetToken,
-                                                                tokenExpirationDateTime))
+                                                                encryptedPassword))
+                return new GenericValueStringResponseModel() { IsOk = true };
+            else
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Account.PasswordResetRequestBadModel };
+        }
+
+        private async Task<GenericValueStringResponseModel> setUserLoginForPasswordResetAsync(PasswordResetRequestModel model)
+        {
+            if (string.IsNullOrEmpty(model.Email))
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Account.PasswordResetRequestBadRequest };
+
+            if (!dbHandlerHyperLabUsers.isUserExistant(model.Email!))
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Users.UserNotExistantErrorMessage };
+
+            /* generate confirmation token and set token expiration date-time */
+            string passwordResetToken = Guid.NewGuid().ToString();
+
+            DateTime tokenExpirationDateTime = DateTime.UtcNow.AddHours(1);
+
+            /* update db */
+            if (await dbHandlerHyperLabUsers.setPasswordForResetAsync(model.Email,
+                                                                      passwordResetToken,
+                                                                      tokenExpirationDateTime))
                 return new GenericValueStringResponseModel() { IsOk = true };
             else
                 return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Account.PasswordResetRequestBadModel };

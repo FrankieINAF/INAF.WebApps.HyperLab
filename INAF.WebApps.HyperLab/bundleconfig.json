@@ -138,6 +138,14 @@
     "includeInProject": true
   },
   {
+    "outputFileName": "wwwroot/js/dist/account/passwordresetexecutebundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/account/passwordresetexecute.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
     "outputFileName": "wwwroot/js/dist/account/passwordresetrequestbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/account/passwordresetrequest.js"

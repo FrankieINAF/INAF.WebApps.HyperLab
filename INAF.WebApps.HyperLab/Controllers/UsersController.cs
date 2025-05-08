@@ -67,7 +67,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (string.IsNullOrEmpty(model.Text))
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
 
-            LoginModel? loginModel = dbHandlerHyperLabUsers.getLogin(model.Text);
+            LoginModel? loginModel = dbHandlerHyperLabUsers.getLoginFromUserName(model.Text);
             if (loginModel != null)
                 return new JsonResult(new GenericResponseModel() { IsOk = true, ResponseObject = loginModel.Id });
             else

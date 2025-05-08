@@ -43,7 +43,7 @@ namespace INAF.WebApps.HyperLab.Helpers.Factories
                 Contacts = userDetails.Contacts,
                 Roles = dbHandlerHyperLabUsers.getRoles(),
                 RoleId = userDetails.Roles[0].Id,
-                Login = dbHandlerHyperLabUsers.getLogin(userId),
+                Login = dbHandlerHyperLabUsers.getLoginFromUserId(userId),
                 OperationType = Libraries.Net.CommonWebAppModels.Values.Enums.OperationType.Update
             };
         }

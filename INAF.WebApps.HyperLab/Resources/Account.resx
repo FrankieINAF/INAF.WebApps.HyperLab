@@ -139,10 +139,10 @@
     <value>Required fileds are missing in the reset password request</value>
   </data>
   <data name="PasswordResetRequestPageTitle" xml:space="preserve">
-    <value>Password reset request</value>
+    <value>Password Reset</value>
   </data>
   <data name="PasswordResetTitle" xml:space="preserve">
-    <value>Password reset</value>
+    <value>Password reset request</value>
   </data>
   <data name="RegistrationPageTitle" xml:space="preserve">
     <value>Registration</value>
@@ -154,7 +154,7 @@
     <value>Sorry, something went wrong. Registration couldn't be completed</value>
   </data>
   <data name="PasswordResetCompletedPageTitle" xml:space="preserve">
-    <value>Password reset completed</value>
+    <value>Password Reset Completed</value>
   </data>
   <data name="PasswordResetCompletedMessage1" xml:space="preserve">
     <value>For security reasons, please &lt;b&gt;make sure to keep your new password safe&lt;/b&gt; and &lt;b&gt;do not share it with anyone&lt;/b&gt;. You can now log in with your new credentials. </value>
@@ -164,5 +164,26 @@
   </data>
   <data name="PasswordResetCompletedTitle" xml:space="preserve">
     <value>Your password has been successfully updated. </value>
+  </data>
+  <data name="PasswordResetStartedPageTitle" xml:space="preserve">
+    <value>Password reset started</value>
+  </data>
+  <data name="PasswordResetStartedMessage1" xml:space="preserve">
+    <value>Your password reset request has been successfully sent. Please check your email and follow the instructions to reset your password.</value>
+  </data>
+  <data name="PasswordResetStartedMessage2" xml:space="preserve">
+    <value>The reset link will expire in &lt;b&gt;1 hour&lt;/b&gt;, so be sure to complete the process as soon as possible.</value>
+  </data>
+  <data name="PasswordResetStartedMessage3" xml:space="preserve">
+    <value>If you didn't request this change or need further assistance, please contact our support team.</value>
+  </data>
+  <data name="PasswordResetStartedTitle" xml:space="preserve">
+    <value>Password Reset Request Sent</value>
+  </data>
+  <data name="PasswordResetExecuteMessage" xml:space="preserve">
+    <value>To secure your account, please enter a new password below. Make sure it meets the security requirements and is different from previous passwords.</value>
+  </data>
+  <data name="PasswordResetRequestMessage" xml:space="preserve">
+    <value>Please provide the email address you used to sign up. A password reset link will be sent to it shortly.</value>
   </data>
 </root>

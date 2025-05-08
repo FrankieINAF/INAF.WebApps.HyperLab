@@ -133,7 +133,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password reset completed.
+        ///   Looks up a localized string similar to Password Reset Completed.
         /// </summary>
         public static string PasswordResetCompletedPageTitle {
             get {
@@ -147,6 +147,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string PasswordResetCompletedTitle {
             get {
                 return ResourceManager.GetString("PasswordResetCompletedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To secure your account, please enter a new password below. Make sure it meets the security requirements and is different from previous passwords..
+        /// </summary>
+        public static string PasswordResetExecuteMessage {
+            get {
+                return ResourceManager.GetString("PasswordResetExecuteMessage", resourceCulture);
             }
         }
         
@@ -169,7 +178,16 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password reset request.
+        ///   Looks up a localized string similar to Please provide the email address you used to sign up. A password reset link will be sent to it shortly..
+        /// </summary>
+        public static string PasswordResetRequestMessage {
+            get {
+                return ResourceManager.GetString("PasswordResetRequestMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password Reset.
         /// </summary>
         public static string PasswordResetRequestPageTitle {
             get {
@@ -178,7 +196,52 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password reset.
+        ///   Looks up a localized string similar to Your password reset request has been successfully sent. Please check your email and follow the instructions to reset your password..
+        /// </summary>
+        public static string PasswordResetStartedMessage1 {
+            get {
+                return ResourceManager.GetString("PasswordResetStartedMessage1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The reset link will expire in &lt;b&gt;1 hour&lt;/b&gt;, so be sure to complete the process as soon as possible..
+        /// </summary>
+        public static string PasswordResetStartedMessage2 {
+            get {
+                return ResourceManager.GetString("PasswordResetStartedMessage2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If you didn&apos;t request this change or need further assistance, please contact our support team..
+        /// </summary>
+        public static string PasswordResetStartedMessage3 {
+            get {
+                return ResourceManager.GetString("PasswordResetStartedMessage3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password reset started.
+        /// </summary>
+        public static string PasswordResetStartedPageTitle {
+            get {
+                return ResourceManager.GetString("PasswordResetStartedPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password Reset Request Sent.
+        /// </summary>
+        public static string PasswordResetStartedTitle {
+            get {
+                return ResourceManager.GetString("PasswordResetStartedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password reset request.
         /// </summary>
         public static string PasswordResetTitle {
             get {
