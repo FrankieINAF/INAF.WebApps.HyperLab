@@ -15,6 +15,7 @@ using INAF.WebApps.HyperLab.Helpers.Factories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using System.Text.Json.Serialization;
@@ -109,6 +110,7 @@ builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
 {
+    options.IdleTimeout = TimeSpan.FromMinutes(5); // Set the timeout for the session
     options.Cookie.IsEssential = true;
 });
 
@@ -193,6 +195,13 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), ".well-known", "acme-challenge")),
+    RequestPath = "/.well-known/acme-challenge",
+    ServeUnknownFileTypes = true // Permette di servire file senza estensione
+});
 
 app.MapControllerRoute(
     name: "default",

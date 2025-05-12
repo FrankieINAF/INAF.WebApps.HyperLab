@@ -33,7 +33,7 @@
 	<ItemGroup>
     <Content Remove="appsettings.development.json" />
     <Content Remove="wwwroot\css\hyperlab\account\confirmationcompleted.css" />
-    <Content Remove="wwwroot\css\hyperlab\account\confirmationerror.css" />
+    <Content Remove="wwwroot\css\hyperlab\account\errorpage.css" />
     <Content Remove="wwwroot\css\hyperlab\account\login.css" />
     <Content Remove="wwwroot\css\hyperlab\account\registrationconfirmed.css" />
     <Content Remove="wwwroot\css\hyperlab\apps\apps.css" />
@@ -100,7 +100,7 @@
     <None Include="Views\_ViewImports.cshtml" />
     <None Include="Views\_ViewStart.cshtml" />
     <None Include="wwwroot\css\hyperlab\account\confirmationcompleted.css" />
-    <None Include="wwwroot\css\hyperlab\account\confirmationerror.css" />
+    <None Include="wwwroot\css\hyperlab\account\errorpage.css" />
     <None Include="wwwroot\css\hyperlab\account\login.css" />
     <None Include="wwwroot\css\hyperlab\account\registrationconfirmed.css" />
     <None Include="wwwroot\css\hyperlab\apps\apps.css" />

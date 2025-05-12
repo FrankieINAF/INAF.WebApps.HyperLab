@@ -23,5 +23,12 @@
 		<div class="h-50-fs h-100-md w-100-fs w-50-md d-flex flex-row">
 			<div class="flex-self-center"><p class="error-text text-just fg-white margin-horizontal-16">@Html.Raw(Home.ErrorPageText)</p></div>
 		</div>
+		<!-- CONTACT US  -->
+		<div class="row cell-fs-12 margin-top-32 d-flex flex-justify-center">
+			<button class="button bg-white primary cycle outline" onclick="navigateTo('/Account/Login')" title="@Html.Raw(Account.ConfirmationSendEmailAgain)">
+				<span class="mif-envelop" />
+			</button>
+			<span class="fg-white margin-left-8 margin-top-4">@Html.Raw(SharedResources.ContactUs)</span>
+		</div>
 	</div>
 </div>

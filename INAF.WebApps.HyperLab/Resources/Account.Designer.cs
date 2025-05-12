@@ -151,6 +151,42 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We couldn&apos;t find an account associated with the email address you provided. Please check the spelling and try again. If you believe this is an error, contact our support team for assistance..
+        /// </summary>
+        public static string PasswordResetErrorEmailNotExistantMessage {
+            get {
+                return ResourceManager.GetString("PasswordResetErrorEmailNotExistantMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email not found.
+        /// </summary>
+        public static string PasswordResetErrorEmailNotExistantTitle {
+            get {
+                return ResourceManager.GetString("PasswordResetErrorEmailNotExistantTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, something went wrong while trying to send email for password reset.
+        /// </summary>
+        public static string PasswordResetErrorGenericMessage {
+            get {
+                return ResourceManager.GetString("PasswordResetErrorGenericMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ooooops.
+        /// </summary>
+        public static string PasswordResetErrorGenericTitle {
+            get {
+                return ResourceManager.GetString("PasswordResetErrorGenericTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To secure your account, please enter a new password below. Make sure it meets the security requirements and is different from previous passwords..
         /// </summary>
         public static string PasswordResetExecuteMessage {

@@ -1,4 +1,6 @@
-﻿using INAF.Libraries.Net.CommonWebAppHelpers;
+﻿using Azure;
+using INAF.Libraries.Net.CommonWebAppHelpers;
+using INAF.Libraries.Net.CommonWebAppModels.Models;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Authentication;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
@@ -9,6 +11,7 @@ using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.Libraries.Net.HyperLab.CommonWebAppHelpers;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Extensions;
+using INAF.WebApps.HyperLab.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -23,6 +26,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 {
     public class AccountController : BaseController
     {
+        private readonly string PASSWORD_RESET_ERROR_MODEL = "PasswordResetErrorModel";
         private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
 
         public AccountController(IServiceProvider serviceProvider,
@@ -204,20 +208,38 @@ namespace INAF.WebApps.HyperLab.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> PasswordResetSendEmail([FromForm] PasswordResetRequestModel model)
         {
+            if (HttpContext.Session.ContainsKey(PASSWORD_RESET_ERROR_MODEL))
+                HttpContext.Session.Remove(PASSWORD_RESET_ERROR_MODEL);
+
+            PasswordResetErrorModel? errorModel = null;
             if (ModelState.IsValid)
             {
+                if (!dbHandlerHyperLabUsers.isLoginExistantForPasswordReset(model.Email!))
+                {
+                    errorModel = new PasswordResetErrorModel(Resources.Account.PasswordResetErrorEmailNotExistantTitle, Resources.Account.PasswordResetErrorEmailNotExistantMessage);
+                    HttpContext.Session.SetObject<PasswordResetErrorModel>(PASSWORD_RESET_ERROR_MODEL, errorModel);
+                    return RedirectToAction(nameof(PasswordResetError), GenericHelper.GetControllerName(nameof(AccountController)));
+                }
+
                 logger.LogInformation($"{nameof(PasswordResetSendEmail)} - email: {model.Email}");
                 GenericValueStringResponseModel response = await setUserLoginForPasswordResetAsync(model);
 
                 if (response.IsOk)
                     return RedirectToAction(nameof(PasswordResetStarted), GenericHelper.GetControllerName(nameof(AccountController)));
+
+                errorModel = new PasswordResetErrorModel(Resources.Account.PasswordResetErrorGenericTitle, response.ExMsg);
+                HttpContext.Session.SetObject<PasswordResetErrorModel>(PASSWORD_RESET_ERROR_MODEL, errorModel);
+                return RedirectToAction(nameof(PasswordResetError), GenericHelper.GetControllerName(nameof(AccountController)));
             }
             else
             {
+                logger.LogWarning($"{nameof(PasswordResetSendEmail)} - model NOT valid");
                 logErrorMessage(ModelState.Values);
             }
 
             ModelState.Clear();
+            errorModel = new PasswordResetErrorModel(Resources.Account.PasswordResetErrorGenericTitle, Resources.Account.PasswordResetErrorGenericMessage);
+            HttpContext.Session.SetObject<PasswordResetErrorModel>(PASSWORD_RESET_ERROR_MODEL, errorModel);
             return RedirectToAction(nameof(PasswordResetError), GenericHelper.GetControllerName(nameof(AccountController)));
         }
 
@@ -237,7 +259,13 @@ namespace INAF.WebApps.HyperLab.Controllers
         [AllowAnonymous]
         public IActionResult PasswordResetError()
         {
-            return View();
+            PasswordResetErrorModel? errorModel = HttpContext.Session.GetObject<PasswordResetErrorModel>(PASSWORD_RESET_ERROR_MODEL);
+            if (errorModel == null)
+                errorModel = new PasswordResetErrorModel(Resources.Account.PasswordResetErrorGenericTitle, Resources.Account.PasswordResetErrorGenericMessage);
+            else
+                HttpContext.Session.Remove(PASSWORD_RESET_ERROR_MODEL);
+
+            return View(errorModel);
         }
 
         // STEP 2

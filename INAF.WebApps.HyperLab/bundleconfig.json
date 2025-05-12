@@ -229,6 +229,16 @@
     "minify": { "enabled": true }
   },
   {
+    "outputFileName": "wwwroot/css/dist/account/errorpagebundle.css",
+    "inputFiles": [
+      "wwwroot/css/hyperlab/common.css",
+      "wwwroot/css/hyperlab/account/errorpage.css",
+      "wwwroot/css/hyperlab/account/login.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
     "outputFileName": "wwwroot/css/dist/home/cookiebannerbundle.css",
     "inputFiles": [
       "wwwroot/css/hyperlab/common.css",

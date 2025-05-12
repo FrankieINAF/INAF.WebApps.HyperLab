@@ -3,12 +3,17 @@
 @{
     Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
 
-    ViewBag.Title = "HyperLab account confirmation error";
+    ViewBag.Title = "HyperLab Account Confirmation Error";
 }
 
+<environment names="Development">
 <link rel="stylesheet" href="~/css/hyperlab/common.css" />
 <link rel="stylesheet" href="~/css/hyperlab/account/login.css" />
-<link rel="stylesheet" href="~/css/hyperlab/account/confirmationerror.css" />
+<link rel="stylesheet" href="~/css/hyperlab/account/errorpage.css" />
+</environment>
+<environment names="Production">
+    <link rel="stylesheet" href="~/css/dist/account/errorpagebundle.min.css" asp-append-version="true" />
+</environment>
 <div class="h-vh-100 w-vw-100">
     <div class="row h-vh-100">
         <!-- TEXT/IMAGES -->
@@ -41,12 +46,12 @@
                                     <p class="text-normal fg-white text-just margin-top-16">@Html.Raw(Account.ConfirmationErrorMessage)</p>
                                     <p class="text-normal fg-white margin-top-8">@Html.Raw(Account.ConfirmationErrorSign)</p>
                                 </div>
-                                <!-- BUTTON TO LOGIN  -->
+                                <!-- CONTACT US -->
                                 <div class="row cell-fs-12 margin-top-32 d-flex flex-justify-center">
                                     <button class="button bg-white primary cycle outline" onclick="navigateTo('/Account/Login')" title="@Html.Raw(Account.ConfirmationSendEmailAgain)">
                                         <span class="mif-envelop" />
                                     </button>
-                                    <span class="fg-white margin-left-8 margin-top-4">@Html.Raw(Account.ConfirmationSendEmailAgain)</span>
+                                    <span class="fg-white margin-left-8 margin-top-4">@Html.Raw(SharedResources.ContactUs)</span>
                                 </div>
                             </div>
                         </div>
