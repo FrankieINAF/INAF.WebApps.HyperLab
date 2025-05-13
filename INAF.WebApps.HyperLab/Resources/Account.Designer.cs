@@ -169,6 +169,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The email entered does not appear to have initiated the password reset process.
+        /// </summary>
+        public static string PasswordResetErrorEmailNotSetForResetMessage {
+            get {
+                return ResourceManager.GetString("PasswordResetErrorEmailNotSetForResetMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid email.
+        /// </summary>
+        public static string PasswordResetErrorEmailNotSetForResetTitle {
+            get {
+                return ResourceManager.GetString("PasswordResetErrorEmailNotSetForResetTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, something went wrong while trying to send email for password reset.
         /// </summary>
         public static string PasswordResetErrorGenericMessage {
@@ -183,6 +201,33 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string PasswordResetErrorGenericTitle {
             get {
                 return ResourceManager.GetString("PasswordResetErrorGenericTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The token provided does not correspond to any valid user..
+        /// </summary>
+        public static string PasswordResetErrorInvalidTokenMessage {
+            get {
+                return ResourceManager.GetString("PasswordResetErrorInvalidTokenMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A valid token is required to complete password reset..
+        /// </summary>
+        public static string PasswordResetErrorNullTokenMessage {
+            get {
+                return ResourceManager.GetString("PasswordResetErrorNullTokenMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid token.
+        /// </summary>
+        public static string PasswordResetErrorTokenTitle {
+            get {
+                return ResourceManager.GetString("PasswordResetErrorTokenTitle", resourceCulture);
             }
         }
         

@@ -198,4 +198,19 @@
   <data name="PasswordResetErrorGenericMessage" xml:space="preserve">
     <value>Sorry, something went wrong while trying to send email for password reset</value>
   </data>
+  <data name="PasswordResetErrorEmailNotSetForResetMessage" xml:space="preserve">
+    <value>The email entered does not appear to have initiated the password reset process</value>
+  </data>
+  <data name="PasswordResetErrorEmailNotSetForResetTitle" xml:space="preserve">
+    <value>Invalid email</value>
+  </data>
+  <data name="PasswordResetErrorInvalidTokenMessage" xml:space="preserve">
+    <value>The token provided does not correspond to any valid user.</value>
+  </data>
+  <data name="PasswordResetErrorNullTokenMessage" xml:space="preserve">
+    <value>A valid token is required to complete password reset.</value>
+  </data>
+  <data name="PasswordResetErrorTokenTitle" xml:space="preserve">
+    <value>Invalid token</value>
+  </data>
 </root>

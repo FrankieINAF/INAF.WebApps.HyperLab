@@ -277,16 +277,35 @@ namespace INAF.WebApps.HyperLab.Controllers
         [AllowAnonymous]
         public IActionResult PasswordResetExecute(IncomingLoginConfirmationModel model)
         {
+            PasswordResetErrorModel? errorModel = null;
+
+            /* check if token is null */
+            if (string.IsNullOrEmpty(model.Token))
+            {
+                logger.LogWarning($"{nameof(PasswordResetExecute)} - model.Token is null");
+                errorModel = new PasswordResetErrorModel(Resources.Account.PasswordResetErrorTokenTitle, Resources.Account.PasswordResetErrorNullTokenMessage);
+                HttpContext.Session.SetObject<PasswordResetErrorModel>(PASSWORD_RESET_ERROR_MODEL, errorModel);
+                return RedirectToAction(nameof(PasswordResetError), GenericHelper.GetControllerName(nameof(AccountController)));
+            }
+
             if (ModelState.IsValid)
             {
-                logger.LogInformation($"{nameof(Confirmation)} - IsValid - user: {model.Id}");
-                if (!dbHandlerHyperLabUsers.isLoginWaitingForPasswordReset(model.Id))
-                    return RedirectToAction(nameof(PasswordResetCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
+                /* check if provided token is waiting for password reset */
+                logger.LogInformation($"{nameof(PasswordResetExecute)} - IsValid - user: {model.Id}");
+                if (!dbHandlerHyperLabUsers.isLoginWaitingForPasswordReset(model.Token))
+                {
+                    errorModel = new PasswordResetErrorModel(Resources.Account.PasswordResetErrorEmailNotSetForResetTitle, Resources.Account.PasswordResetErrorEmailNotSetForResetMessage);
+                    HttpContext.Session.SetObject<PasswordResetErrorModel>(PASSWORD_RESET_ERROR_MODEL, errorModel);
+                    return RedirectToAction(nameof(PasswordResetError), GenericHelper.GetControllerName(nameof(AccountController)));
+                }
 
-                LoginModel? loginModel = dbHandlerHyperLabUsers.getLoginFromLoginId(model.Id);
+                /* try to retrieve login from token */
+                LoginModel? loginModel = dbHandlerHyperLabUsers.getLoginForPasswordResetFromToken(model.Token);
                 if (loginModel == null)
                 {
-                    logger.LogError($"{nameof(PasswordResetExecute)} - loginModel is null - user: {model.Id}");
+                    logger.LogError($"{nameof(PasswordResetExecute)} - loginModel is null - user: {model.Token}");
+                    errorModel = new PasswordResetErrorModel(Resources.Account.PasswordResetErrorTokenTitle, Resources.Account.PasswordResetErrorInvalidTokenMessage);
+                    HttpContext.Session.SetObject<PasswordResetErrorModel>(PASSWORD_RESET_ERROR_MODEL, errorModel);
                     return RedirectToAction(nameof(PasswordResetError), GenericHelper.GetControllerName(nameof(AccountController)));
                 }
 
