@@ -12,6 +12,7 @@ using INAF.Libraries.Net.HyperLab.CommonWebAppHelpers;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Extensions;
 using INAF.WebApps.HyperLab.Helpers;
+using log4net.Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -142,11 +143,18 @@ namespace INAF.WebApps.HyperLab.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Confirmation(IncomingLoginConfirmationModel model)
         {
+            /* check if token is null */
+            if (string.IsNullOrEmpty(model.Token))
+            {
+                logger.LogWarning($"{nameof(Confirmation)} - model.Token is null");
+                return RedirectToAction(nameof(ConfirmationError), GenericHelper.GetControllerName(nameof(AccountController)));
+            }
+
             if (ModelState.IsValid)
             {
                 logger.LogInformation($"{nameof(Confirmation)} - IsValid - user: {model.Id}");
                 /* if login has already been confirmed, then send user to registration completed page */
-                if (dbHandlerHyperLabUsers.isLoginAlreadyConfirmed(model.Id))
+                if (dbHandlerHyperLabUsers.isLoginAlreadyConfirmed(model.Token))
                     return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
 
                 (bool isOk, string exMsg) confirmationResult = await dbHandlerHyperLabUsers.tryConfirmLoginAsync(model.Id,
@@ -157,7 +165,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 if (confirmationResult.isOk)
                 {
                     /* retrieve user data to fix userId in shares and then fix them, when existant */
-                    LoginModel? loginModel = dbHandlerHyperLabUsers.getLoginFromLoginId(model.Id);
+                    LoginModel? loginModel = dbHandlerHyperLabUsers.getLoginFromToken(model.Token);
                     if (loginModel != null)
                     {
                         var dbHandlerHyperLabData = serviceProvider.GetRequiredService<DbHandlerHyperLabData>();
