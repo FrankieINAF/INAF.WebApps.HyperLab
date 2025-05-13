@@ -27,7 +27,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 {
     public class AccountController : BaseController
     {
-        private readonly string PASSWORD_RESET_ERROR_MODEL = "PasswordResetErrorModel";
+        private readonly string ACCOUNT_ERROR_MODEL = "AccountErrorModel";
         private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
 
         public AccountController(IServiceProvider serviceProvider,
@@ -36,6 +36,19 @@ namespace INAF.WebApps.HyperLab.Controllers
                                  DbHandlerHyperLabUsers dbHandlerHyperLabUsers) : base(serviceProvider, configuration, logger)
         {
             this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccountError()
+        {
+            AccountErrorModel? errorModel = HttpContext.Session.GetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL);
+            if (errorModel == null)
+                errorModel = new AccountErrorModel(Resources.Account.AccountErrorGenericTitle, Resources.Account.AccountErrorGenericMessage);
+            else
+                HttpContext.Session.Remove(ACCOUNT_ERROR_MODEL);
+
+            return View(errorModel);
         }
 
         #region CHECK LOGIN/TOKEN
@@ -216,17 +229,17 @@ namespace INAF.WebApps.HyperLab.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> PasswordResetSendEmail([FromForm] PasswordResetRequestModel model)
         {
-            if (HttpContext.Session.ContainsKey(PASSWORD_RESET_ERROR_MODEL))
-                HttpContext.Session.Remove(PASSWORD_RESET_ERROR_MODEL);
+            if (HttpContext.Session.ContainsKey(ACCOUNT_ERROR_MODEL))
+                HttpContext.Session.Remove(ACCOUNT_ERROR_MODEL);
 
-            PasswordResetErrorModel? errorModel = null;
+            AccountErrorModel? errorModel = null;
             if (ModelState.IsValid)
             {
                 if (!dbHandlerHyperLabUsers.isLoginExistantForPasswordReset(model.Email!))
                 {
-                    errorModel = new PasswordResetErrorModel(Resources.Account.PasswordResetErrorEmailNotExistantTitle, Resources.Account.PasswordResetErrorEmailNotExistantMessage);
-                    HttpContext.Session.SetObject<PasswordResetErrorModel>(PASSWORD_RESET_ERROR_MODEL, errorModel);
-                    return RedirectToAction(nameof(PasswordResetError), GenericHelper.GetControllerName(nameof(AccountController)));
+                    errorModel = new AccountErrorModel(Resources.Account.PasswordResetErrorEmailNotExistantTitle, Resources.Account.PasswordResetErrorEmailNotExistantMessage);
+                    HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
+                    return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
                 }
 
                 logger.LogInformation($"{nameof(PasswordResetSendEmail)} - email: {model.Email}");
@@ -235,9 +248,9 @@ namespace INAF.WebApps.HyperLab.Controllers
                 if (response.IsOk)
                     return RedirectToAction(nameof(PasswordResetStarted), GenericHelper.GetControllerName(nameof(AccountController)));
 
-                errorModel = new PasswordResetErrorModel(Resources.Account.PasswordResetErrorGenericTitle, response.ExMsg);
-                HttpContext.Session.SetObject<PasswordResetErrorModel>(PASSWORD_RESET_ERROR_MODEL, errorModel);
-                return RedirectToAction(nameof(PasswordResetError), GenericHelper.GetControllerName(nameof(AccountController)));
+                errorModel = new AccountErrorModel(Resources.Account.AccountErrorGenericTitle, response.ExMsg);
+                HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
+                return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
             }
             else
             {
@@ -246,9 +259,9 @@ namespace INAF.WebApps.HyperLab.Controllers
             }
 
             ModelState.Clear();
-            errorModel = new PasswordResetErrorModel(Resources.Account.PasswordResetErrorGenericTitle, Resources.Account.PasswordResetErrorGenericMessage);
-            HttpContext.Session.SetObject<PasswordResetErrorModel>(PASSWORD_RESET_ERROR_MODEL, errorModel);
-            return RedirectToAction(nameof(PasswordResetError), GenericHelper.GetControllerName(nameof(AccountController)));
+            errorModel = new AccountErrorModel(Resources.Account.AccountErrorGenericTitle, Resources.Account.AccountErrorGenericMessage);
+            HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
+            return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
         }
 
         // STEP 1
@@ -263,19 +276,6 @@ namespace INAF.WebApps.HyperLab.Controllers
             return View();
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult PasswordResetError()
-        {
-            PasswordResetErrorModel? errorModel = HttpContext.Session.GetObject<PasswordResetErrorModel>(PASSWORD_RESET_ERROR_MODEL);
-            if (errorModel == null)
-                errorModel = new PasswordResetErrorModel(Resources.Account.PasswordResetErrorGenericTitle, Resources.Account.PasswordResetErrorGenericMessage);
-            else
-                HttpContext.Session.Remove(PASSWORD_RESET_ERROR_MODEL);
-
-            return View(errorModel);
-        }
-
         // STEP 2
         /// <summary>
         /// Page for inserting the new password
@@ -285,15 +285,15 @@ namespace INAF.WebApps.HyperLab.Controllers
         [AllowAnonymous]
         public IActionResult PasswordResetExecute(IncomingLoginConfirmationModel model)
         {
-            PasswordResetErrorModel? errorModel = null;
+            AccountErrorModel? errorModel = null;
 
             /* check if token is null */
             if (string.IsNullOrEmpty(model.Token))
             {
                 logger.LogWarning($"{nameof(PasswordResetExecute)} - model.Token is null");
-                errorModel = new PasswordResetErrorModel(Resources.Account.PasswordResetErrorTokenTitle, Resources.Account.PasswordResetErrorNullTokenMessage);
-                HttpContext.Session.SetObject<PasswordResetErrorModel>(PASSWORD_RESET_ERROR_MODEL, errorModel);
-                return RedirectToAction(nameof(PasswordResetError), GenericHelper.GetControllerName(nameof(AccountController)));
+                errorModel = new AccountErrorModel(Resources.Account.PasswordResetErrorTokenTitle, Resources.Account.PasswordResetErrorNullTokenMessage);
+                HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
+                return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
             }
 
             if (ModelState.IsValid)
@@ -302,9 +302,9 @@ namespace INAF.WebApps.HyperLab.Controllers
                 logger.LogInformation($"{nameof(PasswordResetExecute)} - IsValid - user: {model.Id}");
                 if (!dbHandlerHyperLabUsers.isLoginWaitingForPasswordReset(model.Token))
                 {
-                    errorModel = new PasswordResetErrorModel(Resources.Account.PasswordResetErrorEmailNotSetForResetTitle, Resources.Account.PasswordResetErrorEmailNotSetForResetMessage);
-                    HttpContext.Session.SetObject<PasswordResetErrorModel>(PASSWORD_RESET_ERROR_MODEL, errorModel);
-                    return RedirectToAction(nameof(PasswordResetError), GenericHelper.GetControllerName(nameof(AccountController)));
+                    errorModel = new AccountErrorModel(Resources.Account.PasswordResetErrorEmailNotSetForResetTitle, Resources.Account.PasswordResetErrorEmailNotSetForResetMessage);
+                    HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
+                    return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
                 }
 
                 /* try to retrieve login from token */
@@ -312,16 +312,16 @@ namespace INAF.WebApps.HyperLab.Controllers
                 if (loginModel == null)
                 {
                     logger.LogError($"{nameof(PasswordResetExecute)} - loginModel is null - user: {model.Token}");
-                    errorModel = new PasswordResetErrorModel(Resources.Account.PasswordResetErrorTokenTitle, Resources.Account.PasswordResetErrorInvalidTokenMessage);
-                    HttpContext.Session.SetObject<PasswordResetErrorModel>(PASSWORD_RESET_ERROR_MODEL, errorModel);
-                    return RedirectToAction(nameof(PasswordResetError), GenericHelper.GetControllerName(nameof(AccountController)));
+                    errorModel = new AccountErrorModel(Resources.Account.PasswordResetErrorTokenTitle, Resources.Account.PasswordResetErrorInvalidTokenMessage);
+                    HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
+                    return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
                 }
 
                 return View(new PasswordResetModel() { Email = loginModel.UserName });
             }
 
             logger.LogInformation($"{nameof(PasswordResetExecute)} - NOT VALID - user: {model.Id}");
-            return RedirectToAction(nameof(PasswordResetError), GenericHelper.GetControllerName(nameof(AccountController)));
+            return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
         }
 
         // STEP 2.5
@@ -384,16 +384,26 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 GenericValueStringResponseModel response = await registerAsync(model);
                 if (response.IsOk)
-                    return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
+                {
+                    if (string.IsNullOrEmpty(response.ExMsg))
+                        return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
+                    else
+                    {
+                        ViewBag.Confirmation = 1;
+                        return RedirectToAction(nameof(RegistrationConfirmed), GenericHelper.GetControllerName(nameof(AccountController)));
+                    }
+                }
                 else
-                    return new JsonResult(response);
+                {
+                    AccountErrorModel errorModel = new AccountErrorModel(Resources.Account.ConfirmationErrorTitle, response.ExMsg);
+                    HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
+                    return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
+                }
             }
-            else
-            {
-                logErrorMessage(ModelState.Values);
-                ModelState.Clear();
-                return new BadRequestResult();
-            }
+
+            logErrorMessage(ModelState.Values);
+            ModelState.Clear();
+            return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
         }
 
         [HttpPost]
@@ -582,11 +592,13 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         private async Task<GenericValueStringResponseModel> registerAsync(RegistrationModel model)
         {
+            /* if no data has been passed, then an error is raised */
             if (string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.LastName) || string.IsNullOrEmpty(model.Email))
                 return new GenericValueStringResponseModel() { IsOk = false, ExMsg = INAF.Libraries.Net.CommonWebAppModels.Resources.Login.RegistrationBadRequest };
 
-            if (dbHandlerHyperLabUsers.isUserExistant(model.Email!))
-                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Users.UserAlreadyExistantMessage };
+            /* if user has a valid login then no action is required */
+            if (dbHandlerHyperLabUsers.isUserExistantAndValidLogin(model.Name, model.LastName, model.Email))
+                return new GenericValueStringResponseModel() { IsOk = true, ExMsg = Resources.Users.UserAlreadyExistantMessage };
 
             /* encrypt password */
             string encryptedPassword = getEncrypted(model.Password!);
@@ -619,7 +631,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (string.IsNullOrEmpty(model.Email))
                 return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Account.PasswordResetRequestBadRequest };
 
-            if (!dbHandlerHyperLabUsers.isUserExistant(model.Email!))
+            if (!dbHandlerHyperLabUsers.isUserExistant(model.Email))
                 return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Users.UserNotExistantErrorMessage };
 
             /* encrypt password */

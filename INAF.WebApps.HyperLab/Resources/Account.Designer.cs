@@ -61,6 +61,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, something went wrong while trying to complete operation.
+        /// </summary>
+        public static string AccountErrorGenericMessage {
+            get {
+                return ResourceManager.GetString("AccountErrorGenericMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ooooops.
+        /// </summary>
+        public static string AccountErrorGenericTitle {
+            get {
+                return ResourceManager.GetString("AccountErrorGenericTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your account confirmation link has expired. Please click the button below to resend the confirmation email..
         /// </summary>
         public static string ConfirmationErrorMessage {
@@ -183,24 +201,6 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string PasswordResetErrorEmailNotSetForResetTitle {
             get {
                 return ResourceManager.GetString("PasswordResetErrorEmailNotSetForResetTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sorry, something went wrong while trying to send email for password reset.
-        /// </summary>
-        public static string PasswordResetErrorGenericMessage {
-            get {
-                return ResourceManager.GetString("PasswordResetErrorGenericMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ooooops.
-        /// </summary>
-        public static string PasswordResetErrorGenericTitle {
-            get {
-                return ResourceManager.GetString("PasswordResetErrorGenericTitle", resourceCulture);
             }
         }
         

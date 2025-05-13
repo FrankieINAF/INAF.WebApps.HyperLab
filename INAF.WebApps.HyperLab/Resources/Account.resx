@@ -192,11 +192,11 @@
   <data name="PasswordResetErrorEmailNotExistantTitle" xml:space="preserve">
     <value>Email not found</value>
   </data>
-  <data name="PasswordResetErrorGenericTitle" xml:space="preserve">
+  <data name="AccountErrorGenericTitle" xml:space="preserve">
     <value>Ooooops</value>
   </data>
-  <data name="PasswordResetErrorGenericMessage" xml:space="preserve">
-    <value>Sorry, something went wrong while trying to send email for password reset</value>
+  <data name="AccountErrorGenericMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to complete operation</value>
   </data>
   <data name="PasswordResetErrorEmailNotSetForResetMessage" xml:space="preserve">
     <value>The email entered does not appear to have initiated the password reset process</value>
