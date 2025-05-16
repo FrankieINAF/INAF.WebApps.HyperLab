@@ -40,16 +40,13 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region SEARCH SIMPLE
         [HttpPost]
-        public IActionResult SearchSimpleGroupsByFilename(SearchRequestByTextModel model)
+        public IActionResult SearchSimpleGroupsByFilename([FromBody] SearchRequestByTextModel model)
         {
-            if (string.IsNullOrEmpty(model.Text) ||
-                model.Text.Length < 3 ||
-                model.RequestedLevels == null ||
-                !model.RequestedLevels.Any())
+            if (model == null || !isRequestOkByText(model.Text, model.RequestedLevels))
                 return new EmptyResult();
 
-            IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByFilename(model.Text,
-                                                                                                                      model.RequestedLevels,
+            IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByFilename(model.Text!,
+                                                                                                                      model.RequestedLevels!,
                                                                                                                       getUserId());
             switch (getCallerContext())
             {
@@ -57,24 +54,22 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels));
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels!));
             }
 
             return new EmptyResult();
         }
 
         [HttpPost]
-        public IActionResult SearchSimpleGroupsByMaterial(SearchRequestByParametersModel model)
+        public IActionResult SearchSimpleGroupsByMaterial([FromBody] SearchRequestByParametersModel model)
         {
-            if (model.Type == null ||
-                model.RequestedLevels == null ||
-                !model.RequestedLevels.Any())
+            if (model == null || !isRequestOkById(model.Id, model.RequestedLevels))
                 return new EmptyResult();
 
             var searchByMaterialHelper = serviceProvider.GetRequiredService<SearchByMaterialHelper>();
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = searchByMaterialHelper.searchByMaterial(model.Id,
-                                                                                                           model.Type,
-                                                                                                           model.RequestedLevels,
+                                                                                                           model.Type!,
+                                                                                                           model.RequestedLevels!,
                                                                                                            getUserId());
 
             switch (getCallerContext())
@@ -83,21 +78,20 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels));
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels!));
             }
 
             return new EmptyResult();
         }
 
         [HttpPost]
-        public IActionResult SearchSimpleGroupsByMineralType(SearchRequestByIdModel model)
+        public IActionResult SearchSimpleGroupsByMineralType([FromBody] SearchRequestByIdModel model)
         {
-            if (model.RequestedLevels == null ||
-                !model.RequestedLevels.Any())
+            if (model == null || !isRequestOkById(model.Id, model.RequestedLevels))
                 return new EmptyResult();
 
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByMineralType(model.Id,
-                                                                                                                         model.RequestedLevels,
+                                                                                                                         model.RequestedLevels!,
                                                                                                                          getUserId());
             switch (getCallerContext())
             {
@@ -105,21 +99,20 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels));
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels!));
             }
 
             return new EmptyResult();
         }
 
         [HttpPost]
-        public IActionResult SearchSimpleGroupsByOriginType(SearchRequestByIdModel model)
+        public IActionResult SearchSimpleGroupsByOriginType([FromBody] SearchRequestByIdModel model)
         {
-            if (model.RequestedLevels == null ||
-                !model.RequestedLevels.Any())
+            if (model == null || !isRequestOkById(model.Id, model.RequestedLevels))
                 return new EmptyResult();
 
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByOriginType(model.Id,
-                                                                                                                        model.RequestedLevels,
+                                                                                                                        model.RequestedLevels!,
                                                                                                                         getUserId());
             switch (getCallerContext())
             {
@@ -127,23 +120,20 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels));
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels!));
             }
 
             return new EmptyResult();
         }
 
         [HttpPost]
-        public IActionResult SearchSimpleGroupsBySampleName(SearchRequestByTextModel model)
+        public IActionResult SearchSimpleGroupsBySampleName([FromBody] SearchRequestByTextModel model)
         {
-            if (string.IsNullOrEmpty(model.Text) ||
-                model.Text.Length < 3 ||
-                model.RequestedLevels == null ||
-                !model.RequestedLevels.Any())
+            if (model == null || !isRequestOkByText(model.Text, model.RequestedLevels))
                 return new EmptyResult();
 
-            IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleName(model.Text,
-                                                                                                                        model.RequestedLevels,
+            IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleName(model.Text!,
+                                                                                                                        model.RequestedLevels!,
                                                                                                                         getUserId());
             switch (getCallerContext())
             {
@@ -151,21 +141,20 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels));
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels!));
             }
 
             return new EmptyResult();
         }
 
         [HttpPost]
-        public IActionResult SearchSimpleGroupsBySampleType(SearchRequestByIdModel model)
+        public IActionResult SearchSimpleGroupsBySampleType([FromBody] SearchRequestByIdModel model)
         {
-            if (model.RequestedLevels == null ||
-                !model.RequestedLevels.Any())
+            if (model == null || !isRequestOkById(model.Id, model.RequestedLevels))
                 return new EmptyResult();
 
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleType(model.Id,
-                                                                                                                        model.RequestedLevels,
+                                                                                                                        model.RequestedLevels!,
                                                                                                                         getUserId());
             switch (getCallerContext())
             {
@@ -317,6 +306,31 @@ namespace INAF.WebApps.HyperLab.Controllers
             }
 
             return result;
+        }
+        #endregion
+
+        #region private
+        private bool isRequestOkById(int id,
+                                     int[]? requestedLevels)
+        {
+            if (id < 1 ||
+                requestedLevels == null ||
+                !requestedLevels.Any())
+                return false;
+
+            return true;
+        }
+
+        private bool isRequestOkByText(string? text,
+                                       int[]? requestedLevels)
+        {
+            if (string.IsNullOrEmpty(text) ||
+                text.Length < 3 ||
+                requestedLevels == null ||
+                !requestedLevels.Any())
+                return false;
+
+            return true;
         }
         #endregion
     }

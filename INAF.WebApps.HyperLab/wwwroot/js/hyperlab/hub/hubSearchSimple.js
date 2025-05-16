@@ -50,7 +50,7 @@ async function searchSimpleByFilename() {
 
     setLoadingCircleIsVisible(true);
 
-    loadPartialViewWithAjaxPost(UrlSearchSimpleGroupsByFilename, model, 'searchResultsContainer');
+    loadPartialViewWithAjaxJsonPost(UrlSearchSimpleGroupsByFilename, model, 'searchResultsContainer');
 
 }
 
@@ -62,7 +62,7 @@ async function searchSimpleByMaterial() {
 
     setLoadingCircleIsVisible(true);
 
-    loadPartialViewWithAjaxPost(UrlSearchSimpleGroupsByMaterial, model, 'searchResultsContainer');
+    loadPartialViewWithAjaxJsonPost(UrlSearchSimpleGroupsByMaterial, model, 'searchResultsContainer');
 }
 
 async function searchSimpleByMineralType() {
@@ -70,7 +70,7 @@ async function searchSimpleByMineralType() {
 
     setLoadingCircleIsVisible(true);
 
-    loadPartialViewWithAjaxPost(UrlSearchSimpleByMineralType, getModelFromPlugin(plugin), 'searchResultsContainer');
+    loadPartialViewWithAjaxJsonPost(UrlSearchSimpleByMineralType, getModelFromPlugin(plugin), 'searchResultsContainer');
 }
 
 async function searchSimpleByOriginType() {
@@ -78,7 +78,7 @@ async function searchSimpleByOriginType() {
 
     setLoadingCircleIsVisible(true);
 
-    loadPartialViewWithAjaxPost(UrlSearchSimpleByOriginType, getModelFromPlugin(plugin), 'searchResultsContainer');
+    loadPartialViewWithAjaxJsonPost(UrlSearchSimpleByOriginType, getModelFromPlugin(plugin), 'searchResultsContainer');
 }
 
 async function searchSimpleBySampleName() {
@@ -96,7 +96,7 @@ async function searchSimpleBySampleName() {
 
     setLoadingCircleIsVisible(true);
 
-    loadPartialViewWithAjaxPost(UrlSearchSimpleGroupsBySampleName, model, 'searchResultsContainer');
+    loadPartialViewWithAjaxJsonPost(UrlSearchSimpleGroupsBySampleName, model, 'searchResultsContainer');
 }
 
 async function searchSimpleBySampleType() {
@@ -104,7 +104,7 @@ async function searchSimpleBySampleType() {
 
     setLoadingCircleIsVisible(true);
 
-    loadPartialViewWithAjaxPost(UrlSearchSimpleBySampleType, getModelFromPlugin(plugin), 'searchResultsContainer');
+    loadPartialViewWithAjaxJsonPost(UrlSearchSimpleBySampleType, getModelFromPlugin(plugin), 'searchResultsContainer');
 }
 
 /* -------------------------------------------------------------------------------- */
