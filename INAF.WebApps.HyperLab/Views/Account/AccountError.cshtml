@@ -1,0 +1,67 @@
+﻿@model AccountErrorModel
+
+@using INAF.Libraries.Net.CommonWebAppModels.Models.Account
+@using INAF.WebApps.HyperLab.Resources
+
+@{
+    Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
+
+    ViewBag.Title = "HyperLab Account Error";
+}
+
+<environment names="Development">
+<link rel="stylesheet" href="~/css/hyperlab/common.css" />
+<link rel="stylesheet" href="~/css/hyperlab/account/login.css" />
+<link rel="stylesheet" href="~/css/hyperlab/account/errorpage.css" />
+</environment>
+<environment names="Production">
+    <link rel="stylesheet" href="~/css/dist/account/errorpagebundle.min.css" asp-append-version="true" />
+</environment>
+<div class="h-vh-100 w-vw-100">
+    <div class="row h-vh-100">
+        <!-- TEXT/IMAGES -->
+        <div class="cell-fs-12 cell-xl-4 h-vh-25-fs h-vh-100-xl">
+            <div class="row cell-fs-12 text-center h-25">
+                <span class="fg-black display2">@Html.Raw(SharedResources.HyperLabLabel)</span>
+            </div>
+            <div class="row text-center h-75">
+                <div class="cell-fs-6 cell-lg-12 text-center h-50">
+                    <img src="~/images/em_spectrum_400x400.png" class="spectrum-image" />
+                </div>
+                <div class="cell-fs-6 cell-lg-12 text-center h-50">
+                    <img src="~/images/login/iaps_marchio_full_colorinaf.svg" class="inaf-image" />
+                </div>
+            </div>
+        </div>
+
+        <!-- FORM -->
+        <div class="cell-fs-12 cell-xl-8 form-cell-background h-vh-75-fs h-vh-100-xl">
+            <!-- LOGIN ROW -->
+            <div class="row">
+                <div class="cell-md-2">&nbsp;</div>
+                <div class="cell-fs-12 cell-md-8">
+                    <div class="error-box-container bg-red p-6 mx-auto border bd-default win-shadow">
+                        <div class="row cell-fs-12">
+                            <div class="error-box">
+                                <!-- MESSAGE -->
+                                <div class="row cell-fs-12">
+                                    <p class="text-leader text-medium fg-white">@Html.Raw(Model.ErrorTitle)</p>
+                                    <p class="text-normal fg-white text-just margin-top-16">@Html.Raw(Model.ErrorMessage)</p>
+                                    <p class="text-normal fg-white margin-top-8">@Html.Raw(Account.ConfirmationErrorSign)</p>
+                                </div>
+                                <!-- CONTACT US -->
+                                <div class="row cell-fs-12 margin-top-32 d-flex flex-justify-center">
+                                    <button class="button bg-white primary cycle outline" onclick="navigateTo('/Account/Login')" title="@Html.Raw(Account.ConfirmationSendEmailAgain)">
+                                        <span class="mif-envelop" />
+                                    </button>
+                                    <span class="fg-white margin-left-8 margin-top-4">@Html.Raw(SharedResources.ContactUs)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cell-md-2">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+</div>
