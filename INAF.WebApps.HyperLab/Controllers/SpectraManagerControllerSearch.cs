@@ -186,7 +186,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetSampleNameSuggestions(GenericRequestByTextModel model)
         {
-            if (model.Text.Length < 3)
+            if (string.IsNullOrEmpty(model.Text) || model.Text.Length < 3)
                 return new EmptyResult();
 
             List<string>? sampleNames = dbHandlerHyperLabData.getSampleNameSuggestions(model.Text,
