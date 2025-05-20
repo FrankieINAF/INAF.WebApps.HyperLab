@@ -216,17 +216,6 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new JsonResult(new GenericResponseModel() { IsOk = isOk });
         }
 
-        //[HttpGet]
-        //public IActionResult GetSavedComplexSearch(GenericRequestByIdModel model)
-        //{
-        //    ComplexSearchSavingModel? complexSearchModel = dbHandlerHyperLabData.getSavedComplexSearch(model.Id,
-        //                                                                                               getUserId());
-        //    if (complexSearchModel == null || complexSearchModel.Conditions == null || !complexSearchModel.Conditions.Any())
-        //        return new EmptyResult();
-
-        //    return new JsonResult(complexSearchModel);
-        //}
-
         [HttpGet]
         public IActionResult GetSavedComplexSearchInfo(GenericRequestByIdModel model)
         {
@@ -311,7 +300,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region private
         private bool isRequestOkById(int id,
-                                     int[]? requestedLevels)
+                                     List<int>? requestedLevels)
         {
             if (id < 1 ||
                 requestedLevels == null ||
@@ -322,7 +311,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         private bool isRequestOkByText(string? text,
-                                       int[]? requestedLevels)
+                                       List<int>? requestedLevels)
         {
             if (string.IsNullOrEmpty(text) ||
                 text.Length < 3 ||

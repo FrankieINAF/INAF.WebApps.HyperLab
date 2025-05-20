@@ -22,7 +22,7 @@ namespace INAF.WebApps.HyperLab.Helpers
 
         public List<SpectraGroupInfoModel>? searchByMaterial(int id,
                                                              string type,
-                                                             int[] requestedLevels,
+                                                             List<int> requestedLevels,
                                                              int operationUserId)
         {
             List<SpectraGroupInfoModel>? spectraGroupInfoModels = null;

@@ -90,7 +90,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         private IEnumerable<ISpectraGroupInfoModel>? retrieveSpectraFilesForGroups(IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo,
-                                                                                   int[] levelIds)
+                                                                                   List<int> levelIds)
         {
             spectraFilesInfo?.ForEach(spectraGroupInfo =>
             {
