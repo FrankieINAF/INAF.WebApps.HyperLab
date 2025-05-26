@@ -117,6 +117,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ButtonEnterFullScreenLabel" xml:space="preserve">
+    <value>Enter full screen</value>
+  </data>
+  <data name="ButtonExitFullScreenLabel" xml:space="preserve">
+    <value>Exit full screen</value>
+  </data>
+  <data name="ButtonOpenProcessSpectraCharmsLabel" xml:space="preserve">
+    <value>Open panel for spectra processing</value>
+  </data>
+  <data name="ButtonShowCharmsColorSelectorLabel" xml:space="preserve">
+    <value>Show color settings panel</value>
+  </data>
+  <data name="ButtonShowCharmsLegendLabel" xml:space="preserve">
+    <value>Show/hide legend</value>
+  </data>
+  <data name="ButtonShowCharmsMessagesLabel" xml:space="preserve">
+    <value>Show messages</value>
+  </data>
+  <data name="ButtonZoomOutLabel" xml:space="preserve">
+    <value>Reset zoom</value>
+  </data>
   <data name="ChartColorsDifferentiationMessage" xml:space="preserve">
     <value>A slight differentiation of colors has been applied to better distinguish raw type spectra</value>
   </data>

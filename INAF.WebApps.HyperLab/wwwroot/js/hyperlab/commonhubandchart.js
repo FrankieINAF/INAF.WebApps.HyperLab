@@ -73,7 +73,7 @@ function manageNavigation() {
             closeCharmsLegend();
             removeBackToSearchButtonProcedure();
             removeBackClearToSearchButtonProcedure();
-            removeOpenCharmsButtonProcedure();
+            removeOpenProcessSpectraCharmsButtonProcedure();
             removeCharmsLegendButtonProcedure();
             removeCharmsColorSelectorButtonProcedure();
             containerFunction = function () {
@@ -90,8 +90,8 @@ function manageNavigation() {
             addCharmsLegendButton();
             addCharmsColorSelectorButton();
             addBackClearToSearchButton();
-            addOpenCharmsButton();
-            //setNavigationButtonsForChartsPanel();
+            addOpenProcessSpectraCharmsButton();
+            addOpenMessagesCharmsButton();
             addEnterFullScreenButton();
             break;
 

@@ -594,7 +594,7 @@ async function loadWhiteSpectraForAlignmentProcedureAsync() {
     let hiddenSpectraNum = hideSpectraToBeHidden();
     if (hiddenSpectraNum > 0) {
         showByClass('buttonShowToastAutoHideNotSelectedSpectra');
-        showToast(AlignmentAutoHideNotSelectedRawSpectraMessage, 3000, INFO);
+        addMessage(AlignmentAutoHideNotSelectedRawSpectraMessage, 3000, INFO);
     }
 }
 
@@ -895,7 +895,7 @@ function buildAlignedSpectrumCompleted() {
     /* mantain hidden all not necessary spectra */
     let hiddenSpectraNum = hideSpectraToBeHidden();
     if (hiddenSpectraNum > 0) {
-        showToast(AlignmentAutoHideRefSpectraMessage, 3000, INFO);
+        addMessage(AlignmentAutoHideRefSpectraMessage, 3000, INFO);
     }
 }
 

@@ -33,7 +33,8 @@
       "wwwroot/js/hyperlab/chart/charms/charmsfitpanelpro.js",
       "wwwroot/js/hyperlab/chart/charms/charmsfitpanelcommon.js",
       "wwwroot/js/hyperlab/chart/charms/charmssmoothingpanel.js",
-      "wwwroot/js/hyperlab/chart/charms/charmsbandanalysis.js"
+      "wwwroot/js/hyperlab/chart/charms/charmsbandanalysis.js",
+      "wwwroot/js/hyperlab/chart/charms/charmsmessages.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true

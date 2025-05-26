@@ -17,7 +17,8 @@ var backToSearchButtonId = 'buttonBackToSearch';
 var backClearToSearchButtonId = 'buttonBackClearToSearch';
 var enterFullScreenButtonId = 'buttonEnterFullScreen';
 var exitFullScreenButtonId = 'buttonExitFullScreen';
-var openCharmsButtonId = 'buttonOpenCharms'
+var openMessagesCharmsButtonId = 'buttonOpenMessagesCharms';
+var openProcessSpectraCharmsButtonId = 'buttonOpenCharms'
 
 /* ################################################################################ */
 /* BUTTONS */
@@ -163,7 +164,7 @@ async function loadChartsFromCloudAsync() {
         setLoadingCircleIsVisible(false);
         //await initCharmsPhase1Async();
         if (obj.SpectraInfo.length > 1)
-            showToast(ChartColorsDifferentiationMessage, 3000, INFO);
+            addMessage(ChartColorsDifferentiationMessage, 3000, INFO);
     } else {
         setLoadingCircleIsVisible(false);
         isChartLoaded = false;

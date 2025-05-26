@@ -129,20 +129,11 @@
   <data name="ButtonDownloadAsXmlFileLabel" xml:space="preserve">
     <value>Download as XML file</value>
   </data>
-  <data name="ButtonEnterFullScreenLabel" xml:space="preserve">
-    <value>Enter full screen</value>
-  </data>
-  <data name="ButtonExitFullScreenLabel" xml:space="preserve">
-    <value>Exit full screen</value>
-  </data>
   <data name="ButtonGraphSelectedSpectraLabel" xml:space="preserve">
     <value>Graph selected spectra</value>
   </data>
   <data name="ButtonHelpLabel" xml:space="preserve">
     <value>Help</value>
-  </data>
-  <data name="ButtonOpenCharmsLabel" xml:space="preserve">
-    <value>Open panel for spectra processing</value>
   </data>
   <data name="ButtonSearchLabel" xml:space="preserve">
     <value>Start searching</value>
@@ -152,15 +143,6 @@
   </data>
   <data name="ButtonShareLabel" xml:space="preserve">
     <value>Share selected spectra</value>
-  </data>
-  <data name="ButtonShowCharmsColorSelectorLabel" xml:space="preserve">
-    <value>Show color settings panel</value>
-  </data>
-  <data name="ButtonShowCharmsLegendLabel" xml:space="preserve">
-    <value>Show/hide legend</value>
-  </data>
-  <data name="ButtonZoomOutLabel" xml:space="preserve">
-    <value>Reset zoom</value>
   </data>
   <data name="ChartOverwriteQuestion" xml:space="preserve">
     <value>By proceeding, the current chart will be overwritten by a new one with selected spectra. Do you really want to continue?</value>

@@ -1,20 +1,4 @@
-﻿///* ---------- BACK-TO-SEARCH BUTTON ---------- */
-//function addBackToSearchButton() {
-//    addButton(backToSearchButtonId, ButtonBackToSearchLabel, 'mif-arrow-left', backToSearchProcedure);
-//}
-
-//function removeBackToSearchButtonProcedure() {
-//    if (!isButtonAvailable(backToSearchButtonId))
-//        return;
-
-//    animateCSS(`${backToSearchButtonId}`, `bounceOutUp`, FAST, removeBackToSearchButton);
-//}
-
-//function removeBackToSearchButton() {
-//    $(`#${backToSearchButtonId}`).remove();
-//}
-
-/* ---------- BACK-CLEAR-TO-SEARCH BUTTON ---------- */
+﻿/* ---------- BACK-CLEAR-TO-SEARCH BUTTON ---------- */
 function addBackClearToSearchButton() {
     addButton(backClearToSearchButtonId, ButtonBackClearToSearchLabel, 'mif-cross-light', backClearToSearchProcedureAsync);
 }
@@ -30,20 +14,36 @@ function removeBackClearToSearchButton() {
     $(`#${backClearToSearchButtonId}`).remove();
 }
 
-/* ---------- CHARMS BUTTON ---------- */
-function addOpenCharmsButton() {
-    addButton(openCharmsButtonId, ButtonOpenCharmsLabel, 'mif-magic-wand', openCharms);
+/* ---------- OPEN MESSAGES BUTTON ---------- */
+function addOpenMessagesCharmsButton() {
+    addButton(openMessagesCharmsButtonId, ButtonShowCharmsMessagesLabel, 'mif-chat', toggleCharmsMessages);
 }
 
-function removeOpenCharmsButtonProcedure() {
-    if (!isButtonAvailable(openCharmsButtonId))
+function removeMessagesCharmsButtonProcedure() {
+    if (!isButtonAvailable(openMessagesCharmsButtonId))
         return;
 
-    animateCSS(`${openCharmsButtonId}`, `bounceOutUp`, FAST, removeOpenCharmsButton);
+    animateCSS(`${openMessagesCharmsButtonId}`, `bounceOutUp`, FAST, removeMessagesCharmsButton);
 }
 
-function removeOpenCharmsButton() {
-    $(`#${openCharmsButtonId}`).remove();
+function removeMessagesCharmsButton() {
+    $(`#${openMessagesCharmsButtonId}`).remove();
+}
+
+/* ---------- OPEN PROCESS SPECTRA CHARMS BUTTON ---------- */
+function addOpenProcessSpectraCharmsButton() {
+    addButton(openProcessSpectraCharmsButtonId, ButtonOpenCharmsLabel, 'mif-magic-wand', openCharms);
+}
+
+function removeOpenProcessSpectraCharmsButtonProcedure() {
+    if (!isButtonAvailable(openProcessSpectraCharmsButtonId))
+        return;
+
+    animateCSS(`${openProcessSpectraCharmsButtonId}`, `bounceOutUp`, FAST, removeOpenProcessSpectraCharmsButton);
+}
+
+function removeOpenProcessSpectraCharmsButton() {
+    $(`#${openProcessSpectraCharmsButtonId}`).remove();
 }
 
 /* ---------- ZOOM-OUT BUTTON ---------- */

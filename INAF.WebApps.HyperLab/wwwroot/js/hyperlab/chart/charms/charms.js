@@ -445,7 +445,7 @@ function updateSelectedSpectrumColor(selectedSpectrum) {
 
     dxChartEndUpdate(chartContainer);
 
-    showToast(CharmsSelectedSpectrumColorUpdateMessage, 3000, INFO);
+    addMessage(CharmsSelectedSpectrumColorUpdateMessage, 3000, INFO);
 }
 
 /* ################################################################################ */

@@ -61,6 +61,69 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter full screen.
+        /// </summary>
+        public static string ButtonEnterFullScreenLabel {
+            get {
+                return ResourceManager.GetString("ButtonEnterFullScreenLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit full screen.
+        /// </summary>
+        public static string ButtonExitFullScreenLabel {
+            get {
+                return ResourceManager.GetString("ButtonExitFullScreenLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open panel for spectra processing.
+        /// </summary>
+        public static string ButtonOpenProcessSpectraCharmsLabel {
+            get {
+                return ResourceManager.GetString("ButtonOpenProcessSpectraCharmsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show color settings panel.
+        /// </summary>
+        public static string ButtonShowCharmsColorSelectorLabel {
+            get {
+                return ResourceManager.GetString("ButtonShowCharmsColorSelectorLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show/hide legend.
+        /// </summary>
+        public static string ButtonShowCharmsLegendLabel {
+            get {
+                return ResourceManager.GetString("ButtonShowCharmsLegendLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show messages.
+        /// </summary>
+        public static string ButtonShowCharmsMessagesLabel {
+            get {
+                return ResourceManager.GetString("ButtonShowCharmsMessagesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset zoom.
+        /// </summary>
+        public static string ButtonZoomOutLabel {
+            get {
+                return ResourceManager.GetString("ButtonZoomOutLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A slight differentiation of colors has been applied to better distinguish raw type spectra.
         /// </summary>
         public static string ChartColorsDifferentiationMessage {
