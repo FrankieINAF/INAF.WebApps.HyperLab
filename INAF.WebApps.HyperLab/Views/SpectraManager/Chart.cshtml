@@ -75,7 +75,7 @@
 </div>
 
 <!-- CHARMS - SPECTRA PROCESSING -->
-<div id="charms" data-role="charms" data-cls-charms="charms-panel" data-position="right" data-on-open="onCharmsOpened()" data-on-close="onCharmsClosed()">
+<div id="charmsProcessSpectra" data-role="charms" data-cls-charms="charms-panel" data-position="right" data-on-open="onCharmsProcessSpectraOpened()" data-on-close="onCharmsProcessSpectraClosed()">
     <!-- MAIN BAR -->
     <div class="d-flex flex-justify-between" style="height: 60px">
         <!-- SPECTRUM SELECTION -->
@@ -89,11 +89,11 @@
         </div>
 
         <!-- CLOSE-AND-RESET-CHARMS BUTTON -->
-        <div onclick="closeCharmsAsync()" class="button light cycle outline float-right pointer" title="@Html.Raw(Charms.CharmsHideAndResetLabel)">
+        <div class="button light cycle outline float-right pointer" title="@Html.Raw(Charms.CharmsHideAndResetLabel)" onclick="closeCharmsProcessSpectraAsync()">
             <span class="mif-cross-light"></span>
         </div>
         <!-- HIDE-CHARMS BUTTON -->
-        <div onclick="hideCharms()" class="button light cycle outline float-right pointer" title="@Html.Raw(Charms.CharmsHideLabel)">
+        <div class="button light cycle outline float-right pointer" title="@Html.Raw(Charms.CharmsHideLabel)" onclick="hideCharmsProcessSpectra()">
             <span class="mif-arrow-right"></span>
         </div>
     </div>

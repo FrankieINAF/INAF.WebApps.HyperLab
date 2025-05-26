@@ -36,7 +36,7 @@ function isSLabConditionForSpectrumTypeNotHigherThanRaw() {
 /* ################################################################################ */
 /* MANAGE CHARMS OPENING/CLOSING */
 /* ################################################################################ */
-async function closeCharmsAsync(isUserPermissionRequested = true) {
+async function closeCharmsProcessSpectraAsync(isUserPermissionRequested = true) {
 
     let callbackAsync = async function () {
         setLoadingCircleIsVisible(true);
@@ -47,7 +47,7 @@ async function closeCharmsAsync(isUserPermissionRequested = true) {
 
         isCharmsResetRequested = true;
 
-        Metro.charms.close('#charms');
+        hideCharmsProcessSpectra();
 
         setLoadingCircleIsVisible(false);
     };
@@ -65,14 +65,14 @@ async function closeCharmsAsync(isUserPermissionRequested = true) {
         await callbackAsync();
 }
 
-function hideCharms() {
+function hideCharmsProcessSpectra() {
     isCharmsResetRequested = false;
 
-    Metro.charms.close('#charms');
+    Metro.charms.close('#charmsProcessSpectra');
 }
 
-function isCharmsOpen() {
-    return Metro.charms.isOpen('#charms');
+function isCharmsProcessSpectraOpen() {
+    return Metro.charms.isOpen('#charmsProcessSpectra');
 }
 
 async function initCharmsPhase1Async() {
@@ -92,7 +92,7 @@ async function initCharmsPhase1Async() {
     initFit();
 }
 
-function onCharmsClosed() {
+function onCharmsProcessSpectraClosed() {
     /* resize chart */
     updateChartSize();
 
@@ -115,7 +115,7 @@ function onCharmsClosed() {
     $("#alignmentCheckboxShowLines").off();
 }
 
-async function onCharmsOpened() {
+async function onCharmsProcessSpectraOpened() {
     if (isCharmsResetRequested) {
         /* if requested, show lines for alignment */
         if (isCheckboxChecked('alignmentCheckboxShowLines'))
@@ -133,7 +133,7 @@ async function onCharmsOpened() {
     }
 }
 
-function openCharms() {
+function openCharmsProcessSpectra() {
     let w = $('#renderbody').width();
 
     w -= (CHARMS_WIDTH);
@@ -142,7 +142,7 @@ function openCharms() {
     //$('#charts').css({ transition: TRANSITION_SHORTHAND });
     //$('#charts').css({ transform: `translate(-${(CHARMS_WIDTH - 100)}, 0)` });
 
-    Metro.charms.open('#charms');
+    Metro.charms.open('#charmsProcessSpectra');
 }
 
 function setTabsForNoRawSpectra() {
@@ -439,6 +439,13 @@ function updateSelectedSpectrumColor(selectedSpectrum) {
     if (index == -1)
         return;
 
+    const oldColor = chartSeries[index].color;
+    if (oldColor == color)
+        return; // if color is the same, then do nothing
+
+    selectedSpectrum.oldColor = oldColor; // save old color for restoring it later, if needed
+
+    /* update color of selected spectrum in chart series */
     dxChartBeginUpdate(chartContainer);
     chartSeries[index].color = color;
     dxChartUpdateSeries(chartContainer, chartSeries);

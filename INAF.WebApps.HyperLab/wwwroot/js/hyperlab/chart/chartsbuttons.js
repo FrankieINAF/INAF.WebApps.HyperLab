@@ -32,7 +32,7 @@ function removeMessagesCharmsButton() {
 
 /* ---------- OPEN PROCESS SPECTRA CHARMS BUTTON ---------- */
 function addOpenProcessSpectraCharmsButton() {
-    addButton(openProcessSpectraCharmsButtonId, ButtonOpenCharmsLabel, 'mif-magic-wand', openCharms);
+    addButton(openProcessSpectraCharmsButtonId, ButtonOpenCharmsLabel, 'mif-magic-wand', openCharmsProcessSpectra);
 }
 
 function removeOpenProcessSpectraCharmsButtonProcedure() {

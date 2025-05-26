@@ -11,7 +11,7 @@ function toggleCharmsColorSelector() {
 
 async function createSpectraTypesColorList() {
     /* close other charms, if opened */
-    Metro.getPlugin('#charms', 'charms').close();
+    Metro.getPlugin('#charmsProcessSpectra', 'charms').close();
     Metro.getPlugin('#charmsLegend', 'charms').close();
 
     /* remove the old list */

@@ -371,7 +371,7 @@ function updateChartSize() {
 
     let w = pageW;
     let h = pageH;
-    if (isCharmsOpen()) {
+    if (isCharmsProcessSpectraOpen()) {
         w = (pageW - CHARMS_WIDTH);
         h = (pageH - APPBAR_HEIGHT);
     }
