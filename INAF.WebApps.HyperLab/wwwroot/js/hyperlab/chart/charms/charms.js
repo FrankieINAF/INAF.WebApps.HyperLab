@@ -270,9 +270,7 @@ function updateSpectrumColor(spectrum, color) {
     if (index == -1)
         return;
 
-    dxChartBeginUpdate(chartContainer);
     dxChartUpdateSeriesProperty(chartContainer, index, 'color', color);
-    dxChartEndUpdate(chartContainer);
 
     addMessage(CharmsSelectedSpectrumColorUpdateMessage, 3000, INFO);
 }
