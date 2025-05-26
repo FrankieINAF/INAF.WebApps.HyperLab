@@ -561,4 +561,7 @@
   <data name="DownloadAsXMLLabel" xml:space="preserve">
     <value>XML</value>
   </data>
+  <data name="CharmsSelectedSpectrumColorUpdateMessage" xml:space="preserve">
+    <value>The color of the selected spectrum has been updated to align with the SpectrumType-Color relationship during spectrum processing</value>
+  </data>
 </root>

@@ -469,8 +469,8 @@ function createSeriesFromPoints(points) {
 
                 if (i > 0 && isRaw) {
                     /* create a slight differentiation in colors of multiple RAW spectra */
-                    color = lightenDarkenColor(lastRawColor, 30); // defined in common.js
-                    spectraInfo[index].Color = color;
+                    //color = lightenDarkenColor(lastRawColor, 30); // defined in common.js
+                    //spectraInfo[index].Color = color;
                     lastRawColor = color; // remember the last RAW color for using it the next time
                     foundRawSpectra++;
                 }
@@ -479,7 +479,7 @@ function createSeriesFromPoints(points) {
                     valueField: keys[j],
                     name: name,
                     axis: 'valueAxis',
-                    color: color,
+                    //color: color,
                     isVisible: true,
                 });
             }

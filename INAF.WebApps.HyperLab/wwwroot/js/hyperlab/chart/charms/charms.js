@@ -396,13 +396,15 @@ function setSelectedSpectrumForProcessing(selected) {
     /* remember new id of selected spectrum */
     selectedSpectrumForProcessingId = selectedValue;
 
-    let selectedSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
+    const selectedSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
+    /* fix color for using spectrumType-color association */
+    updateSelectedSpectrumColor(selectedSpectrum);
     if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL)
         isSLabSpectrumCurrentlySelected = false;
 
     /* find ids of spectra to be removed when changing selected spectrum */
     findSpectrumChildrenByIdProcedure(selectedSpectrumForProcessingId);
-    if (isAnyItem(familyIds)) {
+    if (isAnyItem(familyIds)) { // familyIds is filled-up during 'findSpectrumChildrenByIdProcedure'
         let callbackYes = async function () {
             await callbackYesForSpectrumSelectionManagementAsync(selectedSpectrum, familyIds);
         };
@@ -427,6 +429,23 @@ function setSelectedSpectrumForProcessing(selected) {
             initCharmsPhase2Async();
         }, 250);
     }
+}
+
+function updateSelectedSpectrumColor(selectedSpectrum) {
+    const seriesName = createSeriesNameFromSpectrumNameAndType(selectedSpectrum.Name, selectedSpectrum.SpectrumType)
+    const color = getSpectrumTypeColor(getSpectrumTypeString(selectedSpectrum.SpectrumType));
+
+    let index = findChartSeriesIndexByName(seriesName);
+    if (index == -1)
+        return;
+
+    dxChartBeginUpdate(chartContainer);
+    chartSeries[index].color = color;
+    dxChartUpdateSeries(chartContainer, chartSeries);
+
+    dxChartEndUpdate(chartContainer);
+
+    showToast(CharmsSelectedSpectrumColorUpdateMessage, 3000, INFO);
 }
 
 /* ################################################################################ */
