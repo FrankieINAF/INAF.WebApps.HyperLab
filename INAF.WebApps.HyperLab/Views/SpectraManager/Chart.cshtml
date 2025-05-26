@@ -262,7 +262,7 @@
 </div>
 
 <!-- CHARMS - MESSAGES -->
-<div id="charmsMessages" data-role="charms" data-cls-charms="charms-legend-panel" data-position="left" data-on-open="createCharmsMessages()">
+<div id="charmsMessages" data-role="charms" data-cls-charms="charms-legend-panel" data-position="left">
     <!-- ARROW + TITLE -->
     <div class="row">
         <!-- ARROW -->
@@ -278,13 +278,13 @@
         <!-- CLEAR ALL -->
         <div class="cell-fs-4 cell-md-2">
             <div class="button light cycle outline float-left pointer fg-white" title="@Html.Raw(CharmsMessages.ButtonClearAllLabel)" onclick="clearMessages()">
-                <span class="mif-cross"></span>
+                <span class="mif-cross-light"></span>
             </div>
         </div>
     </div>
 
     <!-- LEGEND -->
-    <div id="messagesContainer" class="row cell-fs-12"></div>
+    <div id="messagesContainer" class="row cell-fs-12 overflow-y-auto"></div>
 </div>
 
 <!-- REFERENCE TO BLAZOR BlazorHelper COMPONENT -->

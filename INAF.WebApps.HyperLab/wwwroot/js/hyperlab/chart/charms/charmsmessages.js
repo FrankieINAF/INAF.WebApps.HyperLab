@@ -1,13 +1,14 @@
 ﻿var messages = []
 
 function clearMessages() {
+    /* clear all messages from UI */
     $('#messagesContainer').empty();
 
+    /* init array for messages */
     initMessages();
-}
 
-function createCharmsMessages() {
-
+    /* close charms since it is empty */
+    toggleCharmsMessages();
 }
 
 function addMessage(content, duration, type) {
