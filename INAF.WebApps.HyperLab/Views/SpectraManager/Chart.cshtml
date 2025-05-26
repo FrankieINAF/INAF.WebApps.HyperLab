@@ -262,30 +262,9 @@
 </div>
 
 <!-- CHARMS - MESSAGES -->
-<div id="charmsMessages" data-role="charms" data-cls-charms="charms-legend-panel" data-position="left">
-    <!-- ARROW + TITLE -->
-    <div class="row">
-        <!-- ARROW -->
-        <div class="cell-fs-4 cell-md-2">
-            <div class="button light cycle outline float-left pointer fg-white" title="@Html.Raw(Charms.CharmsHideLabel)" onclick="toggleCharmsMessages()">
-                <span class="mif-arrow-left"></span>
-            </div>
-        </div>
-        <!-- TITLE -->
-        <div class="cell-fs-4 cell-md-8 text-center">
-            <span class="text-bold text-leader fg-white">@Html.Raw(CharmsMessages.MessagesTitle)</span>
-        </div>
-        <!-- CLEAR ALL -->
-        <div class="cell-fs-4 cell-md-2">
-            <div class="button light cycle outline float-left pointer fg-white" title="@Html.Raw(CharmsMessages.ButtonClearAllLabel)" onclick="clearMessages()">
-                <span class="mif-cross-light"></span>
-            </div>
-        </div>
-    </div>
-
-    <!-- LEGEND -->
-    <div id="messagesContainer" class="row cell-fs-12 overflow-y-auto"></div>
-</div>
+@{
+    await Html.RenderPartialAsync("Partials/_Messages");
+}
 
 <!-- REFERENCE TO BLAZOR BlazorHelper COMPONENT -->
 <base href="~/" />
@@ -318,7 +297,7 @@
     <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmsfitpanelcommon.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmssmoothingpanel.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmsbandanalysis.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmsmessages.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/charmsmessages.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">
     <script type="text/javascript" src="~/js/dist/chart/chartbundle.min.js" asp-append-version="true"></script>

@@ -486,10 +486,23 @@
 	</div>
 </div>
 
-<!-- CHARMS SHARE -->
+<!-- FORM FOR NAVIGATING TO CHART -->
+<form id="formNavigateToChart"
+      method="post"
+      action="/@GenericHelper.GetControllerName(nameof(SpectraManagerController))/@nameof(SpectraManagerController.Chart)"
+      target="_self">
+  @Html.AntiForgeryToken()
+  </form>
+
 @{
+	<!-- CHARMS SHARE -->
 	await Html.RenderPartialAsync("Partials/_Share");
+
+	<!-- CHARMS - MESSAGES -->
+	await Html.RenderPartialAsync("Partials/_Messages");
 }
+
+
 
 <!-- common js variables -->
 @{
@@ -619,6 +632,7 @@
 	<script type="text/javascript" src="~/js/hyperlab/hub/load/loadgetfileslistitemancillary.js" asp-append-version="true"></script>
 	<script type="text/javascript" src="~/js/hyperlab/hub/load/loadcommon.js" asp-append-version="true"></script>
 	<script type="text/javascript" src="~/js/hyperlab/hub/load/loadslab.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="~/js/hyperlab/charmsmessages.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">
 	<script type="text/javascript" src="~/js/dist/hub/hubbundle.min.js" asp-append-version="true"></script>

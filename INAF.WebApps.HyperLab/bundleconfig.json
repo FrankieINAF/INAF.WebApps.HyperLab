@@ -34,7 +34,7 @@
       "wwwroot/js/hyperlab/chart/charms/charmsfitpanelcommon.js",
       "wwwroot/js/hyperlab/chart/charms/charmssmoothingpanel.js",
       "wwwroot/js/hyperlab/chart/charms/charmsbandanalysis.js",
-      "wwwroot/js/hyperlab/chart/charms/charmsmessages.js"
+      "wwwroot/js/hyperlab/charmsmessages.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -79,7 +79,8 @@
       "wwwroot/js/hyperlab/hub/load/loadcommon.js",
       "wwwroot/js/hyperlab/hub/load/loadexternalauthenticated.js",
       "wwwroot/js/hyperlab/hub/load/loadexternalunauthenticated.js",
-      "wwwroot/js/hyperlab/hub/load/loadslab.js"
+      "wwwroot/js/hyperlab/hub/load/loadslab.js",
+      "wwwroot/js/hyperlab/charmsmessages.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true

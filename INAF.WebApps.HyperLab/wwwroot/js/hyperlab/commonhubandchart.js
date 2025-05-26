@@ -4,6 +4,7 @@ var showCharmsLegendButtonId = 'buttonShowCharmsLegend';
 var goToChartsButtonId = 'buttonGoToCharts';
 var helpButtonId = 'buttonHelp';
 
+var openMessagesCharmsButtonId = 'buttonOpenMessagesCharms';
 var searchButtonId = 'buttonSearch';
 var setPublicButtonId = 'buttonSetPublic';
 var shareButtonId = 'buttonShare';
@@ -158,6 +159,22 @@ function setButtonAlignEnabled(id, isEnabled, label) {
 /* ################################################################################ */
 /* ADD/REMOVE BUTTONS */
 /* ################################################################################ */
+/* ---------- OPEN MESSAGES BUTTON ---------- */
+function addOpenMessagesCharmsButton() {
+    addButton(openMessagesCharmsButtonId, ButtonShowCharmsMessagesLabel, 'mif-chat', toggleCharmsMessages);
+}
+
+function removeMessagesCharmsButtonProcedure() {
+    if (!isButtonAvailable(openMessagesCharmsButtonId))
+        return;
+
+    animateCSS(`${openMessagesCharmsButtonId}`, `bounceOutUp`, FAST, removeMessagesCharmsButton);
+}
+
+function removeMessagesCharmsButton() {
+    $(`#${openMessagesCharmsButtonId}`).remove();
+}
+
 /* ---------- SET PUBLIC BUTTON ---------- */
 function addSetPublicButton() {
     addButton(setPublicButtonId, ButtonSetPublicLabel, 'mif-vpn-publ mif-2x', setAsPublicProcedure);

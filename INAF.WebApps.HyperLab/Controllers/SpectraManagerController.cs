@@ -6,6 +6,7 @@ using INAF.Libraries.Net.HyperLab.CommonModels.Models.Pages;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches.Interfaces;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Shares;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Helpers;
@@ -31,18 +32,16 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         #region VIEWS
-        //[Authorize]
-        //[CheckIsLoginValid]
-        [HttpGet]
-        public IActionResult Chart([FromQuery] string ids)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Chart([FromForm] NavigateToChartModel model)
         {
             (bool isUserAuthenticated, List<PermissionModel>? permissions) status = getUserStatus();
 
-            IEnumerable<int>? Ids = null;
+            IEnumerable<int>? Ids = model.SelectedSpectra ?? Array.Empty<int>();
             SelectedSpectraModel? selectedSpectra = null;
-            if (!string.IsNullOrEmpty(ids))
+            if (model.SelectedSpectra != null && model.SelectedSpectra.Length > 0)
             {
-                Ids = ids.Split(',').Select(int.Parse);
                 selectedSpectra = new SelectedSpectraModel() { Ids = Ids };
             }
 

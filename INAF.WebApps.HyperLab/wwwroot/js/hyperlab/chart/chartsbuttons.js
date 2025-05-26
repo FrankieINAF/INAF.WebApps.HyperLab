@@ -14,22 +14,6 @@ function removeBackClearToSearchButton() {
     $(`#${backClearToSearchButtonId}`).remove();
 }
 
-/* ---------- OPEN MESSAGES BUTTON ---------- */
-function addOpenMessagesCharmsButton() {
-    addButton(openMessagesCharmsButtonId, ButtonShowCharmsMessagesLabel, 'mif-chat', toggleCharmsMessages);
-}
-
-function removeMessagesCharmsButtonProcedure() {
-    if (!isButtonAvailable(openMessagesCharmsButtonId))
-        return;
-
-    animateCSS(`${openMessagesCharmsButtonId}`, `bounceOutUp`, FAST, removeMessagesCharmsButton);
-}
-
-function removeMessagesCharmsButton() {
-    $(`#${openMessagesCharmsButtonId}`).remove();
-}
-
 /* ---------- OPEN PROCESS SPECTRA CHARMS BUTTON ---------- */
 function addOpenProcessSpectraCharmsButton() {
     addButton(openProcessSpectraCharmsButtonId, ButtonOpenCharmsLabel, 'mif-magic-wand', openCharmsProcessSpectra);

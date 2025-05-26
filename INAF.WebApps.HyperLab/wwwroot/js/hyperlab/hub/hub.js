@@ -322,6 +322,7 @@ function showSearchInfo() {
 function initButtonsInSearchPanel() {
     //removeBackToSearchButton();
     addSearchButton();
+    addOpenMessagesCharmsButton();
     addHelpButton();
 }
 

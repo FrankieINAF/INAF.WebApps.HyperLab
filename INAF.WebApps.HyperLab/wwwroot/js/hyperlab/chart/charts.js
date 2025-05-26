@@ -17,7 +17,6 @@ var backToSearchButtonId = 'buttonBackToSearch';
 var backClearToSearchButtonId = 'buttonBackClearToSearch';
 var enterFullScreenButtonId = 'buttonEnterFullScreen';
 var exitFullScreenButtonId = 'buttonExitFullScreen';
-var openMessagesCharmsButtonId = 'buttonOpenMessagesCharms';
 var openProcessSpectraCharmsButtonId = 'buttonOpenCharms'
 
 /* ################################################################################ */

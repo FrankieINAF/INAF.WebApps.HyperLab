@@ -12,9 +12,24 @@ function isButtonAvailable(buttonId) {
 }
 
 function navigateToChart() {
-    var ids = selectedSpectra.join(',');
-    var url = `${UrlChart}?Ids=${ids}`;
-    navigateTo(url);
+    // Remove any previous hidden inputs added by this function
+    $('#formNavigateToChart input[type="hidden"][name="SelectedSpectra[]"]').remove();
+
+    // For each value in selectedSpectra, add a hidden input to the form with id 'formNavigateToChart'
+    selectedSpectra.forEach(function(id) {
+        var input = $('<input>')
+            .attr('type', 'hidden')
+            .attr('name', 'SelectedSpectra[]')
+            .val(id);
+        $('#formNavigateToChart').append(input);
+    });
+
+    // Optionally, you can submit the form here if needed:
+    $('#formNavigateToChart').submit();
+
+    //var ids = selectedSpectra.join(',');
+    //var url = `${UrlChart}?Ids=${ids}`;
+    //navigateTo(url);
 }
 
 /* ---------- CHARTS BUTTON ---------- */
