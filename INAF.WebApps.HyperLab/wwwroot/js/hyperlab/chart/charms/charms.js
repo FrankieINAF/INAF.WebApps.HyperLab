@@ -41,12 +41,17 @@ async function closeCharmsProcessSpectraAsync(isUserPermissionRequested = true) 
     let callbackAsync = async function () {
         setLoadingCircleIsVisible(true);
 
+        /* restore old color for selected spectrum, removing spectrumType-color relationship */
+        restoreOldSpectraColor();
+
+        /* remove white spectra used for alignment */
         unloadWhiteSpectraForAlignment();
 
+        /* remove spectra created during selected spectrum processing */
         await removeSpectraProcedureSimpleAsync();
 
+        /* close charms */
         isCharmsResetRequested = true;
-
         hideCharmsProcessSpectra();
 
         setLoadingCircleIsVisible(false);
@@ -244,6 +249,37 @@ function getSpectrumContinuumRemovedProcedure() {
     }
 }
 
+function restoreOldSpectraColor() {
+    if (selectedSpectrumForProcessingId == 0)
+        return; // if no spectrum is selected, then do nothing
+
+    let selectedSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
+    if (!selectedSpectrum || !selectedSpectrum.oldColor)
+        return; // if no old color is available, then do nothing
+
+    /* restore old color for selected spectrum */
+    updateSpectrumColor(selectedSpectrum, selectedSpectrum.oldColor);
+
+    addMessage(CharmsSelectedSpectrumColorRestoreMessage, 3000, INFO);
+}
+
+function updateSpectrumColor(spectrum, color) {
+    const seriesName = createSeriesNameFromSpectrumNameAndType(spectrum.Name, spectrum.SpectrumType)
+
+    let index = findChartSeriesIndexByName(seriesName);
+    if (index == -1)
+        return;
+
+    /* update color of selected spectrum in chart series */
+    dxChartBeginUpdate(chartContainer);
+    chartSeries[index].color = color;
+    dxChartUpdateSeries(chartContainer, chartSeries);
+
+    dxChartEndUpdate(chartContainer);
+
+    addMessage(CharmsSelectedSpectrumColorUpdateMessage, 3000, INFO);
+}
+
 /* ################################################################################ */
 /* SPECTRA TYPES PARENTS */
 /* ################################################################################ */
@@ -439,18 +475,14 @@ function updateSelectedSpectrumColor(selectedSpectrum) {
     if (index == -1)
         return;
 
-    const oldColor = chartSeries[index].color;
+    const oldColor = dxChartGetSeriesByName(chartContainer, seriesName).getColor();
+
     if (oldColor == color)
         return; // if color is the same, then do nothing
 
     selectedSpectrum.oldColor = oldColor; // save old color for restoring it later, if needed
 
-    /* update color of selected spectrum in chart series */
-    dxChartBeginUpdate(chartContainer);
-    chartSeries[index].color = color;
-    dxChartUpdateSeries(chartContainer, chartSeries);
-
-    dxChartEndUpdate(chartContainer);
+    updateSpectrumColor(selectedSpectrum, color);
 
     addMessage(CharmsSelectedSpectrumColorUpdateMessage, 3000, INFO);
 }

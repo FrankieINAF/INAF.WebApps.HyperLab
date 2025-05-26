@@ -475,6 +475,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The color of the selected spectrum has been restored removing  the SpectrumType-Color relationship during spectrum processing.
+        /// </summary>
+        public static string CharmsSelectedSpectrumColorRestoreMessage {
+            get {
+                return ResourceManager.GetString("CharmsSelectedSpectrumColorRestoreMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The color of the selected spectrum has been updated to align with the SpectrumType-Color relationship during spectrum processing.
         /// </summary>
         public static string CharmsSelectedSpectrumColorUpdateMessage {
