@@ -270,11 +270,8 @@ function updateSpectrumColor(spectrum, color) {
     if (index == -1)
         return;
 
-    /* update color of selected spectrum in chart series */
     dxChartBeginUpdate(chartContainer);
-    chartSeries[index].color = color;
-    dxChartUpdateSeries(chartContainer, chartSeries);
-
+    dxChartUpdateSeriesProperty(chartContainer, index, 'color', color);
     dxChartEndUpdate(chartContainer);
 
     addMessage(CharmsSelectedSpectrumColorUpdateMessage, 3000, INFO);
@@ -421,7 +418,7 @@ function onSelectSpectrum(selected) {
     setSelectedSpectrumForProcessing(selected);
 }
 
-function setSelectedSpectrumForProcessing(selected) {
+async function setSelectedSpectrumForProcessing(selected) {
     let selectedValue = Number.isFinite(selected) ? parseInt(selected) : selected;
     if (selectedValue == selectedSpectrumForProcessingId)
         return; // if we're opening charms and the selected spectrum is the already selected one, then do nothing
@@ -434,7 +431,8 @@ function setSelectedSpectrumForProcessing(selected) {
 
     const selectedSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
     /* fix color for using spectrumType-color association */
-    updateSelectedSpectrumColor(selectedSpectrum);
+    updateSelectedSpectrumColorToSpectrumTypeColor(selectedSpectrum);
+
     if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL)
         isSLabSpectrumCurrentlySelected = false;
 
@@ -467,7 +465,7 @@ function setSelectedSpectrumForProcessing(selected) {
     }
 }
 
-function updateSelectedSpectrumColor(selectedSpectrum) {
+function updateSelectedSpectrumColorToSpectrumTypeColor(selectedSpectrum) {
     const seriesName = createSeriesNameFromSpectrumNameAndType(selectedSpectrum.Name, selectedSpectrum.SpectrumType)
     const color = getSpectrumTypeColor(getSpectrumTypeString(selectedSpectrum.SpectrumType));
 

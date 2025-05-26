@@ -90,6 +90,10 @@ function dxChartUpdateSeries(container, chartSeries) {
     $(container).dxChart('instance').option("series", chartSeries);
 }
 
+function dxChartUpdateSeriesProperty(container, chartSeriesIndex, propertyName, propertyValue) {
+    $(container).dxChart('instance').option(`series[${chartSeriesIndex}].${propertyName}`, propertyValue);
+}
+
 /* -------------------------------------------------------------------------------- */
 /* ITEMS */
 /* -------------------------------------------------------------------------------- */

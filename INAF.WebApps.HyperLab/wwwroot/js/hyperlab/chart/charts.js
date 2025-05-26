@@ -443,6 +443,9 @@ function createSeriesFromPoints(points) {
     let lastRawColor;
     let foundRawSpectra = 0;
 
+    const palette = DevExpress.viz.getPalette('Material');
+    let paletteCounter = 0;
+
     let pointsNum = points.length;
     for (var i = 0; i < pointsNum; i++) {
         let point = points[i];
@@ -480,9 +483,11 @@ function createSeriesFromPoints(points) {
                     valueField: keys[j],
                     name: name,
                     axis: 'valueAxis',
-                    //color: color,
+                    color: palette.simpleSet[paletteCounter],
                     isVisible: true,
                 });
+
+                paletteCounter++;
             }
         }
     }
