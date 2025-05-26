@@ -44,6 +44,9 @@ async function closeCharmsProcessSpectraAsync(isUserPermissionRequested = true) 
         /* restore old color for selected spectrum, removing spectrumType-color relationship */
         restoreOldSpectraColor();
 
+        /* reset panels */
+        resetCharmsProcessSpectra();
+
         /* remove white spectra used for alignment */
         unloadWhiteSpectraForAlignment();
 
@@ -148,6 +151,31 @@ function openCharmsProcessSpectra() {
     //$('#charts').css({ transform: `translate(-${(CHARMS_WIDTH - 100)}, 0)` });
 
     Metro.charms.open('#charmsProcessSpectra');
+}
+
+function resetCharmsProcessSpectra() {
+    /* reset selected spectrum for processing id */
+    Metro.getPlugin('#charmsSpectrumSelector', 'select').val(0);
+
+    /* hide tabs */
+    hideByClassDFlexItem('charmsTabsContainer');
+
+    /* hide message about RAW file selection */
+    showByClassDFlexItem('charmsTabAlignmentStartingMessageContainer');
+
+    /* remove all UI elements from alignment panel */
+    $('#alignmentOptionsPanel').empty();
+
+    /* remove all UI elements from fit panel */
+    $('#fitOptionsPanel').empty();
+
+    /* remove all UI elements from smoothing panel */
+    $('#smoothingoptions').empty();
+
+    /* clear list of segments for band analysis */
+    $('#bandsAnalysisSegmentsListContainer').empty();
+    /* clear all band analysis related elements on chart */
+    clearBandAnalysisProcedureCaller();
 }
 
 function setTabsForNoRawSpectra() {
