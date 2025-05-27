@@ -1,4 +1,4 @@
-// Joystick window identifier
+﻿// Joystick window identifier
 var JOYSTICK_WINDOW_IDENTIFIER = "__joysticks_identifiers__";
 // Active joystick window
 var JOYSTICK_WINDOW_ACTIVE = "__active_joysticks__";

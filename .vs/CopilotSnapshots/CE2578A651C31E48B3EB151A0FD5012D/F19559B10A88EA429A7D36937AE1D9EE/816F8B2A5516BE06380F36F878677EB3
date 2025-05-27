@@ -1,0 +1,28 @@
+﻿//import JoystickController from "../../../lib/joystick-controller/dist/es/joystick-controller.min.js";
+
+var staticJoystick;
+
+$(function () {
+    staticJoystick = new JoystickController(
+        {
+            maxRange: 70,
+            level: 10,
+            radius: 50,
+            joystickRadius: 30,
+            opacity: 0.5,
+            leftToRight: false,
+            bottomToUp: true,
+            containerClass: "joystick-container",
+            controllerClass: "joystick-controller",
+            joystickClass: "joystick",
+            distortion: true,
+            x: "50%",
+            y: "10%",
+            mouseClickButton: "ALL",
+            hideContextMenu: false,
+        },
+        ({ x, y, leveledX, leveledY, distance, angle }) => {
+            console.log(x, y, leveledX, leveledY, distance, angle);
+            targetPointer.css('transform', `translate(${leveledX}px, ${leveledY}px)`);
+        });
+});

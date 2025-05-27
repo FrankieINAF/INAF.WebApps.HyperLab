@@ -33,6 +33,9 @@
 <div id="charts" class="mywrapper overflow-x-auto overflow-y-auto" style="max-width: 100%">
 </div>
 
+<div id="target-pointer"></div>
+
+
 <!-- CHARMS - COLOR SELECTOR -->
 <div id="charmsColorSelector" data-role="charms" data-cls-charms="charms-color-selector-panel" data-position="top" data-on-open="createSpectraTypesColorList()">
     <!-- TITLE + BUTTON-->
@@ -298,6 +301,8 @@
     <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmssmoothingpanel.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmsbandanalysis.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/charmsmessages.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/lib/joystick-controller/joystick-controller.js"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/joystick.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">
     <script type="text/javascript" src="~/js/dist/chart/chartbundle.min.js" asp-append-version="true"></script>

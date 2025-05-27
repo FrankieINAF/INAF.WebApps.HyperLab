@@ -1,4 +1,41 @@
-﻿.border-color-error {
+﻿#target-pointer {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #1ba1e2;
+    border-radius: 50%; /* forma circolare */
+    pointer-events: none; /* per non interferire con i click/mouse events nel container */
+    transform: translate(-50%, -50%); /* per centrare il puntatore rispetto alle coordinate */
+}
+
+    /* Creiamo il crosshair con pseudo-elementi */
+    #target-pointer::before,
+    #target-pointer::after {
+        content: "";
+        position: absolute;
+        background: #1ba1e2;
+    }
+
+    /* Linea orizzontale */
+    #target-pointer::before {
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        transform: translateY(-50%);
+    }
+
+    /* Linea verticale */
+    #target-pointer::after {
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        transform: translateX(-50%);
+    }
+
+
+.border-color-error {
     border: 2px solid darkred;
 }
 

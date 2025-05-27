@@ -13,6 +13,8 @@ var isChartLoaded = false;
 var MIN_Y = 'minY';
 var MAX_Y = 'maxY';
 
+var targetPointer;
+
 var backToSearchButtonId = 'buttonBackToSearch';
 var backClearToSearchButtonId = 'buttonBackClearToSearch';
 var enterFullScreenButtonId = 'buttonEnterFullScreen';
@@ -632,4 +634,23 @@ $(function () {
 
     /* add listener for detecting full-screen change and manage buttons */
     setFullScreenChangeListener();
+
+    targetPointer = $("#target-pointer");
+
+    // Center targetPointer in the middle of the 'charts' div
+    var chartsDiv = $('#charts');
+    if (chartsDiv.length && targetPointer.length) {
+        var chartsOffset = chartsDiv.offset();
+        var chartsWidth = chartsDiv.outerWidth();
+        var chartsHeight = chartsDiv.outerHeight();
+        var pointerWidth = targetPointer.outerWidth();
+        var pointerHeight = targetPointer.outerHeight();
+        var centerX = chartsOffset.left + (chartsWidth / 2) - (pointerWidth / 2);
+        var centerY = chartsOffset.top + (chartsHeight / 2) - (pointerHeight / 2);
+        targetPointer.css({
+            left: centerX + 'px',
+            top: centerY + 'px',
+            position: 'absolute'
+        });
+    }
 });

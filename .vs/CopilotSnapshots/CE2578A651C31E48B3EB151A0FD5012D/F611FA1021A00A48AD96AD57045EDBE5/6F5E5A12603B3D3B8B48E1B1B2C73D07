@@ -1,0 +1,43 @@
+﻿var staticJoystick;
+
+$(function () {
+    var targetPointer = $('#target-pointer');
+    var currentX = 0;
+    var currentY = 0;
+    var speedFactor = 0.5; // Lower = slower movement
+    staticJoystick = new JoystickController(
+        {
+            maxRange: 70,
+            level: 10,
+            radius: 50,
+            joystickRadius: 30,
+            opacity: 0.5,
+            leftToRight: false,
+            bottomToUp: true,
+            containerClass: "joystick-container",
+            controllerClass: "joystick-controller",
+            joystickClass: "joystick",
+            distortion: true,
+            x: "50%",
+            y: "10%",
+            mouseClickButton: "ALL",
+            hideContextMenu: false,
+        },
+        ({ x, y, leveledX, leveledY, distance, angle }) => {
+            //console.log(x, y, leveledX, leveledY, distance, angle);
+            if (targetPointer && targetPointer.length) {
+                currentX += leveledX * speedFactor;
+                currentY -= leveledY * speedFactor;
+                targetPointer.css('transform', `translate(${currentX}px, ${currentY}px)`);
+            }
+        });
+
+    // Add event for joystick press
+    if (staticJoystick && staticJoystick.joystick) {
+        $(staticJoystick.joystick).on('mousedown touchstart', function () {
+            // Custom logic for joystick press
+            console.log('Joystick pressed!');
+            // You can trigger a custom event or call a function here
+        });
+    }
+});

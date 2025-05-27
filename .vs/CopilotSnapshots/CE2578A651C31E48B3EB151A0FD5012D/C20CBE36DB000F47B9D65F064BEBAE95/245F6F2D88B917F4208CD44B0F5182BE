@@ -1,0 +1,452 @@
+﻿// Joystick window identifier
+var JOYSTICK_WINDOW_IDENTIFIER = "__joysticks_identifiers__";
+// Active joystick window
+var JOYSTICK_WINDOW_ACTIVE = "__active_joysticks__";
+// Mouse click buttons constants
+var MOUSE_CLICK_BUTTONS = {
+  ALL: -1,
+  LEFT: 0,
+  MIDDLE: 1,
+  RIGHT: 2
+};
+/**
+ * A JavaScript library for creating a virtual joystick.
+ * @author Cyrus Mobini
+ * @version 1.1.1
+ * @docs https://github.com/cyrus2281/joystick-controller#readme
+ */
+var JoystickController = /** @class */function () {
+  /**
+   * Constructor for the joystick controller
+   * @param options Joystick options
+   * @param onMove Callback function when the joystick moves
+   */
+  function JoystickController(options, onMove) {
+    var _this = this;
+    /**
+     * Default transition for the joystick
+     */
+    this.JOYSTICK_TRANSITION = "border-radius 0.2s ease-in-out";
+    /**
+     * Default options for the joystick
+     */
+    this.options = {
+      maxRange: 100,
+      level: 10,
+      radius: 50,
+      joystickRadius: 30,
+      opacity: 0.8,
+      leftToRight: true,
+      bottomToUp: true,
+      containerClass: "",
+      controllerClass: "",
+      joystickClass: "",
+      x: "50%",
+      y: "50%",
+      distortion: false,
+      dynamicPosition: false,
+      dynamicPositionTarget: null,
+      mouseClickButton: -1,
+      hideContextMenu: false
+    };
+    /**
+     * x position of the joystick.
+     */
+    this.x = 0;
+    /**
+     * y position of the joystick.
+     */
+    this.y = 0;
+    /**
+     * x position of the joystick scaled to be between -level and +level.
+     */
+    this.leveledX = 0;
+    /**
+     * y position of the joystick scaled to be between -level and +level.
+     */
+    this.leveledY = 0;
+    /**
+     * Angle of the joystick in radians.
+     */
+    this.angle = 0;
+    /**
+     * Distance of the joystick dot from the center.
+     */
+    this.distance = 0;
+    /**
+     * Indicates if the joystick movement has started.
+     */
+    this.started = false;
+    /**
+     * Identifier for the joystick for dynamic positioning.
+     */
+    this.identifier = null;
+    /**
+     * Mouse button to listen on.
+     */
+    this.mouseButton = -1;
+    /**
+     * Adds necessary event listeners for the joystick.
+     */
+    this.addEventListeners = function () {
+      var mcb = _this.options.mouseClickButton;
+      if (typeof mcb === "string" && Object.keys(MOUSE_CLICK_BUTTONS).includes(mcb) || typeof mcb === "number" && mcb < 6 && mcb > -2) {
+        _this.mouseButton = typeof mcb === "string" ? MOUSE_CLICK_BUTTONS[mcb] : mcb;
+      }
+      if (_this.options.dynamicPosition) {
+        var target = _this.options.dynamicPositionTarget || document;
+        // mouse events Listeners
+        target.addEventListener("mousedown", _this.dynamicPositioningMouse);
+        document.addEventListener("mouseup", _this.removeDynamicPositioning);
+        // touch events Listeners
+        target.addEventListener("touchstart", _this.dynamicPositioningTouch);
+        document.addEventListener("touchmove", _this.onTouchEvent, {
+          passive: false
+        });
+        document.addEventListener("touchend", _this.removeDynamicPositioning);
+        if (_this.options.hideContextMenu) {
+          target.addEventListener("contextmenu", function (e) {
+            return e.preventDefault();
+          });
+          _this.joystick.addEventListener("contextmenu", function (e) {
+            return e.preventDefault();
+          });
+        }
+      } else {
+        // touch events Listeners
+        _this.joystick.addEventListener("touchstart", _this.onStartEvent);
+        _this.joystick.addEventListener("touchmove", _this.onTouchEvent);
+        _this.joystick.addEventListener("touchend", _this.onStopEvent);
+        // mouse events Listeners
+        _this.joystick.addEventListener("mousedown", _this.onStartEvent);
+        if (_this.options.hideContextMenu) {
+          _this.container.addEventListener("contextmenu", function (e) {
+            return e.preventDefault();
+          });
+          _this.joystick.addEventListener("contextmenu", function (e) {
+            return e.preventDefault();
+          });
+        }
+      }
+      // window resize listener
+      window.addEventListener("resize", _this.recenterJoystick);
+    };
+    /**
+     * Fetch the coordinates of the joystick container
+     * base on user click, and adds it to document
+     * @param e MouseEvent
+     */
+    this.dynamicPositioningMouse = function (e) {
+      if (_this.identifier !== null) return;
+      if (_this.mouseButton !== -1 && e.button !== _this.mouseButton) return;
+      var identifier = e.x + "-" + e.y;
+      if (window[JOYSTICK_WINDOW_IDENTIFIER].has(identifier)) return;
+      _this.identifier = identifier;
+      window[JOYSTICK_WINDOW_IDENTIFIER].add(_this.identifier);
+      var x = e.clientX;
+      var y = e.clientY;
+      _this.container.style.left = x + "px";
+      _this.container.style.top = y + "px";
+      _this.container.style.bottom = "unset";
+      _this.container.style.right = "unset";
+      document.body.appendChild(_this.container);
+      _this.recenterJoystick();
+      _this.onStartEvent(e, false);
+    };
+    /**
+     * Fetch the coordinates of the joystick container
+     * base on user touch, and adds it to document
+     * @param event touchstart event
+     */
+    this.dynamicPositioningTouch = function (event) {
+      if (_this.identifier !== null) return;
+      var identifier = event.changedTouches[0].identifier;
+      if (window[JOYSTICK_WINDOW_IDENTIFIER].has(identifier)) return;
+      _this.identifier = identifier;
+      window[JOYSTICK_WINDOW_IDENTIFIER].add(identifier);
+      // Current touch (for multi-touch)
+      var touch;
+      for (var i = 0; i < event.touches.length; i++) {
+        var tc = event.touches.item(i);
+        if (_this.identifier === (tc === null || tc === void 0 ? void 0 : tc.identifier)) {
+          touch = tc;
+          break;
+        }
+      }
+      if (!touch) return;
+      var x = touch.clientX;
+      var y = touch.clientY;
+      _this.container.style.left = x + "px";
+      _this.container.style.top = y + "px";
+      _this.container.style.bottom = "unset";
+      _this.container.style.right = "unset";
+      document.body.appendChild(_this.container);
+      _this.recenterJoystick();
+      _this.onStartEvent(event, false);
+    };
+    /**
+     * Stop the dynamic positioning of the joystick
+     * @param  e mousedown/touchend event
+     */
+    this.removeDynamicPositioning = function (e) {
+      if (_this.identifier === null) return;
+      if (e.type === "touchend") {
+        var identifier = e.changedTouches[0].identifier;
+        if (_this.identifier !== identifier) return;
+      } else if (_this.mouseButton !== -1 && e.button !== _this.mouseButton) return;
+      window[JOYSTICK_WINDOW_IDENTIFIER].delete(_this.identifier);
+      _this.identifier = null;
+      _this.onStopEvent(e);
+      _this.container.remove();
+    };
+    /**
+     * Updating the x,y, distance,angle, and joystick position base on the x and y
+     * @param x x coordinate
+     * @param y y coordinate
+     */
+    this.updateCoordinates = function (x, y) {
+      // distance from center
+      _this.distance = +Math.sqrt(Math.pow(x - _this.centerX, 2) + Math.pow(y - _this.centerY, 2)).toFixed(4);
+      // angle from center in Radians
+      _this.angle = +Math.atan2(y - _this.centerY, x - _this.centerX).toFixed(4);
+      // considering max range
+      var adjustedDistance = _this.distance > _this.options.maxRange ? _this.options.maxRange : _this.distance;
+      // x offset from center
+      _this.x = Math.round(Math.cos(_this.angle) * adjustedDistance);
+      // y offset from center
+      _this.y = -Math.round(Math.sin(_this.angle) * adjustedDistance);
+      // Scaling x and y to be between -level and +level
+      _this.leveledX = Math.round(_this.x / _this.options.maxRange * _this.options.level);
+      _this.leveledY = Math.round(_this.y / _this.options.maxRange * _this.options.level);
+      // setting position of stick
+      _this.joystick.style.left = _this.options.radius + _this.x + "px";
+      _this.joystick.style.bottom = _this.options.radius + _this.y + "px";
+      // distort joystick
+      _this.options.distortion && _this.distortJoystick();
+      // Triggering Event
+      _this.onMove && _this.onMove({
+        x: _this.x,
+        y: _this.y,
+        leveledX: _this.leveledX,
+        leveledY: _this.leveledY,
+        distance: _this.distance,
+        angle: _this.angle
+      });
+    };
+    /**
+     * Resting Coordinates
+     */
+    this.resetCoordinates = function () {
+      _this.x = 0;
+      _this.y = 0;
+      _this.leveledX = 0;
+      _this.leveledY = 0;
+      _this.angle = 0;
+      _this.distance = 0;
+      // reset position of stick
+      _this.joystick.style.left = _this.options.radius + "px";
+      _this.joystick.style.bottom = _this.options.radius + "px";
+      // reset joystick distortion
+      _this.options.distortion && _this.distortJoystick();
+      // Triggering Event
+      _this.onMove && _this.onMove({
+        x: _this.x,
+        y: _this.y,
+        leveledX: _this.leveledX,
+        leveledY: _this.leveledY,
+        distance: _this.distance,
+        angle: _this.angle
+      });
+    };
+    /**
+     * Distort joystick based on distance if further than 70% of maxRange
+     */
+    this.distortJoystick = function () {
+      if (_this.distance > _this.options.maxRange * 0.7) {
+        // distorting joystick
+        _this.joystick.style.borderRadius = "70% 80% 70% 15%";
+        _this.joystick.style.transform = "translate(-50%, 50%) rotate(".concat(+_this.angle + Math.PI / 4, "rad)");
+      } else {
+        // resting to default
+        _this.joystick.style.borderRadius = "50%";
+        _this.joystick.style.transform = "translate(-50%, 50%) rotate(".concat(Math.PI / 4, "rad})");
+      }
+    };
+    /**
+     * on grab joystick event
+     * @param event
+     */
+    this.onStartEvent = function (event, addIdentifier) {
+      if (addIdentifier === void 0) {
+        addIdentifier = true;
+      }
+      if (event.type === "mousedown") {
+        if (_this.mouseButton !== -1 && event.button !== _this.mouseButton) return;
+        window.addEventListener("mousemove", _this.onMouseEvent);
+        window.addEventListener("mouseup", _this.onStopEvent);
+      } else if (addIdentifier) {
+        var identifier = event.changedTouches[0].identifier;
+        _this.identifier = identifier;
+      }
+      _this.started = true;
+      // style adjustment
+      _this.joystick.style.transition = _this.JOYSTICK_TRANSITION;
+      _this.joystick.style.cursor = "grabbing";
+    };
+    /**
+     * On leave joystick event
+     * @param event leave joystick event
+     */
+    this.onStopEvent = function (event) {
+      if (event.type === "mouseup") {
+        if (_this.mouseButton !== -1 && event.button !== _this.mouseButton) return;
+        window.removeEventListener("mousemove", _this.onMouseEvent);
+        window.removeEventListener("mouseup", _this.onStopEvent);
+      } else {
+        _this.identifier = null;
+      }
+      _this.started = false;
+      // style adjustment
+      _this.joystick.style.transition = "all 0.2s ease-in-out";
+      _this.joystick.style.cursor = "grab";
+      // reset values
+      _this.resetCoordinates();
+    };
+    /**
+     * Update the coordinates of the joystick on touch move
+     * @param event touch move event
+     */
+    this.onTouchEvent = function (event) {
+      // Current touch (for multi-touch)
+      var touch;
+      for (var i = 0; i < event.touches.length; i++) {
+        var tc = event.touches.item(i);
+        if (_this.identifier === (tc === null || tc === void 0 ? void 0 : tc.identifier)) {
+          touch = tc;
+          break;
+        }
+      }
+      if (!touch) return;
+      event.preventDefault();
+      // position of touch
+      var x = touch.clientX;
+      var y = touch.clientY;
+      // update coordinates
+      _this.updateCoordinates(x, y);
+    };
+    /**
+     * Update the coordinates of the joystick on mouse move
+     * @param event mouse move event
+     */
+    this.onMouseEvent = function (event) {
+      if (!_this.started) return;
+      event.preventDefault();
+      // position of mouse
+      var x = event.clientX;
+      var y = event.clientY;
+      // distance from center
+      _this.updateCoordinates(x, y);
+    };
+    /**
+     * Update the center coordinates of the joystick on window resize
+     */
+    this.recenterJoystick = function () {
+      // update the center coordinates
+      _this.centerX = _this.controller.getBoundingClientRect().left + _this.options.radius;
+      _this.centerY = _this.controller.getBoundingClientRect().top + _this.options.radius;
+    };
+    this.options = Object.assign(this.options, options);
+    this.onMove = onMove;
+    this.validate();
+    this.init();
+  }
+  /**
+   * Validates if there are any conflicting dynamicPosition options among active joysticks.
+   */
+  JoystickController.prototype.validate = function () {
+    var _this = this;
+    if (window[JOYSTICK_WINDOW_ACTIVE] && window[JOYSTICK_WINDOW_ACTIVE].length > 0 && window[JOYSTICK_WINDOW_ACTIVE].some(function (j) {
+      return j.options.dynamicPosition && (j.options.dynamicPositionTarget || document) === (_this.options.dynamicPositionTarget || document);
+    })) {
+      console.error("Multiple dynamicPosition should be used with different target elements (dynamicPositionTarget) to prevent event collision.");
+    }
+  };
+  /**
+   * Initializes the joystick controller.
+   */
+  JoystickController.prototype.init = function () {
+    // Adding identifier array to window
+    if (!window[JOYSTICK_WINDOW_IDENTIFIER]) {
+      window[JOYSTICK_WINDOW_IDENTIFIER] = new Set();
+    }
+    // Generate a unique ID for the joystick
+    this.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    // Adding to active joysticks
+    window[JOYSTICK_WINDOW_ACTIVE] = Object.assign(window[JOYSTICK_WINDOW_ACTIVE] || [], [this]);
+    // Styles for the joystick
+    this.style = document.createElement("style");
+    this.style.setAttribute("id", "style-" + this.id);
+    this.style.innerHTML = "\n        .joystick-container-".concat(this.id, " {\n            box-sizing: border-box;\n            position: fixed;\n            outline: none;\n            ").concat(this.options.leftToRight ? "left" : "right", ": ").concat(this.options.x, ";\n            ").concat(this.options.bottomToUp ? "bottom" : "top", ": ").concat(this.options.y, ";\n            transform: translate(").concat(this.options.dynamicPosition || this.options.leftToRight ? "-50%" : "50%", ", ").concat(this.options.dynamicPosition || !this.options.bottomToUp ? "-50%" : "50%", ");\n        }\n    \n        .joystick-controller-").concat(this.id, " {\n            box-sizing: border-box;\n            outline: none;\n            opacity: ").concat(this.options.opacity, ";\n            width: ").concat(this.options.radius * 2, "px;\n            height: ").concat(this.options.radius * 2, "px;\n            border-radius: 50%;\n            position: relative;\n            outline: 2px solid #4c4c4c77;\n            background: radial-gradient(circle,#ebebeb55, #5c5c5c55);\n        }\n    \n        .joystick-").concat(this.id, " {\n            box-sizing: border-box;\n            outline: none;\n            position: absolute;\n            cursor: grab;\n            width: ").concat(this.options.joystickRadius * 2, "px;\n            height: ").concat(this.options.joystickRadius * 2, "px;\n            z-index: 1;\n            border-radius: 50%;\n            left: 50%;\n            bottom: 50%;\n            transform: translate(-50%, 50%);\n            background: radial-gradient(#000c, #3e3f46aa);\n            transition: ").concat(this.JOYSTICK_TRANSITION, ";\n        }\n        ");
+    // Container for the joystick
+    this.container = document.createElement("div");
+    this.container.setAttribute("id", "joystick-container-" + this.id);
+    this.container.setAttribute("class", "joystick-container-" + this.id + " " + this.options.containerClass);
+    // Controller for the joystick
+    this.controller = document.createElement("div");
+    this.controller.setAttribute("id", "joystick-controller-" + this.id);
+    this.controller.setAttribute("class", "joystick-controller-" + this.id + " " + this.options.controllerClass);
+    // Actual joystick element
+    this.joystick = document.createElement("div");
+    this.joystick.setAttribute("id", "joystick-" + this.id);
+    this.joystick.setAttribute("class", "joystick-" + this.id + " " + this.options.joystickClass);
+    // Append the joystick elements to the DOM
+    this.controller.appendChild(this.joystick);
+    this.container.appendChild(this.controller);
+    document.head.appendChild(this.style);
+    if (!this.options.dynamicPosition) {
+      document.body.appendChild(this.container);
+    }
+    // Add event listeners for interaction
+    this.addEventListeners();
+    // Center of the joystick
+    this.recenterJoystick();
+    // Resting coordinates
+    this.resetCoordinates();
+  };
+  /**
+   * To remove the joystick from the DOM and clear all the listeners
+   */
+  JoystickController.prototype.destroy = function () {
+    var _this = this;
+    // removing event listeners
+    if (this.options.dynamicPosition) {
+      var target = this.options.dynamicPositionTarget || document;
+      // mouse events Listeners
+      target.removeEventListener("mousedown", this.dynamicPositioningMouse);
+      document.removeEventListener("mouseup", this.removeDynamicPositioning);
+      // touch events Listeners
+      target.removeEventListener("touchstart", this.dynamicPositioningTouch);
+      document.removeEventListener("touchmove", this.onTouchEvent);
+      document.removeEventListener("touchend", this.removeDynamicPositioning);
+    } else {
+      // touch events Listeners
+      this.joystick.removeEventListener("touchstart", this.onStartEvent);
+      this.joystick.removeEventListener("touchmove", this.onTouchEvent);
+      this.joystick.removeEventListener("touchend", this.onStopEvent);
+      // mouse events Listeners
+      this.joystick.removeEventListener("mousedown", this.onStartEvent);
+    }
+    window.removeEventListener("resize", this.recenterJoystick);
+    // removing elements
+    this.style.remove();
+    this.container.remove();
+    // removing from active joysticks
+    if (Array.isArray(window[JOYSTICK_WINDOW_ACTIVE])) window[JOYSTICK_WINDOW_ACTIVE] = window[JOYSTICK_WINDOW_ACTIVE].filter(function (joystick) {
+      return joystick !== _this;
+    });
+  };
+  return JoystickController;
+}();
+// Expose to global scope for non-module usage
+window.JoystickController = JoystickController;
+window.MOUSE_CLICK_BUTTONS = MOUSE_CLICK_BUTTONS;

@@ -1,13 +1,9 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = exports.MOUSE_CLICK_BUTTONS = void 0;
-// Joystick window identifier
+﻿// Joystick window identifier
 var JOYSTICK_WINDOW_IDENTIFIER = "__joysticks_identifiers__";
 // Active joystick window
 var JOYSTICK_WINDOW_ACTIVE = "__active_joysticks__";
 // Mouse click buttons constants
-var MOUSE_CLICK_BUTTONS = {
+export var MOUSE_CLICK_BUTTONS = {
   ALL: -1,
   LEFT: 0,
   MIDDLE: 1,
@@ -19,7 +15,6 @@ var MOUSE_CLICK_BUTTONS = {
  * @version 1.1.1
  * @docs https://github.com/cyrus2281/joystick-controller#readme
  */
-exports.MOUSE_CLICK_BUTTONS = MOUSE_CLICK_BUTTONS;
 var JoystickController = /** @class */function () {
   /**
    * Constructor for the joystick controller
@@ -452,5 +447,4 @@ var JoystickController = /** @class */function () {
   };
   return JoystickController;
 }();
-var _default = JoystickController;
-exports.default = _default;
+export default JoystickController;
