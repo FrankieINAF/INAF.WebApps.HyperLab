@@ -48,21 +48,6 @@ function manageNavigation() {
     let containerFunction = null;
 
     switch (navigationStatus) {
-        //case NAVIGATION_BACK_TO_SEARCH:
-        //    closeCharmsLegend();
-        //    removeBackToSearchButtonProcedure();
-        //    removeBackClearToSearchButtonProcedure();
-        //    removeOpenCharmsButtonProcedure();
-        //    removeCharmsLegendButtonProcedure();
-        //    removeCharmsColorSelectorButtonProcedure();
-        //    containerFunction = function () {
-        //        addSearchButton();
-        //        addCreateChartsButton();
-        //        addGoToChartsButton();
-        //    };
-        //    executeAfter(containerFunction, 500);
-        //    break;
-
         case NAVIGATION_BACK_CLEAR_CHART:
             initChartSeries();
             initSpectraInfo();
@@ -76,6 +61,7 @@ function manageNavigation() {
             removeBackClearToSearchButtonProcedure();
             removeOpenProcessSpectraCharmsButtonProcedure();
             removeCharmsLegendButtonProcedure();
+            removeMessagesCharmsButtonProcedure();
             removeCharmsColorSelectorButtonProcedure();
             containerFunction = function () {
                 addSearchButton();
@@ -89,10 +75,10 @@ function manageNavigation() {
             //removeSearchButtonProcedure();
             //removeCreateChartsButtonProcedure();
             addCharmsLegendButton();
-            addCharmsColorSelectorButton();
+            //addCharmsColorSelectorButton();
             addBackClearToSearchButton();
             addOpenProcessSpectraCharmsButton();
-            addOpenMessagesCharmsButton();
+            //addOpenMessagesCharmsButton();
             addEnterFullScreenButton();
             break;
 

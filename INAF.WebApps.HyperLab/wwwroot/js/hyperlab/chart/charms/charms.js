@@ -41,6 +41,9 @@ async function closeCharmsProcessSpectraAsync(isUserPermissionRequested = true) 
     let callbackAsync = async function () {
         setLoadingCircleIsVisible(true);
 
+        /* remove button for managing spectrumType-color relationship */
+        removeCharmsColorSelectorButtonProcedure();
+
         /* restore old color for selected spectrum, removing spectrumType-color relationship */
         restoreOldSpectraColor();
 
@@ -409,6 +412,9 @@ async function callbackYesForSpectrumSelectionManagementAsync(selectedSpectrum, 
     setLoadingCircleIsVisible(true);
 
     setTimeout(async function () {
+        /* add button for managing spectrumType-color relationship */
+        addCharmsColorSelectorButton();
+
         /* remove previous analysis and UI items, if available */
         clearBandAnalysisProcedureCaller();
 
@@ -471,6 +477,7 @@ async function setSelectedSpectrumForProcessing(selected) {
         let callbackNo = function () {
             selectedSpectrumForProcessingId = oldSelectedSpectrumForProcessingId;
 
+            /* restore old selected spectrum, no different spectrum selection is set and nothing changes */
             Metro.getPlugin('#charmsSpectrumSelector', 'select').val(oldSelectedSpectrumForProcessingId);
         };
         showDialogWithActions(WARNING_LABEL, CharmsDeleteProcessedSpectraQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);

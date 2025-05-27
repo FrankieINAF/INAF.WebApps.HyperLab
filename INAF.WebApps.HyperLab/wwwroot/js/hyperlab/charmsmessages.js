@@ -9,6 +9,9 @@ function clearMessages() {
 
     /* close charms since it is empty */
     toggleCharmsMessages();
+
+    /* remove button for showing messages since no one is available */
+    removeMessagesCharmsButtonProcedure();
 }
 
 function addMessage(content, duration, type) {
@@ -18,6 +21,9 @@ function addMessage(content, duration, type) {
 
     const html = buildMessageItem(content, type);
     $('#messagesContainer').append(html);
+
+    if (messages.length == 1)
+        addOpenMessagesCharmsButton();
 }
 
 function buildMessageItem(content, type) {
