@@ -72,13 +72,9 @@ function manageNavigation() {
 
         case NAVIGATION_SHOW_CHART:
         case NAVIGATION_CREATE_CHART:
-            //removeSearchButtonProcedure();
-            //removeCreateChartsButtonProcedure();
             addCharmsLegendButton();
-            //addCharmsColorSelectorButton();
             addBackClearToSearchButton();
             addOpenProcessSpectraCharmsButton();
-            //addOpenMessagesCharmsButton();
             addEnterFullScreenButton();
             break;
 
@@ -87,17 +83,6 @@ function manageNavigation() {
             break;
     }
 }
-
-/* ---------- SET NAVIGATION BUTTONS FOR CHARTS PANEL SEARCH PANEL ---------- */
-//function setNavigationButtonsForChartsPanel() {
-//    /* add button for back-to-search */
-//    let containerFunction = function () {
-//        //addBackToSearchButton();
-//        addBackClearToSearchButton();
-//        addOpenCharmsButton();
-//    };
-//    executeAfter(containerFunction, 500);
-//}
 
 /* ################################################################################ */
 /* SHOW/HIDE WARNING IN DIALOG MESSAGE */

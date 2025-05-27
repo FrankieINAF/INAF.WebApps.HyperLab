@@ -320,9 +320,7 @@ function showSearchInfo() {
 /* ################################################################################ */
 /* ---------- INIT BUTTONS IN SEARCH PANEL ---------- */
 function initButtonsInSearchPanel() {
-    //removeBackToSearchButton();
     addSearchButton();
-    //addOpenMessagesCharmsButton();
     addHelpButton();
 }
 
