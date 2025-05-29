@@ -160,14 +160,35 @@ function isAnyItem(array) {
     return (array && array.length > 0);
 }
 
-function isMobile() {
-    checkScreenDims();
-    if (screenDims.width <= MOBILE_MAX_WIDTH) {
-        return true;
-    } else {
-        return false;
-    }
+function isMobileByOS() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent);
 }
+
+function isMobileByTouch() {
+    return ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+}
+
+function isMobile() {
+    return isMobileByOS() && isMobileByTouch();
+}
+
+function isPhoneDevice() {
+    return /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && /Mobile/i.test(navigator.userAgent);
+}
+
+
+function isTabletDevice() {
+    return /iPad|Android/i.test(navigator.userAgent) && !/Mobile/i.test(navigator.userAgent);
+}
+
+//function isMobile() {
+//    checkScreenDims();
+//    if (screenDims.width <= MOBILE_MAX_WIDTH) {
+//        return true;
+//    } else {
+//        return false;
+//    }
+//}
 
 $(document).ready(function () {
     luxon.Settings.defaultLocale = 'utc';

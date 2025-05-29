@@ -651,7 +651,7 @@ function tryRemoveFitPointsSeries() {
 /* MANAGE SELECTED POINTS */
 /* ################################################################################ */
 /* STARTING METHOD FOR ADDING/REMOVING POINTS */
-function addRemoveSelectedPointForFittingProcedure(seriesId, seriesName, point, mousePosX, mousePosY) {
+function addRemoveSelectedPointForFittingProcedure(seriesId, point, mousePosX, mousePosY) {
     /* adjusted coords for showing pulse animation */
     mousePosX -= 6;
     mousePosY -= 4;

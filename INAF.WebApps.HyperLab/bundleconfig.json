@@ -35,7 +35,7 @@
       "wwwroot/js/hyperlab/chart/charms/charmssmoothingpanel.js",
       "wwwroot/js/hyperlab/chart/charms/charmsbandanalysis.js",
       "wwwroot/js/hyperlab/charmsmessages.js",
-      "wwwroot/lib/joystick-controller/joystick-controller.js",
+      "wwwroot/lib/joystick/joystick.js",
       "wwwroot/js/hyperlab/chart/joystick.js"
     ],
     "minify": { "enabled": true },

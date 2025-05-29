@@ -88,6 +88,7 @@
   <ItemGroup>
     <Folder Include="Attributes\" />
     <Folder Include="wwwroot\js\dist\" />
+    <Folder Include="wwwroot\lib\joystick-controller\" />
   </ItemGroup>
 
   <ItemGroup>

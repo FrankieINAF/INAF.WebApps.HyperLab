@@ -231,7 +231,7 @@ function createChart(dataSource, series, axisRange) {
 
     chart = chartContainer.dxChart({
         /* data */
-        rotated: isMobile(),
+        rotated: (isMobile() && isPhoneDevice()),
         dataSource: dataSource,
         animation: {
             enabled: false,
@@ -319,6 +319,7 @@ function createChart(dataSource, series, axisRange) {
                     };
             },
             opacity: 1,
+            arrowLength: 40
         },
         /* export options */
         export: {
@@ -327,6 +328,7 @@ function createChart(dataSource, series, axisRange) {
         /* events */
         onDone: function (evt) {
             extractVisualRangesFromDataSource(axisRange);
+            initJoystickController(); // defined in joystick.js
         },
         onPointClick: async function (evt) {
             if (isPointClickForFitEnabled) {
@@ -335,13 +337,12 @@ function createChart(dataSource, series, axisRange) {
                 let point = createSimplePoint(x, y);
 
                 let seriesId = evt.target.series.getValueFields()[0];
-                let seriesName = evt.target.series.name;
 
                 let mousePosX = evt.event.clientX;
                 let mousePosY = evt.event.clientY;
                 //console.log(`onPointClick - ${evt.event.clientX}, ${evt.event.clientY}`);
 
-                addRemoveSelectedPointForFittingProcedure(seriesId, seriesName, point, mousePosX, mousePosY);
+                addRemoveSelectedPointForFittingProcedure(seriesId, point, mousePosX, mousePosY);
             }
         },
         //onPointHoverChanged: function(evt) {
@@ -653,4 +654,6 @@ $(function () {
             position: 'absolute'
         });
     }
+
+    initJoystickManager(); // defined in joystickManager.js
 });

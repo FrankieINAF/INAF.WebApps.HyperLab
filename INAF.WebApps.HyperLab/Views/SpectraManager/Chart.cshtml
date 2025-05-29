@@ -30,10 +30,51 @@
 <link rel="stylesheet" href="~/css/dist/jqueryuibundle.min.css" asp-append-version="true" />
 
 <!-- CHARTS -->
-<div id="charts" class="mywrapper overflow-x-auto overflow-y-auto" style="max-width: 100%">
+<div id="charts" class="mywrapper overflow-x-auto overflow-y-auto" style="max-width: 100%"></div>
+
+<!-- JOYSTICK -->
+<div id="joystickContainer" class="row main-joystick-container" style="top: calc(100% - 220px);">
+    <div class="cell-fs-2">
+        &nbsp;
+    </div>
+    <div class="cell-fs-8">
+        <!-- TOP BUTTON -->
+        <div class="row cell-fs-12 d-flex flex-justify-center">
+            <span id="buttonMovePointerUp" class="mif mif-chevron-right mif-4x fg-white" style="display: inline-block; transform: rotate(-90deg);" onclick="movePointerUp()"></span>
+        </div>
+        <!-- JOYSTICK + LEFT/RIGHT BUTTONS -->
+        <div class="row">
+            <!-- LEFT BUTTON -->
+            <div class="cell-fs-3 d-flex flex-column flex-justify-center">
+                <span id="buttonMovePointerLeft" class="mif mif-chevron-left mif-4x fg-white margin-right-16"></span>
+            </div>
+            <!-- JOYSTICK -->
+            <div class="cell-fs-6">
+                <canvas id="joystick" height="100" width="100" style="position:relative; left: calc(50% - 50px); z-index:20"></canvas>
+            </div>
+            <!-- RIGHT BUTTON -->
+            <div class="cell-fs-3 d-flex flex-column flex-justify-center">
+                <span id="buttonMovePointerRight" class="mif mif-chevron-right mif-4x fg-white"></span>
+            </div>
+        </div>
+        <!-- BOTTOM BUTTON -->
+        <div class="row cell-fs-12 d-flex flex-justify-center">
+            <span id="buttonMovePointerDown" class="mif mif-chevron-right mif-4x fg-white" style="display: inline-block; transform: rotate(90deg);" onclick="movePointerDown()"></span>
+        </div>
+    </div>
+    <div class="cell-fs-2">
+        &nbsp;
+    </div>
 </div>
 
-<div id="target-pointer"></div>
+<!-- MOBILE POINTER MOVED BY JOYSTICK -->
+<div id="target-pointer">
+    <div id="centerDotExternal" class="center-dot-external">
+        <div id="centerDotMiddle" class="center-dot-middle">
+            <div id="centerDotInternal" class="center-dot-internal"></div>
+        </div>
+    </div>
+</div>
 
 
 <!-- CHARMS - COLOR SELECTOR -->
@@ -301,8 +342,10 @@
     <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmssmoothingpanel.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmsbandanalysis.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/charmsmessages.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/lib/joystick-controller/joystick-controller.js"></script>
-    <script type="text/javascript" src="~/js/hyperlab/chart/joystick.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script type="text/javascript" src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+    <script type="text/javascript" src="~/lib/joystick/joystick.js"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/joystickManager.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">
     <script type="text/javascript" src="~/js/dist/chart/chartbundle.min.js" asp-append-version="true"></script>

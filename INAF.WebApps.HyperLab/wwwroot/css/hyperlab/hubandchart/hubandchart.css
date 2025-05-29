@@ -1,4 +1,5 @@
-﻿#target-pointer {
+﻿/* target pointer */
+#target-pointer {
     position: absolute;
     width: 50px;
     height: 50px;
@@ -23,6 +24,7 @@
         right: 0;
         height: 1px;
         transform: translateY(-50%);
+        border-radius: 10%; /* forma circolare */
     }
 
     /* Linea verticale */
@@ -34,7 +36,104 @@
         transform: translateX(-50%);
     }
 
+    #target-pointer .center-dot-external {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 18px;
+        height: 18px;
+        background-color: transparent !important;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+    }
 
+    #target-pointer .center-dot-external-visible {
+        background-color: rgba(27, 161, 226, 0.33) !important;
+    }
+
+    #target-pointer .center-dot-middle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 12px;
+        height: 12px;
+        background-color: transparent !important;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #target-pointer .center-dot-middle-visible {
+        background-color: rgba(27, 161, 226, 0.66) !important;
+    }
+
+    #target-pointer .center-dot-internal {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 6px;
+        height: 6px;
+        background-color: transparent !important;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #target-pointer .center-dot-internal-visible {
+        background-color: #1ba1e2 !important;
+    }
+
+#joystick {
+    margin: auto;
+    height: 100px;
+    width: 100px;
+    border-radius: 100px;
+    -moz-border-radius: 100px;
+    -webkit-border-radius: 100px;
+    text-align: center;
+    background-color: #1ba1e2;
+    font: 24px/100px Helvetica, Arial, sans-serif;
+    cursor: all-scroll;
+    user-select: none;
+    z-index: -100;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* joystick container */
+.joystick-controller {
+    position: relative;
+    top: 0%;
+    left: 0%;
+    margin: auto;
+}
+
+.joystick-container {
+    position: relative;
+    width: 50%;
+    height: 100px;
+    top: 50%;
+    left: 25%;
+    margin: auto;
+    /*pointer-events: none;*/ /* per non interferire con i click/mouse events nel container */
+}
+
+.main-joystick-container {
+    position: absolute;
+    left: 25%;
+    width: 50%;
+    height: 220px;
+    /*pointer-events: none;*/ /* per non interferire con i click/mouse events nel container */
+    background-color: rgba(0,0,0,0.8);
+}
+
+
+/* miscellanea */
 .border-color-error {
     border: 2px solid darkred;
 }

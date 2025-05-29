@@ -366,6 +366,18 @@ function getSpectrumByRawIdAndSpectrumType(rawId, spectrumType) {
     return spectrum;
 }
 
+function getSpectrumBySeriesName(seriesName) {
+    let tmp = seriesName.split(' ');
+    if (tmp.length < 2)
+        return null;
+
+    const spectrumName = tmp[0];
+    const spectrumTypeString = tmp[1].replace('(', '').replace(')', '');
+    const spectrumType = getSpectrumTypeValue(spectrumTypeString);
+
+    return spectraInfo.find(x => x.Name == spectrumName && x.SpectrumType == spectrumType);
+}
+
 function getSpectrumBySpectrumType(spectrumType) {
     return spectraInfo.find(x => x.SpectrumType == spectrumType);
 }

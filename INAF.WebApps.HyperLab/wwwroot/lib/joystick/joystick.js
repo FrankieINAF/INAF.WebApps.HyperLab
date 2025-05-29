@@ -1,12 +1,16 @@
-﻿function initJoystickController() {
+﻿var alpha = 0.75;
+var xCenter = 50;
+var yCenter = 50;
+
+function initJoystickController() {
+    $('#body').removeClass('overflow-y-auto').addClass('overflow-y-hidden');
     // easal stuff goes hur
-    var xCenter = 75;
-    var yCenter = 75;
+
     var stage = new createjs.Stage('joystick');
 
     var psp = new createjs.Shape();
     psp.graphics.beginFill('#FFFFFF').drawCircle(xCenter, yCenter, 25);
-    psp.alpha = 0.50;
+    psp.alpha = alpha;
 
     //var vertical = new createjs.Shape();
     //var horizontal = new createjs.Shape();
@@ -30,7 +34,7 @@
         var pos = $('#joystick').position();
         xCenter = psp.x;
         yCenter = psp.y;
-        psp.alpha = 0.5;
+        psp.alpha = 0.75;
 
         stage.update();
     });
@@ -39,8 +43,8 @@
     mc.on("panmove", function (ev) {
         var pos = $('#joystick').position();
 
-        var x = (ev.center.x - pos.left - 75);
-        var y = (ev.center.y - pos.top - 75);
+        var x = (ev.center.x - pos.left - 50);
+        var y = (ev.center.y - pos.top - 50);
         //console.log(`x: ${x}, y: ${y}`);
         //$('#xVal').text('X: ' + x);
         //$('#yVal').text('Y: ' + (-1 * y));
@@ -54,16 +58,16 @@
             currentX += psp.x * speedFactor;
             currentY += psp.y * speedFactor;
             targetPointer.css('transform', `translate(${currentX}px, ${currentY}px)`);
-            checkForAlignedSeriesPointsInNearby();
+            executeAfter(function () { checkForAlignedSeriesPointsInNearby(); }, 10);
         }
 
-        psp.alpha = 0.5;
+        psp.alpha = alpha;
 
         stage.update();
     });
 
     mc.on("panend", function (ev) {
-        psp.alpha = 0.25;
+        psp.alpha = alpha;
         createjs.Tween.get(psp).to({ x: xCenter, y: yCenter }, 750, createjs.Ease.elasticOut);
     });
 }
