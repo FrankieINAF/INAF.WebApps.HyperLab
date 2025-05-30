@@ -159,6 +159,15 @@
   <data name="ChartWavelengthsLabel" xml:space="preserve">
     <value>Wavelengths (nm)</value>
   </data>
+  <data name="JoystickButtonAddFitPointTitle" xml:space="preserve">
+    <value>Add/remove a point for fit at current position</value>
+  </data>
+  <data name="JoystickPositionLabel" xml:space="preserve">
+    <value>Position:</value>
+  </data>
+  <data name="JoystickPositionValue" xml:space="preserve">
+    <value>r_v1 nm, r_v2</value>
+  </data>
   <data name="LegendLabel" xml:space="preserve">
     <value>Legend</value>
   </data>

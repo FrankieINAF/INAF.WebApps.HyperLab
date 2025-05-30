@@ -187,6 +187,33 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add/remove a point for fit at current position.
+        /// </summary>
+        public static string JoystickButtonAddFitPointTitle {
+            get {
+                return ResourceManager.GetString("JoystickButtonAddFitPointTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position:.
+        /// </summary>
+        public static string JoystickPositionLabel {
+            get {
+                return ResourceManager.GetString("JoystickPositionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to r_v1 nm, r_v2.
+        /// </summary>
+        public static string JoystickPositionValue {
+            get {
+                return ResourceManager.GetString("JoystickPositionValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Legend.
         /// </summary>
         public static string LegendLabel {

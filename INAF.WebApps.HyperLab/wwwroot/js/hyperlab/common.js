@@ -93,6 +93,26 @@ function animateCSSAsync(element, animation, speed = 'faster', callback = null, 
     });
 }
 
+function slideInUp(element, distance, duration, callback) {
+    $(element).css("position", "absolute").animate({
+        top: "-=" + distance + "px"
+    }, duration, function () {
+        if (typeof callback === "function") {
+            callback(); // Esegui la funzione di callback, se fornita
+        }
+    });
+}
+
+function slideOutDown(element, distance, duration, callback) {
+    $(element).css("position", "absolute").animate({
+        top: "+=" + distance + "px"
+    }, duration, function () {
+        if (typeof callback === "function") {
+            callback(); // Esegui la funzione di callback, se fornita
+        }
+    });
+}
+
 async function waitForBooleanValueAsync(checkFunction, interval = 100) {
     while (!checkFunction()) {
         console.log(`waiting...for ${interval}`);

@@ -4,7 +4,6 @@ var yCenter = 50;
 
 function initJoystickController() {
     $('#body').removeClass('overflow-y-auto').addClass('overflow-y-hidden');
-    // easal stuff goes hur
 
     var stage = new createjs.Stage('joystick');
 
@@ -12,14 +11,7 @@ function initJoystickController() {
     psp.graphics.beginFill('#FFFFFF').drawCircle(xCenter, yCenter, 25);
     psp.alpha = alpha;
 
-    //var vertical = new createjs.Shape();
-    //var horizontal = new createjs.Shape();
-    //vertical.graphics.beginFill('#ff4d4d').drawRect(75, 0, 2, 150);
-    //horizontal.graphics.beginFill('#ff4d4d').drawRect(0, 75, 150, 2);
-
     stage.addChild(psp);
-    //stage.addChild(vertical);
-    //stage.addChild(horizontal);
     createjs.Ticker.framerate = 60;
     createjs.Ticker.addEventListener('tick', stage);
     stage.update();
@@ -45,9 +37,6 @@ function initJoystickController() {
 
         var x = (ev.center.x - pos.left - 50);
         var y = (ev.center.y - pos.top - 50);
-        //console.log(`x: ${x}, y: ${y}`);
-        //$('#xVal').text('X: ' + x);
-        //$('#yVal').text('Y: ' + (-1 * y));
 
         var coords = calculateCoords(ev.angle, ev.distance);
 

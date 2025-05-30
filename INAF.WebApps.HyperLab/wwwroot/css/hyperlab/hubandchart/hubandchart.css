@@ -1,24 +1,24 @@
 ﻿/* target pointer */
-#target-pointer {
+#targetPointer {
     position: absolute;
     width: 50px;
     height: 50px;
     border: 2px solid #1ba1e2;
     border-radius: 50%; /* forma circolare */
     pointer-events: none; /* per non interferire con i click/mouse events nel container */
-    transform: translate(-50%, -50%); /* per centrare il puntatore rispetto alle coordinate */
+    /*transform: translate(-50%, -50%);*/ /* per centrare il puntatore rispetto alle coordinate */
 }
 
     /* Creiamo il crosshair con pseudo-elementi */
-    #target-pointer::before,
-    #target-pointer::after {
+    #targetPointer::before,
+    #targetPointer::after {
         content: "";
         position: absolute;
         background: #1ba1e2;
     }
 
     /* Linea orizzontale */
-    #target-pointer::before {
+    #targetPointer::before {
         top: 50%;
         left: 0;
         right: 0;
@@ -28,7 +28,7 @@
     }
 
     /* Linea verticale */
-    #target-pointer::after {
+    #targetPointer::after {
         left: 50%;
         top: 0;
         bottom: 0;
@@ -36,7 +36,7 @@
         transform: translateX(-50%);
     }
 
-    #target-pointer .center-dot-external {
+    #targetPointer .center-dot-external {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -47,11 +47,11 @@
         transform: translate(-50%, -50%);
     }
 
-    #target-pointer .center-dot-external-visible {
+    #targetPointer .center-dot-external-visible {
         background-color: rgba(27, 161, 226, 0.33) !important;
     }
 
-    #target-pointer .center-dot-middle {
+    #targetPointer .center-dot-middle {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -62,11 +62,11 @@
         transform: translate(-50%, -50%);
     }
 
-    #target-pointer .center-dot-middle-visible {
+    #targetPointer .center-dot-middle-visible {
         background-color: rgba(27, 161, 226, 0.66) !important;
     }
 
-    #target-pointer .center-dot-internal {
+    #targetPointer .center-dot-internal {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -77,7 +77,7 @@
         transform: translate(-50%, -50%);
     }
 
-    #target-pointer .center-dot-internal-visible {
+    #targetPointer .center-dot-internal-visible {
         background-color: #1ba1e2 !important;
     }
 
@@ -123,13 +123,20 @@
     /*pointer-events: none;*/ /* per non interferire con i click/mouse events nel container */
 }
 
-.main-joystick-container {
+.joystick-main-container {
     position: absolute;
-    left: 25%;
-    width: 50%;
-    height: 220px;
+    left: 35%;
+    width: 30%;
+    height: 256px;
     /*pointer-events: none;*/ /* per non interferire con i click/mouse events nel container */
-    background-color: rgba(0,0,0,0.8);
+}
+
+/* iPad Air */
+@media screen and (max-width: 820px) {
+    .joystick-main-container {
+        left: 25%;
+        width: 50%;
+    }
 }
 
 
@@ -340,4 +347,8 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+}
+
+.semitransparent-black {
+    background-color: rgba(0,0,0,0.8);
 }

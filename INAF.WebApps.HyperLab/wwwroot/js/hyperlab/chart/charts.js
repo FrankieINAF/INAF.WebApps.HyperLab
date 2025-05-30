@@ -110,17 +110,6 @@ function createChartsProcedureCaller() {
         createChartsProcedure();
 }
 
-function showChartsProcedure() {
-    setMenuCollapsed();
-
-    setChartsPositionForChart();
-    animateCSS(`search`, `slideOutLeft`, FAST); //function defined in panel.js
-    animateCSS(`charts`, `slideInRight`, FAST); //function defined in panel.js
-
-    navigationStatus = NAVIGATION_SHOW_CHART;
-    manageNavigation();
-}
-
 /* ################################################################################ */
 /* CHARTS */
 /* ################################################################################ */
@@ -164,8 +153,8 @@ async function loadChartsFromCloudAsync() {
         isChartLoaded = true;
         setLoadingCircleIsVisible(false);
         //await initCharmsPhase1Async();
-        if (obj.SpectraInfo.length > 1)
-            addMessage(ChartColorsDifferentiationMessage, 3000, INFO);
+        //if (obj.SpectraInfo.length > 1)
+        //    addMessage(ChartColorsDifferentiationMessage, 3000, INFO);
     } else {
         setLoadingCircleIsVisible(false);
         isChartLoaded = false;
@@ -636,7 +625,7 @@ $(function () {
     /* add listener for detecting full-screen change and manage buttons */
     setFullScreenChangeListener();
 
-    targetPointer = $("#target-pointer");
+    //targetPointer = $("#targetPointer");
 
     // Center targetPointer in the middle of the 'charts' div
     var chartsDiv = $('#charts');

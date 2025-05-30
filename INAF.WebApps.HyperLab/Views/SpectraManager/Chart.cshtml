@@ -33,42 +33,57 @@
 <div id="charts" class="mywrapper overflow-x-auto overflow-y-auto" style="max-width: 100%"></div>
 
 <!-- JOYSTICK -->
-<div id="joystickContainer" class="row main-joystick-container" style="top: calc(100% - 220px);">
-    <div class="cell-fs-2">
-        &nbsp;
+<div id="joystickMainContainer" class="joystick-main-container d-flex flex-column" style="top: calc(100% - 36px)">
+    <div class="row" style="height: 36px">
+        <div class="cell-fs-4">&nbsp;</div>
+        <div class="cell-fs-4 d-flex flex-justify-center semitransparent-black"><span id="joystickVisualizationIcon" class="mif mif-expand-less fg-white pointer" onclick="toggleJoystickContainer()"></span></div>
+        <div class="cell-fs-4">&nbsp;</div>
     </div>
-    <div class="cell-fs-8">
-        <!-- TOP BUTTON -->
-        <div class="row cell-fs-12 d-flex flex-justify-center">
-            <span id="buttonMovePointerUp" class="mif mif-chevron-right mif-4x fg-white" style="display: inline-block; transform: rotate(-90deg);" onclick="movePointerUp()"></span>
+    <div class="row semitransparent-black" style="height: 220px">
+        <div class="cell-fs-2 cell-md-3">
+            &nbsp;
         </div>
-        <!-- JOYSTICK + LEFT/RIGHT BUTTONS -->
-        <div class="row">
-            <!-- LEFT BUTTON -->
-            <div class="cell-fs-3 d-flex flex-column flex-justify-center">
-                <span id="buttonMovePointerLeft" class="mif mif-chevron-left mif-4x fg-white margin-right-16"></span>
+        <div class="cell-fs-8 cell-md-6">
+            <!-- TOP BUTTON -->
+            <div class="row cell-fs-12 d-flex flex-justify-center">
+                <span id="buttonMovePointerUp" class="mif mif-chevron-right mif-4x fg-white pointer" style="display: inline-block; transform: rotate(-90deg);" onclick="movePointerUp(1)"></span>
             </div>
-            <!-- JOYSTICK -->
-            <div class="cell-fs-6">
-                <canvas id="joystick" height="100" width="100" style="position:relative; left: calc(50% - 50px); z-index:20"></canvas>
+            <!-- JOYSTICK + LEFT/RIGHT BUTTONS -->
+            <div class="row">
+                <!-- LEFT BUTTON -->
+                <div class="cell-fs-3 d-flex flex-column flex-justify-center">
+                    <span id="buttonMovePointerLeft" class="mif mif-chevron-left mif-4x fg-white margin-right-16 pointer" onclick="movePointerLeft(1)"></span>
+                </div>
+                <!-- JOYSTICK -->
+                <div class="cell-fs-6">
+                    <canvas id="joystick" height="100" width="100" style="position:relative; left: calc(50% - 50px); z-index:20"></canvas>
+                </div>
+                <!-- RIGHT BUTTON -->
+                <div class="cell-fs-3 d-flex flex-column flex-justify-center">
+                    <span id="buttonMovePointerRight" class="mif mif-chevron-right mif-4x fg-white pointer" onclick="movePointerRight(1)"></span>
+                </div>
             </div>
-            <!-- RIGHT BUTTON -->
-            <div class="cell-fs-3 d-flex flex-column flex-justify-center">
-                <span id="buttonMovePointerRight" class="mif mif-chevron-right mif-4x fg-white"></span>
+            <!-- BOTTOM BUTTON -->
+            <div class="row cell-fs-12 d-flex flex-justify-center">
+                <span id="buttonMovePointerDown" class="mif mif-chevron-right mif-4x fg-white pointer" style="display: inline-block; transform: rotate(90deg);" onclick="movePointerDown(1)"></span>
             </div>
         </div>
-        <!-- BOTTOM BUTTON -->
-        <div class="row cell-fs-12 d-flex flex-justify-center">
-            <span id="buttonMovePointerDown" class="mif mif-chevron-right mif-4x fg-white" style="display: inline-block; transform: rotate(90deg);" onclick="movePointerDown()"></span>
+        <div class="cell-fs-2 cell-md-3 d-flex flex-column">
+            <!-- POSITION -->
+            <div class="d-flex flex-column">
+                <div><span class="text-secondary fg-white text-bold">@Html.Raw(Charts.JoystickPositionLabel)</span></div>
+                <div><span id="joystickPositionValue" class="text-secondary fg-white"></span></div>
+            </div>
+            <!-- BUTTON ADD POIT FOR FIT -->
+            <div style="height: 100%; margin: auto" class="d-flex flex-column flex-justify-center">
+                <button id="buttonJoystickAddFitPoint" class="button primary cycle large pointer disabled" title="@Html.Raw(Charts.JoystickButtonAddFitPointTitle)" onclick="addFitPoint()"><span class="mif-target"></span></button>
+            </div>
         </div>
-    </div>
-    <div class="cell-fs-2">
-        &nbsp;
     </div>
 </div>
 
 <!-- MOBILE POINTER MOVED BY JOYSTICK -->
-<div id="target-pointer">
+<div id="targetPointer" class="d-none" style="left: calc(50% - 25px);">
     <div id="centerDotExternal" class="center-dot-external">
         <div id="centerDotMiddle" class="center-dot-middle">
             <div id="centerDotInternal" class="center-dot-internal"></div>
