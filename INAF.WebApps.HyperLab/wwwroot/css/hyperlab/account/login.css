@@ -168,15 +168,18 @@
 }
 
 /* iPad Air */
-@media screen and (max-width: 820px) {
-    .registration-container {
-        width: 90%;
-        height: 80%;
+@media screen and (max-width: 1366px) {
+    .inaf-image {
+        height: 40%;
+    }
+
+    .spectrum-image {
+        height: 40%;
     }
 }
 
-/* iPad Mini */
-@media screen and (max-width: 768px) {
+/* iPad Mini/Air/Pro */
+@media screen and (max-width: 1180px) {
     .login-container {
         height: 60%;
     }
@@ -189,6 +192,17 @@
         height: 60vh;
     }
 
+    .inaf-image {
+        height: 80%;
+    }
+
+    .spectrum-image {
+        height: 80%;
+    }
+}
+
+/* iPad Mini */
+@media screen and (max-width: 768px) {
     .inaf-image {
         height: 40%;
     }

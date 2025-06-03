@@ -162,6 +162,9 @@
   <data name="JoystickButtonAddFitPointTitle" xml:space="preserve">
     <value>Add/remove a point for fit at current position</value>
   </data>
+  <data name="JoystickButtonResetPointerPositionTitle" xml:space="preserve">
+    <value>Reset position of pointer</value>
+  </data>
   <data name="JoystickPositionLabel" xml:space="preserve">
     <value>Position:</value>
   </data>

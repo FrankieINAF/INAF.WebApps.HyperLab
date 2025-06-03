@@ -25,9 +25,13 @@
 
 	<ItemGroup>
 	  <Compile Remove="wwwroot\js\hyperlab\search\**" />
+	  <Compile Remove="wwwroot\lib\joystick-controller\**" />
 	  <Content Remove="wwwroot\js\hyperlab\search\**" />
+	  <Content Remove="wwwroot\lib\joystick-controller\**" />
 	  <EmbeddedResource Remove="wwwroot\js\hyperlab\search\**" />
+	  <EmbeddedResource Remove="wwwroot\lib\joystick-controller\**" />
 	  <None Remove="wwwroot\js\hyperlab\search\**" />
+	  <None Remove="wwwroot\lib\joystick-controller\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -50,7 +54,11 @@
     <Content Remove="wwwroot\css\site.css" />
     <Content Remove="wwwroot\css\speechbubble\speechbubble.css" />
     <Content Remove="wwwroot\js\hyperlab\account\login.js" />
+    <Content Remove="wwwroot\js\hyperlab\account\passwordresetexecute.js" />
+    <Content Remove="wwwroot\js\hyperlab\account\passwordresetrequest.js" />
     <Content Remove="wwwroot\js\hyperlab\account\registration.js" />
+    <Content Remove="wwwroot\js\hyperlab\apps\apps.js" />
+    <Content Remove="wwwroot\js\hyperlab\charmsmessages.js" />
     <Content Remove="wwwroot\js\hyperlab\chart\charms\charms.js" />
     <Content Remove="wwwroot\js\hyperlab\chart\charms\charmsalignmentpanel.js" />
     <Content Remove="wwwroot\js\hyperlab\chart\charms\charmsbandanalysis.js" />
@@ -64,6 +72,8 @@
     <Content Remove="wwwroot\js\hyperlab\chart\charts.js" />
     <Content Remove="wwwroot\js\hyperlab\chart\chartsarrays.js" />
     <Content Remove="wwwroot\js\hyperlab\chart\chartsbuttons.js" />
+    <Content Remove="wwwroot\js\hyperlab\chart\chartsunauthorized.js" />
+    <Content Remove="wwwroot\js\hyperlab\chart\joystickManager.js" />
     <Content Remove="wwwroot\js\hyperlab\common.js" />
     <Content Remove="wwwroot\js\hyperlab\commonbuttons.js" />
     <Content Remove="wwwroot\js\hyperlab\commondxchart.js" />
@@ -72,6 +82,19 @@
     <Content Remove="wwwroot\js\hyperlab\commonhubandchartsandsharedstuff.js" />
     <Content Remove="wwwroot\js\hyperlab\commonlists.js" />
     <Content Remove="wwwroot\js\hyperlab\home\index.js" />
+    <Content Remove="wwwroot\js\hyperlab\hub\blazorglobal.js" />
+    <Content Remove="wwwroot\js\hyperlab\hub\complexsearchesintro.js" />
+    <Content Remove="wwwroot\js\hyperlab\hub\complexsearchesmanagement.js" />
+    <Content Remove="wwwroot\js\hyperlab\hub\hub.js" />
+    <Content Remove="wwwroot\js\hyperlab\hub\hubSearchComplex.js" />
+    <Content Remove="wwwroot\js\hyperlab\hub\hubSearchSimple.js" />
+    <Content Remove="wwwroot\js\hyperlab\hub\info.js" />
+    <Content Remove="wwwroot\js\hyperlab\hub\load\loadcommon.js" />
+    <Content Remove="wwwroot\js\hyperlab\hub\load\loadcommoncheckxml.js" />
+    <Content Remove="wwwroot\js\hyperlab\hub\load\loadexternalauthenticated.js" />
+    <Content Remove="wwwroot\js\hyperlab\hub\load\loadexternalunauthenticated.js" />
+    <Content Remove="wwwroot\js\hyperlab\hub\load\loadgetfileslistitemancillary.js" />
+    <Content Remove="wwwroot\js\hyperlab\hub\load\loadslab.js" />
     <Content Remove="wwwroot\js\hyperlab\layout.js" />
     <Content Remove="wwwroot\js\hyperlab\materials\upsertminerals.js" />
     <Content Remove="wwwroot\js\hyperlab\queue.js" />
@@ -88,7 +111,6 @@
   <ItemGroup>
     <Folder Include="Attributes\" />
     <Folder Include="wwwroot\js\dist\" />
-    <Folder Include="wwwroot\lib\joystick-controller\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -118,7 +140,11 @@
     <None Include="wwwroot\css\site.css" />
     <None Include="wwwroot\css\speechbubble\speechbubble.css" />
     <None Include="wwwroot\js\hyperlab\account\login.js" />
+    <None Include="wwwroot\js\hyperlab\account\passwordresetexecute.js" />
+    <None Include="wwwroot\js\hyperlab\account\passwordresetrequest.js" />
     <None Include="wwwroot\js\hyperlab\account\registration.js" />
+    <None Include="wwwroot\js\hyperlab\apps\apps.js" />
+    <None Include="wwwroot\js\hyperlab\charmsmessages.js" />
     <None Include="wwwroot\js\hyperlab\chart\charms\charms.js" />
     <None Include="wwwroot\js\hyperlab\chart\charms\charmsalignmentpanel.js" />
     <None Include="wwwroot\js\hyperlab\chart\charms\charmsbandanalysis.js" />
@@ -132,6 +158,8 @@
     <None Include="wwwroot\js\hyperlab\chart\charts.js" />
     <None Include="wwwroot\js\hyperlab\chart\chartsarrays.js" />
     <None Include="wwwroot\js\hyperlab\chart\chartsbuttons.js" />
+    <None Include="wwwroot\js\hyperlab\chart\chartsunauthorized.js" />
+    <None Include="wwwroot\js\hyperlab\chart\joystickManager.js" />
     <None Include="wwwroot\js\hyperlab\common.js" />
     <None Include="wwwroot\js\hyperlab\commonbuttons.js" />
     <None Include="wwwroot\js\hyperlab\commondxchart.js" />
@@ -140,6 +168,19 @@
     <None Include="wwwroot\js\hyperlab\commonhubandchart.js" />
     <None Include="wwwroot\js\hyperlab\commonhubandchartsandsharedstuff.js" />
     <None Include="wwwroot\js\hyperlab\home\index.js" />
+    <None Include="wwwroot\js\hyperlab\blazorglobal.js" />
+    <None Include="wwwroot\js\hyperlab\hub\complexsearchesintro.js" />
+    <None Include="wwwroot\js\hyperlab\hub\complexsearchesmanagement.js" />
+    <None Include="wwwroot\js\hyperlab\hub\hub.js" />
+    <None Include="wwwroot\js\hyperlab\hub\hubSearchComplex.js" />
+    <None Include="wwwroot\js\hyperlab\hub\hubSearchSimple.js" />
+    <None Include="wwwroot\js\hyperlab\hub\info.js" />
+    <None Include="wwwroot\js\hyperlab\hub\load\loadcommon.js" />
+    <None Include="wwwroot\js\hyperlab\hub\load\loadcommoncheckxml.js" />
+    <None Include="wwwroot\js\hyperlab\hub\load\loadexternalauthenticated.js" />
+    <None Include="wwwroot\js\hyperlab\hub\load\loadexternalunauthenticated.js" />
+    <None Include="wwwroot\js\hyperlab\hub\load\loadgetfileslistitemancillary.js" />
+    <None Include="wwwroot\js\hyperlab\hub\load\loadslab.js" />
     <None Include="wwwroot\js\hyperlab\layout.js" />
     <None Include="wwwroot\js\hyperlab\materials\upsertminerals.js" />
     <None Include="wwwroot\js\hyperlab\queue\queue.js" />
@@ -266,9 +307,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\js\dist\account\registrationbundle.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\js\dist\chart\chartbundle.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\js\dist\home\indexbundle.js">

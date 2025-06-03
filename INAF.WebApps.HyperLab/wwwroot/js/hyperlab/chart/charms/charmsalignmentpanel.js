@@ -874,6 +874,7 @@ function buildAlignedSpectrumCompleted() {
 
     /* enable management of clicked point on aligned spectrum for fitting */
     setIsPointClickForFitEnabled(true);
+    setJoystickVisible(true);
 
     /* enable buttons for saving/removing aligned spectrum */
     setMetroUIButtonEnabled('alignmentButtonSave', true);
@@ -1071,6 +1072,7 @@ async function removeAlignedSpectrumAsync(alignedSpectrum, isRemovalOnCloudReque
 
     /* disable management of clicked point on aligned spectrum for fitting */
     setIsPointClickForFitEnabled(false);
+    setJoystickVisible(false);
 
     /* remove aligned file from cloud, if required  */
     if (isRemovalOnCloudRequested && Number.isInteger(alignedSpectrum.Id)) {

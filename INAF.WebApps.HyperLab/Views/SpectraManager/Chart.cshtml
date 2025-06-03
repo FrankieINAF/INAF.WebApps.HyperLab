@@ -33,10 +33,16 @@
 <div id="charts" class="mywrapper overflow-x-auto overflow-y-auto" style="max-width: 100%"></div>
 
 <!-- JOYSTICK -->
-<div id="joystickMainContainer" class="joystick-main-container d-flex flex-column" style="top: calc(100% - 36px)">
-    <div class="row" style="height: 36px">
+<div id="joystickMainContainer" class="joystick-main-container flex-column d-none" style="top: calc(100% - 46px)">
+    <div class="row" style="height: 46px">
         <div class="cell-fs-4">&nbsp;</div>
-        <div class="cell-fs-4 d-flex flex-justify-center semitransparent-black"><span id="joystickVisualizationIcon" class="mif mif-expand-less fg-white pointer" onclick="toggleJoystickContainer()"></span></div>
+        <div class="cell-fs-4 semitransparent-black">
+            <div class="row">
+                <div class="cell-fs-4 d-flex flex-justify-center"><img src="~/images/chart/joystick.png" width="20" height="20" /></div>
+                <div class="cell-fs-4 d-flex flex-justify-center"><span id="joystickVisualizationIcon" class="mif mif-expand-less fg-white pointer" onclick="toggleJoystickContainer()"></span></div>
+                <div class="cell-fs-4">&nbsp;</div>
+            </div>
+        </div>
         <div class="cell-fs-4">&nbsp;</div>
     </div>
     <div class="row semitransparent-black" style="height: 220px">
@@ -74,9 +80,14 @@
                 <div><span class="text-secondary fg-white text-bold">@Html.Raw(Charts.JoystickPositionLabel)</span></div>
                 <div><span id="joystickPositionValue" class="text-secondary fg-white"></span></div>
             </div>
-            <!-- BUTTON ADD POIT FOR FIT -->
-            <div style="height: 100%; margin: auto" class="d-flex flex-column flex-justify-center">
+            <!-- BUTTON ADD POINT FOR FIT -->
+            <div style="height: 50%; margin: auto" class="d-flex flex-column flex-justify-center">
                 <button id="buttonJoystickAddFitPoint" class="button primary cycle large pointer disabled" title="@Html.Raw(Charts.JoystickButtonAddFitPointTitle)" onclick="addFitPoint()"><span class="mif-target"></span></button>
+            </div>
+
+            <!-- BUTTON RESET POINTER POSITION -->
+            <div style="height: 50%" class="d-flex flex-justify-center">
+                <button id="buttonResetPointerPosition" class="button primary cycle large pointer" title="@Html.Raw(Charts.JoystickButtonResetPointerPositionTitle)" onclick="resetPointerPosition()"><span class="mif-refresh"></span></button>
             </div>
         </div>
     </div>
@@ -337,7 +348,9 @@
 
 <script src="_framework/blazor.server.js"></script>
 
-<script type="text/javascript" src="~/js/dist/hub/blazorglobalbundle.min.js" asp-append-version="true"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+<script type="text/javascript" src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+<script type="text/javascript" src="~/js/dist/blazorglobalbundle.min.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/js/dist/devextreme/devextremebundle.min.js" asp-append-version="true"></script>
 <environment names="Development">
     <script type="text/javascript" src="~/js/hyperlab/commonhubandchartsandsharedstuff.js" asp-append-version="true"></script>
@@ -357,13 +370,13 @@
     <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmssmoothingpanel.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmsbandanalysis.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/charmsmessages.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
-    <script type="text/javascript" src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
     <script type="text/javascript" src="~/lib/joystick/joystick.js"></script>
     <script type="text/javascript" src="~/js/hyperlab/chart/joystickManager.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">
     <script type="text/javascript" src="~/js/dist/chart/chartbundle.min.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/dist/chart/charmsbundle.min.js" asp-append-version="true"></script>
+     <script type="text/javascript" src="~/js/dist/chart/joystickbundle.js" asp-append-version="true"></script>
 </environment>
 
 <script type="text/javascript">

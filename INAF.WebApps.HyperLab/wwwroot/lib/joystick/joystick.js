@@ -2,7 +2,12 @@
 var xCenter = 50;
 var yCenter = 50;
 
+var isJoystickControllerInitialized = false;
+
 function initJoystickController() {
+    if (isJoystickControllerInitialized)
+        return; // prevent multiple initializations
+
     $('#body').removeClass('overflow-y-auto').addClass('overflow-y-hidden');
 
     var stage = new createjs.Stage('joystick');
@@ -59,6 +64,8 @@ function initJoystickController() {
         psp.alpha = alpha;
         createjs.Tween.get(psp).to({ x: xCenter, y: yCenter }, 750, createjs.Ease.elasticOut);
     });
+
+    isJoystickControllerInitialized = true;
 }
 
 function calculateCoords(angle, distance) {

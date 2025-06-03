@@ -320,7 +320,9 @@ function showSearchInfo() {
 /* ################################################################################ */
 /* ---------- INIT BUTTONS IN SEARCH PANEL ---------- */
 function initButtonsInSearchPanel() {
-    addSearchButton();
+    if (isSLabDataManagerAllowed)
+        addSearchButton();
+
     addHelpButton();
 }
 

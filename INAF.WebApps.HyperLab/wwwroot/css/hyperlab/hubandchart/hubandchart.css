@@ -127,7 +127,7 @@
     position: absolute;
     left: 35%;
     width: 30%;
-    height: 256px;
+    height: 266px;
     /*pointer-events: none;*/ /* per non interferire con i click/mouse events nel container */
 }
 

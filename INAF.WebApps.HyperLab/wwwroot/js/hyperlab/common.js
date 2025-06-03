@@ -196,7 +196,6 @@ function isPhoneDevice() {
     return /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && /Mobile/i.test(navigator.userAgent);
 }
 
-
 function isTabletDevice() {
     return /iPad|Android/i.test(navigator.userAgent) && !/Mobile/i.test(navigator.userAgent);
 }
@@ -290,7 +289,7 @@ function showDialogWithActions(title, content, cls, caption1, caption2, callback
     Metro.dialog.create({
         title: title,
         content: content,
-        clsDialog: cls,
+        clsDialog: `${cls} z-index-2000`,
         closeButton: true,
         actions: [
             {

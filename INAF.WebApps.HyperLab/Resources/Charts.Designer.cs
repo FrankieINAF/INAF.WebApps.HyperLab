@@ -196,6 +196,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset position of pointer.
+        /// </summary>
+        public static string JoystickButtonResetPointerPositionTitle {
+            get {
+                return ResourceManager.GetString("JoystickButtonResetPointerPositionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Position:.
         /// </summary>
         public static string JoystickPositionLabel {

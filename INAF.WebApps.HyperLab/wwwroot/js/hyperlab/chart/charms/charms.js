@@ -436,8 +436,10 @@ async function callbackYesForSpectrumSelectionManagementAsync(selectedSpectrum, 
         /* reset charms UI and load segments for alignment */
         await initCharmsPhase1Async();
 
-        if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL)
+        if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL) {
             setIsPointClickForFitEnabled(true);
+            setJoystickVisible(true);
+        }
 
         /* load info for creating UI of alignment panel  */
         await initCharmsPhase2Async();
@@ -480,6 +482,7 @@ async function setSelectedSpectrumForProcessing(selected) {
             /* restore old selected spectrum, no different spectrum selection is set and nothing changes */
             Metro.getPlugin('#charmsSpectrumSelector', 'select').val(oldSelectedSpectrumForProcessingId);
         };
+
         showDialogWithActions(WARNING_LABEL, CharmsDeleteProcessedSpectraQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);
     } else {
         setTimeout(async function () {
@@ -489,8 +492,10 @@ async function setSelectedSpectrumForProcessing(selected) {
             /* reset charms UI and load segments for alignment */
             await initCharmsPhase1Async();
 
-            if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL || isSLabLowerSpectrumTypeHigherThanRaw)
+            if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL || isSLabLowerSpectrumTypeHigherThanRaw) {
                 setIsPointClickForFitEnabled(true);
+                setJoystickVisible(true);
+            }
 
             /* load info for creating UI of alignment panel  */
             initCharmsPhase2Async();
