@@ -41,7 +41,7 @@
       "wwwroot/js/hyperlab/chart/chartsbuttons.js",
       "wwwroot/js/hyperlab/chart/chartsarrays.js",
       "wwwroot/js/hyperlab/chart/chartsunauthorized.js",
-      "wwwroot/js/hyperlab/charmsmessages.js",
+      "wwwroot/js/hyperlab/charmsmessages.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -220,6 +220,16 @@
   /* CSS */
   /* ################################################################################ */
   {
+    "outputFileName": "wwwroot/css/dist/account/accounterrorbundle.css",
+    "inputFiles": [
+      "wwwroot/css/hyperlab/common.css",
+      "wwwroot/css/hyperlab/account/errorpage.css",
+      "wwwroot/css/hyperlab/account/login.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
     "outputFileName": "wwwroot/css/dist/apps/appsbundle.css",
     "inputFiles": [
       "wwwroot/css/hyperlab/apps/apps.css"
@@ -247,16 +257,6 @@
     "minify": { "enabled": true }
   },
   {
-    "outputFileName": "wwwroot/css/dist/account/errorpagebundle.css",
-    "inputFiles": [
-      "wwwroot/css/hyperlab/common.css",
-      "wwwroot/css/hyperlab/account/errorpage.css",
-      "wwwroot/css/hyperlab/account/login.css"
-    ],
-    "includeInProject": true,
-    "minify": { "enabled": true }
-  },
-  {
     "outputFileName": "wwwroot/css/dist/home/cookiebannerbundle.css",
     "inputFiles": [
       "wwwroot/css/hyperlab/common.css",
@@ -273,6 +273,14 @@
       "wwwroot/lib/devextreme/css/icons/*.ttf",
       "wwwroot/lib/devextreme/css/icons/*.woff",
       "wwwroot/lib/devextreme/css/icons/*.woff2"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/css/dist/errorpagebundle.css",
+    "inputFiles": [
+      "wwwroot/css/hyperlab/errorpage.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }

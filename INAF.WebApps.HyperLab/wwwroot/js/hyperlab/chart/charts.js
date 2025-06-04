@@ -221,6 +221,7 @@ function createChart(dataSource, series, axisRange) {
     chart = chartContainer.dxChart({
         /* data */
         rotated: (isMobile() && isPhoneDevice()),
+        redrawOnResize: true,
         dataSource: dataSource,
         animation: {
             enabled: false,

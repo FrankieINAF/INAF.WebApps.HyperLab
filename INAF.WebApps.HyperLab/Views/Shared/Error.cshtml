@@ -3,32 +3,40 @@
 @using INAF.WebApps.HyperLab.Resources
 
 @{
-	ViewData["Title"] = "Error";
+    ViewData["Title"] = "Error";
 
-	Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
+    Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
 }
 
+<environment names="Development">
+    <link rel="stylesheet" href="~/css/hyperlab/errorpage.css" />
+</environment>
+<environment names="Production">
+    <link rel="stylesheet" href="~/css/dist/errorpagebundle.min.css" asp-append-version="true" />
+</environment>
 <div id="search" class="container h-100 overflow-x-auto overflow-y-hidden d-flex flex-column bg-crimson">
-	<div class="h-25 d-flex flex-column flex-justify-center">
-		<div>
-			<p class="error-title text-strong text-center fg-white">@Html.Raw(Home.ErrorPageTitle)</p>
-		</div>
-	</div>
-	<div class="h-75 w-100 d-flex flex-column-fs flex-row-md">
-		<!-- IMAGE -->
-		<div class="h-50-fs h-100-md  w-100-fs w-50-md d-flex flex-self-center">
-			<div style="margin:auto"><img src="~/images/em_spectrum_400x400.png" /></div>
-		</div>
-		<!-- TEXT -->
-		<div class="h-50-fs h-100-md w-100-fs w-50-md d-flex flex-row">
-			<div class="flex-self-center"><p class="error-text text-just fg-white margin-horizontal-16">@Html.Raw(Home.ErrorPageText)</p></div>
-		</div>
-		<!-- CONTACT US  -->
-		<div class="row cell-fs-12 margin-top-32 d-flex flex-justify-center">
-			<button class="button bg-white primary cycle outline" onclick="navigateTo('/Account/Login')" title="@Html.Raw(Account.ConfirmationSendEmailAgain)">
-				<span class="mif-envelop" />
-			</button>
-			<span class="fg-white margin-left-8 margin-top-4">@Html.Raw(SharedResources.ContactUs)</span>
-		</div>
-	</div>
+    <div class="h-25 d-flex flex-column flex-justify-center">
+        <div>
+            <p class="error-title text-strong text-center fg-white">@Html.Raw(Home.ErrorPageTitle)</p>
+        </div>
+    </div>
+    <div class="h-75 w-100 d-flex flex-column-fs flex-row-md">
+        <!-- IMAGE -->
+        <div class="h-50-fs h-100-md  w-100-fs w-50-md d-flex flex-self-center">
+            <div style="margin:auto" class="d-flex"><img class="hyperlab-image" src="~/images/em_spectrum_400x400.png" /></div>
+        </div>
+        <!-- TEXT -->
+        <div class="h-50-fs h-100-md w-100-fs w-50-md d-flex flex-column">
+            <div class="h-50">
+                <p class="error-text text-just fg-white margin-horizontal-16">@Html.Raw(Home.ErrorPageText)</p>
+            </div>
+            <!-- CONTACT US  -->
+            <div class="margin-top-32 d-flex flex-justify-center">
+                <button class="button bg-white primary cycle outline" onclick="navigateTo('/Account/Login')" title="@Html.Raw(Account.ConfirmationSendEmailAgain)">
+                    <span class="mif-envelop" />
+                </button>
+                <span class="fg-white margin-left-8 margin-top-4">@Html.Raw(SharedResources.ContactUs)</span>
+            </div>
+        </div>
+    </div>
 </div>
