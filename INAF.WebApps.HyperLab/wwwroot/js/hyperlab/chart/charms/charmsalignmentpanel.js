@@ -588,11 +588,7 @@ async function loadWhiteSpectraForAlignmentProcedureAsync() {
     if (isHidingRefWhitesRequested) {
         setRefWhitesHidden();
         isHidingRefWhitesRequested = false;
-    }
 
-    /* hide all but the selected one and ref whites */
-    let hiddenSpectraNum = hideSpectraToBeHidden();
-    if (hiddenSpectraNum > 0) {
         showByClass('buttonShowToastAutoHideNotSelectedSpectra');
         addMessage(AlignmentAutoHideNotSelectedRawSpectraMessage, 3000, INFO);
     }
@@ -892,12 +888,6 @@ function buildAlignedSpectrumCompleted() {
 
     /* reset visual range to make all available spectra visible */
     //dxChartResetVisualRange(chartContainer);
-
-    /* mantain hidden all not necessary spectra */
-    let hiddenSpectraNum = hideSpectraToBeHidden();
-    if (hiddenSpectraNum > 0) {
-        addMessage(AlignmentAutoHideRefSpectraMessage, 3000, INFO);
-    }
 }
 
 function getRefWhiteYMax() {
@@ -918,7 +908,9 @@ function getRefWhiteYMax() {
 
 function setRefWhitesHidden() {
     refWhitesIds.forEach(function (id) {
-        setSpectrumVisibility(id, false);
+        const valueField = buildId(id);
+        const series = chartSeries.find(x => x.valueField == valueField);
+        dxChartHideSeries(chartContainer, series.name);
     });
 }
 

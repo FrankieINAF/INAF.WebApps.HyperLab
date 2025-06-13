@@ -159,7 +159,7 @@
     <None Include="wwwroot\js\hyperlab\chart\chartsarrays.js" />
     <None Include="wwwroot\js\hyperlab\chart\chartsbuttons.js" />
     <None Include="wwwroot\js\hyperlab\chart\chartsunauthorized.js" />
-    <None Include="wwwroot\js\hyperlab\chart\joystickManager.js" />
+    <None Include="wwwroot\js\hyperlab\chart\joystickmanager.js" />
     <None Include="wwwroot\js\hyperlab\common.js" />
     <None Include="wwwroot\js\hyperlab\commonbuttons.js" />
     <None Include="wwwroot\js\hyperlab\commondxchart.js" />

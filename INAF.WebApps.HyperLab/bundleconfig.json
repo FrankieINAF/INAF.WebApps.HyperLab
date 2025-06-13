@@ -104,7 +104,8 @@
     "outputFileName": "wwwroot/js/dist/chart/joystickbundle.js",
     "inputFiles": [
       "wwwroot/lib/joystick/joystick.js",
-      "wwwroot/js/hyperlab/chart/joystickManager.js"
+      "wwwroot/js/hyperlab/chart/joystickmanager.js",
+      "wwwroot/js/hyperlab/chart/joystickchart.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true

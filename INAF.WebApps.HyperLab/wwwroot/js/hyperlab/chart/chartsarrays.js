@@ -1,15 +1,15 @@
 ﻿var familyIds = [];
 
-function hideSpectraToBeHidden() {
-    let spectraToBeHidden = spectraInfo.filter(x => !x.IsVisible);
-    spectraToBeHidden.forEach(function (item) {
-        let seriesname = getSpectrumSeriesNameFromIndex(getSpectrumIndexById(item.Id));
+//function hideSpectraToBeHidden() {
+//    let spectraToBeHidden = cha.filter(x => !x.IsVisible);
+//    spectraToBeHidden.forEach(function (item) {
+//        let seriesname = getSpectrumSeriesNameFromIndex(getSpectrumIndexById(item.Id));
 
-        dxChartHideSeries(chartContainer, seriesname);
-    });
+//        dxChartHideSeries(chartContainer, seriesname);
+//    });
 
-    return spectraToBeHidden.length;
-}
+//    return spectraToBeHidden.length;
+//}
 
 /* ################################################################################ */
 /* CONSTANT LINES */
@@ -46,8 +46,6 @@ function resetShownConstantLines() {
 
 function updateConstantLines() {
     dxChartUpdateOption(chart, 'argumentAxis.constantLines', getConstantLines());
-
-    hideSpectraToBeHidden();
 }
 
 function manageConstantLinesVisualization(selectedTabId) {
@@ -166,24 +164,7 @@ function addSpectrumInfo(spectrumInfo) {
     if (isSpectrumAvailableById(spectrumInfo.Id))
         return;
 
-    spectrumInfo.IsVisible = true;
     spectraInfo.push(spectrumInfo);
-}
-
-function setSpectraInfo(spectraInfoObj) {
-    spectraInfoObj.forEach(function (item) {
-        item.IsVisible = true;
-    });
-
-    spectraInfo = spectraInfoObj;
-}
-
-function setSpectrumVisibility(id, isVisible) {
-    let index = getSpectrumIndexById(id);
-    if (index == -1)
-        return;
-
-    spectraInfo[index].IsVisible = isVisible;
 }
 
 function updateSpectrumInfoId(index, newId) {
@@ -456,14 +437,6 @@ function isAnySpectrumByRawIdAndSpectrumType(rawId, spectrumType) {
     return (spectrum != null);
 }
 
-function isAnySpectrumToBeHidden() {
-    let spectra = spectraInfo.filter(x => !x.IsVisible);
-    if (!spectra || spectra.length)
-        return false;
-
-    return true;
-}
-
 function isSpectrumAvailableById(id) {
     return (spectraInfo.findIndex(x => x.Id == id) > -1);
 }
@@ -637,4 +610,21 @@ function removeChartSeriesByNameProcedure(chartContainer, seriesName) {
         removeChartSeriesAt(index);
         dxChartUpdateSeries(chartContainer, chartSeries);
     }
+}
+
+function removePointsFromChart(chartContainer, xValues, seriesName) {
+    let items = dxChartGetItems(chartContainer);
+
+    dxChartBeginUpdate(chartContainer);
+
+    let xValuesNum = xValues.length;
+    for (var i = 0; i < xValuesNum; i++) {
+        let index = items.findIndex(p => p.X == xValues[i]);
+        if (items[index][seriesName])
+            delete items[index][seriesName];
+    }
+
+    dxChartEndUpdate(chartContainer);
+
+    dxChartRefresh(chartContainer);
 }

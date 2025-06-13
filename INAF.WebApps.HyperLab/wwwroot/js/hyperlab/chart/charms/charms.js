@@ -389,16 +389,14 @@ async function initCharmsPhase2Async() {
 }
 
 function manageSpectraVisibility(selectedSpectrumId) {
-    /* set IsVisible to TRUE for selected spectrum */
-    setSpectrumVisibility(selectedSpectrumId, true);
+    /* show selected spectrum */
     let seriesName = getSpectrumSeriesNameFromIndex(getSpectrumIndexById(selectedSpectrumId));
     dxChartShowSeries(chartContainer, seriesName);
 
-    /* set IsVisible to FALSE for all other spectra */
+    /* hide all other spectra */
     let spectraNum = spectraInfo.length;
     for (var i = 0; i < spectraNum; i++) {
         if (spectraInfo[i].Id != selectedSpectrumId) {
-            setSpectrumVisibility(spectraInfo[i].Id, false);
             let seriesName = getSpectrumSeriesNameFromIndex(getSpectrumIndexById(spectraInfo[i].Id));
             dxChartHideSeries(chartContainer, seriesName);
         }
@@ -782,7 +780,6 @@ async function removeSpectraProcedureSimpleAsync() {
 
     hideSpectraToBeHidden();
 
-
     dxChartRefresh(chartContainer);
     dxChartResetVisualRange(chartContainer);
 }
@@ -1046,6 +1043,7 @@ function isExistingPointByX(points, x) {
     let index = points.findIndex(p => p.X == x);
     return (index >= 0);
 }
+
 /* ################################################################################ */
 /* COMMON */
 /* ################################################################################ */

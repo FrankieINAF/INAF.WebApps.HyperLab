@@ -1,7 +1,12 @@
 ﻿var chart;
 var chartContainer;
 
+var chartMagnifier;
+var chartMagnifierContainer;
+
 var chartConstantLines;
+
+var points = [];
 
 var selectedSpectra = [];
 
@@ -146,15 +151,12 @@ async function loadChartsFromCloudAsync() {
     let obj = await doAjaxPostAsync(UrlGetSpectra, model);
     if (obj) {
         //console.log(obj);
-        setSpectraInfo(obj.SpectraInfo);
+        spectraInfo = obj.SpectraInfo;
+        points = obj.Points;
         chartSeries = createSeriesFromPoints(obj.Points);
-        //chartSeries = createSeriesFromPoint(obj.Points[0]);
         createChart(obj.Points, chartSeries, obj.AxisRange);
         isChartLoaded = true;
         setLoadingCircleIsVisible(false);
-        //await initCharmsPhase1Async();
-        //if (obj.SpectraInfo.length > 1)
-        //    addMessage(ChartColorsDifferentiationMessage, 3000, INFO);
     } else {
         setLoadingCircleIsVisible(false);
         isChartLoaded = false;
@@ -611,6 +613,9 @@ $(function () {
     /* init chartContainer */
     chartContainer = $('#charts');
 
+    /* init chartMagnifier, placed in joystick container */
+    chartMagnifierContainer = $('#chartMagnifier');
+
     /* disable tab for band analysis, it will be re-enabled when continuum-removed is created */
     setTabEnabled(3, false);
 
@@ -645,5 +650,6 @@ $(function () {
         });
     }
 
+    /* init the joystick manager */
     initJoystickManager(); // defined in joystickManager.js
 });

@@ -1,19 +1,19 @@
 ﻿var SERIES_JOYSTICK_POINT = 'JoystickPoint';
 var joystickPointSeries;
 
+var chartMagnifierSeries;
+
 /* -------------------------------------------------------------------------------- */
 /* CHART MAGNIFIER */
 /* -------------------------------------------------------------------------------- */
-function createChartMagnifier() {
+function createChartMagnifier(dataSource, valueAxisVisualRange) {
     /* dispose existant chart, avoiding issues with zoom when recreating */
     disposeChartMagnifier();
-
-    let dataSource = chartContainer.dxChart('getDataSource');
-    //const series = dxChartGetAllSeries(chartContainer);
 
     chartMagnifier = chartMagnifierContainer.dxChart({
         /* data */
         dataSource: dataSource,
+        animation: false,
         commonPaneSettings: {
             backgroundColor: "#ffffff",
         },
@@ -51,6 +51,7 @@ function createChartMagnifier() {
                     color: '#ffffff'
                 }
             },
+            visualRange: valueAxisVisualRange
         },
         series: chartSeries,
         scrollBar: {
@@ -94,6 +95,7 @@ function disposeChartMagnifier() {
 
     chartMagnifierContainer.dxChart("dispose");
     $(chartMagnifierContainer).empty();
+    $('#chartMagnifier').css('margin', 'auto');
     isChartMagnifierLoaded = false;
 }
 
@@ -103,6 +105,12 @@ function roundValue(value) {
 
 
 function updateVisualRangesFromDataSource(chartX, chartY) {
+    chartMagnifierSeries = chartSeries.filter(x => x.isVisible);
+
+    if (!chartMagnifierSeries || chartMagnifierSeries.length == 0)
+        return;
+
+
     const minorTicksValuesX = chartContainer.dxChart('getArgumentAxis').getTicksValues().minorTicksValues
     const diffX = Math.abs(Math.floor(minorTicksValuesX[1] - minorTicksValuesX[0]) / 5);
     const axisRangeMinX = roundValue(chartX - diffX);
@@ -115,10 +123,14 @@ function updateVisualRangesFromDataSource(chartX, chartY) {
     const axisRangeMaxY = chartY + diffY;
     //console.log(`chartY:${chartY}, diffY:${diffY}, axisRangeMinY:${axisRangeMinY}, axisRangeMaxY:${axisRangeMaxY}`);
 
-    chartMagnifierContainer.dxChart("getArgumentAxis").visualRange(axisRangeMinX, axisRangeMaxX);
-    chartMagnifierContainer.dxChart("getValueAxis").visualRange(axisRangeMinY, axisRangeMaxY);
+    const magnifierPoints = points.filter(p => p.X >= axisRangeMinX && p.X <= axisRangeMaxX);
 
-    setJoystickPointOnChart({ P: { X: chartX, Y: chartY } });
+    if (!magnifierPoints || magnifierPoints.length == 0)
+        return;
+
+    createChartMagnifier(magnifierPoints, [axisRangeMinY, axisRangeMaxY]);
+
+    setJoystickPointOnChart({ X: chartX, Y: chartY });
 }
 
 function updateChartMagnifierSeriesVisibility() {
@@ -133,21 +145,25 @@ function updateChartMagnifierSeriesVisibility() {
 }
 
 function setJoystickPointOnChart(point) {
-    if (!joystickPointSeries) {
-        joystickPointSeries = {
-            valueField: SERIES_JOYSTICK_POINT,
-            name: SERIES_JOYSTICK_POINT,
-            axis: 'valueAxis',
-            color: '#1ba1e2',
-            width: 0,
-            point: { visible: true },
-            isVisible: true
-        };
+    joystickPointSeries = {
+        valueField: SERIES_JOYSTICK_POINT,
+        name: SERIES_JOYSTICK_POINT,
+        axis: 'valueAxis',
+        color: '#1ba1e2',
+        width: 0,
+        point: { visible: true },
+        isVisible: true
+    };
 
-        addChartSeries(joystickPointSeries);
-    }
+    chartMagnifierSeries.push(joystickPointSeries);
 
-    let items = dxChartGetItems(chartMagnifierContainer);
+    dxChartUpdateSeries(chartMagnifierContainer, chartMagnifierSeries);
 
-    setPointOnChart(items, point.P.X, point.P.Y, SERIES_JOYSTICK_POINT);
+    const items = dxChartGetItems(chartMagnifierContainer);
+
+    const xValues = [ point.X ];
+    removePointsFromChart(chartMagnifierContainer, xValues, SERIES_JOYSTICK_POINT);
+
+    setPointOnChart(items, point.X, point.Y, SERIES_JOYSTICK_POINT);
+    dxChartRefresh(chartMagnifierContainer);
 }

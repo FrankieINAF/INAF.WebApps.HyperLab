@@ -63,7 +63,11 @@ function createCharmsLegend() {
         if (!series.isVisible()) opacity = 0.5;
 
         let mainliobj = $('<li/>', {
+            id: `legendItem${i}`,
             class: 'fg-white'
+        });
+        $(mainliobj).on('click', function (evt) {
+            onNodeClick(evt);
         });
         $(mainliobj).attr('data-caption', name);
         $(mainliobj).attr('data-icon', `<span id='spectrum${rawSpectrumId}' class='mif-chevron-right pointer' style='background-color: ${rawcolor}; color: ${rawcolor}; opacity: ${opacity}' onclick='onSeriesClick(${rawSpectrumId})' onmouseover='onSeriesMouseOver(${rawSpectrumId})' onmouseout='onSeriesMouseOut(${rawSpectrumId})'></span>>`);
@@ -114,6 +118,12 @@ function toggleCharmsLegend() {
 }
 
 /* ---------- LEGEND EVENTS ---------- */
+function onNodeClick(evt) {
+    executeAfter(function () {
+        $(`#${evt.currentTarget.id}`).removeClass('current');
+    }, 50);
+}
+
 function onSeriesClick(id) {
     let series = getSeriesFromId(id);
     if (series.isVisible()) {

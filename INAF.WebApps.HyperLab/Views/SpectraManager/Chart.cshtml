@@ -34,6 +34,7 @@
 
 <!-- JOYSTICK -->
 <div id="joystickMainContainer" class="joystick-main-container flex-column d-none" style="top: calc(100% - 46px)">
+    <!-- LITTLE PANEL FOR SHOWING/HIFING JOYSTICK -->
     <div class="row" style="height: 46px">
         <div class="cell-fs-4">&nbsp;</div>
         <div class="cell-fs-4 semitransparent-black">
@@ -45,9 +46,10 @@
         </div>
         <div class="cell-fs-4">&nbsp;</div>
     </div>
+    <!-- MAIN PANEL -->
     <div class="row semitransparent-black" style="height: 220px">
-        <div class="cell-fs-2 cell-md-3">
-            &nbsp;
+        <div class="cell-fs-2 cell-md-4 d-flex flex-justify-center">
+            <div id="chartMagnifier" style="margin: auto"></div>
         </div>
         <div class="cell-fs-8 cell-md-6">
             <!-- TOP BUTTON -->
@@ -74,7 +76,7 @@
                 <span id="buttonMovePointerDown" class="mif mif-chevron-right mif-4x fg-white pointer" style="display: inline-block; transform: rotate(90deg);" onclick="movePointerDown(1)"></span>
             </div>
         </div>
-        <div class="cell-fs-2 cell-md-3 d-flex flex-column">
+        <div class="cell-fs-2 cell-md-2 d-flex flex-column">
             <!-- POSITION -->
             <div class="d-flex flex-column">
                 <div><span class="text-secondary fg-white text-bold">@Html.Raw(Charts.JoystickPositionLabel)</span></div>
@@ -371,7 +373,8 @@
     <script type="text/javascript" src="~/js/hyperlab/chart/charms/charmsbandanalysis.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/charmsmessages.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/lib/joystick/joystick.js"></script>
-    <script type="text/javascript" src="~/js/hyperlab/chart/joystickManager.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/joystickmanager.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/chart/joystickchart.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">
     <script type="text/javascript" src="~/js/dist/chart/chartbundle.min.js" asp-append-version="true"></script>

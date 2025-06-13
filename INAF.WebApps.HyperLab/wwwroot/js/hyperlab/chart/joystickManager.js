@@ -7,6 +7,8 @@ var targetPointerSemiWidth = parseInt(targetPointer.width() / 2);
 
 var isJoystickVisible = false;
 
+var isChartMagnifierLoaded = false;
+
 var currentX = 0;
 var currentY = 0;
 var speedFactor = 0.05; // Lower = slower movement
@@ -118,6 +120,9 @@ function checkForAlignedSeriesPointsInNearby() {
 
         /* update position of pointer on joystick UI */
         updatePositionLabel(chartX, chartY);
+
+        /* update chartMagnifier */
+        executeAfter(function () { updateVisualRangesFromDataSource(chartX, chartY) }, 100);
 
         /* check if pointer is in the nearbies of the spectrum (compare pointer position chartY against found value yValue) */
         /* test narrowest range */
@@ -255,6 +260,9 @@ function toggleJoystickContainer() {
             $('#targetPointer').removeClass('d-none');
             animateCSS('targetPointer', 'fadeIn');
 
+            /* create chart magnifier */
+            checkForAlignedSeriesPointsInNearby();
+
             $('#joystickVisualizationIcon').removeClass('mif-expand-less').addClass('mif-expand-more');
         }, 500);
         slideInUp('#joystickMainContainer', 220, 250, callback);
@@ -265,6 +273,8 @@ function toggleJoystickContainer() {
             };
             animateCSS('targetPointer', 'fadeOut', FASTER, fadeoutCallback);
 
+            /* dispose chart magnifier to save memory */
+            disposeChartMagnifier();
 
             $('#joystickVisualizationIcon').removeClass('mif-expand-more').addClass('mif-expand-less');
         }, 500);

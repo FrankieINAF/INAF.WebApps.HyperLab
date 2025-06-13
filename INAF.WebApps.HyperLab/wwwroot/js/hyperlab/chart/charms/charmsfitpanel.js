@@ -561,42 +561,8 @@ async function addFitPointToChartAsync(point, isFromUserAction = false) {
     }
 }
 
-function removeFitPointFromChart(x) {
-    let items = dxChartGetItems(chartContainer);
-
-    dxChartBeginUpdate(chartContainer);
-
-    let index = items.findIndex(p => p.X == x);
-    if (items[index][SERIES_FIT_POINT])
-        delete items[index][SERIES_FIT_POINT];
-
-    dxChartEndUpdate(chartContainer);
-
-    dxChartRefresh(chartContainer);
-
-    if (isShowChartConstantLinesForFitPointsAllowed) {
-        removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS);
-        updateConstantLines();
-    }
-
-    hideSpectraToBeHidden();
-}
-
 function removeFitPointsFromChart(xValues) {
-    let items = dxChartGetItems(chartContainer);
-
-    dxChartBeginUpdate(chartContainer);
-
-    let xValuesNum = xValues.length;
-    for (var i = 0; i < xValuesNum; i++) {
-        let index = items.findIndex(p => p.X == xValues[i]);
-        if (items[index][SERIES_FIT_POINT])
-            delete items[index][SERIES_FIT_POINT];
-    }
-
-    dxChartEndUpdate(chartContainer);
-
-    dxChartRefresh(chartContainer);
+    removePointsFromChart(chartContainer, xValues, SERIES_FIT_POINT)
 
     if (isShowChartConstantLinesForFitPointsAllowed) {
         removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS);
