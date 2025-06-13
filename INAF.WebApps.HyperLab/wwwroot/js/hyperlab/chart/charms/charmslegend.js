@@ -118,6 +118,7 @@ function toggleCharmsLegend() {
 }
 
 /* ---------- LEGEND EVENTS ---------- */
+/* this is used just to remove the 'selected' effect (which hides the spectrum name) when clicking on text */
 function onNodeClick(evt) {
     executeAfter(function () {
         $(`#${evt.currentTarget.id}`).removeClass('current');

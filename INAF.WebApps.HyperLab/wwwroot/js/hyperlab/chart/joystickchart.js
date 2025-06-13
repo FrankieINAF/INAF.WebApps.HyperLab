@@ -110,6 +110,7 @@ function updateVisualRangesFromDataSource(chartX, chartY) {
     if (!chartMagnifierSeries || chartMagnifierSeries.length == 0)
         return;
 
+    const valueFields = chartMagnifierSeries.map(x => x.valueField);
 
     const minorTicksValuesX = chartContainer.dxChart('getArgumentAxis').getTicksValues().minorTicksValues
     const diffX = Math.abs(Math.floor(minorTicksValuesX[1] - minorTicksValuesX[0]) / 5);
@@ -123,7 +124,21 @@ function updateVisualRangesFromDataSource(chartX, chartY) {
     const axisRangeMaxY = chartY + diffY;
     //console.log(`chartY:${chartY}, diffY:${diffY}, axisRangeMinY:${axisRangeMinY}, axisRangeMaxY:${axisRangeMaxY}`);
 
-    const magnifierPoints = points.filter(p => p.X >= axisRangeMinX && p.X <= axisRangeMaxX);
+    const keys = Object.keys(points[0]);
+
+    let commonValueFields = valueFields.filter(value => keys.includes(value));
+    commonValueFields.push('X');
+
+    let magnifierPoints = points.filter(p => p.X >= axisRangeMinX && p.X <= axisRangeMaxX);
+
+    magnifierPoints = magnifierPoints.map(obj =>
+        Object.keys(obj)
+            .filter(key => commonValueFields.includes(key))
+            .reduce((acc, key) => {
+                acc[key] = obj[key];
+                return acc;
+            }, {})
+    );
 
     if (!magnifierPoints || magnifierPoints.length == 0)
         return;

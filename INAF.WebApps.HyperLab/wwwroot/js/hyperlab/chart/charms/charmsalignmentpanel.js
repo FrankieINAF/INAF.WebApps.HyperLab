@@ -910,6 +910,9 @@ function setRefWhitesHidden() {
     refWhitesIds.forEach(function (id) {
         const valueField = buildId(id);
         const series = chartSeries.find(x => x.valueField == valueField);
+
+        series.isVisible = false;
+
         dxChartHideSeries(chartContainer, series.name);
     });
 }

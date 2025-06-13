@@ -508,7 +508,8 @@ function createSeriesFromSpectrumName(idItem, spectrumName, color, isPointVisibl
         axis: 'valueAxis',
         color: color,
         point: { visible: isPointVisible },
-        showInLegend: showInLegend
+        showInLegend: showInLegend,
+        isVisible: true
     };
 }
 
