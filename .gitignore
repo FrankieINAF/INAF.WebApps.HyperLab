@@ -61,3 +61,8 @@
 /.vs/INAF.WebApps.HyperLab/CopilotIndices/17.14.698.11175
 /.vs/INAF.WebApps.HyperLab/CopilotIndices/17.14.719.50355
 /.vs/INAF.WebApps.HyperLab/CopilotIndices/17.14.734.62261
+/INAF.WebApps.HyperLab/wwwroot/js/dist/account/loginbundle.js
+/INAF.WebApps.HyperLab/wwwroot/js/dist/account/passwordresetexecutebundle.js
+/INAF.WebApps.HyperLab/wwwroot/js/dist/account/passwordresetrequestbundle.js
+/INAF.WebApps.HyperLab/wwwroot/js/dist/account/registrationbundle.js
+/INAF.WebApps.HyperLab/wwwroot/js/dist/commonbundle.js
