@@ -53,7 +53,7 @@ function createChartMagnifier(dataSource, valueAxisVisualRange) {
             },
             visualRange: valueAxisVisualRange
         },
-        series: chartSeries,
+        series: chartMagnifierSeries,
         scrollBar: {
             visible: false
         },
@@ -153,6 +153,8 @@ function updateChartMagnifierSeriesVisibility() {
     const chartSeriesNum = chartSeries.length;
     for (var i = 0; i < chartSeriesNum; i++) {
         const chartMagnifierSeries = chartMagnifierContainer.dxChart('getAllSeries').find(x => x.name == chartSeries[i].name);
+        if (!chartMagnifierSeries)
+            continue;
         //console.log(`chartSeries[${i}].name:'${chartSeries[i].name}', chartSeries[${i}].isVisible(): ${chartSeries[i].isVisible()}`);
         chartSeries[i].isVisible() ? chartMagnifierSeries.show() : chartMagnifierSeries.hide();
     }
@@ -160,6 +162,7 @@ function updateChartMagnifierSeriesVisibility() {
 }
 
 function setJoystickPointOnChart(point) {
+    /* define the joystick point series */
     joystickPointSeries = {
         valueField: SERIES_JOYSTICK_POINT,
         name: SERIES_JOYSTICK_POINT,
@@ -170,15 +173,18 @@ function setJoystickPointOnChart(point) {
         isVisible: true
     };
 
-    chartMagnifierSeries.push(joystickPointSeries);
-
-    dxChartUpdateSeries(chartMagnifierContainer, chartMagnifierSeries);
-
+    /* retrieve already available items to add the point to them */
     const items = dxChartGetItems(chartMagnifierContainer);
 
     const xValues = [ point.X ];
     removePointsFromChart(chartMagnifierContainer, xValues, SERIES_JOYSTICK_POINT);
 
+    /* add the point to the chart and update series to meke it visible */
     setPointOnChart(items, point.X, point.Y, SERIES_JOYSTICK_POINT);
+
+    chartMagnifierSeries.push(joystickPointSeries);
+
+    dxChartUpdateSeries(chartMagnifierContainer, chartMagnifierSeries);
+
     dxChartRefresh(chartMagnifierContainer);
 }

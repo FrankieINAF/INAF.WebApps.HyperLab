@@ -2,8 +2,14 @@
 var isJoystickContainerPositionAdjusted = false; // Flag to check if the joystick container position has been adjusted
 var repeatMovePointerUp, repeatMovePointerDown, repeatMovePointerLeft, repeatMovePointerRight;
 
+var numOfPixelsFor1Unit = 0;
+var multipliedNumOfPixelsFor1Unit = 0;
+
+var checkForAlignedSeriesPointsInNearbyTimeout;
+
 var targetPointer = $('#targetPointer');
-var targetPointerSemiWidth = parseInt(targetPointer.width() / 2);
+//var targetPointerSemiWidth = parseInt(targetPointer.width() / 2);
+var targetPointerSemiWidth = 25;
 
 var isJoystickVisible = false;
 
@@ -26,12 +32,25 @@ var GoodSeriesPoint = {
     MousePosY: 0 // mouse position y
 };
 
+function calculateNumOfPixelsFor1Unit() {
+    const visualRangeX = dxChartGetVisualRangeX(chartContainer);
+    /* Calculate the number of pixels for 1 unit based on the visual range and chart width */
+    const tempValue = $(chartContainer).width() / (visualRangeX.endValue - visualRangeX.startValue);
+    if (tempValue <= 1) 
+        numOfPixelsFor1Unit = 1; // Ensure at least 1 pixel for 1 unit
+    else 
+        numOfPixelsFor1Unit = Math.floor($(chartContainer).width() / (visualRangeX.endValue - visualRangeX.startValue));
+
+    /* Multiply by 5 to increase the sensitivity of the joystick movement */
+    multipliedNumOfPixelsFor1Unit = numOfPixelsFor1Unit * 5;
+}
+
 function initJoystickManager() {
     /* move up */
     $('#buttonMovePointerUp').on('mousedown touchstart', function () {
         repeatMovePointerUp = setInterval(() => {
-            movePointerUp(5);
-        }, 100);
+            movePointerUp(numOfPixelsFor1Unit);
+        }, 250);
 
     }).on('mouseup mouseleave touchend touchcancel', function () {
         clearInterval(repeatMovePointerUp);
@@ -42,8 +61,8 @@ function initJoystickManager() {
     /* move down */
     $('#buttonMovePointerDown').on('mousedown touchstart', function () {
         repeatMovePointerDown = setInterval(() => {
-            movePointerDown(5);
-        }, 100);
+            movePointerDown(numOfPixelsFor1Unit);
+        }, 250);
 
     }).on('mouseup mouseleave touchend touchcancel', function () {
         clearInterval(repeatMovePointerDown);
@@ -54,8 +73,8 @@ function initJoystickManager() {
     /* move left */
     $('#buttonMovePointerLeft').on('mousedown touchstart', function () {
         repeatMovePointerLeft = setInterval(() => {
-            movePointerLeft(5);
-        }, 100);
+            movePointerLeft(numOfPixelsFor1Unit);
+        }, 250);
     }).on('mouseup mouseleave touchend touchcancel', function () {
         clearInterval(repeatMovePointerLeft);
     }).on('contextmenu', function (evt) {
@@ -65,8 +84,8 @@ function initJoystickManager() {
     /* move right */
     $('#buttonMovePointerRight').on('mousedown touchstart', function () {
         repeatMovePointerRight = setInterval(() => {
-            movePointerRight(5);
-        }, 100);
+            movePointerRight(numOfPixelsFor1Unit);
+        }, 250);
     }).on('mouseup mouseleave touchend touchcancel', function () {
         clearInterval(repeatMovePointerRight);
     }).on('contextmenu', function (evt) {
@@ -77,6 +96,15 @@ function initJoystickManager() {
 /* -------------------------------------------------------------------------------- */
 /* CHANGE UI OF POINTER WHEN IN NEARBIES OF ALIGNED SPECTRUM */
 /* -------------------------------------------------------------------------------- */
+function callCheckForAlignedSeriesPointsInNearby() {
+    if (checkForAlignedSeriesPointsInNearbyTimeout)
+        clearTimeout(checkForAlignedSeriesPointsInNearbyTimeout);
+
+    checkForAlignedSeriesPointsInNearbyTimeout = setTimeout(function () {
+        checkForAlignedSeriesPointsInNearby();
+    }, 250);
+}
+
 function checkForAlignedSeriesPointsInNearby() {
     const left = targetPointer.position().left + targetPointerSemiWidth;
 
@@ -260,8 +288,10 @@ function toggleJoystickContainer() {
             $('#targetPointer').removeClass('d-none');
             animateCSS('targetPointer', 'fadeIn');
 
+            calculateNumOfPixelsFor1Unit();
+
             /* create chart magnifier */
-            checkForAlignedSeriesPointsInNearby();
+            callCheckForAlignedSeriesPointsInNearby();
 
             $('#joystickVisualizationIcon').removeClass('mif-expand-less').addClass('mif-expand-more');
         }, 500);
@@ -295,46 +325,46 @@ function updatePositionLabel(x, y) {
 /* -------------------------------------------------------------------------------- */
 function movePointerUp(increment) {
     if (increment === undefined)
-        increment = 10;
+        increment = multipliedNumOfPixelsFor1Unit;
 
     //console.log(`Moving pointer up by ${increment}px from ${currentY}px`);
     if (targetPointer && targetPointer.length) {
         currentY -= increment; // Move up by specified increment
         targetPointer.css('transform', `translate(${currentX}px, ${currentY}px)`);
-        checkForAlignedSeriesPointsInNearby();
+        callCheckForAlignedSeriesPointsInNearby();
     }
 }
 
 function movePointerDown(increment) {
     if (increment === undefined)
-        increment = 10;
+        increment = multipliedNumOfPixelsFor1Unit;
 
     if (targetPointer && targetPointer.length) {
         currentY += increment; // Move down by specified increment
         targetPointer.css('transform', `translate(${currentX}px, ${currentY}px)`);
-        checkForAlignedSeriesPointsInNearby();
+        callCheckForAlignedSeriesPointsInNearby();
     }
 }
 
 function movePointerLeft(increment) {
     if (increment === undefined)
-        increment = 10;
+        increment = multipliedNumOfPixelsFor1Unit;
 
     if (targetPointer && targetPointer.length) {
         currentX -= increment; // Move left by specified increment
         targetPointer.css('transform', `translate(${currentX}px, ${currentY}px)`);
-        checkForAlignedSeriesPointsInNearby();
+        callCheckForAlignedSeriesPointsInNearby();
     }
 }
 
 function movePointerRight(increment) {
     if (increment === undefined)
-        increment = 10;
+        increment = multipliedNumOfPixelsFor1Unit;
 
     if (targetPointer && targetPointer.length) {
         currentX += increment; // Move right by specified increment
         targetPointer.css('transform', `translate(${currentX}px, ${currentY}px)`);
-        checkForAlignedSeriesPointsInNearby();
+        callCheckForAlignedSeriesPointsInNearby();
     }
 }
 
