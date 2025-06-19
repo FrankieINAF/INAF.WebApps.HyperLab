@@ -484,6 +484,9 @@ async function setSelectedSpectrumForProcessing(selected) {
         showDialogWithActions(WARNING_LABEL, CharmsDeleteProcessedSpectraQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);
     } else {
         setTimeout(async function () {
+            /* add button for managing spectrumType-color relationship */
+            addCharmsColorSelectorButton();
+
             /* update visibility for all spectra */
             manageSpectraVisibility(selectedSpectrumForProcessingId);
 

@@ -54,6 +54,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
+                    //return buildJsonContentResult(spectraFilesInfo);
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels!));
             }
 
