@@ -67,7 +67,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [Authorize]
         [CheckIsLoginValid]
         [HttpGet]
-        public IActionResult GetSpectrumByParentIdAndSpectrumType(GenericRequestByParentIdAndSpectrumTypeModel model)
+        public IActionResult GetSpectrumByParentIdAndSpectrumTypeForApp(GenericRequestByParentIdAndSpectrumTypeModel model)
         {
             ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId,
                                                                                                        model.SpectrumType,
