@@ -1375,6 +1375,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The &apos;Spectrum Type – Color&apos; code is used during spectral analysis to help users distinguish between different processing levels. To customize the colors associated with each spectrum type, use the Color Settings panel..
+        /// </summary>
+        public static string SpectrumTypeColorRelationshipMessage {
+            get {
+                return ResourceManager.GetString("SpectrumTypeColorRelationshipMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alignment options.
         /// </summary>
         public static string TabsAlignmentTitle {

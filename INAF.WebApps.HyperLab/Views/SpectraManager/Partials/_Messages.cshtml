@@ -16,11 +16,14 @@
         <!-- CLEAR ALL -->
         <div class="cell-fs-4 cell-md-2">
             <div class="button light cycle outline float-left pointer fg-white" title="@Html.Raw(CharmsMessages.ButtonClearAllLabel)" onclick="clearMessages()">
-                <span class="mif-cross-light"></span>
+                <span class="mif-bin"></span>
             </div>
         </div>
     </div>
-
+    <!-- LABEL -->
+    <div class="row cell-fs-12">
+        <span class="text-secondary fg-white">@Html.Raw(CharmsMessages.MessagesListLabel)</span>
+    </div>
     <!-- LEGEND -->
     <div id="messagesContainer" class="row cell-fs-12 overflow-y-auto"></div>
 </div>

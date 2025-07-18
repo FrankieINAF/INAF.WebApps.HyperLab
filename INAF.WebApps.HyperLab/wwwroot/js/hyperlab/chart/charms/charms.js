@@ -455,23 +455,24 @@ async function setSelectedSpectrumForProcessing(selected) {
     if (selectedValue == selectedSpectrumForProcessingId)
         return; // if we're opening charms and the selected spectrum is the already selected one, then do nothing
 
-    /* remember the previous id value */
-    oldSelectedSpectrumForProcessingId = selectedSpectrumForProcessingId;
-
     /* remember new id of selected spectrum */
     selectedSpectrumForProcessingId = selectedValue;
 
     const selectedSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
     /* fix color for using spectrumType-color association */
     updateSelectedSpectrumColorToSpectrumTypeColor(selectedSpectrum);
+    addMessage(SpectrumTypeColorRelationshipMessage, 3000, INFO);
 
     if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL)
         isSLabSpectrumCurrentlySelected = false;
 
     /* find ids of spectra to be removed when changing selected spectrum */
-    findSpectrumChildrenByIdProcedure(selectedSpectrumForProcessingId);
+    findSpectrumChildrenByIdProcedure(oldSelectedSpectrumForProcessingId);
     if (isAnyItem(familyIds)) { // familyIds is filled-up during 'findSpectrumChildrenByIdProcedure'
         let callbackYes = async function () {
+            /* remember the previous id value */
+            oldSelectedSpectrumForProcessingId = selectedSpectrumForProcessingId;
+
             await callbackYesForSpectrumSelectionManagementAsync(selectedSpectrum, familyIds);
         };
         let callbackNo = function () {
@@ -484,6 +485,9 @@ async function setSelectedSpectrumForProcessing(selected) {
         showDialogWithActions(WARNING_LABEL, CharmsDeleteProcessedSpectraQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);
     } else {
         setTimeout(async function () {
+            /* remember the previous id value */
+            oldSelectedSpectrumForProcessingId = selectedSpectrumForProcessingId;
+
             /* add button for managing spectrumType-color relationship */
             addCharmsColorSelectorButton();
 

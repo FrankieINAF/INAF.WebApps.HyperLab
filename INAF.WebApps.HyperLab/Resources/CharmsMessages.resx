@@ -120,6 +120,9 @@
   <data name="ButtonClearAllLabel" xml:space="preserve">
     <value>Clear all</value>
   </data>
+  <data name="MessagesListLabel" xml:space="preserve">
+    <value>Below is the list of messages provided by the system, with the most recent ones at the top.</value>
+  </data>
   <data name="MessagesTitle" xml:space="preserve">
     <value>Messages</value>
   </data>

@@ -15,21 +15,30 @@ function clearMessages() {
 }
 
 function addMessage(content, duration, type) {
-    messages.push(content);
+    var message = buildMessageItem(content);
+    messages.push(message);
 
     showToast(content, duration, type);
 
-    const html = buildMessageItem(content, type);
+    const html = buildMessageUIItem(message, type);
     $('#messagesContainer').append(html);
 
     if (messages.length == 1)
         addOpenMessagesCharmsButton();
 }
 
-function buildMessageItem(content, type) {
+function buildMessageItem(content) {
+    return {
+        Content: content,
+        Time: luxon.DateTime.now().toLocaleString(luxon.DateTime.TIME_WITH_SECONDS)
+    };
+}
+
+function buildMessageUIItem(message, type) {
     let html = ``;
-    html += `<div class="remark ${type}">`;
-    html += `   <span class="text-secondary fg-black">${content}</span>`;
+    html += `<div class="remark ${type}" style="padding:0.5rem">`;
+    html += `   <div class="row cell-fs-12"><span class="text-small fg-black">${message.Time}</span><div>`;
+    html += `   <div class="row cell-fs-12"><span class="text-secondary fg-black">${message.Content}</span></div>`;
     html += `</div>`;
 
     return html;

@@ -567,4 +567,7 @@
   <data name="CharmsSelectedSpectrumColorRestoreMessage" xml:space="preserve">
     <value>The color of the selected spectrum has been restored removing  the SpectrumType-Color relationship during spectrum processing</value>
   </data>
+  <data name="SpectrumTypeColorRelationshipMessage" xml:space="preserve">
+    <value>The 'Spectrum Type – Color' code is used during spectral analysis to help users distinguish between different processing levels. To customize the colors associated with each spectrum type, use the Color Settings panel.</value>
+  </data>
 </root>
