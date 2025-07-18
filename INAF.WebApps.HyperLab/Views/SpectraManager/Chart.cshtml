@@ -32,6 +32,33 @@
 <!-- CHARTS -->
 <div id="charts" class="mywrapper overflow-x-auto overflow-y-auto" style="max-width: 100%"></div>
 
+<!-- GUIDE -->
+<div id="guideContainer" class="mywrapper w-vw-100 h-vh-100 flex-justify-center flex-align-center d-none" style="position: absolute; top:0px; left: 0px">
+    <div id="guide" class="mywrapper overflow-x-hidden overflow-y-auto semitransparent-black w-vw-75 h-vh-75">
+        <!-- TITLE + CLOSE BUTTON -->
+        <div class="row">
+            <div class="cell-fs-12 text-center">
+                <span class="text-leader fg-white">@Html.Raw(Guide.SpectraHubChartTitle)</span>
+                <button id="buttonCloseGuide" class="button light cycle outline pointer fg-white margin-right-8" style="float: right;" onclick="closeGuide()"><span class="mif-cross-light"></span></button>
+            </div>
+        </div>
+        <!-- GENERAL INFO -->
+        <div class="row">
+            <div class="cell-fs-12 text-center">
+                <p class="text-normal text-just fg-white margin-top-16 margin-horizontal-16">@Html.Raw(Guide.SpectraHubChart1)</p>
+            </div>
+            <div class="cell-fs-12 text-center">
+                <p class="text-normal text-just fg-white margin-top-16 margin-horizontal-16">@Html.Raw(Guide.SpectraHubChart2)</p>
+            </div>
+            <div class="cell-fs-12 text-center">
+                <p class="text-normal text-just fg-white margin-top-16 margin-horizontal-16">@Html.Raw(Guide.SpectraHubChart3)</p>
+            </div>
+        </div>
+        <!-- PARTIAL VIEW -->
+        <div id="guideSection" class="margin-top-16"></div>
+    </div>
+</div>
+
 <!-- JOYSTICK -->
 <div id="joystickMainContainer" class="joystick-main-container flex-column d-none" style="top: calc(100% - 46px)">
     <!-- LITTLE PANEL FOR SHOWING/HIFING JOYSTICK -->
@@ -103,7 +130,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- CHARMS - COLOR SELECTOR -->
 <div id="charmsColorSelector" data-role="charms" data-cls-charms="charms-color-selector-panel" data-position="top" data-on-open="createSpectraTypesColorList()">
@@ -375,11 +401,13 @@
     <script type="text/javascript" src="~/lib/joystick/joystick.js"></script>
     <script type="text/javascript" src="~/js/hyperlab/chart/joystickmanager.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/chart/joystickchart.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/guide/guide.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">
     <script type="text/javascript" src="~/js/dist/chart/chartbundle.min.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/dist/chart/charmsbundle.min.js" asp-append-version="true"></script>
-     <script type="text/javascript" src="~/js/dist/chart/joystickbundle.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/dist/chart/joystickbundle.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/dist/guide/guidebundle.min.js" asp-append-version="true"></script>
 </environment>
 
 <script type="text/javascript">

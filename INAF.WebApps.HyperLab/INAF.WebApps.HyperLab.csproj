@@ -265,6 +265,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Contacts.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Guide.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Guide.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Home.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -380,6 +385,10 @@
     <EmbeddedResource Update="Resources\Contacts.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Contacts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Guide.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Guide.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Home.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

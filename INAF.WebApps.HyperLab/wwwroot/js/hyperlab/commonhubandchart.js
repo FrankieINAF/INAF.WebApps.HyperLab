@@ -4,6 +4,7 @@ var showCharmsLegendButtonId = 'buttonShowCharmsLegend';
 var goToChartsButtonId = 'buttonGoToCharts';
 var helpButtonId = 'buttonHelp';
 
+var guideChartButtonId = 'guideChartButton';
 var openMessagesCharmsButtonId = 'buttonOpenMessagesCharms';
 var searchButtonId = 'buttonSearch';
 var setPublicButtonId = 'buttonSetPublic';
@@ -72,6 +73,7 @@ function manageNavigation() {
 
         case NAVIGATION_SHOW_CHART:
         case NAVIGATION_CREATE_CHART:
+            addGuideChartButton();
             addCharmsLegendButton();
             addBackClearToSearchButton();
             addOpenProcessSpectraCharmsButton();
@@ -144,6 +146,23 @@ function removeMessagesCharmsButtonProcedure() {
 
 function removeMessagesCharmsButton() {
     $(`#${openMessagesCharmsButtonId}`).remove();
+}
+
+
+/* ---------- SET GUIDE BUTTON ---------- */
+function addGuideChartButton() {
+    addButton(guideChartButtonId, ButtonGuideLabel, 'mif-help', showGuideChart);
+}
+
+function removeGuideChartButtonProcedure() {
+    if (!isButtonAvailable(guideChartButtonId))
+        return;
+
+    animateCSS(`${guideChartButtonId}`, `bounceOutUp`, FAST, removeGuideChartButton);
+}
+
+function removeGuideChartButton() {
+    $(`#${guideChartButtonId}`).remove();
 }
 
 /* ---------- SET PUBLIC BUTTON ---------- */

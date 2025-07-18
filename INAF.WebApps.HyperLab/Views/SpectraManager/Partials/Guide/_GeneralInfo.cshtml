@@ -1,0 +1,22 @@
+﻿@using INAF.WebApps.HyperLab.Resources;
+
+<div id="generalInfo" class="margin-horizontal-16">
+    <!-- LEGEND -->
+    <div class="row">
+        <div class="cell-fs-2 cell-md-1">
+            <button class="button light cycle outline" title="@Html.Raw(Charts.ButtonShowCharmsLegendLabel)"><span class="mif-list"></span></button>
+        </div>
+        <div class="cell-fs-10 cell-md-11">
+            <p class="text-leader text-medium fg-white">@Html.Raw(Guide.ButtonLegendLabel)</p>
+        </div>
+    </div>
+    <!-- BACK TO SEARCH -->
+    <div class="row">
+        <div class="cell-fs-2 cell-md-1">
+            <button class="button light cycle outline" title="Show/hide legend"><span class="mif-cross-light"></span></button>
+        </div>
+        <div class="cell-fs-10 cell-md-11">
+            <p class="text-leader text-medium fg-white">@Html.Raw(Guide.ButtonBackToSearchLabel)</p>
+        </div>
+    </div>
+</div>

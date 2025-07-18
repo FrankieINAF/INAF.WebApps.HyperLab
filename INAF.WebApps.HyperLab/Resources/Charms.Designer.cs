@@ -403,6 +403,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show guide.
+        /// </summary>
+        public static string ButtonGuideLabel {
+            get {
+                return ResourceManager.GetString("ButtonGuideLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A copy of this processing step is already saved on cloud.
         /// </summary>
         public static string CharmsAlreadySavedOnCloudMessage {

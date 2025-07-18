@@ -71,6 +71,14 @@
     "includeInProject": true
   },
   {
+    "outputFileName": "wwwroot/js/dist/guide/guidebundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/guide/guide.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
     "outputFileName": "wwwroot/js/dist/hub/hubbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/commonhubandchart.js",

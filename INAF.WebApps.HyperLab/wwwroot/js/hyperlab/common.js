@@ -569,10 +569,6 @@ function showElem(elem) {
     $(elem).css('display', 'block');
 }
 
-function showFlexElem(elem) {
-    $(elem).css('display', 'flex');
-}
-
 function showFlex(id) {
     $(`#${id}`).css('display', 'flex');
 }
