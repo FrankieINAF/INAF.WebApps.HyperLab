@@ -97,6 +97,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Click image to show full-screen.
+        /// </summary>
+        public static string ClickToShowImageFullScreenLabel {
+            get {
+                return ResourceManager.GetString("ClickToShowImageFullScreenLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string ClosePanelLabel {
+            get {
+                return ResourceManager.GetString("ClosePanelLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close wizard.
         /// </summary>
         public static string CloseWizardLabel {

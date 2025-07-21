@@ -127,12 +127,51 @@
     <value>&lt;i&gt;Spectra Hub&lt;/i&gt; chart page is designed to perform essential data analysis techniques—continuum removal, smoothing, and band analysis—through a simple and intuitive graphical interface.</value>
   </data>
   <data name="SpectraHubChart2" xml:space="preserve">
-    <value>Logged-in users are permitted to store spectral data in the &lt;i&gt;HyperLab&lt;/i&gt; database, including every stage of data processing. This allows the data to be saved, retrieved, and reused in future projects. When information is stored, a unique user ID is linked to it, establishing ownership and ensuring that the data remains private unless the user explicitly chooses to share it.</value>
+    <value>Logged-in users are permitted to store spectral data in the &lt;i&gt;HyperLab&lt;/i&gt; database, including every stage of data processing.</value>
   </data>
   <data name="SpectraHubChart3" xml:space="preserve">
+    <value>This allows the data to be saved, retrieved, and reused in future projects. When information is stored, a unique user ID is linked to it, establishing ownership and ensuring that the data remains private unless the user explicitly chooses to share it.</value>
+  </data>
+  <data name="SpectraHubChart4" xml:space="preserve">
     <value>Below is an overview of the available features. Click on an item to view a detailed description of the feature, if available.</value>
   </data>
   <data name="SpectraHubChartTitle" xml:space="preserve">
-    <value>Let's explore Spectra Hub Chart Page</value>
+    <value>Spectra Hub Chart Page Guide</value>
+  </data>
+  <data name="ButtonWizardLabel" xml:space="preserve">
+    <value>Show panels for data analysis</value>
+  </data>
+  <data name="ButtonEnterFullScreenLabel" xml:space="preserve">
+    <value>Enable full screen mode for page</value>
+  </data>
+  <data name="SpectraHubChartPanelsAlignmentLabel" xml:space="preserve">
+    <value>Alignment panel</value>
+  </data>
+  <data name="SpectraHubChartPanelsSmoothingButtonLabel" xml:space="preserve">
+    <value>Explore &lt;i&gt;Smoothing&lt;/i&gt; panel</value>
+  </data>
+  <data name="SpectraHubChartPanelsLabel" xml:space="preserve">
+    <value>Panels for data analysis consist of a set of 4 panels aimed to provide basic techniques such as continuum-removal, smoothing and band analysis. Also, for SLab registered users an extra panel for spectra alignment is available.</value>
+  </data>
+  <data name="SpectraHubChartPanelsAlignmentButtonLabel" xml:space="preserve">
+    <value>Explore &lt;i&gt;Alignment&lt;/i&gt; panel</value>
+  </data>
+  <data name="SpectraHubChartPanelsBandAnalysisButtonLabel" xml:space="preserve">
+    <value>Explore &lt;i&gt;Band analysis&lt;/i&gt; panel</value>
+  </data>
+  <data name="SpectraHubChartPanelsContinuumRemovalButtonLabel" xml:space="preserve">
+    <value>Explore &lt;i&gt;Continuum removal&lt;/i&gt; panel</value>
+  </data>
+  <data name="ButtonBackToMainMenuLabel" xml:space="preserve">
+    <value>Back to main menu</value>
+  </data>
+  <data name="SpectraHubChartPanelsContinuumRemovedImageLabel" xml:space="preserve">
+    <value>Example of spectrum after the continuum removal procedure is completed.</value>
+  </data>
+  <data name="SpectraHubChartPanelsSmoothingImageLabel" xml:space="preserve">
+    <value>Example of smoothed spectrum.</value>
+  </data>
+  <data name="SpectraHubChartPanelsBandAnalysisImageLabel" xml:space="preserve">
+    <value>Example of a completed band analysis.</value>
   </data>
 </root>

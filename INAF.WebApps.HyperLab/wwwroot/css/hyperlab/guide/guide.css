@@ -1,2 +1,29 @@
-﻿body {
+﻿.min-width-36 {
+    min-width: 36px !important;
+}
+
+.guide-container {
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute;
+    top: 52px;
+    z-index: 100;
+    background-color: rgba(0,0,0,0.9);
+}
+
+.panels-images {
+    width: 400px !important;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+/* mobile-phones */
+@media (max-width: 576px) {
+    .panels-images {
+        width: 300px !important;
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
 }

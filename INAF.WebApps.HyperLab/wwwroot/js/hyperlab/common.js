@@ -669,6 +669,19 @@ function onImageChange(evt, id) {
 }
 
 /* -------------------------------------------------------------------------------- */
+/* ---------- IMAGE FULL-SCREEN ---------- */
+/* -------------------------------------------------------------------------------- */
+function closeFullscreen() {
+    hideByClassDFlexItem('fullscreen');
+}
+
+function openFullscreen(imgElement) {
+    const fullscreenImg = document.getElementById("fullscreen-img");
+    fullscreenImg.src = imgElement.src;
+    showByClassDFlexItem('fullscreen');
+}
+
+/* -------------------------------------------------------------------------------- */
 /* ---------- ELEMENT POSITION/DIMENSION ---------- */
 /* -------------------------------------------------------------------------------- */
 /* ABSOLUTE */

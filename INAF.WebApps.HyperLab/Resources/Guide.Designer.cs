@@ -61,11 +61,29 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back to main menu.
+        /// </summary>
+        public static string ButtonBackToMainMenuLabel {
+            get {
+                return ResourceManager.GetString("ButtonBackToMainMenuLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close chart page and go back to search page.
         /// </summary>
         public static string ButtonBackToSearchLabel {
             get {
                 return ResourceManager.GetString("ButtonBackToSearchLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable full screen mode for page.
+        /// </summary>
+        public static string ButtonEnterFullScreenLabel {
+            get {
+                return ResourceManager.GetString("ButtonEnterFullScreenLabel", resourceCulture);
             }
         }
         
@@ -79,6 +97,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show panels for data analysis.
+        /// </summary>
+        public static string ButtonWizardLabel {
+            get {
+                return ResourceManager.GetString("ButtonWizardLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;i&gt;Spectra Hub&lt;/i&gt; chart page is designed to perform essential data analysis techniques—continuum removal, smoothing, and band analysis—through a simple and intuitive graphical interface..
         /// </summary>
         public static string SpectraHubChart1 {
@@ -88,7 +115,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logged-in users are permitted to store spectral data in the &lt;i&gt;HyperLab&lt;/i&gt; database, including every stage of data processing. This allows the data to be saved, retrieved, and reused in future projects. When information is stored, a unique user ID is linked to it, establishing ownership and ensuring that the data remains private unless the user explicitly chooses to share it..
+        ///   Looks up a localized string similar to Logged-in users are permitted to store spectral data in the &lt;i&gt;HyperLab&lt;/i&gt; database, including every stage of data processing..
         /// </summary>
         public static string SpectraHubChart2 {
             get {
@@ -97,7 +124,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Below is an overview of the available features. Click on an item to view a detailed description of the feature, if available..
+        ///   Looks up a localized string similar to This allows the data to be saved, retrieved, and reused in future projects. When information is stored, a unique user ID is linked to it, establishing ownership and ensuring that the data remains private unless the user explicitly chooses to share it..
         /// </summary>
         public static string SpectraHubChart3 {
             get {
@@ -106,7 +133,97 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Let&apos;s explore Spectra Hub Chart Page.
+        ///   Looks up a localized string similar to Below is an overview of the available features. Click on an item to view a detailed description of the feature, if available..
+        /// </summary>
+        public static string SpectraHubChart4 {
+            get {
+                return ResourceManager.GetString("SpectraHubChart4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Explore &lt;i&gt;Alignment&lt;/i&gt; panel.
+        /// </summary>
+        public static string SpectraHubChartPanelsAlignmentButtonLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartPanelsAlignmentButtonLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alignment panel.
+        /// </summary>
+        public static string SpectraHubChartPanelsAlignmentLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartPanelsAlignmentLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Explore &lt;i&gt;Band analysis&lt;/i&gt; panel.
+        /// </summary>
+        public static string SpectraHubChartPanelsBandAnalysisButtonLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartPanelsBandAnalysisButtonLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Example of a completed band analysis..
+        /// </summary>
+        public static string SpectraHubChartPanelsBandAnalysisImageLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartPanelsBandAnalysisImageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Explore &lt;i&gt;Continuum removal&lt;/i&gt; panel.
+        /// </summary>
+        public static string SpectraHubChartPanelsContinuumRemovalButtonLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartPanelsContinuumRemovalButtonLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Example of spectrum after the continuum removal procedure is completed..
+        /// </summary>
+        public static string SpectraHubChartPanelsContinuumRemovedImageLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartPanelsContinuumRemovedImageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Panels for data analysis consist of a set of 4 panels aimed to provide basic techniques such as continuum-removal, smoothing and band analysis. Also, for SLab registered users an extra panel for spectra alignment is available..
+        /// </summary>
+        public static string SpectraHubChartPanelsLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartPanelsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Explore &lt;i&gt;Smoothing&lt;/i&gt; panel.
+        /// </summary>
+        public static string SpectraHubChartPanelsSmoothingButtonLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartPanelsSmoothingButtonLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Example of smoothed spectrum..
+        /// </summary>
+        public static string SpectraHubChartPanelsSmoothingImageLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartPanelsSmoothingImageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spectra Hub Chart Page Guide.
         /// </summary>
         public static string SpectraHubChartTitle {
             get {

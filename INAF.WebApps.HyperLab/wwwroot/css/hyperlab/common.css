@@ -10,6 +10,17 @@
     float: right !important;
 }
 
+.full-screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 9999;
+}
+
 .display-block {
     display: block;
 }
@@ -108,6 +119,14 @@ div.mandatory {
 
 .margin-8 {
     margin: 8px;
+}
+
+.margin-16 {
+    margin: 16px !important;
+}
+
+.margin-32 {
+    margin: 32px !important;
 }
 
 .margin-bottom-4 {

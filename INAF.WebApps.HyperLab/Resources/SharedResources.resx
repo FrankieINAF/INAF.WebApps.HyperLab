@@ -129,6 +129,12 @@
   <data name="CancelLabel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="ClickToShowImageFullScreenLabel" xml:space="preserve">
+    <value>Click image to show full-screen</value>
+  </data>
+  <data name="ClosePanelLabel" xml:space="preserve">
+    <value>Close</value>
+  </data>
   <data name="CloseWizardLabel" xml:space="preserve">
     <value>Close wizard</value>
   </data>
