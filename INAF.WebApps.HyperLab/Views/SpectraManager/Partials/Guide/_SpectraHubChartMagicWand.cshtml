@@ -1,0 +1,29 @@
+﻿@using INAF.WebApps.HyperLab.Resources
+
+<div class="margin-horizontal-16">
+    <div class="row d-flex">
+        <div><button class="button light cycle outline pointer fg-white margin-right-8" style="float: right" onclick="showGuideChart()"><span class="mif-arrow-left"></span></button></div>
+        <div class="margin-left-8"><p class="text-normal fg-white margin-top-8">@Html.Raw(Guide.ButtonBackToMainMenuLabel)</p></div>
+    </div>
+    <!-- EXPLANATION -->
+    <div class="row d-flex cell-fs-12 margin-top-16">
+        <p class="text-normal text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.SpectraHubChartPanelsLabel)</p>
+    </div>
+    <!-- BUTTONS -->
+    <div class="row d-flex cell-fs-12 margin-top-8">
+        <button class="button light cycle outline min-width-36" title="Show/hide legend"><span class="mif-arrow-right" onclick="showAlignmentPanel()"></span></button>
+        <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.SpectraHubChartPanelsAlignmentButtonLabel)</p>
+    </div>
+    <div class="row d-flex cell-fs-12 margin-top-8">
+        <button class="button light cycle outline min-width-36" title="Show/hide legend"><span class="mif-arrow-right" onclick="showContinuumRemovalPanel()"></span></button>
+        <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.SpectraHubChartPanelsContinuumRemovalButtonLabel)</p>
+    </div>
+    <div class="row d-flex cell-fs-12 margin-top-8">
+        <button class="button light cycle outline min-width-36" title="Show/hide legend"><span class="mif-arrow-right" onclick="showSmoothingPanel()"></span></button>
+        <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.SpectraHubChartPanelsSmoothingButtonLabel)</p>
+    </div>
+    <div class="row d-flex cell-fs-12 margin-top-8">
+        <button class="button light cycle outline min-width-36" title="Show/hide legend"><span class="mif-arrow-right" onclick="showBandAnalysisPanel()"></span></button>
+        <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.SpectraHubChartPanelsBandAnalysisButtonLabel)</p>
+    </div>
+</div>
