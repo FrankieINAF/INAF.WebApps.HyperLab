@@ -3,7 +3,7 @@
 /* -------------------------------------------------------------------------------- */
 function showGuideChart() {
     showByClassDFlexItem('guideContainer');
-    animateCSS('guideContainer', 'fadeIn', 'FAST', onShowGuideChartCompleted);
+    animateCSS('guideContainer', 'fadeIn', 'FASTER', onShowGuideChartCompleted);
 }
 
 function onShowGuideChartCompleted() {
@@ -17,10 +17,11 @@ function onShowGuideChartCompleted() {
 /* ---------- CLOSE GUIDE ---------- */
 /* -------------------------------------------------------------------------------- */
 function closeGuide() {
-    animateCSS('guideContainer', 'fadeOut', 'FAST', onCloseGuideCompleted);
+    animateCSS('guideContainer', 'fadeOut', 'FASTER', onCloseGuideCompleted);
 }
 
 function onCloseGuideCompleted() {
+    $('#guide').empty();
     hideByClassDFlexItem('guideContainer');
 }
 

@@ -142,6 +142,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (only SLab logged users).
+        /// </summary>
+        public static string SpectraHubChartOnlySLabLoggedLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartOnlySLabLoggedLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Explore &lt;i&gt;Alignment&lt;/i&gt; panel.
         /// </summary>
         public static string SpectraHubChartPanelsAlignmentButtonLabel {
@@ -187,7 +196,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Example of spectrum after the continuum removal procedure is completed..
+        ///   Looks up a localized string similar to Example of continuum-removed spectrum.
         /// </summary>
         public static string SpectraHubChartPanelsContinuumRemovedImageLabel {
             get {

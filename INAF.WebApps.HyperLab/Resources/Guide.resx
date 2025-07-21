@@ -166,12 +166,15 @@
     <value>Back to main menu</value>
   </data>
   <data name="SpectraHubChartPanelsContinuumRemovedImageLabel" xml:space="preserve">
-    <value>Example of spectrum after the continuum removal procedure is completed.</value>
+    <value>Example of continuum-removed spectrum</value>
   </data>
   <data name="SpectraHubChartPanelsSmoothingImageLabel" xml:space="preserve">
     <value>Example of smoothed spectrum.</value>
   </data>
   <data name="SpectraHubChartPanelsBandAnalysisImageLabel" xml:space="preserve">
     <value>Example of a completed band analysis.</value>
+  </data>
+  <data name="SpectraHubChartOnlySLabLoggedLabel" xml:space="preserve">
+    <value>(only SLab logged users)</value>
   </data>
 </root>

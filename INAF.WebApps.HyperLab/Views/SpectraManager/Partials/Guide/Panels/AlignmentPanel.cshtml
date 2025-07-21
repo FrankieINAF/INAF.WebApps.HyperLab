@@ -1,5 +1,9 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using INAF.WebApps.HyperLab.Resources;
+
+<div class="row margin-16">
+    <div class="row d-flex">
+        <div><button class="button light cycle outline pointer fg-white margin-right-8" onclick="showGuideMagicWand()"><span class="mif-arrow-left"></span></button></div>
+        <div class="margin-left-8"><p class="text-normal fg-white margin-top-8">@Html.Raw(Guide.ButtonBackToMainMenuLabel)</p></div>
+        <div><button class="button light cycle outline pointer fg-white margin-right-8" style="float: right" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
+    </div>
+</div>

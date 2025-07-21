@@ -1,47 +1,61 @@
 ﻿@using INAF.WebApps.HyperLab.Resources
 
+<div class="row margin-16 d-flex flex-justify-between">
+    <div class="d-flex">
+        <div><button class="button light cycle outline pointer fg-white margin-right-8" onclick="showGuideChart()"><span class="mif-arrow-left"></span></button></div>
+        <div class="margin-left-8"><p class="text-normal fg-white margin-top-8">@Html.Raw(Guide.ButtonBackToMainMenuLabel)</p></div>
+    </div>
+    <div><button class="button light cycle outline pointer fg-white margin-right-8" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
+</div>
 <div class="row margin-16">
     <!-- BUTTONS -->
     <div class="cell-fs-12 cell-md-6">
-        <div class="row d-flex">
-            <div><button class="button light cycle outline pointer fg-white margin-right-8" style="float: right" onclick="showGuideChart()"><span class="mif-arrow-left"></span></button></div>
-            <div class="margin-left-8"><p class="text-normal fg-white margin-top-8">@Html.Raw(Guide.ButtonBackToMainMenuLabel)</p></div>
-        </div>
         <!-- EXPLANATION -->
         <div class="row d-flex cell-fs-12 margin-top-16">
             <p class="text-normal text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.SpectraHubChartPanelsLabel)</p>
         </div>
         <!-- BUTTONS -->
-        <div class="row d-flex cell-fs-12 margin-top-8">
-            <button class="button light cycle outline min-width-36" title="Show/hide legend"><span class="mif-arrow-right" onclick="showAlignmentPanel()"></span></button>
-            <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.SpectraHubChartPanelsAlignmentButtonLabel)</p>
+        <div class="row margin-top-8">
+            <div class="cell-fs-12 d-flex">
+                <button class="button light cycle outline min-width-36" title="Show/hide legend"><span class="mif-arrow-right" onclick="showAlignmentPanel()"></span></button>
+                <div>
+                    <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.SpectraHubChartPanelsAlignmentButtonLabel)</p>
+                    <p class="text-small fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.SpectraHubChartOnlySLabLoggedLabel)</p>
+                </div>
+            </div>
         </div>
-        <div class="row d-flex cell-fs-12 margin-top-8">
-            <button class="button light cycle outline min-width-36" title="Show/hide legend"><span class="mif-arrow-right" onclick="showContinuumRemovalPanel()"></span></button>
-            <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.SpectraHubChartPanelsContinuumRemovalButtonLabel)</p>
+        <div class="row margin-top-8">
+            <div class="cell-fs-12 d-flex">
+                <button class="button light cycle outline min-width-36" title="Show/hide legend"><span class="mif-arrow-right" onclick="showContinuumRemovalPanel()"></span></button>
+                <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.SpectraHubChartPanelsContinuumRemovalButtonLabel)</p>
+            </div>
         </div>
-        <div class="row d-flex cell-fs-12 margin-top-8">
-            <button class="button light cycle outline min-width-36" title="Show/hide legend"><span class="mif-arrow-right" onclick="showSmoothingPanel()"></span></button>
-            <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.SpectraHubChartPanelsSmoothingButtonLabel)</p>
+        <div class="row margin-top-8">
+            <div class="cell-fs-12 d-flex">
+                <button class="button light cycle outline min-width-36" title="Show/hide legend"><span class="mif-arrow-right" onclick="showSmoothingPanel()"></span></button>
+                <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.SpectraHubChartPanelsSmoothingButtonLabel)</p>
+            </div>
         </div>
-        <div class="row d-flex cell-fs-12 margin-top-8">
-            <button class="button light cycle outline min-width-36" title="Show/hide legend"><span class="mif-arrow-right" onclick="showBandAnalysisPanel()"></span></button>
-            <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.SpectraHubChartPanelsBandAnalysisButtonLabel)</p>
+        <div class="row margin-top-8">
+            <div class="cell-fs-12 d-flex">
+                <button class="button light cycle outline min-width-36" title="Show/hide legend"><span class="mif-arrow-right" onclick="showBandAnalysisPanel()"></span></button>
+                <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.SpectraHubChartPanelsBandAnalysisButtonLabel)</p>
+            </div>
         </div>
     </div>
     <!-- IMAGES -->
     <div class="cell-fs-12 cell-md-6">
         <div class="d-flex flex-column-fs flex-row-lg flex-align-center-lg">
-            <div class="margin-horizontal-8"><img src="~/images/guide/panels/conitnuum removed.png" class="panels-images pointer" title="@Html.Raw(SharedResources.ClickToShowImageFullScreenLabel)" onclick="openFullscreen(this)" /></div>
-            <div class="margin-8"><p class="text-secondary text-just fg-white margin-horizontal-8">@Html.Raw(Guide.SpectraHubChartPanelsContinuumRemovedImageLabel)</p></div>
+            <div class="margin-horizontal-8"><img src="~/images/guide/panels/continuum_removed.png" class="panels-images pointer" title="@Html.Raw(SharedResources.ClickToShowImageFullScreenLabel)" onclick="openFullscreen(this)" /></div>
+            <div class="margin-8"><p class="text-secondary text-just fg-white">@Html.Raw(Guide.SpectraHubChartPanelsContinuumRemovedImageLabel)</p></div>
         </div>
-        <div class="d-flex flex-column-fs flex-row-lg flex-align-center-lg">
-            <div class="margin-horizontal-8"><p class="text-secondary text-just fg-white">@Html.Raw(Guide.SpectraHubChartPanelsSmoothingImageLabel)</p></div>
-            <div class="margin-horizontal-8"><img src="~/images/guide/panels/smoothing.png" class="panels-images pointer" title="@Html.Raw(SharedResources.ClickToShowImageFullScreenLabel)" onclick="openFullscreen(this)" /></div>
+        <div class="d-flex flex-column-fs flex-row-lg flex-align-center-lg margin-top-16">
+            <div class="margin-horizontal-8 order-fs-1 order-lg-2"><img src="~/images/guide/panels/smoothing.png" class="panels-images pointer" title="@Html.Raw(SharedResources.ClickToShowImageFullScreenLabel)" onclick="openFullscreen(this)" /></div>
+            <div class="margin-8 order-fs-2 order-lg-1"><p class="text-secondary text-just fg-white">@Html.Raw(Guide.SpectraHubChartPanelsSmoothingImageLabel)</p></div>
         </div>
-        <div class="d-flex flex-column-fs flex-row-lg flex-align-center-lg">
-            <div class="margin-horizontal-8"><img src="~/images/guide/panels/band analysis_1.png" class="panels-images pointer" title="@Html.Raw(SharedResources.ClickToShowImageFullScreenLabel)" onclick="openFullscreen(this)" /></div>
-            <div class="margin-horizontal-8"><p class="text-secondary text-just fg-white">@Html.Raw(Guide.SpectraHubChartPanelsBandAnalysisImageLabel)</p></div>
+        <div class="d-flex flex-column-fs flex-row-lg flex-align-center-lg margin-top-16">
+            <div class="margin-horizontal-8"><img src="~/images/guide/panels/band_analysis.png" class="panels-images pointer" title="@Html.Raw(SharedResources.ClickToShowImageFullScreenLabel)" onclick="openFullscreen(this)" /></div>
+            <div class="margin-8"><p class="text-secondary text-just fg-white">@Html.Raw(Guide.SpectraHubChartPanelsBandAnalysisImageLabel)</p></div>
         </div>
     </div>
 </div>
