@@ -321,7 +321,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\js\dist\materials\mineralsbundle.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\js\dist\queue\queuebundle.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

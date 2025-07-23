@@ -244,11 +244,13 @@ function getNumOfAcquisitionsForSpectrum() {
 
 /* ---------- SAVE ---------- */
 async function saveInfo() {
-    let sampleTypeId = parseInt(Metro.getPlugin("#SampleDataSelectedValues_SampleTypeId", "select").val());
+    const sampleTypeId = parseInt(Metro.getPlugin("#SampleDataSelectedValues_SampleTypeId", "select").val());
 
-    let grainSizeTypeValues = getGrainSizeTypeValues(sampleTypeId);
+    const grainSizeTypeValues = getGrainSizeTypeValues(sampleTypeId);
 
-    let mineralTypeId = getMineralTypeId()
+    const mineralTypeId = getMineralTypeId()
+
+    const sampleName = $('#SampleDataSelectedValues_Name').val();
 
     let isSavingAllowed = true;
     let savingErrorMessage;
@@ -280,6 +282,10 @@ async function saveInfo() {
             break;
 
         default:
+    }
+
+    if (!sampleName) {
+        isSavingAllowed = false;
     }
 
     if (!isSavingAllowed) {
@@ -340,7 +346,8 @@ function loadInfoMeasurementInfo() {
 /* INFO - SAMPLE DATA */
 /* ################################################################################ */
 function callSetMineralTypeItems() {
-    setMineralTypeItems();
+    if (typeof setMineralTypeItems === 'function') // function is not defined when no sample data are available
+        setMineralTypeItems();
 }
 
 function clearInfo() {
@@ -522,6 +529,7 @@ function setLabel(text) {
 }
 
 function setSelection(ui) {
+    mineralTypeId = getMineralTypeId();
     switch (mineralTypeId) {
         case 1: //Monomineralic
             setMaterialForMonomineralic(ui);
@@ -536,7 +544,7 @@ function setSelection(ui) {
             break;
 
         case 4: //Rocks
-            
+
             setMaterialForRock(ui);
             break;
 
@@ -586,7 +594,6 @@ function setMaterialForExtraterrestrial(ui) {
 
     setMeteoriteClass(ui.item.id, ui.item.label);
 }
-
 
 function setMaterialForMix(ui) {
     hideByClass('noSelectedMinerals');
@@ -649,7 +656,7 @@ function setMaterialForRock(ui) {
         $('#Rock_Id').val(ui.item.id);
     }
 
-    setRock(ui.item.id, ui.item.label)
+    setRock(ui.item.id, ui.item.label);
 }
 
 function callLoadSpectrumSampleSelectedValuesView() {

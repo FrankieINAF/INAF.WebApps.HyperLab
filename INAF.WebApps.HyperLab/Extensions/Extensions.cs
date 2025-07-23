@@ -1,4 +1,7 @@
-﻿using System.Dynamic;
+﻿using INAF.Libraries.Net.DB.HyperLabData.Models.DbValues;
+using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData;
+using System.Dynamic;
 using System.Security.Claims;
 using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
@@ -6,6 +9,16 @@ namespace INAF.WebApps.HyperLab.Extensions
 {
     public static class Extensions
     {
+        public static void AddProperty(this ExpandoObject expando, string propertyName, object propertyValue)
+        {
+            // ExpandoObject supports IDictionary so we can extend it like this
+            var expandoDict = expando as IDictionary<string, object>;
+            if (expandoDict.ContainsKey(propertyName))
+                expandoDict[propertyName] = propertyValue;
+            else
+                expandoDict.Add(propertyName, propertyValue);
+        }
+
         public static CallerContext GetPermissionContext(this HttpContext httpContext)
         {
             string? token = httpContext.GetToken();
@@ -55,16 +68,32 @@ namespace INAF.WebApps.HyperLab.Extensions
             }
         }
 
-
-
-        public static void AddProperty(this ExpandoObject expando, string propertyName, object propertyValue)
+        public static GrainSizeModel ToGrainSizeModel(this DbIntDoubleValue dbIntDoubleValue)
         {
-            // ExpandoObject supports IDictionary so we can extend it like this
-            var expandoDict = expando as IDictionary<string, object>;
-            if (expandoDict.ContainsKey(propertyName))
-                expandoDict[propertyName] = propertyValue;
-            else
-                expandoDict.Add(propertyName, propertyValue);
+            return new GrainSizeModel()
+            {
+                Id = dbIntDoubleValue.Id,
+                Value = dbIntDoubleValue.DoubleValue,
+            };
+        }
+
+        public static GrainSizeTypeModel ToGrainSizeTypeModel(this DbStringValue dbStringValue)
+        {
+            return new GrainSizeTypeModel()
+            {
+                Id = dbStringValue.Id,
+                Type = dbStringValue.StringValue!,
+                TypeValue = dbStringValue.StringValue!.ToGrainSizeType()
+            };
+        }
+
+        public static OriginTypeModel ToOriginTypeModel(this DbStringValue dbStringValue)
+        {
+            return new OriginTypeModel()
+            {
+                Id = dbStringValue.Id,
+                Value = dbStringValue.StringValue
+            };
         }
     }
 }

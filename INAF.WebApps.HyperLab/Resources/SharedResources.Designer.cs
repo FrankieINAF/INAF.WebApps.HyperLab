@@ -232,6 +232,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string NoneLabel {
+            get {
+                return ResourceManager.GetString("NoneLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
         public static string OkLabel {

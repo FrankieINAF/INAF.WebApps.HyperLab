@@ -11,6 +11,11 @@
     background-color: rgba(0,0,0,0.9);
 }
 
+.guide-content {
+    width: 100% !important;
+    height: 100% !important;
+}
+
 .panels-images {
     width: 400px !important;
     margin-top: 16px;
@@ -25,5 +30,45 @@
         width: 300px !important;
         margin-top: 8px;
         margin-bottom: 8px;
+    }
+}
+
+.row-text-title {
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.row-text-content {
+    margin-top: 4px;
+    margin-left: 8px;
+    color: white;
+    font-size: 0.8rem;
+}
+
+.button-text {
+    margin-top: 8px;
+    margin-left: 8px;
+    color: white;
+    font-size: 1rem;
+}
+
+
+/* ################################################################################ */
+/* CONTROLS */
+/* ################################################################################ */
+.panel-image {
+    height: 50%;
+    margin: 4px;
+}
+
+.panel-image-caption {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+    .panel-image-caption {
+        margin-left: 16px;
     }
 }

@@ -8,7 +8,7 @@
 @using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 
 @{
-    int grainSizeLowerValueId = Model.SampleDataSelectedValues.GrainSizeLowerValueId ?? 0;
+    int grainSizeLowerValueId = Model.SampleDataSelectedValues!.GrainSizeLowerValueId ?? 0;
     int grainSizeUpperValueId = Model.SampleDataSelectedValues.GrainSizeUpperValueId ?? 0;
 
     int mineralTypeId = Model.SampleDataSelectedValues.MineralTypeId;
@@ -18,11 +18,11 @@
 <div class="row">
     <div class="cell-fs-12 d-flex flex-justify-center">
         <span>
-            @Html.LabelFor(model => model.SampleDataSelectedValues.Name, new Dictionary<string, object> { { "class", "control-label" } })
+            @Html.LabelFor(model => model.SampleDataSelectedValues!.Name, new Dictionary<string, object> { { "class", "control-label" } })
         </span>
         <span>:&nbsp;</span>
         <span>
-            @Html.LabelFor(model => model.SampleDataSelectedValues.Name, Model.SampleDataSelectedValues.Name)
+            @Html.LabelFor(model => model.SampleDataSelectedValues!.Name, Model.SampleDataSelectedValues.Name)
         </span>
     </div>
 </div>
@@ -33,11 +33,14 @@
         <!-- SAMPLE TYPES -->
         <div class="row cell-fs-12">
             <span>
-                @Html.LabelFor(model => model.SampleDataSelectedValues.SampleTypeId, Info.SampleDataTypeSelectedValueLabel, new Dictionary<string, object> { { "class", "control-label" } })
+                @Html.LabelFor(model => model.SampleDataSelectedValues!.SampleTypeId, Info.SampleDataTypeSelectedValueLabel, new Dictionary<string, object> { { "class", "control-label" } })
             </span>
             <span>:&nbsp;</span>
             <span>
-                @Html.LabelFor(model => model.SampleDataSelectedValues.SampleTypeId, Model.SampleDataAvailableValues.SampleDataValues!.First(x => x.Id == Model.SampleDataSelectedValues.SampleTypeId).Value)
+                @{
+                    var sampleTypeValue = Model.SampleDataAvailableValues.SampleDataValues!.FirstOrDefault(x => x.Id == Model.SampleDataSelectedValues.SampleTypeId);
+                }
+                @Html.LabelFor(model => model.SampleDataSelectedValues!.SampleTypeId, sampleTypeValue?.Value ?? INAF.Libraries.Net.HyperLab.CommonModels.Resources.Info.NotAvailableLabel)
             </span>
         </div>
 
@@ -48,36 +51,51 @@
             string upperLimitMargin = "";
             string upperLimitVisibilityClass = "d-none";
             string visibilityClass = "d-none";
-            switch (Model.SampleDataSelectedValues.SampleTypeId)
+            if (Model.SampleDataSelectedValues != null)
             {
-                case (int)Enums.SampleType.Pellet:
-                case (int)Enums.SampleType.Particulate:
-                    visibilityClass = "d-flex";
-                    var sampleDataValues = Model.SampleDataAvailableValues.SampleDataValues!.First(x => x.Id == Model.SampleDataSelectedValues.SampleTypeId);
-                    if (Model.SampleDataSelectedValues.GrainSizeLowerValueId != null)
-                    {
-                        lowerLimit = sampleDataValues.GrainSizeValues!.First(x => x.Id == Model.SampleDataSelectedValues.GrainSizeLowerValueId).Value.ToString();
-                        lowerLimitVisibilityClass = "d-flex";
-                    }
-                    if (Model.SampleDataSelectedValues.GrainSizeUpperValueId != null)
-                    {
-                        upperLimit = sampleDataValues.GrainSizeValues!.First(x => x.Id == Model.SampleDataSelectedValues.GrainSizeUpperValueId).Value.ToString();
-                        upperLimitVisibilityClass = "d-flex";
+                switch (Model.SampleDataSelectedValues.SampleTypeId)
+                {
+                    case (int)Enums.SampleType.Pellet:
+                    case (int)Enums.SampleType.Particulate:
+                        visibilityClass = "d-flex";
+                        var sampleDataValues = Model.SampleDataAvailableValues.SampleDataValues!.First(x => x.Id == Model.SampleDataSelectedValues.SampleTypeId);
                         if (Model.SampleDataSelectedValues.GrainSizeLowerValueId != null)
-                            upperLimitMargin = "margin-top-8";
-                    }
-                    break;
+                        {
+                            lowerLimit = sampleDataValues.GrainSizeValues!.First(x => x.Id == Model.SampleDataSelectedValues.GrainSizeLowerValueId).Value.ToString();
+                            lowerLimitVisibilityClass = "d-flex";
+                        }
+                        if (Model.SampleDataSelectedValues.GrainSizeUpperValueId != null)
+                        {
+                            upperLimit = sampleDataValues.GrainSizeValues!.First(x => x.Id == Model.SampleDataSelectedValues.GrainSizeUpperValueId).Value.ToString();
+                            upperLimitVisibilityClass = "d-flex";
+                            if (Model.SampleDataSelectedValues.GrainSizeLowerValueId != null)
+                                upperLimitMargin = "margin-top-8";
+                        }
+                        break;
+                }
             }
         }
 
         <!-- GRAIN SIZE TYPES -->
         <div class="row cell-fs-12 margin-top-16 @visibilityClass" id="grainSizeTypesSelectLabel">
             <span>
-                @Html.LabelFor(model => model.SampleDataSelectedValues.GrainSizeTypeId, Info.GrainSizeTypeSelectedValueLabel, new Dictionary<string, object> { { "class", "control-label" } })
+                @Html.LabelFor(model => model.SampleDataSelectedValues!.GrainSizeTypeId, Info.GrainSizeTypeSelectedValueLabel, new Dictionary<string, object> { { "class", "control-label" } })
             </span>
             <span>:&nbsp;</span>
             <span>
-                @Html.LabelFor(model => model.SampleDataSelectedValues.GrainSizeTypeId, Model.SampleDataAvailableValues.GrainSizeTypeValues!.First(x => x.Id == Model.SampleDataSelectedValues.GrainSizeTypeId).Type)
+                @{
+                    string grainSizeTypeLabel = string.Empty;
+                    var grainSizeTypeValue = Model.SampleDataAvailableValues.GrainSizeTypeValues!.FirstOrDefault(x => x.Id == Model.SampleDataSelectedValues?.GrainSizeTypeId);
+                    if (grainSizeTypeValue != null)
+                    {
+                        grainSizeTypeLabel = grainSizeTypeValue.Type;
+                    }
+                    else
+                    {
+                        grainSizeTypeLabel = INAF.Libraries.Net.HyperLab.CommonModels.Resources.Info.NotAvailableLabel;
+                    }
+                }
+                @Html.LabelFor(model => model.SampleDataSelectedValues!.GrainSizeTypeId, grainSizeTypeLabel)
             </span>
         </div>
 
@@ -113,22 +131,38 @@
         <!-- ORIGIN TYPES -->
         <div class="row cell-fs-12">
             <span>
-                @Html.LabelFor(model => model.SampleDataSelectedValues.OriginTypeId, Info.SampleOriginTypeSelectedValueLabel, new Dictionary<string, object> { { "class", "control-label" } })
+                @Html.LabelFor(model => model.SampleDataSelectedValues!.OriginTypeId, Info.SampleOriginTypeSelectedValueLabel, new Dictionary<string, object> { { "class", "control-label" } })
             </span>
             <span>:&nbsp;</span>
             <span>
-                @Html.LabelFor(model => model.SampleDataSelectedValues.OriginTypeId, Model.SampleDataAvailableValues.OriginTypeValues!.First(x => x.Id == Model.SampleDataSelectedValues.OriginTypeId).Value)
+                @{
+                    var originTypeValue = Model.SampleDataAvailableValues.OriginTypeValues!.FirstOrDefault(x => x.Id == Model.SampleDataSelectedValues!.OriginTypeId);
+                    string originTypeLabel = INAF.Libraries.Net.HyperLab.CommonModels.Resources.Info.NotAvailableLabel;
+                    if (originTypeValue != null  && !string.IsNullOrEmpty(originTypeValue.Value))
+                    {
+                        originTypeLabel = originTypeValue.Value;
+                    }
+                }
+                @Html.LabelFor(model => model.SampleDataSelectedValues!.OriginTypeId, originTypeLabel)
             </span>
         </div>
 
         <!-- MINERAL TYPES -->
         <div class="row cell-fs-12 margin-top-16">
             <span>
-                @Html.LabelFor(model => model.SampleDataSelectedValues.MineralTypeId, Info.SampleMineralTypeSelectedValueLabel, new Dictionary<string, object> { { "class", "control-label" } })
+                @Html.LabelFor(model => model.SampleDataSelectedValues!.MineralTypeId, Info.SampleMineralTypeSelectedValueLabel, new Dictionary<string, object> { { "class", "control-label" } })
             </span>
             <span>:&nbsp;</span>
             <span>
-                @Html.LabelFor(model => model.SampleDataSelectedValues.MineralTypeId, Model.SampleDataAvailableValues.MineralTypeValues!.First(x => x.Id == Model.SampleDataSelectedValues.MineralTypeId).Value)
+                @{
+                    var mineralTypeValue = Model.SampleDataAvailableValues.MineralTypeValues!.FirstOrDefault(x => x.Id == Model.SampleDataSelectedValues!.MineralTypeId);
+                    string mineralTypeLabel = INAF.Libraries.Net.HyperLab.CommonModels.Resources.Info.NotAvailableLabel;
+                    if (mineralTypeValue != null && !string.IsNullOrEmpty(mineralTypeValue.Value))
+                    {
+                        mineralTypeLabel = mineralTypeValue.Value;
+                    }
+                }
+                @Html.LabelFor(model => model.SampleDataSelectedValues!.MineralTypeId, mineralTypeLabel)
             </span>
         </div>
     </div>

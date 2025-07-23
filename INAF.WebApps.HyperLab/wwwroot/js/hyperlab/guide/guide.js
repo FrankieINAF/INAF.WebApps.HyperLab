@@ -8,6 +8,7 @@ function showGuideChart() {
 
 function onShowGuideChartCompleted() {
     let callbackdone = function () {
+        $('#body').removeClass('overflow-y-auto').addClass('overflow-y-hidden');
         loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubChartMenu, 'guideMenu');
     };
     loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubChart, 'guide', callbackdone);
@@ -21,6 +22,7 @@ function closeGuide() {
 }
 
 function onCloseGuideCompleted() {
+    $('#body').removeClass('overflow-y-hidden').addClass('overflow-y-auto');
     $('#guide').empty();
     hideByClassDFlexItem('guideContainer');
 }
@@ -32,18 +34,18 @@ function showGuideMagicWand() {
     loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubChartMagicWand, 'guide');
 }
 
-function showAlignmentPanel() {
+function showGuideAlignmentPanel() {
     loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubChartPanelsAlignmentPanel, 'guide');
 }
 
-function showContinuumRemovalPanel() {
+function showGuideContinuumRemovalPanel() {
     loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubChartPanelsContinuumRemovalPanel, 'guide');
 }
 
-function showSmoothingPanel() {
+function showGuideSmoothingPanel() {
     loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubChartPanelsSmoothingPanel, 'guide');
 }
 
-function showBandAnalysisPanel() {
+function showGuideBandAnalysisPanel() {
     loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubChartPanelsBandAnalysisPanel, 'guide');
 }

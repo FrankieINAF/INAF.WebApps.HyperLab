@@ -2,6 +2,7 @@
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Info;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.MeasurementInfo;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
@@ -42,15 +43,14 @@ namespace INAF.WebApps.HyperLab.Controllers
             var measurementInfo = dbHandlerHyperLabData.getSpectrumFileMeasurementInfo(spectrumId,
                                                                                        getUserId());
 
-            if (measurementInfo != null)
-            {
-                if (dbHandlerHyperLabData.isUserStrictlyAuthorized(model.Id, getUserId()))
-                    return PartialView("Partials/_InfoMeasurementInfoEditor", measurementInfo);
-                else
-                    return PartialView("Partials/_InfoMeasurementInfoViewer", measurementInfo);
-            }
+            /* create empty model for spectra with no measurement info */
+            if (measurementInfo == null)
+                measurementInfo = new SpectrumFileMeasurementInfoValues();
+
+            if (dbHandlerHyperLabData.isUserStrictlyAuthorized(model.Id, getUserId()))
+                return PartialView("Partials/_InfoMeasurementInfoEditor", measurementInfo);
             else
-                return new EmptyResult();
+                return PartialView("Partials/_InfoMeasurementInfoViewer", measurementInfo);
         }
 
         [HttpGet]
@@ -71,15 +71,14 @@ namespace INAF.WebApps.HyperLab.Controllers
             var sampleDataSelectedValues = dbHandlerHyperLabData.getSpectrumFileSampleData(spectrumId,
                                                                                            getUserId());
 
-            if (sampleDataSelectedValues != null && sampleDataAvailableValues != null)
-            {
-                if (dbHandlerHyperLabData.isUserStrictlyAuthorized(model.Id, getUserId()))
-                    return PartialView("Partials/_InfoSampleDataEditor", new SpectrumFileSampleDataValuesContainer(model.Id, sampleDataAvailableValues, sampleDataSelectedValues, isEditAllowed: true));
-                else
-                    return PartialView("Partials/_InfoSampleDataViewer", new SpectrumFileSampleDataValuesContainer(model.Id, sampleDataAvailableValues, sampleDataSelectedValues, isEditAllowed: false));
-            }
+            /* create empty model for spectra with no sample data */
+            if (sampleDataSelectedValues == null)
+                sampleDataSelectedValues = SampleDataSelectedValues.CreateEmpty();
+
+            if (dbHandlerHyperLabData.isUserStrictlyAuthorized(model.Id, getUserId()))
+                return PartialView("Partials/_InfoSampleDataEditor", new SpectrumFileSampleDataValuesContainer(model.Id, sampleDataAvailableValues, sampleDataSelectedValues, isEditAllowed: true));
             else
-                return new EmptyResult();
+                return PartialView("Partials/_InfoSampleDataViewer", new SpectrumFileSampleDataValuesContainer(model.Id, sampleDataAvailableValues, sampleDataSelectedValues, isEditAllowed: false));
         }
 
         [HttpGet]
@@ -88,15 +87,14 @@ namespace INAF.WebApps.HyperLab.Controllers
             var sampleDataSelectedValues = dbHandlerHyperLabData.getSpectrumFileSampleData(model.Id,
                                                                                            getUserId());
 
-            if (sampleDataSelectedValues != null)
-            {
-                if (model.SelectedMineralTypeId != sampleDataSelectedValues.MineralTypeId)
-                    /* if the 2 values are different, then we want to change the mineral type selection, otherwise we're reloading original value */
-                    sampleDataSelectedValues.MineralTypeId = model.SelectedMineralTypeId;
-                return PartialView("Partials/_SelectedMineralTypeEditor", sampleDataSelectedValues);
-            }
-            else
-                return new EmptyResult();
+            /* create empty model for spectra with no sample data */
+            if (sampleDataSelectedValues == null)
+                sampleDataSelectedValues = new SampleDataSelectedValues();
+
+            /* if the 2 values are different, then we want to change the mineral type selection, otherwise we're reloading original value */
+            sampleDataSelectedValues.MineralTypeId = model.SelectedMineralTypeId;
+
+            return PartialView("Partials/_SelectedMineralTypeEditor", sampleDataSelectedValues);
         }
         #endregion
 
@@ -130,6 +128,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
         #endregion
 
+        #region POST
         [HttpPost]
         public async Task<IActionResult> DeleteMineral([FromBody] DeleteMaterialRequestModel model)
         {
@@ -164,5 +163,6 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
             }
         }
+        #endregion
     }
 }

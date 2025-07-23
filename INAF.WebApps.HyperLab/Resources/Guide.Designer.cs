@@ -61,6 +61,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back to data analysis panels.
+        /// </summary>
+        public static string ButtonBackToDataAnalysisPanels {
+            get {
+                return ResourceManager.GetString("ButtonBackToDataAnalysisPanels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back to main menu.
         /// </summary>
         public static string ButtonBackToMainMenuLabel {
@@ -138,6 +147,141 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SpectraHubChart4 {
             get {
                 return ResourceManager.GetString("SpectraHubChart4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically align the selected spectrum using the settings already saved on HyperLab cloud.
+        /// </summary>
+        public static string SpectraHubChartAlignmentAutoAlignSelectedSpectrumLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartAlignmentAutoAlignSelectedSpectrumLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically download the aligned version of the spectrum from the HyperLab cloud, when available.
+        /// </summary>
+        public static string SpectraHubChartAlignmentAutoDownloadAlignedSelectedSpectrumLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartAlignmentAutoDownloadAlignedSelectedSpectrumLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle vertical lines on the chart that indicate the boundaries of the spectrum segments to be aligned.
+        /// </summary>
+        public static string SpectraHubChartAlignmentCheckboxShowLinesLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartAlignmentCheckboxShowLinesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For users opting to work with RAW spectra, as well as for members of HyperLab’s scientific team tasked with preparing materials for the broader scientific community, a specialized feature is available.
+        /// </summary>
+        public static string SpectraHubChartAlignmentLabel1 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartAlignmentLabel1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Following a detailed overview of the items within the alignment panel.
+        /// </summary>
+        public static string SpectraHubChartAlignmentLabel2 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartAlignmentLabel2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically download white and ref white spectra for being used in alignment procedure.
+        /// </summary>
+        public static string SpectraHubChartAlignmentLoadWhiteSpectraForAlignmentLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartAlignmentLoadWhiteSpectraForAlignmentLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sets how many points are used to measure the difference between segments near the boundary.
+        /// </summary>
+        public static string SpectraHubChartAlignmentNumOfPointsLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartAlignmentNumOfPointsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show/hide settings panel for alignment.
+        /// </summary>
+        public static string SpectraHubChartAlignmentSettingsLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartAlignmentSettingsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle a panel for editing the wavelengths that define the boundaries of the spectrum segments to be aligned.
+        /// </summary>
+        public static string SpectraHubChartAlignmentShowHideSlidersLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartAlignmentShowHideSlidersLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open a context menu to download aligned spectrum as CSV or XML file.
+        /// </summary>
+        public static string SpectraHubChartButtonAlignedDownload {
+            get {
+                return ResourceManager.GetString("SpectraHubChartButtonAlignedDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete aligned spectrum from chart and the copy on cloud, when requested by user.
+        /// </summary>
+        public static string SpectraHubChartButtonAlignedRemove {
+            get {
+                return ResourceManager.GetString("SpectraHubChartButtonAlignedRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save aligned spectrum on cloud.
+        /// </summary>
+        public static string SpectraHubChartButtonAlignedSave {
+            get {
+                return ResourceManager.GetString("SpectraHubChartButtonAlignedSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute alignment procedure.
+        /// </summary>
+        public static string SpectraHubChartButtonAlignment {
+            get {
+                return ResourceManager.GetString("SpectraHubChartButtonAlignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When this icon is shown, an already saved version of the aligned spectrum is available on HyperLab cloud.
+        /// </summary>
+        public static string SpectraHubChartCharmsAlreadySavedOnCloudMessage {
+            get {
+                return ResourceManager.GetString("SpectraHubChartCharmsAlreadySavedOnCloudMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Following a detailed overview of the items within the continuum-removal panel.
+        /// </summary>
+        public static string SpectraHubChartContinuumRemovalLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartContinuumRemovalLabel", resourceCulture);
             }
         }
         
@@ -228,6 +372,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SpectraHubChartPanelsSmoothingImageLabel {
             get {
                 return ResourceManager.GetString("SpectraHubChartPanelsSmoothingImageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To perform alignment, a reference segment must be selected. The remaining two segments are aligned with respect to it. Selecting a point within the spectrum miniature automatically sets the corresponding segment as the reference.
+        /// </summary>
+        public static string SpectraHubChartSegmentSelectionExplanation {
+            get {
+                return ResourceManager.GetString("SpectraHubChartSegmentSelectionExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selection of the spectrum segment as reference for alignment.
+        /// </summary>
+        public static string SpectraHubChartSegmentSelectionLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartSegmentSelectionLabel", resourceCulture);
             }
         }
         

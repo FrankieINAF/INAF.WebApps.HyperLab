@@ -180,7 +180,7 @@ div.mandatory {
 }
 
 .margin-left-12 {
-    margin-left: 12px;
+    margin-left: 12px !important;
 }
 
 .margin-left-16 {

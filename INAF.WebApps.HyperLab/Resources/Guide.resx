@@ -177,4 +177,58 @@
   <data name="SpectraHubChartOnlySLabLoggedLabel" xml:space="preserve">
     <value>(only SLab logged users)</value>
   </data>
+  <data name="ButtonBackToDataAnalysisPanels" xml:space="preserve">
+    <value>Back to data analysis panels</value>
+  </data>
+  <data name="SpectraHubChartAlignmentSettingsLabel" xml:space="preserve">
+    <value>Show/hide settings panel for alignment</value>
+  </data>
+  <data name="SpectraHubChartAlignmentAutoAlignSelectedSpectrumLabel" xml:space="preserve">
+    <value>Automatically align the selected spectrum using the settings already saved on HyperLab cloud</value>
+  </data>
+  <data name="SpectraHubChartAlignmentAutoDownloadAlignedSelectedSpectrumLabel" xml:space="preserve">
+    <value>Automatically download the aligned version of the spectrum from the HyperLab cloud, when available</value>
+  </data>
+  <data name="SpectraHubChartAlignmentCheckboxShowLinesLabel" xml:space="preserve">
+    <value>Toggle vertical lines on the chart that indicate the boundaries of the spectrum segments to be aligned</value>
+  </data>
+  <data name="SpectraHubChartAlignmentLoadWhiteSpectraForAlignmentLabel" xml:space="preserve">
+    <value>Automatically download white and ref white spectra for being used in alignment procedure</value>
+  </data>
+  <data name="SpectraHubChartAlignmentLabel2" xml:space="preserve">
+    <value>Following a detailed overview of the items within the alignment panel</value>
+  </data>
+  <data name="SpectraHubChartAlignmentLabel1" xml:space="preserve">
+    <value>For users opting to work with RAW spectra, as well as for members of HyperLab’s scientific team tasked with preparing materials for the broader scientific community, a specialized feature is available</value>
+  </data>
+  <data name="SpectraHubChartContinuumRemovalLabel" xml:space="preserve">
+    <value>Following a detailed overview of the items within the continuum-removal panel</value>
+  </data>
+  <data name="SpectraHubChartCharmsAlreadySavedOnCloudMessage" xml:space="preserve">
+    <value>When this icon is shown, an already saved version of the aligned spectrum is available on HyperLab cloud</value>
+  </data>
+  <data name="SpectraHubChartAlignmentShowHideSlidersLabel" xml:space="preserve">
+    <value>Toggle a panel for editing the wavelengths that define the boundaries of the spectrum segments to be aligned</value>
+  </data>
+  <data name="SpectraHubChartSegmentSelectionLabel" xml:space="preserve">
+    <value>Selection of the spectrum segment as reference for alignment</value>
+  </data>
+  <data name="SpectraHubChartSegmentSelectionExplanation" xml:space="preserve">
+    <value>To perform alignment, a reference segment must be selected. The remaining two segments are aligned with respect to it. Selecting a point within the spectrum miniature automatically sets the corresponding segment as the reference</value>
+  </data>
+  <data name="SpectraHubChartAlignmentNumOfPointsLabel" xml:space="preserve">
+    <value>Sets how many points are used to measure the difference between segments near the boundary</value>
+  </data>
+  <data name="SpectraHubChartButtonAlignment" xml:space="preserve">
+    <value>Execute alignment procedure</value>
+  </data>
+  <data name="SpectraHubChartButtonAlignedSave" xml:space="preserve">
+    <value>Save aligned spectrum on cloud</value>
+  </data>
+  <data name="SpectraHubChartButtonAlignedRemove" xml:space="preserve">
+    <value>Delete aligned spectrum from chart and the copy on cloud, when requested by user</value>
+  </data>
+  <data name="SpectraHubChartButtonAlignedDownload" xml:space="preserve">
+    <value>Open a context menu to download aligned spectrum as CSV or XML file</value>
+  </data>
 </root>
