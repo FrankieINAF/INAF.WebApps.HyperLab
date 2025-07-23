@@ -1,0 +1,14 @@
+﻿@using INAF.WebApps.HyperLab.Resources;
+
+<!-- HEADER -->
+<div class="row cell-fs-12 margin-16 d-flex flex-justify-between">
+    <div class="d-flex">
+        <div><button class="button light cycle outline pointer fg-white margin-right-8" onclick="showGuideMagicWand()"><span class="mif-arrow-left"></span></button></div>
+        <div class="margin-left-8"><p class="text-normal fg-white margin-top-8">@Html.Raw(Guide.ButtonBackToDataAnalysisPanels)</p></div>
+    </div>
+    <div class="margin-right-16"><button class="button light cycle outline pointer fg-white" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
+</div>
+<!-- CONTENT -->
+<div class="row cell-fs-12">
+    <p class="fg-white">@Html.Raw(Guide.SpectraHubChartAlignmentLabel)</p>
+</div>

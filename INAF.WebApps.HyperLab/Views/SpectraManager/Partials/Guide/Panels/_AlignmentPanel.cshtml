@@ -1,0 +1,104 @@
+﻿@using INAF.WebApps.HyperLab.Resources;
+
+<!-- HEADER -->
+<div class="row cell-fs-12 margin-16 d-flex flex-justify-between">
+    <div class="d-flex">
+        <div><button class="button light cycle outline pointer fg-white margin-right-8" onclick="showGuideMagicWand()"><span class="mif-arrow-left"></span></button></div>
+        <div class="margin-left-8"><p class="text-normal fg-white margin-top-8">@Html.Raw(Guide.ButtonBackToDataAnalysisPanels)</p></div>
+    </div>
+    <div class="margin-right-16"><button class="button light cycle outline pointer fg-white" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
+</div>
+<!-- CONTENT -->
+<div class="row cell-fs-12">
+    <p class="fg-white">@Html.Raw(Guide.SpectraHubChartAlignmentLabel2)</p>
+</div>
+<div class="row margin-16 d-flex flex-column-fs flex-row-md">
+    <!-- DESCRIPTION -->
+    <div class="order-fs-2 order-md-1 cell-fs-12 cell-md-6 d-flex flex-justify-center overflow-md">
+        <div class="row cell-fs-12 order-fs-2 order-md-1">
+            <hr style="background-color: white" />
+            <!-- ALIGNMENT SETTINGS -->
+            <div class="d-flex">
+                <div class="d-flex">
+                    <span class="mif-cogs mif-2x fg-white"></span>
+                    <p class="row-text-title margin-left-12">@Html.Raw(Charms.AlignmentSettingsLabel)</p>
+                </div>
+                <p class="row-text-content">@Html.Raw(Guide.SpectraHubChartAlignmentSettingsLabel)</p>
+            </div>
+            <div class="row margin-left-12 margin-top-8">
+                <div class="cell-fs-6"><p class="row-text-title">@Html.Raw(Charms.AlignmentAutoAlignSelectedSpectrumLabel)</p></div>
+                <div class="cell-fs-6"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartAlignmentAutoAlignSelectedSpectrumLabel)</p></div>
+            </div>
+            <div class="row margin-left-12 margin-top-8">
+                <div class="cell-fs-6"><p class="row-text-title">@Html.Raw(Charms.AlignmentAutoDownloadAlignedSelectedSpectrumLabel)</p></div>
+                <div class="cell-fs-6"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartAlignmentAutoDownloadAlignedSelectedSpectrumLabel)</p></div>
+            </div>
+            <div class="row margin-left-12 margin-top-8">
+                <div class="cell-fs-6"><p class="row-text-title">@Html.Raw(Charms.AlignmentCheckboxShowLinesLabel)</p></div>
+                <div class="cell-fs-6"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartAlignmentCheckboxShowLinesLabel)</p></div>
+            </div>
+            <div class="row margin-left-12 margin-top-8">
+                <div class="cell-fs-6"><p class="row-text-title">@Html.Raw(Charms.AlignmentLoadWhiteSpectraForAlignmentLabel)</p></div>
+                <div class="cell-fs-6"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartAlignmentLoadWhiteSpectraForAlignmentLabel)</p></div>
+            </div>
+            <hr style="background-color: white" />
+            <!-- ICONS SAVED ON CLOUD -->
+            <div class="row margin-top-16">
+                <div class="row cell-fs-6 d-flex">
+                    <span class="mif-cloud-download mif-2x fg-cyan pointer"></span>
+                    <span class="margin-left-8 text-small margin-top-4 fg-white">@Html.Raw(Charms.CharmsAlreadySavedOnCloudMessage)</span>
+                </div>
+                <div class="cell-fs-6">
+                    <p class="row-text-content">@Html.Raw(Guide.SpectraHubChartCharmsAlreadySavedOnCloudMessage)</p>
+                </div>
+            </div>
+            <hr style="background-color: white" />
+            <!-- SLIDERS -->
+            <div class="row flex-row margin-top-8">
+                <div class="row cell-fs-6 d-flex">
+                    <button class="button cycle bg-transparent bg-cyan-hover pointer"><span class="mif-equalizer-v mif-2x fg-white"></span></button>
+                    <span class="text-secondary margin-left-8 margin-top-4 fg-white">@Html.Raw(Charms.AlignmentShowHideSlidersLabel)</span>
+                </div>
+                <div class="cell-fs-6">
+                    <p class="row-text-content">@Html.Raw(Guide.SpectraHubChartAlignmentShowHideSlidersLabel)</p>
+                </div>
+            </div>
+            <hr style="background-color: white" />
+            <!-- CHART MINIATURE -->
+            <div class="row margin-top-8">
+                <div class="cell-fs-6"><p class="row-text-title">@Html.Raw(Guide.SpectraHubChartSegmentSelectionLabel)</p></div>
+                <div class="cell-fs-6"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartSegmentSelectionExplanation)</p></div>
+            </div>
+            <hr style="background-color: white" />
+            <!-- NUM OF POINTS FOR ALIGNMENT-->
+            <div class="row margin-top-8">
+                <div class="cell-fs-6"><p class="row-text-title">@Html.Raw(Charms.AlignmentNumOfPointsLabel)</p></div>
+                <div class="cell-fs-6"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartAlignmentNumOfPointsLabel)</p></div>
+            </div>
+            <hr style="background-color: white" />
+            <!-- BUTTONS -->
+            <div class="row margin-top-16 d-flex flex-column">
+                <div class="d-flex">
+                    <button class="button primary cycle pointer min-width-36"><span class="mif-checkmark"></span></button>
+                    <p class="button-text">@Html.Raw(Guide.SpectraHubChartButtonAlignment)</p>
+                </div>
+                <div class="d-flex margin-top-8">
+                    <button class="button primary cycle pointer min-width-36"><span class="mif-floppy-disk"></span></button>
+                    <p class="button-text">@Html.Raw(Guide.SpectraHubChartButtonAlignedSave)</p>
+                </div>
+                <div class="d-flex margin-top-8">
+                    <button class="button primary cycle pointer min-width-36"><span class="mif-bin"></span></button>
+                    <p class="button-text">@Html.Raw(Guide.SpectraHubChartButtonAlignedRemove)</p>
+                </div>
+                <div class="d-flex margin-top-8">
+                    <button class="button primary cycle pointer min-width-36"><span class="mif-file-download"></span></button>
+                    <p class="button-text">@Html.Raw(Guide.SpectraHubChartButtonAlignedDownload)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- IMAGE -->
+    <div class="order-fs-1 order-md-2 cell-fs-12 cell-md-6 d-flex flex-justify-center">
+        <img src="~/images/guide/panels/alignment_panel.png" class="panel-image" />
+    </div>
+</div>
