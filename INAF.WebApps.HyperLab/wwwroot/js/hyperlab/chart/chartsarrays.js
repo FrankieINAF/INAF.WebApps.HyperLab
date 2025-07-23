@@ -1,15 +1,13 @@
 ﻿var familyIds = [];
 
-//function hideSpectraToBeHidden() {
-//    let spectraToBeHidden = cha.filter(x => !x.IsVisible);
-//    spectraToBeHidden.forEach(function (item) {
-//        let seriesname = getSpectrumSeriesNameFromIndex(getSpectrumIndexById(item.Id));
+function hideSpectraToBeHidden() {
+    let spectraToBeHidden = chartSeries.filter(x => !x.isVisible);
+    spectraToBeHidden.forEach(function (item) {
+        dxChartHideSeries(chartContainer, item.name);
+    });
 
-//        dxChartHideSeries(chartContainer, seriesname);
-//    });
-
-//    return spectraToBeHidden.length;
-//}
+    return spectraToBeHidden.length;
+}
 
 /* ################################################################################ */
 /* CONSTANT LINES */
