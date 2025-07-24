@@ -186,6 +186,9 @@
   <data name="SendEmailLabel" xml:space="preserve">
     <value>Send an email</value>
   </data>
+  <data name="SendUsEmailLabel" xml:space="preserve">
+    <value>Send us an email</value>
+  </data>
   <data name="SpectrumDownloadErrorMessage" xml:space="preserve">
     <value>An error occurred while trying to download selected spectrum</value>
   </data>

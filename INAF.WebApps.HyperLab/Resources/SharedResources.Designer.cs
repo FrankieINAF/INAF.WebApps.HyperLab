@@ -268,6 +268,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send us an email.
+        /// </summary>
+        public static string SendUsEmailLabel {
+            get {
+                return ResourceManager.GetString("SendUsEmailLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred while trying to download selected spectrum.
         /// </summary>
         public static string SpectrumDownloadErrorMessage {
