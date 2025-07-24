@@ -189,6 +189,14 @@
     "includeInProject": true
   },
   {
+    "outputFileName": "wwwroot/js/dist/hub/sampleandmeasurementinfo/sampleinfoeditorbundle.js",
+    "inputFiles": [
+      "wwwroot/js/hyperlab/hub/sampleandmeasurementinfo/sampleinfoeditor.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
     "outputFileName": "wwwroot/js/dist/sharedstuff/sharedstuffbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/commonhubandchartsandsharedstuff.js",

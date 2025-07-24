@@ -1,0 +1,283 @@
+﻿var grainSizeTypeVal;
+var GRAIN_SIZE_TYPE_LOWER_LIMIT = 1;
+var GRAIN_SIZE_TYPE_RANGE = 2;
+var GRAIN_SIZE_TYPE_UPPER_LIMIT = 3;
+
+var hintRoutines = {
+    showHint: function (hint, element) {
+        $(hint).addClass("showHint");
+        setTimeout(function () { $(hint).removeClass("showHint"); }, 500)
+    },
+
+    hideHint: function (hint, element) {
+        $(hint).addClass("hideHint");
+    }
+}
+
+function onMineralTypeSelected(val) {
+    //console.log(`onMineralTypeSelected - id: ${this.id}, val: ${val}`);
+    validateField(this.id);
+}
+
+function onOriginTypeSelected(val) {
+    //console.log(`onOriginTypeSelected - id: ${this.id}, val: ${val}`);
+    validateField(this.id);
+}
+
+/* ################################################################################ */
+/* GRAIN SIZE MANAGEMENT */
+/* ################################################################################ */
+function buildCommon(values, id, onDataItemSelectFunction) {
+    var html = `<select id='${id}' data-role="select" data-on-item-select="${onDataItemSelectFunction.name}">`;
+    let valuesNum = values.length;
+    for (var i = 0; i < valuesNum; i++) {
+        html += `<option value='${values[i].Id}'>${values[i].Value}</option>`;
+    }
+    html += '</select>';
+
+    return html;
+}
+
+function buildLowerLimit(values) {
+    if (!$('#grainSizeLowerLimit').is(':empty'))
+        return;
+
+    $('#grainSizeLowerLimitSelector').ready(function () {
+        let grainSizeLowerLimitSelector = Metro.getPlugin('#grainSizeLowerLimitSelector', 'select');
+
+        if (grainSizeLowerValueId == 0)
+            grainSizeLowerValueId = getGrainSizeValueForSelectedSampleData(LOWER_LIMIT);
+        grainSizeLowerLimitSelector.val(grainSizeLowerValueId);
+
+        showByClass('grainSizeLowerLimitContainer');
+    });
+
+    let html = buildCommon(values, 'grainSizeLowerLimitSelector', onGrainSizeLowerLimitSelected);
+    $('#grainSizeLowerLimit').html(html);
+}
+
+function buildUpperLimit(values) {
+    if (!$('#grainSizeUpperLimit').is(':empty'))
+        return;
+
+    $('#grainSizeUpperLimitSelector').ready(function () {
+        let grainSizeUpperLimitSelector = Metro.getPlugin('#grainSizeUpperLimitSelector', 'select');
+
+        if (grainSizeUpperValueId == 0)
+            grainSizeUpperValueId = getGrainSizeValueForSelectedSampleData(UPPER_LIMIT);
+        grainSizeUpperLimitSelector.val(grainSizeUpperValueId);
+
+        showByClass('grainSizeUpperLimitContainer');
+    });
+
+    let html = buildCommon(values, 'grainSizeUpperLimitSelector', onGrainSizeUpperLimitSelected);
+    $('#grainSizeUpperLimit').html(html);
+}
+
+function clearLowerLimit() {
+    $('#grainSizeLowerLimit').empty();
+    hideByClass('grainSizeLowerLimitContainer');
+}
+
+function clearUpperLimit() {
+    $('#grainSizeUpperLimit').empty();
+    hideByClass('grainSizeUpperLimitContainer');
+}
+
+function tryBuildGrainSizeValuesSelect(grainSizeValues, grainSizeTypeVal) {
+    if (grainSizeValues && grainSizeValues.length > 0) {
+        switch (grainSizeTypeVal) {
+            case 1:
+                buildLowerLimit(grainSizeValues);
+                clearUpperLimit();
+                break;
+
+            case 2:
+                buildLowerLimit(grainSizeValues);
+                buildUpperLimit(grainSizeValues);
+                break;
+
+            case 3:
+                clearLowerLimit();
+                buildUpperLimit(grainSizeValues);
+                break;
+        }
+    } else {
+        /* clear selectors and hide everything */
+        clearLowerLimit();
+        clearUpperLimit();
+    }
+}
+
+function onGrainSizeTypeSelected(val) {
+    //console.log(`onGrainSizeTypeSelected: ${val}`);
+
+    grainSizeTypeVal = parseInt(val);
+
+    switch (grainSizeTypeVal) {
+        case GRAIN_SIZE_TYPE_LOWER_LIMIT:
+            $('#grainSizeValues').text(GrainSizeSelectLowerLimitLabel);
+            break;
+
+        case GRAIN_SIZE_TYPE_RANGE:
+            $('#grainSizeValues').text(GrainSizeSelectRangeLabel);
+            break;
+
+        case GRAIN_SIZE_TYPE_UPPER_LIMIT:
+            $('#grainSizeValues').text(GrainSizeSelectUpperLimitLabel);
+            break;
+    }
+
+    let selectedSampleData = samplesData.find(x => x.Id == getSampleTypeSelectedValue());
+    tryBuildGrainSizeValuesSelect(selectedSampleData.GrainSizeValues, grainSizeTypeVal);
+}
+
+function getGrainSizeValueForSelectedSampleData(lowerOrUpperLimit) {
+    //let sampleType = getSampleTypeSelectedValue();
+
+    //let grainSizeType = getGrainSizeTypeSelectedValue();
+
+    //console.log(`sampleType: ${sampleType}, grainSizeType: ${grainSizeType}`);
+
+    let sampleData = samplesData.find(x => x.Id == getSampleTypeSelectedValue());
+    if (lowerOrUpperLimit == LOWER_LIMIT)
+        return sampleData.GrainSizeValues[0].Id;
+    else
+        return sampleData.GrainSizeValues[1].Id;
+}
+
+/* -------------------------------------------------------------------------------- */
+/* LOWER-LIMIT/UPPER-LIMIT SELECTION */
+/* -------------------------------------------------------------------------------- */
+function onGrainSizeLowerLimitSelected(val, option, item) {
+    console.log(`onGrainSizeLowerLimitSelected - id: ${this.id}, val: ${val}, option: ${option.text}, item: ${item}`);
+
+    let foundId = 0;
+
+    const x = parseFloat(option.text);
+    $('#grainSizeUpperLimitSelector option').each(function () {
+        var value = parseFloat($(this).text());
+        if (value > x) {
+            foundId = $(this).val();
+            foundValue = value;
+            return false; // interrompe il ciclo .each() alla prima corrispondenza
+        }
+    });
+
+    //console.log(`Found upper limit value: ${foundValue}`);
+    let grainSizeUpperLimitSelector = Metro.getPlugin('#grainSizeUpperLimitSelector', 'select');
+    if (foundId > 0) {
+        grainSizeUpperLimitSelector.val(foundId);
+        grainSizeUpperValueId = foundId;
+    } else {
+        // No upper limit found, clear the selector
+        grainSizeUpperLimitSelector.val('');
+        grainSizeUpperValueId = 0;
+    }
+}
+
+function onGrainSizeUpperLimitSelected(val, option, item) {
+    console.log(`onGrainSizeUpperLimitSelected - id: ${this.id}, val: ${val}, option: ${option.text}, item: ${item}`);
+
+    let foundId = 0;
+
+    const x = parseFloat(option.text);
+    // Iterate from last to first option
+    var options = $('#grainSizeLowerLimitSelector option');
+    for (var i = options.length - 1; i >= 0; i--) {
+        var value = parseFloat($(options[i]).text());
+        if (value < x) {
+            foundId = $(options[i]).val();
+            foundValue = value;
+            break; // stop at the first match from the end
+        }
+    }
+
+    //console.log(`Found lower limit value: ${foundValue}`);
+    let grainSizeLowerLimitSelector = Metro.getPlugin('#grainSizeLowerLimitSelector', 'select');
+    if (foundId > 0) {
+        grainSizeLowerLimitSelector.val(foundId);
+        grainSizeLowerValueId = foundId;
+    } else {
+        // No lower limit found, clear the selector
+        grainSizeLowerLimitSelector.val('');
+        grainSizeLowerValueId = 0;
+    }
+}
+
+/* ################################################################################ */
+/* SAMPLE DATA TYPE MANAGEMENT */
+/* ################################################################################ */
+async function getSampleDataValuesAsync() {
+    let obj = await doAjaxGetNoModelAsync(UrlGetSampleDataValues);
+    if (obj) {
+        let itemsNum = obj.length;
+        for (var i = 0; i < itemsNum; i++) {
+            let sampleData = {
+                Id: obj[i].Id,
+                Value: obj[i].Value,
+                GrainSizeValues: []
+            };
+            if (obj[i].GrainSizeValues && obj[i].GrainSizeValues.length > 0) {
+                let grainSizeValuesNum = obj[i].GrainSizeValues.length
+                for (var j = 0; j < grainSizeValuesNum; j++) {
+                    let grainSizeValue = {
+                        Id: obj[i].GrainSizeValues[j].Id,
+                        Value: obj[i].GrainSizeValues[j].Value
+                    };
+                    sampleData.GrainSizeValues.push(grainSizeValue);
+                }
+            }
+
+            samplesData.push(sampleData)
+        }
+    }
+}
+
+async function initSamplesData() {
+    await getSampleDataValuesAsync();
+
+    switch (parseInt(getSampleTypeSelectedValue())) {
+        case 1: //Slab
+        case 2: //Chip
+            break;
+
+        case 3: //Pellet
+        case 4: //Particulate
+            onGrainSizeTypeSelected(getGrainSizeTypeSelectedValue());
+            break;
+    }
+}
+
+function onSampleDataTypeSelected(val) {
+    //console.log(`onSampleDataTypeSelected - id: ${this.id}, val: ${val}`);
+    validateField(this.id);
+
+    let sampleDataTypeVal = parseInt(val);
+
+    switch (sampleDataTypeVal) {
+        case 1: // slab
+        case 2: // chip
+            hideByClass('grainSizeTypesSelectLabel');
+            hideByClass('grainSizeTypesSelect');
+            break;
+
+        case 3: // pellet
+        case 4: // particulate
+            showByClass('grainSizeTypesSelectLabel');
+            showByClass('grainSizeTypesSelect');
+            onGrainSizeTypeSelected(getGrainSizeTypeSelectedValue());
+            break;
+    }
+}
+
+/* ################################################################################ */
+/* DOCUMENT READY */
+/* ################################################################################ */
+function initSampleInfo() {
+    initSamplesData();
+
+    setAutocomplete(UrlGetMinerals);
+
+    setMaterialForMixEventHandler();
+}

@@ -243,14 +243,74 @@ function getNumOfAcquisitionsForSpectrum() {
 }
 
 /* ---------- SAVE ---------- */
+function validateField(id) {
+    let isFieldValid = ($(`#${id}`).val() != 0);
+
+    let parentDiv = $(`#${id}`).closest('div');
+    let spanChildren = parentDiv.find('span.text-danger');
+
+    if (isFieldValid) {
+        if (spanChildren.length > 0) {
+            spanChildren[0].textContent = '';
+            $($(spanChildren)[0]).addClass('field-validation-valid');
+        }
+    } else {
+        let message = $(`#${id}`).attr('data-val-required');
+        spanChildren[0].textContent = message;
+        $($(spanChildren)[0]).removeClass('field-validation-valid');
+    }
+
+    return isFieldValid;
+}
+
+function validateForm() {
+    let isValid = true;
+
+    let selectFields = $('#formSaveInfo').find('select');
+    if (!selectFields || selectFields.length == 0)
+        return;
+
+    const selectFieldsCount = selectFields.length;
+    for (let i = 0; i < selectFieldsCount; i++) {
+        let isFieldValid = validateField(selectFields[i].id);
+        if (!isFieldValid) {
+            isValid = false;
+        }
+    }
+
+    return isValid;
+}
+
+async function saveInfoProcedure() {
+    var formSaveInfo = $('#formSaveInfo');
+    formSaveInfo.data('validator', null);
+    $.validator.unobtrusive.parse(formSaveInfo);
+
+    const isValidForm = validateForm();
+
+    if (!$(formSaveInfo).valid() || !isValidForm) {
+        formSaveInfo.addClass("ani-ring");
+        setTimeout(function () {
+            formSaveInfo.removeClass("ani-ring");
+            $('#saveInfoButton').attr('disabled', false);
+        }, 1000);
+        var validator = $(formSaveInfo).validate();
+        for (var i in validator.errorMap) {
+            console.log(i, ":", validator.errorMap[i]);
+        }
+        return false;
+    }
+    setLoadingCircleIsVisible(true);
+    await saveInfo();
+    setLoadingCircleIsVisible(false);
+}
+
 async function saveInfo() {
     const sampleTypeId = parseInt(Metro.getPlugin("#SampleDataSelectedValues_SampleTypeId", "select").val());
 
     const grainSizeTypeValues = getGrainSizeTypeValues(sampleTypeId);
 
     const mineralTypeId = getMineralTypeId()
-
-    const sampleName = $('#SampleDataSelectedValues_Name').val();
 
     let isSavingAllowed = true;
     let savingErrorMessage;
@@ -282,10 +342,6 @@ async function saveInfo() {
             break;
 
         default:
-    }
-
-    if (!sampleName) {
-        isSavingAllowed = false;
     }
 
     if (!isSavingAllowed) {
@@ -358,14 +414,14 @@ function clearInfo() {
 }
 
 function getGrainSizeTypeSelectedValue() {
-    return grainSizeTypeSelect.val();
+    return Metro.getPlugin($(grainSizeTypeElemId), 'select').val();
 }
 
 function getSampleTypeSelectedValue() {
-    return sampleTypeSelect.val();
+    return Metro.getPlugin($(sampleTypeElemId), 'select').val();
 }
 
-async function loadFilename() {
+async function loadFilenameAsync() {
     model = {
         Id: selectedId
     };
@@ -386,7 +442,7 @@ function loadInfoSampleData() {
     setLoadingCircleIsVisible(true);
 
     /* load filename on top of panel */
-    loadFilename();
+    loadFilenameAsync();
 
     /* load tab about sample */
     loadPartialViewWithAjaxGet(UrlLoadSpectrumSampleData, model, 'infoSampleData', callSetMineralTypeItems);

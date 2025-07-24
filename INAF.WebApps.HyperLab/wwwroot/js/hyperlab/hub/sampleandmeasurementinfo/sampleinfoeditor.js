@@ -1,4 +1,9 @@
-﻿var hintRoutines = {
+﻿var grainSizeTypeVal;
+var GRAIN_SIZE_TYPE_LOWER_LIMIT = 1;
+var GRAIN_SIZE_TYPE_RANGE = 2;
+var GRAIN_SIZE_TYPE_UPPER_LIMIT = 3;
+
+var hintRoutines = {
     showHint: function (hint, element) {
         $(hint).addClass("showHint");
         setTimeout(function () { $(hint).removeClass("showHint"); }, 500)
@@ -9,11 +14,21 @@
     }
 }
 
+function onMineralTypeSelected(val) {
+    //console.log(`onMineralTypeSelected - id: ${this.id}, val: ${val}`);
+    validateField(this.id);
+}
+
+function onOriginTypeSelected(val) {
+    //console.log(`onOriginTypeSelected - id: ${this.id}, val: ${val}`);
+    validateField(this.id);
+}
+
 /* ################################################################################ */
 /* GRAIN SIZE MANAGEMENT */
 /* ################################################################################ */
-function buildCommon(values, id) {
-    var html = `<select id='${id}' data-role="select">`;
+function buildCommon(values, id, onDataItemSelectFunction) {
+    var html = `<select id='${id}' data-role="select" data-on-item-select="${onDataItemSelectFunction.name}">`;
     let valuesNum = values.length;
     for (var i = 0; i < valuesNum; i++) {
         html += `<option value='${values[i].Id}'>${values[i].Value}</option>`;
@@ -37,7 +52,7 @@ function buildLowerLimit(values) {
         showByClass('grainSizeLowerLimitContainer');
     });
 
-    let html = buildCommon(values, 'grainSizeLowerLimitSelector');
+    let html = buildCommon(values, 'grainSizeLowerLimitSelector', onGrainSizeLowerLimitSelected);
     $('#grainSizeLowerLimit').html(html);
 }
 
@@ -55,7 +70,7 @@ function buildUpperLimit(values) {
         showByClass('grainSizeUpperLimitContainer');
     });
 
-    let html = buildCommon(values, 'grainSizeUpperLimitSelector');
+    let html = buildCommon(values, 'grainSizeUpperLimitSelector', onGrainSizeUpperLimitSelected);
     $('#grainSizeUpperLimit').html(html);
 }
 
@@ -97,18 +112,18 @@ function tryBuildGrainSizeValuesSelect(grainSizeValues, grainSizeTypeVal) {
 function onGrainSizeTypeSelected(val) {
     //console.log(`onGrainSizeTypeSelected: ${val}`);
 
-    let grainSizeTypeVal = parseInt(val);
+    grainSizeTypeVal = parseInt(val);
 
     switch (grainSizeTypeVal) {
-        case 1: // lower limit
+        case GRAIN_SIZE_TYPE_LOWER_LIMIT:
             $('#grainSizeValues').text(GrainSizeSelectLowerLimitLabel);
             break;
 
-        case 2: // range
+        case GRAIN_SIZE_TYPE_RANGE:
             $('#grainSizeValues').text(GrainSizeSelectRangeLabel);
             break;
 
-        case 3: // upper limit
+        case GRAIN_SIZE_TYPE_UPPER_LIMIT:
             $('#grainSizeValues').text(GrainSizeSelectUpperLimitLabel);
             break;
     }
@@ -117,33 +132,12 @@ function onGrainSizeTypeSelected(val) {
     tryBuildGrainSizeValuesSelect(selectedSampleData.GrainSizeValues, grainSizeTypeVal);
 }
 
-function onSampleDataTypeSelected(val) {
-    //console.log(`onSampleDataTypeSelected: ${val}`);
-
-    let sampleDataTypeVal = parseInt(val);
-
-    switch (sampleDataTypeVal) {
-        case 1: // slab
-        case 2: // chip
-            hideByClass('grainSizeTypesSelectLabel');
-            hideByClass('grainSizeTypesSelect');
-            break;
-
-        case 3: // pellet
-        case 4: // particulate
-            showByClass('grainSizeTypesSelectLabel');
-            showByClass('grainSizeTypesSelect');
-            onGrainSizeTypeSelected(getGrainSizeTypeSelectedValue());
-            break;
-    }
-}
-
 function getGrainSizeValueForSelectedSampleData(lowerOrUpperLimit) {
-    let sampleType = getSampleTypeSelectedValue();
+    //let sampleType = getSampleTypeSelectedValue();
 
-    let grainSizeType = getGrainSizeTypeSelectedValue();
+    //let grainSizeType = getGrainSizeTypeSelectedValue();
 
-    console.log(`sampleType: ${sampleType}, grainSizeType: ${grainSizeType}`);
+    //console.log(`sampleType: ${sampleType}, grainSizeType: ${grainSizeType}`);
 
     let sampleData = samplesData.find(x => x.Id == getSampleTypeSelectedValue());
     if (lowerOrUpperLimit == LOWER_LIMIT)
@@ -152,7 +146,69 @@ function getGrainSizeValueForSelectedSampleData(lowerOrUpperLimit) {
         return sampleData.GrainSizeValues[1].Id;
 }
 
-async function getSampleDataValues() {
+/* -------------------------------------------------------------------------------- */
+/* LOWER-LIMIT/UPPER-LIMIT SELECTION */
+/* -------------------------------------------------------------------------------- */
+function onGrainSizeLowerLimitSelected(val, option, item) {
+    console.log(`onGrainSizeLowerLimitSelected - id: ${this.id}, val: ${val}, option: ${option.text}, item: ${item}`);
+
+    let foundId = 0;
+
+    const x = parseFloat(option.text);
+    $('#grainSizeUpperLimitSelector option').each(function () {
+        var value = parseFloat($(this).text());
+        if (value > x) {
+            foundId = $(this).val();
+            foundValue = value;
+            return false; // interrompe il ciclo .each() alla prima corrispondenza
+        }
+    });
+
+    //console.log(`Found upper limit value: ${foundValue}`);
+    let grainSizeUpperLimitSelector = Metro.getPlugin('#grainSizeUpperLimitSelector', 'select');
+    if (foundId > 0) {
+        grainSizeUpperLimitSelector.val(foundId);
+        grainSizeUpperValueId = foundId;
+    } else {
+        // No upper limit found, clear the selector
+        grainSizeUpperLimitSelector.val('');
+        grainSizeUpperValueId = 0;
+    }
+}
+
+function onGrainSizeUpperLimitSelected(val, option, item) {
+    console.log(`onGrainSizeUpperLimitSelected - id: ${this.id}, val: ${val}, option: ${option.text}, item: ${item}`);
+
+    let foundId = 0;
+
+    const x = parseFloat(option.text);
+    // Iterate from last to first option
+    var options = $('#grainSizeLowerLimitSelector option');
+    for (var i = options.length - 1; i >= 0; i--) {
+        var value = parseFloat($(options[i]).text());
+        if (value < x) {
+            foundId = $(options[i]).val();
+            foundValue = value;
+            break; // stop at the first match from the end
+        }
+    }
+
+    //console.log(`Found lower limit value: ${foundValue}`);
+    let grainSizeLowerLimitSelector = Metro.getPlugin('#grainSizeLowerLimitSelector', 'select');
+    if (foundId > 0) {
+        grainSizeLowerLimitSelector.val(foundId);
+        grainSizeLowerValueId = foundId;
+    } else {
+        // No lower limit found, clear the selector
+        grainSizeLowerLimitSelector.val('');
+        grainSizeLowerValueId = 0;
+    }
+}
+
+/* ################################################################################ */
+/* SAMPLE DATA TYPE MANAGEMENT */
+/* ################################################################################ */
+async function getSampleDataValuesAsync() {
     let obj = await doAjaxGetNoModelAsync(UrlGetSampleDataValues);
     if (obj) {
         let itemsNum = obj.length;
@@ -179,7 +235,7 @@ async function getSampleDataValues() {
 }
 
 async function initSamplesData() {
-    await getSampleDataValues();
+    await getSampleDataValuesAsync();
 
     switch (parseInt(getSampleTypeSelectedValue())) {
         case 1: //Slab
@@ -193,17 +249,35 @@ async function initSamplesData() {
     }
 }
 
+function onSampleDataTypeSelected(val) {
+    //console.log(`onSampleDataTypeSelected - id: ${this.id}, val: ${val}`);
+    validateField(this.id);
+
+    let sampleDataTypeVal = parseInt(val);
+
+    switch (sampleDataTypeVal) {
+        case 1: // slab
+        case 2: // chip
+            hideByClass('grainSizeTypesSelectLabel');
+            hideByClass('grainSizeTypesSelect');
+            break;
+
+        case 3: // pellet
+        case 4: // particulate
+            showByClass('grainSizeTypesSelectLabel');
+            showByClass('grainSizeTypesSelect');
+            onGrainSizeTypeSelected(getGrainSizeTypeSelectedValue());
+            break;
+    }
+}
+
 /* ################################################################################ */
 /* DOCUMENT READY */
 /* ################################################################################ */
-$(function () {
-    sampleTypeSelect = Metro.getPlugin($('#@nameof(SpectrumFileSampleDataValuesContainer.SampleDataSelectedValues)_@nameof(SampleDataSelectedValues.SampleTypeId)'), 'select');
-
-    grainSizeTypeSelect = Metro.getPlugin($('#@nameof(SpectrumFileSampleDataValuesContainer.SampleDataSelectedValues)_@nameof(SampleDataSelectedValues.GrainSizeTypeId)'), 'select');
-
+function initSampleInfo() {
     initSamplesData();
 
     setAutocomplete(UrlGetMinerals);
 
     setMaterialForMixEventHandler();
-});
+}

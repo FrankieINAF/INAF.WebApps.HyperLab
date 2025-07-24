@@ -141,6 +141,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> SaveInfo([FromBody] InfoSelectedValuesModel model)
         {
             clearErrorsForKey($"{nameof(InfoSelectedValuesModel.SampleDataSelectedValues)}.{nameof(SampleDataSelectedValues.Name)}");

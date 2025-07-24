@@ -40,7 +40,7 @@ function setConfirmationCompletedMessageVisibility(isVisible) {
 /* ################################################################################ */
 /* DOCUMENT READY */
 /* ################################################################################ */
-$(document).ready(function () {
+$(function () {
     Metro.makePlugin("#UserName", "input");
     Metro.makePlugin("#Password", "input");
 

@@ -95,6 +95,7 @@
     <Content Remove="wwwroot\js\hyperlab\hub\load\loadexternalunauthenticated.js" />
     <Content Remove="wwwroot\js\hyperlab\hub\load\loadgetfileslistitemancillary.js" />
     <Content Remove="wwwroot\js\hyperlab\hub\load\loadslab.js" />
+    <Content Remove="wwwroot\js\hyperlab\hub\sampleandmeasurementinfo\sampleinfoeditor.js" />
     <Content Remove="wwwroot\js\hyperlab\layout.js" />
     <Content Remove="wwwroot\js\hyperlab\materials\upsertminerals.js" />
     <Content Remove="wwwroot\js\hyperlab\queue.js" />
@@ -181,6 +182,7 @@
     <None Include="wwwroot\js\hyperlab\hub\load\loadexternalunauthenticated.js" />
     <None Include="wwwroot\js\hyperlab\hub\load\loadgetfileslistitemancillary.js" />
     <None Include="wwwroot\js\hyperlab\hub\load\loadslab.js" />
+    <None Include="wwwroot\js\hyperlab\hub\sampleandmeasurementinfo\sampleinfoeditor.js" />
     <None Include="wwwroot\js\hyperlab\layout.js" />
     <None Include="wwwroot\js\hyperlab\materials\upsertminerals.js" />
     <None Include="wwwroot\js\hyperlab\queue\queue.js" />

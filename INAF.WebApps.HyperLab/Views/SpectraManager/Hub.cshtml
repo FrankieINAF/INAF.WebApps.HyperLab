@@ -408,32 +408,37 @@
 		</div>
 	</div>
 	<!-- INFO -->
-	<div class="row">
-		<div class="cell-fs-12">
-			<ul data-role="tabs" data-expand="true">
-				<li><a href="#infoSampleData">@Html.Raw(Info.TabSampleDataTitle)</a></li>
-				<li><a href="#infoMeasurement">@Html.Raw(Info.TabMeasurementTitle)</a></li>
-			</ul>
-			<!-- SAMPLE DATA -->
-			<div id="infoSampleData" class="border bd-default no-border-top p-2">
-			</div>
-			<!-- MEASUREMENT -->
-			<div id="infoMeasurement" class="border bd-default no-border-top p-2">
-			</div>
-		</div>
-	</div>
-	<!-- SAVE -->
-
-	<div class="row button-on-bottom">
-		<div class="cell-fs-12">
-			<div id="saveInfo" onclick="saveInfo()" class="button primary cycle large d-none">
-				<span class="mif-floppy-disk"></span>
-			</div>
-			<div id="refreshInfo" onclick="refreshInfo()" class="button primary cycle large d-none">
-				<span class="mif-refresh"></span>
+	<form id="formSaveInfo"
+		  method="post"
+		  action="/@GenericHelper.GetControllerName(nameof(SampleAndMeasurementController))/@nameof(SampleAndMeasurementController.SaveInfo)"
+		  target="_self">
+		@Html.AntiForgeryToken()
+		<div class="row">
+			<div class="cell-fs-12">
+				<ul data-role="tabs" data-expand="true">
+					<li><a href="#infoSampleData">@Html.Raw(Info.TabSampleDataTitle)</a></li>
+					<li><a href="#infoMeasurement">@Html.Raw(Info.TabMeasurementTitle)</a></li>
+				</ul>
+				<!-- SAMPLE DATA -->
+				<div id="infoSampleData" class="border bd-default no-border-top p-2">
+				</div>
+				<!-- MEASUREMENT -->
+				<div id="infoMeasurement" class="border bd-default no-border-top p-2">
+				</div>
 			</div>
 		</div>
-	</div>
+		<!-- SAVE -->
+		<div class="row">
+			<div class="cell-fs-12">
+				<div id="saveInfo" onclick="saveInfoProcedure()" class="button primary cycle large d-none">
+					<span class="mif-floppy-disk"></span>
+				</div>
+				<div id="refreshInfo" onclick="refreshInfo()" class="button primary cycle large d-none">
+					<span class="mif-refresh"></span>
+				</div>
+			</div>
+		</div>
+	</form>
 </div>
 
 <!-- GENERAL INFO ABOUT SEARCH -->
