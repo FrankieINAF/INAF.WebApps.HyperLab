@@ -274,14 +274,17 @@
     <value>Open a context menu to download continuum removed spectrum as CSV or XML file</value>
   </data>
   <data name="SpectraHubChartCoreModelExplanation" xml:space="preserve">
-    <value>Core mode is a fast method for defining segments used to remove the continuum.</value>
+    <value>&lt;i&gt;Core&lt;/i&gt; mode is a fast method for defining segments used to remove the continuum.</value>
   </data>
   <data name="SpectraHubChartContinuumRemovalCoreModeExplanation" xml:space="preserve">
     <value>Core mode is a fast method for defining segments used to remove the continuum.
 Each time a point on the aligned spectrum is clicked, a new point is added to the graph. Every pair of points defines a segment, which is displayed on the graph and listed as an item in the right-hand panel. For each segment, the fitting function applied to the corresponding portion of the spectrum can be modified. By default, a straight line is selected, but other fitting functions are also available</value>
   </data>
   <data name="SpectraHubChartContinuumRemovalProModeExplanation" xml:space="preserve">
-    <value />
+    <value>&lt;i&gt;Pro&lt;/i&gt; mode is a more sophisticated and versatile system for defining segments used to remove the continuum.
+When clicking on a point in the aligned spectrum, two additional points are automatically created on either side of the selected point. These define a range within which a relative maximum is searched. This maximum is then used as an endpoint for the two segments it belongs to.
+Various approximation functions can be applied to the range, each potentially returning different relative maxima depending on the method used
+</value>
   </data>
   <data name="ButtonClickToWatchVideoCoreModeLabel" xml:space="preserve">
     <value>Click to see an example of how to define segments in &lt;i&gt;Core&lt;/i&gt; mode</value>

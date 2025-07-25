@@ -368,7 +368,9 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to &lt;i&gt;Pro&lt;/i&gt; mode is a more sophisticated and versatile system for defining segments used to remove the continuum.
+        ///When clicking on a point in the aligned spectrum, two additional points are automatically created on either side of the selected point. These define a range within which a relative maximum is searched. This maximum is then used as an endpoint for the two segments it belongs to.
+        ///Various approximation functions can be applied to the range, each potentially returning different relative maxima depe [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SpectraHubChartContinuumRemovalProModeExplanation {
             get {
@@ -386,7 +388,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Core mode is a fast method for defining segments used to remove the continuum..
+        ///   Looks up a localized string similar to &lt;i&gt;Core&lt;/i&gt; mode is a fast method for defining segments used to remove the continuum..
         /// </summary>
         public static string SpectraHubChartCoreModelExplanation {
             get {

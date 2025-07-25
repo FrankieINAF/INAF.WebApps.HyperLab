@@ -391,7 +391,7 @@ function showPXMinPXMaxFitting(P0P1Val, parentId, segmentIndex, P) {
     let parentRect = document.getElementById('fitSegmentsListContainerPro').getBoundingClientRect();
 
     let mainContainerRect = document.getElementById('mainContainer').getBoundingClientRect();
-    let charmsRect = document.getElementById('charms').getBoundingClientRect();
+    let charmsRect = document.getElementById('charmsProcessSpectra').getBoundingClientRect();
     let appbarRect = document.getElementById('appbar').getBoundingClientRect();
     //console.log(parentRect);
 

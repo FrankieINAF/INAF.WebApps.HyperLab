@@ -35,6 +35,7 @@
   {
     "outputFileName": "wwwroot/js/dist/chart/chartbundle.js",
     "inputFiles": [
+      "wwwroot/js/hyperlab/commonbuttons.js",
       "wwwroot/js/hyperlab/commonhubandchart.js",
       "wwwroot/js/hyperlab/commonhubandchartsandsharedstuff.js",
       "wwwroot/js/hyperlab/chart/charts.js",

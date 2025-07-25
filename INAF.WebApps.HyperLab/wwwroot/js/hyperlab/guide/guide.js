@@ -67,6 +67,10 @@ function onHideGuideCoreGifCompleted() {
 }
 
 function hideGuideProGif() {
+    animateCSS('proModeGif', 'fadeOut', 'FASTER', onHideGuideProGifCompleted);
+}
+
+function onHideGuideProGifCompleted() {
     $('#proModeGif').empty();
     showByClassDFlexItem('proModeGifButton');
 }

@@ -151,7 +151,8 @@ function removeMessagesCharmsButton() {
 
 /* ---------- SET GUIDE BUTTON ---------- */
 function addGuideChartButton() {
-    addButton(guideChartButtonId, ButtonGuideLabel, 'mif-help', showGuideChart);
+    //addButton(guideChartButtonId, ButtonGuideLabel, 'mif-help', showGuideChart);
+    addImageButton(guideChartButtonId, ButtonGuideLabel, 'help', showGuideChart);
 }
 
 function removeGuideChartButtonProcedure() {
