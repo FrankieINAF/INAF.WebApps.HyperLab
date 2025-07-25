@@ -8,7 +8,7 @@
 @inject DbHandlerHyperLabUsers dbHandler
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="overflow-y-hidden">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -53,7 +53,7 @@
     </environment>
 
 </head>
-<body id="body" class="overflow-y-auto" style="opacity: 1; background-color: black">
+<body id="body" class="overflow-y-auto hide-scrollbar" style="opacity: 1; background-color: black">
     <div id="mainContainer" class="h-vh-100" data-role="navview" data-toggle="#paneToggle" data-expand="xl" data-compact="lg" data-active-state="true">
         <div id="leftMenu" class="navview-pane d-none">
             <div class="bg-cyan d-flex flex-align-center">
@@ -123,7 +123,7 @@
 
     <!-- GUIDE -->
     <div id="guideContainer" class="guide-container d-none">
-        <div id="guide" class="mywrapper guide-content overflow-x-hidden overflow-y-auto margin-horizontal-16"></div>
+        <div id="guide" class="mywrapper guide-content overflow-x-hidden overflow-y-auto hide-scrollbar margin-horizontal-16"></div>
     </div>
 
     <!-- FULL SCREEN IMAGE CONTAINER -->

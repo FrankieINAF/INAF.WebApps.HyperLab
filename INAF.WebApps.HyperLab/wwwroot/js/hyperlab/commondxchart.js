@@ -71,11 +71,11 @@ function dxChartHideSeries(container, seriesName) {
     }
 }
 
-function dxChartSetSeriesVisible(container, seriesName) {
-    if (container.dxChart("getSeriesByName", seriesName).isVisible())
-        container.dxChart("getSeriesByName", seriesName).hide();
-    else
+function dxChartSetSeriesVisible(container, seriesName, isVisible) {
+    if (isVisible)
         container.dxChart("getSeriesByName", seriesName).show();
+    else
+        container.dxChart("getSeriesByName", seriesName).hide();
 
     dxChartResetVisualRange(container);
 }

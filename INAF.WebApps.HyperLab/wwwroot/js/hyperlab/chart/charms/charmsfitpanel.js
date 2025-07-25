@@ -70,7 +70,7 @@ async function preparePanelForFitPhase1Async(extCallback) {
 
         /* add raw spectrum to the ones to be hidden */
         if (isSLabConditionForSpectrumTypeNotHigherThanRaw()) //when a SLab RAW spectrum is loaded and under processing we hide it in this phase, otherwise avoid to hide it
-            setSpectrumVisibility(selectedSpectrumForProcessingId, false);
+            dxChartSetSeriesVisible(chartContainer, getSeriesNameFromId(selectedSpectrumForProcessingId), false);
 
         isFitTabSelected = true;
     }

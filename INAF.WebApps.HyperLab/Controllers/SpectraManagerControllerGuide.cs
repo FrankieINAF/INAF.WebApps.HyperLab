@@ -36,6 +36,18 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
+        public IActionResult GuideSpectraHubChartPanelsContinuumRemovalPanelCoreModeGif()
+        {
+            return PartialView("Partials/Guide/Panels/_ContinuumRemovalPanelCoreModeGif");
+        }
+
+        [HttpGet]
+        public IActionResult GuideSpectraHubChartPanelsContinuumRemovalPanelProModeGif()
+        {
+            return PartialView("Partials/Guide/Panels/_ContinuumRemovalPanelProModeGif");
+        }
+
+        [HttpGet]
         public IActionResult GuideSpectraHubChartPanelsSmoothingPanel()
         {
             return PartialView("Partials/Guide/Panels/_SmoothingPanel");

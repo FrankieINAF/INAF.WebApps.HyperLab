@@ -147,6 +147,9 @@
   <data name="SpectraHubChartPanelsAlignmentLabel" xml:space="preserve">
     <value>Alignment panel</value>
   </data>
+  <data name="SpectraHubChartPanelsContinuumRemovalLabel" xml:space="preserve">
+    <value>Continuum removal panel</value>
+  </data>
   <data name="SpectraHubChartPanelsSmoothingButtonLabel" xml:space="preserve">
     <value>Explore &lt;i&gt;Smoothing&lt;/i&gt; panel</value>
   </data>
@@ -183,6 +186,9 @@
   <data name="SpectraHubChartAlignmentSettingsLabel" xml:space="preserve">
     <value>Show/hide settings panel for alignment</value>
   </data>
+  <data name="SpectraHubChartFitSettingsLabel" xml:space="preserve">
+    <value>Show/hide settings panel for fit</value>
+  </data>
   <data name="SpectraHubChartAlignmentAutoAlignSelectedSpectrumLabel" xml:space="preserve">
     <value>Automatically align the selected spectrum using the settings already saved on HyperLab cloud</value>
   </data>
@@ -198,11 +204,20 @@
   <data name="SpectraHubChartAlignmentLabel2" xml:space="preserve">
     <value>Following a detailed overview of the items within the alignment panel</value>
   </data>
-  <data name="SpectraHubChartAlignmentLabel1" xml:space="preserve">
-    <value>For users opting to work with RAW spectra, as well as for members of HyperLab’s scientific team tasked with preparing materials for the broader scientific community, a specialized feature is available</value>
+  <data name="SpectraHubChartContinuumRemovalLabel1" xml:space="preserve">
+    <value>Continuum removal is a spectral analysis technique used to isolate absorption features in a spectrum by removing its overall shape or continuum. This process enhances the visibility of specific spectral characteristics, making it easier to analyze and compare different materials or substances. It is commonly applied in remote sensing and laboratory spectroscopy to improve the identification and classification of elements based on their unique absorption patterns.&lt;/br&gt;HyperLab provides users with an intuitive and user-friendly interface for performing continuum removal, allowing them to precisely define the segments where this operation should be applied. The process is designed to be straightforward and accessible: users can interact directly with the chart by selecting specific points that define the desired segments for continuum removal. Once these points are chosen, HyperLab enables users to select the appropriate mathematical fit function for each segment, ensuring accurate correction of the spectral baseline.&lt;/br&gt;The &lt;i&gt;Core&lt;/i&gt; mode is ideal for quick and straightforward segment creation, making it accessible even to users who are new to the process. By simply selecting individual points, the system automatically generates segments.&lt;/br&gt;The &lt;i&gt;Pro&lt;/i&gt; mode offers advanced customization, making it particularly useful for precise spectral adjustments. Since each selected point defines an interval with adjustable boundary points, users can fine-tune the segments and apply the most appropriate approximation function for each case.</value>
   </data>
-  <data name="SpectraHubChartContinuumRemovalLabel" xml:space="preserve">
+  <data name="SpectraHubChartAlignmentLabel1" xml:space="preserve">
+    <value>For users working with RAW spectra and for HyperLab’s scientific team preparing data for broader dissemination, a dedicated feature is available: spectral alignment.&lt;/br&gt;This functionality originates from acquisition setups used at SLab: the spectrometer includes three internal detectors covering the following wavelength ranges (nm): 350-1000; 1000-1800; 1800-2500.&lt;/br&gt;During measurements, the ratio between sample and reference signals can introduce discontinuities at the detector transition points, resulting in artificial misalignments in reflectance intensity.&lt;/br&gt;To ensure high-quality data and streamline processing, HyperLab provides an automated correction function that resolves these misalignments, following the approach successfully implemented at SLab</value>
+  </data>
+  <data name="SpectraHubChartContinuumRemovalLabel2" xml:space="preserve">
     <value>Following a detailed overview of the items within the continuum-removal panel</value>
+  </data>
+  <data name="SpectraHubChartContinuumRemovalCoreModeLabel" xml:space="preserve">
+    <value>Core mode</value>
+  </data>
+  <data name="SpectraHubChartContinuumRemovalProModeLabel" xml:space="preserve">
+    <value>Pro mode</value>
   </data>
   <data name="SpectraHubChartCharmsAlreadySavedOnCloudMessage" xml:space="preserve">
     <value>When this icon is shown, an already saved version of the aligned spectrum is available on HyperLab cloud</value>
@@ -222,13 +237,56 @@
   <data name="SpectraHubChartButtonAlignment" xml:space="preserve">
     <value>Execute alignment procedure</value>
   </data>
+  <data name="SpectraHubChartButtonContinuumRemoval" xml:space="preserve">
+    <value>Execute continuum removal procedure</value>
+  </data>
   <data name="SpectraHubChartButtonAlignedSave" xml:space="preserve">
     <value>Save aligned spectrum on cloud</value>
+  </data>
+  <data name="SpectraHubChartButtonContinuumRemovedSave" xml:space="preserve">
+    <value>Save continuum removed spectrum on cloud</value>
   </data>
   <data name="SpectraHubChartButtonAlignedRemove" xml:space="preserve">
     <value>Delete aligned spectrum from chart and the copy on cloud, when requested by user</value>
   </data>
+  <data name="SpectraHubChartButtonContinuumRemovedRemove" xml:space="preserve">
+    <value>Delete continuum removed spectrum from chart and the copy on cloud, when requested by user</value>
+  </data>
   <data name="SpectraHubChartButtonAlignedDownload" xml:space="preserve">
     <value>Open a context menu to download aligned spectrum as CSV or XML file</value>
+  </data>
+  <data name="SpectraHubChartFitSetCoreOrProModeLabel" xml:space="preserve">
+    <value>Allow selection of Core or Pro mode for fitting spectrum</value>
+  </data>
+  <data name="SpectraHubChartFitShowHideVerticalLinesForFitPointsLabel" xml:space="preserve">
+    <value>Choose whether to display vertical lines corresponding to fit points on the chart</value>
+  </data>
+  <data name="SpectraHubChartFitAutoRecalculateContinuumRemovedLabel" xml:space="preserve">
+    <value>Choose whether to automatically recalculate the continuum-removed spectrum whenever a fit point is added or removed</value>
+  </data>
+  <data name="SpectraHubChartFitShowHideBreaksOnValueAxisLabel" xml:space="preserve">
+    <value>Choose whether using breaks or not on y axis: Y-axis breaks help avoid squashed charts when some values are much higher or lower than others, making the graph easier to read</value>
+  </data>
+  <data name="SpectraHubChartFitNumOfPointsForMissingPointsLabel" xml:space="preserve">
+    <value>To perform a proper fit, the spectrum's endpoints must be included. Since these edges can be noisy, a mean value can be calculated by averaging a defined number of points near each end. This parameter sets how many points at the spectrum's edges are used to compute the averaged endpoint</value>
+  </data>
+  <data name="SpectraHubChartButtonContinuumRemovedDownload" xml:space="preserve">
+    <value>Open a context menu to download continuum removed spectrum as CSV or XML file</value>
+  </data>
+  <data name="SpectraHubChartCoreModelExplanation" xml:space="preserve">
+    <value>Core mode is a fast method for defining segments used to remove the continuum.</value>
+  </data>
+  <data name="SpectraHubChartContinuumRemovalCoreModeExplanation" xml:space="preserve">
+    <value>Core mode is a fast method for defining segments used to remove the continuum.
+Each time a point on the aligned spectrum is clicked, a new point is added to the graph. Every pair of points defines a segment, which is displayed on the graph and listed as an item in the right-hand panel. For each segment, the fitting function applied to the corresponding portion of the spectrum can be modified. By default, a straight line is selected, but other fitting functions are also available</value>
+  </data>
+  <data name="SpectraHubChartContinuumRemovalProModeExplanation" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ButtonClickToWatchVideoCoreModeLabel" xml:space="preserve">
+    <value>Click to see an example of how to define segments in &lt;i&gt;Core&lt;/i&gt; mode</value>
+  </data>
+  <data name="ButtonClickToWatchVideoProModeLabel" xml:space="preserve">
+    <value>Click to see an example of how to define segments in &lt;i&gt;Pro&lt;/i&gt; mode</value>
   </data>
 </root>

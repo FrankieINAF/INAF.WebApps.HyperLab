@@ -58,7 +58,7 @@
 /* CONTROLS */
 /* ################################################################################ */
 .panel-image {
-    height: 50%;
+    height: 60%;
     margin: 4px;
 }
 
@@ -68,6 +68,10 @@
 }
 
 @media (max-width: 768px) {
+    .panel-image {
+        height: 30%;
+    }
+
     .panel-image-caption {
         margin-left: 16px;
     }

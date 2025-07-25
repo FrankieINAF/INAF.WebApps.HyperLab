@@ -73,7 +73,7 @@ function manageNavigation() {
 
         case NAVIGATION_SHOW_CHART:
         case NAVIGATION_CREATE_CHART:
-            //addGuideChartButton();
+            addGuideChartButton();
             addCharmsLegendButton();
             addBackClearToSearchButton();
             addOpenProcessSpectraCharmsButton();

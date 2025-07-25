@@ -6,9 +6,131 @@
         <div><button class="button light cycle outline pointer fg-white margin-right-8" onclick="showGuideMagicWand()"><span class="mif-arrow-left"></span></button></div>
         <div class="margin-left-8"><p class="text-normal fg-white margin-top-8">@Html.Raw(Guide.ButtonBackToDataAnalysisPanels)</p></div>
     </div>
-    <div class="margin-right-16"><button class="button light cycle outline pointer fg-white" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
+    <div><span class="fg-white text-leader2 text-medium">@Html.Raw(Guide.SpectraHubChartPanelsContinuumRemovalLabel)</span></div>
+    <div class="margin-right-32"><button class="button light cycle outline pointer fg-white" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
 </div>
 <!-- CONTENT -->
-@* <div class="row cell-fs-12">
-    <p class="fg-white">@Html.Raw(Guide.SpectraHubChartAlignmentLabel)</p>
-</div> *@
+<div class="row cell-fs-12">
+    <p class="fg-white text-just">@Html.Raw(Guide.SpectraHubChartContinuumRemovalLabel1)</p>
+    <p class="fg-white margin-top-8">@Html.Raw(Guide.SpectraHubChartContinuumRemovalLabel2)</p>
+</div>
+<div class="row margin-16 d-flex flex-column-fs flex-row-md">
+    <!-- DESCRIPTION -->
+    <div class="order-fs-2 order-md-1 cell-fs-12 cell-md-6 d-flex flex-justify-center overflow-md">
+        <div class="row cell-fs-12">
+            <hr style="background-color: white" />
+            <!-- CONTINUUM REMOVAL SETTINGS -->
+            <div class="d-flex">
+                <div class="d-flex">
+                    <span class="mif-cogs mif-2x fg-white"></span>
+                    <p class="row-text-title margin-left-12">@Html.Raw(Charms.FitSettingsLabel)</p>
+                </div>
+                <p class="row-text-content">@Html.Raw(Guide.SpectraHubChartFitSettingsLabel)</p>
+            </div>
+            <div class="row margin-left-12 margin-top-8">
+                <div class="cell-fs-6"><p class="row-text-title">@Html.Raw(Charms.FitSetCoreOrProModeLabel)</p></div>
+                <div class="cell-fs-6"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartFitSetCoreOrProModeLabel)</p></div>
+            </div>
+            <div class="row margin-left-12 margin-top-8">
+                <div class="cell-fs-6"><p class="row-text-title">@Html.Raw(Charms.FitShowHideVerticalLinesForFitPointsLabel)</p></div>
+                <div class="cell-fs-6"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartFitShowHideVerticalLinesForFitPointsLabel)</p></div>
+            </div>
+            <div class="row margin-left-12 margin-top-8">
+                <div class="cell-fs-6"><p class="row-text-title">@Html.Raw(Charms.FitAutoRecalculateContinuumRemovedLabel)</p></div>
+                <div class="cell-fs-6"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartFitAutoRecalculateContinuumRemovedLabel)</p></div>
+            </div>
+            <div class="row margin-left-12 margin-top-8">
+                <div class="cell-fs-6"><p class="row-text-title">@Html.Raw(Charms.FitShowHideBreaksOnValueAxisLabel)</p></div>
+                <div class="cell-fs-6"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartFitShowHideBreaksOnValueAxisLabel)</p></div>
+            </div>
+            <hr style="background-color: white" />
+            <!-- ICONS SAVED ON CLOUD -->
+            <div class="row margin-top-16">
+                <div class="row cell-fs-6 d-flex">
+                    <span class="mif-cloud-download mif-2x fg-cyan pointer"></span>
+                    <span class="margin-left-8 text-small margin-top-4 fg-white">@Html.Raw(Charms.CharmsAlreadySavedOnCloudMessage)</span>
+                </div>
+                <div class="cell-fs-6">
+                    <p class="row-text-content">@Html.Raw(Guide.SpectraHubChartCharmsAlreadySavedOnCloudMessage)</p>
+                </div>
+            </div>
+            <hr style="background-color: white" />
+            <!-- NUM OF POINTS FOR MISSING POINTS -->
+            <div class="row margin-top-8">
+                <div class="cell-fs-6"><p class="row-text-title">@Html.Raw(Charms.FitNumOfPointsForMissingPointsLabel)</p></div>
+                <div class="cell-fs-6"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartFitNumOfPointsForMissingPointsLabel)</p></div>
+            </div>
+            <hr style="background-color: white" />
+            <!-- CORE/PRO MODE EXPLANATION -->
+            <div class="row margin-top-8">
+                <div class="row cell-fs-12">
+                    <ul data-app-bar="false"
+                        data-role="tabs"
+                        data-expand="true"
+                        data-expand-point="fs"
+                        data-cls-tabs="flex-justify-center">
+                        <li><a href="#coreMode">@Html.Raw(Guide.SpectraHubChartContinuumRemovalCoreModeLabel)</a></li>
+                        <li><a href="#proMode">@Html.Raw(Guide.SpectraHubChartContinuumRemovalProModeLabel)</a></li>
+                    </ul>
+                </div>
+
+                <div id="coreMode">
+                    <div class="d-flex flex-column flex-align-center">
+                        <div><p class="fg-white">@Html.Raw(Guide.SpectraHubChartContinuumRemovalCoreModeExplanation)</p></div>
+                        <div id="coreModeGifButton" class="d-flex flex-column flex-align-center">
+                            <img src="~/images/guide/media_player_light.png" class="pointer" onclick="showGuideCoreGif()" />
+                            <span class="text-small fg-white">@Html.Raw(Guide.ButtonClickToWatchVideoCoreModeLabel)</span>
+                        </div>
+                        <div id="coreModeGif" class="d-none"></div>
+                    </div>
+                </div>
+                <div id="proMode">
+                    <div class="d-flex flex-column flex-align-center">
+                        <div><p class="fg-white">@Html.Raw(Guide.SpectraHubChartContinuumRemovalProModeExplanation)</p></div>
+                        <div id="proModeGifButton" class="d-flex flex-column flex-align-center">
+                            <img src="~/images/guide/media_player_light.png" class="pointer" onclick="showGuideProGif()" />
+                            <span class="text-small fg-white">@Html.Raw(Guide.ButtonClickToWatchVideoProModeLabel)</span>
+                        </div>
+                        <div id="proModeGif" class="d-none"></div>
+                    </div>
+                </div>
+            </div>
+            <hr style="background-color: white" />
+            <!-- BUTTONS -->
+            <div class="row margin-top-16 d-flex flex-column">
+                <div class="d-flex">
+                    <button class="button primary cycle pointer min-width-36"><span class="mif-checkmark"></span></button>
+                    <p class="button-text">@Html.Raw(Guide.SpectraHubChartButtonContinuumRemoval)</p>
+                </div>
+                <div class="d-flex margin-top-8">
+                    <button class="button primary cycle pointer min-width-36"><span class="mif-floppy-disk"></span></button>
+                    <p class="button-text">@Html.Raw(Guide.SpectraHubChartButtonContinuumRemovedSave)</p>
+                </div>
+                <div class="d-flex margin-top-8">
+                    <button class="button primary cycle pointer min-width-36"><span class="mif-bin"></span></button>
+                    <p class="button-text">@Html.Raw(Guide.SpectraHubChartButtonContinuumRemovedRemove)</p>
+                </div>
+                <div class="d-flex margin-top-8">
+                    <button class="button primary cycle pointer min-width-36"><span class="mif-file-download"></span></button>
+                    <p class="button-text">@Html.Raw(Guide.SpectraHubChartButtonContinuumRemovedDownload)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- IMAGES -->
+    <div class="order-fs-1 order-md-2 cell-fs-12 cell-md-6 d-flex flex-justify-center">
+        <div data-role="carousel"
+             data-width="300px"
+             data-height="900px"
+             data-cls-bullet="bullet-big"
+             data-auto-start="true"
+             data-duration="1000"
+             data-cls-controls="fg-white"
+             data-bullets-position="right"
+             data-control-next="<span class='mif-chevron-right fg-cyan'></span>"
+             data-control-prev="<span class='mif-chevron-left fg-cyan'></span>">
+            <div class="slide" data-cover="images/guide/panels/continuum_removal_panel_core.png"></div>
+            <div class="slide" data-cover="images/guide/panels/continuum_removal_panel_pro.png"></div>
+        </div>
+    </div>
+</div>

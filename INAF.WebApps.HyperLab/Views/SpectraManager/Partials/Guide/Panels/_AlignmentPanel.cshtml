@@ -6,16 +6,18 @@
         <div><button class="button light cycle outline pointer fg-white margin-right-8" onclick="showGuideMagicWand()"><span class="mif-arrow-left"></span></button></div>
         <div class="margin-left-8"><p class="text-normal fg-white margin-top-8">@Html.Raw(Guide.ButtonBackToDataAnalysisPanels)</p></div>
     </div>
-    <div class="margin-right-16"><button class="button light cycle outline pointer fg-white" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
+    <div><span class="fg-white text-leader2 text-medium">@Html.Raw(Guide.SpectraHubChartPanelsAlignmentLabel)</span></div>
+    <div class="margin-right-32"><button class="button light cycle outline pointer fg-white" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
 </div>
 <!-- CONTENT -->
 <div class="row cell-fs-12">
-    <p class="fg-white">@Html.Raw(Guide.SpectraHubChartAlignmentLabel2)</p>
+    <p class="fg-white text-just">@Html.Raw(Guide.SpectraHubChartAlignmentLabel1)</p>
+    <p class="fg-white margin-top-8">@Html.Raw(Guide.SpectraHubChartAlignmentLabel2)</p>
 </div>
 <div class="row margin-16 d-flex flex-column-fs flex-row-md">
     <!-- DESCRIPTION -->
     <div class="order-fs-2 order-md-1 cell-fs-12 cell-md-6 d-flex flex-justify-center overflow-md">
-        <div class="row cell-fs-12 order-fs-2 order-md-1">
+        <div class="row cell-fs-12">
             <hr style="background-color: white" />
             <!-- ALIGNMENT SETTINGS -->
             <div class="d-flex">

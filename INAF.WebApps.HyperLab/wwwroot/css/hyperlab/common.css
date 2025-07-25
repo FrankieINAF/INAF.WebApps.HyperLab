@@ -207,6 +207,10 @@ div.mandatory {
     margin-right: 16px;
 }
 
+.margin-right-32 {
+    margin-right: 32px;
+}
+
 .margin-right-500 {
     margin-right: 500px !important;
 }
@@ -494,4 +498,18 @@ div.mandatory {
         width: 200px;
         height: 200px;
     }
+}
+
+/* ################################################################################ */
+/* HIDE SCROLLBAR  */
+/* ################################################################################ */
+/* Per nascondere la scrollbar ma mantenere lo scroll */
+.hide-scrollbar {
+    overflow: scroll; /* o auto */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
 }

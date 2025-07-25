@@ -88,6 +88,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Click to see an example of how to define segments in &lt;i&gt;Core&lt;/i&gt; mode.
+        /// </summary>
+        public static string ButtonClickToWatchVideoCoreModeLabel {
+            get {
+                return ResourceManager.GetString("ButtonClickToWatchVideoCoreModeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to see an example of how to define segments in &lt;i&gt;Pro&lt;/i&gt; mode.
+        /// </summary>
+        public static string ButtonClickToWatchVideoProModeLabel {
+            get {
+                return ResourceManager.GetString("ButtonClickToWatchVideoProModeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable full screen mode for page.
         /// </summary>
         public static string ButtonEnterFullScreenLabel {
@@ -178,7 +196,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For users opting to work with RAW spectra, as well as for members of HyperLab’s scientific team tasked with preparing materials for the broader scientific community, a specialized feature is available.
+        ///   Looks up a localized string similar to For users working with RAW spectra and for HyperLab’s scientific team preparing data for broader dissemination, a dedicated feature is available: spectral alignment.&lt;/br&gt;This functionality originates from acquisition setups used at SLab: the spectrometer includes three internal detectors covering the following wavelength ranges (nm): 350-1000; 1000-1800; 1800-2500.&lt;/br&gt;During measurements, the ratio between sample and reference signals can introduce discontinuities at the detector transition points, resulti [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SpectraHubChartAlignmentLabel1 {
             get {
@@ -268,6 +286,42 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Execute continuum removal procedure.
+        /// </summary>
+        public static string SpectraHubChartButtonContinuumRemoval {
+            get {
+                return ResourceManager.GetString("SpectraHubChartButtonContinuumRemoval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open a context menu to download continuum removed spectrum as CSV or XML file.
+        /// </summary>
+        public static string SpectraHubChartButtonContinuumRemovedDownload {
+            get {
+                return ResourceManager.GetString("SpectraHubChartButtonContinuumRemovedDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete continuum removed spectrum from chart and the copy on cloud, when requested by user.
+        /// </summary>
+        public static string SpectraHubChartButtonContinuumRemovedRemove {
+            get {
+                return ResourceManager.GetString("SpectraHubChartButtonContinuumRemovedRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save continuum removed spectrum on cloud.
+        /// </summary>
+        public static string SpectraHubChartButtonContinuumRemovedSave {
+            get {
+                return ResourceManager.GetString("SpectraHubChartButtonContinuumRemovedSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to When this icon is shown, an already saved version of the aligned spectrum is available on HyperLab cloud.
         /// </summary>
         public static string SpectraHubChartCharmsAlreadySavedOnCloudMessage {
@@ -277,11 +331,120 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Core mode is a fast method for defining segments used to remove the continuum.
+        ///Each time a point on the aligned spectrum is clicked, a new point is added to the graph. Every pair of points defines a segment, which is displayed on the graph and listed as an item in the right-hand panel. For each segment, the fitting function applied to the corresponding portion of the spectrum can be modified. By default, a straight line is selected, but other fitting functions are also available.
+        /// </summary>
+        public static string SpectraHubChartContinuumRemovalCoreModeExplanation {
+            get {
+                return ResourceManager.GetString("SpectraHubChartContinuumRemovalCoreModeExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Core mode.
+        /// </summary>
+        public static string SpectraHubChartContinuumRemovalCoreModeLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartContinuumRemovalCoreModeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Continuum removal is a spectral analysis technique used to isolate absorption features in a spectrum by removing its overall shape or continuum. This process enhances the visibility of specific spectral characteristics, making it easier to analyze and compare different materials or substances. It is commonly applied in remote sensing and laboratory spectroscopy to improve the identification and classification of elements based on their unique absorption patterns.&lt;/br&gt;HyperLab provides users with an intuitiv [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string SpectraHubChartContinuumRemovalLabel1 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartContinuumRemovalLabel1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Following a detailed overview of the items within the continuum-removal panel.
         /// </summary>
-        public static string SpectraHubChartContinuumRemovalLabel {
+        public static string SpectraHubChartContinuumRemovalLabel2 {
             get {
-                return ResourceManager.GetString("SpectraHubChartContinuumRemovalLabel", resourceCulture);
+                return ResourceManager.GetString("SpectraHubChartContinuumRemovalLabel2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SpectraHubChartContinuumRemovalProModeExplanation {
+            get {
+                return ResourceManager.GetString("SpectraHubChartContinuumRemovalProModeExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pro mode.
+        /// </summary>
+        public static string SpectraHubChartContinuumRemovalProModeLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartContinuumRemovalProModeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Core mode is a fast method for defining segments used to remove the continuum..
+        /// </summary>
+        public static string SpectraHubChartCoreModelExplanation {
+            get {
+                return ResourceManager.GetString("SpectraHubChartCoreModelExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose whether to automatically recalculate the continuum-removed spectrum whenever a fit point is added or removed.
+        /// </summary>
+        public static string SpectraHubChartFitAutoRecalculateContinuumRemovedLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartFitAutoRecalculateContinuumRemovedLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To perform a proper fit, the spectrum&apos;s endpoints must be included. Since these edges can be noisy, a mean value can be calculated by averaging a defined number of points near each end. This parameter sets how many points at the spectrum&apos;s edges are used to compute the averaged endpoint.
+        /// </summary>
+        public static string SpectraHubChartFitNumOfPointsForMissingPointsLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartFitNumOfPointsForMissingPointsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow selection of Core or Pro mode for fitting spectrum.
+        /// </summary>
+        public static string SpectraHubChartFitSetCoreOrProModeLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartFitSetCoreOrProModeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show/hide settings panel for fit.
+        /// </summary>
+        public static string SpectraHubChartFitSettingsLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartFitSettingsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose whether using breaks or not on y axis: Y-axis breaks help avoid squashed charts when some values are much higher or lower than others, making the graph easier to read.
+        /// </summary>
+        public static string SpectraHubChartFitShowHideBreaksOnValueAxisLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartFitShowHideBreaksOnValueAxisLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose whether to display vertical lines corresponding to fit points on the chart.
+        /// </summary>
+        public static string SpectraHubChartFitShowHideVerticalLinesForFitPointsLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartFitShowHideVerticalLinesForFitPointsLabel", resourceCulture);
             }
         }
         
@@ -336,6 +499,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SpectraHubChartPanelsContinuumRemovalButtonLabel {
             get {
                 return ResourceManager.GetString("SpectraHubChartPanelsContinuumRemovalButtonLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Continuum removal panel.
+        /// </summary>
+        public static string SpectraHubChartPanelsContinuumRemovalLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartPanelsContinuumRemovalLabel", resourceCulture);
             }
         }
         
