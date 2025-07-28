@@ -62,6 +62,11 @@
     margin: 4px;
 }
 
+.panel-image2 {
+    height: 60%;
+    margin: 4px;
+}
+
 .panel-image-caption {
     margin-left: 8px;
     margin-right: 8px;
@@ -70,6 +75,10 @@
 @media (max-width: 768px) {
     .panel-image {
         height: 30%;
+    }
+
+    .panel-image2 {
+        height: 80%;
     }
 
     .panel-image-caption {

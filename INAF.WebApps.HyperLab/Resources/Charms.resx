@@ -475,7 +475,7 @@
     <value>Sorry, something went wrong while trying to apply smoothing to selected spectrum</value>
   </data>
   <data name="SmoothingAutoSaveSegmentsLabel" xml:space="preserve">
-    <value>Auto save settings when on value change</value>
+    <value>Auto save settings when a value is changed</value>
   </data>
   <data name="SmoothingAutoSaveSegmentsMessage" xml:space="preserve">
     <value>Ok, I'm going to automatically save smoothing settings each time a value is changed</value>

@@ -250,6 +250,56 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Band Analysis panel is divided into two sections.
+        ///The upper section displays the list of segments into which the spectrum was divided during the continuum removal phase. Each segment is accompanied by a button that initiates the analysis of the corresponding spectral band.
+        ///The lower section presents the results of the analysis
+        ///.
+        /// </summary>
+        public static string SpectraHubChartBandAnalysisExplanation1 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartBandAnalysisExplanation1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Some details related to the band analysis results are displayed directly on the graph.
+        ///The analyzed band is highlighted, and both the line indicating the Full Width at Half Maximum (FWHM) and the Gaussian curve used to identify the band center are shown
+        ///.
+        /// </summary>
+        public static string SpectraHubChartBandAnalysisExplanation2 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartBandAnalysisExplanation2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HyperLab incorporates an advanced band analysis feature that can be applied to each spectral band corresponding to the segments defined during the continuum removal process. By simply pressing a button on the left sidebar, users can initiate the calculation of key parameters—band depth, band area, full width at half maximum (FWHM) and the wavelength of the band center. This parameters are mainly calculating following the approach described in Clark 1984. As the computations progress, the results are dynamic [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string SpectraHubChartBandAnalysisLabel1 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartBandAnalysisLabel1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;N.B.&lt;/b&gt; &lt;i&gt;This panel remains disabled until continuum removal procedure is completed&lt;/i&gt;.
+        /// </summary>
+        public static string SpectraHubChartBandAnalysisLabel2 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartBandAnalysisLabel2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Following a detailed overview of the items within the band analysis panel.
+        /// </summary>
+        public static string SpectraHubChartBandAnalysisLabel3 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartBandAnalysisLabel3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open a context menu to download aligned spectrum as CSV or XML file.
         /// </summary>
         public static string SpectraHubChartButtonAlignedDownload {
@@ -318,6 +368,42 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SpectraHubChartButtonContinuumRemovedSave {
             get {
                 return ResourceManager.GetString("SpectraHubChartButtonContinuumRemovedSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open a context menu to download smoothed spectrum as CSV or XML file.
+        /// </summary>
+        public static string SpectraHubChartButtonSmoothedDownload {
+            get {
+                return ResourceManager.GetString("SpectraHubChartButtonSmoothedDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete smoothed spectrum from chart and the copy on cloud, when requested by user.
+        /// </summary>
+        public static string SpectraHubChartButtonSmoothedRemove {
+            get {
+                return ResourceManager.GetString("SpectraHubChartButtonSmoothedRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save smoothed spectrum on cloud.
+        /// </summary>
+        public static string SpectraHubChartButtonSmoothedSave {
+            get {
+                return ResourceManager.GetString("SpectraHubChartButtonSmoothedSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute smoothing procedure.
+        /// </summary>
+        public static string SpectraHubChartButtonSmoothing {
+            get {
+                return ResourceManager.GetString("SpectraHubChartButtonSmoothing", resourceCulture);
             }
         }
         
@@ -496,6 +582,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Band analysis panel.
+        /// </summary>
+        public static string SpectraHubChartPanelsBandAnalysisLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartPanelsBandAnalysisLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Explore &lt;i&gt;Continuum removal&lt;/i&gt; panel.
         /// </summary>
         public static string SpectraHubChartPanelsContinuumRemovalButtonLabel {
@@ -550,6 +645,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Smoothing panel.
+        /// </summary>
+        public static string SpectraHubChartPanelsSmoothingLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartPanelsSmoothingLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To perform alignment, a reference segment must be selected. The remaining two segments are aligned with respect to it. Selecting a point within the spectrum miniature automatically sets the corresponding segment as the reference.
         /// </summary>
         public static string SpectraHubChartSegmentSelectionExplanation {
@@ -564,6 +668,96 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SpectraHubChartSegmentSelectionLabel {
             get {
                 return ResourceManager.GetString("SpectraHubChartSegmentSelectionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specify whether new values should be saved whenever a smoothing setting is changed.
+        /// </summary>
+        public static string SpectraHubChartSmoothingAutoSaveSegmentsLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartSmoothingAutoSaveSegmentsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Smoothing by segments allows the spectrum to be divided into distinct regions, applying an algorithm with different parameters to each one. This provides great flexibility. Additionally, both the number of segments and the spectral range of each segment can be customized.
+        /// </summary>
+        public static string SpectraHubChartSmoothingBySegmentsExplanation {
+            get {
+                return ResourceManager.GetString("SpectraHubChartSmoothingBySegmentsExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HyperLab provides flexible smoothing options through the Savitzky-Golay algorithm. At the outset, users can choose to apply the algorithm either to the entire spectrum or to a set of three predefined segments, which are fully customizable. If the segmented approach is selected, users can adjust the number of segments as well as define their specific boundaries. For each segment—or for the whole spectrum—two essential parameters must be set: the window size, which determines the range of data points utilized [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string SpectraHubChartSmoothingLabel1 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartSmoothingLabel1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Following a detailed overview of the items within the smoothing panel.
+        /// </summary>
+        public static string SpectraHubChartSmoothingLabel2 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartSmoothingLabel2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter polynomial order, which is the degree of the lest-squares fitted polynomials used in the filter..
+        /// </summary>
+        public static string SpectraHubChartSmoothingParameterPolynomialOrderExplanation {
+            get {
+                return ResourceManager.GetString("SpectraHubChartSmoothingParameterPolynomialOrderExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Following the meaning of the couple of parameters used for smoothing:.
+        /// </summary>
+        public static string SpectraHubChartSmoothingParameters {
+            get {
+                return ResourceManager.GetString("SpectraHubChartSmoothingParameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frame length, which is the number of signal samples that form the interval width around the sample being filtered.
+        /// </summary>
+        public static string SpectraHubChartSmoothingParameterWindowSizeExplanation {
+            get {
+                return ResourceManager.GetString("SpectraHubChartSmoothingParameterWindowSizeExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save current values of settings for smoothing.
+        /// </summary>
+        public static string SpectraHubChartSmoothingSaveSegmentsLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartSmoothingSaveSegmentsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show/hide settings panel for smoothing.
+        /// </summary>
+        public static string SpectraHubChartSmoothingSettingsLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartSmoothingSettingsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Whole spectrum smoothing is a simpler and faster way to apply the Savitzky-Golay algorithm, while still providing good results.
+        /// </summary>
+        public static string SpectraHubChartSmoothingWholeSpectrumExplanation {
+            get {
+                return ResourceManager.GetString("SpectraHubChartSmoothingWholeSpectrumExplanation", resourceCulture);
             }
         }
         

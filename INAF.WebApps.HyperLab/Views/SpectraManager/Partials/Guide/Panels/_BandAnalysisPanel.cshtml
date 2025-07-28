@@ -1,5 +1,46 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using INAF.WebApps.HyperLab.Resources;
+
+<style>
+    img {
+        float: left; /* or right */
+        margin: 10px; /* Add space around the image */
+    }
+
+</style>
+<!-- HEADER -->
+<div class="row cell-fs-12 margin-16 d-flex flex-justify-between">
+    <div class="d-flex">
+        <div><button class="button light cycle outline pointer fg-white margin-right-8" onclick="showGuideMagicWand()"><span class="mif-arrow-left"></span></button></div>
+        <div class="margin-left-8"><p class="text-normal fg-white margin-top-8">@Html.Raw(Guide.ButtonBackToDataAnalysisPanels)</p></div>
+    </div>
+    <div><span class="fg-white text-leader2 text-medium">@Html.Raw(Guide.SpectraHubChartPanelsBandAnalysisLabel)</span></div>
+    <div class="margin-right-32"><button class="button light cycle outline pointer fg-white" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
+</div>
+<!-- CONTENT -->
+<div class="row cell-fs-12">
+    <p class="fg-white text-just">@Html.Raw(Guide.SpectraHubChartBandAnalysisLabel1)</p>
+    <p class="fg-white margin-top-16">@Html.Raw(Guide.SpectraHubChartBandAnalysisLabel2)</p>
+    <p class="fg-white margin-top-16">@Html.Raw(Guide.SpectraHubChartBandAnalysisLabel3)</p>
+</div>
+<div class="row margin-16 d-flex flex-column-fs flex-row-md">
+    <!-- DESCRIPTION -->
+    <div class="order-fs-2 order-md-1 cell-fs-12 cell-md-6 d-flex flex-justify-center overflow-md">
+        <div class="row cell-fs-12">
+            <hr style="background-color: white" />
+            <!-- BAND ANALYSIS -->
+            <div class="row margin-top-8">
+                <div class="cell-fs-12"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartBandAnalysisExplanation1)</p></div>
+            </div>
+            <div class="row margin-top-8">
+                <div class="cell-fs-12">
+                    <img width="200px" src="~/images/guide/panels/band_analysis_on_chart.png" />
+                    <p class="row-text-content">@Html.Raw(Guide.SpectraHubChartBandAnalysisExplanation2)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- IMAGE -->
+    <div class="order-fs-1 order-md-2 cell-fs-12 cell-md-6 d-flex flex-justify-center">
+        <img src="~/images/guide/panels/band_analysis_panel.png" class="panel-image2" />
+    </div>
+</div>

@@ -1,5 +1,114 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using INAF.WebApps.HyperLab.Resources;
+
+<!-- HEADER -->
+<div class="row cell-fs-12 margin-16 d-flex flex-justify-between">
+    <div class="d-flex">
+        <div><button class="button light cycle outline pointer fg-white margin-right-8" onclick="showGuideMagicWand()"><span class="mif-arrow-left"></span></button></div>
+        <div class="margin-left-8"><p class="text-normal fg-white margin-top-8">@Html.Raw(Guide.ButtonBackToDataAnalysisPanels)</p></div>
+    </div>
+    <div><span class="fg-white text-leader2 text-medium">@Html.Raw(Guide.SpectraHubChartPanelsSmoothingLabel)</span></div>
+    <div class="margin-right-32"><button class="button light cycle outline pointer fg-white" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
+</div>
+<!-- CONTENT -->
+<div class="row cell-fs-12">
+    <p class="fg-white text-just">@Html.Raw(Guide.SpectraHubChartSmoothingLabel1)</p>
+    <p class="fg-white margin-top-8">@Html.Raw(Guide.SpectraHubChartSmoothingLabel2)</p>
+</div>
+<div class="row margin-16 d-flex flex-column-fs flex-row-md">
+    <!-- DESCRIPTION -->
+    <div class="order-fs-2 order-md-1 cell-fs-12 cell-md-6 d-flex flex-justify-center overflow-md">
+        <div class="row cell-fs-12">
+            <hr style="background-color: white" />
+            <!-- SMOOTHING SETTINGS -->
+            <div class="d-flex">
+                <div class="d-flex">
+                    <span class="mif-cogs mif-2x fg-white"></span>
+                    <p class="row-text-title margin-left-12">@Html.Raw(Charms.SmoothingSettingsLabel)</p>
+                </div>
+                <p class="row-text-content">@Html.Raw(Guide.SpectraHubChartSmoothingSettingsLabel)</p>
+            </div>
+            <div class="row margin-left-12 margin-top-8">
+                <div class="cell-fs-6"><p class="row-text-title">@Html.Raw(Charms.SmoothingAutoSaveSegmentsLabel)</p></div>
+                <div class="cell-fs-6"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartSmoothingAutoSaveSegmentsLabel)</p></div>
+            </div>
+            <div class="row margin-left-12 margin-top-8">
+                <div class="cell-fs-6"><p class="row-text-title">@Html.Raw(Charms.SmoothingSaveSegmentsLabel)</p></div>
+                <div class="cell-fs-6"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartSmoothingSaveSegmentsLabel)</p></div>
+            </div>
+            <hr style="background-color: white" />
+            <!-- BY SEGMENTS/WHOLE SPECTRUM EXPLANATION -->
+            <div class="row margin-top-8">
+                <div class="row cell-fs-12">
+                    <ul data-app-bar="false"
+                        data-role="tabs"
+                        data-expand="true"
+                        data-expand-point="fs"
+                        data-cls-tabs="flex-justify-center">
+                        <li><a href="#coreMode">@Html.Raw(Charms.SmoothingBySegmentsTabTitle)</a></li>
+                        <li><a href="#proMode">@Html.Raw(Charms.SmoothingWholeSpectrumTabTitle)</a></li>
+                    </ul>
+                </div>
+
+                <div id="coreMode">
+                    <div class="d-flex flex-column flex-align-center">
+                        <p class="fg-white">@Html.Raw(Guide.SpectraHubChartSmoothingBySegmentsExplanation)</p>
+                    </div>
+                </div>
+                <div id="proMode">
+                    <div class="d-flex flex-column flex-align-center">
+                        <p class="fg-white">@Html.Raw(Guide.SpectraHubChartSmoothingWholeSpectrumExplanation)</p>
+                    </div>
+                </div>
+            </div>
+            <!-- PARAMETERS EXPLANATION -->
+            <hr style="background-color: white" />
+            <div class="row margin-top-8">
+                <div class="cell-fs-12"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartSmoothingParameters)</p></div>
+            </div>
+            <div class="row margin-left-12 margin-top-8">
+                <div class="cell-fs-6"><p class="row-text-title">@Html.Raw(Charms.SmoothingSegmentPolynomialOrderLabel)</p></div>
+                <div class="cell-fs-6"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartSmoothingParameterPolynomialOrderExplanation)</p></div>
+            </div>
+            <div class="row margin-left-12 margin-top-8">
+                <div class="cell-fs-6"><p class="row-text-title">@Html.Raw(Charms.SmoothingSegmentWindowSizeLabel)</p></div>
+                <div class="cell-fs-6"><p class="row-text-content">@Html.Raw(Guide.SpectraHubChartSmoothingParameterWindowSizeExplanation)</p></div>
+            </div>
+            <hr style="background-color: white" />
+            <!-- BUTTONS -->
+            <div class="row margin-top-16 d-flex flex-column">
+                <div class="d-flex">
+                    <button class="button primary cycle pointer min-width-36"><span class="mif-checkmark"></span></button>
+                    <p class="button-text">@Html.Raw(Guide.SpectraHubChartButtonSmoothing)</p>
+                </div>
+                <div class="d-flex margin-top-8">
+                    <button class="button primary cycle pointer min-width-36"><span class="mif-floppy-disk"></span></button>
+                    <p class="button-text">@Html.Raw(Guide.SpectraHubChartButtonSmoothedSave)</p>
+                </div>
+                <div class="d-flex margin-top-8">
+                    <button class="button primary cycle pointer min-width-36"><span class="mif-bin"></span></button>
+                    <p class="button-text">@Html.Raw(Guide.SpectraHubChartButtonSmoothedRemove)</p>
+                </div>
+                <div class="d-flex margin-top-8">
+                    <button class="button primary cycle pointer min-width-36"><span class="mif-file-download"></span></button>
+                    <p class="button-text">@Html.Raw(Guide.SpectraHubChartButtonSmoothedDownload)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- IMAGES -->
+    <div class="order-fs-1 order-md-2 cell-fs-12 cell-md-6 d-flex flex-justify-center">
+        <div data-role="carousel"
+             data-width="300px"
+             data-height="900px"
+             data-cls-bullet="bullet-big"
+             data-auto-start="true"
+             data-duration="1000"
+             data-cls-controls="fg-white"
+             data-bullets-position="right"
+             data-control-next="<span class='mif-chevron-right fg-cyan'></span>"
+             data-control-prev="<span class='mif-chevron-left fg-cyan'></span>">
+            <div class="slide" data-cover="images/guide/panels/smoothing_panel_by_segments.png"></div>
+            <div class="slide" data-cover="images/guide/panels/smoothing_panel_whole_spectrum.png"></div>
+        </div>
+    </div>
+</div>

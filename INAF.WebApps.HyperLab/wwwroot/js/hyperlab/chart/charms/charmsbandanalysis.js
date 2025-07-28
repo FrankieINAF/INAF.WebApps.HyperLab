@@ -103,20 +103,17 @@ async function startBandAnalysisProcedureAsync(x0, x1) {
     /* save current segment */
     lastSelectedSegmentForBand = segmentForFitting;
 
-    /* highlight the selected band */
-    await highlightBandAsync(series.name, segmentForFitting, items);
-
     /* calculate band-depth parameters */
-    await executeBandAnalysisProcedureAsync();
+    await executeBandAnalysisProcedureAsync(series, items);
 
     setLoadingCircleIsVisible(false);
 }
 
-async function executeBandAnalysisProcedureAsync() {
+async function executeBandAnalysisProcedureAsync(series, items) {
     //if (!isBandDepthCharmsOpened)
     //    await showBandAnalysisPanelAsync();
 
-    await executeBandAnalysisAsync();
+    await executeBandAnalysisAsync(series, items);
 
     isBandDepthCharmsOpened = true;
 }
@@ -124,9 +121,9 @@ async function executeBandAnalysisProcedureAsync() {
 /* ################################################################################ */
 /* BAND DEPTH */
 /* ################################################################################ */
-async function executeBandAnalysisAsync() {
+async function executeBandAnalysisAsync(series, items) {
     /* retrieve all points of all series from chart */
-    let items = dxChartGetItems(chartContainer);
+    //let items = dxChartGetItems(chartContainer);
 
     /* remove previous analysis and UI items, if available */
     clearBandAnalysisProcedure(items);
@@ -169,7 +166,11 @@ async function executeBandAnalysisAsync() {
     //let invertedYValues = invertYValuesBottomToTop(yValues);
     //showInvertedBand(items, xValues, invertedYValues);
 
+    /* 2.2) show the gaussian fit on chart */
     showGaussianFit(items, pointsInRangeXValues, pointsInRangeYValues, fitResult);
+
+    /* 2.3) highlight the selected band */
+    await highlightBandAsync(series.name, lastSelectedSegmentForBand, items);
 
     /* 3) band depth */
     let bandDepth = evaluateBandDepth(wavelength, bandCenter);
@@ -497,14 +498,15 @@ async function highlightBandAsync(seriesName, segmentForFitting, items) {
         name: SERIES_HIGHLIGHTENED_BAND,
         axis: 'valueAxis',
         color: BAND_AREA_COLOR,
-        showInLegend: false
+        showInLegend: false,
+        isVisible: true
     };
     addChartSeries(bandSeries);
     dxChartUpdateSeries(chartContainer, chartSeries);
 
     dxChartEndUpdate(chartContainer);
 
-    hideSpectraToBeHidden();
+    //hideSpectraToBeHidden();
 
     dxChartResetVisualRange(chartContainer);
 }

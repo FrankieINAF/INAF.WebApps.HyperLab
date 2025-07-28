@@ -150,6 +150,9 @@
   <data name="SpectraHubChartPanelsContinuumRemovalLabel" xml:space="preserve">
     <value>Continuum removal panel</value>
   </data>
+  <data name="SpectraHubChartPanelsSmoothingLabel" xml:space="preserve">
+    <value>Smoothing panel</value>
+  </data>
   <data name="SpectraHubChartPanelsSmoothingButtonLabel" xml:space="preserve">
     <value>Explore &lt;i&gt;Smoothing&lt;/i&gt; panel</value>
   </data>
@@ -213,6 +216,15 @@
   <data name="SpectraHubChartContinuumRemovalLabel2" xml:space="preserve">
     <value>Following a detailed overview of the items within the continuum-removal panel</value>
   </data>
+  <data name="SpectraHubChartSmoothingLabel2" xml:space="preserve">
+    <value>Following a detailed overview of the items within the smoothing panel</value>
+  </data>
+  <data name="SpectraHubChartSmoothingBySegmentsExplanation" xml:space="preserve">
+    <value>Smoothing by segments allows the spectrum to be divided into distinct regions, applying an algorithm with different parameters to each one. This provides great flexibility. Additionally, both the number of segments and the spectral range of each segment can be customized</value>
+  </data>
+  <data name="SpectraHubChartSmoothingWholeSpectrumExplanation" xml:space="preserve">
+    <value>Whole spectrum smoothing is a simpler and faster way to apply the Savitzky-Golay algorithm, while still providing good results</value>
+  </data>
   <data name="SpectraHubChartContinuumRemovalCoreModeLabel" xml:space="preserve">
     <value>Core mode</value>
   </data>
@@ -255,6 +267,9 @@
   <data name="SpectraHubChartButtonAlignedDownload" xml:space="preserve">
     <value>Open a context menu to download aligned spectrum as CSV or XML file</value>
   </data>
+  <data name="SpectraHubChartButtonSmoothedDownload" xml:space="preserve">
+    <value>Open a context menu to download smoothed spectrum as CSV or XML file</value>
+  </data>
   <data name="SpectraHubChartFitSetCoreOrProModeLabel" xml:space="preserve">
     <value>Allow selection of Core or Pro mode for fitting spectrum</value>
   </data>
@@ -291,5 +306,58 @@ Various approximation functions can be applied to the range, each potentially re
   </data>
   <data name="ButtonClickToWatchVideoProModeLabel" xml:space="preserve">
     <value>Click to see an example of how to define segments in &lt;i&gt;Pro&lt;/i&gt; mode</value>
+  </data>
+  <data name="SpectraHubChartSmoothingLabel1" xml:space="preserve">
+    <value>HyperLab provides flexible smoothing options through the Savitzky-Golay algorithm. At the outset, users can choose to apply the algorithm either to the entire spectrum or to a set of three predefined segments, which are fully customizable. If the segmented approach is selected, users can adjust the number of segments as well as define their specific boundaries. For each segment—or for the whole spectrum—two essential parameters must be set: the window size, which determines the range of data points utilized in the smoothing process, and the polynomial order, which controls the degree of the polynomial fit. This setup allows researchers to fine-tune the smoothing process to the specific characteristics of their spectral data</value>
+  </data>
+  <data name="SpectraHubChartSmoothingSettingsLabel" xml:space="preserve">
+    <value>Show/hide settings panel for smoothing</value>
+  </data>
+  <data name="SpectraHubChartSmoothingAutoSaveSegmentsLabel" xml:space="preserve">
+    <value>Specify whether new values should be saved whenever a smoothing setting is changed</value>
+  </data>
+  <data name="SpectraHubChartSmoothingSaveSegmentsLabel" xml:space="preserve">
+    <value>Save current values of settings for smoothing</value>
+  </data>
+  <data name="SpectraHubChartButtonSmoothing" xml:space="preserve">
+    <value>Execute smoothing procedure</value>
+  </data>
+  <data name="SpectraHubChartButtonSmoothedSave" xml:space="preserve">
+    <value>Save smoothed spectrum on cloud</value>
+  </data>
+  <data name="SpectraHubChartButtonSmoothedRemove" xml:space="preserve">
+    <value>Delete smoothed spectrum from chart and the copy on cloud, when requested by user</value>
+  </data>
+  <data name="SpectraHubChartSmoothingParameterPolynomialOrderExplanation" xml:space="preserve">
+    <value>Filter polynomial order, which is the degree of the lest-squares fitted polynomials used in the filter.</value>
+  </data>
+  <data name="SpectraHubChartSmoothingParameterWindowSizeExplanation" xml:space="preserve">
+    <value>Frame length, which is the number of signal samples that form the interval width around the sample being filtered</value>
+  </data>
+  <data name="SpectraHubChartSmoothingParameters" xml:space="preserve">
+    <value>Following the meaning of the couple of parameters used for smoothing:</value>
+  </data>
+  <data name="SpectraHubChartBandAnalysisLabel3" xml:space="preserve">
+    <value>Following a detailed overview of the items within the band analysis panel</value>
+  </data>
+  <data name="SpectraHubChartBandAnalysisExplanation1" xml:space="preserve">
+    <value>The Band Analysis panel is divided into two sections.
+The upper section displays the list of segments into which the spectrum was divided during the continuum removal phase. Each segment is accompanied by a button that initiates the analysis of the corresponding spectral band.
+The lower section presents the results of the analysis
+</value>
+  </data>
+  <data name="SpectraHubChartBandAnalysisExplanation2" xml:space="preserve">
+    <value>Some details related to the band analysis results are displayed directly on the graph.
+The analyzed band is highlighted, and both the line indicating the Full Width at Half Maximum (FWHM) and the Gaussian curve used to identify the band center are shown
+</value>
+  </data>
+  <data name="SpectraHubChartBandAnalysisLabel2" xml:space="preserve">
+    <value>&lt;b&gt;N.B.&lt;/b&gt; &lt;i&gt;This panel remains disabled until continuum removal procedure is completed&lt;/i&gt;</value>
+  </data>
+  <data name="SpectraHubChartBandAnalysisLabel1" xml:space="preserve">
+    <value>HyperLab incorporates an advanced band analysis feature that can be applied to each spectral band corresponding to the segments defined during the continuum removal process. By simply pressing a button on the left sidebar, users can initiate the calculation of key parameters—band depth, band area, full width at half maximum (FWHM) and the wavelength of the band center. This parameters are mainly calculating following the approach described in Clark 1984. As the computations progress, the results are dynamically displayed on the graph, with the affected band, its FWHM, and the band center highlighted.</value>
+  </data>
+  <data name="SpectraHubChartPanelsBandAnalysisLabel" xml:space="preserve">
+    <value>Band analysis panel</value>
   </data>
 </root>

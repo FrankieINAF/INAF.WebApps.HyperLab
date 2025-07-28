@@ -1159,7 +1159,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auto save settings when on value change.
+        ///   Looks up a localized string similar to Auto save settings when a value is changed.
         /// </summary>
         public static string SmoothingAutoSaveSegmentsLabel {
             get {
