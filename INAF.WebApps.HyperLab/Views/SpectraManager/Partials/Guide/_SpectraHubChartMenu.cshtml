@@ -4,14 +4,14 @@
     <!-- LEGEND -->
     <div class="row">
         <div class="cell-fs-12 d-flex">
-            <button class="button light cycle outline min-width-36" title="@Html.Raw(Charts.ButtonShowCharmsLegendLabel)"><span class="mif-list"></span></button>
+            <button class="button light cycle outline min-width-36" title="@Html.Raw(Charts.ButtonShowCharmsLegendLabel)" onclick="showGuideLegend()"><span class="mif-list"></span></button>
             <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.ButtonLegendLabel)</p>
         </div>
     </div>
     <!-- BACK TO SEARCH -->
     <div class="row">
         <div class="cell-fs-12 d-flex">
-            <button class="button light cycle outline min-width-36" title="Show/hide legend"><span class="mif-cross-light"></span></button>
+            <button class="button light cycle outline min-width-36 disabled" title="Show/hide legend"><span class="mif-cross-light"></span></button>
             <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.ButtonBackToSearchLabel)</p>
         </div>
     </div>
@@ -25,7 +25,7 @@
     <!-- FULL SCREEN -->
     <div class="row">
         <div class="cell-fs-12 d-flex">
-            <button class="button light cycle outline min-width-36" title="Show/hide legend"><span class="mif-enlarge"></span></button>
+            <button class="button light cycle outline min-width-36 disabled" title="Show/hide legend"><span class="mif-enlarge"></span></button>
             <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.ButtonEnterFullScreenLabel)</p>
         </div>
     </div>

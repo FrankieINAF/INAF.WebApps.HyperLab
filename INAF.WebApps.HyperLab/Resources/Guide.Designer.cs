@@ -537,6 +537,43 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The legend is used to display all spectra available for visualization on the chart page. Spectra are organized according to a parent-child relationship: each level results from processing the previous one, forming a hierarchical structure. This relationship is represented as a tree diagram, where the base level (e.g., raw or aligned) is the starting point, and all subsequent processing levels branch out from it..
+        /// </summary>
+        public static string SpectraHubChartLegendExplanation1 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartLegendExplanation1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Each spectrum is shown with a colored square followed by its name and processing level. The color of the square corresponds to the spectral type, as explained in the color guide section. The square also indicates the visibility status of the spectrum:.
+        /// </summary>
+        public static string SpectraHubChartLegendExplanation2 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartLegendExplanation2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;ul class=&quot;fg-white&quot;&gt;&lt;li&gt;A fully colored square means the spectrum is visible.&lt;/li&gt;
+        ///&lt;li&gt;A semi-transparent square means the spectrum is hidden.&lt;/li&gt;&lt;/ul&gt;.
+        /// </summary>
+        public static string SpectraHubChartLegendExplanation3 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartLegendExplanation3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visibility is automatically adjusted during processing to enhance clarity and prevent overcrowding. However, users can manually toggle visibility by clicking on the square..
+        /// </summary>
+        public static string SpectraHubChartLegendExplanation4 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartLegendExplanation4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to (only SLab logged users).
         /// </summary>
         public static string SpectraHubChartOnlySLabLoggedLabel {
@@ -555,7 +592,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Alignment panel.
+        ///   Looks up a localized string similar to Alignment.
         /// </summary>
         public static string SpectraHubChartPanelsAlignmentLabel {
             get {
@@ -582,7 +619,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Band analysis panel.
+        ///   Looks up a localized string similar to Band analysis.
         /// </summary>
         public static string SpectraHubChartPanelsBandAnalysisLabel {
             get {
@@ -600,7 +637,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Continuum removal panel.
+        ///   Looks up a localized string similar to Continuum removal.
         /// </summary>
         public static string SpectraHubChartPanelsContinuumRemovalLabel {
             get {
@@ -645,7 +682,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Smoothing panel.
+        ///   Looks up a localized string similar to Smoothing.
         /// </summary>
         public static string SpectraHubChartPanelsSmoothingLabel {
             get {

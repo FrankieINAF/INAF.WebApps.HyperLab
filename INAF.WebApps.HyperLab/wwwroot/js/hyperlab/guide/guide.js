@@ -30,8 +30,23 @@ function onCloseGuideCompleted() {
 }
 
 /* -------------------------------------------------------------------------------- */
+/* ---------- LEGEND GUIDE ---------- */
+/* -------------------------------------------------------------------------------- */
+function showGuideLegend() {
+    loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubChartLegend, 'guide');
+}
+
+/* -------------------------------------------------------------------------------- */
 /* ---------- DATA ANALYSIS GUIDE ---------- */
 /* -------------------------------------------------------------------------------- */
+function backToGuideMainMenu() {
+    onShowGuideChartCompleted();
+}
+
+function backToGuideMagicWand() {
+    loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubChartMagicWand, 'guide');
+}
+
 function showGuideMagicWand() {
     loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubChartMagicWand, 'guide');
 }

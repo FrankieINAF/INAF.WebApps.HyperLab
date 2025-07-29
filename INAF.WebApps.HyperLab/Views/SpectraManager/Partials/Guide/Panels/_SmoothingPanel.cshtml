@@ -1,13 +1,10 @@
 ﻿@using INAF.WebApps.HyperLab.Resources;
 
 <!-- HEADER -->
-<div class="row cell-fs-12 margin-16 d-flex flex-justify-between">
-    <div class="d-flex">
-        <div><button class="button light cycle outline pointer fg-white margin-right-8" onclick="showGuideMagicWand()"><span class="mif-arrow-left"></span></button></div>
-        <div class="margin-left-8"><p class="text-normal fg-white margin-top-8">@Html.Raw(Guide.ButtonBackToDataAnalysisPanels)</p></div>
-    </div>
-    <div><span class="fg-white text-leader2 text-medium">@Html.Raw(Guide.SpectraHubChartPanelsSmoothingLabel)</span></div>
-    <div class="margin-right-32"><button class="button light cycle outline pointer fg-white" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
+<div class="row margin-16 d-flex flex-justify-between">
+    <div class="cell-fs-4 d-flex"><button class="button light cycle outline pointer fg-white margin-right-8" onclick="backToGuideMagicWand()"><span class="mif-arrow-left"></span></button></div>
+    <div class="cell-fs-4"><p class="fg-white text-leader2 text-medium text-center">@Html.Raw(Guide.SpectraHubChartPanelsSmoothingLabel)</p></div>
+    <div class="cell-fs-4"><button class="button light cycle outline pointer fg-white float-right" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
 </div>
 <!-- CONTENT -->
 <div class="row cell-fs-12">

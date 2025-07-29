@@ -17,6 +17,12 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
+        public IActionResult GuideSpectraHubChartLegend()
+        {
+            return PartialView("Partials/Guide/_SpectraHubChartLegend");
+        }
+
+        [HttpGet]
         public IActionResult GuideSpectraHubChartMagicWand()
         {
             return PartialView("Partials/Guide/_SpectraHubChartMagicWand");

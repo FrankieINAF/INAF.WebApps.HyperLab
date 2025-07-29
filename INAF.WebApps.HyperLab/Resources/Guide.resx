@@ -145,13 +145,13 @@
     <value>Enable full screen mode for page</value>
   </data>
   <data name="SpectraHubChartPanelsAlignmentLabel" xml:space="preserve">
-    <value>Alignment panel</value>
+    <value>Alignment</value>
   </data>
   <data name="SpectraHubChartPanelsContinuumRemovalLabel" xml:space="preserve">
-    <value>Continuum removal panel</value>
+    <value>Continuum removal</value>
   </data>
   <data name="SpectraHubChartPanelsSmoothingLabel" xml:space="preserve">
-    <value>Smoothing panel</value>
+    <value>Smoothing</value>
   </data>
   <data name="SpectraHubChartPanelsSmoothingButtonLabel" xml:space="preserve">
     <value>Explore &lt;i&gt;Smoothing&lt;/i&gt; panel</value>
@@ -358,6 +358,19 @@ The analyzed band is highlighted, and both the line indicating the Full Width at
     <value>HyperLab incorporates an advanced band analysis feature that can be applied to each spectral band corresponding to the segments defined during the continuum removal process. By simply pressing a button on the left sidebar, users can initiate the calculation of key parameters—band depth, band area, full width at half maximum (FWHM) and the wavelength of the band center. This parameters are mainly calculating following the approach described in Clark 1984. As the computations progress, the results are dynamically displayed on the graph, with the affected band, its FWHM, and the band center highlighted.</value>
   </data>
   <data name="SpectraHubChartPanelsBandAnalysisLabel" xml:space="preserve">
-    <value>Band analysis panel</value>
+    <value>Band analysis</value>
+  </data>
+  <data name="SpectraHubChartLegendExplanation1" xml:space="preserve">
+    <value>The legend is used to display all spectra available for visualization on the chart page. Spectra are organized according to a parent-child relationship: each level results from processing the previous one, forming a hierarchical structure. This relationship is represented as a tree diagram, where the base level (e.g., raw or aligned) is the starting point, and all subsequent processing levels branch out from it.</value>
+  </data>
+  <data name="SpectraHubChartLegendExplanation2" xml:space="preserve">
+    <value>Each spectrum is shown with a colored square followed by its name and processing level. The color of the square corresponds to the spectral type, as explained in the color guide section. The square also indicates the visibility status of the spectrum:</value>
+  </data>
+  <data name="SpectraHubChartLegendExplanation3" xml:space="preserve">
+    <value>&lt;ul class="fg-white"&gt;&lt;li&gt;A fully colored square means the spectrum is visible.&lt;/li&gt;
+&lt;li&gt;A semi-transparent square means the spectrum is hidden.&lt;/li&gt;&lt;/ul&gt;</value>
+  </data>
+  <data name="SpectraHubChartLegendExplanation4" xml:space="preserve">
+    <value>Visibility is automatically adjusted during processing to enhance clarity and prevent overcrowding. However, users can manually toggle visibility by clicking on the square.</value>
   </data>
 </root>
