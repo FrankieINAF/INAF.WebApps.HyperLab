@@ -30,10 +30,18 @@ function onCloseGuideCompleted() {
 }
 
 /* -------------------------------------------------------------------------------- */
-/* ---------- LEGEND GUIDE ---------- */
+/* ---------- OTHER GUIDEs ---------- */
 /* -------------------------------------------------------------------------------- */
+function showGuideColorPicker() {
+    loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubChartColorPicker, 'guide');
+}
+
 function showGuideLegend() {
     loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubChartLegend, 'guide');
+}
+
+function showGuideMessages() {
+    loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubChartMessages, 'guide');
 }
 
 /* -------------------------------------------------------------------------------- */

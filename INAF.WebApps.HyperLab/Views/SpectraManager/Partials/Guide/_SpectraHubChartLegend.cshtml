@@ -2,13 +2,14 @@
 
 <!-- HEADER -->
 <div class="row cell-fs-12 margin-16 d-flex flex-justify-between">
-    <div><button class="button light cycle outline pointer fg-white margin-right-8" onclick="showGuideChart()"><span class="mif-arrow-left"></span></button></div>
+    <div><button class="button light cycle outline pointer fg-white margin-right-8" onclick="backToGuideMainMenu()"><span class="mif-arrow-left"></span></button></div>
+    <div class="cell-fs-4"><p class="fg-white text-leader2 text-medium text-center">@Html.Raw(Guide.SpectraHubChartLegendLabel)</p></div>
     <div class="margin-right-16"><button class="button light cycle outline pointer fg-white" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
 </div>
 <!-- CONTENT -->
 <div class="row margin-16">
     <div class="order-fs-2 order-md-1 cell-fs-12 cell-md-6 overflow-md">
-        <div class="row margin-top-8">
+        <div class="row cell-fs-12 margin-top-8">
             <p class="text-just fg-white margin-top-16">@Html.Raw(Guide.SpectraHubChartLegendExplanation1)</p>
             <p class="text-just fg-white margin-top-16">@Html.Raw(Guide.SpectraHubChartLegendExplanation2)</p>
             <p class="fg-white margin-top-8">@Html.Raw(Guide.SpectraHubChartLegendExplanation3)</p>

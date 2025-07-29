@@ -373,4 +373,43 @@ The analyzed band is highlighted, and both the line indicating the Full Width at
   <data name="SpectraHubChartLegendExplanation4" xml:space="preserve">
     <value>Visibility is automatically adjusted during processing to enhance clarity and prevent overcrowding. However, users can manually toggle visibility by clicking on the square.</value>
   </data>
+  <data name="SpectraHubChartLegendExplanation5" xml:space="preserve">
+    <value>Visibility is automatically adjusted during processing to enhance clarity and prevent overcrowding. However, users can manually toggle visibility by clicking on the square.</value>
+  </data>
+  <data name="ButtonColorPickerLabel" xml:space="preserve">
+    <value>Show color picker</value>
+  </data>
+  <data name="ButtonMessagesLabel" xml:space="preserve">
+    <value>Show system messages</value>
+  </data>
+  <data name="SpectraHubChartColorPickerExplanation1" xml:space="preserve">
+    <value>The color picker is a tool available during the data analysis phase. When accessing the chart page solely for viewing spectra, this feature is disabled.</value>
+  </data>
+  <data name="SpectraHubChartColorPickerExplanation2" xml:space="preserve">
+    <value>Spectra visualization during processing is based on associating a specific color with each processing level. This helps distinguish the different stages of spectrum processing on the chart. A default color association for each level is provided by the system, but users can modify it at any time using the color picker.</value>
+  </data>
+  <data name="SpectraHubChartColorPickerExplanation3" xml:space="preserve">
+    <value>To change the color linked to a processing level, simply select the desired level and choose a new color from the selector on the right side of the panel. The chart will update instantly to reflect the change.</value>
+  </data>
+  <data name="SpectraHubChartColorPickerExplanation4" xml:space="preserve">
+    <value>As with all user settings, any modifications are automatically saved to the HyperLab cloud, ensuring they are available in future work sessions.</value>
+  </data>
+  <data name="SpectraHubChartColorPickerLabel" xml:space="preserve">
+    <value>Color picker</value>
+  </data>
+  <data name="SpectraHubChartLegendLabel" xml:space="preserve">
+    <value>Legend</value>
+  </data>
+  <data name="SpectraHubChartMessagesLabel" xml:space="preserve">
+    <value>Messages</value>
+  </data>
+  <data name="SpectraHubChartMessagesExplanation1" xml:space="preserve">
+    <value>On the chart page, ephemeral messages—brief notifications—are displayed at the bottom of the screen during various actions, such as selecting a spectrum for processing. These messages are intentionally short-lived to maintain a clean interface and ensure an optimal user experience without cluttering the visual space.</value>
+  </data>
+  <data name="SpectraHubChartMessagesExplanation2" xml:space="preserve">
+    <value>However, since users may wish to review past messages, all notifications are collected in this panel in chronological order: the most recent message appears at the top, followed by older ones.</value>
+  </data>
+  <data name="SpectraHubChartMessagesExplanation3" xml:space="preserve">
+    <value>At any time, users can clear the message history using the dedicated button.</value>
+  </data>
 </root>

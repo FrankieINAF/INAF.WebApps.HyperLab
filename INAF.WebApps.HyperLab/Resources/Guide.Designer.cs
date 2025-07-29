@@ -106,6 +106,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show color picker.
+        /// </summary>
+        public static string ButtonColorPickerLabel {
+            get {
+                return ResourceManager.GetString("ButtonColorPickerLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable full screen mode for page.
         /// </summary>
         public static string ButtonEnterFullScreenLabel {
@@ -120,6 +129,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string ButtonLegendLabel {
             get {
                 return ResourceManager.GetString("ButtonLegendLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show system messages.
+        /// </summary>
+        public static string ButtonMessagesLabel {
+            get {
+                return ResourceManager.GetString("ButtonMessagesLabel", resourceCulture);
             }
         }
         
@@ -417,6 +435,51 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The color picker is a tool available during the data analysis phase. When accessing the chart page solely for viewing spectra, this feature is disabled..
+        /// </summary>
+        public static string SpectraHubChartColorPickerExplanation1 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartColorPickerExplanation1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spectra visualization during processing is based on associating a specific color with each processing level. This helps distinguish the different stages of spectrum processing on the chart. A default color association for each level is provided by the system, but users can modify it at any time using the color picker..
+        /// </summary>
+        public static string SpectraHubChartColorPickerExplanation2 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartColorPickerExplanation2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To change the color linked to a processing level, simply select the desired level and choose a new color from the selector on the right side of the panel. The chart will update instantly to reflect the change..
+        /// </summary>
+        public static string SpectraHubChartColorPickerExplanation3 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartColorPickerExplanation3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to As with all user settings, any modifications are automatically saved to the HyperLab cloud, ensuring they are available in future work sessions..
+        /// </summary>
+        public static string SpectraHubChartColorPickerExplanation4 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartColorPickerExplanation4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color picker.
+        /// </summary>
+        public static string SpectraHubChartColorPickerLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartColorPickerLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Core mode is a fast method for defining segments used to remove the continuum.
         ///Each time a point on the aligned spectrum is clicked, a new point is added to the graph. Every pair of points defines a segment, which is displayed on the graph and listed as an item in the right-hand panel. For each segment, the fitting function applied to the corresponding portion of the spectrum can be modified. By default, a straight line is selected, but other fitting functions are also available.
         /// </summary>
@@ -570,6 +633,60 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SpectraHubChartLegendExplanation4 {
             get {
                 return ResourceManager.GetString("SpectraHubChartLegendExplanation4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visibility is automatically adjusted during processing to enhance clarity and prevent overcrowding. However, users can manually toggle visibility by clicking on the square..
+        /// </summary>
+        public static string SpectraHubChartLegendExplanation5 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartLegendExplanation5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Legend.
+        /// </summary>
+        public static string SpectraHubChartLegendLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartLegendLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On the chart page, ephemeral messages—brief notifications—are displayed at the bottom of the screen during various actions, such as selecting a spectrum for processing. These messages are intentionally short-lived to maintain a clean interface and ensure an optimal user experience without cluttering the visual space..
+        /// </summary>
+        public static string SpectraHubChartMessagesExplanation1 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartMessagesExplanation1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to However, since users may wish to review past messages, all notifications are collected in this panel in chronological order: the most recent message appears at the top, followed by older ones..
+        /// </summary>
+        public static string SpectraHubChartMessagesExplanation2 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartMessagesExplanation2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At any time, users can clear the message history using the dedicated button..
+        /// </summary>
+        public static string SpectraHubChartMessagesExplanation3 {
+            get {
+                return ResourceManager.GetString("SpectraHubChartMessagesExplanation3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Messages.
+        /// </summary>
+        public static string SpectraHubChartMessagesLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubChartMessagesLabel", resourceCulture);
             }
         }
         

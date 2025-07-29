@@ -11,9 +11,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GuideSpectraHubChartMenu()
+        public IActionResult GuideSpectraHubChartColorPicker()
         {
-            return PartialView("Partials/Guide/_SpectraHubChartMenu");
+            return PartialView("Partials/Guide/_SpectraHubChartColorPicker");
         }
 
         [HttpGet]
@@ -26,6 +26,18 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult GuideSpectraHubChartMagicWand()
         {
             return PartialView("Partials/Guide/_SpectraHubChartMagicWand");
+        }
+
+        [HttpGet]
+        public IActionResult GuideSpectraHubChartMenu()
+        {
+            return PartialView("Partials/Guide/_SpectraHubChartMenu");
+        }
+
+        [HttpGet]
+        public IActionResult GuideSpectraHubChartMessages()
+        {
+            return PartialView("Partials/Guide/_SpectraHubChartMessages");
         }
 
         #region PANELS

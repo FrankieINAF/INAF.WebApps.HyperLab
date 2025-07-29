@@ -1,5 +1,22 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using INAF.WebApps.HyperLab.Resources
+
+<!-- HEADER -->
+<div class="row cell-fs-12 margin-16 d-flex flex-justify-between">
+    <div><button class="button light cycle outline pointer fg-white margin-right-8" onclick="backToGuideMainMenu()"><span class="mif-arrow-left"></span></button></div>
+    <div class="cell-fs-4"><p class="fg-white text-leader2 text-medium text-center">@Html.Raw(Guide.SpectraHubChartMessagesLabel)</p></div>
+    <div class="margin-right-16"><button class="button light cycle outline pointer fg-white" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
+</div>
+<!-- CONTENT -->
+<div class="row margin-16">
+    <div class="order-fs-2 order-md-1 cell-fs-12 cell-md-6 d-flex flex-justify-center overflow-md">
+        <div class="row cell-fs-12 margin-horizontal-8">
+            <p class="text-just fg-white margin-top-16">@Html.Raw(Guide.SpectraHubChartMessagesExplanation1)</p>
+            <p class="text-just fg-white margin-top-16">@Html.Raw(Guide.SpectraHubChartMessagesExplanation2)</p>
+            <p class="text-just fg-white margin-top-16">@Html.Raw(Guide.SpectraHubChartMessagesExplanation3)</p>
+        </div>
+    </div>
+    <!-- IMAGE -->
+    <div class="order-fs-1 order-md-2 cell-fs-12 cell-md-6 d-flex flex-justify-center">
+        <img src="~/images/guide/messages.png" class="panel-image" />
+    </div>
+</div>
