@@ -24,15 +24,15 @@
     <link rel="stylesheet" href="~/css/dist/account/loginbundle.min.css" asp-append-version="true" />
 </environment>
 
-<div class="h-vh-100 w-vw-100">
-    <div class="row h-vh-100">
+<div>
+    <div class="d-flex flex-column-fs flex-row-xl">
         <!-- TEXT/IMAGES -->
         @{
             await Html.RenderPartialAsync("Partials/_TextImages");
         }
 
         <!-- FORM -->
-        <div class="cell-fs-12 cell-xl-8 form-cell-background h-vh-75-fs h-vh-100-xl">
+        <div class="col-form-width form-cell-background h-vh-75-fs h-vh-100-xl">
             <!-- MAIN ROW -->
             <div class="row" style="height: 100%; overflow-y: auto">
                 <div class="cell-sm-0 cell-md-2">&nbsp;</div>

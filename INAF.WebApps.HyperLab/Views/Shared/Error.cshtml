@@ -31,12 +31,9 @@
                 <p class="error-text text-just fg-white margin-horizontal-16">@Html.Raw(Home.ErrorPageText)</p>
             </div>
             <!-- CONTACT US  -->
-            <div class="margin-top-32 d-flex flex-justify-center">
-                <button class="button bg-white primary cycle outline" onclick="window.location.href='mailto:francesco.carraro@inaf.it'" title="@Html.Raw(SharedResources.SendUsEmailLabel)">
-                    <span class="mif-envelop" />
-                </button>
-                <span class="fg-white margin-left-8 margin-top-4">@Html.Raw(SharedResources.ContactUs)</span>
-            </div>
+            @{
+                await Html.RenderPartialAsync("Partials/_ContactUs");
+            }
         </div>
     </div>
 </div>

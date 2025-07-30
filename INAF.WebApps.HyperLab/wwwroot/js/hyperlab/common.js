@@ -654,6 +654,13 @@ function sendMail(email) {
     return false;
 }
 
+function sendEmailtoUs() {
+    var link = `mailto:francesco.carraro@inaf.it`;
+
+    window.location.href = link;
+    return false;
+}
+
 /* IMAGE SELECTION */
 function onImageChange(evt, id) {
     const files = evt.target.files;

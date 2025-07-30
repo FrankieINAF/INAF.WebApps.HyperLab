@@ -1,4 +1,12 @@
-﻿.text-danger {
+﻿.col-images-width {
+    width: 40%;
+}
+
+.col-form-width {
+    width: 60%;
+}
+
+.text-danger {
     font-size: 14px;
     color: #dc3545 !important;
 }
@@ -46,6 +54,11 @@
     min-height: 50%;
 }
 
+.registration-confirmed-container {
+    width: 50%;
+    min-height: 40%;
+}
+
 .login-form {
     width: 90%;
     top: 50%;
@@ -70,11 +83,11 @@
 }
 
 .inaf-image {
-    width: 100%;
+    width: 50%;
 }
 
 .spectrum-image {
-    width: 100%;
+    width: 50%;
 }
 
 .items-width {
@@ -83,6 +96,14 @@
 
 /* xl */
 @media screen and (max-width: 1200px) {
+    .col-images-width {
+        width: 100%;
+    }
+
+    .col-form-width {
+        width: 100%;
+    }
+
     .hyperlab-title {
         font-size: 50px;
     }

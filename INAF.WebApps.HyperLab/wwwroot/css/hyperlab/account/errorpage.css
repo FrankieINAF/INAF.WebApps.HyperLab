@@ -1,12 +1,10 @@
 ﻿.error-box-container {
-    width: 90%;
-    -ms-transform: translateY(40%);
-    transform: translateY(40%);
+    width: 60%;
 }
 
 .error-box {
     width: 90%;
-    height: 400px;
+    height: 50%;
     top: 50%;
     left: 5%;
     margin: 0px;
@@ -14,4 +12,18 @@
     -ms-transform: translateY(0%);
     transform: translateY(0%);
     z-index: 10
+}
+
+/* lg */
+@media screen and (max-width: 992px) {
+    .error-box-container {
+        width: 80%;
+    }
+}
+
+/* sm */
+@media screen and (max-width: 576px) {
+    .error-box-container {
+        width: 100%;
+    }
 }

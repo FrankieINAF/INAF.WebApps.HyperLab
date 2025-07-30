@@ -1,8 +1,8 @@
 ﻿@using INAF.WebApps.HyperLab.Resources
 
-<div class="row cell-fs-12">
-	<button class="margin-left-24 button bg-white primary outline" onclick="window.location.href='mailto:francesco.carraro@inaf.it'">
-		<span class="mif mif-envelop"></span>
-		<span class="caption">@Html.Raw(SharedResources.ContactUs)</span>
-	</button>
+<div class="row cell-fs-12 margin-top-32 d-flex flex-justify-center">
+    <button class="button bg-white primary cycle outline" onclick="sendEmailtoUs()" title="@Html.Raw(Account.ConfirmationSendEmailAgain)">
+        <span class="mif-envelop" />
+    </button>
+    <span class="fg-white margin-left-8 margin-top-4">@Html.Raw(SharedResources.ContactUs)</span>
 </div>
