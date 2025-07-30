@@ -33,20 +33,17 @@
 
 .login-container {
     width: 90%;
-    height: 40vh;
-    min-height: 450px;
+    min-height: 60%;
 }
 
 .registration-container {
     width: 90%;
-    height: 40vh;
-    min-height: 500px;
+    min-height: 30%;
 }
 
 .registration-completed-container {
     width: 90%;
-    height: 50vh;
-    min-height: 400px;
+    min-height: 50%;
 }
 
 .login-form {
@@ -65,26 +62,29 @@
     z-index: 10
 }
 
+.hyperlab-title {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    line-height: 1;
+    font-size: 56px;
+}
+
 .inaf-image {
-    height: 100%;
+    width: 100%;
 }
 
 .spectrum-image {
-    height: 100%;
+    width: 100%;
 }
 
-/* nest hub max */
-@media screen and (max-width: 1280px) and (max-height: 800px) {
-    .login-container {
-        height: 60%;
-    }
+.items-width {
+    width: 100%;
+}
 
-    .registration-container {
-        height: 90%;
-    }
-
-    .registration-completed-container {
-        height: 60vh;
+/* xl */
+@media screen and (max-width: 1200px) {
+    .hyperlab-title {
+        font-size: 50px;
     }
 
     .inaf-image {
@@ -92,32 +92,14 @@
     }
 
     .spectrum-image {
-        width: 75%;
+        width: 50%;
     }
 }
 
-/* surface 7 */
-@media screen and (max-width: 1024px) and (min-height: 1368px) {
-    .login-container {
-        width: 100%;
-    }
-
-    .registration-container {
-        width: 100%;
-    }
-
-    .login-form {
-        width: 100%;
-        left: 0%;
-    }
-
-    .registration-form {
-        width: 100%;
-        left: 0%;
-    }
-
-    .registration-completed-container {
-        height: 80vh;
+/* lg */
+@media screen and (max-width: 992px) {
+    .hyperlab-title {
+        font-size: 50px;
     }
 
     .inaf-image {
@@ -125,152 +107,30 @@
     }
 
     .spectrum-image {
-        height: 50%;
+        width: 50%;
     }
+
 }
 
-/* nest hub */
-@media screen and (max-width: 1024px) and (max-height: 600px) {
-    .login-container {
-        width: 90%;
-        height: 100%;
-    }
-
-    .registration-container {
-        width: 90%;
-        height: 100%;
-    }
-
-    .registration-completed-container {
-        height: 80vh;
-    }
-}
-
-/* iPad Pro */
-@media screen and (max-width: 1024px) and (min-height:601px) and (max-height: 1366px) {
-    .login-container {
-        width: 90%;
-        height: 60%;
-    }
-
-    .registration-container {
-        width: 90%;
-        height: 70%;
-    }
-
-    .inaf-image {
-        height: 50%;
-    }
-
-    .spectrum-image {
-        height: 50%;
-    }
-}
-
-/* iPad Air */
-@media screen and (max-width: 1366px) {
-    .inaf-image {
-        height: 40%;
-    }
-
-    .spectrum-image {
-        height: 40%;
-    }
-}
-
-/* iPad Mini/Air/Pro */
-@media screen and (max-width: 1180px) {
-    .login-container {
-        height: 60%;
-    }
-
-    .registration-container {
-        height: 90%;
-    }
-
-    .registration-completed-container {
-        height: 60vh;
-    }
-
-    .inaf-image {
-        height: 80%;
-    }
-
-    .spectrum-image {
-        height: 80%;
-    }
-}
-
-/* iPad Mini */
+/* md */
 @media screen and (max-width: 768px) {
+    .hyperlab-title {
+        font-size: 50px;
+    }
+
     .inaf-image {
         height: 40%;
     }
 
     .spectrum-image {
-        height: 40%;
+        width: 40%;
     }
 }
 
-/* dual screen phones */
-@media screen and (max-width: 540px) {
-    .login-container {
-        height: 100%;
-    }
-
-    .registration-container {
-        width: 90%;
-        height: 100%;
-    }
-
-    .registration-completed-container {
-        height: 70vh;
-    }
-
-    .inaf-image {
-        height: 25%;
-    }
-
-    .spectrum-image {
-        width: 25%;
-        height: 25%;
-    }
-}
-
-/* phones */
-@media screen and (max-width: 480px) {
-    .login-container {
-        width: 90%;
-        height: 500px;
-    }
-
-    .registration-container {
-        width: 90%;
-        height: 100%;
-    }
-
-    .registration-completed-container {
-        height: 70vh;
-    }
-
-    .inaf-image {
-        height: 50%;
-    }
-
-    .spectrum-image {
-        height: 50%;
-    }
-}
-
-/* phones 2 */
-@media screen and (max-width: 400px) {
-    .registration-container {
-        width: 90%;
-        height: 100%;
-    }
-
-    .registration-completed-container {
-        height: 100vh;
+/* sm */
+@media screen and (max-width: 576px) {
+    .hyperlab-title {
+        font-size: 36px;
     }
 
     .inaf-image {
@@ -278,6 +138,6 @@
     }
 
     .spectrum-image {
-        height: 40%;
+        width: 40%;
     }
 }

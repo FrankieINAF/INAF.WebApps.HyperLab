@@ -22,20 +22,20 @@
     <link rel="stylesheet" href="~/css/dist/account/loginbundle.min.css" asp-append-version="true" />
 </environment>
 
-<div class="h-vh-100 w-vw-100">
-    <div class="row h-vh-100">
+<div>
+    <div class="d-flex flex-column-fs flex-row-xl">
         <!-- TEXT/IMAGES -->
         @{
             await Html.RenderPartialAsync("Partials/_TextImages");
         }
 
         <!-- FORM -->
-        <div class="cell-fs-12 cell-lg-8 form-cell-background h-vh-75-fs h-vh-100-lg">
+        <div class="form-cell-background h-vh-75-fs h-vh-100-xl">
             <!-- LOGIN ROW -->
             <div class="row" style="height: 100%; overflow-y: auto">
                 <div class=" cell-sm-0 cell-md-2">&nbsp;</div>
                 <div class="cell-sm-12 cell-md-8 d-flex">
-                    <div class="login-container bg-white p-6 mx-auto border bd-default win-shadow flex-self-center">
+                    <div class="login-container bg-white mx-auto border bd-default win-shadow flex-self-center">
                         <div class="row cell-fs-12">
                             <h2 class="text-medium text-center fg-black">@Html.Raw(CommonResources.Login.LoginTitle)</h2>
                             <hr class="thin mt-4 mb-4 bg-white">
