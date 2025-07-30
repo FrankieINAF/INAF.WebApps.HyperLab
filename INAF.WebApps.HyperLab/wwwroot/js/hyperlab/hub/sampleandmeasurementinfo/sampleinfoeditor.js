@@ -258,14 +258,20 @@ function onSampleDataTypeSelected(val) {
     switch (sampleDataTypeVal) {
         case 1: // slab
         case 2: // chip
-            hideByClass('grainSizeTypesSelectLabel');
-            hideByClass('grainSizeTypesSelect');
+            hideByClassDFlexItem('grainSizeTypesSelectLabel');
+            hideByClassDFlexItem('grainSizeTypesSelect');
+            hideByClassDFlexItem('grainSizeValues');
+            hideByClassDFlexItem('grainSizeLowerLimitContainer');
+            hideByClassDFlexItem('grainSizeUpperLimitContainer');
             break;
 
         case 3: // pellet
         case 4: // particulate
-            showByClass('grainSizeTypesSelectLabel');
-            showByClass('grainSizeTypesSelect');
+            showByClassDFlexItem('grainSizeTypesSelectLabel');
+            showByClassDFlexItem('grainSizeTypesSelect');
+            showByClassDFlexItem('grainSizeValues');
+            hideByClassDFlexItem('grainSizeLowerLimitContainer');
+            hideByClassDFlexItem('grainSizeUpperLimitContainer');
             onGrainSizeTypeSelected(getGrainSizeTypeSelectedValue());
             break;
     }

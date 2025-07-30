@@ -161,6 +161,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             }
             else
             {
+                logErrorMessage(ModelState.Values);
                 return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
             }
         }

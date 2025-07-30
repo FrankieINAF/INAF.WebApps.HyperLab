@@ -130,7 +130,7 @@ function createEmpty() {
 }
 
 function getGrainSizeTypeValues(sampleTypeId) {
-    let grainSizeTypeId = null;
+    let grainSizeTypeId = 0;
     let grainSizeLowerValueId = null;
     let grainSizeUpperValueId = null;
 
@@ -351,7 +351,7 @@ async function saveInfo() {
 
     setLoadingCircleIsVisible(true);
 
-    let model = {
+    const model = {
         FileId: selectedId,
         Name: $('#SampleDataSelectedValues_Name').val(),
         SampleDataSelectedValues: {
@@ -376,7 +376,7 @@ async function saveInfo() {
     };
 
     //console.log(model);
-    let obj = await doAjaxPostAsync(UrlSaveInfo, model);
+    const obj = await doAjaxPostAsync(UrlSaveInfo, model);
     if (obj && obj.IsOk) {
         setLoadingCircleIsVisible(false);
         showInfoBox(INFO_LABEL, UpsertInfoInfoMessage, INFO);
