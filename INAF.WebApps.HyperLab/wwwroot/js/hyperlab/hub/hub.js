@@ -432,7 +432,7 @@ $(function () {
         onWindowResize();
     };
 
-    showPageItems();
+    showPageItems(true);
 
     $('#selectSampleName, #selectFilename').on('keydown', function (evt) {
         if (evt.originalEvent.code == 'Enter')

@@ -621,12 +621,12 @@ $(function () {
 
     fillSelectedSpectra();
 
-    let callback = function () {
+    const callback = function () {
         initPageDims();
         createChartsProcedureCaller();
     }
 
-    showPageItems(callback);
+    showPageItems(false, callback);
 
     /* add listener for detecting full-screen change and manage buttons */
     setFullScreenChangeListener();

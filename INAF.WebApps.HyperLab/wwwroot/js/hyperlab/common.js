@@ -22,7 +22,13 @@ function isNumber(str) {
     return !isNaN(str);
 }
 
-function showPageItems(callback) {
+function showPageItems(isLeftMenuVisible, callback) {
+    if (isLeftMenuVisible)
+        $('#paneToggle').addClass('d-block-fs d-none-lg').removeClass('d-none');
+    else {
+        $('#paneToggle').removeClass('d-block-fs d-none-lg').addClass('d-none');
+    }
+
     showByClass('leftMenu');
     animateCSS('leftMenu', 'fadeIn', FASTER);
 

@@ -186,5 +186,5 @@ $(function () {
         }
     });
 
-    showPageItems();
+    showPageItems(true);
 });
