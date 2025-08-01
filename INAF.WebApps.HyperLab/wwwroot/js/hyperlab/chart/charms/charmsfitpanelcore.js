@@ -61,11 +61,19 @@ function appendToListCore(html) {
 }
 
 function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = false) {
+    loadingCheckObj.reset();
+    loadingCheckObj.startLoading();
+
     let rangeLabel = FitRangeLabel
         .replace('rv_1', segment.P0.P.X)
         .replace('rv_2', segment.P1.P.X);
 
+    console.log('------------------------------------------------------------------------------------------');
+    console.log(`${createSegmentFittingUICore.name} - segment: ${JSON.stringify(segment)}`);
     const segmentWithGuidResult = buildUIElementIdWithGuid(FIT_SEGMENT_CORE);
+    console.log(`${createSegmentFittingUICore.name} - segmentWithGuidResult: ${JSON.stringify(segmentWithGuidResult)}`);
+    addSegmentToDictionary(FIT_SEGMENT_CORE, segmentWithGuidResult.Guid, segment.Index);
+
     const rangeLabelId = buildUIElementId(FIT_SEGMENT_CORE, segment.Index, 'RangeLabel');
     const segmentSelectId = buildUIElementId(FIT_SEGMENT_CORE, segment.Index, 'Select');
     const segmentContainerId = buildUIElementId(FIT_SEGMENT_CORE_VALUE, segment.Index, 'Container');
@@ -96,7 +104,7 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
 
     $(async function () {
         //console.log('------------------------------------------------------------------------------------------')
-        //console.log(`createSegmentFittingUICore - ready - segmentSelectId: ${segmentSelectId}`);
+        console.log(`createSegmentFittingUICore - ready - segmentSelectId: ${segmentSelectId}`);
         await onSegmentFunctionSelectCoreAsync(Metro.getPlugin(`#${segmentSelectId}`, 'select').val());
         //console.log(`${createSegmentFittingUICore.name} - ready - isBuildingUpContinuum: ${isBuildingUpContinuum}, isFromUserAction: ${isFromUserAction}, isLast: ${isLast}`);
         if (isFromUserAction) {
@@ -137,6 +145,8 @@ function removeSegmentForFittingUICore(segment) {
     //$(`#${getUIElementIdWithGuid(FIT_SEGMENT_CORE, guid)}`).remove();
 
     const segmentId = getUIElementIdWithGuid(FIT_SEGMENT_CORE, guid);
-    let callback = function () { $(`#${segmentId}`).remove(); };
-    animateCSS(segmentId, 'slideOutRight', FASTER, callback);
+    $(`#${segmentId}`).remove();
+    /* removed animation 'cause it causes error when replacing a single segment with 2 segments */
+    //let callback = function () { $(`#${segmentId}`).remove(); };
+    //animateCSS(segmentId, 'slideOutRight', FASTER, callback);
 }

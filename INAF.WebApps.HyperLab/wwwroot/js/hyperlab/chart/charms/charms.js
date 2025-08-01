@@ -662,7 +662,7 @@ function setCloudTextAndIconStatus(spectrumType, isSpectrumFromCloud) {
 /* ################################################################################ */
 /* CHECK IS SAVED ON CLOUD */
 /* ################################################################################ */
-async function checkIsSpectrumOfTypeSavedOnCloudAsync(name, spectrumType, spectrumSource) {
+async function checkIsSpectrumOfTypeSavedOnCloudAsync(name, spectrumType, spectrumSource, spectrumLevel) {
     if (!isUserAuthenticated)
         return false;
 
@@ -672,7 +672,8 @@ async function checkIsSpectrumOfTypeSavedOnCloudAsync(name, spectrumType, spectr
     let model = {
         Filename: name,
         SpectrumType: spectrumType,
-        SpectrumSource: spectrumSource
+        SpectrumSource: spectrumSource,
+        SpectrumLevel: spectrumLevel
     };
 
     let obj = await doAjaxGetAsync(UrlIsSpectrumTypeSavedOnCloud, model);

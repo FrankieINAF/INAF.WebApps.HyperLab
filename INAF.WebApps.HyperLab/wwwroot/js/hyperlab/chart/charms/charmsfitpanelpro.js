@@ -48,6 +48,9 @@ async function calculateMaxValuePointAsync(points, pointForFitting, pMinPMaxMaxV
 async function createSegmentFittingUIProAsync(segment, isFromUserAction = false, isLast = false) {
 
     const segmentWithGuidResult = buildUIElementIdWithGuid(FIT_SEGMENT_PRO);
+
+    addSegmentToDictionary(FIT_SEGMENT_PRO, segmentWithGuidResult.Guid, segment.Index);
+
     const segmentSelectId = buildUIElementId(FIT_SEGMENT_PRO, segment.Index, 'Select');
     const segmentContainerId = buildUIElementId(FIT_SEGMENT_PRO_VALUE, segment.Index, 'Container');
 

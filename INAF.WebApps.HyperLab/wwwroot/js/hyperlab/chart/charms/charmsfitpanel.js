@@ -634,7 +634,7 @@ function addRemoveSelectedPointForFittingProcedure(seriesId, point, mousePosX, m
 
 async function addSelectedPointForFittingAsync(point, isFromUserAction = false, isLast = false) {
     if (!isExistantInPointsForFittingArray(point)) {
-        let callback = async function () {
+        const callback = async function () {
             /* save point in dedicated array */
             addToPointsForFittingArray(point);
             //console.log(`${addSelectedPointForFittingAsync.name} - point: ${point.P.Y}`);
@@ -902,13 +902,13 @@ async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isL
         case FIT_CORE_MODE:
             /* create UI element on charms and build the continuum segment on chart */
             result = createSegmentFittingUICore(segment, isFromUserAction, isLast);
-            addSegmentToDictionary(FIT_SEGMENT_CORE, result.Guid, segment.Index);
+            //addSegmentToDictionary(FIT_SEGMENT_CORE, result.Guid, segment.Index);
             break;
 
         case FIT_PRO_MODE:
             /* create UI element on charms and build the continuum segment on chart */
             result = await createSegmentFittingUIProAsync(segment, isFromUserAction, isLast);
-            addSegmentToDictionary(FIT_SEGMENT_PRO, result.Guid, segment.Index);
+            //addSegmentToDictionary(FIT_SEGMENT_PRO, result.Guid, segment.Index);
             break;
     }
 
@@ -973,6 +973,10 @@ async function replaceSegmentForFittingAtProcedureAsync(index, p, isFromUserActi
     let p2 = pointsForFitting[index + 2];
 
     await addNewSegmentProcedureAsync(p0, p1, isFromUserAction, false);
+    //if (loadingCheckObj.IsLoading) {
+    //    //console.log('alignSpectrumAsync - loadingCheckObj.IsLoading');
+    //    await waitForBooleanValueAsync(() => !loadingCheckObj.IsLoading, 100);
+    //}
     await addNewSegmentProcedureAsync(p1, p2, isFromUserAction, true);
 }
 
@@ -1686,6 +1690,15 @@ async function saveContinuumRemovedSpectrumAsync(spectrum) {
             showSimpleDialog(ERROR_LABEL, AlignmentSaveErrorMessage, ALERT);
             return;
         }
+
+        //const alignedSpectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+        //if (!alignedSpectrum) {
+        //    setLoadingCircleIsVisible(false);
+        //    showSimpleDialog(ERROR_LABEL, AlignmentSaveErrorMessage, ALERT);
+        //    return;
+        //}
+
+
 
         const parentFiles = getContinuumRemovedParentFiles(selectedSpectrumForProcessingId);
 

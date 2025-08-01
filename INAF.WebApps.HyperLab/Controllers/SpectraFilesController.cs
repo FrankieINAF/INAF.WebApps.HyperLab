@@ -154,6 +154,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             (bool isSaved, int id) result = dbHandlerHyperLabData.isSpectrumTypeSaved(model.Filename, 
                                                                                       model.SpectrumType, 
                                                                                       model.SpectrumSource, 
+                                                                                      model.SpectrumLevel,
                                                                                       getUserId());
             return new JsonResult(result.ToGenericValueStringResponse());
         }
@@ -164,7 +165,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (string.IsNullOrEmpty(model.Filename))
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
 
-            int count = dbHandlerHyperLabData.isSpectrumTypeSavedWithCount(model.Filename, model.SpectrumType, getUserId());
+            int count = dbHandlerHyperLabData.isSpectrumTypeSavedWithCount(model.Filename, model.SpectrumType, model.SpectrumLevel, getUserId());
             return new JsonResult(new GenericResponseModel(count));
         }
         #endregion
@@ -256,6 +257,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             SpectrumModel? spectrum = dbHandlerHyperLabData.getSpectrumIdByNameAndType(model.Text,
                                                                                        model.Type.ToSpectrumType(),
                                                                                        model.Source.ToSpectrumSource(),
+                                                                                       model.Level,
                                                                                        getUserId());
             if (spectrum != null)
                 return new JsonResult(spectrum);
@@ -279,7 +281,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult GetSpectrumFilename(GenericRequestByIdModel model)
         {
             SpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumMinimalInfo(model.Id,
-                                                                                 getUserId());
+                                                                                        getUserId());
 
             return new JsonResult(spectrumModel);
         }
@@ -304,6 +306,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             IEnumerable<SpectrumVersionModel>? spectrumVersions = dbHandlerHyperLabData.getSpectrumVersions(model.Filename,
                                                                                                             model.SpectrumType,
                                                                                                             model.SpectrumSource,
+                                                                                                            model.SpectrumLevel,
                                                                                                             getUserId());
 
             if (spectrumVersions != null && spectrumVersions.Any())

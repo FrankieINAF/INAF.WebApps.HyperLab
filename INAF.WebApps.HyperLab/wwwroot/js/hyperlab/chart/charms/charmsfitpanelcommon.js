@@ -4,6 +4,7 @@
 /* MANAGE SEGMENTS ORDER WITH DICTIONARY */
 /* ################################################################################ */
 function addSegmentToDictionary(segmentType, guid, index) {
+    console.log(`addSegmentToDictionary - segmentType: ${segmentType}, guid: ${guid}, index: ${index}`);
     const dictionaryObject = getDictionaryObject(segmentType);
 
     if (!isAnySegmentWithIndexInDictionary(segmentType, index))
@@ -166,10 +167,12 @@ function getPXMinPXMaxFunctionIndexFromId(id) {
 function onSegmentFunctionSelectBase(val, fitSegmentType, fitSegmentValueType) {
     let temp = val.split('_');
     const functionId = parseInt(temp[2]);
-
+    console.log(`${onSegmentFunctionSelectBase.name} - val: ${val}, fitSegmentType: ${fitSegmentType}, fitSegmentValueType: ${fitSegmentValueType}, functionId: ${functionId}`);
     /* retrieve info about segment and function */
     const segmentIndex = getFunctionIndexFromValue(val, fitSegmentType);
-
+    console.log(`${onSegmentFunctionSelectBase.name} - segmentIndex: ${segmentIndex}, functionId: ${functionId}`);
+    if (segmentIndex == -1)
+        return;
     /* clear the div */
     let segmentContainerId = buildUIElementId(fitSegmentValueType, segmentIndex, 'Container');
     $(`#${segmentContainerId}`).empty();
@@ -178,7 +181,7 @@ function onSegmentFunctionSelectBase(val, fitSegmentType, fitSegmentValueType) {
     let selectedFitFunction = getFitFunctionById(functionId);
     if (!selectedFitFunction)
         return;
-
+    console.log(`${onSegmentFunctionSelectBase.name} - selectedFitFunction: ${JSON.stringify(selectedFitFunction)}`);
     /* save selected fit function for segment */
     segmentsForFitting[segmentIndex].SelectedFitFunctionId = selectedFitFunction.Id;
     /* set default parameter value */

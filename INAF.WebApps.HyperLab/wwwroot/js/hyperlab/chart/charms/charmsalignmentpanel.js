@@ -73,12 +73,14 @@ function onAlignmentPanelLoaded() {
 }
 
 function callCheckIsSpectrumOfTypeSavedOnCloudForAligned(filename = null) {
+    let level;
     if (filename == null) {
         let file = getSpectrumInfoById(selectedSpectrumForProcessingId);
         filename = file.Name;
+        level = file.SpectrumLevel;
     }
 
-    checkIsSpectrumOfTypeSavedOnCloudAsync(filename, SPECTRUM_TYPE_ALIGNED);
+    checkIsSpectrumOfTypeSavedOnCloudAsync(filename, SPECTRUM_TYPE_ALIGNED, null, level);
 }
 
 /* ################################################################################ */
