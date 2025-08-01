@@ -159,6 +159,9 @@
   <data name="ChartWavelengthsLabel" xml:space="preserve">
     <value>Wavelengths (nm)</value>
   </data>
+  <data name="ErrorText" xml:space="preserve">
+    <value>We encountered an issue while trying to load the requested page. Try to load the page again. If the problem persists, please reach out to the &lt;i&gt;HyperLab Team&lt;/i&gt; for assistance. We appreciate your patience!</value>
+  </data>
   <data name="JoystickButtonAddFitPointTitle" xml:space="preserve">
     <value>Add/remove a point for fit at current position</value>
   </data>

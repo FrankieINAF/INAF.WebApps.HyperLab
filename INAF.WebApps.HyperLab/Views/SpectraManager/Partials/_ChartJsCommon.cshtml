@@ -30,6 +30,7 @@
 
     var FIT_NUM_OF_POINTS_FOR_MISSING_POINTS = "@Constants.FIT_NUM_OF_POINTS_FOR_MISSING_POINTS";
 
+    var AlignmentCompletedMessage = "@Html.Raw(Charms.AlignmentCompletedMessage)";
     var AlignedNoDownloadBecauseAlreadyPresentMessage = "@Html.Raw(Charms.AlignedNoDownloadBecauseAlreadyPresentMessage)";
     var AlignedNoProcessBecauseAlreadyPresentMessage = "@Html.Raw(Charms.AlignedNoProcessBecauseAlreadyPresentMessage)";
     var AlignmentAutoHideNotSelectedRawSpectraMessage = "@Html.Raw(Charms.AlignmentAutoHideNotSelectedRawSpectraMessage)";
@@ -55,6 +56,7 @@
     var CharmsSelectedSpectrumColorUpdateMessage = "@Html.Raw(Charms.CharmsSelectedSpectrumColorUpdateMessage)";
     var CharmsSelectedSpectrumColorRestoreMessage = "@Html.Raw(Charms.CharmsSelectedSpectrumColorRestoreMessage)";
 
+    var ContinuumRemovalCompletedMessage = "@Html.Raw(Charms.ContinuumRemovalCompletedMessage)";
     var ContinuumRemovedNoDownloadBecauseAlreadyPresentMessage = "@Html.Raw(Charms.ContinuumRemovedNoDownloadBecauseAlreadyPresentMessage)";
     var ContinuumRemovedNoProcessBecauseAlreadyPresentMessage = "@Html.Raw(Charms.ContinuumRemovedNoProcessBecauseAlreadyPresentMessage)";
     var ContinuumRemovedRemovalErrorMessage = "@Html.Raw(Charms.ContinuumRemovedRemovalErrorMessage)";
@@ -89,10 +91,13 @@
     var SmoothedRemovalErrorMessage = "@Html.Raw(Charms.SmoothedRemovalErrorMessage)";
     var SmoothedRemovalSuccessMessage = "@Html.Raw(Charms.SmoothedRemovalSuccessMessage)";
     var SmoothedSaveErrorMessage = "@Html.Raw(Charms.SmoothedSaveErrorMessage)";
-    var SmoothedSaveSuccessMessage = "@Html.Raw(Charms.SmoothedSaveSuccessMessage)";
+    var SmoothedBySegmentsSaveSuccessMessage = "@Html.Raw(Charms.SmoothedBySegmentsSaveSuccessMessage)";
+    var SmoothedByWholeSpectrumSaveSuccessMessage = "@Html.Raw(Charms.SmoothedByWholeSpectrumSaveSuccessMessage)";
 
     var SmoothingAddNewSegmentLabel = "@Html.Raw(Charms.SmoothingAddNewSegmentLabel)";
     var SmoothingApplySmoothingErrorMessage = "@Html.Raw(Charms.SmoothingApplySmoothingErrorMessage)";
+    var SmoothingBySegmentsCompletedMessage = "@Html.Raw(Charms.SmoothingBySegmentsCompletedMessage)";
+    var SmoothingByWholeSpectrumCompletedMessage = "@Html.Raw(Charms.SmoothingByWholeSpectrumCompletedMessage)";
     var SmoothingExecuteSmoothingErrorMessage = "@Html.Raw(Charms.SmoothingExecuteSmoothingErrorMessage)";
     var SmoothingExecutionErrorMessage = "@Html.Raw(Charms.SmoothingExecutionErrorMessage)";
     var SmoothingRemoveSegmentQuestion = "@Html.Raw(Charms.SmoothingRemoveSegmentQuestion)";
@@ -164,6 +169,7 @@
     var UrlGetProcessedSpectrum = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.GetProcessedSpectrum)';
     var UrlGetWhiteSpectraForAlignment = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.GetWhiteSpectraForAlignment)';
     var UrlLoadAlignmentPanel = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.LoadAlignmentPanel)';
+    var UrlLoadChartError = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.LoadChartError)';
     var UrlLoadFitPanel = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.LoadFitPanel)';
     var UrlLoadSmoothingPanel = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.LoadSmoothingPanel)';
 

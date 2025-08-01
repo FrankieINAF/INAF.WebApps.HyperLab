@@ -30,14 +30,21 @@
     #region interfaces
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        try
         {
-            objRef = DotNetObjectReference.Create(this);
-            if (jsruntime != null)
-                await jsruntime.InvokeAsync<string>("setDotNetHelper", objRef);
-        }
+            if (firstRender)
+            {
+                objRef = DotNetObjectReference.Create(this);
+                if (jsruntime != null)
+                    await jsruntime.InvokeAsync<string>("setDotNetHelper", objRef);
+            }
 
-        await base.OnAfterRenderAsync(firstRender);
+            await base.OnAfterRenderAsync(firstRender);
+        }
+        catch (Exception ex)
+        {
+            System.Console.WriteLine($"Error in OnAfterRenderAsync: {ex.Message}");
+        }
 
         //Console.WriteLine("OnInitializedAsync completed.");
     }

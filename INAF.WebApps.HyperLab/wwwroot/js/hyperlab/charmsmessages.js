@@ -14,11 +14,12 @@ function clearMessages() {
     removeMessagesCharmsButtonProcedure();
 }
 
-function addMessage(content, duration, type) {
+function addMessage(content, duration, type, displayMessage = true) {
     var message = buildMessageItem(content);
     messages.push(message);
 
-    showToast(content, duration, type);
+    if (displayMessage)
+        showToast(content, duration, type);
 
     const html = buildMessageUIItem(message, type);
     $('#messagesContainer').append(html);

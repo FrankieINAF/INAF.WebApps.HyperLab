@@ -87,6 +87,10 @@ async function loadSpectraTypeColorsAsync() {
                 .replace('_DEFAULT', '')
                 .toLowerCase();
             let spectrumTypeValue = await retrieveSpectrumTypeFromStringAsync(key);
+            if (spectrumTypeValue == null) {
+
+                return false;
+            }
             //console.log(`spectrumTypeValue: ${spectrumTypeValue} - key: ${key} - color: ${obj.Responses[i].Value}`);
             let item = createSpectraTypeColorKeyValueItem(spectrumTypeValue, key, obj.Responses[i].Value);
 
@@ -94,7 +98,10 @@ async function loadSpectraTypeColorsAsync() {
         }
     } else {
         showSimpleDialog(ERROR_LABEL, ChartLoadSpectraTypeColorsErrorMessage, ALERT);
+        return false;
     }
+
+    return true;
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -150,7 +157,11 @@ function getSpectrumTypeColor(spectrumTypeDescription) {
 }
 
 async function retrieveSpectrumTypeFromStringAsync(key) {
-    return await window.dotNetHelper.invokeMethodAsync("retrieveSpectrumTypeFromString", key);
+    try {
+        return await window.dotNetHelper.invokeMethodAsync("retrieveSpectrumTypeFromString", key);
+    } catch (e) {
+        console.log(`${retrieveSpectrumTypeFromStringAsync.name} - ex: ${e}`);
+    }
 }
 
 

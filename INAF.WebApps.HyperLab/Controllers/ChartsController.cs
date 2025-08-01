@@ -33,6 +33,12 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
+        public IActionResult LoadChartError()
+        {
+            return PartialView("Partials/_ChartError");
+        }
+
+        [HttpGet]
         public IActionResult LoadFitPanel()
         {
             (bool isUserAuthenticated, List<PermissionModel>? permissions) userStatus = getUserStatus();

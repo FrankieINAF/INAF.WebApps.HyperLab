@@ -130,13 +130,14 @@ function disposeChart() {
 async function loadChartsProcedureAsync() {
     manageNavigation();
 
-    await loadSpectraTypeColorsAsync();
-
-    if (isUserAuthenticated)
-        /* load data and show charts */
-        loadChartsFromCloudAsync();
-    else
-        loadChartsFromSessionStorage();
+    if (await loadSpectraTypeColorsAsync()) {
+        if (isUserAuthenticated)
+            /* load data and show charts */
+            loadChartsFromCloudAsync();
+        else
+            loadChartsFromSessionStorage();
+    } else 
+        loadPartialViewWithAjaxGetNoModel(UrlLoadChartError, 'charts');
 }
 
 /* load spectra from cloud */

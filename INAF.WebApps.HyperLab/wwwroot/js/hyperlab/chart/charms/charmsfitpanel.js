@@ -1432,13 +1432,17 @@ async function tryCalculateContinuumRemovedAsync() {
 
     /* retrieve points of continuum for removing it from aligned */
     let continuumPoints = getSpectrumPointsByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM);
-    if (!continuumPoints)
+    if (!continuumPoints) {
+        showSimpleDialog(ERROR_LABEL, ContinuumRemovalExecutionErrorMessage, ALERT);
         return;
+    }
 
     /* retrieve points of aligned for calculating continuum-removed spectrum */
     let points = getSpectrumPointsByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
-    if (!points)
+    if (!points) {
+        showSimpleDialog(ERROR_LABEL, ContinuumRemovalExecutionErrorMessage, ALERT);
         return;
+    }
 
     let isOk = true;
 
@@ -1477,8 +1481,12 @@ async function tryCalculateContinuumRemovedAsync() {
 
         setLoadingCircleIsVisible(false);
 
-        if (!isOk)
+        if (isOk)
+            addMessage(ContinuumRemovalCompletedMessage, 3000, INFO);
+        if (!isOk) {
+            addMessage(ContinuumRemovalExecutionErrorMessage, 0, ALERT, displayMessage = false);
             showSimpleDialog(ERROR_LABEL, ContinuumRemovalExecutionErrorMessage, ALERT);
+        }
     }
 
     /* to remove loading when error occurred */
@@ -1767,9 +1775,11 @@ async function saveContinuumRemovedSpectrumAsync(spectrum) {
     setLoadingCircleIsVisible(false);
 
     if (isSavingOk)
-        showSimpleDialog(INFO_LABEL, FitSaveSuccessMessage, SUCCESS);
-    else
+        addMessage(FitSaveSuccessMessage, 3000, INFO);
+    else {
+        addMessage(FitSaveErrorMessage, 0, ALERT, displayMessage = false);
         showSimpleDialog(ERROR_LABEL, FitSaveErrorMessage, ALERT);
+    }
 }
 
 function setSegmentsId(segments) {

@@ -352,6 +352,7 @@ async function loadNumOfPointsForAlignmentAsync() {
         setNumOfPointsForAlignment(parseInt(obj.Value));
         showAndAnimateElementAsync('alignedNumOfPointsForAlignment', 'fadeIn', FAST);
     } else {
+
         showSimpleDialog(ERROR_LABEL, AlignmentLoadNumOfPointsErrorMessage, ALERT);
     }
 }
@@ -836,8 +837,12 @@ async function alignSpectrumAsync() {
 
     setLoadingCircleIsVisible(false);
 
-    if (!isOk)
+    if (isOk)
+        addMessage(AlignmentCompletedMessage, 3000, INFO);
+    else {
+        addMessage(AlignmentExecutionErrorMessage, 0, ALERT, displayMessage = false);
         showSimpleDialog(ERROR_LABEL, AlignmentExecutionErrorMessage, ALERT);
+    }
 }
 
 function buildAlignedSpectrum() {
@@ -1030,9 +1035,11 @@ async function saveAlignedSpectrumAsync(showLoadingAndMessage = true) {
         setLoadingCircleIsVisible(false);
 
         if (isSavingOk)
-            showSimpleDialog(INFO_LABEL, AlignmentSaveSuccessMessage, SUCCESS);
-        else
+            addMessage(AlignmentSaveSuccessMessage, 3000, INFO);
+        else {
+            addMessage(AlignmentSaveErrorMessage, 0, ALERT, displayMessage = false);
             showSimpleDialog(ERROR_LABEL, AlignmentSaveErrorMessage, ALERT);
+        }
     }
     else
         return isSavingOk;

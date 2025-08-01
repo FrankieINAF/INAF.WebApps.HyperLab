@@ -187,6 +187,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We encountered an issue while trying to load the requested page. Try to load the page again. If the problem persists, please reach out to the &lt;i&gt;HyperLab Team&lt;/i&gt; for assistance. We appreciate your patience!.
+        /// </summary>
+        public static string ErrorText {
+            get {
+                return ResourceManager.GetString("ErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add/remove a point for fit at current position.
         /// </summary>
         public static string JoystickButtonAddFitPointTitle {

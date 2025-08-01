@@ -2,15 +2,49 @@
     background-color: darkred;
 }
 
+.error-title {
+    font-size: 48px;
+}
+
+.error-text {
+    font-size: 24px;
+}
 
 .hyperlab-image {
     width: 100%;
     margin: auto;
 }
 
-/* dual screen phones */
-@media screen and (max-width: 540px) {
+.explanation-image {
+    width: 50%;
+    height: auto;
+}
+
+/* xl */
+@media screen and (max-width: 1200px) {
+    .explanation-image {
+        width: 60%;
+        height: auto;
+    }
+
+    .error-text {
+        font-size: 22px;
+    }
+}
+
+/* sm */
+@media screen and (max-width: 576px) {
+    .error-title {
+        font-size: 32px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
     .hyperlab-image {
-        width: 50%
+        width: 40%
+    }
+
+    .error-text {
+        font-size: 18px;
     }
 }

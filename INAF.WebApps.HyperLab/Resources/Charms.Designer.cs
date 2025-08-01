@@ -232,6 +232,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alignment successfully completed!.
+        /// </summary>
+        public static string AlignmentCompletedMessage {
+            get {
+                return ResourceManager.GetString("AlignmentCompletedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, something went wrong while trying to download alignment settings for current aligned spectrum.
         /// </summary>
         public static string AlignmentDownloadAlignmentSettingsErrorMessage {
@@ -633,6 +642,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string CharmsUsingAlreadySavedOnCloudMessage {
             get {
                 return ResourceManager.GetString("CharmsUsingAlreadySavedOnCloudMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Continuum-removal successfully completed.
+        /// </summary>
+        public static string ContinuumRemovalCompletedMessage {
+            get {
+                return ResourceManager.GetString("ContinuumRemovalCompletedMessage", resourceCulture);
             }
         }
         
@@ -1105,6 +1123,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The smoothed (by segments) spectrum has been successfully saved on cloud!.
+        /// </summary>
+        public static string SmoothedBySegmentsSaveSuccessMessage {
+            get {
+                return ResourceManager.GetString("SmoothedBySegmentsSaveSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The smoothed (by whole spectrum) spectrum has been successfully saved on cloud!.
+        /// </summary>
+        public static string SmoothedByWholeSpectrumSaveSuccessMessage {
+            get {
+                return ResourceManager.GetString("SmoothedByWholeSpectrumSaveSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, something went wrong while trying to delete the smoothed spectrum.
         /// </summary>
         public static string SmoothedRemovalErrorMessage {
@@ -1128,15 +1164,6 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SmoothedSaveErrorMessage {
             get {
                 return ResourceManager.GetString("SmoothedSaveErrorMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The smoothed spectrum has been successfully saved on cloud!.
-        /// </summary>
-        public static string SmoothedSaveSuccessMessage {
-            get {
-                return ResourceManager.GetString("SmoothedSaveSuccessMessage", resourceCulture);
             }
         }
         
@@ -1222,11 +1249,29 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Smoothing by segments successfully completed.
+        /// </summary>
+        public static string SmoothingBySegmentsCompletedMessage {
+            get {
+                return ResourceManager.GetString("SmoothingBySegmentsCompletedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to By segments.
         /// </summary>
         public static string SmoothingBySegmentsTabTitle {
             get {
                 return ResourceManager.GetString("SmoothingBySegmentsTabTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Smoothing by whole spectrum successfully completed.
+        /// </summary>
+        public static string SmoothingByWholeSpectrumCompletedMessage {
+            get {
+                return ResourceManager.GetString("SmoothingByWholeSpectrumCompletedMessage", resourceCulture);
             }
         }
         

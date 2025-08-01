@@ -465,8 +465,11 @@
   <data name="SmoothedSaveErrorMessage" xml:space="preserve">
     <value>Sorry, something went wrong while trying to save on cloud smoothed spectrum</value>
   </data>
-  <data name="SmoothedSaveSuccessMessage" xml:space="preserve">
-    <value>The smoothed spectrum has been successfully saved on cloud!</value>
+  <data name="SmoothedBySegmentsSaveSuccessMessage" xml:space="preserve">
+    <value>The smoothed (by segments) spectrum has been successfully saved on cloud!</value>
+  </data>
+  <data name="SmoothedByWholeSpectrumSaveSuccessMessage" xml:space="preserve">
+    <value>The smoothed (by whole spectrum) spectrum has been successfully saved on cloud!</value>
   </data>
   <data name="SmoothingAddNewSegmentLabel" xml:space="preserve">
     <value>Add new segment for smoothing next to this</value>
@@ -572,5 +575,17 @@
   </data>
   <data name="ButtonGuideLabel" xml:space="preserve">
     <value>Show guide</value>
+  </data>
+  <data name="AlignmentCompletedMessage" xml:space="preserve">
+    <value>Alignment successfully completed!</value>
+  </data>
+  <data name="ContinuumRemovalCompletedMessage" xml:space="preserve">
+    <value>Continuum-removal successfully completed</value>
+  </data>
+  <data name="SmoothingBySegmentsCompletedMessage" xml:space="preserve">
+    <value>Smoothing by segments successfully completed</value>
+  </data>
+  <data name="SmoothingByWholeSpectrumCompletedMessage" xml:space="preserve">
+    <value>Smoothing by whole spectrum successfully completed</value>
   </data>
 </root>

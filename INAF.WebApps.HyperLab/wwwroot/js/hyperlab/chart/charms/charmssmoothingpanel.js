@@ -757,9 +757,22 @@ async function applySmoothingAsync(smoothingType) {
         setCloudTextAndIconStatus(destSpectrumType, false);
 
         setLoadingCircleIsVisible(false);
+
+        let infoMessage = '';
+        switch (smoothingType) {
+            case BY_SEGMENTS:
+                infoMessage = SmoothingBySegmentsCompletedMessage;
+                break;
+
+            case BY_WHOLE_SPECTRUM:
+                infoMessage = SmoothingByWholeSpectrumCompletedMessage;
+                break;
+        }
+        addMessage(infoMessage, 3000, INFO);
     }
     else {
         setLoadingCircleIsVisible(false);
+        addMessage(SmoothingExecutionErrorMessage, 0, ALERT, displayMessage = false);
         showSimpleDialog(ERROR_LABEL, SmoothingExecutionErrorMessage, ALERT);
     }
 }
@@ -933,10 +946,23 @@ async function saveSmoothedSpectrumAsync(spectrum, smoothingType, destSpectrumTy
     if (showLoadingAndMessage) {
         setLoadingCircleIsVisible(false);
 
-        if (isSavingOk)
-            showSimpleDialog(INFO_LABEL, SmoothedSaveSuccessMessage, SUCCESS);
-        else
+        if (isSavingOk) {
+            let smoothedSavingMessage = '';
+            switch (smoothingType) {
+                case BY_SEGMENTS:
+                    smoothedSavingMessage = SmoothedBySegmentsSaveSuccessMessage;
+                    break;
+
+                case BY_WHOLE_SPECTRUM:
+                    smoothedSavingMessage = SmoothedByWholeSpectrumSaveSuccessMessage;
+                    break;
+            }
+            addMessage(smoothedSavingMessage, 3000, INFO);
+        }
+        else {
+            addMessage(SmoothedSaveErrorMessage, 0, ALERT, displayMessage = false);
             showSimpleDialog(ERROR_LABEL, SmoothedSaveErrorMessage, ALERT);
+        }
     }
 }
 

@@ -25,12 +25,13 @@
     var UrlHub = $"/{GenericHelper.GetControllerName(nameof(SpectraManagerController))}/{nameof(SpectraManagerController.Hub)}";
 }
 
+<link rel="stylesheet" href="~/css/dist/errorpagebundle.min.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/dist/devextreme/devextremebundle.min.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/dist/hubandchart/hubandchartbundle.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/dist/jqueryuibundle.min.css" asp-append-version="true" />
 
 <!-- CHARTS -->
-<div id="charts" class="mywrapper overflow-x-auto overflow-y-auto" style="max-width: 100%"></div>
+<div id="charts" class="h-100 overflow-x-auto overflow-y-auto" style="max-width: 100%"></div>
 
 <!-- JOYSTICK -->
 <div id="joystickMainContainer" class="joystick-main-container flex-column d-none" style="top: calc(100% - 46px)">
