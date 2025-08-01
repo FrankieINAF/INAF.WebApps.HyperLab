@@ -476,6 +476,34 @@ function removeSpectrumByIndex(index) {
     return spectraInfo.splice(index, 1);
 }
 
+function setSpectrumVisibilityByIdAndSpectrumType(id, spectrumType, isVisible) {
+    let spectrum = getSpectrumByIdAndSpectrumType(id, spectrumType);
+    if (!spectrum)
+        return;
+
+    let series = getSeriesFromId(spectrum.Id);
+    if (!series)
+        return;
+
+    if (isVisible)
+        series.show();
+    else {
+        series.hide();
+        addMessage(AutoSetSpectrumInvisibleMessage.replace('r_v', getSpectrumTypeDescription(spectrumType)), 3000, INFO);
+    }
+}
+
+function setSpectrumVisibilityByName(name, isVisible) {
+    let series = dxChartGetSeriesByName(chartContainer, name);
+    if (!series)
+        return;
+
+    if (isVisible)
+        series.show();
+    else
+        series.hide();
+}
+
 /* ################################################################################ */
 /* CHARTS SERIES ITEMS */
 /* ################################################################################ */

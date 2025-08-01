@@ -796,8 +796,6 @@ async function manageNewPointAsync(point, isFromUserAction = false, isLast = fal
             let pointBefore = getPreviousItemInPointsForFittingArray(point);
             await addNewSegmentProcedureAsync(pointBefore, point, isFromUserAction, isLast); // add as last segment
         }
-
-        setSpectrumVisibilityBySpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_RAW, false);
     }
 }
 
@@ -1330,6 +1328,19 @@ function buildContinuumRemovedSpectrumCompleted(filename) {
 
     if (isShowBreaksOnValueAxisForContinuumRemovedRequested)
         fitShowBreaksOnValueAxis();
+
+    /* hide ALIGNED spectrum for clarity */
+    let alignedSpectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+    if (alignedSpectrum)
+        setSpectrumVisibilityByIdAndSpectrumType(alignedSpectrum.Id, SPECTRUM_TYPE_ALIGNED, false);
+
+    /* remove all segments for fitting for clarity */
+    let continuumSpectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM);
+    if (continuumSpectrum)
+        setSpectrumVisibilityByIdAndSpectrumType(continuumSpectrum.Id, SPECTRUM_TYPE_CONTINUUM, false);
+
+    /* hide points for clarity */
+    setSpectrumVisibilityByName(SERIES_FIT_POINTS, false);
 
     /* mantain hidden all not necessary spectra */
     hideSpectraToBeHidden();

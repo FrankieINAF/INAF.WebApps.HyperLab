@@ -893,6 +893,8 @@ function buildAlignedSpectrumCompleted() {
     /* refresh legend, if opened */
     refreshCharmsLegend();
 
+    /* hide RAW spectrum for clarity */
+    setSpectrumVisibilityByIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_RAW, false);
     /* reset visual range to make all available spectra visible */
     //dxChartResetVisualRange(chartContainer);
 }

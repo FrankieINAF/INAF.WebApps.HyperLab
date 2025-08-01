@@ -20,17 +20,17 @@ function createCharmsLegend() {
     initSpectraTree();
 
     /* add ref spectrum to list */
-    let refSpectrums = getSpectraBySpectrumType(SPECTRUM_TYPE_REF);
+    const refSpectrums = getSpectraBySpectrumType(SPECTRUM_TYPE_REF);
     if (refSpectrums.length > 0)
         addSpectrumToSpectraTree(refSpectrums[0].Id);
 
     /* add ref-white spectrum to list */
-    let refWhiteSpectrums = getSpectraBySpectrumType(SPECTRUM_TYPE_REF_WHITE);
+    const refWhiteSpectrums = getSpectraBySpectrumType(SPECTRUM_TYPE_REF_WHITE);
     if (refWhiteSpectrums.length > 0)
         addSpectrumToSpectraTree(refWhiteSpectrums[0].Id);
 
     /* build array with spectra */
-    let rawSpectraNum = rawSpectra.length;
+    const rawSpectraNum = rawSpectra.length;
     for (var i = 0; i < rawSpectraNum; i++) {
         addSpectrumToSpectraTree(rawSpectra[i].Id);
 
@@ -41,6 +41,14 @@ function createCharmsLegend() {
             familyIds.forEach(function (id) {
                 addSpectrumChildToSpectraTree(rawSpectra[i].Id, id);
             });
+        }
+
+        if (rawSpectra[i].Id == selectedSpectrumForProcessingId) {
+            const continuumSpectra = getSpectraBySpectrumType(SPECTRUM_TYPE_CONTINUUM);
+            if (continuumSpectra.length > 0) {
+                addSpectrumChildToSpectraTree(selectedSpectrumForProcessingId, continuumSpectra[0].Id);
+
+            }
         }
     }
 
@@ -70,7 +78,10 @@ function createCharmsLegend() {
             onNodeClick(evt);
         });
         $(mainliobj).attr('data-caption', name);
-        $(mainliobj).attr('data-icon', `<span id='spectrum${rawSpectrumId}' class='mif-chevron-right pointer' style='background-color: ${rawcolor}; color: ${rawcolor}; opacity: ${opacity}' onclick='onSeriesClick(${rawSpectrumId})' onmouseover='onSeriesMouseOver(${rawSpectrumId})' onmouseout='onSeriesMouseOut(${rawSpectrumId})'></span>>`);
+        let item = `<span id='spectrum${rawSpectrumId}' `;
+        item += getSquareClass(rawcolor, series.isVisible());
+        item += `onclick='onSeriesClick(${rawSpectrumId})' onmouseover='onSeriesMouseOver(${rawSpectrumId})' onmouseout='onSeriesMouseOut(${rawSpectrumId})'></span>`
+        $(mainliobj).attr('data-icon', item);
 
         if (spectraTree[i].Children.length > 0) {
             let ulobj = $('<ul/>');
@@ -80,9 +91,13 @@ function createCharmsLegend() {
 
                 let childcolor = getSeriesColor(childId);
 
-                let opacity = 1;
-                let series = getSeriesFromId(rawSpectrumId);
-                if (!series.isVisible()) opacity = 0.5;
+                let isOpaque = true;
+
+                let series = getSeriesFromId(childId);
+                if (!series.isVisible()) {
+                    opacity = 0.5;
+                    isOpaque = false;
+                }
 
                 let childIdForEvent = childId;
                 if (!Number.isInteger(childId))
@@ -92,7 +107,8 @@ function createCharmsLegend() {
                     class: 'fg-light'
                 });
                 $(childliobj).attr('data-caption', getSpectrumTypeById(childId));
-                let html = `<span id='spectrum${childId}' class='mif-chevron-right pointer' style='background-color: ${childcolor}; color: ${childcolor}; opacity: ${opacity}' `;
+                let html = `<span id='spectrum${childId}' `;
+                html += getSquareClass(childcolor, isOpaque);
                 html += `onclick='onSeriesClick(${childIdForEvent})' onmouseover='onSeriesMouseOver(${childIdForEvent})' onmouseout='onSeriesMouseOut(${childIdForEvent})'></span>`;
                 html += `class="fg-white"></li>`;
                 $(childliobj).attr('data-icon', html);
@@ -106,6 +122,14 @@ function createCharmsLegend() {
     }
 
     Metro.makePlugin('#legend', 'treeview');
+}
+
+function getSquareClass(childcolor, isOpaque) {
+    let backgroundColor = `background-color: ${childcolor}`;
+    if (!isOpaque)
+        backgroundColor = `background-color: transparent;`;
+
+    return `class='colored-square pointer' style='${backgroundColor}; color: ${childcolor}; border: 3px solid ${childcolor}' `;
 }
 
 function refreshCharmsLegend() {
@@ -126,13 +150,21 @@ function onNodeClick(evt) {
 }
 
 function onSeriesClick(id) {
-    let series = getSeriesFromId(id);
+    const series = getSeriesFromId(id);
+
+    const isSeriesContinuum = series.name.includes(getSpectrumTypeString(8));
+
     if (series.isVisible()) {
         series.hide()
-        $(`#spectrum${id}`).css({ opacity: 0.5 });
+        $(`#spectrum${id}`).css('background-color', 'transparent');
+        if (isSeriesContinuum)
+            setSpectrumVisibilityByName(SERIES_FIT_POINTS, false);
     } else {
         series.show();
-        $(`#spectrum${id}`).css({ opacity: 1 });
+        if (isSeriesContinuum)
+            setSpectrumVisibilityByName(SERIES_FIT_POINTS, true);
+        const colorValue = $(`#spectrum${id}`).css('color');
+        $(`#spectrum${id}`).css('background-color', colorValue);
     }
 }
 

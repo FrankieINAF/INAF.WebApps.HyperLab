@@ -294,23 +294,6 @@ function restoreOldSpectraColor() {
     addMessage(CharmsSelectedSpectrumColorRestoreMessage, 3000, INFO);
 }
 
-function setSpectrumVisibilityBySpectrumType(id, spectrumType, isVisible) {
-    let spectrum = getSpectrumByIdAndSpectrumType(id, spectrumType);
-    if (!spectrum)
-        return;
-
-    let series = getSeriesFromId(spectrum.Id);
-    if (!series)
-        return;
-
-    if (isVisible)
-        series.show();
-    else {
-        series.hide();
-        addMessage(AutoSetSpectrumInvisibleMessage.replace('r_v', getSpectrumTypeDescription(spectrumType)), 3000, INFO);
-    }
-}
-
 function updateSpectrumColor(spectrum, color) {
     const seriesName = createSeriesNameFromSpectrumNameAndType(spectrum.Name, spectrum.SpectrumType)
 

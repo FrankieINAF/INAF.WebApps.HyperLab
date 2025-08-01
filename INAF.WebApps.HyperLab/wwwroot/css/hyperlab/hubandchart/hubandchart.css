@@ -352,3 +352,9 @@
 .semitransparent-black {
     background-color: rgba(0,0,0,0.8);
 }
+
+.colored-square {
+    display: block;
+    width: 16px;
+    height: 16px;
+}
