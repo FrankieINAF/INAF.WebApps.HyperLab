@@ -70,6 +70,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto reload in .
+        /// </summary>
+        public static string AutoReloadMessage {
+            get {
+                return ResourceManager.GetString("AutoReloadMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next.
         /// </summary>
         public static string ButtonNextLabel {

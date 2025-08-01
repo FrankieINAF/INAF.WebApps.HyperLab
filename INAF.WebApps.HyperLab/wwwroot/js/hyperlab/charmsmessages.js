@@ -22,7 +22,7 @@ function addMessage(content, duration, type, displayMessage = true) {
         showToast(content, duration, type);
 
     const html = buildMessageUIItem(message, type);
-    $('#messagesContainer').append(html);
+    $('#messagesContainer').prepend(html);
 
     if (messages.length == 1)
         addOpenMessagesCharmsButton();

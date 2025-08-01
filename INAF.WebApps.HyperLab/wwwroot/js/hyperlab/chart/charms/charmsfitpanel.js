@@ -796,6 +796,8 @@ async function manageNewPointAsync(point, isFromUserAction = false, isLast = fal
             let pointBefore = getPreviousItemInPointsForFittingArray(point);
             await addNewSegmentProcedureAsync(pointBefore, point, isFromUserAction, isLast); // add as last segment
         }
+
+        setSpectrumVisibilityBySpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_RAW, false);
     }
 }
 

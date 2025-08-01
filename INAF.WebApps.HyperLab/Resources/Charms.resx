@@ -588,4 +588,7 @@
   <data name="SmoothingByWholeSpectrumCompletedMessage" xml:space="preserve">
     <value>Smoothing by whole spectrum successfully completed</value>
   </data>
+  <data name="AutoSetSpectrumInvisibleMessage" xml:space="preserve">
+    <value>'r_v' spectrum have been automatically hidden for clarity</value>
+  </data>
 </root>

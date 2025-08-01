@@ -37,27 +37,12 @@
 </div>
 
 <script type="text/javascript">
-	function startCountdown(duration, display) {
-		var timer = duration, minutes, seconds;
-		var countdownInterval = setInterval(function () {
-			minutes = parseInt(timer / 60, 10);
-			seconds = parseInt(timer % 60, 10);
-
-			minutes = minutes < 10 ? "0" + minutes : minutes;
-			seconds = seconds < 10 ? "0" + seconds : seconds;
-
-			display.textContent = minutes + ":" + seconds;
-
-			if (--timer < 0) {
-				clearInterval(countdownInterval);
-				window.location.href = "https://hyperlab.iaps.inaf.it/Account/Login"; // Redirect to your desired page
-			}
-		}, 1000);
-	}
-
 	window.onload = function () {
 		var countdownDuration = 10; // Countdown duration in seconds (e.g., 5 minutes)
 		var display = document.querySelector('#countdown');
-		startCountdown(countdownDuration, display);
+		const redirectAction = function() {
+		  location.href = "https://hyperlab.iaps.inaf.it/Account/Login"
+	  };
+		startCountdown(countdownDuration, display, redirectAction);
 	};
 </script>

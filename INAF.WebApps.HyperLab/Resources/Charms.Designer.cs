@@ -403,6 +403,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;r_v&apos; spectrum have been automatically hidden for clarity.
+        /// </summary>
+        public static string AutoSetSpectrumInvisibleMessage {
+            get {
+                return ResourceManager.GetString("AutoSetSpectrumInvisibleMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download.
         /// </summary>
         public static string ButtonDownloadLabel {

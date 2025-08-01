@@ -1,6 +1,6 @@
 ﻿@using INAF.WebApps.HyperLab.Resources;
 
-<div class="h-100 bg-crimson">
+<div class="h-100 bg-crimson overflow-y-auto">
     <div class="h-25 d-flex flex-column flex-justify-center">
         <div>
             <p class="error-title text-strong text-center fg-white">@Html.Raw(Home.ErrorPageTitle)</p>
@@ -15,6 +15,21 @@
         <div class="w-100-fs w-50-md d-flex flex-column">
             <div class="d-flex flex-justify-center"><img src="~/images/chart/error_engineer.png" class="explanation-image" /></div>
             <p class="error-text text-just fg-white margin-horizontal-16">@Html.Raw(Charts.ErrorText)</p>
+            <!-- COUNTDOWN -->
+            <div class="margin-top-8 d-flex flex-row flex-justify-center">
+                <span class="fg-white text-leader margin-right-16">@Html.Raw(SharedResources.AutoReloadMessage)</span>
+                <span id="countdown" class="fg-white text-leader">00:10</span></div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(function() {
+      var countdownDuration = 10; // Countdown duration in seconds (e.g., 5 minutes)
+      var display = document.querySelector('#countdown');
+      const redirectAction = function() {
+          location.reload();
+      };
+      startCountdown(countdownDuration, display, redirectAction);
+    })
+</script>

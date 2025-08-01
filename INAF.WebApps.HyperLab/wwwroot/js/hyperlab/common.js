@@ -230,6 +230,28 @@ function navigateTo(url) {
 }
 
 /* -------------------------------------------------------------------------------- */
+/* ---------- COUNTDOWN ---------- */
+/* -------------------------------------------------------------------------------- */
+function startCountdown(duration, display, redirectAction) {
+    var timer = duration, minutes, seconds;
+    var countdownInterval = setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+            clearInterval(countdownInterval);
+            redirectAction();
+            //window.location.href = redirect; // Redirect to your desired page
+        }
+    }, 1000);
+}
+
+/* -------------------------------------------------------------------------------- */
 /* ---------- SESSION STORAGE ---------- */
 /* -------------------------------------------------------------------------------- */
 function getItemsFromSessionStorage(requestedKey) {
