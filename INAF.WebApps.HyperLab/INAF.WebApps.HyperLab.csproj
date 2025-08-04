@@ -257,6 +257,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CharmsMessages.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\CharmsShare.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CharmsShare.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Charts.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -379,6 +384,10 @@
     <EmbeddedResource Update="Resources\CharmsMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CharmsMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\CharmsShare.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CharmsShare.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Charts.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

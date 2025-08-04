@@ -12,7 +12,7 @@
         <div class="cell-fs-2">&nbsp;</div>
         <!-- TITLE -->
         <div class="cell-fs-8">
-            <h3 class="text-light text-center">@Html.Raw(Charms.CharmsShareTitle)</h3>
+            <h3 class="text-light text-center">@Html.Raw(CharmsShare.CharmsShareTitle)</h3>
         </div>
         <!-- CLOSE-AND-RESET-CHARMS BUTTON -->
         <div class="cell-fs-2">
@@ -26,23 +26,24 @@
     <div class="row margin-top-16">
         <div class="cell-fs-12 d-flex">
             <div><span class="mif-info"></span></div>
-            <div class="margin-left-16"><p class="text-light text-just">@Html.Raw(Charms.CharmsShareExplanation)</p></div>
+            <div class="margin-left-16"><p class="text-light text-just">@Html.Raw(CharmsShare.CharmsShareExplanation)</p></div>
         </div>
     </div>
 
     <!-- NUM OF SHARED SPECTRA -->
-    <div class="row margin-top-8">
-        <div class="cell-fs-12">
-            <p id="numOfSharedSpectraLabel" class="text-light text-center h5"></p>
-        </div>
+    <div class="row cell-fs-12 margin-top-8">
+        <p id="numOfSharedSpectraLabel" class="text-light text-center h5"></p>
     </div>
 
     <!-- SHARE INTERFACE -->
+    <div class="row cell-fs-12 margin-top-8">
+        <p class="text-light text-just text-small">@Html.Raw(CharmsShare.CharmsShareEnterUsersEmail)</p>
+    </div>
     <!-- insert new user -->
     <div class="row margin-top-8">
         <div class="cell-fs-2 cell-md-4">&nbsp;</div>
         <div class="cell-fs-8 cell-md-4 margin-top-8">
-            <input id="newUserToShare" type="email" data-role="input" placeholder="@Html.Raw(Charms.CharmsShareInputPlaceholder)" data-prevent-submit="true" data-custom-buttons="shareCustomButtons">
+            <input id="newUserToShare" type="email" data-role="input" placeholder="@Html.Raw(CharmsShare.CharmsShareInputPlaceholder)" data-prevent-submit="true" data-custom-buttons="shareCustomButtons">
         </div>
         <div>&nbsp;</div>
     </div>
@@ -52,7 +53,7 @@
     </div>
     <!-- list of inserted users -->
     <div id="selectedUsersToShareListLabel" class="row cell-fs-12 margin-top-8 d-none">
-        <p class="text-center text-light h5">@Html.Raw(Charms.CharmsShareSelectedUsersLabel)</p>
+        <p class="text-center text-light h5">@Html.Raw(CharmsShare.CharmsShareSelectedUsersLabel)</p>
     </div>
     <div class="row margin-top-4">
         <div class="cell-fs-2 cell-md-4">&nbsp;</div>
@@ -67,7 +68,7 @@
         <div class="cell-fs-8 cell-md-4">
             <button id="buttonShareSpectra" class="image-button primary disabled float-right" onclick="shareSpectraAsync()">
                 <span class="mif-share icon"></span>
-                <span class="caption">@Html.Raw(Charms.CharmsShareButton)</span>
+                <span class="caption">@Html.Raw(CharmsShare.CharmsShareButton)</span>
             </button>
         </div>
         <div class="cell-fs-2 cell-md-4">&nbsp;</div>
@@ -75,12 +76,12 @@
 </div>
 
 <script type="text/javascript">
-    var CharmsShareCheckUserMessage = "@Html.Raw(Charms.CharmsShareCheckUserMessage)";
-    var CharmsShareInvitationNotCreatedErrorMessage = "@Html.Raw(Charms.CharmsShareInvitationNotCreatedErrorMessage)";
-    var CharmsShareShareNotCreatedForUserErrorMessage = "@Html.Raw(Charms.CharmsShareShareNotCreatedForUserErrorMessage)";
-    var CharmsShareSpectraSharedInfoMessage = "@Html.Raw(Charms.CharmsShareSpectraSharedInfoMessage)";
-    var CharmsShareSpectraSharedErrorMessage = "@Html.Raw(Charms.CharmsShareSpectraSharedErrorMessage)";
-    var CharmsShareUserNotExistantMessage = "@Html.Raw(Charms.CharmsShareUserNotExistantMessage)";
+    var CharmsShareCheckUserMessage = "@Html.Raw(CharmsShare.CharmsShareCheckUserMessage)";
+    var CharmsShareInvitationNotCreatedErrorMessage = "@Html.Raw(CharmsShare.CharmsShareInvitationNotCreatedErrorMessage)";
+    var CharmsShareShareNotCreatedForUserErrorMessage = "@Html.Raw(CharmsShare.CharmsShareShareNotCreatedForUserErrorMessage)";
+    var CharmsShareSpectraSharedInfoMessage = "@Html.Raw(CharmsShare.CharmsShareSpectraSharedInfoMessage)";
+    var CharmsShareSpectraSharedErrorMessage = "@Html.Raw(CharmsShare.CharmsShareSpectraSharedErrorMessage)";
+    var CharmsShareUserNotExistantMessage = "@Html.Raw(CharmsShare.CharmsShareUserNotExistantMessage)";
 
     var shareCustomButtons = [
         {

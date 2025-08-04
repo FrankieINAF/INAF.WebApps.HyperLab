@@ -5,7 +5,6 @@ var goToChartsButtonId = 'buttonGoToCharts';
 var helpButtonId = 'buttonHelp';
 
 var guideChartButtonId = 'guideChartButton';
-var openMessagesCharmsButtonId = 'buttonOpenMessagesCharms';
 var searchButtonId = 'buttonSearch';
 var setPublicButtonId = 'buttonSetPublic';
 var shareButtonId = 'buttonShare';
@@ -132,23 +131,6 @@ function setButtonAlignEnabled(id, isEnabled, label) {
 /* ################################################################################ */
 /* ADD/REMOVE BUTTONS */
 /* ################################################################################ */
-/* ---------- OPEN MESSAGES BUTTON ---------- */
-function addOpenMessagesCharmsButton() {
-    addButton(openMessagesCharmsButtonId, ButtonShowCharmsMessagesLabel, 'mif-chat', toggleCharmsMessages);
-}
-
-function removeMessagesCharmsButtonProcedure() {
-    if (!isButtonAvailable(openMessagesCharmsButtonId))
-        return;
-
-    animateCSS(`${openMessagesCharmsButtonId}`, `bounceOutUp`, FAST, removeMessagesCharmsButton);
-}
-
-function removeMessagesCharmsButton() {
-    $(`#${openMessagesCharmsButtonId}`).remove();
-}
-
-
 /* ---------- SET GUIDE BUTTON ---------- */
 function addGuideChartButton() {
     //addButton(guideChartButtonId, ButtonGuideLabel, 'mif-help', showGuideChart);

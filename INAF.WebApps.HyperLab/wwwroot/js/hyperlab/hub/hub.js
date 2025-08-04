@@ -60,7 +60,8 @@ function addSelectedSpectrum(id) {
     if (selectedSpectra.length == 1) {
         addShareButton();
         addSetPublicButton();
-        addMessage(ChartsUseChartsButtonMessage, 3000, INFO);
+        showToast(ChartsUseChartsButtonMessage, 3000, INFO);
+        //addMessage(ChartsUseChartsButtonMessage, 3000, INFO);
     }
 }
 
@@ -70,7 +71,8 @@ function removeSelectedSpectrum(index) {
     //console.log(`removeSelectedSpectrum - selectedSpectra: ${selectedSpectra}`);
     if (selectedSpectra.length == 0) {
         //removeCreateChartsButtonProcedure();
-        addMessage(ChartsNoSpectraSelectedMessage, 3000, WARNING);
+        showToast(ChartsNoSpectraSelectedMessage, 3000, WARNING);
+        //addMessage(ChartsNoSpectraSelectedMessage, 3000, WARNING);
     }
 }
 
