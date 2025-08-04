@@ -1,6 +1,4 @@
-﻿using Azure;
-using INAF.Libraries.Net.CommonWebAppHelpers;
-using INAF.Libraries.Net.CommonWebAppModels.Models;
+﻿using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Authentication;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
@@ -12,7 +10,6 @@ using INAF.Libraries.Net.HyperLab.CommonWebAppHelpers;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Extensions;
 using INAF.WebApps.HyperLab.Helpers;
-using log4net.Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +18,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {

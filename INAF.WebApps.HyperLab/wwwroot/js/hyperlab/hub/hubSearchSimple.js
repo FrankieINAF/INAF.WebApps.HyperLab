@@ -51,7 +51,6 @@ async function searchSimpleByFilename() {
     setLoadingCircleIsVisible(true);
 
     loadPartialViewWithAjaxJsonPost(UrlSearchSimpleGroupsByFilename, model, 'searchResultsContainer');
-
 }
 
 async function searchSimpleByMaterial() {
@@ -115,4 +114,8 @@ function getModelFromPlugin(plugin) {
         Id: parseInt(plugin.val()),
         RequestedLevels: requestedLevelsSimple
     };
+}
+
+function setSearchField(searchType, value) {
+
 }

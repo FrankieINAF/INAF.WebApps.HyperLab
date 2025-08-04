@@ -22,6 +22,16 @@ namespace INAF.WebApps.HyperLab.Helpers
             return value == null ? default(T) : JsonSerializer.Deserialize<T>(json);
         }
 
+        public static string? GetObjectString(this ISession session, string key)
+        {
+            var value = session.Get(key);
+            if (value == null)
+            {
+                return null;
+            }
+            return Encoding.UTF8.GetString(value);
+        }
+
         public static void SetObject<T>(this ISession session, string key, T value)
         {
             string json = JsonSerializer.Serialize(value);
@@ -60,23 +70,6 @@ namespace INAF.WebApps.HyperLab.Helpers
         public static void SetDouble(this ISession session, string key, double value)
         {
             session.Set(key, BitConverter.GetBytes(value));
-        }
-        #endregion
-
-        #region STRING
-        public static string? GetString(this ISession session, string key)
-        {
-            var data = session.Get(key);
-            if (data == null)
-            {
-                return null;
-            }
-            return BitConverter.ToString(data, 0);
-        }
-
-        public static void SetString(this ISession session, string key, string value)
-        {
-            session.Set(key, Encoding.UTF8.GetBytes(value));
         }
         #endregion
     }

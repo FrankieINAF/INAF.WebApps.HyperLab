@@ -72,6 +72,41 @@
         return spectrumLevelText;
     }
 
+    function getSearchTypeString(searchType) {
+        let searchTypeText = 'SimpleByFilename';
+        switch (searchType) {
+            case 1:
+                searchTypeText = '@Enums.Enums.SearchType.SimpleByFilename.ToString()';
+            break;
+
+            case 2:
+                searchTypeText = '@Enums.Enums.SearchType.SimpleByMaterial.ToString()';
+            break;
+
+            case 3:
+                searchTypeText = '@Enums.Enums.SearchType.SimpleByMineralType.ToString()';
+            break;
+
+            case 4:
+                searchTypeText = '@Enums.Enums.SearchType.SimpleByOriginType.ToString()';
+            break;
+
+            case 5:
+                searchTypeText = '@Enums.Enums.SearchType.SimpleBySampleName.ToString()';
+            break;
+
+            case 6:
+                searchTypeText = '@Enums.Enums.SearchType.SimpleBySampleType.ToString()';
+            break;
+
+            case 7:
+                searchTypeText = '@Enums.Enums.SearchType.Complex.ToString()';
+            break;
+        }
+
+        return searchTypeText;
+    }
+
     function getSpectrumSourceString(spectrumSource) {
         let spectrumSourceText = 'SLab';
         switch (spectrumSource) {

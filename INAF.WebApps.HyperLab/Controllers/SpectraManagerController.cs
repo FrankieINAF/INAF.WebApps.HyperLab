@@ -1,4 +1,5 @@
-﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Permissions;
+﻿using INAF.Libraries.Net.CommonWebAppHelpers;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Permissions;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Info;
@@ -10,10 +11,13 @@ using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Helpers;
+using INAF.WebApps.HyperLab.Models;
+using INAF.WebApps.HyperLab.Values;
 using LinqKit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using System.Text.Json;
+//using Newtonsoft.Json;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -36,6 +40,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Chart([FromForm] NavigateToChartModel model)
         {
+            HttpContext.Session.SetString(Constants.LAST_PAGE, nameof(Chart));
             (bool isUserAuthenticated, List<PermissionModel>? permissions) status = getUserStatus();
 
             IEnumerable<int>? Ids = model.SelectedSpectra ?? Array.Empty<int>();
@@ -53,14 +58,71 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult Hub()
         {
+            string? lastSearch = string.Empty;
+            if (HttpContext.Session.ContainsKey(Constants.LAST_PAGE))
+            {
+                string? lastPage = HttpContext.Session.GetString(Constants.LAST_PAGE);
+                if (!string.IsNullOrEmpty(lastPage) && lastPage.Equals(nameof(Chart)))
+                    lastSearch = HttpContext.Session.GetObjectString(Constants.LAST_SEARCH);
+            }
+            else
+                HttpContext.Session.SetString(Constants.LAST_PAGE, nameof(Hub));
+
             (bool isUserAuthenticated, List<PermissionModel>? permissions) status = getUserStatus();
 
             var sampleTypesHelper = serviceProvider.GetRequiredService<SampleTypesHelper>();
             SampleTypeValuesContainerExtended sampleTypeValuesContainerExtended = SampleTypeValuesContainerExtended.Create(sampleTypesHelper.getSampleTypeValuesContainer());
-            var searchPageModel = new SearchPageModel(status.isUserAuthenticated, status.permissions, sampleTypeValuesContainerExtended);
+            var searchPageModel = new SearchPageModel(status.isUserAuthenticated, status.permissions, sampleTypeValuesContainerExtended, lastSearch);
             return View(searchPageModel);
         }
         #endregion
+
+        [Authorize]
+        [CheckIsLoginValid]
+        [HttpPost]
+        public IActionResult ExecuteLastSearch()
+        {
+            object? lastSearch = HttpContext.Session.GetObject<SessionSearchModel>(Constants.LAST_SEARCH);
+            if (lastSearch != null)
+            {
+                var sessionSearchModel = lastSearch as SessionSearchModel;
+                if (sessionSearchModel != null)
+                {
+                    switch (sessionSearchModel.SearchType)
+                    {
+                        case Libraries.Net.HyperLab.CommonModels.Values.Enums.SearchType.SimpleByFilename:
+                            //SearchRequestByTextModel? model = JsonSerializer.Deserialize<SearchRequestByTextModel>(sessionSearchModel.SearchObjectJson!);
+                            //if (model != null)
+                            //    return SearchSimpleGroupsByFilename(model, saveSessionVariable: false);
+                            break;
+                        //return RedirectToAction(
+                        //    nameof(SpectraManagerController.SearchSimpleGroupsByFilename2),
+                        //    GenericHelper.GetControllerName(nameof(SpectraManagerController)),
+                        //    sessionSearchModel.SearchObject as SearchRequestByTextModel
+                        //);
+                        //case Libraries.Net.HyperLab.CommonModels.Values.Enums.SearchType.SimpleByMaterial:
+                        //    break;
+                        //case Libraries.Net.HyperLab.CommonModels.Values.Enums.SearchType.SimpleByMineralType:
+                        //    break;
+                        //case Libraries.Net.HyperLab.CommonModels.Values.Enums.SearchType.SimpleByOriginType:
+                        //    break;
+                        //case Libraries.Net.HyperLab.CommonModels.Values.Enums.SearchType.SimpleBySampleName:
+                        //    break;
+                        //case Libraries.Net.HyperLab.CommonModels.Values.Enums.SearchType.SimpleBySampleType:
+                        //    break;
+                        //case Libraries.Net.HyperLab.CommonModels.Values.Enums.SearchType.Complex:
+                        //    break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            /* when no last search has been saved, simply remove key and redirect to 'Hub' to load view from scratch  */
+            HttpContext.Session.Remove(Constants.LAST_SEARCH);
+
+            return RedirectToAction(nameof(Hub));
+        }
 
         [Authorize]
         [CheckIsLoginValid]
@@ -84,7 +146,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         #region ANCILLARY
         private ContentResult buildJsonContentResult(object? inputValue)
         {
-            string jsonResult = JsonConvert.SerializeObject(inputValue);
+            string jsonResult = JsonSerializer.Serialize(inputValue);
             return Content(jsonResult, "application/json");
         }
 

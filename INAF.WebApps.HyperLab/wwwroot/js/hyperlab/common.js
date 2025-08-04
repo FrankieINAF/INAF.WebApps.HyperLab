@@ -1052,6 +1052,38 @@ function loadPartialViewWithAjaxPost(url, model, targetId, donecallback, failcal
     });
 }
 
+function loadPartialViewWithAjaxPostNoModel(url, targetId, donecallback, failcallback) {
+    setLoadingCircleIsVisible(true);
+
+    $.ajax({
+        type: POST,
+        url: url,
+        cache: false,
+        async: true,
+        dataType: "html",
+        headers: {
+            RequestVerificationToken:
+                $('input:hidden[name="__RequestVerificationToken"]').val()
+        }
+    }).done(function (obj) {
+        $(`#${targetId}`).html(obj);
+
+        if (donecallback)
+            donecallback();
+
+        setLoadingCircleIsVisible(false);
+    }).fail(function (xhr, status, error) {
+        if (failcallback)
+            fail(xhr, status, error);
+        else {
+            console.log(`${url} - xhr:` + xhr);
+            console.log(`${url} - status:` + status);
+            console.log(`${url} - error:` + error);
+        }
+        setLoadingCircleIsVisible(false);
+    });
+}
+
 function loadPartialViewWithAjaxJsonPost(url, model, targetId, donecallback, failcallback) {
     setLoadingCircleIsVisible(true);
 

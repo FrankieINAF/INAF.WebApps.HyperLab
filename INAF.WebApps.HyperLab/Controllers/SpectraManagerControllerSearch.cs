@@ -5,7 +5,10 @@ using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.WebApps.HyperLab.Helpers;
+using INAF.WebApps.HyperLab.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -40,7 +43,8 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region SEARCH SIMPLE
         [HttpPost]
-        public IActionResult SearchSimpleGroupsByFilename([FromBody] SearchRequestByTextModel model)
+        public IActionResult SearchSimpleGroupsByFilename([FromBody] SearchRequestByTextModel model,
+                                                          bool saveSessionVariable = true)
         {
             if (model == null || !isRequestOkByText(model.Text, model.RequestedLevels))
                 return new EmptyResult();
@@ -48,13 +52,16 @@ namespace INAF.WebApps.HyperLab.Controllers
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByFilename(model.Text!,
                                                                                                                       model.RequestedLevels!,
                                                                                                                       getUserId());
+
+            if (saveSessionVariable)
+                setLastSearchSession(model, Enums.SearchType.SimpleByFilename);
+
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
                     return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
-                    //return buildJsonContentResult(spectraFilesInfo);
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels!));
             }
 
@@ -321,6 +328,15 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return false;
 
             return true;
+        }
+
+        private void setLastSearchSession(object json,
+                                          SearchType searchType)
+        {
+            if (HttpContext.Session.ContainsKey(Values.Constants.LAST_SEARCH))
+                HttpContext.Session.Remove(Values.Constants.LAST_SEARCH);
+
+            HttpContext.Session.SetObject(Values.Constants.LAST_SEARCH, new SessionSearchModel() { SearchObjectJson = json, SearchType = searchType });
         }
         #endregion
     }

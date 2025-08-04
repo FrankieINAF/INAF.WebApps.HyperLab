@@ -374,6 +374,53 @@ function checkOrientation() {
 }
 
 /* ################################################################################ */
+/* LAST SEARCH EXECUTION */
+/* ################################################################################ */
+function tryRestoreLastSearch() {
+    if (!lastSearchJson)
+        return;
+
+    console.log(`lastSearchJson: ${lastSearchJson}`);
+
+    const lastSearch = JSON.parse(lastSearchJson);
+    const searchType = lastSearch.SearchType;
+    switch (searchType) {
+        case 1:
+            $('#selectFilename').val(lastSearch.SearchObjectJson.Text);
+            setCurrentSearchSimpleType('selectFilename');
+            break;
+
+        case 2:
+
+            break;
+
+        case 3:
+
+            break;
+
+        case 4:
+
+            break;
+
+        case 5:
+
+            break;
+
+        case 6:
+
+            break;
+
+        case 7:
+
+            break;
+
+        default:
+    }
+
+    executeAfter(function () { search(); }, 500);
+}
+
+/* ################################################################################ */
 /* DOCUMENT READY */
 /* ################################################################################ */
 function onWindowResize() {
@@ -465,6 +512,11 @@ $(function () {
     /* check for screen orientation */
     screen.orientation.addEventListener("change", checkOrientation);
     checkOrientation(); // Initial check
+
+    /* try execute last search, when available */
+    tryRestoreLastSearch();
+    //if (isLastSearchAvailable)
+    //    loadPartialViewWithAjaxPostNoModel(UrlExecuteLastSearch, 'searchResultsContainer');
 });
 
 $(document).on('beforeunload', function () {

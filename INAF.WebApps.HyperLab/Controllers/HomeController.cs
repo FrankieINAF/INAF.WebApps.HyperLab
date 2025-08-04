@@ -1,10 +1,9 @@
 ﻿using INAF.WebApps.HyperLab.Controllers.Base;
-using Microsoft.AspNetCore.Authorization;
+using INAF.WebApps.HyperLab.Values;
 using Microsoft.AspNetCore.Mvc;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
-    //[Authorize]
     public class HomeController : BaseController
     {
         public HomeController(IServiceProvider serviceProvider, 
@@ -13,11 +12,13 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         public IActionResult Index()
         {
+            HttpContext.Session.SetString(Constants.LAST_PAGE, nameof(Index));
             return View();
         }
 
         public IActionResult Error()
         {
+            HttpContext.Session.SetString(Constants.LAST_PAGE, nameof(Error));
             return View("Error");
         }
     }
