@@ -366,7 +366,7 @@ function buildSavedComplexSearchesTable(obj) {
     $('#retrievedComplexSearchesList').html(html);
 }
 
-async function getSavedComplexSearches(isReloadRequired = false) {
+async function getSavedComplexSearches(isReloadRequired = false, callback) {
     if (areComplexSearchesRetrieved && !isReloadRequired)
         return;
 
@@ -375,7 +375,7 @@ async function getSavedComplexSearches(isReloadRequired = false) {
     let obj = await doAjaxGetNoModelAsync(UrlGetSavedComplexSearches)
     if (obj && obj.length > 0) {
         /* hide info */
-        let callback = function () {
+        let callbackReload = function () {
             /* build the list with available items */
             buildSavedComplexSearchesTable(obj);
             /* hide explanation on complex searches */
@@ -385,9 +385,13 @@ async function getSavedComplexSearches(isReloadRequired = false) {
             showComplexSearchesIntroProcedure(isReloadRequired);
         };
         if (isReloadRequired)
-            callback();
-        else
-            animateCSS('retrievedComplexSearchesInfo', 'backOutRight', FASTER, callback);
+            callbackReload();
+        else {
+            if (callback && typeof callback === 'function')
+                callback();
+            else
+                animateCSS('retrievedComplexSearchesInfo', 'backOutRight', FASTER, callbackReload);
+        }
 
         /* set list as retrieved */
         areComplexSearchesRetrieved = true;

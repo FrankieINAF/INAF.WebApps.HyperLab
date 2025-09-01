@@ -1,22 +1,28 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
+using INAF.Libraries.Net.Extensions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.SearchesManagement;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
+using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Helpers;
 using INAF.WebApps.HyperLab.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
+    [Authorize]
+    [CheckIsLoginValid]
     public partial class SpectraManagerController
     {
         #region SEARCH COMPLEX
         [HttpGet]
-        public IActionResult SearchComplex(GenericRequestByIdModel model)
+        public IActionResult SearchComplexById(GenericRequestByIdModel model,
+                                               bool saveSessionVariable = true)
         {
             ComplexSearchSavingModel? complexSearchModel = dbHandlerHyperLabData.getSavedComplexSearch(model.Id,
                                                                                                        getUserId());
@@ -27,13 +33,39 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                                 complexSearchModel.RequestedLevels!,
                                                                                                 getUserId());
 
+            if (saveSessionVariable)
+                setLastSearchSession(model, Enums.SearchType.Complex);
+
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
                     return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
+                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, complexSearchModel.RequestedLevels!));
+            }
 
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SearchComplexByModel(ComplexSearchSavingModel complexSearchModel,
+                                                  bool saveSessionVariable = true)
+        {
+            if (complexSearchModel == null || !complexSearchModel.Conditions.IsAny())
+                return new EmptyResult();
+
+            List<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(complexSearchModel.Conditions!,
+                                                                                                complexSearchModel.RequestedLevels!,
+                                                                                                getUserId());
+
+            switch (getCallerContext())
+            {
+                case Enums.CallerContext.Web:
+                    return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
+
+                case Enums.CallerContext.App:
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, complexSearchModel.RequestedLevels!));
             }
 

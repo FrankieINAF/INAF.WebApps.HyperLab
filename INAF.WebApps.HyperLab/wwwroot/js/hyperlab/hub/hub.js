@@ -273,21 +273,29 @@ function getMaterialForSearchByEnter(evt, srcElem, dstElem, callback) {
 
 function initSearchTypesButtons() {
     $('#searchTypeRadioSimple').click(function () {
-        if (isCheckboxChecked('searchTypeRadioSimple')) {
-            SELECTED_SEARCH_TYPE = SEARCH_SIMPLE_TYPE;
-            hideByClass('panelSearchComplex');
-            showByClass('panelSearchSimple');
-        }
+        selectSimpleSearch();
     });
 
     $('#searchTypeRadioComplex').click(function () {
-        if (isCheckboxChecked('searchTypeRadioComplex')) {
-            SELECTED_SEARCH_TYPE = SEARCH_COMPLEX_TYPE;
-            hideByClass('panelSearchSimple');
-            showByClass('panelSearchComplex');
-            getSavedComplexSearches();
-        }
+        selectComplexSearch();
     });
+}
+
+function selectComplexSearch(isReloadRequired = false, callback) {
+    if (isCheckboxChecked('searchTypeRadioComplex')) {
+        SELECTED_SEARCH_TYPE = SEARCH_COMPLEX_TYPE;
+        hideByClass('panelSearchSimple');
+        showByClass('panelSearchComplex');
+        getSavedComplexSearches(isReloadRequired, callback);
+    }
+}
+
+function selectSimpleSearch() {
+    if (isCheckboxChecked('searchTypeRadioSimple')) {
+        SELECTED_SEARCH_TYPE = SEARCH_SIMPLE_TYPE;
+        hideByClass('panelSearchComplex');
+        showByClass('panelSearchSimple');
+    }
 }
 
 function setCurrentSearchSimpleType(selected) {
@@ -390,11 +398,13 @@ function tryRestoreLastSearch() {
     let executeSearch = true;
     switch (searchType) {
         case 1:
+            selectSimpleSearch();
             $('#selectFilename').val(lastSearch.SearchObjectJson.Text);
             setCurrentSearchSimpleType('selectFilename');
             break;
 
         case 2:
+            selectSimpleSearch();
             $('#selectMaterialInput').val(lastSearch.SearchObjectJson.Text);
             const callback2 = function () {
                 executeAfter(function () { search(); }, 500);
@@ -405,27 +415,37 @@ function tryRestoreLastSearch() {
             break;
 
         case 3:
+            selectSimpleSearch();
             Metro.getPlugin('#selectMineralType', 'select').val(lastSearch.SearchObjectJson.Id);
             setCurrentSearchSimpleType('selectMineralType');
             break;
 
         case 4:
+            selectSimpleSearch();
             Metro.getPlugin('#selectOriginType', 'select').val(lastSearch.SearchObjectJson.Id);
             setCurrentSearchSimpleType('selectOriginType');
             break;
 
         case 5:
+            selectSimpleSearch();
             $('#selectSampleName').val(lastSearch.SearchObjectJson.Text);
             setCurrentSearchSimpleType('selectSampleName');
             break;
 
         case 6:
+            selectSimpleSearch();
             Metro.getPlugin('#selectSampleDataType', 'select').val(lastSearch.SearchObjectJson.Id);
             setCurrentSearchSimpleType('selectSampleDataType');
             break;
 
         case 7:
-
+            if (lastSearch.SearchObjectJson.Id > 0) {
+                $('[id="searchTypeRadioComplex"]').prop('checked', true);
+                const callback = function () {
+                    buildAndRunComplexSearchProcedureAsync(lastSearch.SearchObjectJson.Id);
+                };
+                selectComplexSearch(false, callback);
+            }
             break;
 
         default:

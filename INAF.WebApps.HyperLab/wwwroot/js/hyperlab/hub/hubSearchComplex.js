@@ -234,7 +234,7 @@ function addConditionsOperators(currentIndex = null) {
                 break;
             default:
         }
-    }  else {
+    } else {
         _currentIndex = conditionsIndex;
         addConditionModel(getConditionModel(_currentIndex, CONDITION_OPERATORS));
     }
@@ -1232,7 +1232,7 @@ function getRemoveButtonOpacityActionsHtml(currentIndex, groupIndex) {
     return `onmouseover="showRemoveButton(${currentIndex}, ${groupIndex})" onmouseout="hideRemoveButton(${currentIndex}, ${groupIndex})"`;
 }
 
-function getRemoveButtonId(currentIndex,  groupIndex) {
+function getRemoveButtonId(currentIndex, groupIndex) {
     return `removeButton${currentIndex}${groupIndex}`;
 }
 
@@ -1419,11 +1419,20 @@ function buildComplexSearch(obj) {
 /* SEARCH */
 /* ################################################################################ */
 async function executeComplexSearchAsync() {
-    let model = {
-        Id: saveComplexSearchModel.Id
-    };
+    if (saveComplexSearchModel.Id == 0) {
+        saveComplexSearchModel.RequestedLevels = requestedLevelsComplex;
 
-    loadPartialViewWithAjaxGet(UrlSearchComplex, model, 'searchResultsContainer');
+        saveComplexSearchModel.AreSingleAcquisitionsResultsRequested = requestedLevelsComplex.includes(1);
+        saveComplexSearchModel.AreAveragedResultsRequested = requestedLevelsComplex.includes(2);
+        
+        loadPartialViewWithAjaxPost(UrlSearchComplexByModel, saveComplexSearchModel, 'searchResultsContainer');
+    } else {
+        let model = {
+            Id: saveComplexSearchModel.Id
+        };
+
+        loadPartialViewWithAjaxGet(UrlSearchComplexById, model, 'searchResultsContainer');
+    }
 }
 
 /* -------------------------------------------------------------------------------- */
