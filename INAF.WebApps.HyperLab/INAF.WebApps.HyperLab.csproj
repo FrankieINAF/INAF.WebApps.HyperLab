@@ -173,8 +173,8 @@
     <None Include="wwwroot\js\hyperlab\hub\complexsearchesintro.js" />
     <None Include="wwwroot\js\hyperlab\hub\complexsearchesmanagement.js" />
     <None Include="wwwroot\js\hyperlab\hub\hub.js" />
-    <None Include="wwwroot\js\hyperlab\hub\hubSearchComplex.js" />
-    <None Include="wwwroot\js\hyperlab\hub\hubSearchSimple.js" />
+    <None Include="wwwroot\js\hyperlab\hub\hubsearchcomplex.js" />
+    <None Include="wwwroot\js\hyperlab\hub\hubsearchsimple.js" />
     <None Include="wwwroot\js\hyperlab\hub\info.js" />
     <None Include="wwwroot\js\hyperlab\hub\load\loadcommon.js" />
     <None Include="wwwroot\js\hyperlab\hub\load\loadcommoncheckxml.js" />

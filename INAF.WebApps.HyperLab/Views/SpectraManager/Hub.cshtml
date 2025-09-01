@@ -152,30 +152,17 @@
                             <div class="cell-fs-12 cell-sm-6 cell-lg-4">
                                 <label id="selectMaterialSearchTypeLabel" for="selectMaterialInput" class="text-secondary">@Html.Raw(Search.SearchSimpleByMaterialLabel)</label>
                                 <div class="d-flex flex-content-start">
-                                    <input id="@{
-                      @selectMaterial
-	 }
-Input"
+                                    <input id="@{@selectMaterial}Input"
                                            type="text"
                                            placeholder="@Html.Raw(Search.SearchByMaterialPlaceholder)"
                                            data-role="input"
                                            data-search-button="true"
                                            onfocus="setCurrentSearchSimpleType('@selectMaterial')"
                                            data-search-button-click="custom"
-                                           data-on-search-button-click="getMaterialsSuggestions('@{
-
-           @selectMaterial
-											           ;
-										          }
-Input','@selectMaterial')" />
+                                           data-on-search-button-click="getMaterialsSuggestions('@{@selectMaterial}Input','@selectMaterial')" />
                                     <select id="@selectMaterial" data-role="select" data-cls-select="overlap" data-on-change="setCurrentSearchSimpleType('@selectMaterial')" data-on-drop="setCurrentSearchSimpleType('@selectMaterial')"></select>
                                     <button class="button dark cycle small outline margin-top-4 margin-left-8"
-                                            onclick="resetSearchByMaterial('@{
-
-                      @selectMaterial
-;
-	 }
-Input')"
+                                            onclick="resetSearchByMaterial('@{@selectMaterial}Input')"
                                             title="@Html.Raw(Search.SearchClearSuggestionsButtonTitle)">
                                         <span class="mif-cross-light"></span>
                                     </button>
@@ -631,8 +618,9 @@ Input')"
     <script type="text/javascript" src="~/js/hyperlab/commonhubandchartsandsharedstuff.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/commonhubandchart.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/hub/hub.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/hub/hubSearchSimple.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/hyperlab/hub/hubSearchComplex.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/hub/hubsearchcommon.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/hub/hubsearchsimple.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/hub/hubsearchcomplex.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/hub/complexsearchesmanagement.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/hub/complexsearchesintro.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/hub/info.js" asp-append-version="true"></script>

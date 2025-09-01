@@ -193,7 +193,7 @@ async function searchGroupItems(rawId, rowIndex) {
 /* ################################################################################ */
 /* MATERIALS SUGGESTIONS */
 /* ################################################################################ */
-async function getMaterialsSuggestions(srcElemId, dstElemId, callback) {
+async function getMaterialsSuggestions(srcElemId, dstElemId, callback1, callback2) {
     let text = $(`#${srcElemId}`).val();
 
     if (!text) {
@@ -220,8 +220,11 @@ async function getMaterialsSuggestions(srcElemId, dstElemId, callback) {
             /* show the 'select' UI element */
             showFlexMetroUIElem(`${dstElemId}`);
 
-            if (callback)
-                callback(dstElemId);
+            if (callback1)
+                callback1(dstElemId);
+
+            if (callback2)
+                callback2();
         } else {
             suggestions = {};
             resetSearchByMaterial();
@@ -384,6 +387,7 @@ function tryRestoreLastSearch() {
 
     const lastSearch = JSON.parse(lastSearchJson);
     const searchType = lastSearch.SearchType;
+    let executeSearch = true;
     switch (searchType) {
         case 1:
             $('#selectFilename').val(lastSearch.SearchObjectJson.Text);
@@ -391,23 +395,33 @@ function tryRestoreLastSearch() {
             break;
 
         case 2:
-
+            $('#selectMaterialInput').val(lastSearch.SearchObjectJson.Text);
+            const callback2 = function () {
+                executeAfter(function () { search(); }, 500);
+            };
+            getMaterialsSuggestions('selectMaterialInput', 'selectMaterial', manageValueSelection, callback2);
+            setCurrentSearchSimpleType('selectMaterial');
+            executeSearch = false;
             break;
 
         case 3:
-
+            Metro.getPlugin('#selectMineralType', 'select').val(lastSearch.SearchObjectJson.Id);
+            setCurrentSearchSimpleType('selectMineralType');
             break;
 
         case 4:
-
+            Metro.getPlugin('#selectOriginType', 'select').val(lastSearch.SearchObjectJson.Id);
+            setCurrentSearchSimpleType('selectOriginType');
             break;
 
         case 5:
-
+            $('#selectSampleName').val(lastSearch.SearchObjectJson.Text);
+            setCurrentSearchSimpleType('selectSampleName');
             break;
 
         case 6:
-
+            Metro.getPlugin('#selectSampleDataType', 'select').val(lastSearch.SearchObjectJson.Id);
+            setCurrentSearchSimpleType('selectSampleDataType');
             break;
 
         case 7:
@@ -417,7 +431,8 @@ function tryRestoreLastSearch() {
         default:
     }
 
-    executeAfter(function () { search(); }, 500);
+    if (executeSearch)
+        executeAfter(function () { search(); }, 500);
 }
 
 /* ################################################################################ */
