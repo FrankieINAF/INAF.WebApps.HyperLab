@@ -4,6 +4,21 @@ namespace INAF.WebApps.HyperLab.Controllers
 {
     public partial class SpectraManagerController
     {
+        #region HUB
+        [HttpGet]
+        public IActionResult GuideSpectraHub()
+        {
+            return PartialView("Partials/Guide/_SpectraHub");
+        }
+
+        [HttpGet]
+        public IActionResult GuideSpectraHubMenu()
+        {
+            return PartialView("Partials/Guide/_SpectraHubMenu");
+        }
+        #endregion
+
+        #region CHART
         [HttpGet]
         public IActionResult GuideSpectraHubChart()
         {
@@ -76,6 +91,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             return PartialView("Partials/Guide/Panels/_BandAnalysisPanel");
         }
+        #endregion
         #endregion
     }
 }

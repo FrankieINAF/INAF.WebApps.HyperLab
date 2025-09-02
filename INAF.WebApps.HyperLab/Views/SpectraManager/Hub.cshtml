@@ -501,8 +501,6 @@
     await Html.RenderPartialAsync("Partials/_Messages");
 }
 
-
-
 <!-- common js variables -->
 @{
     await Html.RenderPartialAsync("Partials/_JsCommon");
@@ -615,6 +613,7 @@
 <script type="text/javascript" src="~/js/dist/blazorglobalbundle.min.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/js/dist/devextreme/devextremebundle.min.js" asp-append-version="true"></script>
 <environment names="Development">
+    <script type="text/javascript" src="~/js/hyperlab/commonbuttons.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/commonhubandchartsandsharedstuff.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/commonhubandchart.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/hub/hub.js" asp-append-version="true"></script>
@@ -631,7 +630,9 @@
     <script type="text/javascript" src="~/js/hyperlab/hub/load/loadcommon.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/hub/load/loadslab.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/hyperlab/charmsmessages.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/hyperlab/guide/guide.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">
     <script type="text/javascript" src="~/js/dist/hub/hubbundle.min.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/dist/guide/guidebundle.min.js" asp-append-version="true"></script>
 </environment>

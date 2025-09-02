@@ -1,5 +1,22 @@
 ﻿/* -------------------------------------------------------------------------------- */
-/* ---------- OPNE GUIDE ---------- */
+/* ---------- SHOW GUIDE FOR HUB PAGE ---------- */
+/* -------------------------------------------------------------------------------- */
+function showGuideHub() {
+    showByClassDFlexItem('guideContainer');
+    animateCSS('guideContainer', 'fadeIn', 'FASTER', onShowGuideHubCompleted);
+}
+
+function onShowGuideHubCompleted() {
+    let callbackdone = function () {
+        $('#body').removeClass('overflow-y-hidden').addClass('overflow-y-auto');
+        $('html').removeClass('overflow-y-hidden').addClass('overflow-y-auto hide-scrollbar');
+        loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubMenu, 'guideMenu');
+    };
+    loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHub, 'guide', callbackdone);
+}
+
+/* -------------------------------------------------------------------------------- */
+/* ---------- SHOW GUIDE FOR CHART PAGE ---------- */
 /* -------------------------------------------------------------------------------- */
 function showGuideChart() {
     showByClassDFlexItem('guideContainer');

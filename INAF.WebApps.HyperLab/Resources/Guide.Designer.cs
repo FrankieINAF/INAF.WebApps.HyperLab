@@ -151,6 +151,42 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The &lt;i&gt;Spectra Hub&lt;/i&gt; page is designed to allow users to upload their own spectra from local files or search for spectra within the HyperLab database, available only to logged-in users..
+        /// </summary>
+        public static string SpectraHub1 {
+            get {
+                return ResourceManager.GetString("SpectraHub1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Two types of search are available within the database: &lt;b&gt;Simple&lt;/b&gt; and &lt;b&gt;Complex&lt;/b&gt;. The &lt;b&gt;Simple&lt;/b&gt; search relies on the value of a single search parameter, while the &lt;b&gt;Complex&lt;/b&gt; search allows users to combine multiple parameters to refine their results..
+        /// </summary>
+        public static string SpectraHub2 {
+            get {
+                return ResourceManager.GetString("SpectraHub2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When using the &lt;b&gt;Complex&lt;/b&gt; search, for each parameter, users can create a group consisting of multiple values combined using boolean operators such as &lt;b&gt;AND&lt;/b&gt; and &lt;b&gt;OR&lt;/b&gt;. Multiple groups can then be linked together, again using &lt;b&gt;AND&lt;/b&gt;/&lt;b&gt;OR&lt;/b&gt;, to build more flexible and expressive search queries.
+        /// </summary>
+        public static string SpectraHub3 {
+            get {
+                return ResourceManager.GetString("SpectraHub3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;Complex&lt;/b&gt; searches can be saved and assigned a custom name. Each saved search is uniquely associated with the user who created it. Users can access their list of previously saved complex searches at any time, making it easy to reuse or refine them as needed..
+        /// </summary>
+        public static string SpectraHub4 {
+            get {
+                return ResourceManager.GetString("SpectraHub4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;i&gt;Spectra Hub&lt;/i&gt; chart page is designed to perform essential data analysis techniques—continuum removal, smoothing, and band analysis—through a simple and intuitive graphical interface..
         /// </summary>
         public static string SpectraHubChart1 {
@@ -921,6 +957,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SpectraHubChartTitle {
             get {
                 return ResourceManager.GetString("SpectraHubChartTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spectra Hub Page Guide.
+        /// </summary>
+        public static string SpectraHubTitle {
+            get {
+                return ResourceManager.GetString("SpectraHubTitle", resourceCulture);
             }
         }
     }

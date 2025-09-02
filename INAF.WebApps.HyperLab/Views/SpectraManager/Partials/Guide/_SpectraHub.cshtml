@@ -1,5 +1,19 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using INAF.WebApps.HyperLab.Resources;
+
+<!-- TITLE + CLOSE BUTTON -->
+<div class="row">
+    <div class="cell-fs-2">&nbsp;</div>
+    <div class="cell-fs-8 text-center"><span class="text-leader fg-white">@Html.Raw(Guide.SpectraHubTitle)</span></div>
+    <div class="cell-fs-2"><button id="buttonCloseGuide" class="button light cycle outline pointer fg-white margin-right-8" style="float: right" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
+</div>
+<!-- GENERAL INFO -->
+<div class="row">
+    <div class="cell-fs-12 text-center">
+        <p class="text-normal text-just fg-white margin-top-16 margin-horizontal-16">@Html.Raw(Guide.SpectraHub1)</p>
+        <p class="text-normal text-just fg-white margin-top-4 margin-horizontal-16">@Html.Raw(Guide.SpectraHub2)</p>
+        <p class="text-normal text-just fg-white margin-top-4 margin-horizontal-16">@Html.Raw(Guide.SpectraHub3)</p>
+        <p class="text-normal text-just fg-white margin-top-8 margin-horizontal-16">@Html.Raw(Guide.SpectraHub4)</p>
+    </div>
+</div>
+<!-- PARTIAL VIEW -->
+<div id="guideMenu" class="margin-top-16"></div>

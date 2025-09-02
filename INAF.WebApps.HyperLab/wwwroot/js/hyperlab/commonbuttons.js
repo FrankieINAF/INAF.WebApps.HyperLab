@@ -19,7 +19,7 @@ function addImageButton(buttonId, buttonTooltip, imageName, buttonAction) {
     if (item[0])
         return;
 
-    var button = $(`<img id="${buttonId}" title="${buttonTooltip}" class="pointer" style="float: left; margin:0px 8px 0px 8px; width: 36px" src="images/appbars/${imageName}.png"/>`);
+    var button = $(`<img id="${buttonId}" title="${buttonTooltip}" class="pointer" style="float: left; margin:0px 8px 0px 8px; width: 36px" src="/images/appbars/${imageName}.png"/>`);
     $('#buttonsAppBar').append($(button));
     animateCSS(`${buttonId}`, `bounceInDown`, FAST);
 

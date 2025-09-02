@@ -5,6 +5,7 @@ var goToChartsButtonId = 'buttonGoToCharts';
 var helpButtonId = 'buttonHelp';
 
 var guideChartButtonId = 'guideChartButton';
+var guideHubButtonId = 'guideHubButton';
 var searchButtonId = 'buttonSearch';
 var setPublicButtonId = 'buttonSetPublic';
 var shareButtonId = 'buttonShare';
@@ -80,7 +81,10 @@ function manageNavigation() {
             break;
 
         default: // NAVIGATION_INIT
+            addGuideHubButton();
 
+            if (isSLabDataManagerAllowed)
+                addSearchButton();
             break;
     }
 }
@@ -131,7 +135,7 @@ function setButtonAlignEnabled(id, isEnabled, label) {
 /* ################################################################################ */
 /* ADD/REMOVE BUTTONS */
 /* ################################################################################ */
-/* ---------- SET GUIDE BUTTON ---------- */
+/* ---------- SET GUIDE-FOR-CHART BUTTON ---------- */
 function addGuideChartButton() {
     //addButton(guideChartButtonId, ButtonGuideLabel, 'mif-help', showGuideChart);
     addImageButton(guideChartButtonId, ButtonGuideLabel, 'help', showGuideChart);
@@ -146,6 +150,22 @@ function removeGuideChartButtonProcedure() {
 
 function removeGuideChartButton() {
     $(`#${guideChartButtonId}`).remove();
+}
+
+/* ---------- SET GUIDE-FOR-HUB BUTTON ---------- */
+function addGuideHubButton() {
+    addImageButton(guideHubButtonId, ButtonGuideLabel, 'help', showGuideHub);
+}
+
+function removeGuideHubButtonProcedure() {
+    if (!isButtonAvailable(guideHubButtonId))
+        return;
+
+    animateCSS(`${guideHubButtonId}`, `bounceOutUp`, FAST, removeGuideHubButton);
+}
+
+function removeGuideHubButton() {
+    $(`#${guideHubButtonId}`).remove();
 }
 
 /* ---------- SET PUBLIC BUTTON ---------- */

@@ -126,17 +126,32 @@
   <data name="SpectraHubChart1" xml:space="preserve">
     <value>&lt;i&gt;Spectra Hub&lt;/i&gt; chart page is designed to perform essential data analysis techniques—continuum removal, smoothing, and band analysis—through a simple and intuitive graphical interface.</value>
   </data>
+  <data name="SpectraHub1" xml:space="preserve">
+    <value>The &lt;i&gt;Spectra Hub&lt;/i&gt; page is designed to allow users to upload their own spectra from local files or search for spectra within the HyperLab database, available only to logged-in users.</value>
+  </data>
   <data name="SpectraHubChart2" xml:space="preserve">
     <value>Logged-in users are permitted to store spectral data in the &lt;i&gt;HyperLab&lt;/i&gt; database, including every stage of data processing.</value>
+  </data>
+  <data name="SpectraHub2" xml:space="preserve">
+    <value>Two types of search are available within the database: &lt;b&gt;Simple&lt;/b&gt; and &lt;b&gt;Complex&lt;/b&gt;. The &lt;b&gt;Simple&lt;/b&gt; search relies on the value of a single search parameter, while the &lt;b&gt;Complex&lt;/b&gt; search allows users to combine multiple parameters to refine their results.</value>
   </data>
   <data name="SpectraHubChart3" xml:space="preserve">
     <value>This allows the data to be saved, retrieved, and reused in future projects. When information is stored, a unique user ID is linked to it, establishing ownership and ensuring that the data remains private unless the user explicitly chooses to share it.</value>
   </data>
+  <data name="SpectraHub3" xml:space="preserve">
+    <value>When using the &lt;b&gt;Complex&lt;/b&gt; search, for each parameter, users can create a group consisting of multiple values combined using boolean operators such as &lt;b&gt;AND&lt;/b&gt; and &lt;b&gt;OR&lt;/b&gt;. Multiple groups can then be linked together, again using &lt;b&gt;AND&lt;/b&gt;/&lt;b&gt;OR&lt;/b&gt;, to build more flexible and expressive search queries</value>
+  </data>
   <data name="SpectraHubChart4" xml:space="preserve">
     <value>Below is an overview of the available features. Click on an item to view a detailed description of the feature, if available.</value>
   </data>
+  <data name="SpectraHub4" xml:space="preserve">
+    <value>&lt;b&gt;Complex&lt;/b&gt; searches can be saved and assigned a custom name. Each saved search is uniquely associated with the user who created it. Users can access their list of previously saved complex searches at any time, making it easy to reuse or refine them as needed.</value>
+  </data>
   <data name="SpectraHubChartTitle" xml:space="preserve">
     <value>Spectra Hub Chart Page Guide</value>
+  </data>
+  <data name="SpectraHubTitle" xml:space="preserve">
+    <value>Spectra Hub Page Guide</value>
   </data>
   <data name="ButtonWizardLabel" xml:space="preserve">
     <value>Show panels for data analysis</value>

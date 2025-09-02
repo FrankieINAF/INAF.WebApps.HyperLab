@@ -332,28 +332,29 @@ function showSearchInfo() {
 /* BUTTONS */
 /* ################################################################################ */
 /* ---------- INIT BUTTONS IN SEARCH PANEL ---------- */
-function initButtonsInSearchPanel() {
-    if (isSLabDataManagerAllowed)
-        addSearchButton();
+//function initButtonsInSearchPanel() {
+//    if (isSLabDataManagerAllowed)
+//        addSearchButton();
 
-    addHelpButton();
-}
+//    addGuideChartButton();
+//    //addHelpButton();
+//}
 
-/* ---------- HELP BUTTON ---------- */
-function addHelpButton() {
-    addButton(helpButtonId, ButtonHelpLabel, 'mif-help', showSearchInfo);
-}
+///* ---------- HELP BUTTON ---------- */
+//function addHelpButton() {
+//    addButton(helpButtonId, ButtonHelpLabel, 'mif-help', showSearchInfo);
+//}
 
-function removeHelpButtonProcedure() {
-    if (!isButtonAvailable(helpButtonId))
-        return;
+//function removeHelpButtonProcedure() {
+//    if (!isButtonAvailable(helpButtonId))
+//        return;
 
-    animateCSS(`${helpButtonId}`, `bounceOutUp`, FAST, removeHelpButton);
-}
+//    animateCSS(`${helpButtonId}`, `bounceOutUp`, FAST, removeHelpButton);
+//}
 
-function removeHelpButton() {
-    $(`#${helpButtonId}`).remove();
-}
+//function removeHelpButton() {
+//    $(`#${helpButtonId}`).remove();
+//}
 
 /* ---------- SEARCH BUTTON ---------- */
 function addSearchButton() {
@@ -477,7 +478,8 @@ $(function () {
 
     /* init buttons */
     SELECTED_SEARCH_TYPE = SEARCH_SIMPLE_TYPE;
-    initButtonsInSearchPanel();
+    //initButtonsInSearchPanel();
+    manageNavigation();
 
     /* init chartContainer */
     chartContainer = $('#charts');

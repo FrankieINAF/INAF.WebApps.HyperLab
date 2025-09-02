@@ -82,6 +82,7 @@
   {
     "outputFileName": "wwwroot/js/dist/hub/hubbundle.js",
     "inputFiles": [
+      "wwwroot/js/hyperlab/commonbuttons.js",
       "wwwroot/js/hyperlab/commonhubandchart.js",
       "wwwroot/js/hyperlab/commonhubandchartsandsharedstuff.js",
       "wwwroot/js/hyperlab/hub/hub.js",
