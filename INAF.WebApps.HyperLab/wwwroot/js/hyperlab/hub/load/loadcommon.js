@@ -7,7 +7,7 @@ var parsedSpectra = [];
 /* PARSED SPECTRA */
 /* ################################################################################ */
 function addParsedSpectrum(filename, xml, spectrumType, source, fileType) {
-    parsedSpectra.push(createParsedSpectrum(filename, xml, spectrumType, source));
+    parsedSpectra.push(createParsedSpectrum(filename, xml, spectrumType, source, fileType));
 }
 
 function createParsedSpectrum(filename, xml, spectrumType, source, fileType) {

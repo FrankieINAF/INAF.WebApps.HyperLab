@@ -39,12 +39,10 @@ function addOrRemoveSelectedSpectrum(id) {
     if (isNaN(id))
         return;
 
-    var index = selectedSpectra.findIndex(x => x == id);
-    //console.log(`addOrRemoveSelectedSpectrum - id: ${id}, index: ${index}`);
-    if (index == -1)
+    if (!selectedSpectra.includes(id))
         addSelectedSpectrum(id);
     else {
-        removeSelectedSpectrum(index);
+        removeSelectedSpectrum(id);
         if (selectedSpectra.length == 0) {
             removeCreateChartsButtonProcedure();
             removeShareButtonProcedure();
@@ -65,8 +63,9 @@ function addSelectedSpectrum(id) {
     }
 }
 
-function removeSelectedSpectrum(index) {
-    //console.log(`removeSelectedSpectrum - index: ${index}`);
+function removeSelectedSpectrum(id) {
+    const index = selectedSpectra.findIndex(x => x == id);
+    //console.log(`removeSelectedSpectrum - id: ${id}, index: ${index}`);
     selectedSpectra.splice(index, 1);
     //console.log(`removeSelectedSpectrum - selectedSpectra: ${selectedSpectra}`);
     if (selectedSpectra.length == 0) {

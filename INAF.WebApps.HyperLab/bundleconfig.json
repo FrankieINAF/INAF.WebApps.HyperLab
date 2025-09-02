@@ -98,6 +98,7 @@
       "wwwroot/js/hyperlab/hub/load/loadexternalauthenticated.js",
       "wwwroot/js/hyperlab/hub/load/loadexternalunauthenticated.js",
       "wwwroot/js/hyperlab/hub/load/loadslab.js",
+      "wwwroot/js/hyperlab/chart/charms/charms.js",
       "wwwroot/js/hyperlab/charmsmessages.js"
     ],
     "minify": { "enabled": true },

@@ -10,6 +10,39 @@ async function loadSLabFilesAsync(evt, element) {
     await loadFilesAsync(evt, SPECTRUM_SOURCE_SLAB)
 }
 
+function tryReadAlignmentSettings(xml) {
+    let parser = new DOMParser();
+    let xmlDoc = parser.parseFromString(xml, "application/xml");
+
+    let alignmentNode = xmlDoc.getElementsByTagName('AlignmentSettings')[0];
+    let numOfPointsNode = alignmentNode.getElementsByTagName('NumOfPoints')[0];
+    if (numOfPointsNode)
+        numOfPoints = numOfPointsNode.innerHTML;
+    else
+        numOfPoints = 0;
+
+    let segmentBoundariesNode = alignmentNode.getElementsByTagName('SegmentBoundaries')[0];
+    let minNode = segmentBoundariesNode.getElementsByTagName('Min')[0];
+    if (minNode)
+        min = minNode.innerHTML;
+    else
+        min = 0;
+    let maxNode = segmentBoundariesNode.getElementsByTagName('Max')[0];
+    if (maxNode)
+        max = maxNode.innerHTML;
+    else
+        max = 0;
+
+    return {
+        AlignmentSegmentBoundariesModel: {
+            Min: parseFloat(min),
+            Max: parseFloat(max)
+        },
+        IsLoadedFromCloud: false,
+        NumOfPoints: parseInt(numOfPoints),
+    };
+}
+
 /* ################################################################################ */
 /* SAVE FILE */
 /* ################################################################################ */
@@ -41,7 +74,7 @@ function saveSLabFileProcedure(filename, xml, spectrumType, fileType) {
 
         let args = [filename, xml, spectrumType, true];
         askAndExecute(CharmsSpectraProcessingManagementLabel, message, saveSLabFileAsync, args);
-    } else 
+    } else
         saveSLabFileAsync(filename, xml, spectrumType, false);
 }
 
@@ -67,6 +100,7 @@ async function saveSLabFileAsync(filename, xml, spectrumType, isRawUrlRequested)
         switch (spectrumType) {
             case SPECTRUM_TYPE_ALIGNED:
                 url = UrlSaveSpectrumOfTypeAligned;
+                saveSpectrumRequest.AlignmentSettings = tryReadAlignmentSettings(xml);
                 break;
 
             case SPECTRUM_TYPE_CONTINUUM_REMOVED:
