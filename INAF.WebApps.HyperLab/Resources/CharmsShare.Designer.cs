@@ -79,7 +79,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter the email addresses of users you want to share spectra with.&lt;/br&gt;Users already registered on HyperLab will automatically be granted access to the shared spectra.&lt;/br&gt;Users who are not yet registered will receive an invitation email to join HyperLab. Once they register, access to the shared spectra will be granted automatically..
+        ///   Looks up a localized string similar to Enter the email addresses of users you want to share spectra with. Users already registered on HyperLab will automatically be granted access to the shared spectra. Users who are not yet registered will receive an invitation email to join HyperLab. Once they register, access to the shared spectra will be granted automatically..
         /// </summary>
         public static string CharmsShareEnterUsersEmail {
             get {
