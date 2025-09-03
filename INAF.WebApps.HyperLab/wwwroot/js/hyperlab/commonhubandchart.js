@@ -6,7 +6,9 @@ var helpButtonId = 'buttonHelp';
 
 var guideChartButtonId = 'guideChartButton';
 var guideHubButtonId = 'guideHubButton';
+var openMessagesCharmsButtonId = 'buttonOpenMessagesCharms';
 var searchButtonId = 'buttonSearch';
+var publicAndShareButtonId = 'buttonPublicAndShare';
 var setPublicButtonId = 'buttonSetPublic';
 var shareButtonId = 'buttonShare';
 var zoomOutButtonId = 'buttonZoomOut';
@@ -168,36 +170,47 @@ function removeGuideHubButton() {
     $(`#${guideHubButtonId}`).remove();
 }
 
-/* ---------- SET PUBLIC BUTTON ---------- */
-function addSetPublicButton() {
-    addButton(setPublicButtonId, ButtonSetPublicLabel, 'mif-vpn-publ mif-2x', setAsPublicProcedure);
+/*  */
+function addPublicAndShareButtons() {
+    let html = `<div id="${publicAndShareButtonId}" class="multi-action" style="height: 36px">`;
+    html += `<button class="action-button rotate-minus bg-transparent second fg-white" onclick="$(this).toggleClass('active')" >`;
+    html += `<span class="icon"><span class="mif-external"></span></span>`;
+    html += `</button >`;
+    html += `<ul class="actions drop-bottom">`;
+    html += `<li class="bg-cyan" title="${ButtonShareLabel}" onclick="${openCharmsShare.name}()"><a href="#"><span class="mif-share pointer"></a></li>`;
+    html += `<li class="bg-cyan" title="${ButtonSetPublicLabel}" onclick="${setAsPublicProcedure.name}()"><a href="#"><span class="mif-vpn-publ pointer"></a></span></li>`;
+    html += `</ul>`;
+    html += `</div >`;
+
+    $('#buttonsAppBar').append($(html));
+    animateCSS(`${publicAndShareButtonId}`, `bounceInDown`, FAST);
 }
 
-function removeSetPublicButtonProcedure() {
-    if (!isButtonAvailable(setPublicButtonId))
+function removePublicAndShareButtonsProcedure() {
+    if (!isButtonAvailable(publicAndShareButtonId))
         return;
 
-    animateCSS(`${setPublicButtonId}`, `bounceOutUp`, FAST, removeSetPublicButton);
+    animateCSS(`${publicAndShareButtonId}`, `bounceOutUp`, FAST, removePublicAndShareButtons);
 }
 
-function removeSetPublicButton() {
-    $(`#${setPublicButtonId}`).remove();
+function removePublicAndShareButtons() {
+    $(`#${publicAndShareButtonId}`).remove();
 }
 
-/* ---------- SHARE BUTTON ---------- */
-function addShareButton() {
-    addButton(shareButtonId, ButtonShareLabel, 'mif-share', openCharmsShare);
+/* ---------- OPEN MESSAGES BUTTON ---------- */
+function addOpenMessagesCharmsButton() {
+    addButton(openMessagesCharmsButtonId, ButtonShowCharmsMessagesLabel, 'mif-chat', toggleCharmsMessages);
 }
 
-function removeShareButtonProcedure() {
-    if (!isButtonAvailable(shareButtonId))
+function removeMessagesCharmsButtonProcedure() {
+    if (!isButtonAvailable(openMessagesCharmsButtonId))
         return;
 
-    animateCSS(`${shareButtonId}`, `bounceOutUp`, FAST, removeShareButton);
+    animateCSS(`${openMessagesCharmsButtonId}`, `bounceOutUp`, FAST, removeMessagesCharmsButton);
 }
 
-function removeShareButton() {
-    $(`#${shareButtonId}`).remove();
+function removeMessagesCharmsButton() {
+    $(`#${openMessagesCharmsButtonId}`).remove();
 }
 
 /* ################################################################################ */

@@ -24,7 +24,6 @@ var backToSearchButtonId = 'buttonBackToSearch';
 var backClearToSearchButtonId = 'buttonBackClearToSearch';
 var enterFullScreenButtonId = 'buttonEnterFullScreen';
 var exitFullScreenButtonId = 'buttonExitFullScreen';
-var openMessagesCharmsButtonId = 'buttonOpenMessagesCharms';
 var openProcessSpectraCharmsButtonId = 'buttonOpenCharms'
 
 /* ################################################################################ */
@@ -92,22 +91,6 @@ function removeExitFullScreenButtonProcedure() {
 
 function removeExitFullScreenButton() {
     $(`#${exitFullScreenButtonId}`).remove();
-}
-
-/* ---------- OPEN MESSAGES BUTTON ---------- */
-function addOpenMessagesCharmsButton() {
-    addButton(openMessagesCharmsButtonId, ButtonShowCharmsMessagesLabel, 'mif-chat', toggleCharmsMessages);
-}
-
-function removeMessagesCharmsButtonProcedure() {
-    if (!isButtonAvailable(openMessagesCharmsButtonId))
-        return;
-
-    animateCSS(`${openMessagesCharmsButtonId}`, `bounceOutUp`, FAST, removeMessagesCharmsButton);
-}
-
-function removeMessagesCharmsButton() {
-    $(`#${openMessagesCharmsButtonId}`).remove();
 }
 
 /* ################################################################################ */

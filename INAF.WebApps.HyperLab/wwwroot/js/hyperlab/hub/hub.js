@@ -12,6 +12,10 @@ var areComplexSearchesRetrieved = false;
 
 var timeoutOnWindowResize;
 
+var LOADING_TYPE_SEARCH = 'loadingTypeSearch';
+var LOADING_TYPE_LOAD = 'loadingTypeLoad';
+var loadingType;
+
 function setChartAreaWidth(isChartVisible) {
     let bodyW = $('#body').width();
     let menuW = $('#leftMenu').width();
@@ -45,8 +49,7 @@ function addOrRemoveSelectedSpectrum(id) {
         removeSelectedSpectrum(id);
         if (selectedSpectra.length == 0) {
             removeCreateChartsButtonProcedure();
-            removeShareButtonProcedure();
-            removeSetPublicButtonProcedure();
+            removePublicAndShareButtonsProcedure();
         }
     }
 }
@@ -56,10 +59,8 @@ function addSelectedSpectrum(id) {
 
     addCreateChartsButtonProcedure();
     if (selectedSpectra.length == 1) {
-        addShareButton();
-        addSetPublicButton();
-        showToast(ChartsUseChartsButtonMessage, 3000, INFO);
-        //addMessage(ChartsUseChartsButtonMessage, 3000, INFO);
+        addPublicAndShareButtons();
+        addMessage(ChartsUseChartsButtonMessage, 3000, INFO);
     }
 }
 
@@ -69,9 +70,7 @@ function removeSelectedSpectrum(id) {
     selectedSpectra.splice(index, 1);
     //console.log(`removeSelectedSpectrum - selectedSpectra: ${selectedSpectra}`);
     if (selectedSpectra.length == 0) {
-        //removeCreateChartsButtonProcedure();
-        showToast(ChartsNoSpectraSelectedMessage, 3000, WARNING);
-        //addMessage(ChartsNoSpectraSelectedMessage, 3000, WARNING);
+        addMessage(ChartsNoSpectraSelectedMessage, 3000, WARNING);
     }
 }
 
@@ -89,6 +88,10 @@ function clearSearchResults() {
     let callback = function () {
         $('#searchResultsContainer').empty();
         setOverflowYHidden();
+
+        /* remove buttons added when any spaectrum is selected */
+        removeCreateChartsButtonProcedure();
+        removePublicAndShareButtonsProcedure();
     };
     animateCSS('searchResultsContainer', 'backOutDown', FAST, callback);
 }
@@ -330,31 +333,6 @@ function showSearchInfo() {
 /* ################################################################################ */
 /* BUTTONS */
 /* ################################################################################ */
-/* ---------- INIT BUTTONS IN SEARCH PANEL ---------- */
-//function initButtonsInSearchPanel() {
-//    if (isSLabDataManagerAllowed)
-//        addSearchButton();
-
-//    addGuideChartButton();
-//    //addHelpButton();
-//}
-
-///* ---------- HELP BUTTON ---------- */
-//function addHelpButton() {
-//    addButton(helpButtonId, ButtonHelpLabel, 'mif-help', showSearchInfo);
-//}
-
-//function removeHelpButtonProcedure() {
-//    if (!isButtonAvailable(helpButtonId))
-//        return;
-
-//    animateCSS(`${helpButtonId}`, `bounceOutUp`, FAST, removeHelpButton);
-//}
-
-//function removeHelpButton() {
-//    $(`#${helpButtonId}`).remove();
-//}
-
 /* ---------- SEARCH BUTTON ---------- */
 function addSearchButton() {
     addButton(searchButtonId, ButtonSearchLabel, 'mif-search', search);
@@ -477,8 +455,20 @@ $(function () {
 
     /* init buttons */
     SELECTED_SEARCH_TYPE = SEARCH_SIMPLE_TYPE;
-    //initButtonsInSearchPanel();
     manageNavigation();
+
+    /* init loading type */
+    loadingType = LOADING_TYPE_SEARCH;
+
+    $('#searchtitle').on('click', function () {
+        loadingType = LOADING_TYPE_SEARCH;
+        addSearchButton();
+    });
+
+    $('#loadtitle').on('click', function () {
+        loadingType = LOADING_TYPE_LOAD;
+        removeSearchButtonProcedure();
+    });
 
     /* init chartContainer */
     chartContainer = $('#charts');
