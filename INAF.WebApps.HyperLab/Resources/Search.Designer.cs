@@ -412,6 +412,42 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Couldn&apos;t save file on cloud. Missing alignment settings for current spectrum type..
+        /// </summary>
+        public static string LoadFileSaveMissingAlignmentSettingsErrorMessage {
+            get {
+                return ResourceManager.GetString("LoadFileSaveMissingAlignmentSettingsErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Couldn&apos;t save file on cloud. Missing continuum removal settings for current spectrum type..
+        /// </summary>
+        public static string LoadFileSaveMissingContinuumRemovalSettingsErrorMessage {
+            get {
+                return ResourceManager.GetString("LoadFileSaveMissingContinuumRemovalSettingsErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Couldn&apos;t save file on cloud. Missing parent files for current spectrum type..
+        /// </summary>
+        public static string LoadFileSaveMissingParentFilesErrorMessage {
+            get {
+                return ResourceManager.GetString("LoadFileSaveMissingParentFilesErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Couldn&apos;t save file on cloud. Missing smoothing settings for current spectrum type..
+        /// </summary>
+        public static string LoadFileSaveMissingSmoothingSettingsErrorMessage {
+            get {
+                return ResourceManager.GetString("LoadFileSaveMissingSmoothingSettingsErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, an error occurred while trying to save on cloud loaded spectrum.
         /// </summary>
         public static string LoadFileSaveOnCloudErrorMessage {

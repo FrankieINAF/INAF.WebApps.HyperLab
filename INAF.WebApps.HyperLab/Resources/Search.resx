@@ -597,4 +597,16 @@
   <data name="SearchComplexByFilenameLabel" xml:space="preserve">
     <value>Filename</value>
   </data>
+  <data name="LoadFileSaveMissingAlignmentSettingsErrorMessage" xml:space="preserve">
+    <value>Couldn't save file on cloud. Missing alignment settings for current spectrum type.</value>
+  </data>
+  <data name="LoadFileSaveMissingSmoothingSettingsErrorMessage" xml:space="preserve">
+    <value>Couldn't save file on cloud. Missing smoothing settings for current spectrum type.</value>
+  </data>
+  <data name="LoadFileSaveMissingContinuumRemovalSettingsErrorMessage" xml:space="preserve">
+    <value>Couldn't save file on cloud. Missing continuum removal settings for current spectrum type.</value>
+  </data>
+  <data name="LoadFileSaveMissingParentFilesErrorMessage" xml:space="preserve">
+    <value>Couldn't save file on cloud. Missing parent files for current spectrum type.</value>
+  </data>
 </root>
