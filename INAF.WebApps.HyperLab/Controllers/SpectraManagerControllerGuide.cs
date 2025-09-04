@@ -30,6 +30,12 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
+        public IActionResult GuideSpectraHubSearchResults()
+        {
+            return PartialView("Partials/Guide/_SpectraHubSearchResults");
+        }
+
+        [HttpGet]
         public IActionResult GuideSpectraHubSimpleSearch()
         {
             return PartialView("Partials/Guide/_SpectraHubSimpleSearch");

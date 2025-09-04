@@ -160,6 +160,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show &lt;b&gt;Search results&lt;/b&gt;.
+        /// </summary>
+        public static string ButtonSpectraHubSearchResultsLabel {
+            get {
+                return ResourceManager.GetString("ButtonSpectraHubSearchResultsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show &lt;b&gt;Simple search&lt;/b&gt;.
         /// </summary>
         public static string ButtonSpectraHubSimpleSearchLabel {
@@ -1119,6 +1128,51 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SpectraHubSearchCommonExplanation {
             get {
                 return ResourceManager.GetString("SpectraHubSearchCommonExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The results from both simple and complex searches are displayed in a table format. Each row lists the filename of a spectrum that matches the selected search criteria, along with the number of available processing levels and the acquisition type—either single or averaged. This organized layout allows users to quickly review and compare relevant spectra, facilitating efficient selection for further analysis..
+        /// </summary>
+        public static string SpectraHubSearchResultsExplanation1 {
+            get {
+                return ResourceManager.GetString("SpectraHubSearchResultsExplanation1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By clicking the icon at the beginning of each row in the results table, users can expand the entry to reveal all individual spectra associated with the displayed filename. Each spectrum is shown along with its spectrum type, date of upload, and last modification date. In addition to these core details, several other elements are available to support various tasks, such as further analysis, metadata inspection, or export options, depending on the context and user permissions..
+        /// </summary>
+        public static string SpectraHubSearchResultsExplanation2 {
+            get {
+                return ResourceManager.GetString("SpectraHubSearchResultsExplanation2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The first element in each expanded spectrum row is a checkbox, which allows users to select the file and add it to a list of spectra that can be displayed on the Chart page. The &lt;i&gt;Info&lt;/i&gt; button serves a dual purpose: for the spectrum owner, it opens a form where they can enter or edit details about the sample used for acquisition, as well as information related to the measurement itself. For other users, these details are available in read-only mode. Additionally, two download buttons are provided, enabl [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string SpectraHubSearchResultsExplanation3 {
+            get {
+                return ResourceManager.GetString("SpectraHubSearchResultsExplanation3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fig. 1 – Results table view. The details for a selected spectrum have been expanded, displaying the available spectrum types..
+        /// </summary>
+        public static string SpectraHubSearchResultsExplanationFig1 {
+            get {
+                return ResourceManager.GetString("SpectraHubSearchResultsExplanationFig1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search results.
+        /// </summary>
+        public static string SpectraHubSearchResultsLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubSearchResultsLabel", resourceCulture);
             }
         }
         

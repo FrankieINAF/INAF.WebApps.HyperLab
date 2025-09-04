@@ -23,6 +23,10 @@ function showGuideLoadLocalFiles() {
     loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubLoadLocalFiles, 'guide');
 }
 
+function showGuideSearchResults() {
+    loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubSearchResults, 'guide');
+}
+
 function showGuideSimpleSearch() {
     loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubSimpleSearch, 'guide');
 }
