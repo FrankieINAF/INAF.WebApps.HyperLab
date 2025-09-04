@@ -12,9 +12,27 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
+        public IActionResult GuideSpectraHubComplexSearch()
+        {
+            return PartialView("Partials/Guide/_SpectraHubComplexSearch");
+        }
+
+        [HttpGet]
+        public IActionResult GuideSpectraHubLoadLocalFiles()
+        {
+            return PartialView("Partials/Guide/_SpectraHubLoadLocalFiles");
+        }
+
+        [HttpGet]
         public IActionResult GuideSpectraHubMenu()
         {
             return PartialView("Partials/Guide/_SpectraHubMenu");
+        }
+
+        [HttpGet]
+        public IActionResult GuideSpectraHubSimpleSearch()
+        {
+            return PartialView("Partials/Guide/_SpectraHubSimpleSearch");
         }
         #endregion
 

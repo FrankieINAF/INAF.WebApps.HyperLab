@@ -15,6 +15,22 @@ function onShowGuideHubCompleted() {
     loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHub, 'guide', callbackdone);
 }
 
+function showGuideComplexSearch() {
+    loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubComplexSearch, 'guide');
+}
+
+function showGuideLoadLocalFiles() {
+    loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubLoadLocalFiles, 'guide');
+}
+
+function showGuideSimpleSearch() {
+    loadPartialViewWithAjaxGetNoModel(UrlGuideSpectraHubSimpleSearch, 'guide');
+}
+
+function backToGuideHubMainMenu() {
+    onShowGuideHubCompleted();
+}
+
 /* -------------------------------------------------------------------------------- */
 /* ---------- SHOW GUIDE FOR CHART PAGE ---------- */
 /* -------------------------------------------------------------------------------- */
@@ -62,9 +78,9 @@ function showGuideMessages() {
 }
 
 /* -------------------------------------------------------------------------------- */
-/* ---------- DATA ANALYSIS GUIDE ---------- */
+/* ---------- DATA ANALYSIS GUIDES ---------- */
 /* -------------------------------------------------------------------------------- */
-function backToGuideMainMenu() {
+function backToGuideChartMainMenu() {
     onShowGuideChartCompleted();
 }
 

@@ -140,6 +140,7 @@
     <None Include="wwwroot\css\hyperlab\hubandchart\hubandchart.css" />
     <None Include="wwwroot\css\site.css" />
     <None Include="wwwroot\css\speechbubble\speechbubble.css" />
+    <None Include="wwwroot\images\guide\hub_load_local_files.jpeg" />
     <None Include="wwwroot\js\hyperlab\account\login.js" />
     <None Include="wwwroot\js\hyperlab\account\passwordresetexecute.js" />
     <None Include="wwwroot\js\hyperlab\account\passwordresetrequest.js" />

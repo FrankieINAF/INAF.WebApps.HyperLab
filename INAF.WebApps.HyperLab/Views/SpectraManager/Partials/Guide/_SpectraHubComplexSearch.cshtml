@@ -1,5 +1,32 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using INAF.WebApps.HyperLab.Resources
+
+<!-- HEADER -->
+<div class="row cell-fs-12 margin-16 d-flex flex-justify-between">
+    <div><button class="button light cycle outline pointer fg-white margin-right-8" onclick="backToGuideHubMainMenu()"><span class="mif-arrow-left"></span></button></div>
+    <div class="cell-fs-4"><p class="fg-white text-leader2 text-medium text-center">@Html.Raw(Guide.SpectraHubComplexSearchLabel)</p></div>
+    <div class="margin-right-16"><button class="button light cycle outline pointer fg-white" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
+</div>
+<!-- CONTENT -->
+<div class="row margin-horizontal-16">
+    <div class="order-1 cell-fs-12 cell-xl-6 d-flex flex-justify-center overflow-md">
+        <div class="row cell-fs-12 margin-horizontal-8">
+            <p class="text-just fg-white">@Html.Raw(Guide.SpectraHubComplexSearchExplanation1)</p>
+            <p class="text-just fg-white margin-top-16">@Html.Raw(Guide.SpectraHubComplexSearchExplanation2)</p>
+            <p class="text-just fg-white margin-top-16">@Html.Raw(Guide.SpectraHubComplexSearchExplanation3)</p>
+            <p class="text-just fg-white margin-top-16">@Html.Raw(Guide.SpectraHubComplexSearchExplanation4)</p>
+            <p class="text-just fg-white margin-top-16">@Html.Raw(Guide.SpectraHubComplexSearchExplanation5)</p>
+            <p class="text-just fg-white margin-top-16">@Html.Raw(Guide.SpectraHubSearchCommonExplanation)</p>
+        </div>
+    </div>
+    <!-- IMAGE -->
+    <div class="order-2 cell-fs-12 cell-xl-6 d-flex flex-column flex-justify-center">
+        <div class="d-flex flex-column">
+            <div><img src="~/images/guide/hub_complex_search_general.jpeg" /></div>
+            <div class="margin-top-8"><p class="text-small fg-white">@Html.Raw(Guide.SpectraHubComplexSearchExplanationFig1)</p></div>
+        </div>
+        <div class="d-flex flex-column margin-top-16">
+            <div><img src="~/images/guide/hub_complex_search_example.jpeg" /></div>
+            <div class="margin-top-8"><p class="text-small fg-white">@Html.Raw(Guide.SpectraHubComplexSearchExplanationFig2)</p></div>
+        </div>
+    </div>
+</div>

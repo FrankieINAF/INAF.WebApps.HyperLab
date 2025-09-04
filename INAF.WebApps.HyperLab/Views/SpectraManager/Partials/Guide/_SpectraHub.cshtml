@@ -15,5 +15,27 @@
         <p class="text-normal text-just fg-white margin-top-8 margin-horizontal-16">@Html.Raw(Guide.SpectraHub4)</p>
     </div>
 </div>
-<!-- PARTIAL VIEW -->
-<div id="guideMenu" class="margin-top-16"></div>
+<!-- BUTTONS -->
+<div class="margin-top-16">
+    <!-- SIMPLE SEARCH -->
+    <div class="row">
+        <div class="cell-fs-12 d-flex">
+            <button class="button light cycle outline min-width-36" onclick="showGuideSimpleSearch()"><span class="mif-search"></span></button>
+            <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.ButtonSpectraHubSimpleSearchLabel)</p>
+        </div>
+    </div>
+    <!-- COMPLEX SEARCH -->
+    <div class="row">
+        <div class="cell-fs-12 d-flex">
+            <button class="button light cycle outline min-width-36" onclick="showGuideComplexSearch()"><span class="mif-search"></span></button>
+            <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.ButtonSpectraHubComplexSearchLabel)</p>
+        </div>
+    </div>
+    <!-- LOAD SEARCH -->
+    <div class="row">
+        <div class="cell-fs-12 d-flex">
+            <button class="button light cycle outline min-width-36" onclick="showGuideLoadLocalFiles()"><span class="mif-folder-open"></span></button>
+            <p class="text-leader2 text-medium fg-white margin-left-8 margin-top-4">@Html.Raw(Guide.ButtonSpectraHubLoadLocalFilesLabel)</p>
+        </div>
+    </div>
+</div>

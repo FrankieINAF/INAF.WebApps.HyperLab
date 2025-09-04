@@ -142,6 +142,33 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show &lt;b&gt;Complex search&lt;/b&gt;.
+        /// </summary>
+        public static string ButtonSpectraHubComplexSearchLabel {
+            get {
+                return ResourceManager.GetString("ButtonSpectraHubComplexSearchLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show &lt;b&gt;Load spectra from device&lt;/b&gt;.
+        /// </summary>
+        public static string ButtonSpectraHubLoadLocalFilesLabel {
+            get {
+                return ResourceManager.GetString("ButtonSpectraHubLoadLocalFilesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show &lt;b&gt;Simple search&lt;/b&gt;.
+        /// </summary>
+        public static string ButtonSpectraHubSimpleSearchLabel {
+            get {
+                return ResourceManager.GetString("ButtonSpectraHubSimpleSearchLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show panels for data analysis.
         /// </summary>
         public static string ButtonWizardLabel {
@@ -151,7 +178,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The &lt;i&gt;Spectra Hub&lt;/i&gt; page is designed to allow users to upload their own spectra from local files or search for spectra within the HyperLab database, available only to logged-in users..
+        ///   Looks up a localized string similar to The &lt;i&gt;Spectra Hub&lt;/i&gt; page is designed to allow users to &lt;u&gt;upload&lt;/u&gt; their own spectra from local files or &lt;u&gt;search&lt;/u&gt; for spectra within the HyperLab database, available only to logged-in users..
         /// </summary>
         public static string SpectraHub1 {
             get {
@@ -957,6 +984,177 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SpectraHubChartTitle {
             get {
                 return ResourceManager.GetString("SpectraHubChartTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Complex searches use the same parameters available in simple searches—filename, sample name, material, origin type, and mineral type—but with enhanced flexibility. In this mode, users can input multiple values for each parameter and combine different parameters together in a single query. This allows for more refined and targeted results, making it easier to explore specific subsets of data based on multiple criteria simultaneously..
+        /// </summary>
+        public static string SpectraHubComplexSearchExplanation1 {
+            get {
+                return ResourceManager.GetString("SpectraHubComplexSearchExplanation1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The complex search screen is divided into two main areas: on the left side, users will find buttons corresponding to the available search parameters, while the remaining space displays either an explanatory image illustrating how to build a search or, if available, a list of previously saved searches. .
+        /// </summary>
+        public static string SpectraHubComplexSearchExplanation2 {
+            get {
+                return ResourceManager.GetString("SpectraHubComplexSearchExplanation2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Once the complex search mode is activated, creating a new search is simple—just click one of the parameter buttons on the left. This action automatically generates a form for the selected field, along with a header. On the left side of the header are buttons to execute, save, or delete the search; on the right side, there is an additional button to remove the search form entirely..
+        /// </summary>
+        public static string SpectraHubComplexSearchExplanation3 {
+            get {
+                return ResourceManager.GetString("SpectraHubComplexSearchExplanation3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Once a group is created, its corresponding button is grayed out and disabled to prevent the same group from being added multiple times to the search..
+        /// </summary>
+        public static string SpectraHubComplexSearchExplanation4 {
+            get {
+                return ResourceManager.GetString("SpectraHubComplexSearchExplanation4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In complex searches, each search parameter can accept one or more values, which are linked together using a Boolean operator—&lt;i&gt;AND&lt;/i&gt; or &lt;i&gt;OR&lt;/i&gt;. This set of values forms what is referred to as a group. Multiple groups can be created within a single complex search, and these groups themselves can be connected using Boolean operators. This layered structure allows users to build highly customized queries by combining different criteria and logical relationships..
+        /// </summary>
+        public static string SpectraHubComplexSearchExplanation5 {
+            get {
+                return ResourceManager.GetString("SpectraHubComplexSearchExplanation5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fig. 1 - View of the starting panel for complex searches. On the left the list of available parameters, on the right the list of the available searches..
+        /// </summary>
+        public static string SpectraHubComplexSearchExplanationFig1 {
+            get {
+                return ResourceManager.GetString("SpectraHubComplexSearchExplanationFig1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fig. 2 - View of the panel for complex searches when a saved complex search is shown. .
+        /// </summary>
+        public static string SpectraHubComplexSearchExplanationFig2 {
+            get {
+                return ResourceManager.GetString("SpectraHubComplexSearchExplanationFig2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Complex search.
+        /// </summary>
+        public static string SpectraHubComplexSearchLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubComplexSearchLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The upload panel includes two primary buttons: &quot;Load SLab Spectra&quot; and &quot;Load External Spectra.&quot; The first button enables users to upload spectral data generated by SLab and stored locally on their device. This is particularly useful for integrating lab-generated results directly into the HyperLab environment. The second button allows users to import spectra from external sources, such as third-party databases or collaborative research files..
+        /// </summary>
+        public static string SpectraHubLoadLocalFiles1 {
+            get {
+                return ResourceManager.GetString("SpectraHubLoadLocalFiles1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Both types of spectra—SLab and external—can be seamlessly saved to the HyperLab cloud, ensuring secure storage and easy access for future analysis. Once uploaded, the spectra become available for visualization and comparison on the Graphs page, where users can explore spectral features, overlay datasets, and perform detailed evaluations..
+        /// </summary>
+        public static string SpectraHubLoadLocalFiles2 {
+            get {
+                return ResourceManager.GetString("SpectraHubLoadLocalFiles2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Supported file formats include &lt;i&gt;CSV&lt;/i&gt; and &lt;i&gt;XML&lt;/i&gt;, provided they adhere to the compatibility requirements of the HyperLab application. This flexibility allows researchers to work with a wide range of data sources while maintaining consistency across the platform..
+        /// </summary>
+        public static string SpectraHubLoadLocalFiles3 {
+            get {
+                return ResourceManager.GetString("SpectraHubLoadLocalFiles3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spectra uploaded from local files must be saved through the web app in order to be used on the Chart page. If the user is logged in, the uploaded files are stored in the central database, ensuring persistent access across sessions and devices. If the user is not logged in, the spectra are saved locally within the web app&apos;s storage, meaning they are only available on the current device and session..
+        /// </summary>
+        public static string SpectraHubLoadLocalFiles4 {
+            get {
+                return ResourceManager.GetString("SpectraHubLoadLocalFiles4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fig. 1 - View of the panel with some spectra loaded from local device. For XML files the spectrum type is recognized. Both files have been saved on cloud for being used in Chart page..
+        /// </summary>
+        public static string SpectraHubLoadLocalFilesFig1 {
+            get {
+                return ResourceManager.GetString("SpectraHubLoadLocalFilesFig1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load spectra from device.
+        /// </summary>
+        public static string SpectraHubLoadLocalFilesLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubLoadLocalFilesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The system also offers an option to request spectra obtained from either &lt;b&gt;single acquisitions&lt;/b&gt; or &lt;b&gt;averaged acquisitions&lt;/b&gt;. Some spectra in the database result from a single measurement, while others are derived from multiple acquisitions that have been averaged to reduce potential noise. This distinction allows users to choose between raw data and more refined spectral profiles, depending on their analytical needs..
+        /// </summary>
+        public static string SpectraHubSearchCommonExplanation {
+            get {
+                return ResourceManager.GetString("SpectraHubSearchCommonExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simple search.
+        /// </summary>
+        public static string SpectraHubSimlpleSearchLabel {
+            get {
+                return ResourceManager.GetString("SpectraHubSimlpleSearchLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &lt;b&gt;simple search&lt;/b&gt; allows users to query the database using only one parameter at a time, selected from the available options: &lt;i&gt;filename&lt;/i&gt;, &lt;i&gt;sample name&lt;/i&gt;, &lt;i&gt;material&lt;/i&gt; (rock or mineral name), &lt;i&gt;origin type&lt;/i&gt;, or &lt;i&gt;mineral type&lt;/i&gt;. When a user clicks on a search category—either to enter a value in a text field or to choose from a dropdown list—the selected category is automatically set as the current search type. This ensures that each search is focused and based on a single criterion, [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string SpectraHubSimpleSearchExplanation1 {
+            get {
+                return ResourceManager.GetString("SpectraHubSimpleSearchExplanation1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A special note applies to the &lt;b&gt;Search by material&lt;/b&gt; field, which enables users to find spectra based on the minerals, rocks, or meteorites that make up the examined sample. Users can begin typing the name of a material—such as a rock, mineral, or meteorite—and once at least three characters have been entered, pressing Enter will trigger the system to suggest matching names. These suggestions are grouped by category, making it easier to identify the desired material. Once selected, users can click the se [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string SpectraHubSimpleSearchExplanation2 {
+            get {
+                return ResourceManager.GetString("SpectraHubSimpleSearchExplanation2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fig. 1 - View of the panel for simple search..
+        /// </summary>
+        public static string SpectraHubSimpleSearchExplanationFig1 {
+            get {
+                return ResourceManager.GetString("SpectraHubSimpleSearchExplanationFig1", resourceCulture);
             }
         }
         
