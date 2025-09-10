@@ -326,7 +326,20 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteSpectrum([FromBody] DeleteSpectrumRequestModel model)
         {
+            //System.Diagnostics.Debug.WriteLine($"DeleteSpectrum {model.Id}");
+            //dbHandlerHyperLabData.simDeleteSpectrumFile(model.Id, getUserId());
+
+            //return new JsonResult(true);
             return new JsonResult(await dbHandlerHyperLabData.deleteSpectrumFileProcedureAsync(model.Id, getUserId()));
+            //if (isOk)
+            //{
+            //    isOk = await dbHandlerHyperLabData.deleteChildrenSpectraTypesAsync(id,
+            //                                                                       spectrumType,
+            //                                                                       rawId,
+            //                                                                       operationUserId,
+            //                                                                       context);
+            //}
+            //return new JsonResult(isOk);
         }
 
         #region SAVE SPECTRUM OF TYPE
