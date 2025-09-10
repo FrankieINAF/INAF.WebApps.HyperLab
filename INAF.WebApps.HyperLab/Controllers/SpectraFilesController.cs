@@ -151,9 +151,9 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (string.IsNullOrEmpty(model.Filename))
                 return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
 
-            (bool isSaved, int id) result = dbHandlerHyperLabData.isSpectrumTypeSaved(model.Filename, 
-                                                                                      model.SpectrumType, 
-                                                                                      model.SpectrumSource, 
+            (bool isSaved, int id) result = dbHandlerHyperLabData.isSpectrumTypeSaved(model.Filename,
+                                                                                      model.SpectrumType,
+                                                                                      model.SpectrumSource,
                                                                                       model.SpectrumLevel,
                                                                                       getUserId());
             return new JsonResult(result.ToGenericValueStringResponse());
@@ -326,20 +326,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteSpectrum([FromBody] DeleteSpectrumRequestModel model)
         {
-            //System.Diagnostics.Debug.WriteLine($"DeleteSpectrum {model.Id}");
-            //dbHandlerHyperLabData.simDeleteSpectrumFile(model.Id, getUserId());
-
-            //return new JsonResult(true);
-            return new JsonResult(await dbHandlerHyperLabData.deleteSpectrumFileProcedureAsync(model.Id, getUserId()));
-            //if (isOk)
-            //{
-            //    isOk = await dbHandlerHyperLabData.deleteChildrenSpectraTypesAsync(id,
-            //                                                                       spectrumType,
-            //                                                                       rawId,
-            //                                                                       operationUserId,
-            //                                                                       context);
-            //}
-            //return new JsonResult(isOk);
+            if (await dbHandlerHyperLabData.deleteSpectrumFileProcedureAsync(model.Id, getUserId()))
+                return new JsonResult(GenericResponseModel.CreateSuccessResponse());
+            else
+                return new JsonResult(GenericResponseModel.CreateErrorResponse());
         }
 
         #region SAVE SPECTRUM OF TYPE
