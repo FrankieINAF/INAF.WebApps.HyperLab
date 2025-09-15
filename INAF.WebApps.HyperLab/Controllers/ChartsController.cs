@@ -57,33 +57,6 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         #region GET
-        [Authorize]
-        [CheckIsLoginValid]
-        [HttpGet]
-        public IActionResult GetSpectrumById(GenericRequestByIdModel model)
-        {
-            ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumById(model.Id,
-                                                                                  getUserId());
-            if (spectrumModel == null)
-                return new EmptyResult();
-
-            return new JsonResult(spectrumModel);
-        }
-
-        [Authorize]
-        [CheckIsLoginValid]
-        [HttpGet]
-        public IActionResult GetSpectrumByParentIdAndSpectrumTypeForApp(GenericRequestByParentIdAndSpectrumTypeModel model)
-        {
-            ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId,
-                                                                                                       model.SpectrumType,
-                                                                                                       getUserId());
-            if (spectrumModel == null)
-                return new EmptyResult();
-
-            return new JsonResult(spectrumModel);
-        }
-
         [HttpGet]
         public IActionResult GetWhiteSpectraForAlignment()
         {

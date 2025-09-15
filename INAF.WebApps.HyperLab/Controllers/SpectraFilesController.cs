@@ -214,14 +214,41 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new JsonResult(new GenericResponseModel(fileSpectrumModel));
         }
 
+        [Authorize]
+        [CheckIsLoginValid]
         [HttpGet]
+        public IActionResult GetSpectrumById(GenericRequestByIdModel model)
+        {
+            ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumById(model.Id,
+                                                                                  getUserId());
+            if (spectrumModel == null)
+                return new EmptyResult();
+
+            return new JsonResult(spectrumModel);
+        }
+
+        [HttpGet]
+        [Authorize]
+        [CheckIsLoginValid]
         public IActionResult GetSpectrumByParentIdAndSpectrumType(GenericRequestByParentIdAndSpectrumTypeModel model)
         {
             ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId,
-                                                                                                   model.SpectrumType,
-                                                                                                   getUserId());
+                                                                                                       model.SpectrumType,
+                                                                                                       getUserId());
             if (spectrumModel != null)
-                return new JsonResult(new GenericResponseModel(spectrumModel));
+            {
+                switch (getCallerContext())
+                {
+                    case Enums.CallerContext.Web:
+                        return new JsonResult(new GenericResponseModel(spectrumModel));
+
+                    case Enums.CallerContext.App:
+                        return new JsonResult(spectrumModel);
+
+                    default:
+                        return new JsonResult(GenericResponseModel.CreateErrorResponse());
+                }
+            }
             else
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
         }
@@ -269,8 +296,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult GetSpectrumIdByParentIdAndSpectrumType(IdAndSpectrumTypeRequestModel model)
         {
             int id = dbHandlerHyperLabData.getSpectrumIdByParentIdAndSpectrumType(model.Id,
-                                                                              model.SpectrumType,
-                                                                              getUserId());
+                                                                                  model.SpectrumType,
+                                                                                  getUserId());
             if (id != int.MinValue)
                 return new JsonResult(new GenericResponseModel() { IsOk = true, Id = id });
             else
