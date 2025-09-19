@@ -75,7 +75,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult GetContinuumRemovalSettings(GenericRequestByIdModel model)
         {
             ContinuumRemovalSettingsModel? continuumRemovalSettingsModel = dbHandlerHyperLabData.getContinuumRemovalSettings(model.Id,
-                                                                                                                         getUserId());
+                                                                                                                             getUserId());
+
             if (continuumRemovalSettingsModel != null)
             {
                 switch (getCallerContext())
