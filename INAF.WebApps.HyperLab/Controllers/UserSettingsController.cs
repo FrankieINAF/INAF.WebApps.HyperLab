@@ -40,6 +40,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetUserSetting(KeyRequestModel model)
         {
+            if (string.IsNullOrEmpty(model.Key))
+                return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
+
             (bool isOk, string? value) result = dbHandlerHyperLabUsers.getUserSettingsValue(getUserId(),
                                                                                             model.Key);
 
