@@ -1,5 +1,6 @@
 ﻿@using INAF.Libraries.Net.CommonWebAppHelpers
 @using INAF.Libraries.Net.CommonWebAppModels.Models.Menu
+@using INAF.Libraries.Net.HyperLab.CommonModels.Resources
 @using INAF.WebApps.HyperLab.Controllers
 
 @inject INAF.WebApps.HyperLab.Helpers.MenuHelper menuHelper
@@ -68,7 +69,7 @@
 		<li>
 			<a class="menuitem" href="@Url.Action(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)))">
 				<span class="icon"><span class="mif mif-unlock"></span></span>
-				<span class="caption fg-white">@Html.Raw(INAF.WebApps.HyperLab.Resources.Account.LoginSLabLabel)</span>
+				<span class="caption fg-white">@Html.Raw(Account.LoginSLabLabel)</span>
 			</a>
 		</li>
 	}

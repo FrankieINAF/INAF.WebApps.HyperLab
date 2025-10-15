@@ -55,7 +55,7 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
 
         protected Caller getCaller()
         {
-            string token = HttpContext.GetToken();
+            string? token = HttpContext.GetToken();
             if (string.IsNullOrEmpty(token))
                 return Caller.WebApp;
             else
@@ -86,7 +86,7 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
 
         protected CallerContext getCallerContext()
         {
-            string token = HttpContext.GetToken();
+            string? token = HttpContext.GetToken();
             if (string.IsNullOrEmpty(token))
                 return CallerContext.Web;
             else

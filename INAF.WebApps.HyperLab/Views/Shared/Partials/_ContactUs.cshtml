@@ -1,8 +1,9 @@
 ﻿@using INAF.WebApps.HyperLab.Resources
+@using INAF.Libraries.Net.HyperLab.CommonModels.Resources
 
 <div class="row cell-fs-12 margin-top-32 d-flex flex-justify-center">
     <button class="button bg-white primary cycle outline" onclick="sendEmailtoUs()" title="@Html.Raw(Account.ConfirmationSendEmailAgain)">
         <span class="mif-envelop" />
     </button>
-    <span class="fg-white margin-left-8 margin-top-4">@Html.Raw(SharedResources.ContactUs)</span>
+    <span class="margin-left-8 margin-top-4">@Html.Raw(SharedResources.ContactUs)</span>
 </div>
