@@ -186,6 +186,9 @@
   <data name="UserNotExistantErrorMessage" xml:space="preserve">
     <value>The email entered does not match any existing user.</value>
   </data>
+  <data name="UserNotConfirmedErrorMessage" xml:space="preserve">
+    <value>The email entered does not match any valid user.</value>
+  </data>
   <data name="UserPermissions" xml:space="preserve">
     <value>Permissions:</value>
   </data>

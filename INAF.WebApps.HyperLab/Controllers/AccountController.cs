@@ -666,8 +666,10 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (!dbHandlerHyperLabUsers.isLoginExistantForPasswordReset(email))
             {
                 errorModel = new AccountErrorModel(Account.PasswordResetErrorEmailNotExistantTitle, Account.PasswordResetErrorEmailNotExistantMessage);
+                
                 if (getCallerContext() == Enums.CallerContext.Web)
                     HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
+
                 return (false, errorModel);
             }
 
@@ -678,8 +680,10 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return (true, null);
 
             errorModel = new AccountErrorModel(Account.AccountErrorGenericTitle, response.ExMsg);
+            
             if (getCallerContext() == Enums.CallerContext.Web)
                 HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
+
             return (false, errorModel);
         }
 
@@ -690,6 +694,9 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             if (!dbHandlerHyperLabUsers.isUserExistant(email!))
                 return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Users.UserNotExistantErrorMessage };
+
+            if (!dbHandlerHyperLabUsers.isUserExistantAndValidLogin(email!))
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Users.UserNotConfirmedErrorMessage };
 
             /* generate confirmation token and set token expiration date-time */
             string passwordResetToken = Guid.NewGuid().ToString();

@@ -259,6 +259,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The email entered does not match any valid user..
+        /// </summary>
+        public static string UserNotConfirmedErrorMessage {
+            get {
+                return ResourceManager.GetString("UserNotConfirmedErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The email entered does not match any existing user..
         /// </summary>
         public static string UserNotExistantErrorMessage {
