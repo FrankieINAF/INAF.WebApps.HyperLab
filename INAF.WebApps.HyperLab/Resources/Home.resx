@@ -147,6 +147,12 @@
   <data name="TileMLAppTitle" xml:space="preserve">
     <value>MLApp</value>
   </data>
+  <data name="TileSimbioDescription" xml:space="preserve">
+    <value>A brief description of functions available in this page</value>
+  </data>
+  <data name="TileSimbioTitle" xml:space="preserve">
+    <value>Simbio</value>
+  </data>
   <data name="TileSpectraHubDescription" xml:space="preserve">
     <value>The Spectra Hub is a web tool that allows the analysis of spectra stored locally on users' devices, providing advanced spectroscopic capabilities. It also grants the retrieval and analysis of spectra at SLab@IAPS, enhancing workflow efficiency and accelerating data analysis for swift, accurate insights.</value>
   </data>

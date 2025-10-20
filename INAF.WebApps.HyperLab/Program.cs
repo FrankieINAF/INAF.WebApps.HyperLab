@@ -2,6 +2,7 @@ using BundlerMinifier;
 using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
+using INAF.Libraries.Net.DB.Simbio.Data;
 using INAF.Libraries.Net.HyperLab.CommonHelpers;
 using INAF.Libraries.Net.HyperLab.CommonWebAppHelpers;
 using INAF.Libraries.Net.HyperLabCommonHelpers;
@@ -122,6 +123,7 @@ builder.Services
     /* SCOPED SERVICES */
     .AddScoped<DbHandlerHyperLabData>()
     .AddScoped<DbHandlerHyperLabUsers>()
+    .AddScoped<DbHandlerSimbio>()
     .AddScoped<ChartsHelper>()
 
     /* TRANSIENT SERVICES */

@@ -151,6 +151,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A brief description of functions available in this page.
+        /// </summary>
+        public static string TileSimbioDescription {
+            get {
+                return ResourceManager.GetString("TileSimbioDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simbio.
+        /// </summary>
+        public static string TileSimbioTitle {
+            get {
+                return ResourceManager.GetString("TileSimbioTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Spectra Hub is a web tool that allows the analysis of spectra stored locally on users&apos; devices, providing advanced spectroscopic capabilities. It also grants the retrieval and analysis of spectra at SLab@IAPS, enhancing workflow efficiency and accelerating data analysis for swift, accurate insights..
         /// </summary>
         public static string TileSpectraHubDescription {

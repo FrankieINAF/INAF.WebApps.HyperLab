@@ -1,4 +1,5 @@
-﻿@using INAF.WebApps.HyperLab.Resources
+﻿@using INAF.WebApps.HyperLab.Controllers.Simbio
+@using INAF.WebApps.HyperLab.Resources
 @using INAF.WebApps.HyperLab.Controllers
 @using INAF.WebApps.HyperLab.Controllers.HyperLab
 @using INAF.WebApps.HyperLab.Helpers
@@ -41,43 +42,58 @@
         <div class="margin-vertical-24">
             <p class="text-leader2 text-just padding-16 fg-white">@Html.Raw(Home.WelcomeExplanation)</p>
         </div>
-        <div id="tilesContainer" class="tiles-grid d-flex flex-justify-center">
-            <!-- HUB -->
-            <div data-role="tile" data-size="large" data-effect="hover-slide-up" class="flex-self-center" onclick="navigateTo('@Url.Action(nameof(SpectraManagerController.Hub), GenericHelper.GetControllerName(nameof(SpectraManagerController)))')">
-                <div class="slide-front d-flex flex-column">
-                    <div class="flex-self-center" style="margin: auto"><img src="~/images/home/spectrum.png" width="200" height="200" /></div>
-                </div>
-                <div class="slide-back">
-                    <p class="tile-description-text text-just">@Html.Raw(Home.TileSpectraHubDescription)</p>
-                </div>
-                <div class="pos-absolute pos-bottom-left margin-4">
-                    <span data-role="branding-bar">@Html.Raw(Home.TileSpectraHubTitle)</span>
-                </div>
-            </div>
-            <!-- GROUP -->
-            <div class="tiles-grid tiles-group flex-self-center">
-                <!-- GModeApp-->
-                <div data-role="tile" data-size="wide" data-effect="hover-slide-up" onclick="navigateTo('@Url.Action(nameof(AppsController.GModeApp), GenericHelper.GetControllerName(nameof(AppsController)))')">
-                    <div class="slide-front d-flex flex-justify-center">
-                        <img class="wide-tile-img-size" src="~/images/home/gmodeapp.png" />
+
+        <div id="tilesContainer" class="d-flex flex-justify-center">
+            <div class="tiles-grid size-4">
+                <!-- HUB -->
+                <div data-role="tile" data-size="large" data-effect="hover-slide-up" onclick="navigateTo('@Url.Action(nameof(SpectraManagerController.Hub), GenericHelper.GetControllerName(nameof(SpectraManagerController)))')">
+                    <div class="slide-front d-flex flex-column">
+                        <div class="flex-self-center" style="margin: auto"><img src="~/images/home/spectrum.png" width="200" height="200" /></div>
                     </div>
                     <div class="slide-back">
-                        <p class="tile-description-text text-just">@Html.Raw(Home.TileGModeAppDescription)</p>
+                        <p class="tile-description-text text-just">@Html.Raw(Home.TileSpectraHubDescription)</p>
                     </div>
                     <div class="pos-absolute pos-bottom-left margin-4">
-                        <span data-role="branding-bar">@Html.Raw(Home.TileGModeAppTitle)</span>
+                        <span data-role="branding-bar">@Html.Raw(Home.TileSpectraHubTitle)</span>
                     </div>
                 </div>
-                <!-- MLApp-->
-                <div data-role="tile" data-size="wide" data-effect="hover-slide-up" onclick="navigateTo('@Url.Action(nameof(AppsController.MLApp), GenericHelper.GetControllerName(nameof(AppsController)))')">
-                    <div class="slide-front d-flex flex-justify-center">
-                        <img class="wide-tile-img-size" src="~/images/home/mlapp.png" />
+                <!-- SIMBIO -->
+                <div data-role="tile" data-size="large" data-effect="hover-slide-up" onclick="navigateTo('@Url.Action(nameof(TargetsController.Viewer), GenericHelper.GetControllerName(nameof(TargetsController)))')">
+                    <div class="slide-front d-flex flex-column">
+                        <div class="flex-self-center" style="margin: auto"><img src="~/images/home/bepicolombo_logo.png" width="200" height="200" /></div>
                     </div>
                     <div class="slide-back">
-                        <p class="tile-description-text text-just">@Html.Raw(Home.TileMLAppDescription)</p>
+                        <p class="tile-description-text text-just">@Html.Raw(Home.TileSimbioDescription)</p>
                     </div>
                     <div class="pos-absolute pos-bottom-left margin-4">
-                        <span data-role="branding-bar">@Html.Raw(Home.TileMLAppTitle)</span>
+                        <span data-role="branding-bar">@Html.Raw(Home.TileSimbioTitle)</span>
+                    </div>
+                </div>
+                <!-- GROUP -->
+                <div class="tiles-grid tiles-group size-4">
+                    <!-- GModeApp-->
+                    <div data-role="tile" data-size="wide" data-effect="hover-slide-up" onclick="navigateTo('@Url.Action(nameof(AppsController.GModeApp), GenericHelper.GetControllerName(nameof(AppsController)))')">
+                        <div class="slide-front d-flex flex-justify-center">
+                            <img class="wide-tile-img-size" src="~/images/home/gmodeapp.png" />
+                        </div>
+                        <div class="slide-back">
+                            <p class="tile-description-text text-just">@Html.Raw(Home.TileGModeAppDescription)</p>
+                        </div>
+                        <div class="pos-absolute pos-bottom-left margin-4">
+                            <span data-role="branding-bar">@Html.Raw(Home.TileGModeAppTitle)</span>
+                        </div>
+                    </div>
+                    <!-- MLApp-->
+                    <div data-role="tile" data-size="wide" data-effect="hover-slide-up" onclick="navigateTo('@Url.Action(nameof(AppsController.MLApp), GenericHelper.GetControllerName(nameof(AppsController)))')">
+                        <div class="slide-front d-flex flex-justify-center">
+                            <img class="wide-tile-img-size" src="~/images/home/mlapp.png" />
+                        </div>
+                        <div class="slide-back">
+                            <p class="tile-description-text text-just">@Html.Raw(Home.TileMLAppDescription)</p>
+                        </div>
+                        <div class="pos-absolute pos-bottom-left margin-4">
+                            <span data-role="branding-bar">@Html.Raw(Home.TileMLAppTitle)</span>
+                        </div>
                     </div>
                 </div>
             </div>

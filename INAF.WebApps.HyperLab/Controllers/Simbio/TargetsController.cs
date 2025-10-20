@@ -16,11 +16,16 @@ namespace INAF.WebApps.HyperLab.Controllers.Simbio
             this.dbHandlerSimbio = dbHandlerSimbio;
         }
 
-        public IActionResult GetTargetsObsCoords()
+        public IActionResult Viewer()
+        { 
+            return View("~/Views/Simbio/Targets/Viewer.cshtml"); 
+        }
+
+        public IActionResult GetTargetsWithObsCoords()
         {
-            IEnumerable<TargetObsCoordsModel>? targetObsCoords = dbHandlerSimbio.getTargetsObsCoords();
-            if (targetObsCoords.IsAny())
-                return new JsonResult(targetObsCoords);
+            IEnumerable<TargetInfoModel>? targetInfos = dbHandlerSimbio.getTargetsWithObsCoords();
+            if (targetInfos.IsAny())
+                return new JsonResult(targetInfos);
             else
                 return new EmptyResult();
         }
