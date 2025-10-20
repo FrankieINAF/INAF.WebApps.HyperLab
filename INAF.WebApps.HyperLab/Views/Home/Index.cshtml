@@ -44,7 +44,7 @@
         </div>
 
         <div id="tilesContainer" class="d-flex flex-justify-center">
-            <div class="tiles-grid size-4">
+            <div class="tiles-grid size-fs-2 size-md-4">
                 <!-- HUB -->
                 <div data-role="tile" data-size="large" data-effect="hover-slide-up" onclick="navigateTo('@Url.Action(nameof(SpectraManagerController.Hub), GenericHelper.GetControllerName(nameof(SpectraManagerController)))')">
                     <div class="slide-front d-flex flex-column">
@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <!-- SIMBIO -->
-                <div data-role="tile" data-size="large" data-effect="hover-slide-up" onclick="navigateTo('@Url.Action(nameof(TargetsController.Viewer), GenericHelper.GetControllerName(nameof(TargetsController)))')">
+                <div data-role="tile" data-size="large" data-effect="hover-slide-up" onclick="navigateTo('@Url.Action(nameof(TargetsController.Map), GenericHelper.GetControllerName(nameof(TargetsController)))')">
                     <div class="slide-front d-flex flex-column">
                         <div class="flex-self-center" style="margin: auto"><img src="~/images/home/bepicolombo_logo.png" width="200" height="200" /></div>
                     </div>
@@ -70,7 +70,7 @@
                     </div>
                 </div>
                 <!-- GROUP -->
-                <div class="tiles-grid tiles-group size-4">
+                <div class="tiles-grid tiles-group size-fs-2 size-md-4">
                     <!-- GModeApp-->
                     <div data-role="tile" data-size="wide" data-effect="hover-slide-up" onclick="navigateTo('@Url.Action(nameof(AppsController.GModeApp), GenericHelper.GetControllerName(nameof(AppsController)))')">
                         <div class="slide-front d-flex flex-justify-center">
@@ -107,8 +107,3 @@
 <environment names="Production">
     <script src="~/js/dist/home/indexbundle.js"></script>
 </environment>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        window.mediaQueryHelper.addOrRemoveClass('tilesContainer', 'flex-column', '(max-width: 480px)');
-    });
-</script>

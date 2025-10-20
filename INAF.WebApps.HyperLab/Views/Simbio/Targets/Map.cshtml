@@ -1,15 +1,27 @@
-﻿@using INAF.WebApps.HyperLab.Resources
+﻿@using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Controllers.Simbio
+@using INAF.WebApps.HyperLab.Resources
 
 @{
     ViewBag.Title = SimbioMap.MapPageTitle;
 
 }
 
+<div class="container h-100 overflow-x-auto overflow-y-auto">
+    <!-- MAP -->
+    <div id="map"></div>
+    <!-- CHART -->
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/vega@6"></script>
 <script src="https://cdn.jsdelivr.net/npm/vega-lite@6"></script>
 <script src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+<script type="text/javascript">
+    var UrlGetTargetsWithObsCoords = '/@GenericHelper.GetControllerName(nameof(TargetsController))/@nameof(TargetsController.GetTargetsWithObsCoords)';
+</script>
 <environment names="Development">
-    <script type="text/javascript"  src="~/js/simbio/map/map.js"></script>
+    <script type="text/javascript" src="~/js/simbio/map/map.js"></script>
 </environment>
 <environment names="Production">
     <script type="text/javascript" src="~/js/dist/simbio/map/mapbundle.min.js" asp-append-version="true"></script>

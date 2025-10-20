@@ -1,4 +1,5 @@
 [
+  /* HYPERLAB */
   {
     "outputFileName": "wwwroot/js/dist/apps/appsbundle.js",
     "inputFiles": [
@@ -16,7 +17,7 @@
     "includeInProject": true
   },
   {
-    "outputFileName": "wwwroot/js/dist/chart/charmsbundle.js",
+    "outputFileName": "wwwroot/js/dist/hyperlab/chart/charmsbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/chart/charms/charms.js",
       "wwwroot/js/hyperlab/chart/charms/charmslegend.js",
@@ -33,7 +34,7 @@
     "includeInProject": true
   },
   {
-    "outputFileName": "wwwroot/js/dist/chart/chartbundle.js",
+    "outputFileName": "wwwroot/js/dist/hyperlab/chart/chartbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/commonbuttons.js",
       "wwwroot/js/hyperlab/commonhubandchart.js",
@@ -80,7 +81,7 @@
     "includeInProject": true
   },
   {
-    "outputFileName": "wwwroot/js/dist/hub/hubbundle.js",
+    "outputFileName": "wwwroot/js/dist/hyperlab/hub/hubbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/commonbuttons.js",
       "wwwroot/js/hyperlab/commonhubandchart.js",
@@ -113,7 +114,7 @@
     "includeInProject": true
   },
   {
-    "outputFileName": "wwwroot/js/dist/chart/joystickbundle.js",
+    "outputFileName": "wwwroot/js/dist/hyperlab/chart/joystickbundle.js",
     "inputFiles": [
       "wwwroot/lib/joystick/joystick.js",
       "wwwroot/js/hyperlab/chart/joystickmanager.js",
@@ -159,7 +160,7 @@
     "includeInProject": true
   },
   {
-    "outputFileName": "wwwroot/js/dist/materials/mineralsbundle.js",
+    "outputFileName": "wwwroot/js/dist/hyperlab/materials/mineralsbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/materials/upsertminerals.js",
       "wwwroot/js/hyperlab/commonlists.js",
@@ -193,7 +194,7 @@
     "includeInProject": true
   },
   {
-    "outputFileName": "wwwroot/js/dist/hub/sampleandmeasurementinfo/sampleinfoeditorbundle.js",
+    "outputFileName": "wwwroot/js/dist/hyperlab/hub/sampleandmeasurementinfo/sampleinfoeditorbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/hub/sampleandmeasurementinfo/sampleinfoeditor.js"
     ],
@@ -201,7 +202,7 @@
     "includeInProject": true
   },
   {
-    "outputFileName": "wwwroot/js/dist/sharedstuff/sharedstuffbundle.js",
+    "outputFileName": "wwwroot/js/dist/hyperlab/sharedstuff/sharedstuffbundle.js",
     "inputFiles": [
       "wwwroot/js/hyperlab/commonhubandchartsandsharedstuff.js",
       "wwwroot/js/hyperlab/commonhubandsharedstuff.js",
@@ -233,6 +234,15 @@
       "wwwroot/js/hyperlab/users/userslist.js",
       "wwwroot/js/hyperlab/commonlists.js",
       "wwwroot/js/hyperlab/commonsearch.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  /* SIMBIO */
+  {
+    "outputFileName": "wwwroot/js/dist/simbio/map/mapbundle.js",
+    "inputFiles": [
+      "wwwroot/js/simbio/map/map.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -357,7 +367,7 @@
     "minify": { "enabled": true }
   },
   {
-    "outputFileName": "wwwroot/css/dist/materials/mineralsbundle.css",
+    "outputFileName": "wwwroot/css/dist/hyperlab/materials/mineralsbundle.css",
     "inputFiles": [
       "wwwroot/css/hyperlab/commonlists.css",
       "wwwroot/css/hyperlab/materials/minerals.css"
@@ -366,7 +376,7 @@
     "minify": { "enabled": true }
   },
   {
-    "outputFileName": "wwwroot/css/dist/hubandchart/hubandchartbundle.css",
+    "outputFileName": "wwwroot/css/dist/hyperlab/hubandchart/hubandchartbundle.css",
     "inputFiles": [
       "wwwroot/css/hyperlab/hubandchart/searches.css",
       "wwwroot/css/hyperlab/hubandchart/hubandchart.css",
@@ -386,7 +396,7 @@
     "minify": { "enabled": true }
   },
   {
-    "outputFileName": "wwwroot/css/dist/hubandchart/sharebundle.css",
+    "outputFileName": "wwwroot/css/dist/hyperlab/hubandchart/sharebundle.css",
     "inputFiles": [
       "wwwroot/css/hyperlab/hubandchart/share.css"
     ],

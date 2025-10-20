@@ -305,6 +305,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SharedStuff.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\SimbioMap.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SimbioMap.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Users.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -418,6 +423,10 @@
     <EmbeddedResource Update="Resources\SharedStuff.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SharedStuff.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\SimbioMap.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SimbioMap.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Users.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
