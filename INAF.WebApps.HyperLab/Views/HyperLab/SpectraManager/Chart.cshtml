@@ -4,8 +4,9 @@
 @using INAF.Libraries.Net.HyperLab.CommonModels.Models.Pages
 @using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches
 @using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Controllers.HyperLab
 @using INAF.WebApps.HyperLab.Resources
-@using INAF.WebApps.HyperLab.Views.Charts.Blazor
+@using INAF.WebApps.HyperLab.Views.HyperLab.Charts.Blazor
 
 @{
     ViewBag.Title = Search.ChartPageTitle;
@@ -199,7 +200,7 @@
             <!-- FIT -->
             <div id="fitoptions">
                 @{
-                    await Html.RenderPartialAsync("Partials/_AlwaysVisibleFitPanel");
+                    await Html.RenderPartialAsync("~/Views/HyperLab/SpectraManager/Partials/_AlwaysVisibleFitPanel.cshtml");
                 }
             </div>
             <!-- SMOOTHING -->
@@ -335,7 +336,7 @@
 
 <!-- CHARMS - MESSAGES -->
 @{
-    await Html.RenderPartialAsync("Partials/_Messages");
+    await Html.RenderPartialAsync("~/Views/HyperLab/SpectraManager/Partials/_Messages.cshtml");
 }
 
 <!-- REFERENCE TO BLAZOR BlazorHelper COMPONENT -->
@@ -344,8 +345,8 @@
 
 <!-- common js variables -->
 @{
-    await Html.RenderPartialAsync("Partials/_HubAndChartJsCommon");
-    await Html.RenderPartialAsync("Partials/_ChartJsCommon");
+    await Html.RenderPartialAsync("~/Views/HyperLab/SpectraManager/Partials/_HubAndChartJsCommon.cshtml");
+    await Html.RenderPartialAsync("~/Views/HyperLab/SpectraManager/Partials/_ChartJsCommon.cshtml");
 }
 
 <script src="_framework/blazor.server.js"></script>

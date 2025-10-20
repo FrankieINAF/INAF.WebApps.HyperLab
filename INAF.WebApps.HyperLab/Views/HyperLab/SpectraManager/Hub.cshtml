@@ -7,6 +7,7 @@
 @using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData
 @using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 @using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Controllers.HyperLab
 @using INAF.WebApps.HyperLab.Resources
 
 @{
@@ -495,18 +496,18 @@
 
 @{
     <!-- CHARMS SHARE -->
-    await Html.RenderPartialAsync("Partials/_Share");
+    await Html.RenderPartialAsync("~/Views/HyperLab/SpectraManager/Partials/_Share.cshtml");
 
     <!-- CHARMS - MESSAGES -->
-    await Html.RenderPartialAsync("Partials/_Messages");
+    await Html.RenderPartialAsync("~/Views/HyperLab/SpectraManager/Partials/_Messages.cshtml");
 }
 
 <!-- common js variables -->
 @{
     await Html.RenderPartialAsync("Partials/_JsCommon");
-    await Html.RenderPartialAsync("Partials/_HubAndShareJsCommon");
-    await Html.RenderPartialAsync("Partials/_HubAndChartJsCommon");
-    await Html.RenderPartialAsync("Partials/_HubJsCommon");
+    await Html.RenderPartialAsync("~/Views/HyperLab/SpectraManager/Partials/_HubAndShareJsCommon.cshtml");
+    await Html.RenderPartialAsync("~/Views/HyperLab/SpectraManager/Partials/_HubAndChartJsCommon.cshtml");
+    await Html.RenderPartialAsync("~/Views/HyperLab/SpectraManager/Partials/_HubJsCommon.cshtml");
 }
 <script type="text/javascript">
     var lastSearchJson = '@Html.Raw(lastSearchJson)';

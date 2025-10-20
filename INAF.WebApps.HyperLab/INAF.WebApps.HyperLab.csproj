@@ -210,6 +210,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.Simbio.Data\INAF.Libraries.Net.DB.Simbio.Data\INAF.Libraries.Net.DB.Simbio.Data.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.Extensions\INAF.Libraries.Net.Extensions\INAF.Libraries.Net.Extensions.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLab.Data\INAF.Libraries.Net.DB.HyperLab.Data\INAF.Libraries.Net.DB.HyperLab.Data.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLab.Users\INAF.Libraries.Net.DB.HyperLab.Users\INAF.Libraries.Net.DB.HyperLab.Users.csproj" />
@@ -220,6 +221,7 @@
     <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.Log\INAF.Libraries.Net.Log\INAF.Libraries.Net.Log.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.Math\INAF.Libraries.Net.Math\INAF.Libraries.Net.Math.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.ScienceModels\INAF.Libraries.Net.ScienceModels\INAF.Libraries.Net.ScienceModels.csproj" />
+    <ProjectReference Include="..\..\..\Libraries\Net\Simbio\INAF.Libraries.Net.Simbio.CommonModels\INAF.Libraries.Net.Simbio.CommonModels\INAF.Libraries.Net.Simbio.CommonModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>

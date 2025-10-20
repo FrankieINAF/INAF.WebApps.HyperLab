@@ -173,11 +173,11 @@
         <div id="materialsManagement">
             @if (Model.IsEditAllowed)
             {
-                @await Html.PartialAsync("Partials/_SelectedMineralTypeEditor", Model.SampleDataSelectedValues)
+                @await Html.PartialAsync("~/Views/HyperLab/SampleAndMeasurement/Partials/_SelectedMineralTypeEditor.cshtml", Model.SampleDataSelectedValues)
             }
             else
             {
-                @await Html.PartialAsync("Partials/_SelectedMineralTypeViewer", Model.SampleDataSelectedValues)
+                @await Html.PartialAsync("~/Views/HyperLab/SampleAndMeasurement/Partials/_SelectedMineralTypeViewer.cshtml", Model.SampleDataSelectedValues)
             }
         </div>
     </div>

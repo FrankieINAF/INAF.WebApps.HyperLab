@@ -20,7 +20,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
-namespace INAF.WebApps.HyperLab.Controllers
+namespace INAF.WebApps.HyperLab.Controllers.HyperLab
 {
     [Authorize]
     [CheckIsLoginValid]
@@ -49,10 +49,10 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 switch (getCallerContext())
                 {
-                    case Enums.CallerContext.Web:
+                    case CallerContext.Web:
                         return new JsonResult(new GenericResponseModel(alignmentSettingsModel));
 
-                    case Enums.CallerContext.App:
+                    case CallerContext.App:
                         return new JsonResult(alignmentSettingsModel);
                 }
             }
@@ -60,10 +60,10 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 switch (getCallerContext())
                 {
-                    case Enums.CallerContext.Web:
+                    case CallerContext.Web:
                         return new JsonResult(GenericResponseModel.CreateErrorResponse());
 
-                    case Enums.CallerContext.App:
+                    case CallerContext.App:
                         return new EmptyResult();
                 }
             }
@@ -81,10 +81,10 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 switch (getCallerContext())
                 {
-                    case Enums.CallerContext.Web:
+                    case CallerContext.Web:
                         return new JsonResult(new GenericResponseModel(continuumRemovalSettingsModel));
 
-                    case Enums.CallerContext.App:
+                    case CallerContext.App:
                         return new JsonResult(continuumRemovalSettingsModel);
                 }
             }
@@ -92,10 +92,10 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 switch (getCallerContext())
                 {
-                    case Enums.CallerContext.Web:
+                    case CallerContext.Web:
                         return new JsonResult(GenericResponseModel.CreateErrorResponse());
 
-                    case Enums.CallerContext.App:
+                    case CallerContext.App:
                         return new EmptyResult();
                 }
             }
@@ -112,10 +112,10 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 switch (getCallerContext())
                 {
-                    case Enums.CallerContext.Web:
+                    case CallerContext.Web:
                         return new JsonResult(new GenericResponseModel(smoothingSettings));
 
-                    case Enums.CallerContext.App:
+                    case CallerContext.App:
                         return new JsonResult(smoothingSettings);
                 }
             }
@@ -123,10 +123,10 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 switch (getCallerContext())
                 {
-                    case Enums.CallerContext.Web:
+                    case CallerContext.Web:
                         return new JsonResult(GenericResponseModel.CreateErrorResponse());
 
-                    case Enums.CallerContext.App:
+                    case CallerContext.App:
                         return new EmptyResult();
                 }
             }
@@ -240,10 +240,10 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 switch (getCallerContext())
                 {
-                    case Enums.CallerContext.Web:
+                    case CallerContext.Web:
                         return new JsonResult(new GenericResponseModel(spectrumModel));
 
-                    case Enums.CallerContext.App:
+                    case CallerContext.App:
                         return new JsonResult(spectrumModel);
 
                     default:

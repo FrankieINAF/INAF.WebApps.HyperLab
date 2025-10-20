@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
 
-namespace INAF.WebApps.HyperLab.Controllers
+namespace INAF.WebApps.HyperLab.Controllers.HyperLab
 {
     [Authorize]
     [CheckIsLoginValid]
@@ -23,7 +23,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                                    ILogger<MaterialsController> logger,
                                    DbHandlerHyperLabData dbHandlerHyperLabUsers) : base(serviceProvider, logger)
         {
-            this.dbHandlerHyperLabData = dbHandlerHyperLabUsers;
+            dbHandlerHyperLabData = dbHandlerHyperLabUsers;
         }
 
         #region VIEWS
@@ -32,7 +32,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             var mineralModel = dbHandlerHyperLabData.getMineralDetails(model.Id);
             if (mineralModel != null)
-                return PartialView("Partials/_MineralDetails", mineralModel);
+                return PartialView("~/Views/HyperLab/Materials/Partials/_MineralDetails.cshtml", mineralModel);
             else
                 return new EmptyResult();
         }
@@ -45,7 +45,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (model?.Id != null && model?.Id > 0)
                 mineralModel = dbHandlerHyperLabData.getMineralDetails(model.Id);
 
-            return PartialView("Partials/_UpsertMineral", mineralModel);
+            return PartialView("~/Views/HyperLab/Matrials/Partials/_UpsertMineral.cshtml", mineralModel);
         }
 
         [HttpGet]

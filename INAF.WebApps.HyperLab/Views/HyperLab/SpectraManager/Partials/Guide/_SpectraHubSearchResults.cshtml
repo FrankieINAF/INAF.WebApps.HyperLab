@@ -1,0 +1,24 @@
+﻿@using INAF.WebApps.HyperLab.Resources
+
+<!-- HEADER -->
+<div class="row cell-fs-12 margin-16 d-flex flex-justify-between">
+    <div><button class="button light cycle outline pointer fg-white margin-right-8" onclick="backToGuideHubMainMenu()"><span class="mif-arrow-left"></span></button></div>
+    <div class="cell-fs-4"><p class="fg-white text-leader2 text-medium text-center">@Html.Raw(Guide.SpectraHubSearchResultsLabel)</p></div>
+    <div class="margin-right-16"><button class="button light cycle outline pointer fg-white" onclick="closeGuide()"><span class="mif-cross-light"></span></button></div>
+</div>
+<!-- CONTENT -->
+<div class="row margin-horizontal-16">
+    <div class="order-1 cell-fs-12 cell-xl-6 d-flex flex-justify-center overflow-md">
+        <div class="row cell-fs-12 margin-horizontal-8">
+            <p class="text-just fg-white">@Html.Raw(Guide.SpectraHubComplexSearchExplanation1)</p>
+            <p class="text-just fg-white margin-top-16">@Html.Raw(Guide.SpectraHubSearchResultsExplanation1)</p>
+            <p class="text-just fg-white margin-top-16">@Html.Raw(Guide.SpectraHubSearchResultsExplanation2)</p>
+            <p class="text-just fg-white margin-top-16">@Html.Raw(Guide.SpectraHubSearchResultsExplanation3)</p>
+        </div>
+    </div>
+    <!-- IMAGE -->
+    <div class="order-2 cell-fs-12 cell-xl-6 d-flex flex-column">
+        <div><img src="~/images/guide/hub_search_results.jpeg" /></div>
+        <div class="margin-top-8"><p class="text-small fg-white">@Html.Raw(Guide.SpectraHubSearchResultsExplanationFig1)</p></div>
+    </div>
+</div>

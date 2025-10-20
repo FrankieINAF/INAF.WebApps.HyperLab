@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 //using Newtonsoft.Json;
 
-namespace INAF.WebApps.HyperLab.Controllers
+namespace INAF.WebApps.HyperLab.Controllers.HyperLab
 {
     public partial class SpectraManagerController : BaseController
     {
@@ -51,7 +51,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             ChartPageModel chartPageModel = new ChartPageModel(status.isUserAuthenticated, status.permissions, selectedSpectra);
 
-            return View(chartPageModel);
+            return View("~/Views/HyperLab/SpectraManager/Chart.cshtml", chartPageModel);
         }
 
         [HttpGet]
@@ -72,7 +72,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             var sampleTypesHelper = serviceProvider.GetRequiredService<SampleTypesHelper>();
             SampleTypeValuesContainerExtended sampleTypeValuesContainerExtended = SampleTypeValuesContainerExtended.Create(sampleTypesHelper.getSampleTypeValuesContainer());
             var searchPageModel = new SearchPageModel(status.isUserAuthenticated, status.permissions, sampleTypeValuesContainerExtended, lastSearch);
-            return View(searchPageModel);
+            return View("~/Views/HyperLab/SpectraManager/Hub.cshtml", searchPageModel);
         }
         #endregion
 

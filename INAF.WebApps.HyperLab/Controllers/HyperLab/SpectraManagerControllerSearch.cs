@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
-namespace INAF.WebApps.HyperLab.Controllers
+namespace INAF.WebApps.HyperLab.Controllers.HyperLab
 {
     [Authorize]
     [CheckIsLoginValid]
@@ -39,7 +39,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
-                    return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
+                    return PartialView("~/Views/HyperLab/SpectraManager/Partials/_SearchResults.cshtml", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, complexSearchModel.RequestedLevels!));
@@ -63,7 +63,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
-                    return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
+                    return PartialView("~/Views/HyperLab/SpectraManager/Partials/_SearchResults.cshtml", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, complexSearchModel.RequestedLevels!));
@@ -91,7 +91,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
-                    return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
+                    return PartialView("~/Views/HyperLab/SpectraManager/Partials/_SearchResults.cshtml", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels!));
@@ -119,7 +119,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
-                    return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
+                    return PartialView("~/Views/HyperLab/SpectraManager/Partials/_SearchResults.cshtml", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels!));
@@ -145,7 +145,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
-                    return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
+                    return PartialView("~/Views/HyperLab/SpectraManager/Partials/_SearchResults.cshtml", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels!));
@@ -171,7 +171,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
-                    return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
+                    return PartialView("~/Views/HyperLab/SpectraManager/Partials/_SearchResults.cshtml", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels!));
@@ -197,7 +197,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
-                    return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
+                    return PartialView("~/Views/HyperLab/SpectraManager/Partials/_SearchResults.cshtml", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, model.RequestedLevels!));
@@ -223,7 +223,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             switch (getCallerContext())
             {
                 case Enums.CallerContext.Web:
-                    return PartialView("Partials/_SearchResults", new SearchResultsContainer(spectraFilesInfo));
+                    return PartialView("~/Views/HyperLab/SpectraManager/Partials/_SearchResults.cshtml", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
                     return buildJsonContentResult(spectraFilesInfo);

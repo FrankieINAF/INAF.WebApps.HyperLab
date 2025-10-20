@@ -99,8 +99,8 @@
 
 <!-- common js variables -->
 @{
-    await Html.RenderPartialAsync("Partials/_HubAndShareJsCommon");
-    await Html.RenderPartialAsync("Partials/_SharedStuffJsCommon");
+    await Html.RenderPartialAsync("~/Views/HyperLab/SpectraManager/Partials/_HubAndShareJsCommon.cshtml");
+    await Html.RenderPartialAsync("~/Views/HyperLab/SpectraManager/Partials/_SharedStuffJsCommon.cshtml");
 }
 <script type="text/javascript">
     var checkboxSharedSpectraByMeBaseId = '@checkboxSharedByMeBaseId';

@@ -8,7 +8,7 @@ using INAF.WebApps.HyperLab.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
-namespace INAF.WebApps.HyperLab.Controllers
+namespace INAF.WebApps.HyperLab.Controllers.HyperLab
 {
     public class SpectraPublicActionsController : BaseController
     {

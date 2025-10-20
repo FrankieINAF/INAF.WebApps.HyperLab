@@ -5,7 +5,7 @@ using INAF.WebApps.HyperLab.Values;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace INAF.WebApps.HyperLab.Controllers
+namespace INAF.WebApps.HyperLab.Controllers.HyperLab
 {
     [Authorize]
     [CheckIsLoginValid]

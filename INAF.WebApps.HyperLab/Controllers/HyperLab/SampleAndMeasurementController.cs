@@ -12,7 +12,7 @@ using INAF.WebApps.HyperLab.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace INAF.WebApps.HyperLab.Controllers
+namespace INAF.WebApps.HyperLab.Controllers.HyperLab
 {
     [Authorize]
     [CheckIsLoginValid]
@@ -48,9 +48,9 @@ namespace INAF.WebApps.HyperLab.Controllers
                 measurementInfo = new SpectrumFileMeasurementInfoValues();
 
             if (dbHandlerHyperLabData.isUserStrictlyAuthorized(model.Id, getUserId()))
-                return PartialView("Partials/_InfoMeasurementInfoEditor", measurementInfo);
+                return PartialView("~/Views/HyperLab/SampleAndMeasurement/Partials/_InfoMeasurementInfoEditor.cshtml", measurementInfo);
             else
-                return PartialView("Partials/_InfoMeasurementInfoViewer", measurementInfo);
+                return PartialView("~/Views/HyperLab/SampleAndMeasurement/Partials/_InfoMeasurementInfoViewer.cshtml", measurementInfo);
         }
 
         [HttpGet]
@@ -76,9 +76,9 @@ namespace INAF.WebApps.HyperLab.Controllers
                 sampleDataSelectedValues = SampleDataSelectedValues.CreateEmpty();
 
             if (dbHandlerHyperLabData.isUserStrictlyAuthorized(model.Id, getUserId()))
-                return PartialView("Partials/_InfoSampleDataEditor", new SpectrumFileSampleDataValuesContainer(model.Id, sampleDataAvailableValues, sampleDataSelectedValues, isEditAllowed: true));
+                return PartialView("~/Views/HyperLab/SampleAndMeasurement/Partials/_InfoSampleDataEditor.cshtml", new SpectrumFileSampleDataValuesContainer(model.Id, sampleDataAvailableValues, sampleDataSelectedValues, isEditAllowed: true));
             else
-                return PartialView("Partials/_InfoSampleDataViewer", new SpectrumFileSampleDataValuesContainer(model.Id, sampleDataAvailableValues, sampleDataSelectedValues, isEditAllowed: false));
+                return PartialView("~/Views/HyperLab/SampleAndMeasurement/Partials/_InfoSampleDataViewer.cshtml", new SpectrumFileSampleDataValuesContainer(model.Id, sampleDataAvailableValues, sampleDataSelectedValues, isEditAllowed: false));
         }
 
         [HttpGet]
@@ -94,7 +94,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             /* if the 2 values are different, then we want to change the mineral type selection, otherwise we're reloading original value */
             sampleDataSelectedValues.MineralTypeId = model.SelectedMineralTypeId;
 
-            return PartialView("Partials/_SelectedMineralTypeEditor", sampleDataSelectedValues);
+            return PartialView("~/Views/HyperLab/SampleAndMeasurement/Partials/_SelectedMineralTypeEditor.cshtml", sampleDataSelectedValues);
         }
         #endregion
 

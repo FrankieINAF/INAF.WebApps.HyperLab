@@ -10,7 +10,7 @@ using INAF.WebApps.HyperLab.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace INAF.WebApps.HyperLab.Controllers
+namespace INAF.WebApps.HyperLab.Controllers.HyperLab
 {
     public class ChartsController : BaseController
     {
@@ -29,13 +29,13 @@ namespace INAF.WebApps.HyperLab.Controllers
             (bool isUserAuthenticated, List<PermissionModel>? permissions) userStatus = getUserStatus();
 
             PartialViewModel partialViewModel = new PartialViewModel(userStatus.isUserAuthenticated);
-            return PartialView("Partials/_AlignmentPanel", partialViewModel);
+            return PartialView("~/Views/HyperLab/Charts/Partials/_AlignmentPanel.cshtml", partialViewModel);
         }
 
         [HttpGet]
         public IActionResult LoadChartError()
         {
-            return PartialView("Partials/_ChartError");
+            return PartialView("~/Views/HyperLab/Charts/Partials/_ChartError.cshtml");
         }
 
         [HttpGet]
@@ -44,7 +44,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             (bool isUserAuthenticated, List<PermissionModel>? permissions) userStatus = getUserStatus();
             PartialViewModel partialViewModel = new PartialViewModel(userStatus.isUserAuthenticated);
 
-            return PartialView("Partials/_FitPanel", partialViewModel);
+            return PartialView("~/Views/HyperLab/Charts/Partials/_FitPanel.cshtml", partialViewModel);
         }
 
         [HttpGet]
@@ -53,7 +53,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             (bool isUserAuthenticated, List<PermissionModel>? permissions) userStatus = getUserStatus();
             PartialViewModel partialViewModel = new PartialViewModel(userStatus.isUserAuthenticated);
 
-            return PartialView("Partials/_SmoothingPanel", partialViewModel);
+            return PartialView("~/Views/HyperLab/Charts/Partials/_SmoothingPanel.cshtml", partialViewModel);
         }
 
         #region GET

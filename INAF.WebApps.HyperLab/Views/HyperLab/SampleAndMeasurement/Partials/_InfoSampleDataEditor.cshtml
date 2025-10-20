@@ -2,10 +2,11 @@
 
 @using INAF.Libraries.Net.CommonWebAppHelpers
 @using INAF.Libraries.Net.HyperLab.CommonModels.Models.Info
-@using INAF.WebApps.HyperLab.Controllers
-@using INAF.WebApps.HyperLab.Resources
 @using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData
 @using INAF.Libraries.Net.HyperLab.CommonModels.Values;
+@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Controllers.HyperLab
+@using INAF.WebApps.HyperLab.Resources
 
 @{
     int grainSizeLowerValueId = Model.SampleDataSelectedValues?.GrainSizeLowerValueId ?? 0;
@@ -170,7 +171,7 @@
         </div>
 
         <div id="materialsManagement">
-            @await Html.PartialAsync("Partials/_SelectedMineralTypeEditor", Model.SampleDataSelectedValues)
+            @await Html.PartialAsync("~/Views/HyperLab/SampleAndMeasurement/Partials/_SelectedMineralTypeEditor.cshtml", Model.SampleDataSelectedValues)
         </div>
     </div>
 </div>

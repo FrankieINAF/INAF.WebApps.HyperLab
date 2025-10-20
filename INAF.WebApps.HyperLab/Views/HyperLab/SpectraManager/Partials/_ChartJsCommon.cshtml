@@ -1,7 +1,8 @@
-﻿@using INAF.WebApps.HyperLab.Controllers
-@using INAF.WebApps.HyperLab.Resources
-@using INAF.Libraries.Net.CommonWebAppHelpers
+﻿@using INAF.Libraries.Net.CommonWebAppHelpers
 @using INAF.Libraries.Net.HyperLab.CommonModels.Values
+@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Controllers.HyperLab
+@using INAF.WebApps.HyperLab.Resources
 @using static INAF.Libraries.Net.Math.Values.Enums;
 
 <script type="text/javascript">
@@ -207,9 +208,9 @@
     var UrlGuideSpectraHubChartPanelsSmoothingPanel = '/@GenericHelper.GetControllerName(nameof(SpectraManagerController))/@nameof(SpectraManagerController.GuideSpectraHubChartPanelsSmoothingPanel)';    
 
     /* UserSettingsController */
-    var UrlGetDefaultColors = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetDefaultColors)';
-    var UrlGetFitFunctions = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetFitFunctions)';
-    var UrlGetPXMinPXMaxMaxValueFunctions = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetPXMinPXMaxMaxValueFunctions)';
+    var UrlGetDefaultColors = '/@GenericHelper.GetControllerName(nameof(UserSettingsHyperLabController))/@nameof(UserSettingsHyperLabController.GetDefaultColors)';
+    var UrlGetFitFunctions = '/@GenericHelper.GetControllerName(nameof(UserSettingsHyperLabController))/@nameof(UserSettingsHyperLabController.GetFitFunctions)';
+    var UrlGetPXMinPXMaxMaxValueFunctions = '/@GenericHelper.GetControllerName(nameof(UserSettingsHyperLabController))/@nameof(UserSettingsHyperLabController.GetPXMinPXMaxMaxValueFunctions)';
     var UrlGetUserSetting = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetUserSetting)';
     var UrlGetUserSettingsByWildcard = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.GetUserSettingsByWildcard)';
     var UrlSetUserSetting = '/@GenericHelper.GetControllerName(nameof(UserSettingsController))/@nameof(UserSettingsController.SetUserSetting)';

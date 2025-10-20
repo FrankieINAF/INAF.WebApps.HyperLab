@@ -5,7 +5,7 @@ using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 
-namespace INAF.WebApps.HyperLab.Controllers
+namespace INAF.WebApps.HyperLab.Controllers.HyperLab
 {
     public class SpectraSharesController : BaseController
     {

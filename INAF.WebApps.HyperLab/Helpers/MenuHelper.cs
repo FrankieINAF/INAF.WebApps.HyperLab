@@ -3,6 +3,7 @@ using INAF.Libraries.Net.CommonWebAppModels.Models.Menu;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.WebApps.HyperLab.Controllers;
+using INAF.WebApps.HyperLab.Controllers.HyperLab;
 using INAF.WebApps.HyperLab.Extensions;
 
 namespace INAF.WebApps.HyperLab.Helpers
