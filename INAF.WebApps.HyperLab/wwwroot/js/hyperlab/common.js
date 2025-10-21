@@ -206,15 +206,6 @@ function isTabletDevice() {
     return /iPad|Android/i.test(navigator.userAgent) && !/Mobile/i.test(navigator.userAgent);
 }
 
-//function isMobile() {
-//    checkScreenDims();
-//    if (screenDims.width <= MOBILE_MAX_WIDTH) {
-//        return true;
-//    } else {
-//        return false;
-//    }
-//}
-
 $(document).ready(function () {
     luxon.Settings.defaultLocale = 'utc';
     luxon.Settings.defaultZoneName = 'utc';

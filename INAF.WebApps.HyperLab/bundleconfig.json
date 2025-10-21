@@ -420,5 +420,14 @@
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
+  },
+  /* SIMBIO */
+  {
+    "outputFileName": "wwwroot/css/dist/simbio/map/mapbundle.css",
+    "inputFiles": [
+      "wwwroot/css/simbio/map/map.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
   }
 ]

@@ -8,15 +8,17 @@
 
 }
 
+<link href="https://cesium.com/downloads/cesiumjs/releases/1.113/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+<link rel="stylesheet" href="~/css/dist/simbio/map/mapbundle.min.css" asp-append-version="true" />
+
 <div class="container h-100 overflow-x-auto overflow-y-auto">
     <!-- MAP -->
-    <div id="map"></div>
+    <div id="map" style="width: 600px; height: 600px"></div>
     <!-- CHART -->
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/vega@6"></script>
-<script src="https://cdn.jsdelivr.net/npm/vega-lite@6"></script>
-<script src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+<div id="tooltip" class="map-item-tooltip"></div>
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.113/Build/Cesium/Cesium.js"></script>
 <script type="text/javascript">
     var UrlGetTargetsWithObsCoords = '/@GenericHelper.GetControllerName(nameof(TargetsController))/@nameof(TargetsController.GetTargetsWithObsCoords)';
 </script>
