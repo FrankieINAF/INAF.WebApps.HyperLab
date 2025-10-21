@@ -9,6 +9,18 @@ const spec = {
         "type": "orthographic",
         "rotate": { "expr": "[0, 0, 0]" }
     },
+    "params": [
+        {
+            "name": "rotate0",
+            "value": 0,
+            "bind": { "input": "range", "min": -90, "max": 90, "step": 1 }
+        },
+        {
+            "name": "rotate1",
+            "value": 0,
+            "bind": { "input": "range", "min": -90, "max": 90, "step": 1 }
+        },
+    ],
     "layer": [
         {
             "data": { "sphere": true },
@@ -20,7 +32,7 @@ const spec = {
                 "url": "https://vega.github.io/editor/data/world-110m.json",
                 "format": { "type": "topojson", "feature": "countries" }
             },
-            "mark": { "type": "geoshape", "fill": "mintcream", "stroke": "black" }
+            "mark": { "type": "geoshape", "fill": "mintcream", "stroke": "black" },
         },
         {
             "encoding": {
@@ -30,7 +42,21 @@ const spec = {
                 //"latitude2": { "field": "maxLat", "type": "quantitative" },
             },
             "mark": { "type": "circle", "color": "red", "opacity": 0.25 },
-        }
+        },
+        //{
+        //    "encoding": {
+        //        "x": { "field": "minLon", "type": "quantitative" },
+        //        "x2": { "field": "maxLon", "type": "quantitative" },
+        //        "y": { "field": "minLat", "type": "quantitative" },
+        //        "y2": { "field": "maxLat", "type": "quantitative" },
+        //    },
+        //    "mark": { "type": "rect", "color": "red", "opacity": 0.25 },
+        //    "transform": [
+        //        {
+        //            "filter": "((rotate0 * -1) - 90 < datum.minLon && datum.maxLon < (rotate0 * -1) + 90) && ((rotate1 * -1) - 90 < datum.minLat && datum.maxLat < (rotate1 * -1) + 90)"
+        //        }
+        //    ],
+        //}
     ]
 };
 
@@ -43,7 +69,7 @@ function formatRectangles(obj) {
                 centerLon: item.CenterLon,
                 centerLat: item.CenterLat,
                 minLon: item.MinLon,
-                maxLon: item.maxLon,
+                maxLon: item.MaxLon,
                 minLat: item.MinLat,
                 maxLat: item.MaxLat,
             };
