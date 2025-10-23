@@ -25,12 +25,16 @@
 
 	<ItemGroup>
 	  <Compile Remove="wwwroot\js\hyperlab\search\**" />
+	  <Compile Remove="wwwroot\lib\cesiumjs\**" />
 	  <Compile Remove="wwwroot\lib\joystick-controller\**" />
 	  <Content Remove="wwwroot\js\hyperlab\search\**" />
+	  <Content Remove="wwwroot\lib\cesiumjs\**" />
 	  <Content Remove="wwwroot\lib\joystick-controller\**" />
 	  <EmbeddedResource Remove="wwwroot\js\hyperlab\search\**" />
+	  <EmbeddedResource Remove="wwwroot\lib\cesiumjs\**" />
 	  <EmbeddedResource Remove="wwwroot\lib\joystick-controller\**" />
 	  <None Remove="wwwroot\js\hyperlab\search\**" />
+	  <None Remove="wwwroot\lib\cesiumjs\**" />
 	  <None Remove="wwwroot\lib\joystick-controller\**" />
 	</ItemGroup>
 
@@ -112,7 +116,6 @@
   <ItemGroup>
     <Folder Include="Attributes\" />
     <Folder Include="wwwroot\js\dist\" />
-    <Folder Include="wwwroot\lib\cesiumjs\js\" />
   </ItemGroup>
 
   <ItemGroup>

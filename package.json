@@ -1,0 +1,19 @@
+{
+  "name": "inaf.webapps.hyperlab",
+  "version": "1.0.0",
+  "description": "This is open-access code for review. Feedback and contributions are welcome",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://www.ict.inaf.it/gitlab/francesco-carraro/DotNET/WebApps/INAF.WebApps.HyperLab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openglobus/og": "^0.27.19"
+  }
+}
