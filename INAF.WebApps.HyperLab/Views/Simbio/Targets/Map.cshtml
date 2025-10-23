@@ -8,7 +8,7 @@
 
 }
 
-<link href="/lib/openglobus/css/og.css" rel="stylesheet">
+<link href="https://cesium.com/downloads/cesiumjs/releases/1.113/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
 <link rel="stylesheet" href="~/css/dist/simbio/map/mapbundle.min.css" asp-append-version="true" />
 
 <div class="container h-100 overflow-x-auto overflow-y-auto">
@@ -18,12 +18,13 @@
 </div>
 
 <div id="tooltip" class="map-item-tooltip"></div>
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.113/Build/Cesium/Cesium.js"></script>
 <script type="text/javascript">
     var UrlGetTargetsWithObsCoords = '/@GenericHelper.GetControllerName(nameof(TargetsController))/@nameof(TargetsController.GetTargetsWithObsCoords)';
 </script>
 <environment names="Development">
-    <script type="module" src="~/js/simbio/map/map.js"></script>
+    <script type="text/javascript" src="~/js/simbio/map/map.js"></script>
 </environment>
 <environment names="Production">
-    <script type="module" src="~/js/dist/simbio/map/mapbundle.min.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/dist/simbio/map/mapbundle.min.js" asp-append-version="true"></script>
 </environment>
