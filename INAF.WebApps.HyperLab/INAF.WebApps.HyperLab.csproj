@@ -112,6 +112,7 @@
   <ItemGroup>
     <Folder Include="Attributes\" />
     <Folder Include="wwwroot\js\dist\" />
+    <Folder Include="wwwroot\lib\cesiumjs\js\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -433,5 +434,7 @@
       <LastGenOutput>Users.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties bundleconfig_1json__JsonSchema="https://www.schemastore.org/bxci.schema-3.x.json" /></VisualStudio></ProjectExtensions>
 
 </Project>
