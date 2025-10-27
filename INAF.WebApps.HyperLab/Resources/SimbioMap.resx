@@ -117,7 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="TargetAreaLabel" xml:space="preserve">
+    <value>Area:</value>
+  </data>
+  <data name="TargetCoveragePercentageLabel" xml:space="preserve">
+    <value>Coverage %:</value>
+  </data>
+  <data name="GetTargetInfoErrorMessage" xml:space="preserve">
+    <value>Sorry, no info available about requested target</value>
+  </data>
+  <data name="TargetLatCenterLabel" xml:space="preserve">
+    <value>center:</value>
+  </data>
+  <data name="TargetLatRangeLabel" xml:space="preserve">
+    <value>Lat range:</value>
+  </data>
+  <data name="TargetLonCenterLabel" xml:space="preserve">
+    <value>center:</value>
+  </data>
+  <data name="TargetLonRangeLabel" xml:space="preserve">
+    <value>Lon range:</value>
+  </data>
   <data name="MapPageTitle" xml:space="preserve">
     <value>Map Page</value>
+  </data>
+  <data name="TargetGeomInfoLabel" xml:space="preserve">
+    <value>Geom info</value>
+  </data>
+  <data name="TargetObservedByLabel" xml:space="preserve">
+    <value>Observed by: </value>
+  </data>
+  <data name="TargetLiteratureReferenceLabel" xml:space="preserve">
+    <value>Lit. ref.:</value>
+  </data>
+  <data name="TargetCategoryLabel" xml:space="preserve">
+    <value>Category:</value>
+  </data>
+  <data name="TargetObservationModeLabel" xml:space="preserve">
+    <value>Obs. mode:</value>
+  </data>
+  <data name="TargetObservationTypeLabel" xml:space="preserve">
+    <value>Obs type:</value>
+  </data>
+  <data name="TargetObservationInfoLbel" xml:space="preserve">
+    <value>Observation info</value>
   </data>
 </root>

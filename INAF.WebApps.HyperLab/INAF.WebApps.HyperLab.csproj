@@ -132,11 +132,11 @@
     <None Include="wwwroot\css\hyperlab\account\login.css" />
     <None Include="wwwroot\css\hyperlab\account\registrationconfirmed.css" />
     <None Include="wwwroot\css\hyperlab\apps\apps.css" />
-    <None Include="wwwroot\css\hyperlab\common.css" />
+    <None Include="wwwroot\css\common.css" />
     <None Include="wwwroot\css\hyperlab\commonlayoutnonavigation.css" />
     <None Include="wwwroot\css\hyperlab\commonlists.css" />
-    <None Include="wwwroot\css\hyperlab\commonvalidation.css" />
-    <None Include="wwwroot\css\hyperlab\errorpage.css" />
+    <None Include="wwwroot\css\commonvalidation.css" />
+    <None Include="wwwroot\css\errorpage.css" />
     <None Include="wwwroot\css\hyperlab\home\cookiebanner.css" />
     <None Include="wwwroot\css\hyperlab\home\index.css" />
     <None Include="wwwroot\css\hyperlab\materials\minerals.css" />

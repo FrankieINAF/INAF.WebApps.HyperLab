@@ -61,11 +61,137 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, no info available about requested target.
+        /// </summary>
+        public static string GetTargetInfoErrorMessage {
+            get {
+                return ResourceManager.GetString("GetTargetInfoErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Map Page.
         /// </summary>
         public static string MapPageTitle {
             get {
                 return ResourceManager.GetString("MapPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area:.
+        /// </summary>
+        public static string TargetAreaLabel {
+            get {
+                return ResourceManager.GetString("TargetAreaLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category:.
+        /// </summary>
+        public static string TargetCategoryLabel {
+            get {
+                return ResourceManager.GetString("TargetCategoryLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Coverage %:.
+        /// </summary>
+        public static string TargetCoveragePercentageLabel {
+            get {
+                return ResourceManager.GetString("TargetCoveragePercentageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geom info.
+        /// </summary>
+        public static string TargetGeomInfoLabel {
+            get {
+                return ResourceManager.GetString("TargetGeomInfoLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to center:.
+        /// </summary>
+        public static string TargetLatCenterLabel {
+            get {
+                return ResourceManager.GetString("TargetLatCenterLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lat range:.
+        /// </summary>
+        public static string TargetLatRangeLabel {
+            get {
+                return ResourceManager.GetString("TargetLatRangeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lit. ref.:.
+        /// </summary>
+        public static string TargetLiteratureReferenceLabel {
+            get {
+                return ResourceManager.GetString("TargetLiteratureReferenceLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to center:.
+        /// </summary>
+        public static string TargetLonCenterLabel {
+            get {
+                return ResourceManager.GetString("TargetLonCenterLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lon range:.
+        /// </summary>
+        public static string TargetLonRangeLabel {
+            get {
+                return ResourceManager.GetString("TargetLonRangeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Observation info.
+        /// </summary>
+        public static string TargetObservationInfoLbel {
+            get {
+                return ResourceManager.GetString("TargetObservationInfoLbel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obs. mode:.
+        /// </summary>
+        public static string TargetObservationModeLabel {
+            get {
+                return ResourceManager.GetString("TargetObservationModeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obs type:.
+        /// </summary>
+        public static string TargetObservationTypeLabel {
+            get {
+                return ResourceManager.GetString("TargetObservationTypeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Observed by: .
+        /// </summary>
+        public static string TargetObservedByLabel {
+            get {
+                return ResourceManager.GetString("TargetObservedByLabel", resourceCulture);
             }
         }
     }

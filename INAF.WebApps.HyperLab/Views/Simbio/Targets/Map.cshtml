@@ -17,11 +17,99 @@
     <!-- CHART -->
 </div>
 
+<div id="charmsSelectedItem" data-role="charms" data-cls-charms="charms-panel" data-position="right" data-on-open="onCharmsSelectedItemOpened()">
+    <!-- MAIN BAR -->
+    <div style="height: 60px">
+        <!-- HIDE-CHARMS BUTTON -->
+        <div class="button light cycle outline float-right pointer" title="@Html.Raw(Charms.CharmsHideLabel)" onclick="hideCharmsSelectedItem()">
+            <span class="mif-arrow-right"></span>
+        </div>
+    </div>
+    <!-- TARGET INFO -->
+    <!-- NAME -->
+    <div class="row cell-12">
+        <p id="targetName" class="fg-white text-center text-leader"></p>
+    </div>
+    <hr class="thin mt-4 mb-4 bg-white">
+    <!-- OBSERVED BY INFO -->
+    <div class="row cell-12">
+        <span class="fg-white text-center">@Html.Raw(SimbioMap.TargetObservedByLabel)</span>
+        <span id="observedBy" class="fg-white text-center"></span>
+    </div>
+    <hr class="thin mt-4 mb-4 bg-white">
+    <!-- OBSERVATION INFO -->
+    <div class="row cell-12">
+        <p class="fg-white text-center text-leader2">@Html.Raw(SimbioMap.TargetObservationInfoLbel)</p>
+    </div>
+    <div class="row cell-12">
+        <span class="fg-white text-center">@Html.Raw(SimbioMap.TargetCategoryLabel)</span>
+        <span id="category" class="fg-white text-center"></span>
+    </div>
+    <div class="row cell-12">
+        <span class="fg-white text-center">@Html.Raw(SimbioMap.TargetObservationModeLabel)</span>
+        <span id="observationMode" class="fg-white text-center"></span>
+    </div>
+    <div class="row cell-12">
+        <span class="fg-white text-center">@Html.Raw(SimbioMap.TargetObservationTypeLabel)</span>
+        <span id="observationType" class="fg-white text-center"></span>
+    </div>
+    <hr class="thin mt-4 mb-4 bg-white">
+    <!-- GEOM INFO -->
+    <div class="row cell-12">
+        <p class="fg-white text-center text-leader2">@Html.Raw(SimbioMap.TargetGeomInfoLabel)</p>
+    </div>
+    <div class="row cell-12 d-flex flex-column">
+        <!-- LAT -->
+        <div class="d-flex flex-row">
+            <div>
+                <span>@Html.Raw(SimbioMap.TargetLatRangeLabel)</span>
+                <span id="latRange"></span>
+            </div>
+            <div class="margin-left-16">
+                <span>@Html.Raw(SimbioMap.TargetLatCenterLabel)</span>
+                <span id="latCenter"></span>
+            </div>
+
+        </div>
+        <!-- LON -->
+        <div class="d-flex flex-row margin-top-16">
+            <div>
+                <span>@Html.Raw(SimbioMap.TargetLonRangeLabel)</span>
+                <span id="lonRange"></span>
+            </div>
+            <div class="margin-left-16">
+                <span>@Html.Raw(SimbioMap.TargetLonCenterLabel)</span>
+                <span id="lonCenter"></span>
+            </div>
+        </div>
+        <!-- AREA  -->
+        <div class="d-flex flex-row margin-top-16">
+            <div>
+                <span>@Html.Raw(SimbioMap.TargetAreaLabel)</span>
+                <span id="area"></span>
+            </div>
+        </div>
+        <!-- COVERAGE  -->
+        <div class="d-flex flex-row margin-top-16">
+            <div>
+                <span>@Html.Raw(SimbioMap.TargetCoveragePercentageLabel)</span>
+                <span id="coveragePercentage"></span>
+            </div>
+        </div>
+    </div>
+    <hr class="thin mt-4 mb-4 bg-white">
+    <!-- OTHER INFO -->
+    <div class="row cell-12">
+        <span class="fg-white text-center">@Html.Raw(SimbioMap.TargetLiteratureReferenceLabel)</span>
+        <a id="litRef" class="fg-white"></a>
+    </div>
+</div>
+
+@{
+    await Html.RenderPartialAsync("_JsCommonSimbio");
+}
 <div id="tooltip" class="map-item-tooltip"></div>
 <script src="https://cesium.com/downloads/cesiumjs/releases/1.113/Build/Cesium/Cesium.js"></script>
-<script type="text/javascript">
-    var UrlGetTargetsWithObsCoords = '/@GenericHelper.GetControllerName(nameof(TargetsController))/@nameof(TargetsController.GetTargetsWithObsCoords)';
-</script>
 <environment names="Development">
     <script type="text/javascript" src="~/js/simbio/map/map.js"></script>
 </environment>

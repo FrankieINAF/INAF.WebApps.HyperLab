@@ -34,6 +34,11 @@ builder.Services.AddSingleton<RsaSecurityKey>(rsaSecurityKey);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews()
+    .AddRazorOptions(options =>
+    {
+        options.ViewLocationFormats.Add("/Views/HyperLab/Shared/{0}.cshtml");
+        options.ViewLocationFormats.Add("/Views/Simbio/Shared/{0}.cshtml");
+    })
     .AddJsonOptions(x =>
     {
         x.JsonSerializerOptions.PropertyNamingPolicy = null; // to avoid camel case when creating json from objects

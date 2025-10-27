@@ -253,7 +253,7 @@
   {
     "outputFileName": "wwwroot/css/dist/account/accounterrorbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/common.css",
+      "wwwroot/css/common.css",
       "wwwroot/css/hyperlab/account/errorpage.css",
       "wwwroot/css/hyperlab/account/login.css"
     ],
@@ -271,8 +271,8 @@
   {
     "outputFileName": "wwwroot/css/dist/commonbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/common.css",
-      "wwwroot/css/hyperlab/commonvalidation.css",
+      "wwwroot/css/common.css",
+      "wwwroot/css/commonvalidation.css",
       "wwwroot/css/animate/animate.css"
     ],
     "includeInProject": true,
@@ -282,7 +282,7 @@
     "outputFileName": "wwwroot/css/dist/account/commonlayoutnonavigationbundle.css",
     "inputFiles": [
       "wwwroot/css/hyperlab/commonlayoutnonavigation.css",
-      "wwwroot/css/hyperlab/common.css"
+      "wwwroot/css/common.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -290,7 +290,7 @@
   {
     "outputFileName": "wwwroot/css/dist/home/cookiebannerbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/common.css",
+      "wwwroot/css/common.css",
       "wwwroot/css/hyperlab/home/cookiebanner.css"
     ],
     "includeInProject": true,
@@ -311,7 +311,7 @@
   {
     "outputFileName": "wwwroot/css/dist/errorpagebundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/errorpage.css"
+      "wwwroot/css/errorpage.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -345,7 +345,7 @@
   {
     "outputFileName": "wwwroot/css/dist/account/loginbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/common.css",
+      "wwwroot/css/common.css",
       "wwwroot/css/hyperlab/account/confirmationcompleted.css",
       "wwwroot/css/hyperlab/account/login.css"
     ],
@@ -378,6 +378,7 @@
   {
     "outputFileName": "wwwroot/css/dist/hyperlab/hubandchart/hubandchartbundle.css",
     "inputFiles": [
+      "wwwroot/css/commoncharms.css",
       "wwwroot/css/hyperlab/hubandchart/searches.css",
       "wwwroot/css/hyperlab/hubandchart/hubandchart.css",
       "wwwroot/css/hyperlab/hubandchart/charms.css"
@@ -388,7 +389,7 @@
   {
     "outputFileName": "wwwroot/css/dist/account/registrationconfirmedbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/common.css",
+      "wwwroot/css/common.css",
       "wwwroot/css/hyperlab/account/login.css",
       "wwwroot/css/hyperlab/account/registrationconfirmed.css"
     ],
@@ -417,6 +418,17 @@
       "wwwroot/css/hyperlab/commonlists.css",
       "wwwroot/css/hyperlab/users/users.css",
       "wwwroot/css/hyperlab/users/userdata.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  /* SIMBIO */
+  {
+    "outputFileName": "wwwroot/css/dist/simbio/map/mapbundle.css",
+    "inputFiles": [
+      "wwwroot/css/common.css",
+      "wwwroot/css/commoncharms.css",
+      "wwwroot/css/simbio/map/map.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }

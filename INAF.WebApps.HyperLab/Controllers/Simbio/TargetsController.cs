@@ -1,6 +1,8 @@
-﻿using INAF.Libraries.Net.DB.Simbio.Data;
+﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
+using INAF.Libraries.Net.DB.Simbio.Data;
 using INAF.Libraries.Net.Extensions;
 using INAF.Libraries.Net.Simbio.CommonModels.Models.GeoInfo;
+using INAF.Libraries.Net.Simbio.CommonModels.Models.Targets;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
@@ -27,9 +29,19 @@ namespace INAF.WebApps.HyperLab.Controllers.Simbio
         }
 
         [HttpGet]
+        public IActionResult GetTargetInfo(GenericRequestByIdModel model)
+        {
+            TargetModel? targetInfo = dbHandlerSimbio.getTargetInfo(model.Id);
+            if (targetInfo != null)
+                return new JsonResult(targetInfo);
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
         public IActionResult GetTargetsWithObsCoords()
         {
-            IEnumerable<TargetInfoModel>? targetInfos = dbHandlerSimbio.getTargetsWithObsCoords();
+            IEnumerable<TargetGeoInfoModel>? targetInfos = dbHandlerSimbio.getTargetsWithObsCoords();
             if (targetInfos.IsAny())
                 return new JsonResult(targetInfos);
             else

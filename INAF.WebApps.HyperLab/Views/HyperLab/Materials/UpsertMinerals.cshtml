@@ -68,7 +68,7 @@
 
 @Html.AntiForgeryToken()
 
-@await Html.PartialAsync("Partials/_JsCommon")
+@await Html.PartialAsync("_JsCommonHyperLab")
 
 <script type="text/javascript">
     var UrlDeleteMineral = '/@GenericHelper.GetControllerName(nameof(MaterialsController))/@nameof(MaterialsController.DeleteMineral)';
