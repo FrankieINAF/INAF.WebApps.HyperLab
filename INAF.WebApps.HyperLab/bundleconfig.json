@@ -244,7 +244,7 @@
     "inputFiles": [
       "wwwroot/js/simbio/map/map.js"
     ],
-    "minify": { "enabled": true },
+    "minify": { "enabled": false },
     "includeInProject": true
   },
   /* ################################################################################ */

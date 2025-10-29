@@ -186,6 +186,12 @@ function showGlobe() {
     });
 
     /* set Mercury imagery */
+    //const mercuryImagery = new Cesium.UrlTemplateImageryProvider({
+    //    url: "/tiles/mercury/{z}/{x}/{y}.png",
+    //    tilingScheme: new Cesium.GeographicTilingScheme(),
+    //    maximumLevel: 7,
+    //    credit: "Valentina Galluzzi"
+    //});
     const mercuryImagery = new Cesium.SingleTileImageryProvider({
         url: '/images/maps/mercury_messenger_mdis_basemap_enhancedcolor_mosaic_global_1024.jpg',
         rectangle: Cesium.Rectangle.fromDegrees(-180, -90, 180, 90)
