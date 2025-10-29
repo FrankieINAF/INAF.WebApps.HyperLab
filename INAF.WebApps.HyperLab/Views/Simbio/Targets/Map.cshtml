@@ -12,6 +12,25 @@
 <link rel="stylesheet" href="~/css/dist/simbio/map/mapbundle.min.css" asp-append-version="true" />
 
 <div class="container h-100 overflow-x-auto overflow-y-auto">
+    <div id="selectors">
+        <div class="row cell-fs-12 d-flex">
+            <!-- TARGETS -->
+            <div class="d-flex">
+                <div><input id="loadHideTargets" type="checkbox" data-role="switch" data-on="Load" data-off="Hide"></div>
+                <div class="margin-top-4"><span class="fg-black">@Html.Raw(SimbioMap.SelectorsShowHideTargets)</span></div>
+            </div>
+            <!-- STPs AND FOOTPRINTS -->
+            <div class="d-flex flex-column margin-left-24">
+                <div class="d-flex">
+                    <div><input id="showHideSearchOfFootprints" type="checkbox" data-role="switch" data-on="Show" data-off="Hide"></div>
+                    <div class="margin-top-4"><span class="fg-black">@Html.Raw(SimbioMap.SelectorsShowHideSearchOfFootprints)</span></div>
+                </div>
+                <div id="selectStpContainer" class="d-none">
+                    <select id="selectStp" data-role="select" data-on-item-select="retrieveFootprintsByStpAsync"></select>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- MAP -->
     <div id="map" style="width: 100%; height: 600px"></div>
     <!-- CHART -->

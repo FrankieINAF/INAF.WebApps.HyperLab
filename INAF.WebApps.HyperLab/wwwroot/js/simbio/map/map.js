@@ -1,11 +1,28 @@
-﻿var targetsArray = [];
+﻿var footprintsArray = [];
+var targetsArray = [];
+
 var viewer = null;
 var tooltipElement = null;
 var handler = null;
 
 var selectedTargetId;
 
+var FOOTPRINT = 'Footprint';
+var SIM = 'SIM';
+var TARGET = 'Target';
+
 Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmNjkyMTc1NC04ZWNmLTQzMjEtODhmNC00OWNmOTBjMjU0YjkiLCJpZCI6MzUyNjQ0LCJpYXQiOjE3NjEwNDk3MDB9.JcVGQqYP84LJPidLwfzQfMkHuazk1tXWeiQAKuEHh_Y';
+
+function initSwitchLoadTargets() {
+    $('#loadHideTargets').on('change', async function () {
+        let isChecked = isCheckboxChecked('loadHideTargets');
+
+        if (isChecked)
+            await retrieveTargetsAsync();
+        else
+            removeTargets();
+    });
+}
 
 /* ################################################################################ */
 /* RETRIEVE TARGETS FROM BACK-END */
@@ -92,11 +109,15 @@ async function retrieveTargetDetailsAsync(targetId) {
         $('#lonCenter').text(obj.CenterLon.toFixed(6));
         $('#area').text(obj.AreaGeod.toLocaleString('en-US'));
         $('#coveragePercentage').text(obj.CoveragePercentage.toFixed(2));
-        $('#litRef').attr('href', obj.LiteratureRef);
-        $('#litRef').text(obj.LiteratureRef);
+        let litRef = obj.LiteratureRef;
+        if (litRef)
+            $('#litRef').attr('href', obj.LiteratureRef);
+        else
+            litRef = '-';
+        $('#litRef').text(litRef);
 
     } else {
-        showSimpleDialog(ERROR_LABEL, GetTargetInfoErrorMessage, ALERT);
+        showSimpleDialog(ERROR_LABEL, TargetGetInfoErrorMessage, ALERT);
     }
 }
 
@@ -161,33 +182,76 @@ function showGlobe() {
     });
 }
 
-function addExtrudedRectangle(viewer, west, south, east, north, color, id, name) {
-    viewer.entities.add({
-        id: id,
-        name: name || 'Custom Extruded Rectangle',
-        rectangle: {
-            coordinates: Cesium.Rectangle.fromDegrees(west, south, east, north),
-            material: color.withAlpha(0.7),
+/* ################################################################################ */
+/* RETRIEVE FOOTPRINTS */
+/* ################################################################################ */
+async function retrieveFootprintsByStpAsync(val) {
+    setLoadingCircleIsVisible(true);
 
-            /* height and extrudedHeight define the 3D shape */
-            height: 0,
-            /* extrudedHeight is the height to which the rectangle is extruded */
-            extrudedHeight: 0,
+    const model = {
+        Value: val
+    };
 
-            fill: true,
-            outline: true,
-            outlineColor: Cesium.Color.BLACK
-        }
-    });
+    let footprints = await doAjaxGetAsync(UrlGetFootprintsByStp, model);
+    if (footprints == null || footprints.length == 0) {
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(WARNING_LABEL, FootprintsNoItemsAvailable, WARNING);
+        return;
+    }
+
+    const footprintsCount = footprints.length;
+    for (var i = 0; i < footprintsCount; i++) {
+        const footprint = footprints[i];
+
+        footprintsArray.push(footprint);
+
+        const flatCoords = footprint.corners.flatMap(corner => [corner.longitude, corner.latitude]);
+        const positions = Cesium.Cartesian3.fromDegreesArray(flatCoords);
+
+        viewer.entities.add({
+            id: footprint.Id,
+            name: `${FOOTPRINT} ${footprint.Id}`,
+            polygon: {
+                hierarchy: positions,
+                /* height and extrudedHeight define the 3D shape */
+                height: 0,
+                /* extrudedHeight is the height to which the rectangle is extruded */
+                extrudedHeight: 0,
+                material: Cesium.Color.RED.withAlpha(0.5),
+                outline: true,
+                outlineColor: Cesium.Color.BLACK
+            }
+        });
+    }
+
+    setLoadingCircleIsVisible(false);
+}
+
+async function retrieveStpsWithFootprintsAsync() {
+    let stps = await doAjaxGetAsync(UrlGetStpsWithFootprints);
+    if (stps == null || stps.length == 0)
+        return;
+
+    Metro.getPlugin('#selectStp', 'select').addOption('Select STP');
+    const stpsCount = stps.length;
+    for (var i = 0; i < stpsCount; i++) {
+        Metro.getPlugin('#selectStp', 'select').addOption(stps[i]);
+    }
+    showByClassDFlexItem('selectStpContainer');
 }
 
 /* ################################################################################ */
 /* RETRIEVE TARGETS FROM BACK-END */
 /* ################################################################################ */
-async function retrieveAndShowTargetsAsync() {
+async function retrieveTargetsAsync() {
+    setLoadingCircleIsVisible(true);
+
     let targets = await doAjaxGetNoModelAsync(UrlGetTargetsWithObsCoords);
-    if (targets == null || targets.length == 0)
+    if (targets == null || targets.length == 0) {
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(WARNING_LABEL, TargetsNoItemsAvailableMessage, WARNING);
         return;
+    }
 
     targetsArray = [];
     const targetsCount = targets.length;
@@ -196,14 +260,46 @@ async function retrieveAndShowTargetsAsync() {
 
         targetsArray.push(target);
 
-        addExtrudedRectangle(
-            viewer,
-            target.MinLon, target.MinLat, target.MaxLon, target.MaxLat,
-            Cesium.Color.CYAN,
-            target.Id,
-            "Target: " + target.Name
-        );
+        viewer.entities.add({
+            id: target.Id,
+            name: `${TARGET}: ${target.Name}` || 'Custom Extruded Rectangle',
+            rectangle: {
+                coordinates: Cesium.Rectangle.fromDegrees(target.MinLon, target.MinLat, target.MaxLon, target.MaxLat),
+                material: Cesium.Color.CYAN.withAlpha(0.7),
+                /* height and extrudedHeight define the 3D shape */
+                height: 0,
+                /* extrudedHeight is the height to which the rectangle is extruded */
+                extrudedHeight: 0,
+                fill: true,
+                outline: true,
+                outlineColor: Cesium.Color.BLACK
+            }
+        });
+        //addEntities(
+        //    viewer,
+        //    target.MinLon, target.MinLat, target.MaxLon, target.MaxLat,
+        //    Cesium.Color.CYAN,
+        //    target.Id,
+        //    "Target: " + target.Name
+        //);
     }
+
+    setLoadingCircleIsVisible(false);
+}
+
+function removeTargets() {
+    let entities = viewer.entities.values.find(x => x.name.includes(SIM));
+    if (!entities)
+        return;
+
+    /* remove targets from map */
+    entities.entityCollection.removeAll();
+    /* clear in-memory array */
+    targetsArray = [];
+    //const entitiesNum = entities.length;
+    //for (var i = 0; i < entitiesNum; i++) {
+    //    viewer.entities.removeById(entities[i].id);
+    //}
 }
 
 /* ################################################################################ */
@@ -212,8 +308,6 @@ async function retrieveAndShowTargetsAsync() {
 $(function () {
     showPageItems(true);
 
-    setLoadingCircleIsVisible(true);
-
     tooltipElement = document.getElementById('tooltip');
 
     showGlobe();
@@ -221,15 +315,9 @@ $(function () {
     handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
     initEventsOnTargets();
 
-    const init = async function () {
-        try {
-            await retrieveAndShowTargetsAsync();
-        } catch (e) {
-            console.log(e);
-        } finally {
-            setLoadingCircleIsVisible(false);
-        }
-    };
+    /* retrieve stps related to footprints */
+    retrieveStpsWithFootprintsAsync();
 
-    executeAfter(init, 500);
+    /* init switch for loading/hiding targets */
+    initSwitchLoadTargets();
 });

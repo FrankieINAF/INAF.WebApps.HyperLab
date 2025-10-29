@@ -123,7 +123,7 @@
   <data name="TargetCoveragePercentageLabel" xml:space="preserve">
     <value>Coverage %:</value>
   </data>
-  <data name="GetTargetInfoErrorMessage" xml:space="preserve">
+  <data name="TargetGetInfoErrorMessage" xml:space="preserve">
     <value>Sorry, no info available about requested target</value>
   </data>
   <data name="TargetLatCenterLabel" xml:space="preserve">
@@ -161,5 +161,17 @@
   </data>
   <data name="TargetObservationInfoLbel" xml:space="preserve">
     <value>Observation info</value>
+  </data>
+  <data name="SelectorsShowHideTargets" xml:space="preserve">
+    <value>Show/hide targets</value>
+  </data>
+  <data name="TargetsNoItemsAvailableMessage" xml:space="preserve">
+    <value>No targets available</value>
+  </data>
+  <data name="FootprintsNoItemsAvailable" xml:space="preserve">
+    <value>No footprints available for selected STP value</value>
+  </data>
+  <data name="SelectorsShowHideSearchOfFootprints" xml:space="preserve">
+    <value>Show/hide search for footprints</value>
   </data>
 </root>

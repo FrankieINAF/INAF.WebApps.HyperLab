@@ -9,8 +9,15 @@
     var STC = '@Enums.Channel.STC.ToString()';
     var VIHI = '@Enums.Channel.VIHI.ToString()';
 
-    var GetTargetInfoErrorMessage = "@Html.Raw(SimbioMap.GetTargetInfoErrorMessage)";
+    var FootprintsNoItemsAvailable = "@Html.Raw(SimbioMap.FootprintsNoItemsAvailable)";
 
-    var UrlGetTargetInfo = '/@GenericHelper.GetControllerName(nameof(TargetsController))/@nameof(TargetsController.GetTargetInfo)';
-    var UrlGetTargetsWithObsCoords = '/@GenericHelper.GetControllerName(nameof(TargetsController))/@nameof(TargetsController.GetTargetsWithObsCoords)';
+    var TargetsNoItemsAvailableMessage = "@Html.Raw(SimbioMap.TargetsNoItemsAvailableMessage)";
+    var TargetGetInfoErrorMessage = "@Html.Raw(SimbioMap.TargetGetInfoErrorMessage)";
+
+    var UrlGetFootprintsByStp = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.GetFootprintsByStp)';
+
+    var UrlGetStpsWithFootprints = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.GetStpsWithFootprints)';
+
+    var UrlGetTargetInfo = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.GetTargetInfo)';
+    var UrlGetTargetsWithObsCoords = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.GetTargetsWithObsCoords)';
 </script>

@@ -61,11 +61,11 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorry, no info available about requested target.
+        ///   Looks up a localized string similar to No footprints available for selected STP value.
         /// </summary>
-        public static string GetTargetInfoErrorMessage {
+        public static string FootprintsNoItemsAvailable {
             get {
-                return ResourceManager.GetString("GetTargetInfoErrorMessage", resourceCulture);
+                return ResourceManager.GetString("FootprintsNoItemsAvailable", resourceCulture);
             }
         }
         
@@ -75,6 +75,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string MapPageTitle {
             get {
                 return ResourceManager.GetString("MapPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show/hide search for footprints.
+        /// </summary>
+        public static string SelectorsShowHideSearchOfFootprints {
+            get {
+                return ResourceManager.GetString("SelectorsShowHideSearchOfFootprints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show/hide targets.
+        /// </summary>
+        public static string SelectorsShowHideTargets {
+            get {
+                return ResourceManager.GetString("SelectorsShowHideTargets", resourceCulture);
             }
         }
         
@@ -111,6 +129,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string TargetGeomInfoLabel {
             get {
                 return ResourceManager.GetString("TargetGeomInfoLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, no info available about requested target.
+        /// </summary>
+        public static string TargetGetInfoErrorMessage {
+            get {
+                return ResourceManager.GetString("TargetGetInfoErrorMessage", resourceCulture);
             }
         }
         
@@ -192,6 +219,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string TargetObservedByLabel {
             get {
                 return ResourceManager.GetString("TargetObservedByLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No targets available.
+        /// </summary>
+        public static string TargetsNoItemsAvailableMessage {
+            get {
+                return ResourceManager.GetString("TargetsNoItemsAvailableMessage", resourceCulture);
             }
         }
     }
