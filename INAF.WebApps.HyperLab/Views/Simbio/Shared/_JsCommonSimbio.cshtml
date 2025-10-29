@@ -1,0 +1,16 @@
+﻿@using INAF.Libraries.Net.Simbio.CommonModels.Values
+@using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Controllers.Simbio
+@using INAF.WebApps.HyperLab.Resources
+
+<script type="text/javascript">
+    var HRIC = '@Enums.Channel.HRIC.ToString()';
+    var STC = '@Enums.Channel.STC.ToString()';
+    var VIHI = '@Enums.Channel.VIHI.ToString()';
+
+    var GetTargetInfoErrorMessage = "@Html.Raw(SimbioMap.GetTargetInfoErrorMessage)";
+
+    var UrlGetTargetInfo = '/@GenericHelper.GetControllerName(nameof(TargetsController))/@nameof(TargetsController.GetTargetInfo)';
+    var UrlGetTargetsWithObsCoords = '/@GenericHelper.GetControllerName(nameof(TargetsController))/@nameof(TargetsController.GetTargetsWithObsCoords)';
+</script>
