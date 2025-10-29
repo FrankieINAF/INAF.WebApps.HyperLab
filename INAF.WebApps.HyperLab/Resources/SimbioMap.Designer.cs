@@ -79,6 +79,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select STP.
+        /// </summary>
+        public static string SelectorSelectStpValue {
+            get {
+                return ResourceManager.GetString("SelectorSelectStpValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show/hide search for footprints.
         /// </summary>
         public static string SelectorsShowHideSearchOfFootprints {

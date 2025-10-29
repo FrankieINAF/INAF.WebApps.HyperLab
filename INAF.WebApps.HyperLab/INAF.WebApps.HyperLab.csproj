@@ -116,6 +116,7 @@
   <ItemGroup>
     <Folder Include="Attributes\" />
     <Folder Include="wwwroot\js\dist\" />
+    <Folder Include="wwwroot\tiles\mercury\" />
   </ItemGroup>
 
   <ItemGroup>

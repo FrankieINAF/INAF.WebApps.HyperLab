@@ -1,5 +1,6 @@
-﻿var footprintsArray = [];
-var targetsArray = [];
+﻿
+var footprintsArray = null;
+var targetsArray = null;
 
 var viewer = null;
 var tooltipElement = null;
@@ -13,7 +14,7 @@ var TARGET = 'Target';
 
 Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmNjkyMTc1NC04ZWNmLTQzMjEtODhmNC00OWNmOTBjMjU0YjkiLCJpZCI6MzUyNjQ0LCJpYXQiOjE3NjEwNDk3MDB9.JcVGQqYP84LJPidLwfzQfMkHuazk1tXWeiQAKuEHh_Y';
 
-function initSwitchLoadTargets() {
+function initSwitchLoadHideTargets() {
     $('#loadHideTargets').on('change', async function () {
         let isChecked = isCheckboxChecked('loadHideTargets');
 
@@ -21,6 +22,17 @@ function initSwitchLoadTargets() {
             await retrieveTargetsAsync();
         else
             removeTargets();
+    });
+}
+
+function initSwitchShowHideSearchOfFootprints() {
+    $('#showHideSearchOfFootprints').on('change', function () {
+        let isChecked = isCheckboxChecked('showHideSearchOfFootprints');
+
+        if (isChecked)
+            showByClassDFlexItem('selectStpContainer');
+        else
+            hideByClassDFlexItem('selectStpContainer');
     });
 }
 
@@ -143,6 +155,12 @@ function showGlobe() {
     viewer = new Cesium.Viewer('map', {
         terrainProvider: new Cesium.EllipsoidTerrainProvider(),
         imageryProvider: false,
+        //imageryProvider: new Cesium.UrlTemplateImageryProvider({
+        //    url: "/tiles/mercury/{z}/{x}/{y}.png",
+        //    tilingScheme: new Cesium.GeographicTilingScheme(),
+        //    maximumLevel: 7,
+        //    credit: "Valentina Galluzzi"
+        //}),
 
         creditContainer: document.createElement("div"),
 
@@ -186,6 +204,9 @@ function showGlobe() {
 /* RETRIEVE FOOTPRINTS */
 /* ################################################################################ */
 async function retrieveFootprintsByStpAsync(val) {
+    if (val == null || val == SelectorSelectStpValue)
+        return;
+
     setLoadingCircleIsVisible(true);
 
     const model = {
@@ -237,7 +258,6 @@ async function retrieveStpsWithFootprintsAsync() {
     for (var i = 0; i < stpsCount; i++) {
         Metro.getPlugin('#selectStp', 'select').addOption(stps[i]);
     }
-    showByClassDFlexItem('selectStpContainer');
 }
 
 /* ################################################################################ */
@@ -306,6 +326,9 @@ function removeTargets() {
 /* DOCUMENT READY */
 /* ################################################################################ */
 $(function () {
+    footprintsArray = [];
+    targetsArray = [];
+
     showPageItems(true);
 
     tooltipElement = document.getElementById('tooltip');
@@ -319,5 +342,7 @@ $(function () {
     retrieveStpsWithFootprintsAsync();
 
     /* init switch for loading/hiding targets */
-    initSwitchLoadTargets();
+    initSwitchLoadHideTargets();
+    /* init switch for selecting stp */
+    initSwitchShowHideSearchOfFootprints();
 });

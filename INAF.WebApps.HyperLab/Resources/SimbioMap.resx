@@ -174,4 +174,7 @@
   <data name="SelectorsShowHideSearchOfFootprints" xml:space="preserve">
     <value>Show/hide search for footprints</value>
   </data>
+  <data name="SelectorSelectStpValue" xml:space="preserve">
+    <value>Select STP</value>
+  </data>
 </root>
