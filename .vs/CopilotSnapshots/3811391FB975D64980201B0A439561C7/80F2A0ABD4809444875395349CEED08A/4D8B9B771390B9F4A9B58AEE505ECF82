@@ -1,4 +1,6 @@
-﻿/* ################################################################################ */
+﻿var footprintsArray = null;
+
+/* ################################################################################ */
 /* RETRIEVE TARGETS FROM BACK-END */
 /* ################################################################################ */
 async function retrieveTargetDetailsAsync(targetId) {
@@ -61,4 +63,53 @@ function onCharmsSelectedItemOpened() {
 
 function showCharmsSelectedItem() {
     Metro.charms.open('#charmsSelectedItem');
+}
+
+/* ################################################################################ */
+/* RETRIEVE FOOTPRINTS */
+/* ################################################################################ */
+async function retrieveFootprintsByStpAsync(val) {
+    if (val == null || val == SelectorSelectStpValue)
+        return;
+
+    setLoadingCircleIsVisible(true);
+
+    const model = {
+        Value: val
+    };
+
+    let footprints = await doAjaxGetAsync(UrlGetFootprintsByStp, model);
+    if (footprints == null || footprints.length == 0) {
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(WARNING_LABEL, FootprintsNoItemsAvailable, WARNING);
+        return;
+    }
+
+    const footprintsCount = footprints.length;
+    for (var i = 0; i < footprintsCount; i++) {
+        const footprint = footprints[i];
+
+        footprintsArray.push(footprint);
+
+        const coordsArray = footprint.corners.map(corner => [corner.longitude, corner.latitude]);
+        console.log(coordsArray);
+        //const positions = Cesium.Cartesian3.fromDegreesArray(flatCoords);
+
+        //viewer.entities.add({
+        //    id: footprint.Id,
+        //    name: `${FOOTPRINT} ${footprint.Id}`,
+        //    polygon: {
+        //        hierarchy: positions,
+        //        /* height and extrudedHeight define the 3D shape */
+        //        height: 0,
+        //        /* extrudedHeight is the height to which the rectangle is extruded */
+        //        extrudedHeight: 0,
+        //        material: Cesium.Color.RED.withAlpha(0.5),
+        //        outline: true,
+        //        outlineColor: Cesium.Color.BLACK
+        //    }
+        //});
+    }
+
+    setLoadingCircleIsVisible(false);
 }

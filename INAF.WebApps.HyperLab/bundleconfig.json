@@ -242,7 +242,6 @@
   {
     "outputFileName": "wwwroot/js/dist/simbio/map/mapbundle.js",
     "inputFiles": [
-      "wwwroot/js/simbio/map/mapopenglobus.js",
       "wwwroot/js/simbio/map/map.js"
     ],
     "minify": { "enabled": false },

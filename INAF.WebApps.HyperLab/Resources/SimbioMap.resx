@@ -177,4 +177,7 @@
   <data name="SelectorSelectStpValue" xml:space="preserve">
     <value>Select STP</value>
   </data>
+  <data name="TargetTooltipInfo" xml:space="preserve">
+    <value>Click on target for more info</value>
+  </data>
 </root>

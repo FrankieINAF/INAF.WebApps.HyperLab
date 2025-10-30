@@ -127,12 +127,52 @@
 @{
     await Html.RenderPartialAsync("_JsCommonSimbio");
 }
-<div id="tooltip" class="map-item-tooltip"></div>
+<div id="tooltip" class="map-item-tooltip d-flex flex-column">
+    <div class="d-flex">
+        <div><img src="~/images/simbiomap/target.png" /></div>
+        <div>
+            <div><p id="tooltipContent" class="text-center"></p></div>
+            <div><p class="text-center text-small margin-top-4">@Html.Raw(SimbioMap.TargetTooltipInfo)</p></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var footprintsArray = [];
+    var targetsArray = [];
+
+    var selectedTargetId = null;
+    var tooltipElement = document.getElementById('tooltip');
+</script>
 <script type="module" src="~/lib/openglobus/js/og.es.js"></script>
 <environment names="Development">
-    <script type="module" src="~/js/simbio/map/mapopenglobus.js"></script>
+    @* <script type="module" src="~/js/simbio/map/mapforopenglobus.js"></script>
+    <script type="module" src="~/js/simbio/map/mapopenglobus.js"></script> *@
     <script type="module" src="~/js/simbio/map/map.js"></script>
+    <script type="module">
+        import { 
+            hideCharmsSelectedItem,
+            onCharmsSelectedItemOpened,
+            retrieveFootprintsByStpAsync, 
+        } from '/js/simbio/map/map.js';
+        /* following lines are required to access imported function by global scope */
+        window.hideCharmsSelectedItem = hideCharmsSelectedItem;
+        window.onCharmsSelectedItemOpened = onCharmsSelectedItemOpened;
+        window.retrieveFootprintsByStpAsync = retrieveFootprintsByStpAsync;
+    </script>
 </environment>
 <environment names="Production">
-    <script type="text/javascript" src="~/js/dist/simbio/map/mapbundle.min.js" asp-append-version="true"></script>
+    <script type="module" src="~/js/dist/simbio/map/mapbundle.js" asp-append-version="true"></script>
+    <script type="module">
+        import {
+            hideCharmsSelectedItem,
+            onCharmsSelectedItemOpened,
+            retrieveFootprintsByStpAsync,
+        } from '/js/dist/simbio/map/mapbundle.js';
+        /* following lines are required to access imported function by global scope */
+        window.hideCharmsSelectedItem = hideCharmsSelectedItem;
+        window.onCharmsSelectedItemOpened = onCharmsSelectedItemOpened;
+        window.retrieveFootprintsByStpAsync = retrieveFootprintsByStpAsync;
+    </script>
 </environment>
+

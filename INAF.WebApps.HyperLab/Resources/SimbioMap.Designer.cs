@@ -239,5 +239,14 @@ namespace INAF.WebApps.HyperLab.Resources {
                 return ResourceManager.GetString("TargetsNoItemsAvailableMessage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click on target for more info.
+        /// </summary>
+        public static string TargetTooltipInfo {
+            get {
+                return ResourceManager.GetString("TargetTooltipInfo", resourceCulture);
+            }
+        }
     }
 }

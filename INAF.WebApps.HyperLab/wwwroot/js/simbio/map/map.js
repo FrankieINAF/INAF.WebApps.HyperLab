@@ -1,18 +1,143 @@
-﻿import { showGlobe, addRectangleByBounds } from './mapopenglobus.js';
+﻿import {
+    Ellipsoid,
+    Extent,
+    Globe,
+    LonLat,
+    XYZ,
+    Entity,
+    Vector
+} from "/lib/openglobus/js/og.es.js";
 
-var footprintsArray = null;
-var targetsArray = null;
-
-var viewer = null;
-var tooltipElement = null;
-var handler = null;
-
-var selectedTargetId;
+var globe;
+var targets;
 
 var FOOTPRINT = 'Footprint';
 var SIM = 'SIM';
 var TARGET = 'Target';
 
+/* ################################################################################ */
+/* OPENGLOBUS */
+/* ################################################################################ */
+function showGlobe() {
+    const mercuryEllipsoid = new Ellipsoid(2439400.0, 2439400.0, 2439400.0);
+
+    //const mercuryTiles = new XYZ("MercuryRaster", {
+    //    isBaseLayer: true,
+    //    url: "/tiles/mercury/{z}/{x}/{y}.png", // percorso alle tile
+    //    attribution: "ESRI",
+    //    visibility: true,
+    //    minZoom: 0,
+    //    maxZoom: 7
+    //});
+
+    globe = new Globe({
+        target: "map",
+        name: "Mercury",
+        ellipsoid: mercuryEllipsoid,
+        backgroundColor: "white",
+        atmosphereEnabled: false,
+        nightTextureSrc: null,
+        specularTextureSrc: null,
+        sun: {
+            enabled: false
+        },
+        shadows: false,
+        layers: [],
+        //controls: []
+        viewExtent: new Extent(new LonLat(-180, -90), new LonLat(180, 90))
+    });
+
+    /* set sky background */
+    globe.planet.renderer.controls.SimpleSkyBackground.colorOne = "rgb(255,255,255)";
+    globe.planet.renderer.controls.SimpleSkyBackground.colorTwo = "rgb(255,255,255)";
+
+    /* define targets layer with events for each target */
+    targets = new Vector("Targets", {
+        'visibility': true,
+        'isBaseLayer': false,
+        'diffuse': [0, 0, 0],
+        'ambient': [1, 1, 1]
+    });
+    targets.addTo(globe.planet);
+
+    targets.events.on("mouseleave", function (e) {
+        e.pickingObject.geometry.setFillColor(1, 0, 0, 0.2);
+        hideByClassDFlexItem('tooltip');
+    });
+    targets.events.on("mouseenter", function (e) {
+        e.pickingObject.geometry.bringToFront();
+        e.pickingObject.geometry.setFillColor(1, 0, 0, 0.6);
+
+        $('#tooltipContent').text(e.pickingObject.name);
+        $('#tooltip').css({
+            left: `${e.clientX + 20}px`,
+            top: `${e.clientY + 20}px`
+        });
+        showByClassDFlexItem('tooltip');
+    });
+
+    targets.events.on("lclick", function (e) {
+        globe.planet.flyExtent(e.pickingObject.geometry.getExtent());
+
+        selectedTargetId = e.pickingObject.id;
+        showCharmsSelectedItem();
+    });
+    targets.events.on("touchstart", function (e) {
+        globe.planet.flyExtent(e.pickingObject.geometry.getExtent());
+
+        selectedTargetId = e.pickingObject.id;
+        showCharmsSelectedItem();
+    });
+}
+
+function addGeometryEntityByBounds(id, name, type, minLat, maxLat, minLon, maxLon) {
+    const coordinates = [[[[minLon, minLat], [minLon, maxLat], [maxLon, maxLat], [maxLon, minLat], [minLon, minLat]]]];
+
+    targets.add(new Entity({
+        'id': id,
+        'name': name,
+        'properties': {
+            'type': type,
+        },
+        'geometry': {
+            'type': "MultiPolygon",
+            'coordinates': coordinates,
+            'style': {
+                'fillColor': "rgba(255,0,0,0.2)",
+                'strokeWidth': 0
+            }
+        }
+    }));
+}
+
+function addGeometryEntityByCoordsArray(id, name, type, coordsArray) {
+    const coordinates = [[[...coordsArray]]];
+
+    targets.add(new Entity({
+        'id': id,
+        'name': name,
+        'properties': {
+            'type': type,
+        },
+        'geometry': {
+            'type': "MultiPolygon",
+            'coordinates': coordinates,
+            'style': {
+                'fillColor': "rgba(0,0,255,0.2)",
+                'strokeWidth': 0
+            }
+        }
+    }));
+}
+
+function removeAllRectangles() {
+    targets.clear();
+
+}
+
+/* ################################################################################ */
+/* MAP */
+/* ################################################################################ */
 function initSwitchLoadHideTargets() {
     $('#loadHideTargets').on('change', async function () {
         let isChecked = isCheckboxChecked('loadHideTargets');
@@ -35,9 +160,49 @@ function initSwitchShowHideSearchOfFootprints() {
     });
 }
 
+/* -------------------------------------------------------------------------------- */
+/* CHARMS FOR SELECTED ITEM */
+/* -------------------------------------------------------------------------------- */
+async function retrieveStpsWithFootprintsAsync() {
+    let stps = await doAjaxGetAsync(UrlGetStpsWithFootprints);
+    if (stps == null || stps.length == 0)
+        return;
+
+    Metro.getPlugin('#selectStp', 'select').addOption('Select STP');
+    const stpsCount = stps.length;
+    for (var i = 0; i < stpsCount; i++) {
+        Metro.getPlugin('#selectStp', 'select').addOption(stps[i]);
+    }
+}
+
 /* ################################################################################ */
-/* RETRIEVE TARGETS FROM BACK-END */
+/* TARGETS */
 /* ################################################################################ */
+/* -------------------------------------------------------------------------------- */
+/* RETRIEVE TARGETS + DETAILS */
+/* -------------------------------------------------------------------------------- */
+async function retrieveTargetsAsync() {
+    setLoadingCircleIsVisible(true);
+
+    let targets = await doAjaxGetNoModelAsync(UrlGetTargetsWithObsCoords);
+    if (targets == null || targets.length == 0) {
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(WARNING_LABEL, TargetsNoItemsAvailableMessage, WARNING);
+        return;
+    }
+
+    targetsArray = [];
+    const targetsCount = targets.length;
+    for (let i = 0; i < targetsCount; i++) {
+        const target = targets[i];
+
+        targetsArray.push(target);
+        addGeometryEntityByBounds(target.Id, target.Name, TARGET, target.MinLat, target.MaxLat, target.MinLon, target.MaxLon);
+    }
+
+    setLoadingCircleIsVisible(false);
+}
+
 async function retrieveTargetDetailsAsync(targetId) {
     const model = {
         Id: targetId
@@ -85,25 +250,33 @@ async function retrieveTargetDetailsAsync(targetId) {
     }
 }
 
+function removeTargets() {
+    /* remove targets from map */
+    removeAllRectangles();
+
+    /* clear in-memory array */
+    targetsArray = [];
+}
+
 /* -------------------------------------------------------------------------------- */
-/* CHARMS FOR SELECTED ITEM */
+/* OPEN/CLOSE CHARM TARGET */
 /* -------------------------------------------------------------------------------- */
-function hideCharmsSelectedItem() {
+export function hideCharmsSelectedItem() {
     Metro.charms.close('#charmsSelectedItem');
+}
+
+export function onCharmsSelectedItemOpened() {
+    retrieveTargetDetailsAsync(selectedTargetId);
 }
 
 function showCharmsSelectedItem() {
     Metro.charms.open('#charmsSelectedItem');
 }
 
-function onCharmsSelectedItemOpened() {
-    retrieveTargetDetailsAsync(selectedTargetId);
-}
-
 /* ################################################################################ */
-/* RETRIEVE FOOTPRINTS */
+/* FOOTPRINTS */
 /* ################################################################################ */
-async function retrieveFootprintsByStpAsync(val) {
+export async function retrieveFootprintsByStpAsync(val) {
     if (val == null || val == SelectorSelectStpValue)
         return;
 
@@ -126,74 +299,13 @@ async function retrieveFootprintsByStpAsync(val) {
 
         footprintsArray.push(footprint);
 
-        //const flatCoords = footprint.corners.flatMap(corner => [corner.longitude, corner.latitude]);
-        //const positions = Cesium.Cartesian3.fromDegreesArray(flatCoords);
-
-        //viewer.entities.add({
-        //    id: footprint.Id,
-        //    name: `${FOOTPRINT} ${footprint.Id}`,
-        //    polygon: {
-        //        hierarchy: positions,
-        //        /* height and extrudedHeight define the 3D shape */
-        //        height: 0,
-        //        /* extrudedHeight is the height to which the rectangle is extruded */
-        //        extrudedHeight: 0,
-        //        material: Cesium.Color.RED.withAlpha(0.5),
-        //        outline: true,
-        //        outlineColor: Cesium.Color.BLACK
-        //    }
-        //});
+        const coordsArray = footprint.corners.map(corner => [corner.longitude, corner.latitude]);
+        coordsArray.push(coordsArray[0]);
+        //console.log(coordsArray);
+        addGeometryEntityByCoordsArray(footprint.Id, `${FOOTPRINT} ${footprint.Id}`, FOOTPRINT, coordsArray);
     }
 
     setLoadingCircleIsVisible(false);
-}
-
-async function retrieveStpsWithFootprintsAsync() {
-    let stps = await doAjaxGetAsync(UrlGetStpsWithFootprints);
-    if (stps == null || stps.length == 0)
-        return;
-
-    Metro.getPlugin('#selectStp', 'select').addOption('Select STP');
-    const stpsCount = stps.length;
-    for (var i = 0; i < stpsCount; i++) {
-        Metro.getPlugin('#selectStp', 'select').addOption(stps[i]);
-    }
-}
-
-/* ################################################################################ */
-/* RETRIEVE TARGETS FROM BACK-END */
-/* ################################################################################ */
-async function retrieveTargetsAsync() {
-    setLoadingCircleIsVisible(true);
-
-    let targets = await doAjaxGetNoModelAsync(UrlGetTargetsWithObsCoords);
-    if (targets == null || targets.length == 0) {
-        setLoadingCircleIsVisible(false);
-        showSimpleDialog(WARNING_LABEL, TargetsNoItemsAvailableMessage, WARNING);
-        return;
-    }
-
-    targetsArray = [];
-    const targetsCount = targets.length;
-    for (let i = 0; i < targetsCount; i++) {
-        const target = targets[i];
-
-        targetsArray.push(target);
-        addRectangleByBounds(target.Name, target.MinLat, target.MaxLat, target.MinLon, target.MaxLon);
-    }
-
-    setLoadingCircleIsVisible(false);
-}
-
-function removeTargets() {
-    //let entities = viewer.entities.values.find(x => x.name.includes(SIM));
-    //if (!entities)
-    //    return;
-
-    ///* remove targets from map */
-    //entities.entityCollection.removeAll();
-    /* clear in-memory array */
-    targetsArray = [];
 }
 
 /* ################################################################################ */
@@ -204,8 +316,6 @@ $(function () {
     targetsArray = [];
 
     showPageItems(true);
-
-    tooltipElement = document.getElementById('tooltip');
 
     showGlobe();
 
