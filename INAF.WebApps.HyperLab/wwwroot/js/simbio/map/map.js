@@ -281,17 +281,17 @@ async function retrieveTargetsAsync() {
 
     targetsArray = [];
     const targetsCount = targets.length;
-    for (let i = 0; i < targetsCount; i++) {
+    for (let i = 0; i < 10; i++) {
         const target = targets[i];
 
         targetsArray.push(target);
-
+        console.log(target.MinLon, target.MinLat, target.MaxLon, target.MaxLat);
         viewer.entities.add({
             id: target.Id,
             name: `${TARGET}: ${target.Name}` || 'Custom Extruded Rectangle',
             rectangle: {
                 coordinates: Cesium.Rectangle.fromDegrees(target.MinLon, target.MinLat, target.MaxLon, target.MaxLat),
-                material: Cesium.Color.CYAN.withAlpha(0.7),
+                material: Cesium.Color.RED.withAlpha(0.7),
                 /* height and extrudedHeight define the 3D shape */
                 height: 0,
                 /* extrudedHeight is the height to which the rectangle is extruded */
