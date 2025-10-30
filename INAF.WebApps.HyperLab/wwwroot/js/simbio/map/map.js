@@ -175,34 +175,11 @@ async function retrieveTargetsAsync() {
 
     targetsArray = [];
     const targetsCount = targets.length;
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < targetsCount; i++) {
         const target = targets[i];
 
         targetsArray.push(target);
-
-        addRectangleByBounds(target.MinLat, target.MaxLat, target.MinLon, target.MaxLon);
-        //viewer.entities.add({
-        //    id: target.Id,
-        //    name: `${TARGET}: ${target.Name}` || 'Custom Extruded Rectangle',
-        //    rectangle: {
-        //        coordinates: Cesium.Rectangle.fromDegrees(target.MinLon, target.MinLat, target.MaxLon, target.MaxLat),
-        //        material: Cesium.Color.CYAN.withAlpha(0.7),
-        //        /* height and extrudedHeight define the 3D shape */
-        //        height: 0,
-        //        /* extrudedHeight is the height to which the rectangle is extruded */
-        //        extrudedHeight: 0,
-        //        fill: true,
-        //        outline: true,
-        //        outlineColor: Cesium.Color.BLACK
-        //    }
-        //});
-        //addEntities(
-        //    viewer,
-        //    target.MinLon, target.MinLat, target.MaxLon, target.MaxLat,
-        //    Cesium.Color.CYAN,
-        //    target.Id,
-        //    "Target: " + target.Name
-        //);
+        addRectangleByBounds(target.Name, target.MinLat, target.MaxLat, target.MinLon, target.MaxLon);
     }
 
     setLoadingCircleIsVisible(false);
@@ -231,9 +208,6 @@ $(function () {
     tooltipElement = document.getElementById('tooltip');
 
     showGlobe();
-
-    //handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
-    //initEventsOnTargets();
 
     /* retrieve stps related to footprints */
     retrieveStpsWithFootprintsAsync();
