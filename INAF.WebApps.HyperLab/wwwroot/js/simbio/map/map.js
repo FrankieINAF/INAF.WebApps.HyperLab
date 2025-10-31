@@ -9,11 +9,11 @@
 } from "/lib/openglobus/js/og.es.js";
 
 var globe;
-var targets;
+var entities;
 
-var FOOTPRINT = 'Footprint';
+var FOOTPRINT = 'FOOTPRINT';
 var SIM = 'SIM';
-var TARGET = 'Target';
+var TARGET = 'TARGET';
 
 /* ################################################################################ */
 /* OPENGLOBUS */
@@ -51,14 +51,14 @@ function showGlobe() {
     globe.planet.renderer.controls.SimpleSkyBackground.colorOne = "rgb(255,255,255)";
     globe.planet.renderer.controls.SimpleSkyBackground.colorTwo = "rgb(255,255,255)";
 
-    /* define targets layer with events for each target */
+    /* define entities layer with events for each target */
     defineTargetsEvents();
 }
 
 function addGeometryEntityByBounds(id, name, type, minLat, maxLat, minLon, maxLon) {
     const coordinates = [[[[minLon, minLat], [minLon, maxLat], [maxLon, maxLat], [maxLon, minLat], [minLon, minLat]]]];
 
-    targets.add(new Entity({
+    entities.add(new Entity({
         'id': id,
         'name': name,
         'properties': {
@@ -78,7 +78,7 @@ function addGeometryEntityByBounds(id, name, type, minLat, maxLat, minLon, maxLo
 function addGeometryEntityByCoordsArray(id, name, type, coordsArray) {
     const coordinates = [[[...coordsArray]]];
 
-    targets.add(new Entity({
+    entities.add(new Entity({
         'id': id,
         'name': name,
         'properties': {
@@ -96,19 +96,19 @@ function addGeometryEntityByCoordsArray(id, name, type, coordsArray) {
 }
 
 function defineTargetsEvents() {
-    targets = new Vector("Targets", {
+    entities = new Vector("Targets", {
         'visibility': true,
         'isBaseLayer': false,
         'diffuse': [0, 0, 0],
         'ambient': [1, 1, 1]
     });
-    targets.addTo(globe.planet);
+    entities.addTo(globe.planet);
 
-    targets.events.on("mouseleave", function (e) {
+    entities.events.on("mouseleave", function (e) {
         e.pickingObject.geometry.setFillColor(1, 0, 0, 0.2);
         hideByClassDFlexItem('tooltip');
     });
-    targets.events.on("mouseenter", function (e) {
+    entities.events.on("mouseenter", function (e) {
         e.pickingObject.geometry.bringToFront();
         e.pickingObject.geometry.setFillColor(1, 0, 0, 0.6);
 
@@ -120,14 +120,14 @@ function defineTargetsEvents() {
         showByClassDFlexItem('tooltip');
     });
 
-    targets.events.on("lclick", function (e) {
+    entities.events.on("lclick", function (e) {
         globe.planet.flyExtent(e.pickingObject.geometry.getExtent());
 
         selectedTargetId = e.pickingObject.id;
         if (e.pickingObject.properties.type == TARGET)
             showCharmsSelectedItem();
     });
-    targets.events.on("touchstart", function (e) {
+    entities.events.on("touchstart", function (e) {
         globe.planet.flyExtent(e.pickingObject.geometry.getExtent());
 
         selectedTargetId = e.pickingObject.id;
@@ -135,11 +135,16 @@ function defineTargetsEvents() {
     });
 }
 
-function removeAllRectangles() {
-    targets.clear();
+function removeEntitiesProcedure(type) {
+    const selectedEntities = entities.getEntities().filter(x => x.properties.type == type);
+    if (selectedEntities == null)
+        return false;
 
+    /* remove entities from map */
+    entities.removeEntities(selectedEntities);
+
+    return true;
 }
-
 /* ################################################################################ */
 /* MAP */
 /* ################################################################################ */
@@ -186,20 +191,28 @@ async function retrieveStpsWithFootprintsAsync() {
 /* -------------------------------------------------------------------------------- */
 /* RETRIEVE TARGETS + DETAILS */
 /* -------------------------------------------------------------------------------- */
+function removeTargets() {
+    if (!removeEntitiesProcedure(TARGET))
+        return;
+
+    /* clear in-memory array */
+    targetsArray = [];
+}
+
 async function retrieveTargetsAsync() {
     setLoadingCircleIsVisible(true);
 
-    let targets = await doAjaxGetNoModelAsync(UrlGetTargetsWithObsCoords);
-    if (targets == null || targets.length == 0) {
+    let entities = await doAjaxGetNoModelAsync(UrlGetTargetsWithObsCoords);
+    if (entities == null || entities.length == 0) {
         setLoadingCircleIsVisible(false);
         showSimpleDialog(WARNING_LABEL, TargetsNoItemsAvailableMessage, WARNING);
         return;
     }
 
     targetsArray = [];
-    const targetsCount = targets.length;
+    const targetsCount = entities.length;
     for (let i = 0; i < targetsCount; i++) {
-        const target = targets[i];
+        const target = entities[i];
 
         targetsArray.push(target);
         addGeometryEntityByBounds(target.Id, target.Name, TARGET, target.MinLat, target.MaxLat, target.MinLon, target.MaxLon);
@@ -255,14 +268,6 @@ async function retrieveTargetDetailsAsync(targetId) {
     }
 }
 
-function removeTargets() {
-    /* remove targets from map */
-    removeAllRectangles();
-
-    /* clear in-memory array */
-    targetsArray = [];
-}
-
 /* -------------------------------------------------------------------------------- */
 /* OPEN/CLOSE CHARM TARGET */
 /* -------------------------------------------------------------------------------- */
@@ -281,9 +286,20 @@ function showCharmsSelectedItem() {
 /* ################################################################################ */
 /* FOOTPRINTS */
 /* ################################################################################ */
+function removeFootprints() {
+    if (!removeEntitiesProcedure(FOOTPRINT))
+        return;
+
+    /* clear in-memory array */
+    footprintsArray = [];
+}
+
 export async function retrieveFootprintsByStpAsync(val) {
     if (val == null || val == SelectorSelectStpValue)
         return;
+
+    /* remove footprints from previous search, if available */
+    removeFootprints();
 
     setLoadingCircleIsVisible(true);
 
@@ -327,7 +343,7 @@ $(function () {
     /* retrieve stps related to footprints */
     retrieveStpsWithFootprintsAsync();
 
-    /* init switch for loading/hiding targets */
+    /* init switch for loading/hiding entities */
     initSwitchLoadHideTargets();
     /* init switch for selecting stp */
     initSwitchShowHideSearchOfFootprints();
