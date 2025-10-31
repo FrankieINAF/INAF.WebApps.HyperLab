@@ -52,42 +52,7 @@ function showGlobe() {
     globe.planet.renderer.controls.SimpleSkyBackground.colorTwo = "rgb(255,255,255)";
 
     /* define targets layer with events for each target */
-    targets = new Vector("Targets", {
-        'visibility': true,
-        'isBaseLayer': false,
-        'diffuse': [0, 0, 0],
-        'ambient': [1, 1, 1]
-    });
-    targets.addTo(globe.planet);
-
-    targets.events.on("mouseleave", function (e) {
-        e.pickingObject.geometry.setFillColor(1, 0, 0, 0.2);
-        hideByClassDFlexItem('tooltip');
-    });
-    targets.events.on("mouseenter", function (e) {
-        e.pickingObject.geometry.bringToFront();
-        e.pickingObject.geometry.setFillColor(1, 0, 0, 0.6);
-
-        $('#tooltipContent').text(e.pickingObject.name);
-        $('#tooltip').css({
-            left: `${e.clientX + 20}px`,
-            top: `${e.clientY + 20}px`
-        });
-        showByClassDFlexItem('tooltip');
-    });
-
-    targets.events.on("lclick", function (e) {
-        globe.planet.flyExtent(e.pickingObject.geometry.getExtent());
-
-        selectedTargetId = e.pickingObject.id;
-        showCharmsSelectedItem();
-    });
-    targets.events.on("touchstart", function (e) {
-        globe.planet.flyExtent(e.pickingObject.geometry.getExtent());
-
-        selectedTargetId = e.pickingObject.id;
-        showCharmsSelectedItem();
-    });
+    defineTargetsEvents();
 }
 
 function addGeometryEntityByBounds(id, name, type, minLat, maxLat, minLon, maxLon) {
@@ -128,6 +93,46 @@ function addGeometryEntityByCoordsArray(id, name, type, coordsArray) {
             }
         }
     }));
+}
+
+function defineTargetsEvents() {
+    targets = new Vector("Targets", {
+        'visibility': true,
+        'isBaseLayer': false,
+        'diffuse': [0, 0, 0],
+        'ambient': [1, 1, 1]
+    });
+    targets.addTo(globe.planet);
+
+    targets.events.on("mouseleave", function (e) {
+        e.pickingObject.geometry.setFillColor(1, 0, 0, 0.2);
+        hideByClassDFlexItem('tooltip');
+    });
+    targets.events.on("mouseenter", function (e) {
+        e.pickingObject.geometry.bringToFront();
+        e.pickingObject.geometry.setFillColor(1, 0, 0, 0.6);
+
+        $('#tooltipContent').text(e.pickingObject.name);
+        $('#tooltip').css({
+            left: `${e.clientX + 20}px`,
+            top: `${e.clientY + 20}px`
+        });
+        showByClassDFlexItem('tooltip');
+    });
+
+    targets.events.on("lclick", function (e) {
+        globe.planet.flyExtent(e.pickingObject.geometry.getExtent());
+
+        selectedTargetId = e.pickingObject.id;
+        if (e.pickingObject.properties.type == TARGET)
+            showCharmsSelectedItem();
+    });
+    targets.events.on("touchstart", function (e) {
+        globe.planet.flyExtent(e.pickingObject.geometry.getExtent());
+
+        selectedTargetId = e.pickingObject.id;
+        showCharmsSelectedItem();
+    });
 }
 
 function removeAllRectangles() {
