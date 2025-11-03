@@ -4,7 +4,6 @@ using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Info;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Pages;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches.Interfaces;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Shares;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.WebApps.HyperLab.Attributes;
@@ -12,10 +11,8 @@ using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Helpers;
 using INAF.WebApps.HyperLab.Models;
 using INAF.WebApps.HyperLab.Values;
-using LinqKit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 //using Newtonsoft.Json;
 
 namespace INAF.WebApps.HyperLab.Controllers
@@ -143,27 +140,6 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         #region ANCILLARY
-        private ContentResult buildJsonContentResult(object? inputValue)
-        {
-            string jsonResult = JsonSerializer.Serialize(inputValue);
-            return Content(jsonResult, "application/json");
-        }
-
-        private IEnumerable<ISpectraGroupInfoModel>? retrieveSpectraFilesForGroups(IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo,
-                                                                                   List<int> levelIds)
-        {
-            spectraFilesInfo?.ForEach(spectraGroupInfo =>
-            {
-                List<SpectrumInfoModel>? spectrumInfoModels = dbHandlerHyperLabData.searchGroupItems(spectraGroupInfo.Id,
-                                                                                                     levelIds,
-                                                                                                     getUserId());
-                if (spectrumInfoModels?.Count > 0)
-                    spectraGroupInfo.Spectra = spectrumInfoModels;
-            });
-
-            return spectraFilesInfo;
-        }
-
         private IEnumerable<SharedSpectrumModel>? getSharedSpectra(int userId, Func<int, List<SharedSpectrumModel>?> function)
         {
             List<SharedSpectrumModel>? sharedSpectra = function(userId);

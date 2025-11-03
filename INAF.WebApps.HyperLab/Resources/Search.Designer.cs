@@ -457,11 +457,20 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The panel features a button labeled &quot;Load External Spectra,&quot; which allows you to import spectra from external sources. These spectra can be uploaded in CSV format and must be compatible with the HyperLab app. Once imported, they can be saved to the HyperLab cloud and utilized for data analysis on the graphs page.
+        ///   Looks up a localized string similar to The panel features a button labeled &quot;Load External Spectra,&quot; which allows you to import spectra from external sources. These spectra can be uploaded in CSV..
         /// </summary>
         public static string LoadFilesExternalExplanation {
             get {
                 return ResourceManager.GetString("LoadFilesExternalExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;N.B.&lt;/b&gt; CSV files must consist in 2 columns: wavelength, value. No header allowed..
+        /// </summary>
+        public static string LoadFilesExternalExplanationCSVFormat {
+            get {
+                return ResourceManager.GetString("LoadFilesExternalExplanationCSVFormat", resourceCulture);
             }
         }
         
