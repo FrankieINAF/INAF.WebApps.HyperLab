@@ -466,7 +466,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;N.B.&lt;/b&gt; CSV files must consist in 2 columns: wavelength, value. No header allowed..
+        ///   Looks up a localized string similar to &lt;u&gt;CSV&lt;/u&gt; files must consist in 2 columns: wavelength, value. No header allowed..
         /// </summary>
         public static string LoadFilesExternalExplanationCSVFormat {
             get {
@@ -475,7 +475,25 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The panel features two buttons: &quot;Load SLab Spectra&quot; and &quot;Load External Spectra.&quot; The first button allows you to upload spectra from SLab stored on your device, while the second lets you import spectra from external sources. Both types of spectra can be saved to the HyperLab cloud and used for data analysis on the graphs page. Files can be uploaded in either CSV or XML format, as long as they are compatible with the HyperLab app.
+        ///   Looks up a localized string similar to &lt;b&gt;N.B.&lt;/b&gt;.
+        /// </summary>
+        public static string LoadFilesExternalExplanationNB {
+            get {
+                return ResourceManager.GetString("LoadFilesExternalExplanationNB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only &lt;u&gt;XML&lt;/u&gt; files generated from spectra saved via the HyperLab web app are accepted..
+        /// </summary>
+        public static string LoadFilesExternalExplanationXMLFormat {
+            get {
+                return ResourceManager.GetString("LoadFilesExternalExplanationXMLFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The panel features two buttons: &quot;Load SLab Spectra&quot; and &quot;Load External Spectra.&quot; The first button allows you to upload spectra from SLab stored on your device, while the second lets you import spectra from external sources. Both types of spectra can be saved to the HyperLab cloud and used for data analysis on the graphs page..
         /// </summary>
         public static string LoadFilesSLabAndExternalExplanation {
             get {

@@ -526,7 +526,7 @@
     <value>Load spectra</value>
   </data>
   <data name="LoadFilesSLabAndExternalExplanation" xml:space="preserve">
-    <value>The panel features two buttons: "Load SLab Spectra" and "Load External Spectra." The first button allows you to upload spectra from SLab stored on your device, while the second lets you import spectra from external sources. Both types of spectra can be saved to the HyperLab cloud and used for data analysis on the graphs page. Files can be uploaded in either CSV or XML format, as long as they are compatible with the HyperLab app</value>
+    <value>The panel features two buttons: "Load SLab Spectra" and "Load External Spectra." The first button allows you to upload spectra from SLab stored on your device, while the second lets you import spectra from external sources. Both types of spectra can be saved to the HyperLab cloud and used for data analysis on the graphs page.</value>
   </data>
   <data name="LoadFileAddButtonTitle" xml:space="preserve">
     <value>Add file loader</value>
@@ -579,6 +579,9 @@
   <data name="LoadFilesExternalExplanation" xml:space="preserve">
     <value>The panel features a button labeled "Load External Spectra," which allows you to import spectra from external sources. These spectra can be uploaded in CSV.</value>
   </data>
+  <data name="LoadFilesExternalExplanationNB" xml:space="preserve">
+    <value>&lt;b&gt;N.B.&lt;/b&gt;</value>
+  </data>
   <data name="LoadFileMissingAlignmentSettingsWarningMessage" xml:space="preserve">
     <value>Since the spectrum was loaded from a CSV file, the alignment settings are missing. Do you still want to save it?</value>
   </data>
@@ -610,6 +613,9 @@
     <value>Couldn't save file on cloud. Missing parent files for current spectrum type.</value>
   </data>
   <data name="LoadFilesExternalExplanationCSVFormat" xml:space="preserve">
-    <value>&lt;b&gt;N.B.&lt;/b&gt; CSV files must consist in 2 columns: wavelength, value. No header allowed.</value>
+    <value>&lt;u&gt;CSV&lt;/u&gt; files must consist in 2 columns: wavelength, value. No header allowed.</value>
+  </data>
+  <data name="LoadFilesExternalExplanationXMLFormat" xml:space="preserve">
+    <value>Only &lt;u&gt;XML&lt;/u&gt; files generated from spectra saved via the HyperLab web app are accepted.</value>
   </data>
 </root>
