@@ -21,14 +21,14 @@ var TARGET = 'TARGET';
 function showGlobe() {
     const mercuryEllipsoid = new Ellipsoid(2439400.0, 2439400.0, 2439400.0);
 
-    //const mercuryTiles = new XYZ("MercuryRaster", {
-    //    isBaseLayer: true,
-    //    url: "/tiles/mercury/{z}/{x}/{y}.png", // percorso alle tile
-    //    attribution: "ESRI",
-    //    visibility: true,
-    //    minZoom: 0,
-    //    maxZoom: 7
-    //});
+    const mercuryTiles = new XYZ("MercuryRaster", {
+        isBaseLayer: true,
+        url: "/tiles/mercury/{z}/{x}/{y}.png", // percorso alle tile
+        attribution: "ESRI",
+        visibility: true,
+        minZoom: 0,
+        maxZoom: 8
+    });
 
     globe = new Globe({
         target: "map",
@@ -46,6 +46,8 @@ function showGlobe() {
         //controls: []
         viewExtent: new Extent(new LonLat(-180, -90), new LonLat(180, 90))
     });
+
+    globe.planet.addLayer(mercuryTiles);
 
     /* set sky background */
     globe.planet.renderer.controls.SimpleSkyBackground.colorOne = "rgb(255,255,255)";
