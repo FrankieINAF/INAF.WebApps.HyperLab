@@ -1,0 +1,187 @@
+﻿@using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Controllers.Simbio
+@using INAF.WebApps.HyperLab.Resources
+
+@{
+    ViewBag.Title = SimbioMap.MapPageTitle;
+
+}
+
+<link href="~/lib/openglobus/css/og.css" rel="stylesheet">
+<link rel="stylesheet" href="~/css/dist/simbio/map/mapbundle.min.css" asp-append-version="true" />
+
+<div class="container h-100 overflow-x-auto overflow-y-auto">
+    <div id="selectors">
+        <div class="row cell-fs-12 d-flex">
+            <!-- TARGETS -->
+            <div class="d-flex flex-column">
+                <!-- SHOW/HIDE -->
+                <div class="d-flex">
+                    <div><input id="loadHideTargets" type="checkbox" data-role="switch" data-on="Load" data-off="Hide"></div>
+                    <div class="margin-top-4"><span class="fg-black">@Html.Raw(SimbioMap.SelectorsShowHideTargets)</span></div>
+                </div>
+                <!-- SEARCH BOX -->
+                <div>
+                
+                </div>
+            </div>
+            <!-- STPs AND FOOTPRINTS -->
+            <div class="d-flex flex-column margin-left-24">
+                <!-- SHOW/HIDE SEARCH BOX -->
+                <div class="d-flex">
+                    <div><input id="showHideSearchOfFootprints" type="checkbox" data-role="switch" data-on="Show" data-off="Hide"></div>
+                    <div class="margin-top-4"><span class="fg-black">@Html.Raw(SimbioMap.SelectorsShowHideSearchOfFootprints)</span></div>
+                </div>
+                <!-- SEARCH BOX -->
+                <div id="selectStpContainer" class="d-none">
+                    <select id="selectStp" data-role="select" data-on-item-select="retrieveFootprintsByStpAsync"></select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- MAP -->
+    <div id="map" style="width: 100%; height: 600px"></div>
+    <!-- CHART -->
+</div>
+
+<div id="charmsSelectedItem" data-role="charms" data-cls-charms="charms-panel" data-position="right" data-on-open="onCharmsSelectedItemOpened()">
+    <!-- MAIN BAR -->
+    <div style="height: 60px">
+        <!-- HIDE-CHARMS BUTTON -->
+        <div class="button light cycle outline float-right pointer" title="@Html.Raw(Charms.CharmsHideLabel)" onclick="hideCharmsSelectedItem()">
+            <span class="mif-arrow-right"></span>
+        </div>
+    </div>
+    <!-- TARGET INFO -->
+    <!-- NAME -->
+    <div class="row cell-12">
+        <p id="targetName" class="fg-white text-center text-leader"></p>
+    </div>
+    <hr class="thin mt-4 mb-4 bg-white">
+    <!-- OBSERVED BY INFO -->
+    <div class="row cell-12">
+        <span class="fg-white text-center">@Html.Raw(SimbioMap.TargetObservedByLabel)</span>
+        <span id="observedBy" class="fg-white text-center"></span>
+    </div>
+    <hr class="thin mt-4 mb-4 bg-white">
+    <!-- OBSERVATION INFO -->
+    <div class="row cell-12">
+        <p class="fg-white text-center text-leader2">@Html.Raw(SimbioMap.TargetObservationInfoLbel)</p>
+    </div>
+    <div class="row cell-12">
+        <span class="fg-white text-center">@Html.Raw(SimbioMap.TargetCategoryLabel)</span>
+        <span id="category" class="fg-white text-center"></span>
+    </div>
+    <div class="row cell-12">
+        <span class="fg-white text-center">@Html.Raw(SimbioMap.TargetObservationModeLabel)</span>
+        <span id="observationMode" class="fg-white text-center"></span>
+    </div>
+    <div class="row cell-12">
+        <span class="fg-white text-center">@Html.Raw(SimbioMap.TargetObservationTypeLabel)</span>
+        <span id="observationType" class="fg-white text-center"></span>
+    </div>
+    <hr class="thin mt-4 mb-4 bg-white">
+    <!-- GEOM INFO -->
+    <div class="row cell-12">
+        <p class="fg-white text-center text-leader2">@Html.Raw(SimbioMap.TargetGeomInfoLabel)</p>
+    </div>
+    <div class="row cell-12 d-flex flex-column">
+        <!-- LAT -->
+        <div class="d-flex flex-row">
+            <div>
+                <span>@Html.Raw(SimbioMap.TargetLatRangeLabel)</span>
+                <span id="latRange"></span>
+            </div>
+            <div class="margin-left-16">
+                <span>@Html.Raw(SimbioMap.TargetLatCenterLabel)</span>
+                <span id="latCenter"></span>
+            </div>
+
+        </div>
+        <!-- LON -->
+        <div class="d-flex flex-row margin-top-16">
+            <div>
+                <span>@Html.Raw(SimbioMap.TargetLonRangeLabel)</span>
+                <span id="lonRange"></span>
+            </div>
+            <div class="margin-left-16">
+                <span>@Html.Raw(SimbioMap.TargetLonCenterLabel)</span>
+                <span id="lonCenter"></span>
+            </div>
+        </div>
+        <!-- AREA  -->
+        <div class="d-flex flex-row margin-top-16">
+            <div>
+                <span>@Html.Raw(SimbioMap.TargetAreaLabel)</span>
+                <span id="area"></span>
+            </div>
+        </div>
+        <!-- COVERAGE  -->
+        <div class="d-flex flex-row margin-top-16">
+            <div>
+                <span>@Html.Raw(SimbioMap.TargetCoveragePercentageLabel)</span>
+                <span id="coveragePercentage"></span>
+            </div>
+        </div>
+    </div>
+    <hr class="thin mt-4 mb-4 bg-white">
+    <!-- OTHER INFO -->
+    <div class="row cell-12">
+        <span class="fg-white text-center">@Html.Raw(SimbioMap.TargetLiteratureReferenceLabel)</span>
+        <a id="litRef" class="fg-white"></a>
+    </div>
+</div>
+
+@{
+    await Html.RenderPartialAsync("_JsCommonSimbio");
+}
+<div id="tooltip" class="map-item-tooltip d-flex flex-column">
+    <div class="d-flex">
+        <div><img src="~/images/simbiomap/target.png" /></div>
+        <div>
+            <div><p id="tooltipContent" class="text-center"></p></div>
+            <div><p class="text-center text-small margin-top-4">@Html.Raw(SimbioMap.TargetTooltipInfo)</p></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var footprintsArray = [];
+    var targetsArray = [];
+
+    var selectedTargetId = null;
+    var tooltipElement = document.getElementById('tooltip');
+</script>
+<script type="module" src="~/lib/openglobus/js/og.es.js"></script>
+<environment names="Development">
+    @* <script type="module" src="~/js/simbio/map/mapforopenglobus.js"></script>
+    <script type="module" src="~/js/simbio/map/mapopenglobus.js"></script> *@
+    <script type="module" src="~/js/simbio/map/map.js"></script>
+    <script type="module">
+        import {
+            hideCharmsSelectedItem,
+            onCharmsSelectedItemOpened,
+            retrieveFootprintsByStpAsync,
+        } from '/js/simbio/map/map.js';
+        /* following lines are required to access imported function by global scope */
+        window.hideCharmsSelectedItem = hideCharmsSelectedItem;
+        window.onCharmsSelectedItemOpened = onCharmsSelectedItemOpened;
+        window.retrieveFootprintsByStpAsync = retrieveFootprintsByStpAsync;
+    </script>
+</environment>
+<environment names="Production">
+    <script type="module" src="~/js/dist/simbio/map/mapbundle.js" asp-append-version="true"></script>
+    <script type="module">
+        import {
+            hideCharmsSelectedItem,
+            onCharmsSelectedItemOpened,
+            retrieveFootprintsByStpAsync,
+        } from '/js/dist/simbio/map/mapbundle.js';
+        /* following lines are required to access imported function by global scope */
+        window.hideCharmsSelectedItem = hideCharmsSelectedItem;
+        window.onCharmsSelectedItemOpened = onCharmsSelectedItemOpened;
+        window.retrieveFootprintsByStpAsync = retrieveFootprintsByStpAsync;
+    </script>
+</environment>
+
