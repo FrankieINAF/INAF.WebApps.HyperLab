@@ -241,6 +241,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restore default visualization.
+        /// </summary>
+        public static string TargetsRestoreDefaultVisualizationLabel {
+            get {
+                return ResourceManager.GetString("TargetsRestoreDefaultVisualizationLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A value for name field is required.
         /// </summary>
         public static string TargetsSearchEmptyFieldMessage {

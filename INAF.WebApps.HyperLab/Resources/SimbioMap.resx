@@ -189,4 +189,7 @@
   <data name="TargetsSearchEmptyFieldMessage" xml:space="preserve">
     <value>A value for name field is required</value>
   </data>
+  <data name="TargetsRestoreDefaultVisualizationLabel" xml:space="preserve">
+    <value>Restore default visualization</value>
+  </data>
 </root>

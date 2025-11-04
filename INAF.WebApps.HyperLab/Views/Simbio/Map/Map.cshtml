@@ -23,7 +23,9 @@
                 </div>
                 <!-- SEARCH BOX -->
                 <div id="searchTargetInputContainer" class="d-none">
-                    <input id="searchTargetInput"
+                    <div class="d-flex">
+                    <div>
+                        <input id="searchTargetInput"
                            type="text"
                            placeholder="@Html.Raw(SimbioMap.TargetsSearchTargetLabel)"
                            data-role="input"
@@ -31,6 +33,11 @@
                            data-search-button-click="custom"
                            data-on-search-button-click="searchForTarget()"
                            data-on-clear-click="restoreDefaultVisualization()"/>
+                    </div>
+                    <div>
+                            <button class="button cycle dark small outline margin-left-4 margin-top-4" onclick="restoreDefaultVisualization()" title="@Html.Raw(SimbioMap.TargetsRestoreDefaultVisualizationLabel)"><span class="mif-cross-light"></span></button>
+                    </div>
+                    </div>
                 </div>
             </div>
             <!-- STPs AND FOOTPRINTS -->

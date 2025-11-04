@@ -44,7 +44,6 @@ function showGlobe() {
         shadows: false,
         layers: [],
         //controls: []
-        //viewExtent: new Extent(new LonLat(-180, -90), new LonLat(180, 90))
     });
 
     globe.planet.addLayer(mercuryTiles);
@@ -126,10 +125,10 @@ function defineTargetsEvents() {
 
     entities.events.on("lclick", function (e) {
         globe.planet.flyExtent(e.pickingObject.geometry.getExtent());
-
+        //console.log('ciao');
         if (e.pickingObject.properties.type == TARGET) {
             selectedTargetName = e.pickingObject.name;
-            console.log(`selectedTargetName: ${selectedTargetName}`);
+            //console.log(`selectedTargetName: ${selectedTargetName}`);
             showCharmsSelectedItem();
         }
     });
