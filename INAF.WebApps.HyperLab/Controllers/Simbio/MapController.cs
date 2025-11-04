@@ -28,14 +28,14 @@ namespace INAF.WebApps.HyperLab.Controllers.Simbio
         [HttpGet]
         public IActionResult Map()
         {
-            return View("~/Views/Simbio/Targets/Map.cshtml");
+            return View("~/Views/Simbio/Map/Map.cshtml");
         }
 
         #region TARGETS
         [HttpGet]
-        public IActionResult GetTargetInfo(GenericRequestByIdModel model)
+        public IActionResult GetTargetInfo(GenericRequestByTextModel model)
         {
-            TargetModel? targetInfo = dbHandlerSimbio.getTargetInfo(model.Id);
+            TargetModel? targetInfo = dbHandlerSimbio.getTargetInfo(model.Text);
             if (targetInfo != null)
                 return new JsonResult(targetInfo);
             else

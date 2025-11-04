@@ -44,7 +44,7 @@ function showGlobe() {
         shadows: false,
         layers: [],
         //controls: []
-        viewExtent: new Extent(new LonLat(-180, -90), new LonLat(180, 90))
+        //viewExtent: new Extent(new LonLat(-180, -90), new LonLat(180, 90))
     });
 
     globe.planet.addLayer(mercuryTiles);
@@ -52,6 +52,8 @@ function showGlobe() {
     /* set sky background */
     globe.planet.renderer.controls.SimpleSkyBackground.colorOne = "rgb(255,255,255)";
     globe.planet.renderer.controls.SimpleSkyBackground.colorTwo = "rgb(255,255,255)";
+
+    setDefaultViewExtent();
 
     /* define entities layer with events for each target */
     defineTargetsEvents();
@@ -125,14 +127,16 @@ function defineTargetsEvents() {
     entities.events.on("lclick", function (e) {
         globe.planet.flyExtent(e.pickingObject.geometry.getExtent());
 
-        selectedTargetId = e.pickingObject.id;
-        if (e.pickingObject.properties.type == TARGET)
+        if (e.pickingObject.properties.type == TARGET) {
+            selectedTargetName = e.pickingObject.name;
+            console.log(`selectedTargetName: ${selectedTargetName}`);
             showCharmsSelectedItem();
+        }
     });
     entities.events.on("touchstart", function (e) {
         globe.planet.flyExtent(e.pickingObject.geometry.getExtent());
 
-        selectedTargetId = e.pickingObject.id;
+        selectedTargetName = e.pickingObject.name;
         showCharmsSelectedItem();
     });
 }
@@ -146,6 +150,10 @@ function removeEntitiesProcedure(type) {
     entities.removeEntities(selectedEntities);
 
     return true;
+}
+
+function setDefaultViewExtent() {
+    globe.planet.viewExtent(new Extent(new LonLat(-180, -90), new LonLat(180, 90)));
 }
 /* ################################################################################ */
 /* MAP */
@@ -199,6 +207,19 @@ function removeTargets() {
 
     /* clear in-memory array */
     targetsArray = [];
+
+    hideByClassDFlexItem('searchTargetInputContainer');
+}
+
+export function restoreDefaultVisualization() {
+    /* hide charms for selected target */
+    hideCharmsSelectedItem();
+
+    /* remove all previous target values */
+    deleteTargetDetails();
+
+    /* restore default visualization of globe */
+    setDefaultViewExtent();
 }
 
 async function retrieveTargetsAsync() {
@@ -211,27 +232,28 @@ async function retrieveTargetsAsync() {
         return;
     }
 
-    targetsArray = [];
+    //targetsArray = [];
     const targetsCount = entities.length;
     for (let i = 0; i < targetsCount; i++) {
         const target = entities[i];
 
-        targetsArray.push(target);
+        //targetsArray.push(target);
         addGeometryEntityByBounds(target.Id, target.Name, TARGET, target.MinLat, target.MaxLat, target.MinLon, target.MaxLon);
     }
+
+    showByClassDFlexItem('searchTargetInputContainer');
 
     setLoadingCircleIsVisible(false);
 }
 
-async function retrieveTargetDetailsAsync(targetId) {
+async function retrieveTargetDetailsAsync(selectedTargetName) {
     const model = {
-        Id: targetId
+        Text: selectedTargetName
     };
 
     const obj = await doAjaxGetAsync(UrlGetTargetInfo, model);
     if (obj != null) {
-        console.log(obj);
-        $('#targetName').text(obj.Name);
+        //console.log(obj);
 
         let observedByText = '';
         if (obj.ObservedByHRIC)
@@ -246,28 +268,98 @@ async function retrieveTargetDetailsAsync(targetId) {
                 observedByText += ', ';
             observedByText += VIHI;
         }
-        $('#observedBy').text(observedByText);
 
-        $('#category').text(obj.Category);
-        $('#observationMode').text(obj.ObsMode);
-        $('#observationType').text(obj.ObsType);
-
-        $('#latRange').text(`[${obj.MinLat.toFixed(6)}, ${obj.MaxLat.toFixed(6)}]`);
-        $('#latCenter').text(obj.CenterLat.toFixed(6));
-        $('#lonRange').text(`[${obj.MinLon.toFixed(6)}, ${obj.MaxLon.toFixed(6)}]`);
-        $('#lonCenter').text(obj.CenterLon.toFixed(6));
-        $('#area').text(obj.AreaGeod.toLocaleString('en-US'));
-        $('#coveragePercentage').text(obj.CoveragePercentage.toFixed(2));
-        let litRef = obj.LiteratureRef;
-        if (litRef)
-            $('#litRef').attr('href', obj.LiteratureRef);
-        else
-            litRef = '-';
-        $('#litRef').text(litRef);
+        writeTargetDetails(
+            obj.Name,
+            observedByText,
+            obj.Category,
+            obj.ObsMode,
+            obj.ObsType,
+            obj.MinLat.toFixed(6),
+            obj.MaxLat.toFixed(6),
+            obj.CenterLat.toFixed(6),
+            obj.MinLon.toFixed(6),
+            obj.MaxLon.toFixed(6),
+            obj.CenterLon.toFixed(6),
+            obj.AreaGeod.toLocaleString('en-US'),
+            obj.CoveragePercentage.toFixed(2),
+            obj.LiteratureRef);
 
     } else {
         showSimpleDialog(ERROR_LABEL, TargetGetInfoErrorMessage, ALERT);
     }
+}
+
+export function searchForTarget() {
+    const text = $(`#searchTargetInput`).val();
+
+    if (text == null || text.trim() == ''){
+        showSimpleDialog(WARNING_LABEL, TargetsSearchEmptyFieldMessage, WARNING);
+        return;
+    }
+
+    const selectedEntity = entities.getEntities().find(x => x.properties.type == TARGET && x.name == text);
+    if (selectedEntity == null)
+        return;
+
+    globe.planet.flyExtent(selectedEntity.geometry.getExtent());
+
+    selectedTargetName = selectedEntity.name;
+    showCharmsSelectedItem();
+}
+
+function deleteTargetDetails() {
+    writeTargetDetails(
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '');
+}
+
+function writeTargetDetails(name,
+    observedByText,
+    category,
+    obsMode,
+    obsType,
+    minLat,
+    maxLat,
+    centerLat,
+    minLon,
+    maxLon,
+    centerLon,
+    areaGeod,
+    coveragePercentage,
+    literatureRef) {
+    $('#targetName').text(name);
+
+    $('#observedBy').text(observedByText);
+
+    $('#category').text(category);
+    $('#observationMode').text(obsMode);
+    $('#observationType').text(obsType);
+
+    $('#latRange').text(`[${minLat}, ${maxLat}]`);
+    $('#latCenter').text(centerLat);
+    $('#lonRange').text(`[${minLon}, ${maxLon}]`);
+    $('#lonCenter').text(centerLon);
+    $('#area').text(areaGeod);
+    $('#coveragePercentage').text(coveragePercentage);
+    let litRef = literatureRef;
+    if (litRef)
+        $('#litRef').attr('href', literatureRef);
+    else
+        litRef = '-';
+    $('#litRef').text(litRef);
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -278,7 +370,7 @@ export function hideCharmsSelectedItem() {
 }
 
 export function onCharmsSelectedItemOpened() {
-    retrieveTargetDetailsAsync(selectedTargetId);
+    retrieveTargetDetailsAsync(selectedTargetName);
 }
 
 function showCharmsSelectedItem() {
@@ -336,7 +428,7 @@ export async function retrieveFootprintsByStpAsync(val) {
 /* ################################################################################ */
 $(function () {
     footprintsArray = [];
-    targetsArray = [];
+    //targetsArray = [];
 
     showPageItems(true);
 
@@ -349,4 +441,6 @@ $(function () {
     initSwitchLoadHideTargets();
     /* init switch for selecting stp */
     initSwitchShowHideSearchOfFootprints();
+
+    addReturnListenerToElem('searchTargetInput', searchForTarget);
 });

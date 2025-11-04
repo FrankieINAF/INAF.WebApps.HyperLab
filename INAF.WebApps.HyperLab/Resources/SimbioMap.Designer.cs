@@ -241,6 +241,33 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A value for name field is required.
+        /// </summary>
+        public static string TargetsSearchEmptyFieldMessage {
+            get {
+                return ResourceManager.GetString("TargetsSearchEmptyFieldMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No items available with used name.
+        /// </summary>
+        public static string TargetsSearchNoItemsAvailableMessage {
+            get {
+                return ResourceManager.GetString("TargetsSearchNoItemsAvailableMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search for target by name....
+        /// </summary>
+        public static string TargetsSearchTargetLabel {
+            get {
+                return ResourceManager.GetString("TargetsSearchTargetLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Click on target for more info.
         /// </summary>
         public static string TargetTooltipInfo {

@@ -180,4 +180,13 @@
   <data name="TargetTooltipInfo" xml:space="preserve">
     <value>Click on target for more info</value>
   </data>
+  <data name="TargetsSearchTargetLabel" xml:space="preserve">
+    <value>Search for target by name...</value>
+  </data>
+  <data name="TargetsSearchNoItemsAvailableMessage" xml:space="preserve">
+    <value>No items available with used name</value>
+  </data>
+  <data name="TargetsSearchEmptyFieldMessage" xml:space="preserve">
+    <value>A value for name field is required</value>
+  </data>
 </root>
