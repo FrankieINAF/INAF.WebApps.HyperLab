@@ -105,7 +105,7 @@ function showSearchResults(resultsNum) {
     let callback;
     if (resultsNum > 0) {
         callback = function () {
-            $('#panelSearchLoad').parent().removeClass('h-vh-50');
+            //$('#panelSearchLoad').parent().removeClass('h-vh-50');
             Metro.getPlugin('#panelSearchLoad', 'panel').collapse();
         };
     }
@@ -431,6 +431,31 @@ function tryRestoreLastSearch() {
 
     if (executeSearch)
         executeAfter(function () { search(); }, 500);
+}
+
+/* ################################################################################ */
+/* TOOLTIP(s) */
+/* ################################################################################ */
+var isTooltipSearchByMaterialVisible = false;
+
+function hideTooltipSearchByMaterial() {
+    animateCSS('tooltipSelectMaterialInput', 'fadeOut', FAST, function () {
+        hide('tooltipSelectMaterialInput');
+    });
+}
+
+function showTooltipSearchByMaterial() {
+    show('tooltipSelectMaterialInput');
+    animateCSS('tooltipSelectMaterialInput', 'fadeIn', FAST);
+}
+
+function setTooltipSearchByMaterialVisibility() {
+    if (!isTooltipSearchByMaterialVisible)
+        showTooltipSearchByMaterial();
+    else
+        hideTooltipSearchByMaterial();
+
+    isTooltipSearchByMaterialVisible = !isTooltipSearchByMaterialVisible;
 }
 
 /* ################################################################################ */

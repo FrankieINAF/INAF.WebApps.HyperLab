@@ -263,7 +263,7 @@
     "inputFiles": [
       "wwwroot/css/hyperlab/common.css",
       "wwwroot/css/hyperlab/commonvalidation.css",
-      "wwwroot/css/animate/animate.css"
+      "wwwroot/lib/animate.css/animate.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -315,6 +315,17 @@
     "minify": { "enabled": true }
   },
   {
+    "outputFileName": "wwwroot/css/dist/hubandchart/hubandchartbundle.css",
+    "inputFiles": [
+      "wwwroot/css/hyperlab/hubandchart/hub.css",
+      "wwwroot/css/hyperlab/hubandchart/searches.css",
+      "wwwroot/css/hyperlab/hubandchart/hubandchart.css",
+      "wwwroot/css/hyperlab/hubandchart/charms.css"
+    ],
+    "includeInProject": true,
+    "minify": { "enabled": true }
+  },
+  {
     "outputFileName": "wwwroot/css/dist/home/indexbundle.css",
     "inputFiles": [
       "wwwroot/css/hyperlab/home/index.css"
@@ -361,16 +372,6 @@
     "inputFiles": [
       "wwwroot/css/hyperlab/commonlists.css",
       "wwwroot/css/hyperlab/materials/minerals.css"
-    ],
-    "includeInProject": true,
-    "minify": { "enabled": true }
-  },
-  {
-    "outputFileName": "wwwroot/css/dist/hubandchart/hubandchartbundle.css",
-    "inputFiles": [
-      "wwwroot/css/hyperlab/hubandchart/searches.css",
-      "wwwroot/css/hyperlab/hubandchart/hubandchart.css",
-      "wwwroot/css/hyperlab/hubandchart/charms.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }

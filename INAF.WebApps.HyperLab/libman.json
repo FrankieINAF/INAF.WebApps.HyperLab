@@ -15,6 +15,10 @@
       "provider": "jsdelivr",
       "library": "joystick-controller@1.1.1",
       "destination": "wwwroot/lib/joystick-controller/"
+    },
+    {
+      "library": "animate.css@4.1.1",
+      "destination": "wwwroot/lib/animate/animate.css/"
     }
   ]
 }

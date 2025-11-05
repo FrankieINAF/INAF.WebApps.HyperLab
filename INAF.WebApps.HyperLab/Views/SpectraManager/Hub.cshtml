@@ -47,18 +47,6 @@
 <link rel="stylesheet" href="~/css/dist/hubandchart/hubandchartbundle.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/dist/jqueryuibundle.min.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/dist/speechbubble.min.css" asp-append-version="true" />
-<style>
-    .button-on-bottom {
-        position: absolute;
-        bottom: 12px;
-    }
-
-    .overlap {
-        position: absolute;
-        width: 290px;
-        top: 0px;
-    }
-</style>
 <!-- SEARCH -->
 <div id="search" class="container h-100 overflow-x-auto overflow-y-auto">
     @Html.AntiForgeryToken()
@@ -150,28 +138,36 @@
                             </div>
                             <!-- MATERIALS -->
                             <div class="cell-fs-12 cell-sm-6 cell-lg-4">
-                                <label id="selectMaterialSearchTypeLabel" for="selectMaterialInput" class="text-secondary">@Html.Raw(Search.SearchSimpleByMaterialLabel)</label>
+                                <div class="d-flex">
+                                    <div>
+                                        <label id="selectMaterialSearchTypeLabel" for="selectMaterialInput" class="text-secondary">@Html.Raw(Search.SearchSimpleByMaterialLabel)
+                                                <span class="badge bg-cyan fg-white pointer" onclick="setTooltipSearchByMaterialVisibility()">i</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="tooltipSelectMaterialInput" class="tooltip" style="display: none">
+                                    <div class="d-flex flex-column">
+                                        <div>
+                                            <button class="button light cycle outline mini float-right" onclick="setTooltipSearchByMaterialVisibility()"><span class="mif-cross-light"></span></button>
+                                        </div>
+                                        <div>
+                                            <p class="text-secondary text-just fg-white">@Html.Raw(Search.SearchSimpleByMaterialTooltip1)</p>
+                                            <p class="text-secondary text-just fg-white margin-top-4">@Html.Raw(Search.SearchSimpleByMaterialTooltip2)</p>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="d-flex flex-content-start">
-                                    <input id="@{
-                                    @selectMaterial
-                                                                        }
-Input"
+                                    <input id="@{@selectMaterial}Input"
                                            type="text"
                                            placeholder="@Html.Raw(Search.SearchByMaterialPlaceholder)"
                                            data-role="input"
                                            data-search-button="true"
                                            onfocus="setCurrentSearchSimpleType('@selectMaterial')"
                                            data-search-button-click="custom"
-                                           data-on-search-button-click="getMaterialsSuggestions('@{
-                                           @selectMaterial
-                                                                                      }
-Input','@selectMaterial')" />
+                                           data-on-search-button-click="getMaterialsSuggestions('@{@selectMaterial}Input','@selectMaterial')" />
                                     <select id="@selectMaterial" data-role="select" data-cls-select="overlap" data-on-change="setCurrentSearchSimpleType('@selectMaterial')" data-on-drop="setCurrentSearchSimpleType('@selectMaterial')"></select>
                                     <button class="button dark cycle small outline margin-top-4 margin-left-8"
-                                            onclick="resetSearchByMaterial('@{
-                                            @selectMaterial
-                                                                                        }
-Input')"
+                                            onclick="resetSearchByMaterial('@{@selectMaterial}Input')"
                                             title="@Html.Raw(Search.SearchClearSuggestionsButtonTitle)">
                                         <span class="mif-cross-light"></span>
                                     </button>
