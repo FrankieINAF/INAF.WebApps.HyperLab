@@ -316,7 +316,7 @@ async function saveSLabFileAsync(filename, xml, spectrumType, isRawUrlRequested)
         }
 
         const parentFiles = tryReadParentFiles(xml, areAllParentFilesRequired);
-        if (!parentFiles) {
+        if (!parentFiles && spectrumType != SPECTRUM_TYPE_RAW) {
             isSavingEnabled = false;
             savingErrorMessage = LoadFileSaveMissingParentFilesErrorMessage;
         }

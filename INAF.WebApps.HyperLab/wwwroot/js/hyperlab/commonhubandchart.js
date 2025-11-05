@@ -173,7 +173,7 @@ function removeGuideHubButton() {
 /*  */
 function addPublicAndShareButtons() {
     let html = `<div id="${publicAndShareButtonId}" class="multi-action" style="height: 36px">`;
-    html += `<button class="action-button rotate-minus bg-transparent second fg-white" onclick="$(this).toggleClass('active')" >`;
+    html += `<button class="action-button rotate-minus bg-transparent second fg-white" title="${ButtonPublicAndShareLabel}" onclick="$(this).toggleClass('active')" >`;
     html += `<span class="icon"><span class="mif-external"></span></span>`;
     html += `</button >`;
     html += `<ul class="actions drop-bottom">`;

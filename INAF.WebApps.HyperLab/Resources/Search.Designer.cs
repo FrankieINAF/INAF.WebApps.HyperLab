@@ -142,6 +142,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Make public or share spectra.
+        /// </summary>
+        public static string ButtonPublicAndShareLabel {
+            get {
+                return ResourceManager.GetString("ButtonPublicAndShareLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start searching.
         /// </summary>
         public static string ButtonSearchLabel {

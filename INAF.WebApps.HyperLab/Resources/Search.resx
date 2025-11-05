@@ -627,4 +627,7 @@
   <data name="SearchSimpleByMaterialTooltip1" xml:space="preserve">
     <value>Start typing a material name and press enter or use search icon within the input field to get suggestions about available material(s)</value>
   </data>
+  <data name="ButtonPublicAndShareLabel" xml:space="preserve">
+    <value>Make public or share spectra</value>
+  </data>
 </root>
