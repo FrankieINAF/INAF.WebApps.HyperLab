@@ -23,12 +23,22 @@ function showGlobe() {
 
     const mercuryTiles = new XYZ("MercuryRaster", {
         isBaseLayer: true,
-        url: "/tiles/mercury/{z}/{x}/{y}.png", // percorso alle tile
+        url: "/tiles/mercury/{z}/{x}/{y}.png", // percorso alle tile TMS
         attribution: "ESRI",
         visibility: true,
         minZoom: 0,
-        maxZoom: 8
+        maxZoom: 8,
+        tms: true // ← questa è la chiave!
     });
+
+    //const mercuryTiles = new XYZ("MercuryRaster", {
+    //    isBaseLayer: true,
+    //    url: "/tiles/mercury/{z}/{x}/{y}.png", // percorso alle tile
+    //    attribution: "ESRI",
+    //    visibility: true,
+    //    minZoom: 0,
+    //    maxZoom: 8
+    //});
 
     globe = new Globe({
         target: "map",
