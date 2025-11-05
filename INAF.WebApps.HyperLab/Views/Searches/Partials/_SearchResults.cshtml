@@ -1,0 +1,169 @@
+﻿@model SearchResultsContainer
+
+@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches
+@using INAF.WebApps.HyperLab.Resources
+@using INAF.Libraries.Net.Extensions
+@using Microsoft.AspNetCore.Html;
+@using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
+
+@{
+	int resultsNum = Model?.Results?.Count() ?? 0;
+}
+
+<div data-role="panel"
+	 id="resultsPanel"
+	 data-title-caption="<strong>@Search.ResultsPanelTitle</strong>"
+	 data-cls-title-caption="margin-horizontal-4"
+	 data-collapsed="false"
+	 data-collapsible="false"
+	 data-custom-buttons="searchCustomButton"
+	 data-on-panel-create="showSearchResultsCaller">
+	@{
+		if (Model?.Results?.Count() > 0)
+		{
+			MineralType mineralType = Model.Results.First().MineralType;
+
+			int rowsNum = Model.Results.Count();
+
+			<table class="table compact striped row-hover">
+				<thead>
+					<tr>
+						<th></th>
+						<th>#</th>
+						<th>@Html.Raw(Search.SearchResultColNameLabel)</th>
+						<th>@Html.Raw(Search.SearchResultColSpectraTypesNumLabel)</th>
+						@switch (mineralType)
+						{
+							case MineralType.Monomineralic:
+								<th>@Html.Raw(Search.SearchResultColMonomineralicLabel)</th>
+								break;
+							case MineralType.Mix:
+								<th>@Html.Raw(Search.SearchResultColMixLabel)</th>
+								break;
+							case MineralType.Rock:
+								<th>@Html.Raw(Search.SearchResultColRockLabel)</th>
+								break;
+							case MineralType.Extraterrestrial:
+								<th>@Html.Raw(Search.SearchResultColMeteorClassLabel)</th>
+								break;
+							default:
+								<th>&nbsp;</th>
+								break;
+						}
+						<th>@Html.Raw(Search.SearchResultColSpectrumLevelLabel)</th>
+					</tr>
+				</thead>
+				<tbody>
+					@for (int i = 0; i < rowsNum; i++)
+					{
+						int index = i;
+						int id = Model.Results.ElementAt(i).Id;
+						int level = (int)Model.Results.ElementAt(i).SpectrumLevel;
+						<tr>
+							<td>
+								<span id="groupItems@{@index;}IconExpand" class="mif-expand-more mif-2x pointer" onclick="searchGroupItems(@id, @index)" title="@Html.Raw(Search.GroupItemsExpandTooltip)"></span>
+								<span id="groupItems@{@index;}IconShrink" class="mif-expand-less mif-2x pointer d-none" onclick="clearGroupItems(@index)" title="@Html.Raw(Search.GroupItemsShrinkTooltip)"></span>
+							</td>
+							<td>@index</td>
+							<td>@Html.Raw(Model.Results.ElementAt(i).SpectrumFilename)</td>
+							<td>@Html.Raw(Model.Results.ElementAt(i).AvailableSpectraTypes?.Count())</td>
+							@switch (mineralType)
+							{
+								case MineralType.Monomineralic:
+									var monomineralicItem = (SingleMaterialSpectraGroupInfoModel)Model.Results.ElementAt(i);
+									if (monomineralicItem != null && monomineralicItem.Mineral != null)
+									{
+										<td>@Html.Raw(monomineralicItem.Mineral.Name)</td>
+									}
+									else
+									{
+										<td>&nbsp;</td>
+									}
+									break;
+								case MineralType.Mix:
+									var mineralsItem = (MineralsSpectraGroupInfoModel)Model.Results.ElementAt(i);
+									if (mineralsItem != null && mineralsItem.Minerals != null && mineralsItem.Minerals.Count > 0)
+									{
+										<td>
+											@{
+												int mineralsNum = mineralsItem.Minerals.Count;
+												for (int j = 0; j < mineralsNum; j++)
+												{
+													<span>@Html.Raw(mineralsItem.Minerals[j].Name)</span>
+													if (j < mineralsNum - 1)
+													{
+														<span>,</span>
+													}
+												}
+											}
+										</td>
+									}
+									else
+									{
+										<td>&nbsp;</td>
+									}
+									break;
+								case MineralType.Rock:
+									var rockItem = (SingleMaterialSpectraGroupInfoModel)Model.Results.ElementAt(i);
+									if (rockItem != null && rockItem.Mineral != null)
+									{
+										<td>@Html.Raw(rockItem.Mineral.Name)</td>
+									}
+									else
+									{
+										<td>&nbsp;</td>
+									}
+									break;
+								case MineralType.Extraterrestrial:
+									var meteorItem = (SingleMaterialSpectraGroupInfoModel)Model.Results.ElementAt(i);
+									if (meteorItem != null && meteorItem.Mineral != null)
+									{
+										<td>@Html.Raw(meteorItem.Mineral.Name)</td>
+									}
+									else
+									{
+										<td>&nbsp;</td>
+									}
+									break;
+								default:
+									<td>&nbsp;</td>
+									break;
+							}
+							<td>@Html.Raw(Model.Results.ElementAt(i).SpectrumLevel.GetDescription())</td>
+						</tr>
+						<tr id="tr@{@index;}">
+							<td colspan="6">
+								<div id="groupItems@{@index;}" style="background-color: white"></div>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
+		else
+		{
+			<div class="row">
+				<div class="cell-fs-12 remark warning margin-horizontal-4">
+					<span class="mif-cross margin-right-8"></span><span class="text-secondary margin-horizontal-8">@Html.Raw(Search.SearchNoResultsMessage)</span>
+				</div>
+			</div>
+		}
+	}
+</div>
+
+<script type="text/javascript">
+	var searchCustomButton = [
+		{
+			html: "<span class='mif-bin'></span>",
+			cls: 'primary',
+			onclick: function() {
+				clearSearchResults();
+				executeAfter(expandSearchPanel, JS_DELAY_200); // 'expandSearchPanel' is defined in hub.js
+			}
+		}
+	]
+
+	function showSearchResultsCaller() {
+		showSearchResults(@resultsNum);
+	}
+</script>
