@@ -202,7 +202,7 @@ function showGlobe() {
         minimumLevel: 0,
         maximumLevel: 7,
         rectangle: Cesium.Rectangle.fromDegrees(minLon, minLat, maxLon, maxLat),
-        flipY: true // ← fondamentale per TMS!
+        //flipY: true // ← fondamentale per TMS!
     });
     //const mercuryImagery = new Cesium.UrlTemplateImageryProvider({
     //    url: "/tiles/mercury/{z}/{x}/{y}.png",
