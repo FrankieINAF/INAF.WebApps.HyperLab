@@ -622,10 +622,10 @@
     <value>Start typing a material name and then press enter or click on search icon to get suggestions about available materials.</value>
   </data>
   <data name="SearchSimpleByMaterialTooltip2" xml:space="preserve">
-    <value>Once material(s) suggestion(s) have been displayed, select one and click on search icon to search for spectra</value>
+    <value>Once material(s) suggestion(s) have been displayed, select one and click on search button on top of page to search for spectra</value>
   </data>
   <data name="SearchSimpleByMaterialTooltip1" xml:space="preserve">
-    <value>Start typing a material name and press enter or use search icon within the input field to get suggestions about available material(s)</value>
+    <value>Start typing a material name and press enter or use search input field search icon to get suggestions about available material(s)</value>
   </data>
   <data name="ButtonPublicAndShareLabel" xml:space="preserve">
     <value>Make public or share spectra</value>

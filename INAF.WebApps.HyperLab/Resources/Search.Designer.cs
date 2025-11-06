@@ -1285,7 +1285,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start typing a material name and press enter or use search icon within the input field to get suggestions about available material(s).
+        ///   Looks up a localized string similar to Start typing a material name and press enter or use search input field search icon to get suggestions about available material(s).
         /// </summary>
         public static string SearchSimpleByMaterialTooltip1 {
             get {
@@ -1294,7 +1294,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Once material(s) suggestion(s) have been displayed, select one and click on search icon to search for spectra.
+        ///   Looks up a localized string similar to Once material(s) suggestion(s) have been displayed, select one and click on search button on top of page to search for spectra.
         /// </summary>
         public static string SearchSimpleByMaterialTooltip2 {
             get {

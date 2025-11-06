@@ -86,8 +86,11 @@ async function startBandAnalysisProcedureAsync(x0, x1) {
         return;
 
     let seriesIndex = findChartSeriesIndexByValueFieldId(spectrum.Id);
-    if (seriesIndex == -1)
-        return;
+    if (seriesIndex == -1) {
+        seriesIndex = findChartSeriesIndexByValueFieldId(buildTempContinuumRemovedId());
+        if (seriesIndex == -1)
+            return;
+    }
 
     setLoadingCircleIsVisible(true);
 
