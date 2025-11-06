@@ -152,8 +152,11 @@ function onCharmsSelectedItemOpened() {
 /* SHOW THE GLOBE */
 /* ################################################################################ */
 function showGlobe() {
+    const mercuryEllipsoid = new Cesium.Ellipsoid(2439400.0, 2439400.0, 2439400.0);
+
     viewer = new Cesium.Viewer('map', {
-        terrainProvider: new Cesium.EllipsoidTerrainProvider(),
+        globe: new Cesium.Globe(mercuryEllipsoid),
+        //terrainProvider: new Cesium.EllipsoidTerrainProvider(),
         imageryProvider: false,
         //imageryProvider: new Cesium.UrlTemplateImageryProvider({
         //    url: "/tiles/mercury/{z}/{x}/{y}.png",
@@ -186,16 +189,31 @@ function showGlobe() {
     });
 
     /* set Mercury imagery */
+    const minLon = -180.0;
+    const minLat = -90.0;
+    const maxLon = 180.0;
+    const maxLat = 90;
+    const mercuryImagery = new Cesium.UrlTemplateImageryProvider({
+        url: "/tiles/mercury/{z}/{x}/{reverseY}.png",
+        tilingScheme: new Cesium.GeographicTilingScheme({
+            ellipsoid: mercuryEllipsoid
+        }),
+        tms: true,
+        minimumLevel: 0,
+        maximumLevel: 7,
+        rectangle: Cesium.Rectangle.fromDegrees(minLon, minLat, maxLon, maxLat),
+        flipY: true // ← fondamentale per TMS!
+    });
     //const mercuryImagery = new Cesium.UrlTemplateImageryProvider({
     //    url: "/tiles/mercury/{z}/{x}/{y}.png",
     //    tilingScheme: new Cesium.GeographicTilingScheme(),
     //    maximumLevel: 7,
     //    credit: "Valentina Galluzzi"
     //});
-    const mercuryImagery = new Cesium.SingleTileImageryProvider({
-        url: '/images/maps/mercury_messenger_mdis_basemap_enhancedcolor_mosaic_global_1024.jpg',
-        rectangle: Cesium.Rectangle.fromDegrees(-180, -90, 180, 90)
-    });
+    //const mercuryImagery = new Cesium.SingleTileImageryProvider({
+    //    url: '/images/maps/mercury_messenger_mdis_basemap_enhancedcolor_mosaic_global_1024.jpg',
+    //    rectangle: Cesium.Rectangle.fromDegrees(-180, -90, 180, 90)
+    //});
     viewer.imageryLayers.addImageryProvider(mercuryImagery);
 
     /* set background color */

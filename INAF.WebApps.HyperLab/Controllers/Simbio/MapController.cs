@@ -35,7 +35,7 @@ namespace INAF.WebApps.HyperLab.Controllers.Simbio
         [HttpGet]
         public IActionResult GetTargetInfo(GenericRequestByIdModel model)
         {
-            TargetModel? targetInfo = dbHandlerSimbio.getTargetInfo(model.Id);
+            TargetModel? targetInfo = dbHandlerSimbio.getTargetInfo(model.Id.ToString());
             if (targetInfo != null)
                 return new JsonResult(targetInfo);
             else
