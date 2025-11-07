@@ -194,20 +194,22 @@ function showGlobe() {
     const maxLon = 180.0;
     const maxLat = 90;
     const mercuryImagery = new Cesium.UrlTemplateImageryProvider({
-        url: "/tiles/mercury/{z}/{x}/{reverseY}.png",
+        url: "/tiles/mercury/tms_old/{z}/{x}/{reverseY}.png",
         tilingScheme: new Cesium.GeographicTilingScheme({
             ellipsoid: mercuryEllipsoid
         }),
-        tms: true,
         minimumLevel: 0,
         maximumLevel: 7,
         rectangle: Cesium.Rectangle.fromDegrees(minLon, minLat, maxLon, maxLat),
-        //flipY: true // ← fondamentale per TMS!
     });
     //const mercuryImagery = new Cesium.UrlTemplateImageryProvider({
-    //    url: "/tiles/mercury/{z}/{x}/{y}.png",
-    //    tilingScheme: new Cesium.GeographicTilingScheme(),
+    //    url: "/tiles/mercury/xyz/{z}/{x}/{y}.png",
+    //        tilingScheme: new Cesium.GeographicTilingScheme({
+    //            ellipsoid: mercuryEllipsoid
+    //        }),
+    //    minimumLevel: 0,
     //    maximumLevel: 7,
+    //    rectangle: Cesium.Rectangle.fromDegrees(minLon, minLat, maxLon, maxLat),
     //    credit: "Valentina Galluzzi"
     //});
     //const mercuryImagery = new Cesium.SingleTileImageryProvider({
