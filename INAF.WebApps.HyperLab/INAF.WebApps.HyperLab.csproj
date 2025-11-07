@@ -324,6 +324,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="appsettings.staging.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\js\dist\account\loginbundle.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
