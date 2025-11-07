@@ -23,25 +23,14 @@ var TARGET = 'TARGET';
 /* ################################################################################ */
 function showGlobe() {
     const mercuryEllipsoid = new Ellipsoid(MERCURY_RADIUS, MERCURY_RADIUS, MERCURY_RADIUS);
-    const minLon = -180.0;
-    const minLat = -90.0;
-    const maxLon = 180.0;
-    const maxLat = 90;
     const mercuryTiles = new XYZ("MercuryRaster", {
         isBaseLayer: true,
-        url: "/tiles/mercury/xyz_old/{z}/{x}/{y}.png", // percorso alle tile TMS
+        url: "/tiles/mercury/xyz/{z}/{x}/{y}.png",
         attribution: "ESRI",
         visibility: true,
         minZoom: 0,
-        maxZoom: 7,
+        maxZoom: 9,
     });
-    //mercuryTiles.setExtent(new Extent(new LonLat(minLon, minLat), new LonLat(maxLon, maxLat)));
-    //const mercuryTiles = new XYZ("MercuryRaster", {
-    //    isBaseLayer: true,
-    //    url: "/tiles/mercury/tms_old/{z}/{x}/{y}.png",
-    //    maxZoom: 7,
-    //    minZoom: 0,
-    //});
 
     globe = new Globe({
         target: "map",
@@ -368,7 +357,7 @@ function writeTargetDetails(name,
     $('#coveragePercentage').text(coveragePercentage);
     let litRef = literatureRef;
     if (litRef)
-        $('#litRef').attr('href', literatureRef);
+        $('#litRef').attr('href', literatureRef).attr('target', '_blank');
     else
         litRef = '-';
     $('#litRef').text(litRef);
