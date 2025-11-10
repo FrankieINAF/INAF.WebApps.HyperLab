@@ -51,8 +51,8 @@ function showGlobe() {
     globe.planet.addLayer(mercuryTiles);
 
     /* set sky background */
-    globe.planet.renderer.controls.SimpleSkyBackground.colorOne = "rgb(255,255,255)";
-    globe.planet.renderer.controls.SimpleSkyBackground.colorTwo = "rgb(255,255,255)";
+    globe.planet.renderer.controls.SimpleSkyBackground.colorOne = "rgb(0,0,0)";
+    globe.planet.renderer.controls.SimpleSkyBackground.colorTwo = "rgb(0,0,0)";
 
     setDefaultViewExtent();
 
