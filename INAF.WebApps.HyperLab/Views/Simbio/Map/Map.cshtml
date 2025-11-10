@@ -35,7 +35,7 @@
                            data-on-clear-click="restoreDefaultVisualization()"/>
                     </div>
                     <div>
-                            <button class="button cycle dark small outline margin-left-4 margin-top-4" onclick="restoreDefaultVisualization()" title="@Html.Raw(SimbioMap.TargetsRestoreDefaultVisualizationLabel)"><span class="mif-cross-light"></span></button>
+                        <button class="button cycle dark small outline margin-left-4 margin-top-4" onclick="restoreDefaultVisualization()" title="@Html.Raw(SimbioMap.TargetsRestoreDefaultVisualizationLabel)"><span class="mif-cross-light"></span></button>
                     </div>
                     </div>
                 </div>
@@ -169,9 +169,7 @@
 </script>
 <script type="module" src="~/lib/openglobus/js/og.es.js"></script>
 <environment names="Development">
-    @* <script type="module" src="~/js/simbio/map/mapforopenglobus.js"></script>
-    <script type="module" src="~/js/simbio/map/mapopenglobus.js"></script> *@
-    <script type="module" src="~/js/simbio/map/map.js"></script>
+    <script type="module" src="~/js/src/simbio/map/map.js"></script>
     <script type="module">
         import {
             hideCharmsSelectedItem,
@@ -179,7 +177,7 @@
             restoreDefaultVisualization,
             retrieveFootprintsByStpAsync,
             searchForTarget
-        } from '/js/simbio/map/map.js';
+        } from '/js/src/simbio/map/map.js';
         /* following lines are required to access imported function by global scope */
         window.hideCharmsSelectedItem = hideCharmsSelectedItem;
         window.onCharmsSelectedItemOpened = onCharmsSelectedItemOpened;
