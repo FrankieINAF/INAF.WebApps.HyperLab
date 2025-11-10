@@ -1,0 +1,24 @@
+﻿.button-on-bottom {
+    position: absolute;
+    bottom: 12px;
+}
+
+.overlap {
+    position: absolute;
+    width: 290px;
+    top: 0px;
+}
+
+.tooltip {
+    width: 300px;
+    height: 180px;
+    position: absolute;
+    top: -125%;
+    left: 35%;
+    display: inline-block;
+    background-color: #1ba1e2 !important;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    z-index: 10;
+}
