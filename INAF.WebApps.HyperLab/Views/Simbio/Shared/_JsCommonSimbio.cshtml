@@ -9,6 +9,17 @@
     var STC = '@Enums.Channel.STC.ToString()';
     var VIHI = '@Enums.Channel.VIHI.ToString()';
 
+    var FeatureCategoryAll = "@Html.Raw(SimbioMap.FeatureCategoryAll)";
+    var FeatureCategoryAlbedos = "@Html.Raw(SimbioMap.FeatureCategoryAlbedos)";
+    var FeatureCategoryCraters = "@Html.Raw(SimbioMap.FeatureCategoryCraters)";
+    var FeatureCategoryDorsa = "@Html.Raw(SimbioMap.FeatureCategoryDorsa)";
+    var FeatureCategoryFossae = "@Html.Raw(SimbioMap.FeatureCategoryFossae)";
+    var FeatureCategoryMontes = "@Html.Raw(SimbioMap.FeatureCategoryMontes)";
+    var FeatureCategoryPlanitiae = "@Html.Raw(SimbioMap.FeatureCategoryPlanitiae)";
+    var FeatureCategoryRupes = "@Html.Raw(SimbioMap.FeatureCategoryRupes)";
+    var FeatureCategoryValles = "@Html.Raw(SimbioMap.FeatureCategoryValles)";
+
+    var FeaturesNoItemsAvailableMessage = "@Html.Raw(SimbioMap.FeaturesNoItemsAvailableMessage)";
     var FootprintsNoItemsAvailable = "@Html.Raw(SimbioMap.FootprintsNoItemsAvailable)";
     var SelectorSelectStpValue = "@Html.Raw(SimbioMap.SelectorSelectStpValue)";
     var TargetsNoItemsAvailableMessage = "@Html.Raw(SimbioMap.TargetsNoItemsAvailableMessage)";
@@ -21,6 +32,7 @@
 
     var UrlGetStpsWithFootprints = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.GetStpsWithFootprints)';
 
+    var UrlGetFeatures = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.GetFeatures)';
     var UrlGetTargetInfo = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.GetTargetInfo)';
     var UrlGetTargetsWithObsCoords = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.GetTargetsWithObsCoords)';
 </script>

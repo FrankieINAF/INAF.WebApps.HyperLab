@@ -9,27 +9,38 @@
     XYZ,
 } from "/lib/openglobus/js/og.es.js";
 
+import {
+    initCheckboxFeaturesAll
+} from "./mapfeatures.js";
+
 const MERCURY_RADIUS = 2439400.0;
+const FOOTPRINT = 'FOOTPRINT';
+const SIM = 'SIM';
+const TARGET = 'TARGET';
+
+export var entities;
+export var featuresLayer;
 
 var globe;
-var entities;
-
-var FOOTPRINT = 'FOOTPRINT';
-var SIM = 'SIM';
-var TARGET = 'TARGET';
 
 /* ################################################################################ */
 /* OPENGLOBUS */
 /* ################################################################################ */
 function showGlobe() {
     const mercuryEllipsoid = new Ellipsoid(MERCURY_RADIUS, MERCURY_RADIUS, MERCURY_RADIUS);
-    const mercuryTiles = new XYZ("MercuryRaster", {
+    const mercuryTilesLayer = new XYZ("MercuryTiles", {
         isBaseLayer: true,
         url: "/tiles/mercury/xyz/{z}/{x}/{y}.png",
         attribution: "ESRI",
         visibility: true,
         minZoom: 0,
         maxZoom: 9,
+    });
+
+    featuresLayer = new Vector("FeaturesLayer", {
+        'clampToGround': true,
+        'entities': null,
+        'async': false
     });
 
     globe = new Globe({
@@ -44,11 +55,9 @@ function showGlobe() {
             enabled: false
         },
         shadows: false,
-        layers: [],
+        layers: [mercuryTilesLayer, featuresLayer],
         //controls: []
     });
-
-    globe.planet.addLayer(mercuryTiles);
 
     /* set sky background */
     globe.planet.renderer.controls.SimpleSkyBackground.colorOne = "rgb(0,0,0)";
@@ -206,9 +215,6 @@ function removeTargets() {
     if (!removeEntitiesProcedure(TARGET))
         return;
 
-    /* clear in-memory array */
-    targetsArray = [];
-
     hideByClassDFlexItem('searchTargetInputContainer');
 }
 
@@ -294,7 +300,7 @@ async function retrieveTargetDetailsAsync(selectedTargetName) {
 export function searchForTarget() {
     const text = $(`#searchTargetInput`).val();
 
-    if (text == null || text.trim() == ''){
+    if (text == null || text.trim() == '') {
         showSimpleDialog(WARNING_LABEL, TargetsSearchEmptyFieldMessage, WARNING);
         return;
     }
@@ -433,7 +439,21 @@ $(function () {
 
     showPageItems(true);
 
+    if (isMobileByOS()) {
+        $('#map').css('height', '100%');
+    } else {
+        $('#map').css('height', '800px');
+
+        /* set drop-down always opened and open it */
+        $('#featuresDropdown').addClass('keep-open');
+        Metro.getPlugin('#featuresDropdown', 'dropdown').open();
+
+    }
+
     showGlobe();
+
+    /* init all checkboxes for showing/hiding features */
+    initCheckboxFeaturesAll();
 
     /* retrieve stps related to footprints */
     retrieveStpsWithFootprintsAsync();

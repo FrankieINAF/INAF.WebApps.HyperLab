@@ -12,50 +12,76 @@
 <link rel="stylesheet" href="~/css/dist/simbio/map/mapbundle.min.css" asp-append-version="true" />
 
 <div class="container h-100 overflow-x-auto overflow-y-auto">
-    <div id="selectors">
-        <div class="row cell-fs-12 d-flex">
-            <!-- TARGETS -->
-            <div class="d-flex flex-column">
-                <!-- SHOW/HIDE -->
-                <div class="d-flex">
-                    <div><input id="loadHideTargets" type="checkbox" data-role="switch" data-on="Load" data-off="Hide"></div>
-                    <div class="margin-top-4"><span class="fg-black">@Html.Raw(SimbioMap.SelectorsShowHideTargets)</span></div>
+    <div class="d-flex flex-column-fs flex-row-lg">
+        <!-- SELECTORS -->
+        <div id="selectors" class="w-100-fs w-25-lg">
+            <div class="row cell-fs-12 d-flex flex-justify-between-fs flex-column-lg">
+                <!-- FEATURES -->
+                <div>
+                    <p id="featuresLabel" class="fg-black text-bold d-block-fs d-none-lg">@Html.Raw(SimbioMap.FeaturesLabel)</p>
+                    <div id="featuresDropdown"
+                         data-role="dropdown"
+                         data-toggle-element=featuresLabel>
+                        <div class="d-flex flex-column">
+                            <p class="fg-black">@Html.Raw(SimbioMap.FeaturesShowHideLabel)</p>
+                            <div><input id="showHideFeaturesAll" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-left-48" data-caption="@Html.Raw(SimbioMap.FeatureCategoryAll)"></div>
+                            <div class="d-flex"><img src="~/images/simbiomap/features/featuresAlbedo.png"/><input id="showHideFeaturesAlbedos" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-top-8" data-caption="@Html.Raw(SimbioMap.FeatureCategoryAlbedos)"></div>
+                            <div class="d-flex"><img src="~/images/simbiomap/features/featuresCrater.png" /><input id="showHideFeaturesCraters" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-top-8" data-caption="@Html.Raw(SimbioMap.FeatureCategoryCraters)"></div>
+                            <div class="d-flex"><img src="~/images/simbiomap/features/featuresDorsum.png" /><input id="showHideFeaturesDorsa" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-top-8" data-caption="@Html.Raw(SimbioMap.FeatureCategoryDorsa)"></div>
+                            <div class="d-flex"><img src="~/images/simbiomap/features/featuresFossa.png" /><input id="showHideFeaturesFossae" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-top-8" data-caption="@Html.Raw(SimbioMap.FeatureCategoryFossae)"></div>
+                            <div class="d-flex"><img src="~/images/simbiomap/features/featuresMons.png" /><input id="showHideFeaturesMontes" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-top-8" data-caption="@Html.Raw(SimbioMap.FeatureCategoryMontes)"></div>
+                            <div class="d-flex"><img src="~/images/simbiomap/features/featuresPlanitia.png" /><input id="showHideFeaturesPlanitiae" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-top-8" data-caption="@Html.Raw(SimbioMap.FeatureCategoryPlanitiae)"></div>
+                            <div class="d-flex"><img src="~/images/simbiomap/features/featuresRupes.png" /><input id="showHideFeaturesRupes" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-top-8" data-caption="@Html.Raw(SimbioMap.FeatureCategoryRupes)"></div>
+                            <div class="d-flex"><img src="~/images/simbiomap/features/featuresVallis.png" /><input id="showHideFeaturesValles" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-top-8" data-caption="@Html.Raw(SimbioMap.FeatureCategoryValles)"></div>
+                        </div>
+                    </div>
                 </div>
-                <!-- SEARCH BOX -->
-                <div id="searchTargetInputContainer" class="d-none">
+                <hr class="d-none-fs d-block-lg w-100 bg-cyan margin-top-8" />
+                <!-- TARGETS -->
+                <div class="d-flex flex-column">
+                    <!-- SHOW/HIDE -->
                     <div class="d-flex">
-                    <div>
-                        <input id="searchTargetInput"
-                           type="text"
-                           placeholder="@Html.Raw(SimbioMap.TargetsSearchTargetLabel)"
-                           data-role="input"
-                           data-search-button="true"
-                           data-search-button-click="custom"
-                           data-on-search-button-click="searchForTarget()"
-                           data-on-clear-click="restoreDefaultVisualization()"/>
+                        <div><input id="loadHideTargets" type="checkbox" data-role="switch" data-on="Load" data-off="Hide"></div>
+                        <div class="margin-top-4"><p class="fg-black">@Html.Raw(SimbioMap.SelectorsShowHideTargets)</p></div>
                     </div>
-                    <div>
-                        <button class="button cycle dark small outline margin-left-4 margin-top-4" onclick="restoreDefaultVisualization()" title="@Html.Raw(SimbioMap.TargetsRestoreDefaultVisualizationLabel)"><span class="mif-cross-light"></span></button>
-                    </div>
+                    <!-- SEARCH BOX -->
+                    <div id="searchTargetInputContainer" class="d-none">
+                        <div class="d-flex">
+                            <div>
+                                <input id="searchTargetInput"
+                                       type="text"
+                                       placeholder="@Html.Raw(SimbioMap.TargetsSearchTargetLabel)"
+                                       data-role="input"
+                                       data-search-button="true"
+                                       data-search-button-click="custom"
+                                       data-on-search-button-click="searchForTarget()"
+                                       data-on-clear-click="restoreDefaultVisualization()" />
+                            </div>
+                            <div>
+                                <button class="button cycle dark small outline margin-left-4 margin-top-4" onclick="restoreDefaultVisualization()" title="@Html.Raw(SimbioMap.TargetsRestoreDefaultVisualizationLabel)"><span class="mif-cross-light"></span></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- STPs AND FOOTPRINTS -->
-            <div class="d-flex flex-column margin-left-24">
-                <!-- SHOW/HIDE SEARCH BOX -->
-                <div class="d-flex">
-                    <div><input id="showHideSearchOfFootprints" type="checkbox" data-role="switch" data-on="Show" data-off="Hide"></div>
-                    <div class="margin-top-4"><span class="fg-black">@Html.Raw(SimbioMap.SelectorsShowHideSearchOfFootprints)</span></div>
-                </div>
-                <!-- SEARCH BOX -->
-                <div id="selectStpContainer" class="d-none">
-                    <select id="selectStp" data-role="select" data-on-item-select="retrieveFootprintsByStpAsync"></select>
+                <hr class="d-none-fs d-block-lg w-100 bg-cyan margin-top-8" />
+                <!-- STPs AND FOOTPRINTS -->
+                <div class="d-flex flex-column">
+                    <!-- SHOW/HIDE SEARCH BOX -->
+                    <div class="d-flex">
+                        <div><input id="showHideSearchOfFootprints" type="checkbox" data-role="switch" data-on="Show" data-off="Hide"></div>
+                        <div class="margin-top-4"><p class="fg-black">@Html.Raw(SimbioMap.SelectorsShowHideSearchOfFootprints)</p></div>
+                    </div>
+                    <!-- SEARCH BOX -->
+                    <div id="selectStpContainer" class="d-none">
+                        <select id="selectStp" data-role="select" data-on-item-select="retrieveFootprintsByStpAsync"></select>
+                    </div>
                 </div>
             </div>
         </div>
+        <!-- MAP -->
+        <div id="map" class="w-100-fs w-75-lg"></div>
     </div>
-    <!-- MAP -->
-    <div id="map" style="width: 100%; height: 600px"></div>
+    
     <!-- CHART -->
 </div>
 
@@ -162,14 +188,15 @@
 
 <script type="text/javascript">
     var footprintsArray = [];
-    //var targetsArray = [];
 
     var selectedTargetName = null;
     var tooltipElement = document.getElementById('tooltip');
 </script>
 <script type="module" src="~/lib/openglobus/js/og.es.js"></script>
 <environment names="Development">
+    @* <script type="module" src="~/js/src/simbio/map/mapcommons.js"></script> *@
     <script type="module" src="~/js/src/simbio/map/map.js"></script>
+    <script type="module" src="~/js/src/simbio/map/mapfeatures.js"></script>
     <script type="module">
         import {
             hideCharmsSelectedItem,

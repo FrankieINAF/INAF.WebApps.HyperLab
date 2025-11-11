@@ -242,7 +242,9 @@
   {
     "outputFileName": "wwwroot/js/dist/simbio/map/mapbundle.js",
     "inputFiles": [
-      "wwwroot/js/src/simbio/map/map.js"
+      "wwwroot/js/src/simbio/map/mapcommons.js",
+      "wwwroot/js/src/simbio/map/map.js",
+      "wwwroot/js/src/simbio/map/mapfeatures.js"
     ],
     "minify": { "enabled": false },
     "includeInProject": true
@@ -271,8 +273,8 @@
   {
     "outputFileName": "wwwroot/css/dist/commonbundle.css",
     "inputFiles": [
-      "wwwroot/css/src/common.css",
-      "wwwroot/css/src/commonvalidation.css",
+      "wwwroot/css/src/common/common.css",
+      "wwwroot/css/src/common/commonvalidation.css",
       "wwwroot/css/src/animate/animate.css"
     ],
     "includeInProject": true,
@@ -345,7 +347,7 @@
   {
     "outputFileName": "wwwroot/css/dist/account/loginbundle.css",
     "inputFiles": [
-      "wwwroot/css/src/common.css",
+      "wwwroot/css/src/common/common.css",
       "wwwroot/css/src/hyperlab/account/confirmationcompleted.css",
       "wwwroot/css/src/hyperlab/account/login.css"
     ],
@@ -389,7 +391,7 @@
   {
     "outputFileName": "wwwroot/css/dist/account/registrationconfirmedbundle.css",
     "inputFiles": [
-      "wwwroot/css/src/common.css",
+      "wwwroot/css/src/common/common.css",
       "wwwroot/css/src/hyperlab/account/login.css",
       "wwwroot/css/src/hyperlab/account/registrationconfirmed.css"
     ],
@@ -426,8 +428,7 @@
   {
     "outputFileName": "wwwroot/css/dist/simbio/map/mapbundle.css",
     "inputFiles": [
-      "wwwroot/css/src/common.css",
-      "wwwroot/css/src/commoncharms.css",
+      "wwwroot/css/src/common/commoncharms.css",
       "wwwroot/css/src/simbio/map/map.css"
     ],
     "includeInProject": true,

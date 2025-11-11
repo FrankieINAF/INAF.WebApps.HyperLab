@@ -192,4 +192,40 @@
   <data name="TargetsRestoreDefaultVisualizationLabel" xml:space="preserve">
     <value>Restore default visualization</value>
   </data>
+  <data name="FeatureCategoryAlbedos" xml:space="preserve">
+    <value>Albedos</value>
+  </data>
+  <data name="FeatureCategoryCraters" xml:space="preserve">
+    <value>Craters</value>
+  </data>
+  <data name="FeatureCategoryDorsa" xml:space="preserve">
+    <value>Dorsa</value>
+  </data>
+  <data name="FeatureCategoryFossae" xml:space="preserve">
+    <value>Fossae</value>
+  </data>
+  <data name="FeatureCategoryMontes" xml:space="preserve">
+    <value>Montes</value>
+  </data>
+  <data name="FeatureCategoryPlanitiae" xml:space="preserve">
+    <value>Planitiae</value>
+  </data>
+  <data name="FeatureCategoryRupes" xml:space="preserve">
+    <value>Rupes</value>
+  </data>
+  <data name="FeatureCategoryValles" xml:space="preserve">
+    <value>Valles</value>
+  </data>
+  <data name="FeaturesShowHideLabel" xml:space="preserve">
+    <value>Select features to be shown/hidden on surface</value>
+  </data>
+  <data name="FeaturesLabel" xml:space="preserve">
+    <value>Features</value>
+  </data>
+  <data name="FeatureCategoryAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="FeaturesNoItemsAvailableMessage" xml:space="preserve">
+    <value>No features found for selected category</value>
+  </data>
 </root>

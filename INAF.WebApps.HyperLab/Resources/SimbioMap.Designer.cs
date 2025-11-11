@@ -61,6 +61,114 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Albedos.
+        /// </summary>
+        public static string FeatureCategoryAlbedos {
+            get {
+                return ResourceManager.GetString("FeatureCategoryAlbedos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string FeatureCategoryAll {
+            get {
+                return ResourceManager.GetString("FeatureCategoryAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Craters.
+        /// </summary>
+        public static string FeatureCategoryCraters {
+            get {
+                return ResourceManager.GetString("FeatureCategoryCraters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dorsa.
+        /// </summary>
+        public static string FeatureCategoryDorsa {
+            get {
+                return ResourceManager.GetString("FeatureCategoryDorsa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fossae.
+        /// </summary>
+        public static string FeatureCategoryFossae {
+            get {
+                return ResourceManager.GetString("FeatureCategoryFossae", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Montes.
+        /// </summary>
+        public static string FeatureCategoryMontes {
+            get {
+                return ResourceManager.GetString("FeatureCategoryMontes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planitiae.
+        /// </summary>
+        public static string FeatureCategoryPlanitiae {
+            get {
+                return ResourceManager.GetString("FeatureCategoryPlanitiae", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rupes.
+        /// </summary>
+        public static string FeatureCategoryRupes {
+            get {
+                return ResourceManager.GetString("FeatureCategoryRupes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valles.
+        /// </summary>
+        public static string FeatureCategoryValles {
+            get {
+                return ResourceManager.GetString("FeatureCategoryValles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Features.
+        /// </summary>
+        public static string FeaturesLabel {
+            get {
+                return ResourceManager.GetString("FeaturesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No features found for selected category.
+        /// </summary>
+        public static string FeaturesNoItemsAvailableMessage {
+            get {
+                return ResourceManager.GetString("FeaturesNoItemsAvailableMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select features to be shown/hidden on surface.
+        /// </summary>
+        public static string FeaturesShowHideLabel {
+            get {
+                return ResourceManager.GetString("FeaturesShowHideLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No footprints available for selected STP value.
         /// </summary>
         public static string FootprintsNoItemsAvailable {

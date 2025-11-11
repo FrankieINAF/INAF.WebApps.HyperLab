@@ -1,13 +1,12 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.Simbio.Data;
-using INAF.Libraries.Net.DB.Simbio.Data.Tables;
 using INAF.Libraries.Net.Extensions;
+using INAF.Libraries.Net.Simbio.CommonModels.Models.Features;
 using INAF.Libraries.Net.Simbio.CommonModels.Models.Footprints;
 using INAF.Libraries.Net.Simbio.CommonModels.Models.GeoInfo;
 using INAF.Libraries.Net.Simbio.CommonModels.Models.Targets;
-using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
-using Microsoft.AspNetCore.Authorization;
+using INAF.WebApps.HyperLab.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyModel;
 
@@ -31,10 +30,30 @@ namespace INAF.WebApps.HyperLab.Controllers.Simbio
             return View("~/Views/Simbio/Map/Map.cshtml");
         }
 
+        #region FEATURES
+        [HttpGet]
+        public IActionResult GetFeatures(GenericRequestByTextModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Text))
+                return new EmptyResult();
+
+            IEnumerable<FeatureModel>? features = null;
+            if (model.Text.Equals(SimbioMap.FeatureCategoryAll, StringComparison.OrdinalIgnoreCase))
+                features = dbHandlerSimbio.getAllFeatures();
+            else
+                features = dbHandlerSimbio.getFeaturesByCategory(model.Text);
+
+            return new JsonResult(features);
+        }
+        #endregion
+
         #region TARGETS
         [HttpGet]
         public IActionResult GetTargetInfo(GenericRequestByTextModel model)
         {
+            if (string.IsNullOrWhiteSpace(model.Text))
+                return new EmptyResult();
+
             TargetModel? targetInfo = dbHandlerSimbio.getTargetInfo(model.Text);
             if (targetInfo != null)
                 return new JsonResult(targetInfo);

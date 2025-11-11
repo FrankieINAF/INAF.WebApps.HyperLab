@@ -42,7 +42,7 @@
 }
 
 .inline-flex {
-    display: inline-flex;
+    display: inline-flex !important;
 }
 
 .pointer {
@@ -84,17 +84,17 @@
 }
 
 .rows-divider {
-    margin-top: 4px;
+    margin-top: 4px !important;
     margin-bottom: 4px
 }
 
 .rows-divider2 {
-    margin-top: 8px;
+    margin-top: 8px !important;
     margin-bottom: 8px
 }
 
 .rows-divider3 {
-    margin-top: 24px;
+    margin-top: 24px !important;
     margin-bottom: 24px
 }
 
@@ -106,7 +106,7 @@ div.mandatory {
     display: inline;
     cursor: pointer;
     position: relative;
-    right: 0px;
+    right: 0px !important;
 }
 
 .control-label {
@@ -114,11 +114,11 @@ div.mandatory {
 }
 
 .margin-4 {
-    margin: 4px;
+    margin: 4px !important;
 }
 
 .margin-8 {
-    margin: 8px;
+    margin: 8px !important;
 }
 
 .margin-16 {
@@ -130,20 +130,20 @@ div.mandatory {
 }
 
 .margin-bottom-4 {
-    margin-bottom: 4px;
+    margin-bottom: 4px !important;
 }
 
 .margin-bottom-8 {
-    margin-bottom: 8px;
+    margin-bottom: 8px !important;
 }
 
 .margin-bottom-12 {
-    margin-bottom: 12px;
+    margin-bottom: 12px !important;
 }
 
 .margin-horizontal-2 {
-    margin-left: 2px;
-    margin-right: 2px;
+    margin-left: 2px !important;
+    margin-right: 2px !important;
 }
 
 .margin-horizontal-4 {
@@ -152,23 +152,23 @@ div.mandatory {
 }
 
 .margin-horizontal-8 {
-    margin-left: 8px;
-    margin-right: 8px;
+    margin-left: 8px !important;
+    margin-right: 8px !important;
 }
 
 .margin-horizontal-16 {
-    margin-left: 16px;
-    margin-right: 16px;
+    margin-left: 16px !important;
+    margin-right: 16px !important;
 }
 
 .margin-horizontal-32 {
-    margin-left: 32px;
-    margin-right: 32px;
+    margin-left: 32px !important;
+    margin-right: 32px !important;
 }
 
 .margin-horizontal-48 {
-    margin-left: 48px;
-    margin-right: 48px;
+    margin-left: 48px !important;
+    margin-right: 48px !important;
 }
 
 .margin-left-4 {
@@ -176,7 +176,7 @@ div.mandatory {
 }
 
 .margin-left-8 {
-    margin-left: 8px;
+    margin-left: 8px !important;
 }
 
 .margin-left-12 {
@@ -184,31 +184,35 @@ div.mandatory {
 }
 
 .margin-left-16 {
-    margin-left: 16px;
+    margin-left: 16px !important;
 }
 
 .margin-left-20 {
-    margin-left: 20px;
+    margin-left: 20px !important;
 }
 
 .margin-left-24 {
-    margin-left: 24px;
+    margin-left: 24px !important;
+}
+
+.margin-left-48 {
+    margin-left: 48px !important;
 }
 
 .margin-right-4 {
-    margin-right: 4px;
+    margin-right: 4px !important;
 }
 
 .margin-right-8 {
-    margin-right: 8px;
+    margin-right: 8px !important;
 }
 
 .margin-right-16 {
-    margin-right: 16px;
+    margin-right: 16px !important;
 }
 
 .margin-right-32 {
-    margin-right: 32px;
+    margin-right: 32px !important;
 }
 
 .margin-right-500 {
@@ -216,27 +220,27 @@ div.mandatory {
 }
 
 .margin-top-4 {
-    margin-top: 4px;
+    margin-top: 4px !important;
 }
 
 .margin-top-5 {
-    margin-top: 5px;
+    margin-top: 5px !important;
 }
 
 .margin-top-6 {
-    margin-top: 6px;
+    margin-top: 6px !important;
 }
 
 .margin-top--8 {
-    margin-top: -8px;
+    margin-top: -8px !important;
 }
 
 .margin-top-8 {
-    margin-top: 8px;
+    margin-top: 8px !important;
 }
 
 .margin-top-16 {
-    margin-top: 16px;
+    margin-top: 16px !important;
 }
 
 .margin-top-16-important {
@@ -269,69 +273,69 @@ div.mandatory {
 }
 
 .margin-vertical-8 {
-    margin-top: 8px;
-    margin-bottom: 8px;
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;
 }
 
 .margin-vertical-16 {
-    margin-top: 16px;
-    margin-bottom: 16px;
+    margin-top: 16px !important;
+    margin-bottom: 16px !important;
 }
 
 .margin-vertical-24 {
-    margin-top: 24px;
-    margin-bottom: 24px;
+    margin-top: 24px !important;
+    margin-bottom: 24px !important;
 }
 
 .padding-8 {
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
 }
 
 .padding-16 {
-    padding-top: 16px;
-    padding-bottom: 16px;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
 }
 
 .padding-bottom-4 {
-    padding-bottom: 4px;
+    padding-bottom: 4px !important;
 }
 
 .padding-bottom-8 {
-    padding-bottom: 8px;
+    padding-bottom: 8px !important;
 }
 
 .padding-horizontal-4 {
-    padding-left: 4px;
-    padding-right: 4px;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
 }
 
 .padding-horizontal-16 {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
 }
 
 .padding-top-16 {
-    padding-top: 16px;
+    padding-top: 16px !important;
 }
 
 .padding-vertical-4 {
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
 }
 
 .padding-vertical-8 {
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
 }
 
 .padding-vertical-16 {
-    padding-top: 16px;
-    padding-bottom: 16px;
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
 }
 
 .text-align-center {
@@ -339,11 +343,11 @@ div.mandatory {
 }
 
 .width-48 {
-    width: 48px;
+    width: 48px !important;
 }
 
 .width-200 {
-    width: 200px;
+    width: 200px !important;
 }
 
 .white-fg {
@@ -379,7 +383,7 @@ div.mandatory {
 }
 
 .roundedimage {
-    display: flex;
+    display: flex !important;
     margin-left: auto;
     margin-right: auto;
     object-fit: cover;
@@ -388,29 +392,29 @@ div.mandatory {
 }
 
 .roundedimage-little {
-    width: 128px;
-    height: 128px;
+    width: 128px !important;
+    height: 128px !important;
 }
 
 .roundedimage-middle {
-    width: 192px;
-    height: 192px;
+    width: 192px !important;
+    height: 192px !important;
 }
 
 .roundedimage-big {
-    width: 256px;
-    height: 256px;
+    width: 256px !important;
+    height: 256px !important;
 }
 
 @media (max-width: 768px) {
     .roundedimage {
-        width: 128px;
-        height: 128px;
+        width: 128px !important;
+        height: 128px !important;
     }
 
     .roundedimage-big {
-        width: 128px;
-        height: 128px;
+        width: 128px !important;
+        height: 128px !important;
     }
 }
 
@@ -418,17 +422,17 @@ div.mandatory {
 /* CONTROLS */
 /* ################################################################################ */
 .centered-form-control {
-    display: flex;
+    display: flex !important;
     margin-left: auto;
     margin-right: auto;
 }
 
 .form-group-with-rounded-white-border {
     border: 1px solid white;
-    border-radius: 5px;
-    padding: 8px;
+    border-radius: 5px !important;
+    padding: 8px !important;
     width: 75%;
-    display: flex;
+    display: flex !important;
     margin-left: auto;
     margin-right: auto;
 }
@@ -441,7 +445,7 @@ div.mandatory {
 
 
 .form-label {
-    font-size: 20px;
+    font-size: 20px !important;
     font-weight: bold;
 }
 
@@ -471,7 +475,7 @@ div.mandatory {
 
 @media (max-width: 576px) {
     .border-tab {
-        border-right: none!important;
+        border-right: none !important;
         border-top: 1px solid #1ba1e2 !important; /* ciano */
     }
 }
@@ -483,20 +487,20 @@ div.mandatory {
     width: 100%;
     height: 100%;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0px !important;
+    left: 0px !important;
     background-color: black;
 }
 
 .intro-logo {
-    width: 400px;
-    height: 400px;
+    width: 400px !important;
+    height: 400px !important;
 }
 
 @media (max-width: 576px) {
     .intro-logo {
-        width: 200px;
-        height: 200px;
+        width: 200px !important;
+        height: 200px !important;
     }
 }
 
@@ -510,6 +514,6 @@ div.mandatory {
     -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
-.hide-scrollbar::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Edge */
-}
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Edge */
+    }
