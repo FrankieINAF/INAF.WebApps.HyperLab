@@ -18,10 +18,13 @@
             <div class="row cell-fs-12 d-flex flex-justify-between-fs flex-column-lg">
                 <!-- FEATURES -->
                 <div>
-                    <p id="featuresLabel" class="fg-black text-bold d-block-fs d-none-lg">@Html.Raw(SimbioMap.FeaturesLabel)</p>
+                    <button id="featuresLabel"  class="image-button info">
+                        <span class="mif-map icon"></span>
+                        <span class="caption">@Html.Raw(SimbioMap.FeaturesLabel)</span>
+                    </button>
                     <div id="featuresDropdown"
                          data-role="dropdown"
-                         data-toggle-element=featuresLabel>
+                         data-toggle-element="#featuresLabel">
                         <div class="d-flex flex-column">
                             <p class="fg-black">@Html.Raw(SimbioMap.FeaturesShowHideLabel)</p>
                             <div><input id="showHideFeaturesAll" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-left-48" data-caption="@Html.Raw(SimbioMap.FeatureCategoryAll)"></div>
@@ -41,7 +44,7 @@
                 <div class="d-flex flex-column">
                     <!-- SHOW/HIDE -->
                     <div class="d-flex">
-                        <div><input id="loadHideTargets" type="checkbox" data-role="switch" data-on="Load" data-off="Hide"></div>
+                        <div><input id="loadHideTargets" type="checkbox" data-role="switch" data-cls-switch="switch-cyan" data-cls-check="bd-cyan" data-on="Load" data-off="Hide"></div>
                         <div class="margin-top-4"><p class="fg-black">@Html.Raw(SimbioMap.SelectorsShowHideTargets)</p></div>
                     </div>
                     <!-- SEARCH BOX -->
@@ -68,7 +71,7 @@
                 <div class="d-flex flex-column">
                     <!-- SHOW/HIDE SEARCH BOX -->
                     <div class="d-flex">
-                        <div><input id="showHideSearchOfFootprints" type="checkbox" data-role="switch" data-on="Show" data-off="Hide"></div>
+                        <div><input id="showHideSearchOfFootprints" type="checkbox" data-role="switch" data-cls-switch="switch-cyan" data-cls-check="bd-cyan" data-on="Show" data-off="Hide"></div>
                         <div class="margin-top-4"><p class="fg-black">@Html.Raw(SimbioMap.SelectorsShowHideSearchOfFootprints)</p></div>
                     </div>
                     <!-- SEARCH BOX -->

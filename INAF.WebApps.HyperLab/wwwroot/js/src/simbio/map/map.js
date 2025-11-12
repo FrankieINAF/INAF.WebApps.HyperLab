@@ -445,8 +445,8 @@ $(function () {
         $('#map').css('height', '800px');
 
         /* set drop-down always opened and open it */
-        $('#featuresDropdown').addClass('keep-open');
-        Metro.getPlugin('#featuresDropdown', 'dropdown').open();
+        //$('#featuresDropdown').addClass('keep-open');
+        //Metro.getPlugin('#featuresDropdown', 'dropdown').open();
 
     }
 

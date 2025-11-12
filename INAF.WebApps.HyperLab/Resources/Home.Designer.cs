@@ -19,7 +19,7 @@ namespace INAF.WebApps.HyperLab.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Home {
@@ -70,7 +70,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please note that for &lt;i&gt;SLab Data Manager&lt;/i&gt; registration is required solely to enable users to save their work on our cloud. No use is made of the provided email addresses beyond this purpose..
+        ///   Looks up a localized string similar to Please note that for &lt;i&gt;HyperLab&lt;/i&gt; registration is required solely to enable users to save their work on our cloud. No use is made of the provided email addresses beyond this purpose..
         /// </summary>
         public static string CookieBannerMessage2 {
             get {

@@ -452,6 +452,10 @@ div.mandatory {
 /* ################################################################################ */
 /* BORDERS */
 /* ################################################################################ */
+.border-cyan {
+    border-color: #1ba1e2 !important; /* ciano */
+}
+
 .border-bottom {
     border-bottom: 1px solid #1ba1e2 !important; /* ciano */
 }
@@ -516,4 +520,20 @@ div.mandatory {
 
     .hide-scrollbar::-webkit-scrollbar {
         display: none; /* Chrome, Safari, Edge */
+    }
+
+/* ################################################################################ */
+/* SWITCH  */
+/* ################################################################################ */
+.switch-cyan .check::after {
+    background: #0a87c1 !important;
+    border-color: #0a87c1 !important;
+}
+
+.switch-cyan input[type="checkbox"]:checked ~ .check {
+    background: #ffffff !important;
+}
+
+    .switch-cyan input[type="checkbox"]:checked ~ .check::after {
+        border-color: #0a87c1 !important;
     }

@@ -220,7 +220,7 @@
     <value>Select features to be shown/hidden on surface</value>
   </data>
   <data name="FeaturesLabel" xml:space="preserve">
-    <value>Features</value>
+    <value>Show/hide features list</value>
   </data>
   <data name="FeatureCategoryAll" xml:space="preserve">
     <value>All</value>
