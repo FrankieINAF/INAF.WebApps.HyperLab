@@ -1,10 +1,23 @@
-﻿.map-item-tooltip {
+﻿.map-target-tooltip {
     position: absolute;
     z-index: 1000;
     width: 220px;
     height: 60px;
     padding: 5px;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(27, 161, 226, 0.7);
+    color: white;
+    border-radius: 3px;
+    pointer-events: none;
+    display: none;
+}
+
+.map-feature-tooltip {
+    position: absolute;
+    z-index: 1000;
+    width: 200px;
+    height: 80px;
+    padding: 4px;
+    background: rgba(27, 161, 226, 0.7);
     color: white;
     border-radius: 3px;
     pointer-events: none;

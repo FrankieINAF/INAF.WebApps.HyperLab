@@ -12,19 +12,18 @@
 <link rel="stylesheet" href="~/css/dist/simbio/map/mapbundle.min.css" asp-append-version="true" />
 
 <div class="container h-100 overflow-x-auto overflow-y-auto">
-    <div class="d-flex flex-column-fs flex-row-lg">
+    <div class="h-100 d-flex flex-column-fs flex-row-lg">
         <!-- SELECTORS -->
-        <div id="selectors" class="w-100-fs w-25-lg">
-            <div class="row cell-fs-12 d-flex flex-justify-between-fs flex-column-lg">
+        <div id="selectors" class="w-100-fs w-25-lg order-fs-2 order-lg-1">
+            <div class="d-flex flex-justify-between-fs flex-column-lg">
                 <!-- FEATURES -->
                 <div>
-                    <button id="featuresLabel"  class="image-button info">
+                    <button id="featuresButton" class="image-button info" onclick="openCloseFeaturesDropdown()">
                         <span class="mif-map icon"></span>
                         <span class="caption">@Html.Raw(SimbioMap.FeaturesLabel)</span>
                     </button>
                     <div id="featuresDropdown"
-                         data-role="dropdown"
-                         data-toggle-element="#featuresLabel">
+                         data-role="dropdown">
                         <div class="d-flex flex-column">
                             <p class="fg-black">@Html.Raw(SimbioMap.FeaturesShowHideLabel)</p>
                             <div><input id="showHideFeaturesAll" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-left-48" data-caption="@Html.Raw(SimbioMap.FeatureCategoryAll)"></div>
@@ -82,7 +81,31 @@
             </div>
         </div>
         <!-- MAP -->
-        <div id="map" class="w-100-fs w-75-lg"></div>
+        <div id="map" class="w-100-fs w-75-lg order-fs-1 order-lg-2"></div>
+        <!-- TOOLTIP FOR TARGETS -->
+        <div id="targetsTooltip" class="map-target-tooltip d-none flex-column">
+            <div class="d-flex">
+                <div><img src="~/images/simbiomap/target.png" /></div>
+                <div>
+                    <div><p id="targetsTooltipContent" class="text-center"></p></div>
+                    <div><p class="text-center text-small margin-top-4">@Html.Raw(SimbioMap.TargetTooltipInfo)</p></div>
+                </div>
+            </div>
+        </div>
+        <!-- TOOLTIP FOR FEATURES -->
+        <div id="featuresTooltip" class="map-feature-tooltip d-none flex-column" style="pointer-events: auto">
+            <div class="d-flex">
+                <div>
+                    <div class="d-flex">
+                        <div style="width: 40px">&nbsp;</div>
+                        <div style="width: 120px"><p id="featureName" class="text-center text-ellipsis"></p></div>
+                        <div style="width: 40px" onclick="hideFeatureTooltip()"><span id="featuresTooltipCloseButton" class="mif mif-cross-light pointer margin-top-4 margin-left-16 d-none"></span></div>
+                    </div>
+                    <div><p id="featureCategory" class="text-left text-small margin-top-4"></p></div>
+                    <div><p id="featurePosition" class="text-left text-small margin-top-4"></p></div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <!-- CHART -->
@@ -179,15 +202,6 @@
 @{
     await Html.RenderPartialAsync("_JsCommonSimbio");
 }
-<div id="tooltip" class="map-item-tooltip d-flex flex-column">
-    <div class="d-flex">
-        <div><img src="~/images/simbiomap/target.png" /></div>
-        <div>
-            <div><p id="tooltipContent" class="text-center"></p></div>
-            <div><p class="text-center text-small margin-top-4">@Html.Raw(SimbioMap.TargetTooltipInfo)</p></div>
-        </div>
-    </div>
-</div>
 
 <script type="text/javascript">
     var footprintsArray = [];
@@ -204,6 +218,7 @@
         import {
             hideCharmsSelectedItem,
             onCharmsSelectedItemOpened,
+            openCloseFeaturesDropdown,
             restoreDefaultVisualization,
             retrieveFootprintsByStpAsync,
             searchForTarget
@@ -211,9 +226,16 @@
         /* following lines are required to access imported function by global scope */
         window.hideCharmsSelectedItem = hideCharmsSelectedItem;
         window.onCharmsSelectedItemOpened = onCharmsSelectedItemOpened;
+        window.openCloseFeaturesDropdown = openCloseFeaturesDropdown;
         window.restoreDefaultVisualization = restoreDefaultVisualization;
         window.retrieveFootprintsByStpAsync = retrieveFootprintsByStpAsync;
         window.searchForTarget = searchForTarget;
+
+        import { 
+            hideFeatureTooltip 
+        } from '/js/src/simbio/map/mapfeatures.js';
+        /* following lines are required to access imported function by global scope */
+        window.hideFeatureTooltip = hideFeatureTooltip;
     </script>
 </environment>
 <environment names="Production">
@@ -221,6 +243,7 @@
     <script type="module">
         import {
             hideCharmsSelectedItem,
+            hideFeatureTooltip,
             onCharmsSelectedItemOpened,
             restoreDefaultVisualization,
             retrieveFootprintsByStpAsync,
@@ -228,6 +251,7 @@
         } from '/js/dist/simbio/map/mapbundle.js';
         /* following lines are required to access imported function by global scope */
         window.hideCharmsSelectedItem = hideCharmsSelectedItem;
+        window.hideFeatureTooltip = hideFeatureTooltip;
         window.onCharmsSelectedItemOpened = onCharmsSelectedItemOpened;
         window.restoreDefaultVisualization = restoreDefaultVisualization;
         window.retrieveFootprintsByStpAsync = retrieveFootprintsByStpAsync;

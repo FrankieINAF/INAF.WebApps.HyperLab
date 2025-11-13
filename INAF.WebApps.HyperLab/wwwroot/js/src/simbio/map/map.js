@@ -10,6 +10,7 @@
 } from "/lib/openglobus/js/og.es.js";
 
 import {
+    defineFeaturesEvents,
     initCheckboxFeaturesAll
 } from "./mapfeatures.js";
 
@@ -18,10 +19,33 @@ const FOOTPRINT = 'FOOTPRINT';
 const SIM = 'SIM';
 const TARGET = 'TARGET';
 
-export var entities;
+export var targetsLayer;
 export var featuresLayer;
 
 var globe;
+
+export function setMapPointerEventsAllowed(isAllowed) {
+    if (isAllowed)
+        $('#map').css('pointer-events', 'auto');
+    else
+        $('#map').css('pointer-events', 'none');
+}
+
+/* ################################################################################ */
+/* FEATURES DROPDOWN */
+/* ################################################################################ */
+var isFeaturesDropdownOpen = false;
+export function openCloseFeaturesDropdown() {
+    if (!isFeaturesDropdownOpen) {
+        Metro.getPlugin('#featuresDropdown', 'dropdown').open();
+        $('#featuresDropdown').addClass('keep-open');
+    } else {
+        $('#featuresDropdown').removeClass('keep-open');
+        Metro.getPlugin('#featuresDropdown', 'dropdown').close();
+    }
+
+    isFeaturesDropdownOpen = !isFeaturesDropdownOpen;
+}
 
 /* ################################################################################ */
 /* OPENGLOBUS */
@@ -37,9 +61,16 @@ function showGlobe() {
         maxZoom: 9,
     });
 
+    targetsLayer = new Vector("Entities", {
+        'visibility': true,
+        'isBaseLayer': false,
+        'diffuse': [0, 0, 0],
+        'ambient': [1, 1, 1]
+    });
+
     featuresLayer = new Vector("FeaturesLayer", {
         'clampToGround': true,
-        'entities': null,
+        'targetsLayer': null,
         'async': false
     });
 
@@ -55,7 +86,7 @@ function showGlobe() {
             enabled: false
         },
         shadows: false,
-        layers: [mercuryTilesLayer, featuresLayer],
+        layers: [mercuryTilesLayer, targetsLayer, featuresLayer],
         //controls: []
     });
 
@@ -65,14 +96,17 @@ function showGlobe() {
 
     setDefaultViewExtent();
 
-    /* define entities layer with events for each target */
+    /* define targetsLayer layer with events for each target */
     defineTargetsEvents();
+
+    /* define features layer with events for each feature */
+    defineFeaturesEvents();
 }
 
 function addGeometryEntityByBounds(id, name, type, minLat, maxLat, minLon, maxLon) {
     const coordinates = [[[[minLon, minLat], [minLon, maxLat], [maxLon, maxLat], [maxLon, minLat], [minLon, minLat]]]];
 
-    entities.add(new Entity({
+    targetsLayer.add(new Entity({
         'id': id,
         'name': name,
         'properties': {
@@ -92,7 +126,7 @@ function addGeometryEntityByBounds(id, name, type, minLat, maxLat, minLon, maxLo
 function addGeometryEntityByCoordsArray(id, name, type, coordsArray) {
     const coordinates = [[[...coordsArray]]];
 
-    entities.add(new Entity({
+    targetsLayer.add(new Entity({
         'id': id,
         'name': name,
         'properties': {
@@ -109,41 +143,32 @@ function addGeometryEntityByCoordsArray(id, name, type, coordsArray) {
     }));
 }
 
-function defineTargetsEvents() {
-    entities = new Vector("Targets", {
-        'visibility': true,
-        'isBaseLayer': false,
-        'diffuse': [0, 0, 0],
-        'ambient': [1, 1, 1]
-    });
-    entities.addTo(globe.planet);
-
-    entities.events.on("mouseleave", function (e) {
+function defineTargetsEvents() {    
+    targetsLayer.events.on("mouseleave", function (e) {
         e.pickingObject.geometry.setFillColor(1, 0, 0, 0.2);
-        hideByClassDFlexItem('tooltip');
+        hideByClassDFlexItem('targetsTooltip');
     });
-    entities.events.on("mouseenter", function (e) {
+    targetsLayer.events.on("mouseenter", function (e) {
         e.pickingObject.geometry.bringToFront();
         e.pickingObject.geometry.setFillColor(1, 0, 0, 0.6);
 
-        $('#tooltipContent').text(e.pickingObject.name);
-        $('#tooltip').css({
-            left: `${e.clientX + 20}px`,
-            top: `${e.clientY + 20}px`
+        $('#targetsTooltipContent').text(e.pickingObject.name);
+        $('#targetsTooltip').css({
+            left: `${e.clientX + 80}px`,
+            top: `${e.clientY - 50}px`
         });
-        showByClassDFlexItem('tooltip');
+        showByClassDFlexItem('targetsTooltip');
     });
 
-    entities.events.on("lclick", function (e) {
+    targetsLayer.events.on("lclick", function (e) {
         globe.planet.flyExtent(e.pickingObject.geometry.getExtent());
-        //console.log('ciao');
         if (e.pickingObject.properties.type == TARGET) {
             selectedTargetName = e.pickingObject.name;
             //console.log(`selectedTargetName: ${selectedTargetName}`);
             showCharmsSelectedItem();
         }
     });
-    entities.events.on("touchstart", function (e) {
+    targetsLayer.events.on("touchstart", function (e) {
         globe.planet.flyExtent(e.pickingObject.geometry.getExtent());
 
         selectedTargetName = e.pickingObject.name;
@@ -152,12 +177,12 @@ function defineTargetsEvents() {
 }
 
 function removeEntitiesProcedure(type) {
-    const selectedEntities = entities.getEntities().filter(x => x.properties.type == type);
+    const selectedEntities = targetsLayer.getEntities().filter(x => x.properties.type == type);
     if (selectedEntities == null)
         return false;
 
-    /* remove entities from map */
-    entities.removeEntities(selectedEntities);
+    /* remove targetsLayer from map */
+    targetsLayer.removeEntities(selectedEntities);
 
     return true;
 }
@@ -232,17 +257,17 @@ export function restoreDefaultVisualization() {
 async function retrieveTargetsAsync() {
     setLoadingCircleIsVisible(true);
 
-    let entities = await doAjaxGetNoModelAsync(UrlGetTargetsWithObsCoords);
-    if (entities == null || entities.length == 0) {
+    let targetsLayer = await doAjaxGetNoModelAsync(UrlGetTargetsWithObsCoords);
+    if (targetsLayer == null || targetsLayer.length == 0) {
         setLoadingCircleIsVisible(false);
         showSimpleDialog(WARNING_LABEL, TargetsNoItemsAvailableMessage, WARNING);
         return;
     }
 
     //targetsArray = [];
-    const targetsCount = entities.length;
+    const targetsCount = targetsLayer.length;
     for (let i = 0; i < targetsCount; i++) {
-        const target = entities[i];
+        const target = targetsLayer[i];
 
         //targetsArray.push(target);
         addGeometryEntityByBounds(target.Id, target.Name, TARGET, target.MinLat, target.MaxLat, target.MinLon, target.MaxLon);
@@ -305,7 +330,7 @@ export function searchForTarget() {
         return;
     }
 
-    const selectedEntity = entities.getEntities().find(x => x.properties.type == TARGET && x.name == text);
+    const selectedEntity = targetsLayer.getEntities().find(x => x.properties.type == TARGET && x.name == text);
     if (selectedEntity == null)
         return;
 
@@ -435,20 +460,8 @@ export async function retrieveFootprintsByStpAsync(val) {
 /* ################################################################################ */
 $(function () {
     footprintsArray = [];
-    //targetsArray = [];
 
     showPageItems(true);
-
-    if (isMobileByOS()) {
-        $('#map').css('height', '100%');
-    } else {
-        $('#map').css('height', '800px');
-
-        /* set drop-down always opened and open it */
-        //$('#featuresDropdown').addClass('keep-open');
-        //Metro.getPlugin('#featuresDropdown', 'dropdown').open();
-
-    }
 
     showGlobe();
 
@@ -458,8 +471,9 @@ $(function () {
     /* retrieve stps related to footprints */
     retrieveStpsWithFootprintsAsync();
 
-    /* init switch for loading/hiding entities */
+    /* init switch for loading/hiding targetsLayer */
     initSwitchLoadHideTargets();
+
     /* init switch for selecting stp */
     initSwitchShowHideSearchOfFootprints();
 
