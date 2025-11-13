@@ -1,0 +1,69 @@
+﻿@using INAF.Libraries.Net.Simbio.CommonModels.Values
+@using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Controllers.Simbio
+@using INAF.WebApps.HyperLab.Resources
+
+<script type="text/javascript">
+    var HRIC = '@Enums.Channel.HRIC.ToString()';
+    var STC = '@Enums.Channel.STC.ToString()';
+    var VIHI = '@Enums.Channel.VIHI.ToString()';
+
+    var FeatureCategoryAll = "@Html.Raw(SimbioMap.FeatureCategoryAll)";
+    var FeatureCategoryAlbedo = "@Html.Raw(SimbioMap.FeatureCategoryAlbedo)";
+    var FeatureCategoryAlbedos = "@Html.Raw(SimbioMap.FeatureCategoryAlbedos)";
+    var FeatureCategoryCrater = "@Html.Raw(SimbioMap.FeatureCategoryCrater)";
+    var FeatureCategoryCraters = "@Html.Raw(SimbioMap.FeatureCategoryCraters)";
+    var FeatureCategoryDorsa = "@Html.Raw(SimbioMap.FeatureCategoryDorsa)";
+    var FeatureCategoryDorsum = "@Html.Raw(SimbioMap.FeatureCategoryDorsum)";
+    var FeatureCategoryFossa = "@Html.Raw(SimbioMap.FeatureCategoryFossa)";
+    var FeatureCategoryFossae = "@Html.Raw(SimbioMap.FeatureCategoryFossae)";
+    var FeatureCategoryMons = "@Html.Raw(SimbioMap.FeatureCategoryMons)";
+    var FeatureCategoryMontes = "@Html.Raw(SimbioMap.FeatureCategoryMontes)";
+    var FeatureCategoryPlanitia = "@Html.Raw(SimbioMap.FeatureCategoryPlanitia)";
+    var FeatureCategoryPlanitiae = "@Html.Raw(SimbioMap.FeatureCategoryPlanitiae)";
+    var FeatureCategoryRupes = "@Html.Raw(SimbioMap.FeatureCategoryRupes)";
+    var FeatureCategoryValles = "@Html.Raw(SimbioMap.FeatureCategoryValles)";
+    var FeatureCategoryVallis = "@Html.Raw(SimbioMap.FeatureCategoryVallis)";
+
+    var FeaturesNoItemsAvailableMessage = "@Html.Raw(SimbioMap.FeaturesNoItemsAvailableMessage)";
+    var FootprintsNoItemsAvailable = "@Html.Raw(SimbioMap.FootprintsNoItemsAvailable)";
+    var SelectorSelectStpValue = "@Html.Raw(SimbioMap.SelectorSelectStpValue)";
+    var TargetsNoItemsAvailableMessage = "@Html.Raw(SimbioMap.TargetsNoItemsAvailableMessage)";
+    var TargetGetInfoErrorMessage = "@Html.Raw(SimbioMap.TargetGetInfoErrorMessage)";
+    var TargetsRestoreDefaultVisualizationLabel = "@Html.Raw(SimbioMap.TargetsRestoreDefaultVisualizationLabel)";
+    var TargetsSearchEmptyFieldMessage = "@Html.Raw(SimbioMap.TargetsSearchEmptyFieldMessage)";
+    var TargetsSearchNoItemsAvailableMessage = "@Html.Raw(SimbioMap.TargetsSearchNoItemsAvailableMessage)";
+
+    var UrlGetFootprintsByStp = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.GetFootprintsByStp)';
+
+    var UrlGetStpsWithFootprints = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.GetStpsWithFootprints)';
+
+    var UrlGetFeatures = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.GetFeatures)';
+    var UrlGetTargetInfo = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.GetTargetInfo)';
+    var UrlGetTargetsWithObsCoords = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.GetTargetsWithObsCoords)';
+
+    // Dictionary mapping plural feature category labels to singular labels
+    var FeaturePluralToSingularMap = {};
+    // Populate map only for pairs available in this file
+    FeaturePluralToSingularMap[FeatureCategoryAlbedos] = FeatureCategoryAlbedo;
+    FeaturePluralToSingularMap[FeatureCategoryCraters] = FeatureCategoryCrater;
+    FeaturePluralToSingularMap[FeatureCategoryDorsa] = FeatureCategoryDorsum;
+    FeaturePluralToSingularMap[FeatureCategoryFossae] = FeatureCategoryFossa;
+    FeaturePluralToSingularMap[FeatureCategoryMontes] = FeatureCategoryMons;
+    FeaturePluralToSingularMap[FeatureCategoryPlanitiae] = FeatureCategoryPlanitia;
+    FeaturePluralToSingularMap[FeatureCategoryValles] = FeatureCategoryVallis;
+
+    // Inverted dictionary mapping singular labels to plural labels
+    var FeatureSingularToPluralMap = {};
+    for (var plural in FeaturePluralToSingularMap) {
+        if (FeaturePluralToSingularMap.hasOwnProperty(plural)) {
+            var singular = FeaturePluralToSingularMap[plural];
+            FeatureSingularToPluralMap[singular] = plural;
+        }
+    }
+
+    // Example usage:
+    // console.log(FeaturePluralToSingularMap[FeatureCategoryCraters]);
+    // console.log(FeatureSingularToPluralMap[FeatureCategoryCrater]);
+</script>

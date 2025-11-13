@@ -195,26 +195,47 @@
   <data name="FeatureCategoryAlbedos" xml:space="preserve">
     <value>Albedos</value>
   </data>
+  <data name="FeatureCategoryAlbedo" xml:space="preserve">
+    <value>Albedo</value>
+  </data>
   <data name="FeatureCategoryCraters" xml:space="preserve">
     <value>Craters</value>
+  </data>
+  <data name="FeatureCategoryCrater" xml:space="preserve">
+    <value>Crater</value>
   </data>
   <data name="FeatureCategoryDorsa" xml:space="preserve">
     <value>Dorsa</value>
   </data>
+  <data name="FeatureCategoryDorsum" xml:space="preserve">
+    <value>Dorsum</value>
+  </data>
   <data name="FeatureCategoryFossae" xml:space="preserve">
     <value>Fossae</value>
+  </data>
+  <data name="FeatureCategoryFossa" xml:space="preserve">
+    <value>Fossa</value>
   </data>
   <data name="FeatureCategoryMontes" xml:space="preserve">
     <value>Montes</value>
   </data>
+  <data name="FeatureCategoryMons" xml:space="preserve">
+    <value>Mons</value>
+  </data>
   <data name="FeatureCategoryPlanitiae" xml:space="preserve">
     <value>Planitiae</value>
+  </data>
+  <data name="FeatureCategoryPlanitia" xml:space="preserve">
+    <value>Planitia</value>
   </data>
   <data name="FeatureCategoryRupes" xml:space="preserve">
     <value>Rupes</value>
   </data>
   <data name="FeatureCategoryValles" xml:space="preserve">
     <value>Valles</value>
+  </data>
+  <data name="FeatureCategoryVallis" xml:space="preserve">
+    <value>Vallis</value>
   </data>
   <data name="FeaturesShowHideLabel" xml:space="preserve">
     <value>Select features to be shown/hidden on surface</value>

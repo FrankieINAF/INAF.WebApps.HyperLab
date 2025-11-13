@@ -61,6 +61,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Albedo.
+        /// </summary>
+        public static string FeatureCategoryAlbedo {
+            get {
+                return ResourceManager.GetString("FeatureCategoryAlbedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Albedos.
         /// </summary>
         public static string FeatureCategoryAlbedos {
@@ -75,6 +84,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string FeatureCategoryAll {
             get {
                 return ResourceManager.GetString("FeatureCategoryAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crater.
+        /// </summary>
+        public static string FeatureCategoryCrater {
+            get {
+                return ResourceManager.GetString("FeatureCategoryCrater", resourceCulture);
             }
         }
         
@@ -97,6 +115,24 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dorsum.
+        /// </summary>
+        public static string FeatureCategoryDorsum {
+            get {
+                return ResourceManager.GetString("FeatureCategoryDorsum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fossa.
+        /// </summary>
+        public static string FeatureCategoryFossa {
+            get {
+                return ResourceManager.GetString("FeatureCategoryFossa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fossae.
         /// </summary>
         public static string FeatureCategoryFossae {
@@ -106,11 +142,29 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mons.
+        /// </summary>
+        public static string FeatureCategoryMons {
+            get {
+                return ResourceManager.GetString("FeatureCategoryMons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Montes.
         /// </summary>
         public static string FeatureCategoryMontes {
             get {
                 return ResourceManager.GetString("FeatureCategoryMontes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planitia.
+        /// </summary>
+        public static string FeatureCategoryPlanitia {
+            get {
+                return ResourceManager.GetString("FeatureCategoryPlanitia", resourceCulture);
             }
         }
         
@@ -138,6 +192,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string FeatureCategoryValles {
             get {
                 return ResourceManager.GetString("FeatureCategoryValles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vallis.
+        /// </summary>
+        public static string FeatureCategoryVallis {
+            get {
+                return ResourceManager.GetString("FeatureCategoryVallis", resourceCulture);
             }
         }
         

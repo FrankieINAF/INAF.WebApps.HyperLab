@@ -11,7 +11,7 @@ import {
 var isAllFeatureRequest = false;
 var points = [];
 
-var featuresNamesArray = [
+var featuresCategoriesArray = [
     FeatureCategoryAlbedos,
     FeatureCategoryCraters,
     FeatureCategoryDorsa,
@@ -39,9 +39,6 @@ export function initCheckboxFeaturesAll() {
 
 function initCheckboxFeatures(featureCategory) {
     $(`#showHideFeatures${featureCategory}`).on('change', async function () {
-        if (isAllFeatureRequest && featureCategory != FeatureCategoryAll)
-            return;
-
         let isChecked = isCheckboxChecked(`showHideFeatures${featureCategory}`);
 
         if (isChecked) {
@@ -63,7 +60,10 @@ function initCheckboxFeatures(featureCategory) {
 /* RETRIEVE/REMOVE FEATURES */
 /* ################################################################################ */
 function removeMapFeatures(featureCategory) {
-    const selectedEntities = featuresLayer.getEntities().filter(x => x.properties.type == featureCategory);
+    if (featureCategory == FeatureCategoryAll)
+        return;
+    const category = FeaturePluralToSingularMap[featureCategory];
+    const selectedEntities = featuresLayer.getEntities().filter(x => x.properties.type == category);
     if (selectedEntities == null || selectedEntities.length == 0)
         return false;
 
@@ -75,19 +75,18 @@ function removeMapFeatures(featureCategory) {
 }
 
 function removeMapFeaturesAllProcedure() {
-    featuresNamesArray.forEach(function (featureName) {
-        $(`#showHideFeatures${featureName}`).prop('checked', false).trigger('change');
-    });
-
     isAllFeatureRequest = false;
 
-    removeMapFeatures(FeatureCategoryAll);
+    featuresCategoriesArray.forEach(function (featureName) {
+        console.log(`removeMapFeaturesAllProcedure: ${featureName}`);
+        $(`#showHideFeatures${featureName}`).prop('checked', false).trigger('change');
+    });
 }
 
 function retrieveMapFeaturesAllProcedure(featureCategory) {
     isAllFeatureRequest = true;
 
-    featuresNamesArray.forEach(function (featureName) {
+    featuresCategoriesArray.forEach(function (featureName) {
         $(`#showHideFeatures${featureName}`).prop('checked', true).trigger('change');
     });
 
@@ -109,11 +108,11 @@ async function retrieveMapFeaturesAsync(featureCategory) {
 
     let obj = await doAjaxGetAsync(UrlGetFeatures, model);
     if (obj && obj.length > 0) {
-        //console.log(obj);
+        console.log(obj);
         const featuresNum = obj.length;
         for (let i = 0; i < featuresNum; i++) {
             let lonlat = new LonLat(obj[i].Longitude, obj[i].Latitude);
-            addMapFeatureOnGlobus(obj[i], lonlat, featureCategory);
+            addMapFeatureOnGlobus(obj[i], lonlat);
         }
         featuresLayer.addEntities(points);
         setLoadingCircleIsVisible(false);
@@ -126,18 +125,17 @@ async function retrieveMapFeaturesAsync(featureCategory) {
 /* -------------------------------------------------------------------------------- */
 /* ADD FEATURES ON GLOBUS */
 /* -------------------------------------------------------------------------------- */
-function addMapFeatureOnGlobus(feature, lonlat, featureCategory) {
+function addMapFeatureOnGlobus(feature, lonlat) {
     points.push(new Entity({
         'name': feature.Name,
         'properties': {
-            'type': featureCategory,
+            'type': feature.FeatureCategoryName,
         },
         'lonlat': lonlat,
         'billboard': {
             'src': `/images/simbiomap/features/features${feature.FeatureCategoryName}.png`,
             'size': [48, 48],
             'offset': [0, 0],
-            //'alignedAxis': wgs84.lonLatToCartesian(coords).normalize()
         }
     }));
 }
@@ -173,6 +171,7 @@ function showFeatureTooltip(e) {
         yOffset = -40;
     }
 
+    $('#featureImage').attr('src', `/images/simbiomap/features/features${e.pickingObject.properties.type}.png`);
     $('#featureName').text(e.pickingObject.name);
     $('#featureCategory').text(e.pickingObject.properties.type);
     const lonlat = e.pickingObject.getLonLat();

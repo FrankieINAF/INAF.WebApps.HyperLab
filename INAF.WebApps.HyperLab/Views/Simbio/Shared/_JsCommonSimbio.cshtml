@@ -10,14 +10,21 @@
     var VIHI = '@Enums.Channel.VIHI.ToString()';
 
     var FeatureCategoryAll = "@Html.Raw(SimbioMap.FeatureCategoryAll)";
+    var FeatureCategoryAlbedo = "@Html.Raw(SimbioMap.FeatureCategoryAlbedo)";
     var FeatureCategoryAlbedos = "@Html.Raw(SimbioMap.FeatureCategoryAlbedos)";
+    var FeatureCategoryCrater = "@Html.Raw(SimbioMap.FeatureCategoryCrater)";
     var FeatureCategoryCraters = "@Html.Raw(SimbioMap.FeatureCategoryCraters)";
     var FeatureCategoryDorsa = "@Html.Raw(SimbioMap.FeatureCategoryDorsa)";
+    var FeatureCategoryDorsum = "@Html.Raw(SimbioMap.FeatureCategoryDorsum)";
+    var FeatureCategoryFossa = "@Html.Raw(SimbioMap.FeatureCategoryFossa)";
     var FeatureCategoryFossae = "@Html.Raw(SimbioMap.FeatureCategoryFossae)";
+    var FeatureCategoryMons = "@Html.Raw(SimbioMap.FeatureCategoryMons)";
     var FeatureCategoryMontes = "@Html.Raw(SimbioMap.FeatureCategoryMontes)";
+    var FeatureCategoryPlanitia = "@Html.Raw(SimbioMap.FeatureCategoryPlanitia)";
     var FeatureCategoryPlanitiae = "@Html.Raw(SimbioMap.FeatureCategoryPlanitiae)";
     var FeatureCategoryRupes = "@Html.Raw(SimbioMap.FeatureCategoryRupes)";
     var FeatureCategoryValles = "@Html.Raw(SimbioMap.FeatureCategoryValles)";
+    var FeatureCategoryVallis = "@Html.Raw(SimbioMap.FeatureCategoryVallis)";
 
     var FeaturesNoItemsAvailableMessage = "@Html.Raw(SimbioMap.FeaturesNoItemsAvailableMessage)";
     var FootprintsNoItemsAvailable = "@Html.Raw(SimbioMap.FootprintsNoItemsAvailable)";
@@ -35,4 +42,16 @@
     var UrlGetFeatures = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.GetFeatures)';
     var UrlGetTargetInfo = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.GetTargetInfo)';
     var UrlGetTargetsWithObsCoords = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.GetTargetsWithObsCoords)';
+
+    // Dictionary mapping singular feature category labels to plural labels
+    var FeaturePluralToSingularMap = {};
+    // Populate map only for pairs available in this file
+    FeaturePluralToSingularMap[FeatureCategoryAlbedos] = FeatureCategoryAlbedo;
+    FeaturePluralToSingularMap[FeatureCategoryCraters] = FeatureCategoryCrater;
+    FeaturePluralToSingularMap[FeatureCategoryDorsa] = FeatureCategoryDorsum;
+    FeaturePluralToSingularMap[FeatureCategoryFossae] = FeatureCategoryFossa;
+    FeaturePluralToSingularMap[FeatureCategoryMontes] = FeatureCategoryMons;
+    FeaturePluralToSingularMap[FeatureCategoryPlanitiae] = FeatureCategoryPlanitia;
+    FeaturePluralToSingularMap[FeatureCategoryRupes] = FeatureCategoryRupes;
+    FeaturePluralToSingularMap[FeatureCategoryValles] = FeatureCategoryVallis;
 </script>

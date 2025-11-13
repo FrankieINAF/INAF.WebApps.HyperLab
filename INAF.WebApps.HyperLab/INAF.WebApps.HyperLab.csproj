@@ -325,9 +325,6 @@
     <Content Update="appsettings.staging.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\fonts\Arial.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Update="wwwroot\js\dist\account\loginbundle.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -4,8 +4,8 @@
     width: 220px;
     height: 60px;
     padding: 5px;
-    background: rgba(27, 161, 226, 0.7);
-    color: white;
+    background: rgba(255, 255, 255, 0.8);
+    color: black;
     border-radius: 3px;
     pointer-events: none;
     display: none;
@@ -15,10 +15,10 @@
     position: absolute;
     z-index: 1000;
     width: 200px;
-    height: 80px;
+    height: 100px;
     padding: 4px;
-    background: rgba(27, 161, 226, 0.7);
-    color: white;
+    background: rgba(255, 255, 255, 0.8);
+    color: black;
     border-radius: 3px;
     pointer-events: none;
     display: none;
