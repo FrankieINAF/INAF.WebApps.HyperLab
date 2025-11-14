@@ -157,7 +157,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             if (ModelState.IsValid)
             {
-                var email = model.Contacts.FirstOrDefault(x => x.ContactType == INAF.Libraries.Net.CommonWebAppModels.Values.Enums.ContactType.Email);
+                var email = model.Contacts?.FirstOrDefault(x => x.ContactType == INAF.Libraries.Net.CommonWebAppModels.Values.Enums.ContactType.Email);
 
                 /* user-name overwritten by 1st part of email */
                 string[] temp = email.Value.Split('@');

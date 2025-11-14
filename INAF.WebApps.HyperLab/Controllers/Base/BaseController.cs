@@ -101,7 +101,7 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
 
         protected int getUserId()
         {
-            string token = HttpContext.GetToken();
+            string? token = HttpContext.GetToken();
             if (string.IsNullOrEmpty(token))
                 return HttpContext.GetUserId();
             else

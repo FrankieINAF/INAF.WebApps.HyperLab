@@ -67,7 +67,8 @@
             <div class="suggest-box bg-darkGrayBlue">
                 <div class="data-box">
                     @{
-                        string? userName = @Context.GetUserName();
+                        var details = dbHandler.getUserDetailsSimple(Context.GetUserId());
+                        string userName = $"{details.Name} {details.LastName}";
                         if (string.IsNullOrEmpty(userName))
                         {
                             userName = "Guest";
