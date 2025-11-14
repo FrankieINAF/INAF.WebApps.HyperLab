@@ -14,6 +14,7 @@
     ViewBag.Title = "Login";
 
     int confirmation = ViewBag?.Confirmation ?? 0;
+    string returnUrl = ViewBag?.ReturnUrl ?? string.Empty;
 }
 <environment names="Development">
     <link rel="stylesheet" href="~/css/src/hyperlab/common.css" />
@@ -52,6 +53,8 @@
 
 
                                     @Html.AntiForgeryToken()
+
+                                    <input type="hidden" id="ReturnUrl" name="ReturnUrl" value="@returnUrl" />
 
                                     <div class="row loginRowsDivider">
                                         <div class="cell-fs-12">

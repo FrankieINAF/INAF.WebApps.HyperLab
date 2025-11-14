@@ -510,6 +510,8 @@
     await Html.RenderPartialAsync("~/Views/HyperLab/SpectraManager/Partials/_HubJsCommon.cshtml");
 }
 <script type="text/javascript">
+    currentView = '/@GenericHelper.GetControllerName(nameof(SpectraManagerController))/@nameof(SpectraManagerController.Hub)';
+
     var lastSearchJson = '@Html.Raw(lastSearchJson)';
     var isSLabDataManagerAllowed = @IsSLabDataManagerAllowed.ToJsString();
     var isUserAuthenticated = @Model.IsUserAuthenticated.ToJsString();

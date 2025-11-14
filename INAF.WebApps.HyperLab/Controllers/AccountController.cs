@@ -109,8 +109,8 @@ namespace INAF.WebApps.HyperLab.Controllers
                 logger.LogInformation($"{nameof(Login)} - user: {model.UserName}");
                 (bool isAuthenticated, UserModel? user) result = await tryAuthenticateForWebAsync(model.UserName!, model.Password!, model.RememberMe);
                 logger.LogInformation($"{nameof(Login)} - isAuthenticated: {result.isAuthenticated}");
-                if (result.isAuthenticated)
-                    return RedirectToAction(nameof(SpectraManagerController.Hub), GenericHelper.GetControllerName(nameof(SpectraManagerController)));
+                if (result.isAuthenticated && !string.IsNullOrEmpty(model.ReturnUrl))
+                    return Redirect(model.ReturnUrl);
             }
             else
             {

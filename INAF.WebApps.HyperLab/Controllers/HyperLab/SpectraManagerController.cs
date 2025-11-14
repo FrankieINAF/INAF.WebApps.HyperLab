@@ -143,26 +143,7 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
         }
 
         #region ANCILLARY
-        private ContentResult buildJsonContentResult(object? inputValue)
-        {
-            string jsonResult = JsonSerializer.Serialize(inputValue);
-            return Content(jsonResult, "application/json");
-        }
-
-        private IEnumerable<ISpectraGroupInfoModel>? retrieveSpectraFilesForGroups(IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo,
-                                                                                   List<int> levelIds)
-        {
-            spectraFilesInfo?.ForEach(spectraGroupInfo =>
-            {
-                List<SpectrumInfoModel>? spectrumInfoModels = dbHandlerHyperLabData.searchGroupItems(spectraGroupInfo.Id,
-                                                                                                     levelIds,
-                                                                                                     getUserId());
-                if (spectrumInfoModels?.Count > 0)
-                    spectraGroupInfo.Spectra = spectrumInfoModels;
-            });
-
-            return spectraFilesInfo;
-        }
+        
 
         private IEnumerable<SharedSpectrumModel>? getSharedSpectra(int userId, Func<int, List<SharedSpectrumModel>?> function)
         {

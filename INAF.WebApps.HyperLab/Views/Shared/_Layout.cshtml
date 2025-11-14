@@ -158,6 +158,8 @@
         <script type="text/javascript" src="~/js/dist/commonbundle.min.js" asp-append-version="true"></script>
     </environment>
     <script type="text/javascript">
+        /* currentView save the current view for being used when user log-in */
+        var currentView;
 
         $(document).ready(function () {
             $('.pull-button').on(Metro.events.click, function () {
