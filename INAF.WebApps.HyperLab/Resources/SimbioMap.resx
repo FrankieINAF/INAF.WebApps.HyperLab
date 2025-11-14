@@ -138,8 +138,8 @@
   <data name="TargetLonRangeLabel" xml:space="preserve">
     <value>Lon range:</value>
   </data>
-  <data name="MapPageTitle" xml:space="preserve">
-    <value>Map Page</value>
+  <data name="SimbioMapPageTitle" xml:space="preserve">
+    <value>Simbio @ Mercury Page</value>
   </data>
   <data name="TargetGeomInfoLabel" xml:space="preserve">
     <value>Geom info</value>

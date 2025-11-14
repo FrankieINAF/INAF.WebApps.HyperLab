@@ -241,15 +241,6 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Map Page.
-        /// </summary>
-        public static string MapPageTitle {
-            get {
-                return ResourceManager.GetString("MapPageTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Select STP.
         /// </summary>
         public static string SelectorSelectStpValue {
@@ -273,6 +264,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SelectorsShowHideTargets {
             get {
                 return ResourceManager.GetString("SelectorsShowHideTargets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simbio @ Mercury Page.
+        /// </summary>
+        public static string SimbioMapPageTitle {
+            get {
+                return ResourceManager.GetString("SimbioMapPageTitle", resourceCulture);
             }
         }
         
