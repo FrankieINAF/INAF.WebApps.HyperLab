@@ -257,25 +257,33 @@ export function restoreDefaultVisualization() {
 async function retrieveTargetsAsync() {
     setLoadingCircleIsVisible(true);
 
-    let targetsLayer = await doAjaxGetNoModelAsync(UrlGetTargetsWithObsCoords);
-    if (targetsLayer == null || targetsLayer.length == 0) {
+    try {
+        let targetsLayer = await doAjaxGetNoModelAsync(UrlGetTargetsWithObsCoords);
+        if (targetsLayer == null || targetsLayer.length == 0) {
+            setLoadingCircleIsVisible(false);
+            showSimpleDialog(WARNING_LABEL, TargetsNoItemsAvailableMessage, WARNING);
+            return;
+        }
+
+        //targetsArray = [];
+        const targetsCount = targetsLayer.length;
+        for (let i = 0; i < targetsCount; i++) {
+            const target = targetsLayer[i];
+
+            //targetsArray.push(target);
+            addGeometryEntityByBounds(target.Id, target.Name, TARGET, target.MinLat, target.MaxLat, target.MinLon, target.MaxLon);
+        }
+
+        showByClassDFlexItem('searchTargetInputContainer');
         setLoadingCircleIsVisible(false);
-        showSimpleDialog(WARNING_LABEL, TargetsNoItemsAvailableMessage, WARNING);
-        return;
+    } catch (e) {
+        Metro.getPlugin('#loadHideTargets', 'switch').toggleState();
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(ERROR_LABEL, TargetsGetItemsErrorMessage, ALERT);
     }
+    
 
-    //targetsArray = [];
-    const targetsCount = targetsLayer.length;
-    for (let i = 0; i < targetsCount; i++) {
-        const target = targetsLayer[i];
-
-        //targetsArray.push(target);
-        addGeometryEntityByBounds(target.Id, target.Name, TARGET, target.MinLat, target.MaxLat, target.MinLon, target.MaxLon);
-    }
-
-    showByClassDFlexItem('searchTargetInputContainer');
-
-    setLoadingCircleIsVisible(false);
+    
 }
 
 async function retrieveTargetDetailsAsync(selectedTargetName) {
@@ -283,43 +291,50 @@ async function retrieveTargetDetailsAsync(selectedTargetName) {
         Text: selectedTargetName
     };
 
-    const obj = await doAjaxGetAsync(UrlGetTargetInfo, model);
-    if (obj != null) {
-        //console.log(obj);
+    let isOk = true;
+    try {
+        const obj = await doAjaxGetAsync(UrlGetTargetInfo, model);
+        if (obj != null) {
+            //console.log(obj);
 
-        let observedByText = '';
-        if (obj.ObservedByHRIC)
-            observedByText += HRIC;
-        if (obj.ObservedBySTC) {
-            if (observedByText.length > 0)
-                observedByText += ', ';
-            observedByText += STC;
-        }
-        if (obj.ObservedByVIHI) {
-            if (observedByText.length > 0)
-                observedByText += ', ';
-            observedByText += VIHI;
-        }
+            let observedByText = '';
+            if (obj.ObservedByHRIC)
+                observedByText += HRIC;
+            if (obj.ObservedBySTC) {
+                if (observedByText.length > 0)
+                    observedByText += ', ';
+                observedByText += STC;
+            }
+            if (obj.ObservedByVIHI) {
+                if (observedByText.length > 0)
+                    observedByText += ', ';
+                observedByText += VIHI;
+            }
 
-        writeTargetDetails(
-            obj.Name,
-            observedByText,
-            obj.Category,
-            obj.ObsMode,
-            obj.ObsType,
-            obj.MinLat.toFixed(6),
-            obj.MaxLat.toFixed(6),
-            obj.CenterLat.toFixed(6),
-            obj.MinLon.toFixed(6),
-            obj.MaxLon.toFixed(6),
-            obj.CenterLon.toFixed(6),
-            obj.AreaGeod.toLocaleString('en-US'),
-            obj.CoveragePercentage.toFixed(2),
-            obj.LiteratureRef);
+            writeTargetDetails(
+                obj.Name,
+                observedByText,
+                obj.Category,
+                obj.ObsMode,
+                obj.ObsType,
+                obj.MinLat.toFixed(6),
+                obj.MaxLat.toFixed(6),
+                obj.CenterLat.toFixed(6),
+                obj.MinLon.toFixed(6),
+                obj.MaxLon.toFixed(6),
+                obj.CenterLon.toFixed(6),
+                obj.AreaGeod.toLocaleString('en-US'),
+                obj.CoveragePercentage.toFixed(2),
+                obj.LiteratureRef);
 
-    } else {
-        showSimpleDialog(ERROR_LABEL, TargetGetInfoErrorMessage, ALERT);
+        } else
+            isOk = false;
+    } catch (e) {
+        isOk = false;
     }
+
+    if (!isOk)
+        showSimpleDialog(ERROR_LABEL, TargetGetInfoErrorMessage, ALERT);
 }
 
 export function searchForTarget() {

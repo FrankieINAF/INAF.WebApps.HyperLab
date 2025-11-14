@@ -403,6 +403,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred while trying to retrieve targets..
+        /// </summary>
+        public static string TargetsGetItemsErrorMessage {
+            get {
+                return ResourceManager.GetString("TargetsGetItemsErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No targets available.
         /// </summary>
         public static string TargetsNoItemsAvailableMessage {

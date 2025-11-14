@@ -249,4 +249,7 @@
   <data name="FeaturesNoItemsAvailableMessage" xml:space="preserve">
     <value>No features found for selected category</value>
   </data>
+  <data name="TargetsGetItemsErrorMessage" xml:space="preserve">
+    <value>An error occurred while trying to retrieve targets.</value>
+  </data>
 </root>
