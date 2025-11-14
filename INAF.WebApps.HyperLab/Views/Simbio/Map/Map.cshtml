@@ -18,12 +18,15 @@
             <div class="d-flex flex-justify-between-fs flex-column-lg">
                 <!-- FEATURES -->
                 <div>
-                    <button id="featuresButton" class="image-button info" onclick="openCloseFeaturesDropdown()">
-                        <span class="mif-map icon"></span>
-                        <span class="caption">@Html.Raw(SimbioMap.FeaturesLabel)</span>
-                    </button>
+                    <div class="d-flex">
+                        <div><input id="loadHideFeatures" type="checkbox" onclick="onLoadHideFeaturesClick()" data-role="switch" data-cls-switch="switch-cyan" data-cls-check="bd-cyan" data-on="Load" data-off="Hide"></div>
+                        <div class="margin-top-4"><p class="fg-black">@Html.Raw(SimbioMap.FeaturesLabel)</p></div>
+                    </div>
                     <div id="featuresDropdown"
-                         data-role="dropdown">
+                         data-role="dropdown"
+                         data-toggle-element="#loadHideFeatures"
+                         data-on-drop="openCloseFeaturesDropdown"
+                         data-on-up="openCloseFeaturesDropdown">
                         <div class="d-flex flex-column">
                             <p class="fg-black">@Html.Raw(SimbioMap.FeaturesShowHideLabel)</p>
                             <div><input id="showHideFeaturesAll" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-left-48" data-caption="@Html.Raw(SimbioMap.FeatureCategoryAll)"></div>
@@ -218,7 +221,8 @@
         import {
             hideCharmsSelectedItem,
             onCharmsSelectedItemOpened,
-            openCloseFeaturesDropdown,
+            onFeaturesDropdownOpenClose,
+            onLoadHideFeaturesClick,
             restoreDefaultVisualization,
             retrieveFootprintsByStpAsync,
             searchForTarget
@@ -226,7 +230,8 @@
         /* following lines are required to access imported function by global scope */
         window.hideCharmsSelectedItem = hideCharmsSelectedItem;
         window.onCharmsSelectedItemOpened = onCharmsSelectedItemOpened;
-        window.openCloseFeaturesDropdown = openCloseFeaturesDropdown;
+        window.onFeaturesDropdownOpenClose = onFeaturesDropdownOpenClose;
+        window.onLoadHideFeaturesClick = onLoadHideFeaturesClick;
         window.restoreDefaultVisualization = restoreDefaultVisualization;
         window.retrieveFootprintsByStpAsync = retrieveFootprintsByStpAsync;
         window.searchForTarget = searchForTarget;
@@ -245,6 +250,7 @@
             hideCharmsSelectedItem,
             hideFeatureTooltip,
             onCharmsSelectedItemOpened,
+            onFeaturesDropdownOpenClose,
             restoreDefaultVisualization,
             retrieveFootprintsByStpAsync,
             searchForTarget
@@ -253,6 +259,7 @@
         window.hideCharmsSelectedItem = hideCharmsSelectedItem;
         window.hideFeatureTooltip = hideFeatureTooltip;
         window.onCharmsSelectedItemOpened = onCharmsSelectedItemOpened;
+        window.onFeaturesDropdownOpenClose = onFeaturesDropdownOpenClose;
         window.restoreDefaultVisualization = restoreDefaultVisualization;
         window.retrieveFootprintsByStpAsync = retrieveFootprintsByStpAsync;
         window.searchForTarget = searchForTarget;

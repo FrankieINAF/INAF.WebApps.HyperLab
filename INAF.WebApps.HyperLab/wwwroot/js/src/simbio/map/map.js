@@ -35,16 +35,20 @@ export function setMapPointerEventsAllowed(isAllowed) {
 /* FEATURES DROPDOWN */
 /* ################################################################################ */
 var isFeaturesDropdownOpen = false;
-export function openCloseFeaturesDropdown() {
+export function onFeaturesDropdownOpenClose() {
     if (!isFeaturesDropdownOpen) {
-        Metro.getPlugin('#featuresDropdown', 'dropdown').open();
+        $('#loadHideFeatures').prop('checked', true);
         $('#featuresDropdown').addClass('keep-open');
     } else {
-        $('#featuresDropdown').removeClass('keep-open');
-        Metro.getPlugin('#featuresDropdown', 'dropdown').close();
+        $('#loadHideFeatures').prop('checked', false);
     }
 
     isFeaturesDropdownOpen = !isFeaturesDropdownOpen;
+}
+
+export function onLoadHideFeaturesClick() {
+    if (isFeaturesDropdownOpen)
+        $('#featuresDropdown').removeClass('keep-open');
 }
 
 /* ################################################################################ */
@@ -277,13 +281,10 @@ async function retrieveTargetsAsync() {
         showByClassDFlexItem('searchTargetInputContainer');
         setLoadingCircleIsVisible(false);
     } catch (e) {
-        Metro.getPlugin('#loadHideTargets', 'switch').toggleState();
+        $('#loadHideTargets').prop('checked', false);
         setLoadingCircleIsVisible(false);
         showSimpleDialog(ERROR_LABEL, TargetsGetItemsErrorMessage, ALERT);
     }
-    
-
-    
 }
 
 async function retrieveTargetDetailsAsync(selectedTargetName) {
@@ -483,14 +484,14 @@ $(function () {
     /* init all checkboxes for showing/hiding features */
     initCheckboxFeaturesAll();
 
-    /* retrieve stps related to footprints */
-    retrieveStpsWithFootprintsAsync();
-
     /* init switch for loading/hiding targetsLayer */
     initSwitchLoadHideTargets();
 
     /* init switch for selecting stp */
     initSwitchShowHideSearchOfFootprints();
+
+    /* retrieve stps related to footprints */
+    retrieveStpsWithFootprintsAsync();
 
     addReturnListenerToElem('searchTargetInput', searchForTarget);
 });
