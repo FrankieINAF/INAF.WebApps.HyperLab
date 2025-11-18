@@ -571,6 +571,8 @@ async function loadWhiteSpectraForAlignmentAsync() {
 
         dxChartEndUpdate(chartContainer);
 
+        hideSpectraToBeHidden();
+
         /* reset visual range to make ref whites appear in chart */
         if (!isCheckboxChecked('charmsSwitchAutoAlignSpectrum') && !isCheckboxChecked('charmsSwitchAutoDownloadAlignedSpectrum'))
             dxChartResetVisualRange(chartContainer);
@@ -834,6 +836,9 @@ async function alignSpectrumAsync() {
             isOk = false
     } else
         isOk = false;
+
+    /* refresh visibility of spectra */
+    hideSpectraToBeHidden();
 
     setLoadingCircleIsVisible(false);
 

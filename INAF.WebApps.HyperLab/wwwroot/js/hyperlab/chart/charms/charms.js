@@ -398,6 +398,8 @@ function manageSpectraVisibility(selectedSpectrumId) {
     for (var i = 0; i < spectraNum; i++) {
         if (spectraInfo[i].Id != selectedSpectrumId) {
             let seriesName = getSpectrumSeriesNameFromIndex(getSpectrumIndexById(spectraInfo[i].Id));
+            let index = chartSeries.findIndex(x => x.name == seriesName);
+            chartSeries[index].isVisible = false; // set attribute for being used later
             dxChartHideSeries(chartContainer, seriesName);
         }
     }
