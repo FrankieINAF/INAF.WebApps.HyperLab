@@ -846,7 +846,7 @@ async function alignSpectrumAsync() {
 function buildAlignedSpectrum() {
     try {
         /* retrieve info about parent spectrum */
-        let rawSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
+        let rawSpectrum = getSpectrumById(selectedSpectrumForProcessingId);
 
         /* build spectrum info for being added to 'spactraInfo' */
         let alignedSpectrum = buildSpectrum(buildTempAlignedId(),
@@ -961,7 +961,7 @@ async function saveAlignedSpectrumAsync(showLoadingAndMessage = true) {
     let isSavingOk = true;
 
     try {
-        const spectrum = getSpectrumInfoById(buildTempAlignedId());
+        const spectrum = getSpectrumById(buildTempAlignedId());
         if (!spectrum)
             return;
 
@@ -969,7 +969,7 @@ async function saveAlignedSpectrumAsync(showLoadingAndMessage = true) {
             setLoadingCircleIsVisible(true);
 
         /* retrieve parent file */
-        const rawSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
+        const rawSpectrum = getSpectrumById(selectedSpectrumForProcessingId);
 
         const alignmentSettings = getAlignmentSettings();
         const parentFiles = getAlignedParentFiles(selectedSpectrumForProcessingId);

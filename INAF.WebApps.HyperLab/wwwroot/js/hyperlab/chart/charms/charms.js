@@ -231,7 +231,7 @@ function buildSpectrumFile(parentId, name, spectrumLevel, spectrumType, spectrum
 }
 
 function buildParentFile(id) {
-    let parentFile = getSpectrumInfoById(id);
+    let parentFile = getSpectrumById(id);
 
     let parentFileId = fixId(parentFile.Id);
     return {
@@ -284,7 +284,7 @@ function restoreOldSpectraColor() {
     if (selectedSpectrumForProcessingId == 0)
         return; // if no spectrum is selected, then do nothing
 
-    let selectedSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
+    let selectedSpectrum = getSpectrumById(selectedSpectrumForProcessingId);
     if (!selectedSpectrum || !selectedSpectrum.oldColor)
         return; // if no old color is available, then do nothing
 
@@ -460,7 +460,7 @@ async function setSelectedSpectrumForProcessing(selected) {
     /* remember new id of selected spectrum */
     selectedSpectrumForProcessingId = selectedValue;
 
-    const selectedSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
+    const selectedSpectrum = getSpectrumById(selectedSpectrumForProcessingId);
     /* fix color for using spectrumType-color association */
     updateSelectedSpectrumColorToSpectrumTypeColor(selectedSpectrum);
     addMessage(SpectrumTypeColorRelationshipMessage, 3000, INFO);
@@ -558,6 +558,22 @@ async function downloadProcessedSpectrumAsync(spectrumType) {
     let obj = await doAjaxPostAsync(UrlGetProcessedSpectrum, model);
     if (obj) {
         setLoadingCircleIsVisible(true); // trick for avoiding mysterious disappearing of loading
+
+        /* check for parent spectrum: if parent has been retrieved from cloud or saved, its Id is an integer.
+           If parent spectrum has only been built-up then its Id is created by buildTempAlignedId, buildTempContinuumRemovedId, etc.  */
+        parentSpectrum = getSpectrumById(obj.SpectraInfo.ParentId);
+        if (!parentSpectrum) {
+            const parentType = spectraTypesParents[obj.SpectraInfo.SpectrumType];
+            parentSpectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, parentType);
+            if (!parentSpectrum) {
+                showSimpleDialog(ERROR_LABEL, CharmsRetrieveParentSpectrumErrorMessage, ALERT);
+                setLoadingCircleIsVisible(false);
+                return;
+            }
+
+            /* set correct ParentId */
+            obj.SpectraInfo.ParentId = parentSpectrum.Id;
+        }
 
         /* save spectrum into 'spectraInfo' */
         addSpectrumInfo(obj.SpectraInfo);
@@ -671,9 +687,9 @@ async function checkIsSpectrumOfTypeSavedOnCloudAsync(spectrumType, filename = n
 
     let file;
     if (filename != null)
-        file = getSpectrumInfoByName(filename);
+        file = getSpectrumByName(filename);
     else 
-        file = getSpectrumInfoById(selectedSpectrumForProcessingId);
+        file = getSpectrumById(selectedSpectrumForProcessingId);
 
     if (file == null) {
         showSimpleDialog(WARNING_LABEL, CharmsRetrieveFileInfoErrorMessage, WARNING);
@@ -831,7 +847,7 @@ function buildFamilyTreeForSpectrum(id) {
 
     let spectra = [];
     familyIds.forEach(function (id) {
-        spectra.push(getSpectrumInfoById(id));
+        spectra.push(getSpectrumById(id));
     });
 
     /* re-order array items */

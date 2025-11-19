@@ -52,7 +52,7 @@ function setButtonsEnabled(areEnabled, smoothingType) {
 
 async function callCheckIsSpectrumOfTypeSavedOnCloudForSmoothedAsync(filename = null, spectrumType) {
     if (filename == null) {
-        let file = getSpectrumInfoById(selectedSpectrumForProcessingId);
+        let file = getSpectrumById(selectedSpectrumForProcessingId);
         filename = file.Name;
     }
 
@@ -141,7 +141,7 @@ function getAvailableSrcSpectrumTypesNum() {
         familyIds.push(selectedSpectrumForProcessingId);
 
     familyIds.forEach(function (item) {
-        const spectrumInfo = getSpectrumInfoById(item);
+        const spectrumInfo = getSpectrumById(item);
         if (!spectrumInfo)
             return;
         /* check if the spectrum is available by id and type */
@@ -780,7 +780,7 @@ async function applySmoothingAsync(smoothingType) {
 function buildSmoothedSpectrum(smoothingType, srcSpectrumType, destSpectrumType) {
     try {
         /* retrieve RAW spectrum */
-        let baseSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
+        let baseSpectrum = getSpectrumById(selectedSpectrumForProcessingId);
 
         /* retrieve info about parent spectrum */
         let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
@@ -834,7 +834,7 @@ async function saveSmoothedSpectrumProcedureAsync(smoothingType) {
     /* retrieve spectrumType of processed spectrum */
     let destSpectrumType = await getDestSpectrumTypeAsync(smoothingType, getSrcSpectrumType());
 
-    let spectrum = getSpectrumInfoById(buildTempSmoothedSpectrumId(getSrcSpectrumType(), smoothingType));
+    let spectrum = getSpectrumById(buildTempSmoothedSpectrumId(getSrcSpectrumType(), smoothingType));
     if (!spectrum)
         spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, getSrcSpectrumType());
 
@@ -865,7 +865,7 @@ async function saveSmoothedSpectrumAsync(spectrum, smoothingType, destSpectrumTy
         let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, srcSpectrumType);
         /* but when an aligned spectrum is the main parent, we need this second search to get info */
         if (!srcSpectrum)
-            srcSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
+            srcSpectrum = getSpectrumById(selectedSpectrumForProcessingId);
         if (srcSpectrum.Id == buildTempSmoothedSpectrumId(srcSpectrumType, smoothingType))
             srcSpectrum.Id = 0;
 

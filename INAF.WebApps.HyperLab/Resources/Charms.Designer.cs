@@ -511,6 +511,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, something went wrong while trying to retrieve parent spectrum..
+        /// </summary>
+        public static string CharmsRetrieveParentSpectrumErrorMessage {
+            get {
+                return ResourceManager.GetString("CharmsRetrieveParentSpectrumErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The color of the selected spectrum has been restored removing  the SpectrumType-Color relationship during spectrum processing.
         /// </summary>
         public static string CharmsSelectedSpectrumColorRestoreMessage {

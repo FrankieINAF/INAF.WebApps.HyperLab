@@ -309,7 +309,7 @@ function getAncestorSpectrumByIdAndSpectrumType(id, spectrumType) {
     let spectrum = getSpectrumByIdAndSpectrumType(id, spectrumType);
     let ancestorSpectrumId = spectrum.ParentId;
     while (continueLoop) {
-        let ancestorSpectrum = getParentSpectrumById(ancestorSpectrumId);
+        let ancestorSpectrum = getSpectrumById(ancestorSpectrumId);
         if (ancestorSpectrum == null)
             continueLoop = false;
         else {
@@ -330,19 +330,16 @@ function getSpectraByParentId(parentId) {
     return spectraInfo.filter(x => x.ParentId == parentId);
 }
 
+function getSpectrumById(id) {
+    return spectraInfo.find(x => x.Id == id);
+}
+
 function getSpectrumByIdAndSpectrumType(id, spectrumType) {
     return spectraInfo.find(x => x.Id == id && x.SpectrumType == spectrumType);
 }
 
-function getParentSpectrumById(id) {
-    let spectrum = spectraInfo.find(x => x.Id == id);
-    if (spectrum == null)
-        return null;
-
-    if (spectrum.ParentId == null)
-        return null;
-
-    return spectraInfo.find(x => x.Id == spectrum.ParentId);
+function getSpectrumByName(filename) {
+    return spectraInfo.find(x => x.Name == filename);
 }
 
 function getSpectrumByRawIdAndSpectrumType(rawId, spectrumType) {
@@ -382,14 +379,6 @@ function getSpectrumIndexByIdAndSpectrumType(id, spectrumType) {
 
 function getSpectrumIndexByParentIdAndSpectrumType(parentId, spectrumType) {
     return spectraInfo.findIndex(x => x.ParentId == parentId && x.SpectrumType == spectrumType);
-}
-
-function getSpectrumInfoById(id) {
-    return spectraInfo.find(x => x.Id == id);
-}
-
-function getSpectrumInfoByName(filename) {
-    return spectraInfo.find(x => x.Name == filename);
 }
 
 function getSpectrumNameById(id) {

@@ -1166,7 +1166,7 @@ function tryAddContinuumSpectrum() {
     }
 
     /* retrieve parent RAW spectrum */
-    let selectedSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
+    let selectedSpectrum = getSpectrumById(selectedSpectrumForProcessingId);
 
     /* build spectrum info for being added to 'spectraInfo' */
     let continuumSpectrum = buildSpectrum(
@@ -1283,7 +1283,7 @@ function removeFitPointsSeriesPoints() {
 function buildContinuumRemovedSpectrum() {
     try {
         /* retrieve RAW spectrum */
-        let rawSpectrum = getSpectrumInfoById(selectedSpectrumForProcessingId);
+        let rawSpectrum = getSpectrumById(selectedSpectrumForProcessingId);
 
         /* retrieve aligned spectrum */
         let alignedSpectrum = getSpectrumAlignedProcedure();
@@ -1385,16 +1385,21 @@ function getNumOfPointsForMissingPoints() {
 }
 
 function setMissingPointsFromDownloadedContinuumRemoved() {
-    let continuumPoints = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM);
-    //let continuumPoints = getPointsFromSeriesPoints(dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM))));
+    try {
+        let continuumPoints = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM);
+        //let continuumPoints = getPointsFromSeriesPoints(dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM))));
 
-    /* set missing point 0 */
-    trySaveMissingPoint(createPointForFitting(createSimplePoint(continuumPoints[0].X, continuumPoints[0].Y)));
+        /* set missing point 0 */
+        trySaveMissingPoint(createPointForFitting(createSimplePoint(continuumPoints[0].X, continuumPoints[0].Y)));
 
-    /* set missing point 1 */
-    let continuumPointsNum = continuumPoints.length;
+        /* set missing point 1 */
+        let continuumPointsNum = continuumPoints.length;
 
-    trySaveMissingPoint(createPointForFitting(createSimplePoint(continuumPoints[continuumPointsNum - 1].X, continuumPoints[continuumPointsNum - 1].Y)));
+        trySaveMissingPoint(createPointForFitting(createSimplePoint(continuumPoints[continuumPointsNum - 1].X, continuumPoints[continuumPointsNum - 1].Y)));
+
+    } catch (e) {
+        /* this exception should occur only when this function is called when retrieving from DB. */
+    }
 }
 
 async function startRemoveContinuumProcedureAsync() {
@@ -1947,6 +1952,7 @@ window.addEventListener(EVENT_SEGMENTS_LOADED_DOWNLOAD_CONTINUUM_REMOVED, (e) =>
     setLoadingCircleIsVisible(false);
 
     /* set missing points for allowing auto-retry of calculating continuum-removal */
+    selectedSpectrumTypeForContinuumRemoval = SPECTRUM_TYPE_ALIGNED;
     setMissingPointsFromDownloadedContinuumRemoved();
 
     /* condition for allowing auto-retry of calculating continuum-removal */

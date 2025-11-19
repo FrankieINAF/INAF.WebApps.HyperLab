@@ -558,4 +558,7 @@
   <data name="CharmsRetrieveFileInfoErrorMessage" xml:space="preserve">
     <value>Sorry, something went wrong while trying to retrieve info about spectrum from cloud</value>
   </data>
+  <data name="CharmsRetrieveParentSpectrumErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to retrieve parent spectrum.</value>
+  </data>
 </root>
