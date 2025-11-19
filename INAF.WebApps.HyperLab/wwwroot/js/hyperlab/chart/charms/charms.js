@@ -580,6 +580,7 @@ async function downloadProcessedSpectrumAsync(spectrumType) {
 
                 /* retrieve and show settings used for removing continuum from currently selected spectrum */
                 isBuildingUpContinuum = true; // used to avoid removing loading while building up continuum
+                selectedSpectrumTypeForContinuumRemoval = SPECTRUM_TYPE_ALIGNED; // used for building up points for continuum
                 await downloadContinuumRemovalSettingsAsync(obj.SpectraInfo.Id);
 
                 ///* save boundaries points as missing points to enable continuum-removed recalculation if points are added/removed */
@@ -664,18 +665,29 @@ function setCloudTextAndIconStatus(spectrumType, isSpectrumFromCloud) {
 /* ################################################################################ */
 /* CHECK IS SAVED ON CLOUD */
 /* ################################################################################ */
-async function checkIsSpectrumOfTypeSavedOnCloudAsync(name, spectrumType, spectrumSource, spectrumLevel) {
+async function checkIsSpectrumOfTypeSavedOnCloudAsync(spectrumType, filename = null) {
     if (!isUserAuthenticated)
         return false;
 
-    if (spectrumSource == null)
-        spectrumSource = SPECTRUM_SOURCE_SLAB;
+    let file;
+    if (filename != null)
+        file = getSpectrumInfoByName(filename);
+    else 
+        file = getSpectrumInfoById(selectedSpectrumForProcessingId);
+
+    if (file == null) {
+        showSimpleDialog(WARNING_LABEL, CharmsRetrieveFileInfoErrorMessage, WARNING);
+        return false;
+    }
+
+    //if (spectrumSource == null)
+    //spectrumSource = SPECTRUM_SOURCE_SLAB;
 
     let model = {
-        Filename: name,
-        SpectrumType: spectrumType,
-        SpectrumSource: spectrumSource,
-        SpectrumLevel: spectrumLevel
+        Filename: file.Name,
+        SpectrumType: file.SpectrumType,
+        SpectrumSource: file.SpectrumSource,
+        SpectrumLevel: file.SpectrumLevel
     };
 
     let obj = await doAjaxGetAsync(UrlIsSpectrumTypeSavedOnCloud, model);

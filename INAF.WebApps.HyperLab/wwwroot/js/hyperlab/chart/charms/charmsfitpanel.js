@@ -41,15 +41,10 @@ var errorBarSemiHeight;
 var PULSE_TIMEOUT = 1000;
 
 async function callCheckIsSpectrumOfTypeSavedOnCloudForContinuumRemovedAsync(filename = null) {
-    if (filename == null) {
-        let file = getSpectrumInfoById(selectedSpectrumForProcessingId);
-        filename = file.Name;
-    }
-
-    return checkIsSpectrumOfTypeSavedOnCloudAsync(filename, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    return await checkIsSpectrumOfTypeSavedOnCloudAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED, filename);
 }
 
-async function preparePanelForFitPhase1Async(extCallback) {
+async function preparePanelForFitPhase1Async(extCallback = null) {
     if (!isFitTabSelected) {
         setTabSelectedProcedure('charmsTabs', OPTIONS_TITLE_FIT);
 
@@ -64,7 +59,8 @@ async function preparePanelForFitPhase1Async(extCallback) {
             loadNumOfPointsForMissingPointsAsync();
 
             /* execute external callback */
-            extCallback();
+            if (extCallback)
+                extCallback();
         }
         loadPartialViewWithAjaxGetNoModel(UrlLoadFitPanel, 'fitOptionsPanel', callback);
 
@@ -1675,7 +1671,7 @@ async function saveContinuumRemovedSpectrumProcedureAsync() {
         return;
     }
 
-    let cond1 = await checkIsSpectrumOfTypeSavedOnCloudAsync(spectrum.Name, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    let cond1 = await checkIsSpectrumOfTypeSavedOnCloudAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED, spectrum.Name);
     let cond2 = isSpectrumOfTypeSavedOnCloud(SPECTRUM_TYPE_CONTINUUM_REMOVED);
     if (cond1 || cond2)
         askAndExecute(CharmsSpectraProcessingManagementLabel, OverwriteSavedSpectrumQuestion, saveContinuumRemovedSpectrumAsync, [spectrum]);
@@ -1879,7 +1875,7 @@ function downloadContinuumRemovedSpectrumProcedure() {
 }
 
 async function downloadContinuumRemovalSettingsAsync(id) {
-    let model = {
+    const model = {
         Id: id
     };
 
@@ -1899,7 +1895,7 @@ async function downloadContinuumRemovalSettingsAsync(id) {
             alignedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
         }
 
-        let alignedPoints = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+        const alignedPoints = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
         //let alignedPoints = getPointsFromSeriesPoints(dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(alignedSpectrum)));
 
         if (!alignedPoints) {
@@ -1916,13 +1912,16 @@ async function downloadContinuumRemovalSettingsAsync(id) {
         }
 
         /* add points of continuum and build it up */
-        let segmentsNum = obj.ResponseObject.Segments.length;
+        const segmentsNum = obj.ResponseObject.Segments.length;
         for (var i = 0; i < segmentsNum; i++) {
             let x = obj.ResponseObject.Segments[i].XStart;
             await addPointAsync(x);
         }
         /* add XEnd from last segment to complete continuum */
         await addPointAsync(obj.ResponseObject.Segments[segmentsNum - 1].XEnd, false, true);
+
+        /* enable the band analysis tab */
+        setTabEnabled(3, true);
     } else {
         showSimpleDialog(ERROR_LABEL, FitDownloadContinuumRemovalSettingsErrorMessage, ALERT);
     }

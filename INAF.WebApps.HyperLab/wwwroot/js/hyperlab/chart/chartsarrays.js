@@ -388,6 +388,10 @@ function getSpectrumInfoById(id) {
     return spectraInfo.find(x => x.Id == id);
 }
 
+function getSpectrumInfoByName(filename) {
+    return spectraInfo.find(x => x.Name == filename);
+}
+
 function getSpectrumNameById(id) {
     let spectrum = spectraInfo.find(x => x.Id == id);
     return spectrum.Name;

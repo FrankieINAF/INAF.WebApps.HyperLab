@@ -56,7 +56,7 @@ async function callCheckIsSpectrumOfTypeSavedOnCloudForSmoothedAsync(filename = 
         filename = file.Name;
     }
 
-    await checkIsSpectrumOfTypeSavedOnCloudAsync(filename, spectrumType);
+    await checkIsSpectrumOfTypeSavedOnCloudAsync(spectrumType, filename);
 }
 
 async function getDestSpectrumTypeAsync(smoothingType, spectrumType) {
@@ -843,7 +843,7 @@ async function saveSmoothedSpectrumProcedureAsync(smoothingType) {
         return;
     }
 
-    let cond1 = await checkIsSpectrumOfTypeSavedOnCloudAsync(spectrum.Name, destSpectrumType);
+    let cond1 = await checkIsSpectrumOfTypeSavedOnCloudAsync(destSpectrumType, spectrum.Name);
     let cond2 = isSpectrumOfTypeSavedOnCloud(destSpectrumType);
     if (cond1 || cond2)
         askAndExecute(CharmsSpectraProcessingManagementLabel, OverwriteSavedSpectrumQuestion, saveSmoothedSpectrumAsync, [spectrum, smoothingType, destSpectrumType, true]);

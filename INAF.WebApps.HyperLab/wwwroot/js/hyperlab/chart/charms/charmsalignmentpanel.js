@@ -73,14 +73,7 @@ function onAlignmentPanelLoaded() {
 }
 
 function callCheckIsSpectrumOfTypeSavedOnCloudForAligned(filename = null) {
-    let level;
-    if (filename == null) {
-        let file = getSpectrumInfoById(selectedSpectrumForProcessingId);
-        filename = file.Name;
-        level = file.SpectrumLevel;
-    }
-
-    checkIsSpectrumOfTypeSavedOnCloudAsync(filename, SPECTRUM_TYPE_ALIGNED, null, level);
+    checkIsSpectrumOfTypeSavedOnCloudAsync(SPECTRUM_TYPE_ALIGNED, filename);
 }
 
 /* ################################################################################ */
@@ -956,7 +949,7 @@ function getAlignmentSettings() {
 
 async function saveAlignedSpectrumProcedureAsync() {
     let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
-    let cond1 = await checkIsSpectrumOfTypeSavedOnCloudAsync(spectrum.Name, SPECTRUM_TYPE_ALIGNED);
+    let cond1 = await checkIsSpectrumOfTypeSavedOnCloudAsync(SPECTRUM_TYPE_ALIGNED, spectrum.Name);
     let cond2 = isSpectrumOfTypeSavedOnCloud(SPECTRUM_TYPE_ALIGNED);
     if (cond1 || cond2)
         askAndExecute(CharmsSpectraProcessingManagementLabel, OverwriteSavedSpectrumQuestion, saveAlignedSpectrumAsync);
