@@ -1,429 +1,440 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>6a746840-f061-46d0-88cd-07b7d304f64a</UserSecretsId>
-  </PropertyGroup>
+		<PropertyGroup>
+				<TargetFramework>net10.0</TargetFramework>
+				<Nullable>enable</Nullable>
+				<ImplicitUsings>enable</ImplicitUsings>
+				<UserSecretsId>6a746840-f061-46d0-88cd-07b7d304f64a</UserSecretsId>
+		</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <WarningLevel>7</WarningLevel>
-  </PropertyGroup>
+		<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+				<WarningLevel>7</WarningLevel>
+		</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <WarningLevel>7</WarningLevel>
-  </PropertyGroup>
+		<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+				<WarningLevel>7</WarningLevel>
+		</PropertyGroup>
 
-	<ItemGroup>
-		<FontFiles Include="wwwroot\lib\metro\mif\*.woff;wwwroot\lib\metro\mif\*.ttf;wwwroot\lib\metro\mif\*.svg" />
-	</ItemGroup>
+		<ItemGroup>
+				<FontFiles Include="wwwroot\lib\metro\mif\*.woff;wwwroot\lib\metro\mif\*.ttf;wwwroot\lib\metro\mif\*.svg" />
+		</ItemGroup>
 
-	<Target Name="CopyFonts" AfterTargets="Build">
-		<Copy SourceFiles="@(FontFiles)" DestinationFolder="$(ProjectDir)wwwroot\css\dist\metro\mif" />
-	</Target>
+		<Target Name="CopyFonts" AfterTargets="Build">
+				<Copy SourceFiles="@(FontFiles)" DestinationFolder="$(ProjectDir)wwwroot\css\dist\metro\mif" />
+		</Target>
 
-	<ItemGroup>
-	  <Compile Remove="wwwroot\js\hyperlab\search\**" />
-	  <Compile Remove="wwwroot\lib\joystick-controller\**" />
-	  <Content Remove="wwwroot\js\hyperlab\search\**" />
-	  <Content Remove="wwwroot\lib\joystick-controller\**" />
-	  <EmbeddedResource Remove="wwwroot\js\hyperlab\search\**" />
-	  <EmbeddedResource Remove="wwwroot\lib\joystick-controller\**" />
-	  <None Remove="wwwroot\js\hyperlab\search\**" />
-	  <None Remove="wwwroot\lib\joystick-controller\**" />
-	</ItemGroup>
+		<ItemGroup>
+				<Compile Remove="wwwroot\js\hyperlab\search\**" />
+				<Compile Remove="wwwroot\lib\joystick-controller\**" />
+				<Content Remove="wwwroot\js\hyperlab\search\**" />
+				<Content Remove="wwwroot\lib\joystick-controller\**" />
+				<EmbeddedResource Remove="wwwroot\js\hyperlab\search\**" />
+				<EmbeddedResource Remove="wwwroot\lib\joystick-controller\**" />
+				<None Remove="wwwroot\js\hyperlab\search\**" />
+				<None Remove="wwwroot\lib\joystick-controller\**" />
+		</ItemGroup>
 
-	<ItemGroup>
-    <Content Remove="appsettings.development.json" />
-    <Content Remove="wwwroot\css\hyperlab\account\confirmationcompleted.css" />
-    <Content Remove="wwwroot\css\hyperlab\account\errorpage.css" />
-    <Content Remove="wwwroot\css\hyperlab\account\login.css" />
-    <Content Remove="wwwroot\css\hyperlab\account\registrationconfirmed.css" />
-    <Content Remove="wwwroot\css\hyperlab\apps\apps.css" />
-    <Content Remove="wwwroot\css\hyperlab\common.css" />
-    <Content Remove="wwwroot\css\hyperlab\commonlayoutnonavigation.css" />
-    <Content Remove="wwwroot\css\hyperlab\commonlists.css" />
-    <Content Remove="wwwroot\css\hyperlab\commonvalidation.css" />
-    <Content Remove="wwwroot\css\hyperlab\errorpage.css" />
-    <Content Remove="wwwroot\css\hyperlab\home\cookiebanner.css" />
-    <Content Remove="wwwroot\css\hyperlab\home\index.css" />
-    <Content Remove="wwwroot\css\hyperlab\hubandchart\hubandchart.css" />
-    <Content Remove="wwwroot\css\hyperlab\materials\minerals.css" />
-    <Content Remove="wwwroot\css\hyperlab\hubandchart\charms.css" />
-    <Content Remove="wwwroot\css\site.css" />
-    <Content Remove="wwwroot\css\speechbubble\speechbubble.css" />
-    <Content Remove="wwwroot\js\hyperlab\account\login.js" />
-    <Content Remove="wwwroot\js\hyperlab\account\passwordresetexecute.js" />
-    <Content Remove="wwwroot\js\hyperlab\account\passwordresetrequest.js" />
-    <Content Remove="wwwroot\js\hyperlab\account\registration.js" />
-    <Content Remove="wwwroot\js\hyperlab\apps\apps.js" />
-    <Content Remove="wwwroot\js\hyperlab\charmsmessages.js" />
-    <Content Remove="wwwroot\js\hyperlab\chart\charms\charms.js" />
-    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmsalignmentpanel.js" />
-    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmsbandanalysis.js" />
-    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmscolorselector.js" />
-    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmsfitpanel.js" />
-    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmsfitpanelcommon.js" />
-    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmsfitpanelcore.js" />
-    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmsfitpanelpro.js" />
-    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmslegend.js" />
-    <Content Remove="wwwroot\js\hyperlab\chart\charms\charmssmoothingpanel.js" />
-    <Content Remove="wwwroot\js\hyperlab\chart\charts.js" />
-    <Content Remove="wwwroot\js\hyperlab\chart\chartsarrays.js" />
-    <Content Remove="wwwroot\js\hyperlab\chart\chartsbuttons.js" />
-    <Content Remove="wwwroot\js\hyperlab\chart\chartsunauthorized.js" />
-    <Content Remove="wwwroot\js\hyperlab\chart\joystickManager.js" />
-    <Content Remove="wwwroot\js\hyperlab\common.js" />
-    <Content Remove="wwwroot\js\hyperlab\commonbuttons.js" />
-    <Content Remove="wwwroot\js\hyperlab\commondxchart.js" />
-    <Content Remove="wwwroot\js\hyperlab\commonhub.js" />
-    <Content Remove="wwwroot\js\hyperlab\commonhubandchart.js" />
-    <Content Remove="wwwroot\js\hyperlab\commonhubandchartsandsharedstuff.js" />
-    <Content Remove="wwwroot\js\hyperlab\commonlists.js" />
-    <Content Remove="wwwroot\js\hyperlab\home\index.js" />
-    <Content Remove="wwwroot\js\hyperlab\hub\blazorglobal.js" />
-    <Content Remove="wwwroot\js\hyperlab\hub\complexsearchesintro.js" />
-    <Content Remove="wwwroot\js\hyperlab\hub\complexsearchesmanagement.js" />
-    <Content Remove="wwwroot\js\hyperlab\hub\hub.js" />
-    <Content Remove="wwwroot\js\hyperlab\hub\hubSearchComplex.js" />
-    <Content Remove="wwwroot\js\hyperlab\hub\hubSearchSimple.js" />
-    <Content Remove="wwwroot\js\hyperlab\hub\info.js" />
-    <Content Remove="wwwroot\js\hyperlab\hub\load\loadcommon.js" />
-    <Content Remove="wwwroot\js\hyperlab\hub\load\loadcommoncheckxml.js" />
-    <Content Remove="wwwroot\js\hyperlab\hub\load\loadexternalauthenticated.js" />
-    <Content Remove="wwwroot\js\hyperlab\hub\load\loadexternalunauthenticated.js" />
-    <Content Remove="wwwroot\js\hyperlab\hub\load\loadgetfileslistitemancillary.js" />
-    <Content Remove="wwwroot\js\hyperlab\hub\load\loadslab.js" />
-    <Content Remove="wwwroot\js\hyperlab\hub\sampleandmeasurementinfo\sampleinfoeditor.js" />
-    <Content Remove="wwwroot\js\hyperlab\layout.js" />
-    <Content Remove="wwwroot\js\hyperlab\materials\upsertminerals.js" />
-    <Content Remove="wwwroot\js\hyperlab\queue.js" />
-    <Content Remove="wwwroot\js\hyperlab\sharedstuff\sharedstuff.js" />
-    <Content Remove="wwwroot\js\hyperlab\users\commonsaveusersettings.js" />
-    <Content Remove="wwwroot\js\hyperlab\users\upsertuser.js" />
-    <Content Remove="wwwroot\js\hyperlab\users\userslist.js" />
-  </ItemGroup>
+		<!-- added by Frankie -->
+		<!-- to prevent publishing of tiles folder -->
+		<ItemGroup>
+				<Content Remove="wwwroot/tiles\**" />
+		</ItemGroup>
+		<ItemGroup>
+				<None Include="wwwroot/tiles\**">
+						<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+				</None>
+		</ItemGroup>
 
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\css\hyperlab\account\confirmationcompleted.css" />
-  </ItemGroup>
+		<ItemGroup>
+				<Content Remove="appsettings.development.json" />
+				<Content Remove="wwwroot\css\hyperlab\account\confirmationcompleted.css" />
+				<Content Remove="wwwroot\css\hyperlab\account\errorpage.css" />
+				<Content Remove="wwwroot\css\hyperlab\account\login.css" />
+				<Content Remove="wwwroot\css\hyperlab\account\registrationconfirmed.css" />
+				<Content Remove="wwwroot\css\hyperlab\apps\apps.css" />
+				<Content Remove="wwwroot\css\hyperlab\common.css" />
+				<Content Remove="wwwroot\css\hyperlab\commonlayoutnonavigation.css" />
+				<Content Remove="wwwroot\css\hyperlab\commonlists.css" />
+				<Content Remove="wwwroot\css\hyperlab\commonvalidation.css" />
+				<Content Remove="wwwroot\css\hyperlab\errorpage.css" />
+				<Content Remove="wwwroot\css\hyperlab\home\cookiebanner.css" />
+				<Content Remove="wwwroot\css\hyperlab\home\index.css" />
+				<Content Remove="wwwroot\css\hyperlab\hubandchart\hubandchart.css" />
+				<Content Remove="wwwroot\css\hyperlab\materials\minerals.css" />
+				<Content Remove="wwwroot\css\hyperlab\hubandchart\charms.css" />
+				<Content Remove="wwwroot\css\site.css" />
+				<Content Remove="wwwroot\css\speechbubble\speechbubble.css" />
+				<Content Remove="wwwroot\js\hyperlab\account\login.js" />
+				<Content Remove="wwwroot\js\hyperlab\account\passwordresetexecute.js" />
+				<Content Remove="wwwroot\js\hyperlab\account\passwordresetrequest.js" />
+				<Content Remove="wwwroot\js\hyperlab\account\registration.js" />
+				<Content Remove="wwwroot\js\hyperlab\apps\apps.js" />
+				<Content Remove="wwwroot\js\hyperlab\charmsmessages.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\charms\charms.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\charms\charmsalignmentpanel.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\charms\charmsbandanalysis.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\charms\charmscolorselector.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\charms\charmsfitpanel.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\charms\charmsfitpanelcommon.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\charms\charmsfitpanelcore.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\charms\charmsfitpanelpro.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\charms\charmslegend.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\charms\charmssmoothingpanel.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\charts.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\chartsarrays.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\chartsbuttons.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\chartsunauthorized.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\joystickManager.js" />
+				<Content Remove="wwwroot\js\hyperlab\common.js" />
+				<Content Remove="wwwroot\js\hyperlab\commonbuttons.js" />
+				<Content Remove="wwwroot\js\hyperlab\commondxchart.js" />
+				<Content Remove="wwwroot\js\hyperlab\commonhub.js" />
+				<Content Remove="wwwroot\js\hyperlab\commonhubandchart.js" />
+				<Content Remove="wwwroot\js\hyperlab\commonhubandchartsandsharedstuff.js" />
+				<Content Remove="wwwroot\js\hyperlab\commonlists.js" />
+				<Content Remove="wwwroot\js\hyperlab\home\index.js" />
+				<Content Remove="wwwroot\js\hyperlab\hub\blazorglobal.js" />
+				<Content Remove="wwwroot\js\hyperlab\hub\complexsearchesintro.js" />
+				<Content Remove="wwwroot\js\hyperlab\hub\complexsearchesmanagement.js" />
+				<Content Remove="wwwroot\js\hyperlab\hub\hub.js" />
+				<Content Remove="wwwroot\js\hyperlab\hub\hubSearchComplex.js" />
+				<Content Remove="wwwroot\js\hyperlab\hub\hubSearchSimple.js" />
+				<Content Remove="wwwroot\js\hyperlab\hub\info.js" />
+				<Content Remove="wwwroot\js\hyperlab\hub\load\loadcommon.js" />
+				<Content Remove="wwwroot\js\hyperlab\hub\load\loadcommoncheckxml.js" />
+				<Content Remove="wwwroot\js\hyperlab\hub\load\loadexternalauthenticated.js" />
+				<Content Remove="wwwroot\js\hyperlab\hub\load\loadexternalunauthenticated.js" />
+				<Content Remove="wwwroot\js\hyperlab\hub\load\loadgetfileslistitemancillary.js" />
+				<Content Remove="wwwroot\js\hyperlab\hub\load\loadslab.js" />
+				<Content Remove="wwwroot\js\hyperlab\hub\sampleandmeasurementinfo\sampleinfoeditor.js" />
+				<Content Remove="wwwroot\js\hyperlab\layout.js" />
+				<Content Remove="wwwroot\js\hyperlab\materials\upsertminerals.js" />
+				<Content Remove="wwwroot\js\hyperlab\queue.js" />
+				<Content Remove="wwwroot\js\hyperlab\sharedstuff\sharedstuff.js" />
+				<Content Remove="wwwroot\js\hyperlab\users\commonsaveusersettings.js" />
+				<Content Remove="wwwroot\js\hyperlab\users\upsertuser.js" />
+				<Content Remove="wwwroot\js\hyperlab\users\userslist.js" />
+		</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Attributes\" />
-    <Folder Include="wwwroot\js\dist\" />
-  </ItemGroup>
+		<ItemGroup>
+				<_ContentIncludedByDefault Remove="wwwroot\css\hyperlab\account\confirmationcompleted.css" />
+		</ItemGroup>
 
-  <ItemGroup>
-    <None Include="appsettings.development.json" />
-    <None Include="Views\Home\Index.cshtml" />
-    <None Include="Views\Home\Privacy.cshtml" />
-    <None Include="Views\Shared\Error.cshtml" />
-    <None Include="Views\Shared\_Layout.cshtml" />
-    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
-    <None Include="Views\_ViewImports.cshtml" />
-    <None Include="Views\_ViewStart.cshtml" />
-    <None Include="wwwroot\css\hyperlab\account\confirmationcompleted.css" />
-    <None Include="wwwroot\css\hyperlab\account\errorpage.css" />
-    <None Include="wwwroot\css\hyperlab\account\login.css" />
-    <None Include="wwwroot\css\hyperlab\account\registrationconfirmed.css" />
-    <None Include="wwwroot\css\hyperlab\apps\apps.css" />
-    <None Include="wwwroot\css\hyperlab\common.css" />
-    <None Include="wwwroot\css\hyperlab\commonlayoutnonavigation.css" />
-    <None Include="wwwroot\css\hyperlab\commonlists.css" />
-    <None Include="wwwroot\css\hyperlab\commonvalidation.css" />
-    <None Include="wwwroot\css\hyperlab\errorpage.css" />
-    <None Include="wwwroot\css\hyperlab\home\cookiebanner.css" />
-    <None Include="wwwroot\css\hyperlab\home\index.css" />
-    <None Include="wwwroot\css\hyperlab\materials\minerals.css" />
-    <None Include="wwwroot\css\hyperlab\hubandchart\charms.css" />
-    <None Include="wwwroot\css\hyperlab\hubandchart\hubandchart.css" />
-    <None Include="wwwroot\css\site.css" />
-    <None Include="wwwroot\css\speechbubble\speechbubble.css" />
-    <None Include="wwwroot\images\guide\hub_load_local_files.jpeg" />
-    <None Include="wwwroot\js\hyperlab\account\login.js" />
-    <None Include="wwwroot\js\hyperlab\account\passwordresetexecute.js" />
-    <None Include="wwwroot\js\hyperlab\account\passwordresetrequest.js" />
-    <None Include="wwwroot\js\hyperlab\account\registration.js" />
-    <None Include="wwwroot\js\hyperlab\apps\apps.js" />
-    <None Include="wwwroot\js\hyperlab\charmsmessages.js" />
-    <None Include="wwwroot\js\hyperlab\chart\charms\charms.js" />
-    <None Include="wwwroot\js\hyperlab\chart\charms\charmsalignmentpanel.js" />
-    <None Include="wwwroot\js\hyperlab\chart\charms\charmsbandanalysis.js" />
-    <None Include="wwwroot\js\hyperlab\chart\charms\charmscolorselector.js" />
-    <None Include="wwwroot\js\hyperlab\chart\charms\charmsfitpanel.js" />
-    <None Include="wwwroot\js\hyperlab\chart\charms\charmsfitpanelcommon.js" />
-    <None Include="wwwroot\js\hyperlab\chart\charms\charmsfitpanelcore.js" />
-    <None Include="wwwroot\js\hyperlab\chart\charms\charmsfitpanelpro.js" />
-    <None Include="wwwroot\js\hyperlab\chart\charms\charmslegend.js" />
-    <None Include="wwwroot\js\hyperlab\chart\charms\charmssmoothingpanel.js" />
-    <None Include="wwwroot\js\hyperlab\chart\charts.js" />
-    <None Include="wwwroot\js\hyperlab\chart\chartsarrays.js" />
-    <None Include="wwwroot\js\hyperlab\chart\chartsbuttons.js" />
-    <None Include="wwwroot\js\hyperlab\chart\chartsunauthorized.js" />
-    <None Include="wwwroot\js\hyperlab\chart\joystickmanager.js" />
-    <None Include="wwwroot\js\hyperlab\common.js" />
-    <None Include="wwwroot\js\hyperlab\commonbuttons.js" />
-    <None Include="wwwroot\js\hyperlab\commondxchart.js" />
-    <None Include="wwwroot\js\hyperlab\commonlists.js" />
-    <None Include="wwwroot\js\hyperlab\commonhub.js" />
-    <None Include="wwwroot\js\hyperlab\commonhubandchart.js" />
-    <None Include="wwwroot\js\hyperlab\commonhubandchartsandsharedstuff.js" />
-    <None Include="wwwroot\js\hyperlab\home\index.js" />
-    <None Include="wwwroot\js\hyperlab\blazorglobal.js" />
-    <None Include="wwwroot\js\hyperlab\hub\complexsearchesintro.js" />
-    <None Include="wwwroot\js\hyperlab\hub\complexsearchesmanagement.js" />
-    <None Include="wwwroot\js\hyperlab\hub\hub.js" />
-    <None Include="wwwroot\js\hyperlab\hub\hubsearchcomplex.js" />
-    <None Include="wwwroot\js\hyperlab\hub\hubsearchsimple.js" />
-    <None Include="wwwroot\js\hyperlab\hub\info.js" />
-    <None Include="wwwroot\js\hyperlab\hub\load\loadcommon.js" />
-    <None Include="wwwroot\js\hyperlab\hub\load\loadcommoncheckxml.js" />
-    <None Include="wwwroot\js\hyperlab\hub\load\loadexternalauthenticated.js" />
-    <None Include="wwwroot\js\hyperlab\hub\load\loadexternalunauthenticated.js" />
-    <None Include="wwwroot\js\hyperlab\hub\load\loadgetfileslistitemancillary.js" />
-    <None Include="wwwroot\js\hyperlab\hub\load\loadslab.js" />
-    <None Include="wwwroot\js\hyperlab\hub\sampleandmeasurementinfo\sampleinfoeditor.js" />
-    <None Include="wwwroot\js\hyperlab\layout.js" />
-    <None Include="wwwroot\js\hyperlab\materials\upsertminerals.js" />
-    <None Include="wwwroot\js\hyperlab\queue\queue.js" />
-    <None Include="wwwroot\js\hyperlab\sharedstuff\sharedstuff.js" />
-    <None Include="wwwroot\js\hyperlab\queue\commonsaveusersettings.js" />
-    <None Include="wwwroot\js\hyperlab\users\upsertuser.js" />
-    <None Include="wwwroot\js\hyperlab\users\userslist.js" />
-  </ItemGroup>
+		<ItemGroup>
+				<Folder Include="Attributes\" />
+				<Folder Include="wwwroot\js\dist\" />
+		</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
-    <PackageReference Include="BuildWebCompiler" Version="1.12.405" />
-    <PackageReference Include="BundlerMinifier.Core" Version="3.2.449" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="10.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="8.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1" />
-  </ItemGroup>
+		<ItemGroup>
+				<None Include="appsettings.development.json" />
+				<None Include="Views\Home\Index.cshtml" />
+				<None Include="Views\Home\Privacy.cshtml" />
+				<None Include="Views\Shared\Error.cshtml" />
+				<None Include="Views\Shared\_Layout.cshtml" />
+				<None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+				<None Include="Views\_ViewImports.cshtml" />
+				<None Include="Views\_ViewStart.cshtml" />
+				<None Include="wwwroot\css\hyperlab\account\confirmationcompleted.css" />
+				<None Include="wwwroot\css\hyperlab\account\errorpage.css" />
+				<None Include="wwwroot\css\hyperlab\account\login.css" />
+				<None Include="wwwroot\css\hyperlab\account\registrationconfirmed.css" />
+				<None Include="wwwroot\css\hyperlab\apps\apps.css" />
+				<None Include="wwwroot\css\hyperlab\common.css" />
+				<None Include="wwwroot\css\hyperlab\commonlayoutnonavigation.css" />
+				<None Include="wwwroot\css\hyperlab\commonlists.css" />
+				<None Include="wwwroot\css\hyperlab\commonvalidation.css" />
+				<None Include="wwwroot\css\hyperlab\errorpage.css" />
+				<None Include="wwwroot\css\hyperlab\home\cookiebanner.css" />
+				<None Include="wwwroot\css\hyperlab\home\index.css" />
+				<None Include="wwwroot\css\hyperlab\materials\minerals.css" />
+				<None Include="wwwroot\css\hyperlab\hubandchart\charms.css" />
+				<None Include="wwwroot\css\hyperlab\hubandchart\hubandchart.css" />
+				<None Include="wwwroot\css\site.css" />
+				<None Include="wwwroot\css\speechbubble\speechbubble.css" />
+				<None Include="wwwroot\images\guide\hub_load_local_files.jpeg" />
+				<None Include="wwwroot\js\hyperlab\account\login.js" />
+				<None Include="wwwroot\js\hyperlab\account\passwordresetexecute.js" />
+				<None Include="wwwroot\js\hyperlab\account\passwordresetrequest.js" />
+				<None Include="wwwroot\js\hyperlab\account\registration.js" />
+				<None Include="wwwroot\js\hyperlab\apps\apps.js" />
+				<None Include="wwwroot\js\hyperlab\charmsmessages.js" />
+				<None Include="wwwroot\js\hyperlab\chart\charms\charms.js" />
+				<None Include="wwwroot\js\hyperlab\chart\charms\charmsalignmentpanel.js" />
+				<None Include="wwwroot\js\hyperlab\chart\charms\charmsbandanalysis.js" />
+				<None Include="wwwroot\js\hyperlab\chart\charms\charmscolorselector.js" />
+				<None Include="wwwroot\js\hyperlab\chart\charms\charmsfitpanel.js" />
+				<None Include="wwwroot\js\hyperlab\chart\charms\charmsfitpanelcommon.js" />
+				<None Include="wwwroot\js\hyperlab\chart\charms\charmsfitpanelcore.js" />
+				<None Include="wwwroot\js\hyperlab\chart\charms\charmsfitpanelpro.js" />
+				<None Include="wwwroot\js\hyperlab\chart\charms\charmslegend.js" />
+				<None Include="wwwroot\js\hyperlab\chart\charms\charmssmoothingpanel.js" />
+				<None Include="wwwroot\js\hyperlab\chart\charts.js" />
+				<None Include="wwwroot\js\hyperlab\chart\chartsarrays.js" />
+				<None Include="wwwroot\js\hyperlab\chart\chartsbuttons.js" />
+				<None Include="wwwroot\js\hyperlab\chart\chartsunauthorized.js" />
+				<None Include="wwwroot\js\hyperlab\chart\joystickmanager.js" />
+				<None Include="wwwroot\js\hyperlab\common.js" />
+				<None Include="wwwroot\js\hyperlab\commonbuttons.js" />
+				<None Include="wwwroot\js\hyperlab\commondxchart.js" />
+				<None Include="wwwroot\js\hyperlab\commonlists.js" />
+				<None Include="wwwroot\js\hyperlab\commonhub.js" />
+				<None Include="wwwroot\js\hyperlab\commonhubandchart.js" />
+				<None Include="wwwroot\js\hyperlab\commonhubandchartsandsharedstuff.js" />
+				<None Include="wwwroot\js\hyperlab\home\index.js" />
+				<None Include="wwwroot\js\hyperlab\blazorglobal.js" />
+				<None Include="wwwroot\js\hyperlab\hub\complexsearchesintro.js" />
+				<None Include="wwwroot\js\hyperlab\hub\complexsearchesmanagement.js" />
+				<None Include="wwwroot\js\hyperlab\hub\hub.js" />
+				<None Include="wwwroot\js\hyperlab\hub\hubsearchcomplex.js" />
+				<None Include="wwwroot\js\hyperlab\hub\hubsearchsimple.js" />
+				<None Include="wwwroot\js\hyperlab\hub\info.js" />
+				<None Include="wwwroot\js\hyperlab\hub\load\loadcommon.js" />
+				<None Include="wwwroot\js\hyperlab\hub\load\loadcommoncheckxml.js" />
+				<None Include="wwwroot\js\hyperlab\hub\load\loadexternalauthenticated.js" />
+				<None Include="wwwroot\js\hyperlab\hub\load\loadexternalunauthenticated.js" />
+				<None Include="wwwroot\js\hyperlab\hub\load\loadgetfileslistitemancillary.js" />
+				<None Include="wwwroot\js\hyperlab\hub\load\loadslab.js" />
+				<None Include="wwwroot\js\hyperlab\hub\sampleandmeasurementinfo\sampleinfoeditor.js" />
+				<None Include="wwwroot\js\hyperlab\layout.js" />
+				<None Include="wwwroot\js\hyperlab\materials\upsertminerals.js" />
+				<None Include="wwwroot\js\hyperlab\queue\queue.js" />
+				<None Include="wwwroot\js\hyperlab\sharedstuff\sharedstuff.js" />
+				<None Include="wwwroot\js\hyperlab\queue\commonsaveusersettings.js" />
+				<None Include="wwwroot\js\hyperlab\users\upsertuser.js" />
+				<None Include="wwwroot\js\hyperlab\users\userslist.js" />
+		</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.Extensions\INAF.Libraries.Net.Extensions\INAF.Libraries.Net.Extensions.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLab.Data\INAF.Libraries.Net.DB.HyperLab.Data\INAF.Libraries.Net.DB.HyperLab.Data.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLab.Users\INAF.Libraries.Net.DB.HyperLab.Users\INAF.Libraries.Net.DB.HyperLab.Users.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\Net\HyperLab\INAF.Libraries.Net.HyperLab.CommonHelpers\INAF.Libraries.Net.HyperLab.CommonHelpers\INAF.Libraries.Net.HyperLab.CommonHelpers.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\Net\HyperLab\INAF.Libraries.Net.HyperLab.CommonModels\INAF.Libraries.Net.HyperLab.CommonModels\INAF.Libraries.Net.HyperLab.CommonModels.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.CommonWebAppHelpers\INAF.Libraries.Net.CommonWebAppHelpers\INAF.Libraries.Net.CommonWebAppHelpers.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.CommonWebAppModels\INAF.Libraries.Net.CommonWebAppModels\INAF.Libraries.Net.CommonWebAppModels.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.Log\INAF.Libraries.Net.Log\INAF.Libraries.Net.Log.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.Math\INAF.Libraries.Net.Math\INAF.Libraries.Net.Math.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.ScienceModels\INAF.Libraries.Net.ScienceModels\INAF.Libraries.Net.ScienceModels.csproj" />
-  </ItemGroup>
+		<ItemGroup>
+				<PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+				<PackageReference Include="BuildWebCompiler" Version="1.12.405" />
+				<PackageReference Include="BundlerMinifier.Core" Version="3.2.449" />
+				<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
+				<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
+				<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="10.0.0" />
+				<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
+				<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.0" />
+				<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+				<PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="8.0.0" />
+				<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
+				<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+				<PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1" />
+		</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Resources\Apps.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Apps.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Charms.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Charms.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\CharmsBandAnalysis.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CharmsBandAnalysis.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\CharmsColorSelector.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CharmsColorSelector.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\CharmsLegend.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CharmsLegend.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\CharmsMessages.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CharmsMessages.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\CharmsShare.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CharmsShare.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Charts.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Charts.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Contacts.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Contacts.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Guide.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Guide.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Home.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Home.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Info.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Info.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Materials.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Materials.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Search.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Search.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\SharedResources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SharedResources.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\SharedStuff.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SharedStuff.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Users.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Users.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
+		<ItemGroup>
+				<ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.Extensions\INAF.Libraries.Net.Extensions\INAF.Libraries.Net.Extensions.csproj" />
+				<ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLab.Data\INAF.Libraries.Net.DB.HyperLab.Data\INAF.Libraries.Net.DB.HyperLab.Data.csproj" />
+				<ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLab.Users\INAF.Libraries.Net.DB.HyperLab.Users\INAF.Libraries.Net.DB.HyperLab.Users.csproj" />
+				<ProjectReference Include="..\..\..\Libraries\Net\HyperLab\INAF.Libraries.Net.HyperLab.CommonHelpers\INAF.Libraries.Net.HyperLab.CommonHelpers\INAF.Libraries.Net.HyperLab.CommonHelpers.csproj" />
+				<ProjectReference Include="..\..\..\Libraries\Net\HyperLab\INAF.Libraries.Net.HyperLab.CommonModels\INAF.Libraries.Net.HyperLab.CommonModels\INAF.Libraries.Net.HyperLab.CommonModels.csproj" />
+				<ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.CommonWebAppHelpers\INAF.Libraries.Net.CommonWebAppHelpers\INAF.Libraries.Net.CommonWebAppHelpers.csproj" />
+				<ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.CommonWebAppModels\INAF.Libraries.Net.CommonWebAppModels\INAF.Libraries.Net.CommonWebAppModels.csproj" />
+				<ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.Log\INAF.Libraries.Net.Log\INAF.Libraries.Net.Log.csproj" />
+				<ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.Math\INAF.Libraries.Net.Math\INAF.Libraries.Net.Math.csproj" />
+				<ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.ScienceModels\INAF.Libraries.Net.ScienceModels\INAF.Libraries.Net.ScienceModels.csproj" />
+		</ItemGroup>
 
-  <ItemGroup>
-    <Content Update="appsettings.staging.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\js\dist\account\loginbundle.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\js\dist\account\registrationbundle.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\js\dist\home\indexbundle.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\js\dist\jquerybundle.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\js\dist\materials\mineralsbundle.js">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\js\dist\queue\queuebundle.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\js\dist\sharedstuff\sharedstuffbundle.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\js\dist\users\upsertuserbundle.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\js\dist\users\userslistbundle.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\metro\css\metro.css">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\metro\css\metro.css.map">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\metro\css\metro.min.css">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
+		<ItemGroup>
+				<Compile Update="Resources\Apps.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>Apps.resx</DependentUpon>
+				</Compile>
+				<Compile Update="Resources\Charms.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>Charms.resx</DependentUpon>
+				</Compile>
+				<Compile Update="Resources\CharmsBandAnalysis.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>CharmsBandAnalysis.resx</DependentUpon>
+				</Compile>
+				<Compile Update="Resources\CharmsColorSelector.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>CharmsColorSelector.resx</DependentUpon>
+				</Compile>
+				<Compile Update="Resources\CharmsLegend.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>CharmsLegend.resx</DependentUpon>
+				</Compile>
+				<Compile Update="Resources\CharmsMessages.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>CharmsMessages.resx</DependentUpon>
+				</Compile>
+				<Compile Update="Resources\CharmsShare.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>CharmsShare.resx</DependentUpon>
+				</Compile>
+				<Compile Update="Resources\Charts.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>Charts.resx</DependentUpon>
+				</Compile>
+				<Compile Update="Resources\Contacts.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>Contacts.resx</DependentUpon>
+				</Compile>
+				<Compile Update="Resources\Guide.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>Guide.resx</DependentUpon>
+				</Compile>
+				<Compile Update="Resources\Home.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>Home.resx</DependentUpon>
+				</Compile>
+				<Compile Update="Resources\Info.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>Info.resx</DependentUpon>
+				</Compile>
+				<Compile Update="Resources\Materials.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>Materials.resx</DependentUpon>
+				</Compile>
+				<Compile Update="Resources\Search.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>Search.resx</DependentUpon>
+				</Compile>
+				<Compile Update="Resources\SharedResources.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>SharedResources.resx</DependentUpon>
+				</Compile>
+				<Compile Update="Resources\SharedStuff.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>SharedStuff.resx</DependentUpon>
+				</Compile>
+				<Compile Update="Resources\Users.Designer.cs">
+						<DesignTime>True</DesignTime>
+						<AutoGen>True</AutoGen>
+						<DependentUpon>Users.resx</DependentUpon>
+				</Compile>
+		</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\Apps.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Apps.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Charms.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Charms.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\CharmsBandAnalysis.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CharmsBandAnalysis.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\CharmsColorSelector.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CharmsColorSelector.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\CharmsLegend.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CharmsLegend.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\CharmsMessages.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CharmsMessages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\CharmsShare.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CharmsShare.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Charts.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Charts.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Contacts.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Contacts.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Guide.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Guide.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Home.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Home.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Info.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Info.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Materials.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Materials.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Search.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Search.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\SharedResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SharedResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\SharedStuff.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SharedStuff.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Users.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Users.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+		<ItemGroup>
+				<Content Update="appsettings.staging.json">
+						<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+				</Content>
+				<Content Update="wwwroot\js\dist\account\loginbundle.js">
+						<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+				</Content>
+				<Content Update="wwwroot\js\dist\account\registrationbundle.js">
+						<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+				</Content>
+				<Content Update="wwwroot\js\dist\home\indexbundle.js">
+						<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+				</Content>
+				<Content Update="wwwroot\js\dist\jquerybundle.js">
+						<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+				</Content>
+				<Content Update="wwwroot\js\dist\materials\mineralsbundle.js">
+						<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+				</Content>
+				<Content Update="wwwroot\js\dist\queue\queuebundle.js">
+						<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+				</Content>
+				<Content Update="wwwroot\js\dist\sharedstuff\sharedstuffbundle.js">
+						<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+				</Content>
+				<Content Update="wwwroot\js\dist\users\upsertuserbundle.js">
+						<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+				</Content>
+				<Content Update="wwwroot\js\dist\users\userslistbundle.js">
+						<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+				</Content>
+				<Content Update="wwwroot\lib\metro\css\metro.css">
+						<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+						<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				</Content>
+				<Content Update="wwwroot\lib\metro\css\metro.css.map">
+						<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+						<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				</Content>
+				<Content Update="wwwroot\lib\metro\css\metro.min.css">
+						<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+						<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				</Content>
+		</ItemGroup>
+
+		<ItemGroup>
+				<EmbeddedResource Update="Resources\Apps.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>Apps.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\Charms.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>Charms.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\CharmsBandAnalysis.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>CharmsBandAnalysis.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\CharmsColorSelector.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>CharmsColorSelector.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\CharmsLegend.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>CharmsLegend.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\CharmsMessages.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>CharmsMessages.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\CharmsShare.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>CharmsShare.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\Charts.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>Charts.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\Contacts.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>Contacts.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\Guide.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>Guide.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\Home.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>Home.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\Info.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>Info.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\Materials.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>Materials.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\Search.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>Search.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\SharedResources.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>SharedResources.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\SharedStuff.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>SharedStuff.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\Users.resx">
+						<Generator>PublicResXFileCodeGenerator</Generator>
+						<LastGenOutput>Users.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+		</ItemGroup>
 
 </Project>

@@ -647,6 +647,15 @@ function getTextIdFromSpectrumType(spectrumType) {
 
     let temp = desc.split(' ');
 
+    if (temp.includes('smoothed')) {
+        // Normalize spectrumType: remove any prefix before the 'Smoothed' token so
+        // downstream code always sees types that start with 'Smoothed' (e.g.
+        // 'AlignedSmoothedBySegments' -> 'SmoothedBySegments').
+        const smIndex = temp.indexOf('smoothed');
+        if (smIndex > -1)
+            temp = temp.slice(smIndex);
+    }
+
     temp[0] = firstLetterLowerCase(temp[0]);
 
     if (temp.length > 0) {
@@ -701,7 +710,7 @@ async function checkIsSpectrumOfTypeSavedOnCloudAsync(spectrumType, filename = n
 
     let model = {
         Filename: file.Name,
-        SpectrumType: file.SpectrumType,
+        SpectrumType: spectrumType,
         SpectrumSource: file.SpectrumSource,
         SpectrumLevel: file.SpectrumLevel
     };
