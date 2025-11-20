@@ -75,7 +75,7 @@ function loadSmoothingPanel() {
     /* load panel for smoothing */
     let callback = function () {
         callCheckIsSpectrumOfTypeSavedOnCloudForSmoothedAsync(null, SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_SEGMENTS);
-        callCheckIsSpectrumOfTypeSavedOnCloudForSmoothedAsync(null, SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_WHOLE_SPECTRUM);
+        callCheckIsSpectrumOfTypeSavedOnCloudForSmoothedAsync(null, SPECTRUM_TYPE_ALIGNED_SMOOTHED);
     }
     loadPartialViewWithAjaxGetNoModel(UrlLoadSmoothingPanel, 'smoothingoptions', callback);
 }

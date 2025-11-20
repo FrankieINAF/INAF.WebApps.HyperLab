@@ -119,10 +119,6 @@ function resetSegmentsDictionary() {
 /* -------------------------------------------------------------------------------- */
 /* ANCILLARY */
 /* -------------------------------------------------------------------------------- */
-function generateShortGUID() {
-    return Math.random().toString(36).substring(2, 9); // Genera una stringa pseudo-unica
-}
-
 function getDictionaryObject(segmentType) {
     if (segmentType == FIT_SEGMENT_CORE)
         return 'CoreSegments';

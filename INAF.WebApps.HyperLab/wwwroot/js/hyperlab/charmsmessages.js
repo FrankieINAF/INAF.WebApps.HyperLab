@@ -18,11 +18,12 @@ function addMessage(content, duration, type, displayMessage = true) {
     var message = buildMessageItem(content);
     messages.push(message);
 
-    if (displayMessage)
-        showToast(content, duration, type);
+    const item = buildMessageUIItem(message, type);
 
-    const html = buildMessageUIItem(message, type);
-    $('#messagesContainer').prepend(html);
+    if (displayMessage)
+        showCharmsMessagesNotifications(item, duration);
+
+    $('#messagesContainer').prepend(item.Html);
 
     if (messages.length == 1)
         addOpenMessagesCharmsButton();
@@ -36,17 +37,35 @@ function buildMessageItem(content) {
 }
 
 function buildMessageUIItem(message, type) {
+    const guid = generateShortGUID();
+
     let html = ``;
-    html += `<div class="remark ${type}" style="padding:0.5rem">`;
+    html += `<div id="${guid}" class="remark ${type}" style="padding:0.5rem">`;
     html += `   <div class="row cell-fs-12"><span class="text-small fg-black">${message.Time}</span><div>`;
     html += `   <div class="row cell-fs-12"><span class="text-secondary fg-black">${message.Content}</span></div>`;
     html += `</div>`;
 
-    return html;
+    return {
+        Html: html,
+        Guid: guid
+    }
 }
 
 function initMessages() {
     messages = [];
+}
+
+function showCharmsMessagesNotifications(item, duration) {
+
+    setTimeout(function () {
+        $(`#messagesNotifications #${item.Guid}`).remove();
+    }, duration);
+    /* add all messages to the charms */
+    $('#messagesNotifications').prepend(item.Html);
+
+
+    if (!Metro.charms.isOpen('#charmMessagesNotifications'))
+        Metro.getPlugin('#charmMessagesNotifications', 'charms').open();
 }
 
 function toggleCharmsMessages() {

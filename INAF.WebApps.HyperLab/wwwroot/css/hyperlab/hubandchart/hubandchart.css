@@ -145,9 +145,14 @@
     border: 2px solid darkred;
 }
 
-.charms-panel {
-    width: 500px !important;
-    background-color: rgba(0, 0, 0, 0.8) !important;
+.charms-color-selector-column {
+    height: 100% !important;
+    overflow-y: auto;
+}
+
+.charms-color-selector-panel {
+    height: 550px !important;
+    background-color: rgba(0, 0, 0, 0.9) !important;
     overflow-y: auto;
 }
 
@@ -157,14 +162,15 @@
     overflow-y: auto;
 }
 
-.charms-color-selector-column {
-    height: 100% !important;
-    overflow-y: auto;
+.charms-messages-panel {
+    height: 400px !important;
+    background-color: transparent !important;
+    overflow-y: hidden;
 }
 
-.charms-color-selector-panel {
-    height: 550px !important;
-    background-color: rgba(0, 0, 0, 0.9) !important;
+.charms-panel {
+    width: 500px !important;
+    background-color: rgba(0, 0, 0, 0.8) !important;
     overflow-y: auto;
 }
 
@@ -357,4 +363,11 @@
     display: block;
     width: 16px;
     height: 16px;
+}
+
+/* MESSAGES ON CHARMS */
+.messages-notifications-container {
+    width: 500px;
+    max-height: 500px;
+    background-color: rgba(0,0,0,0.8);
 }

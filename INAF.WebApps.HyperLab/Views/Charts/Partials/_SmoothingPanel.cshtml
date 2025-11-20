@@ -109,6 +109,12 @@
 
 		<!-- WHOLE SPECTRUM -->
 		<div id="wholespectrumoptions">
+			<!-- ICONS SAVED ON CLOUD -->
+			<div id="smoothedByWholeSpectrumSavedOnCloud" class="margin-left-4 margin-vertical-8" style="display: none">
+				<div><span id="smoothedByWholeSpectrumCloudIcon" class="mif-cloud-download mif-2x fg-cyan pointer" title="@Html.Raw(Charms.CharmsCloudDownloadLabel)" onclick="downloadSmoothedBySegmentsSpectrumProcedure()"></span></div>
+				<div><span id="smoothedByWholeSpectrumCloudText" class="margin-left-8 text-small margin-top-4">@Html.Raw(Charms.CharmsAlreadySavedOnCloudMessage)</span></div>
+			</div>
+
 			<div class="row cell-fs-12">
 				<span class="text-secondary">@Html.Raw(Charms.SmoothingTabByWholeSpectrumOptionsLabel)</span>
 			</div>

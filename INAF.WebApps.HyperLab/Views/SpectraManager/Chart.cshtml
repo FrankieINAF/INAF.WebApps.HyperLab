@@ -338,6 +338,17 @@
     await Html.RenderPartialAsync("Partials/_Messages");
 }
 
+<!-- MESSAGES LIST -->
+<div id="charmMessagesNotifications" data-role="charms" data-cls-charms="charms-messages-panel" data-position="bottom">
+    <div class="d-flex" style="height: 500px">
+        <div class="d-flex flex-self-end flex-column">
+            <div id="messagesNotificationsContainer" class="flex-self-center messages-notifications-container overflow-y-auto">
+                <ul id="messagesNotifications" class="items-list"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- REFERENCE TO BLAZOR BlazorHelper COMPONENT -->
 <base href="~/" />
 <component type="typeof(BlazorHelper)" render-mode="ServerPrerendered" />

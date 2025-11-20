@@ -44,6 +44,12 @@
 						<CopyToPublishDirectory>Never</CopyToPublishDirectory>
 				</None>
 		</ItemGroup>
+		<!-- to prevent publishing of satellite resource folders other than 'en' -->
+		<Target Name="RemoveSatelliteResourceFolders" AfterTargets="Publish">
+				<ItemGroup>
+						<SatelliteResourceFiles Remove="@(SatelliteResourceFiles)" Condition="'%(Culture)' != 'en'" />
+				</ItemGroup>
+		</Target>
 
 		<ItemGroup>
 				<Content Remove="appsettings.development.json" />

@@ -477,6 +477,10 @@ function firstLetterUpperCase(text) {
     return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
+function generateShortGUID() {
+    return Math.random().toString(36).substring(2, 9); // Genera una stringa pseudo-unica
+}
+
 function hexToDecimal(hex) {
     return parseInt(hex.replace('#', ''), 16);
 }
