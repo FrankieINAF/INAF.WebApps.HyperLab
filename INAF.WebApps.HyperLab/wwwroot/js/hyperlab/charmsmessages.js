@@ -58,7 +58,17 @@ function initMessages() {
 function showCharmsMessagesNotifications(item, duration) {
 
     setTimeout(function () {
+        //console.log(`Removing message ${item.Guid} after ${duration} ms`);
         $(`#messagesNotifications #${item.Guid}`).remove();
+        //animateCSS(`${item.Guid}`, 'fadeOut', function () { $(`#messagesNotifications #${item.Guid}`).remove(); });
+        /* if no messages are still present, then animate messages button */
+        if ($('#messagesNotifications').children().length == 0) {
+            /* close charms */
+            Metro.getPlugin('#charmMessagesNotifications', 'charms').close();
+            /* animate button */
+            $('#buttonOpenMessagesCharms').addClass('ani-shuttle');
+            setTimeout(function () { $('#buttonOpenMessagesCharms').removeClass('ani-shuttle'); }, 5000);
+        }
     }, duration);
     /* add all messages to the charms */
     $('#messagesNotifications').prepend(item.Html);

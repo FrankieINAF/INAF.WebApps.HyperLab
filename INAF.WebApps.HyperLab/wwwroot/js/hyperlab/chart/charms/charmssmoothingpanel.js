@@ -18,13 +18,26 @@ var smoothingWholeSpectrumOptions;
 var INCREASE = 'increase';
 var DECREASE = 'decrease';
 
+var smoothingsDictionary = {};
+
+function getSrcSpectrumTypeVal() {
+    return Metro.getPlugin('#srcSpectrumTypeList', 'select').val();
+}
+
+function setSrcSpectrumTypeVal(value) {
+    Metro.getPlugin('#srcSpectrumTypeList', 'select').val(value);
+}
+
 async function onSrcSpectrumTypeSelected(selected) {
-    console.log(`onSrcSpectrumTypeSelected - selected: ${selected}`);
+    //console.log(`onSrcSpectrumTypeSelected - selected: ${selected}`);
 
     const smoothingType = getSmoothingType();
-    let destSpectrumType = await getDestSpectrumTypeAsync(smoothingType, getSrcSpectrumType());
+    const destSpectrumType = await getDestSpectrumTypeAsync(smoothingType, getSrcSpectrumType());
 
-    let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, destSpectrumType);
+    /* update cloud icons on panel */
+    setCloudIconOnPanel(smoothingsDictionary[destSpectrumType], destSpectrumType);
+
+    const srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, destSpectrumType);
     setButtonsEnabled(srcSpectrum != null, smoothingType);
 }
 
@@ -73,9 +86,24 @@ async function getDestSpectrumTypeAsync(smoothingType, spectrumType) {
 
 function loadSmoothingPanel() {
     /* load panel for smoothing */
-    let callback = function () {
-        callCheckIsSpectrumOfTypeSavedOnCloudForSmoothedAsync(null, SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_SEGMENTS);
-        callCheckIsSpectrumOfTypeSavedOnCloudForSmoothedAsync(null, SPECTRUM_TYPE_ALIGNED_SMOOTHED);
+    let callback = async function () {
+        /* check which smoothed spectra are already saved on cloud */
+        const callAlignedSmoothedBySegments = callCheckIsSpectrumOfTypeSavedOnCloudForSmoothedAsync(null, SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_SEGMENTS, false);
+        const callAlignedSmoothed = callCheckIsSpectrumOfTypeSavedOnCloudForSmoothedAsync(null, SPECTRUM_TYPE_ALIGNED_SMOOTHED, false);
+        const callContinuumRemovedSmoothedBySegments = callCheckIsSpectrumOfTypeSavedOnCloudForSmoothedAsync(null, SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED_BY_SEGMENTS, false);
+        const callContinuumRemovedSmoothed = callCheckIsSpectrumOfTypeSavedOnCloudForSmoothedAsync(null, SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED, false);
+        
+        /* wait for all calls to complete */
+        const [resAlignedSmoothedBySegments, resAlignedSmoothed, resContinuumRemovedSmoothedBySegments, resContinuumRemovedSmoothed] = await Promise.all([callAlignedSmoothedBySegments, callAlignedSmoothed, callContinuumRemovedSmoothedBySegments, callContinuumRemovedSmoothed]);
+
+        /* store results in dictionary */
+        smoothingsDictionary[SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_SEGMENTS] = resAlignedSmoothedBySegments;
+        smoothingsDictionary[SPECTRUM_TYPE_ALIGNED_SMOOTHED] = resAlignedSmoothed;
+        smoothingsDictionary[SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED_BY_SEGMENTS] = resContinuumRemovedSmoothedBySegments; 
+        smoothingsDictionary[SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED] = resContinuumRemovedSmoothed;
+
+        const currentSrcSpectrumTypeVal = getSrcSpectrumTypeVal();
+        setCloudIconOnPanel(smoothingsDictionary[currentSrcSpectrumTypeVal], currentSrcSpectrumTypeVal);
     }
     loadPartialViewWithAjaxGetNoModel(UrlLoadSmoothingPanel, 'smoothingoptions', callback);
 }
@@ -157,8 +185,12 @@ function getAvailableSrcSpectrumTypesNum() {
 function selectTargetSpectrumType() {
     let availableNum = getAvailableSrcSpectrumTypesNum();
 
+    /* get the current src spectrum type andd set as selected in select element even if it is hidden because
+       its value is used by the smoothingsDictionary */
+    let srcSpectrumType = getSrcSpectrumType();
+    setSrcSpectrumTypeVal(srcSpectrumType);
+
     if (availableNum == 1) {
-        let srcSpectrumType = getSrcSpectrumType();
         /* write the src spectrumType */
         showByClass('smoothingSrcSpectrumType');
         $('#smoothingSrcSpectrumType').text(getSpectrumTypeDescription(srcSpectrumType));

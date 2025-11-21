@@ -690,7 +690,7 @@ function setCloudTextAndIconStatus(spectrumType, isSpectrumFromCloud) {
 /* ################################################################################ */
 /* CHECK IS SAVED ON CLOUD */
 /* ################################################################################ */
-async function checkIsSpectrumOfTypeSavedOnCloudAsync(spectrumType, filename = null) {
+async function checkIsSpectrumOfTypeSavedOnCloudAsync(spectrumType, filename = null, isUIUpdateRequired = true) {
     if (!isUserAuthenticated)
         return false;
 
@@ -720,9 +720,10 @@ async function checkIsSpectrumOfTypeSavedOnCloudAsync(spectrumType, filename = n
         /* save status of spectrum in 'spectraInfo' */
         saveSavedOnCloudStatus(obj.IsOk, spectrumType);
 
-        /* show/hide icon on panel  */
-        setCloudIconOnPanel(obj.IsOk, spectrumType);
-
+        if (isUIUpdateRequired) 
+            /* show/hide icon on panel  */
+            setCloudIconOnPanel(obj.IsOk, spectrumType);
+        
         return obj.IsOk;
     }
     else
