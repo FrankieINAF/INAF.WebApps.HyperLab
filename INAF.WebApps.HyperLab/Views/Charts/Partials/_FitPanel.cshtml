@@ -2,121 +2,192 @@
 
 @using INAF.WebApps.HyperLab.Resources
 
-<!-- CONTAINER FOR FIT SETTINGS -->
-<div id="fitPanel" class="d-none">
-	<!-- NUM OF POINTS FOR MISSING POINTS -->
-	<div id="fitNumOfPointsValueContainer">
-		<label for="inputNumOfPointsForFit">@Html.Raw(Charms.FitNumOfPointsForMissingPointsLabel)</label>
-		<input id="inputNumOfPointsForFit"
-			   type="text"
-			   data-role="spinner"
-			   data-buttons-position="right"
-			   data-cls-spinner="spinner margin-top-4"
-			   data-step="1"
-			   data-min-value="3"
-			   data-max-value="100"
-			   data-plus-icon="<span class='mif-chevron-thin-up'></span>"
-			   data-minus-icon="<span class='mif-chevron-thin-down'></span>"
-			   data-cls-spinner-button-plus="bg-cyan"
-			   data-cls-spinner-button-minus="bg-cyan"
-			   data-on-plus-click="onFitNumOfPointsForMissingPointsChange"
-			   data-on-minus-click="onFitNumOfPointsForMissingPointsChange"
-			   data-cls-spinner-button="fg-white">
-	</div>
-
-	<!-- SEGMENTS (CORE) -->
-	<div id="fitSegmentsListContainerCore" class="flex-column margin-top-24 d-none">
-		<ul data-role="tabs"
-			data-app-bar="false"
-			data-expand="true"
-			data-expand-point="fs"
-			data-cls-tabs="tabs-list flex-justify-center">
-			<li class="active"><a href="#fitSegmentsListCoreContainer">@Html.Raw(Charms.FitManageSegmentsListLabel)</a></li>
-			<li><a href="#fitPointsListCoreContainer">@Html.Raw(Charms.FitManagePointsListLabel)</a></li>
-		</ul>
-		<!-- LIST OF SEGMENTS -->
-		<div id="fitSegmentsListCoreContainer" class="margin-top-24">
-			<label for="fitSegmentsListCore">@Html.Raw(Charms.FitSegmentsListLabel)</label>
-			<div id="fitSegmentsListCore" class="overflow-y-auto overflow-x-hidden" style="height: 45vh"></div>
-		</div>
-		<!-- LIST OF POINTS -->
-		<div id="fitPointsListCoreContainer" class="margin-top-24">
-			<label for="fitPointsListCore">@Html.Raw(Charms.FitPointsListLabel)</label>
-			<div id="fitPointsListCore" class="overflow-y-auto overflow-x-hidden" style="height: 45vh"></div>
-		</div>
-	</div>
-
-	<!-- SEGMENTS (PRO) -->
-	<div id="fitSegmentsListContainerPro" class="flex-column margin-top-24 d-none">
-		<!-- LIST OF SEGMENTS -->
-		<label for="fitSegmentsListPro">@Html.Raw(Charms.FitSegmentsListLabel)</label>
-		<div id="fitSegmentsListPro" class="overflow-y-auto overflow-x-hidden" style="height: 45vh"></div>
-	</div>
-
-	<!-- NO SEGMENTS MESSAGE -->
-	<div id="noSegmentsMessageContainer" class="margin-top-24">
-		<p class="text-just fg-white">@Html.Raw(Charms.FitNoSegmentsAvailableMessage)</p>
-	</div>
-
-	<!-- BUTTONS -->
-	<div class="row cell-fs-12">
-		<!-- BUTTON CREATE CONTINUUM -->
-		<button id="fitButtonExecute" class="button primary cycle pointer disabled large" title="@Html.Raw(Charms.FitButtonDisabledMessage)" onclick="startRemoveContinuumProcedureAsync()"><span class="mif-checkmark"></span></button>
-		@if (Model.IsUserAuthenticated)
-		{
-			<!-- BUTTON SAVE -->
-			<button id="fitButtonSave" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.FitButtonSaveLabel)" onclick="saveContinuumRemovedSpectrumProcedureAsync()"><span class="mif-floppy-disk"></span></button>
-		}
-		<!-- BUTTON REMOVE -->
-		<button id="fitButtonRemove" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.FitButtonRemoveLabel)" onclick="removeContinuumRemovedSpectrumProcedure()"><span class="mif-bin"></span></button>
-		<!-- BUTTON DOWNLOAD -->
-		<div id="fitButtonDownload" class="multi-action d-none margin-left-16">
-			<button class="action-button rotate-minus primary fg-white"
-					onclick="$(this).toggleClass('active')">
-				<span class="icon"><span class="mif-file-download"></span></span>
-			</button>
-			<ul class="actions drop-bottom">
-				<li class="bg-cyan" title="@Html.Raw(Charms.FitButtonDownloadAsCsvLabel)" onclick="downloadContinuumRemovedSpectrumAsCsvAsync()">
-					<p class="text-small fg-white text-center text-bold">@Html.Raw(Charms.DownloadAsCSVLabel)</p>
-				</li>
-				<li class="bg-cyan" title="@Html.Raw(Charms.FitButtonDownloadAsXmlLabel)" onclick="downloadContinuumRemovedSpectrumAsXmlAsync()">
-					<p class="text-small fg-white text-center text-bold">@Html.Raw(Charms.DownloadAsXMLLabel)</p>
-				</li>
-			</ul>
-		</div>
-	</div>
+<div class="d-flex flex-row margin-vertical-4">
+    <button id="fitSettings" class="button cycle bg-transparent bg-cyan-hover pointer" onclick="toggleDropDown('fitSettingsDropdown')"><span class="mif-cogs mif-2x fg-white"></span></button>
+    <span class="text-secondary margin-left-8 margin-top-4">@Html.Raw(Charms.FitSettingsLabel)</span>
 </div>
+<div class="pos-relative">
+    <div id="fitSettingsDropdown"
+         class="fg-white"
+         data-role="dropdown"
+         data-no-close="true"
+         data-toggle-element="#fitSettings">
+        <!-- CORE/PRO MODE -->
+        <div class="row cell-fs-12 margin-vertical-4 d-flex flex-row">
+            <div>
+                <input id="fitCheckboxCoreProMode"
+                       type="checkbox"
+                       data-role="switch"
+                       data-caption="@Html.Raw(Charms.FitSetCoreOrProModeLabel)"
+                       data-off="@Html.Raw(Charms.FitCoreModeLabel)"
+                       data-on="@Html.Raw(Charms.FitProModeLabel)"
+                       data-cls-switch="charmsSwitch"
+                       data-cls-caption="fg-white"
+                       data-cls-check="bd-cyan charmsSwitch">
+            </div>
+            <div class="margin-left-16 margin-top-6"><p id="currentFitMode" class="text-bold"></p></div>
+        </div>
+        <!-- SHOW/HIDE VERTICAL LINES FOR FIT POINTS -->
+        <div class="row cell-fs-12 margin-vertical-4">
+            <input id="fitChechboxShowLines"
+                   type="checkbox"
+                   data-role="switch"
+                   data-caption="@Html.Raw(Charms.FitShowHideVerticalLinesForFitPointsLabel)"
+                   data-cls-switch="charmsSwitch"
+                   data-cls-caption="fg-white"
+                   data-cls-check="bd-cyan charmsSwitch">
+        </div>
+        <!-- SHOW/HIDE VERTICAL LINES FOR FIT POINTS -->
+        <div class="row cell-fs-12 margin-vertical-4">
+            <input id="charmsAutoRecalculateContinuumRemovedOnChangingFitPoints"
+                   type="checkbox"
+                   data-role="switch"
+                   data-caption="@Html.Raw(Charms.FitAutoRecalculateContinuumRemovedLabel)"
+                   data-cls-switch="charmsSwitch"
+                   data-cls-caption="fg-white"
+                   data-cls-check="bd-cyan charmsSwitch">
+        </div>
+        <!-- SHOW/HIDE BREAKS ON VALUE AXIS -->
+        <div class="row cell-fs-12 margin-vertical-4">
+            <input id="charmsShowHideBreaksOnValueAxis"
+                   type="checkbox"
+                   data-role="switch"
+                   data-caption="@Html.Raw(Charms.FitShowHideBreaksOnValueAxisLabel)"
+                   data-cls-switch="charmsSwitch"
+                   data-cls-caption="fg-white"
+                   data-cls-check="bd-cyan charmsSwitch">
+        </div>
+    </div>
+</div>
+<!-- ICONS SAVED ON CLOUD -->
+<div id="continuumRemovedSavedOnCloud" class="margin-left-4 margin-vertical-8" style="display: none">
+    <div><span id="continuumRemovedCloudIcon" class="mif-cloud-download mif-2x fg-cyan pointer" title="@Html.Raw(Charms.CharmsCloudDownloadLabel)" onclick="downloadContinuumRemovedSpectrumProcedure()"></span></div>
+    <div><span id="continuumRemovedCloudText" class="margin-left-8 text-small margin-top-4">@Html.Raw(Charms.CharmsAlreadySavedOnCloudMessage)</span></div>
+</div>
+<!-- MESSAGE FOR EMPTY PANEL -->
+<div id="charmsTabFitStartingMessageContainer" class="h-vh-75 d-flex flex-content-center" style="flex-wrap: wrap">
+    <span class="mif-info mif-2x"></span>
+    <p class="text-just fg-white margin-top-16">@Html.Raw(Charms.FitStartingMessage1)</p>
+    <p class="text-just fg-white margin-top-8">@Html.Raw(Charms.FitStartingMessage2)</p>
+    <p class="text-just fg-white margin-top-24">@Html.Raw(Charms.FitStartingMessageCloud)</p>
+</div>
+<div id="fitOptionsPanel">
+	<!-- CONTAINER FOR FIT SETTINGS -->
+	<div id="fitPanel" class="d-none">
+		<!-- NUM OF POINTS FOR MISSING POINTS -->
+		<div id="fitNumOfPointsValueContainer">
+			<label for="inputNumOfPointsForFit">@Html.Raw(Charms.FitNumOfPointsForMissingPointsLabel)</label>
+			<input id="inputNumOfPointsForFit"
+				   type="text"
+				   data-role="spinner"
+				   data-buttons-position="right"
+				   data-cls-spinner="spinner margin-top-4"
+				   data-step="1"
+				   data-min-value="3"
+				   data-max-value="100"
+				   data-plus-icon="<span class='mif-chevron-thin-up'></span>"
+				   data-minus-icon="<span class='mif-chevron-thin-down'></span>"
+				   data-cls-spinner-button-plus="bg-cyan"
+				   data-cls-spinner-button-minus="bg-cyan"
+				   data-on-plus-click="onFitNumOfPointsForMissingPointsChange"
+				   data-on-minus-click="onFitNumOfPointsForMissingPointsChange"
+				   data-cls-spinner-button="fg-white">
+		</div>
 
-<div id="continuumRemovedDialogRemove" class="dialog" data-role="dialog">
-	<div class="dialog-title">@Html.Raw(Charms.ContinuumRemovalManagementTitle)</div>
-	<div class="dialog-content">
-		<div class="d-flex flex-row">
-			<span class="mif-bin mif-5x"></span>
-			<div class="d-flex flex-column margin-left-24">
-				<!-- MAIN MESSAGE -->
-				<div><span>@Html.Raw(Charms.ContinuumRemovalRemoveQuestion)</span></div>
-				<!-- MESSAGE REMOVAL OF CHILDREN SPECTRA -->
-				<div id="continuumRemovedChildrenRemovalWarning" class="margin-top-16 d-none flex-row">
-					<span class="mif-warning mif-2x fg-lightOrange margin-top-8"></span>
-					<div class="margin-horizontal-8"><span class="text-medium text-secondary text-just">@Html.Raw(Charms.SpectrumChildrenRemovalWarningMessage)</span></div>
-				</div>
-				<!-- CHECKBOX CLOUD -->
-				<div class="d-flex flex-column margin-top-16">
-					<input id="checkboxRemoveContinuumRemovedSpectrumOnCloud"
-						   type="checkbox"
-						   data-role="checkbox"
-						   data-caption="@Html.Raw(Charms.CharmsRemoveOnCloudQuestion)"
-						   data-style="2"
-						   data-cls-caption="fg-black"
-						   data-cls-check="bd-cyan charmsSwitch"
-						   data-cls-checkbox="d-none" />
-				</div>
+		<!-- SEGMENTS (CORE) -->
+		<div id="fitSegmentsListContainerCore" class="flex-column margin-top-24 d-none">
+			<ul data-role="tabs"
+				data-app-bar="false"
+				data-expand="true"
+				data-expand-point="fs"
+				data-cls-tabs="tabs-list flex-justify-center">
+				<li class="active"><a href="#fitSegmentsListCoreContainer">@Html.Raw(Charms.FitManageSegmentsListLabel)</a></li>
+				<li><a href="#fitPointsListCoreContainer">@Html.Raw(Charms.FitManagePointsListLabel)</a></li>
+			</ul>
+			<!-- LIST OF SEGMENTS -->
+			<div id="fitSegmentsListCoreContainer" class="margin-top-24">
+				<label for="fitSegmentsListCore">@Html.Raw(Charms.FitSegmentsListLabel)</label>
+				<div id="fitSegmentsListCore" class="overflow-y-auto overflow-x-hidden" style="height: 45vh"></div>
+			</div>
+			<!-- LIST OF POINTS -->
+			<div id="fitPointsListCoreContainer" class="margin-top-24">
+				<label for="fitPointsListCore">@Html.Raw(Charms.FitPointsListLabel)</label>
+				<div id="fitPointsListCore" class="overflow-y-auto overflow-x-hidden" style="height: 45vh"></div>
+			</div>
+		</div>
+
+		<!-- SEGMENTS (PRO) -->
+		<div id="fitSegmentsListContainerPro" class="flex-column margin-top-24 d-none">
+			<!-- LIST OF SEGMENTS -->
+			<label for="fitSegmentsListPro">@Html.Raw(Charms.FitSegmentsListLabel)</label>
+			<div id="fitSegmentsListPro" class="overflow-y-auto overflow-x-hidden" style="height: 45vh"></div>
+		</div>
+
+		<!-- NO SEGMENTS MESSAGE -->
+		<div id="noSegmentsMessageContainer" class="margin-top-24">
+			<p class="text-just fg-white">@Html.Raw(Charms.FitNoSegmentsAvailableMessage)</p>
+		</div>
+
+		<!-- BUTTONS -->
+		<div class="row cell-fs-12">
+			<!-- BUTTON CREATE CONTINUUM -->
+			<button id="fitButtonExecute" class="button primary cycle pointer disabled large" title="@Html.Raw(Charms.FitButtonDisabledMessage)" onclick="startRemoveContinuumProcedureAsync()"><span class="mif-checkmark"></span></button>
+			@if (Model.IsUserAuthenticated)
+			{
+				<!-- BUTTON SAVE -->
+				<button id="fitButtonSave" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.FitButtonSaveLabel)" onclick="saveContinuumRemovedSpectrumProcedureAsync()"><span class="mif-floppy-disk"></span></button>
+			}
+			<!-- BUTTON REMOVE -->
+			<button id="fitButtonRemove" class="button primary cycle pointer disabled large margin-left-16" title="@Html.Raw(Charms.FitButtonRemoveLabel)" onclick="removeContinuumRemovedSpectrumProcedure()"><span class="mif-bin"></span></button>
+			<!-- BUTTON DOWNLOAD -->
+			<div id="fitButtonDownload" class="multi-action d-none margin-left-16">
+				<button class="action-button rotate-minus primary fg-white"
+						onclick="$(this).toggleClass('active')">
+					<span class="icon"><span class="mif-file-download"></span></span>
+				</button>
+				<ul class="actions drop-bottom">
+					<li class="bg-cyan" title="@Html.Raw(Charms.FitButtonDownloadAsCsvLabel)" onclick="downloadContinuumRemovedSpectrumAsCsvAsync()">
+						<p class="text-small fg-white text-center text-bold">@Html.Raw(Charms.DownloadAsCSVLabel)</p>
+					</li>
+					<li class="bg-cyan" title="@Html.Raw(Charms.FitButtonDownloadAsXmlLabel)" onclick="downloadContinuumRemovedSpectrumAsXmlAsync()">
+						<p class="text-small fg-white text-center text-bold">@Html.Raw(Charms.DownloadAsXMLLabel)</p>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>
-	<div class="dialog-actions">
-		<button class="button primary" onclick="removeSpectraProcedureAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED, 'continuumRemovedDialogRemove', 'checkboxRemoveContinuumRemovedSpectrumOnCloud')">@Html.Raw(SharedResources.YesLabel)</button>
-		<button class="button js-dialog-close">@Html.Raw(SharedResources.NoLabel)</button>
+
+	<div id="continuumRemovedDialogRemove" class="dialog" data-role="dialog">
+		<div class="dialog-title">@Html.Raw(Charms.ContinuumRemovalManagementTitle)</div>
+		<div class="dialog-content">
+			<div class="d-flex flex-row">
+				<span class="mif-bin mif-5x"></span>
+				<div class="d-flex flex-column margin-left-24">
+					<!-- MAIN MESSAGE -->
+					<div><span>@Html.Raw(Charms.ContinuumRemovalRemoveQuestion)</span></div>
+					<!-- MESSAGE REMOVAL OF CHILDREN SPECTRA -->
+					<div id="continuumRemovedChildrenRemovalWarning" class="margin-top-16 d-none flex-row">
+						<span class="mif-warning mif-2x fg-lightOrange margin-top-8"></span>
+						<div class="margin-horizontal-8"><span class="text-medium text-secondary text-just">@Html.Raw(Charms.SpectrumChildrenRemovalWarningMessage)</span></div>
+					</div>
+					<!-- CHECKBOX CLOUD -->
+					<div class="d-flex flex-column margin-top-16">
+						<input id="checkboxRemoveContinuumRemovedSpectrumOnCloud"
+							   type="checkbox"
+							   data-role="checkbox"
+							   data-caption="@Html.Raw(Charms.CharmsRemoveOnCloudQuestion)"
+							   data-style="2"
+							   data-cls-caption="fg-black"
+							   data-cls-check="bd-cyan charmsSwitch"
+							   data-cls-checkbox="d-none" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="dialog-actions">
+			<button class="button primary" onclick="removeSpectraProcedureAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED, 'continuumRemovedDialogRemove', 'checkboxRemoveContinuumRemovedSpectrumOnCloud')">@Html.Raw(SharedResources.YesLabel)</button>
+			<button class="button js-dialog-close">@Html.Raw(SharedResources.NoLabel)</button>
+		</div>
 	</div>
 </div>
 

@@ -44,7 +44,7 @@ async function callCheckIsSpectrumOfTypeSavedOnCloudForContinuumRemovedAsync(fil
     return await checkIsSpectrumOfTypeSavedOnCloudAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED, filename);
 }
 
-async function preparePanelForFitPhase1Async(extCallback = null) {
+async function loadFitPanelAsync(extCallback = null) {
     if (!isFitTabSelected) {
         setTabSelectedProcedure('charmsTabs', OPTIONS_TITLE_FIT);
 
@@ -59,10 +59,12 @@ async function preparePanelForFitPhase1Async(extCallback = null) {
             loadNumOfPointsForMissingPointsAsync();
 
             /* execute external callback */
-            if (extCallback)
+            if (extCallback) {
+                hideFitStartingMessageContainer();
                 extCallback();
+            }
         }
-        loadPartialViewWithAjaxGetNoModel(UrlLoadFitPanel, 'fitOptionsPanel', callback);
+        loadPartialViewWithAjaxGetNoModel(UrlLoadFitPanel, 'fitoptions', callback);
 
         /* add raw spectrum to the ones to be hidden */
         if (isSLabConditionForSpectrumTypeNotHigherThanRaw()) //when a SLab RAW spectrum is loaded and under processing we hide it in this phase, otherwise avoid to hide it
@@ -72,7 +74,7 @@ async function preparePanelForFitPhase1Async(extCallback = null) {
     }
 }
 
-function preparePanelForFitPhase2() {
+function hideFitStartingMessageContainer() {
     if (!isFitTabReady) {
         /* hide message for empty panel */
         let callback = function () {
@@ -651,7 +653,7 @@ async function addSelectedPointForFittingAsync(point, isFromUserAction = false, 
             };
             /* switch to 'FIT OPTIONS' tab and load fitting functions  */
             if (isOnlyOneItemInPointsForFittingArrayAvailable())
-                await preparePanelForFitPhase1Async(pointUICallback);
+                await loadFitPanelAsync(pointUICallback);
             else
                 pointUICallback();
 
@@ -775,8 +777,9 @@ async function manageNewPointAsync(point, isFromUserAction = false, isLast = fal
         /* remove the existing segment to let create 2 new ones */
         replaceSegmentForFittingAtProcedureAsync(index, point, isFromUserAction, isLast);
     } else {
-        /* hide 'empty' message and show list of segments */
-        preparePanelForFitPhase2();
+        /* hide 'empty' message and show list of segments 
+           (works only when fit panel has already been loaded by user and message is still visible) */
+        hideFitStartingMessageContainer();
 
         /* no segments added for empty points list and for 1st point */
         if (isPointsForFittingArrayEmpty() || isFirstItemInPointsForFittingArray())
@@ -1872,7 +1875,7 @@ function downloadContinuumRemovedSpectrumProcedure() {
         isContinuumRemovedDownloadRequested = true;
 
         /* load the fit panel */
-        preparePanelForFitPhase1Async();
+        loadFitPanelAsync();
     } else {
         /* when the 'fit options' tab has been opened by user action... */
         downloadProcessedSpectrumAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED);

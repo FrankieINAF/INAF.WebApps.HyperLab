@@ -180,7 +180,7 @@
                 data-expand-point="fs"
                 data-cls-tabs="tabs-list flex-justify-center">
                 <li><a id="alignmentoptionstitle" href="#alignmentoptions">@Html.Raw(Charms.TabsAlignmentTitle)</a></li>
-                <li><a id="fitoptionstitle" href="#fitoptions">@Html.Raw(Charms.TabsFitTitle)</a></li>
+                <li><a id="fitoptionstitle" href="#fitoptions" onclick="loadFitPanelAsync()">@Html.Raw(Charms.TabsFitTitle)</a></li>
                 <li><a id="smoothingoptionstitle" href="#smoothingoptions" onclick="selectTargetSpectrumType()">@Html.Raw(Charms.TabsSmoothingTitle)</a></li>
                 <li><a id="bandanalysistitle" href="#bandanalysis" onclick="createListOfSegmentsForBandAnalysis()">@Html.Raw(Charms.TabsBandAnalysisTitle)</a></li>
             </ul>
@@ -198,9 +198,9 @@
             </div>
             <!-- FIT -->
             <div id="fitoptions">
-                @{
+                @* @{
                     await Html.RenderPartialAsync("~/Views/Charts/Partials/_FitPanelAlwaysVisible.cshtml");
-                }
+                } *@
             </div>
             <!-- SMOOTHING -->
             <div id="smoothingoptions"></div>

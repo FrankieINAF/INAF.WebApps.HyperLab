@@ -86,23 +86,6 @@ function isCharmsProcessSpectraOpen() {
     return Metro.charms.isOpen('#charmsProcessSpectra');
 }
 
-async function initCharmsPhase1Async() {
-    /* hide tabs */
-    hideByClassDFlexItem('charmsTabsContainer');
-
-    /* show explanation message */
-    showByClassDFlexItem('charmsTabAlignmentStartingMessageContainer');
-
-    /* load from cloud relationships between each spectrum type and its parent */
-    getSpectraTypesParentsAsync();
-
-    /* show 1st tab */
-    setTabSelectedProcedure('charmsTabs', OPTIONS_TITLE_ALIGNMENT);
-
-    /* reset all variables and arrays used for fitting */
-    initFit();
-}
-
 function onCharmsProcessSpectraClosed() {
     /* resize chart */
     updateChartSize();
@@ -126,13 +109,11 @@ function onCharmsProcessSpectraClosed() {
     $("#alignmentCheckboxShowLines").off();
 }
 
-async function onCharmsProcessSpectraOpened() {
+function onCharmsProcessSpectraOpened() {
     if (isCharmsResetRequested) {
         /* if requested, show lines for alignment */
         if (isCheckboxChecked('alignmentCheckboxShowLines'))
             $("#alignmentCheckboxShowLines").trigger("click");
-
-        //await initCharmsPhase1Async();
 
         /* fill selector for available RAW files */
         loadSpectraToBeProcessed();
@@ -219,7 +200,7 @@ function buildSpectrum(id, parentId, name, spectrumLevel, spectrumType, spectrum
 }
 
 function buildSpectrumFile(parentId, name, spectrumLevel, spectrumType, spectrumSource, xml) {
-    return  {
+    return {
         Id: 0,
         Filename: name,
         ParentId: fixId(parentId),
@@ -370,24 +351,6 @@ function loadSpectraToBeProcessed() {
     }
 }
 
-async function initCharmsPhase2Async() {
-    /* hide message about RAW file selection */
-    hideByClassDFlexItem('charmsTabAlignmentStartingMessageContainer');
-
-    if (isSLabConditionForSpectrumTypeNotHigherThanRaw()) {
-        /* set as selected the alignment tab */
-        setTabEnabled(0, true);
-
-        //console.log(`onSelectSpectrum - selected: ${selected}`) // selected is Id, i.e: 5
-        loadPartialViewWithAjaxGetNoModel(UrlLoadAlignmentPanel, 'alignmentOptionsPanel', onAlignmentPanelLoaded);
-    } else {
-        setTabsForNoRawSpectra();
-    }
-    /* check whether continuum-removed version is already available on cloud or not */
-    if (await callCheckIsSpectrumOfTypeSavedOnCloudForContinuumRemovedAsync())
-        setTabEnabled(1, true);
-}
-
 function manageSpectraVisibility(selectedSpectrumId) {
     /* show selected spectrum */
     let seriesName = getSpectrumSeriesNameFromIndex(getSpectrumIndexById(selectedSpectrumId));
@@ -408,41 +371,77 @@ function manageSpectraVisibility(selectedSpectrumId) {
 /* -------------------------------------------------------------------------------- */
 /* SPECTRUM SELECTION MANGEMENT */
 /* -------------------------------------------------------------------------------- */
-async function callbackYesForSpectrumSelectionManagementAsync(selectedSpectrum, idsToBeRemoved) {
+function manageTabsForSelectedSpectrum(selectedSpectrum) {
+    switch (selectedSpectrum.SpectrumType) {
+        case SPECTRUM_TYPE_RAW:
+
+            break;
+    }
+}
+
+async function manageSelectedSpectrumAsync(selectedSpectrum, idsToBeRemoved) {
+    /* remember the previous id value */
+    oldSelectedSpectrumForProcessingId = selectedSpectrumForProcessingId;
+
     setLoadingCircleIsVisible(true);
 
     setTimeout(async function () {
+        /* load from cloud relationships between each spectrum type and its parent */
+        getSpectraTypesParentsAsync();
+
+        /* reset all variables and arrays used for fitting */
+        initFit();
+
+        /* reset charms UI and load segments for alignment */
+        setTabSelectedProcedure('charmsTabs', OPTIONS_TITLE_ALIGNMENT);
+
+        /* hide message about RAW file selection */
+        hideByClassDFlexItem('charmsTabAlignmentStartingMessageContainer');
+
         /* add button for managing spectrumType-color relationship */
         addCharmsColorSelectorButton();
 
         /* remove previous analysis and UI items, if available */
-        clearBandAnalysisProcedureCaller();
+        if (idsToBeRemoved != null) {
+            clearBandAnalysisProcedureCaller();
 
-        /* disable tab for band analysis */
-        setTabEnabled(3, false);
+            /* disable tab for band analysis */
+            setTabEnabled(3, false);
 
-        /* remove previous fit points series */
-        tryRemoveFitPointsSeries();
+            /* remove previous fit points series */
+            tryRemoveFitPointsSeries();
 
-        /* remove spectra from chart */
-        removeChartSeriesByFieldsIdProcedure(chartContainer, idsToBeRemoved);
+            /* remove spectra from chart */
+            removeChartSeriesByFieldsIdProcedure(chartContainer, idsToBeRemoved);
 
-        /* remove spectra from 'spectraInfo' (children of the selected one) */
-        removeSpectraById(idsToBeRemoved);
+            /* remove spectra from 'spectraInfo' (children of the selected one) */
+            removeSpectraById(idsToBeRemoved);
+        }
 
         /* update visibility for all spectra (set visible the selected one, invisible all the other ones) */
         manageSpectraVisibility(selectedSpectrumForProcessingId);
 
-        /* reset charms UI and load segments for alignment */
-        await initCharmsPhase1Async();
-
-        if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL) {
+        if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL || isSLabLowerSpectrumTypeHigherThanRaw) {
             setIsPointClickForFitEnabled(true);
             setJoystickVisible(true);
         }
 
         /* load info for creating UI of alignment panel  */
-        await initCharmsPhase2Async();
+        if (isSLabConditionForSpectrumTypeNotHigherThanRaw()) {
+            /* set as enabled the alignment tab */
+            setTabEnabled(0, true);
+
+            //console.log(`onSelectSpectrum - selected: ${selected}`) // selected is Id, i.e: 5
+            loadPartialViewWithAjaxGetNoModel(UrlLoadAlignmentPanel, 'alignmentOptionsPanel', onAlignmentPanelLoaded); // onAlignmentPanelLoaded defined in charmsalignmentpanel.js
+        } else {
+            setTabsForNoRawSpectra();
+        }
+
+        if (await callCheckIsSpectrumOfTypeSavedOnCloudForContinuumRemovedAsync())
+            setTabEnabled(1, true);
+
+        /* manage enabled/disabled tabs depending on SpectrumType of selected spectrum  */
+        manageTabsForSelectedSpectrum(selectedSpectrum);
 
         setLoadingCircleIsVisible(false);
     }, 250);
@@ -461,6 +460,7 @@ async function setSelectedSpectrumForProcessing(selected) {
     selectedSpectrumForProcessingId = selectedValue;
 
     const selectedSpectrum = getSpectrumById(selectedSpectrumForProcessingId);
+
     /* fix color for using spectrumType-color association */
     updateSelectedSpectrumColorToSpectrumTypeColor(selectedSpectrum);
     addMessage(SpectrumTypeColorRelationshipMessage, 3000, INFO);
@@ -472,10 +472,7 @@ async function setSelectedSpectrumForProcessing(selected) {
     findSpectrumChildrenByIdProcedure(oldSelectedSpectrumForProcessingId);
     if (isAnyItem(familyIds)) { // familyIds is filled-up during 'findSpectrumChildrenByIdProcedure'
         let callbackYes = async function () {
-            /* remember the previous id value */
-            oldSelectedSpectrumForProcessingId = selectedSpectrumForProcessingId;
-
-            await callbackYesForSpectrumSelectionManagementAsync(selectedSpectrum, familyIds);
+            await manageSelectedSpectrumAsync(selectedSpectrum, familyIds);
         };
         let callbackNo = function () {
             selectedSpectrumForProcessingId = oldSelectedSpectrumForProcessingId;
@@ -485,29 +482,8 @@ async function setSelectedSpectrumForProcessing(selected) {
         };
 
         showDialogWithActions(WARNING_LABEL, CharmsDeleteProcessedSpectraQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);
-    } else {
-        setTimeout(async function () {
-            /* remember the previous id value */
-            oldSelectedSpectrumForProcessingId = selectedSpectrumForProcessingId;
-
-            /* add button for managing spectrumType-color relationship */
-            addCharmsColorSelectorButton();
-
-            /* update visibility for all spectra */
-            manageSpectraVisibility(selectedSpectrumForProcessingId);
-
-            /* reset charms UI and load segments for alignment */
-            await initCharmsPhase1Async();
-
-            if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL || isSLabLowerSpectrumTypeHigherThanRaw) {
-                setIsPointClickForFitEnabled(true);
-                setJoystickVisible(true);
-            }
-
-            /* load info for creating UI of alignment panel  */
-            initCharmsPhase2Async();
-        }, 250);
-    }
+    } else
+        await manageSelectedSpectrumAsync(selectedSpectrum);
 }
 
 function updateSelectedSpectrumColorToSpectrumTypeColor(selectedSpectrum) {
@@ -697,7 +673,7 @@ async function checkIsSpectrumOfTypeSavedOnCloudAsync(spectrumType, filename = n
     let file;
     if (filename != null)
         file = getSpectrumByName(filename);
-    else 
+    else
         file = getSpectrumById(selectedSpectrumForProcessingId);
 
     if (file == null) {
@@ -720,10 +696,10 @@ async function checkIsSpectrumOfTypeSavedOnCloudAsync(spectrumType, filename = n
         /* save status of spectrum in 'spectraInfo' */
         saveSavedOnCloudStatus(obj.IsOk, spectrumType);
 
-        if (isUIUpdateRequired) 
+        if (isUIUpdateRequired)
             /* show/hide icon on panel  */
             setCloudIconOnPanel(obj.IsOk, spectrumType);
-        
+
         return obj.IsOk;
     }
     else
