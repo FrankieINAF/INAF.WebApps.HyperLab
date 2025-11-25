@@ -504,8 +504,8 @@ namespace INAF.WebApps.HyperLab.Controllers
             int bandOverlapRange = dbHandlerHyperLabUsers.getUserSettingsBandOverlapRange(getUserId());
 
             bool isOverlapping = dbHandlerHyperLabData.isBandOverlappingWithExistingOne(model.FileId,
-                                                                                        model.BandLeftBoundary,
-                                                                                        model.BandRightBoundary,
+                                                                                        model.LeftBoundary,
+                                                                                        model.RightBoundary,
                                                                                         bandOverlapRange,
                                                                                         getUserId());
             return new JsonResult(new GenericResponseModel() { BoolValue = isOverlapping });
@@ -516,8 +516,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             (bool isOk, int id) result = await dbHandlerHyperLabData.upsertBandAnalysisDataAsync(model.FileId,
                                                                                                  model.Id,
-                                                                                                 model.BandLeftBoundary,
-                                                                                                 model.BandRightBoundary,
+                                                                                                 model.LeftBoundary,
+                                                                                                 model.RightBoundary,
                                                                                                  model.BandCenterX,
                                                                                                  model.BandDepth,
                                                                                                  model.BandArea,

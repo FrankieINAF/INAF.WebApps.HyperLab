@@ -147,6 +147,7 @@ async function executeBandAnalysisAsync(series, items) {
     $('#bandAnalysisBandBoundariesMinValue').text(selectedRangeXMin);
     $('#bandAnalysisBandBoundariesMaxValue').text(selectedRangeXMax);
 
+    //console.log(`Selected band boundaries: [${selectedRangeXMin}, ${selectedRangeXMax}]`);
     saveBandBoundaries([selectedRangeXMin, selectedRangeXMax]);
 
     /* calculate values that fit the input values */
