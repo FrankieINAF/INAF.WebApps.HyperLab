@@ -192,4 +192,16 @@
   <data name="BandAnalysisForFileLabel" xml:space="preserve">
     <value>BandAnalysis</value>
   </data>
+  <data name="BandAnalysisBandCenterNotFoundErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to find band center. Band analysis not completed.</value>
+  </data>
+  <data name="BandAnalysisSegmentFittingError" xml:space="preserve">
+    <value>Sorry, couldn't find the necessary band info for starting band analysis.</value>
+  </data>
+  <data name="BandAnalysisAlreadyExecutedOnBandWarningMessage" xml:space="preserve">
+    <value>Band analysis has already been performed. Results are currently displayed.</value>
+  </data>
+  <data name="BandAnalysisNoSpectrumFoundErrorMessage" xml:space="preserve">
+    <value>Sorry, an error occurred while trying to execute band analysis on selected spectrum</value>
+  </data>
 </root>

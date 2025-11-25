@@ -69,30 +69,42 @@ async function startBandAnalysisProcedureAsync(x0, x1) {
     /* retrieve available analysis data, if present */
     getBandsAnalysisDataAsync();
 
+    setLoadingCircleIsVisible(true);
+
     /* start retrieving info for evaluating bands analysis data */
     let segmentForFitting = segmentsForFitting.find(s => s.P0.P.X <= x0 && s.P1.P.X >= x1);
 
     /* if no existing segment in segmentsForFitting is found, no action is required */
-    if (!segmentForFitting)
+    if (!segmentForFitting) {
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(ERROR_LABEL, BandAnalysisSegmentFittingError, ALERT);
         return;
+    }
 
     /* if we're dealing with the same band, no action is required */
-    if (lastSelectedSegmentForBand && segmentForFitting.P0.P.X == lastSelectedSegmentForBand.P0.P.X && segmentForFitting.P1.P.X == lastSelectedSegmentForBand.P1.P.X)
+    if (lastSelectedSegmentForBand && segmentForFitting.P0.P.X == lastSelectedSegmentForBand.P0.P.X && segmentForFitting.P1.P.X == lastSelectedSegmentForBand.P1.P.X) {
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(WARNING_LABEL, BandAnalysisAlreadyExecutedOnBandWarningMessage, WARNING);
         return;
+    }
 
     /* let's find the series name */
     let spectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED);
-    if (!spectrum)
+    if (!spectrum) {
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(ERROR_LABEL, BandAnalysisNoSpectrumFoundErrorMessage, ALERT);
         return;
+    }
 
     let seriesIndex = findChartSeriesIndexByValueFieldId(spectrum.Id);
     if (seriesIndex == -1) {
         seriesIndex = findChartSeriesIndexByValueFieldId(buildTempContinuumRemovedId());
-        if (seriesIndex == -1)
+        if (seriesIndex == -1) {
+            setLoadingCircleIsVisible(false);
+            showSimpleDialog(ERROR_LABEL, BandAnalysisNoSpectrumFoundErrorMessage, ALERT);
             return;
+        }
     }
-
-    setLoadingCircleIsVisible(true);
 
     let series = chartSeries[seriesIndex];
 
@@ -113,17 +125,11 @@ async function startBandAnalysisProcedureAsync(x0, x1) {
 }
 
 async function executeBandAnalysisProcedureAsync(series, items) {
-    //if (!isBandDepthCharmsOpened)
-    //    await showBandAnalysisPanelAsync();
-
     await executeBandAnalysisAsync(series, items);
 
     isBandDepthCharmsOpened = true;
 }
 
-/* ################################################################################ */
-/* BAND DEPTH */
-/* ################################################################################ */
 async function executeBandAnalysisAsync(series, items) {
     /* retrieve all points of all series from chart */
     //let items = dxChartGetItems(chartContainer);
@@ -132,16 +138,16 @@ async function executeBandAnalysisAsync(series, items) {
     clearBandAnalysisProcedure(items);
 
     /* find points in range selected by the highlightened band */
-    let seriesPoints = dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED)));
-    let pointsInRange = extractSpectrumRange(getPointsFromSeriesPoints(seriesPoints), lastSelectedSegmentForBand.P0.P.X, lastSelectedSegmentForBand.P1.P.X);
+    const seriesPoints = dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED)));
+    const pointsInRange = extractSpectrumRange(getPointsFromSeriesPoints(seriesPoints), lastSelectedSegmentForBand.P0.P.X, lastSelectedSegmentForBand.P1.P.X);
 
     /* extract y values from points */
-    let pointsInRangeXValues = pointsInRange.map(p => p.X);
-    let pointsInRangeYValues = pointsInRange.map(p => p.Y);
+    const pointsInRangeXValues = pointsInRange.map(p => p.X);
+    const pointsInRangeYValues = pointsInRange.map(p => p.Y);
 
     /* find the min value of the continuum-removed points in the selected range */
-    let selectedRangeXMin = Math.min(...pointsInRangeXValues);
-    let selectedRangeXMax = Math.max(...pointsInRangeXValues);
+    const selectedRangeXMin = Math.min(...pointsInRangeXValues);
+    const selectedRangeXMax = Math.max(...pointsInRangeXValues);
 
     /* show current band boundaries */
     $('#bandAnalysisBandBoundariesMinValue').text(selectedRangeXMin);
@@ -151,14 +157,19 @@ async function executeBandAnalysisAsync(series, items) {
     saveBandBoundaries([selectedRangeXMin, selectedRangeXMax]);
 
     /* calculate values that fit the input values */
-    let fitResult = await window.dotNetHelper.invokeMethodAsync("getAbsorptionBandGaussianFit",
+    const fitResult = await window.dotNetHelper.invokeMethodAsync("getAbsorptionBandGaussianFit",
         pointsInRangeXValues,
         pointsInRangeYValues);
 
     /* retrieve values for next calculations */
-    let wavelength = parseInt(fitResult.μ);
-
-    let bandCenter = pointsInRange.find(p => p.X == wavelength);
+    const wavelength = parseInt(fitResult.μ);
+    //console.log(`Wavelength (band center): ${wavelength}`);
+    const bandCenter = pointsInRange.find(p => p.X == wavelength);
+    if (!bandCenter) {
+        setLoadingCircleIsVisible(false);
+        showSimpleDialog(ERROR_LABEL, BandAnalysisBandCenterNotFoundErrorMessage, ALERT);
+        return;
+    }
 
     //console.log(`μ: ${fitResult.μ}, σ: ${fitResult.σ}`);
     /* 2.0) show band center */
@@ -177,9 +188,9 @@ async function executeBandAnalysisAsync(series, items) {
     await highlightBandAsync(series.name, lastSelectedSegmentForBand, items);
 
     /* 3) band depth */
-    let bandDepth = evaluateBandDepth(wavelength, bandCenter);
+    const bandDepth = evaluateBandDepth(wavelength, bandCenter);
 
-    let fitPointsYValues = fitPoints.map(p => p.Y);
+    const fitPointsYValues = fitPoints.map(p => p.Y);
 
     /* 4) band area */
     evaluateBandAreaAsync(pointsInRangeXValues, fitPointsYValues);
@@ -202,7 +213,9 @@ async function executeBandAnalysisAsync(series, items) {
 
     isBandAnalysisAvailable = true;
 }
-
+/* ################################################################################ */
+/* BAND ANALYSIS STEPS */
+/* ################################################################################ */
 async function evaluateBandAreaAsync(xs, ys) {
     let area = await window.dotNetHelper.invokeMethodAsync("evaluateBandArea",
         xs,

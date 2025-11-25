@@ -19,7 +19,7 @@ namespace INAF.WebApps.HyperLab.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class CharmsBandAnalysis {
@@ -61,6 +61,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Band analysis has already been performed. Results are currently displayed..
+        /// </summary>
+        public static string BandAnalysisAlreadyExecutedOnBandWarningMessage {
+            get {
+                return ResourceManager.GetString("BandAnalysisAlreadyExecutedOnBandWarningMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Band area: .
         /// </summary>
         public static string BandAnalysisBandAreaLabel {
@@ -84,6 +93,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string BandAnalysisBandCenterLabel {
             get {
                 return ResourceManager.GetString("BandAnalysisBandCenterLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, something went wrong while trying to find band center. Band analysis not completed..
+        /// </summary>
+        public static string BandAnalysisBandCenterNotFoundErrorMessage {
+            get {
+                return ResourceManager.GetString("BandAnalysisBandCenterNotFoundErrorMessage", resourceCulture);
             }
         }
         
@@ -205,6 +223,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, an error occurred while trying to execute band analysis on selected spectrum.
+        /// </summary>
+        public static string BandAnalysisNoSpectrumFoundErrorMessage {
+            get {
+                return ResourceManager.GetString("BandAnalysisNoSpectrumFoundErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Band analysis already evaluated will be overwritten. Continue?.
         /// </summary>
         public static string BandAnalysisReplaceBandsAnalysisQuestion {
@@ -246,6 +273,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string BandAnalysisSaveSuccessMessage {
             get {
                 return ResourceManager.GetString("BandAnalysisSaveSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, couldn&apos;t find the necessary band info for starting band analysis..
+        /// </summary>
+        public static string BandAnalysisSegmentFittingError {
+            get {
+                return ResourceManager.GetString("BandAnalysisSegmentFittingError", resourceCulture);
             }
         }
         
