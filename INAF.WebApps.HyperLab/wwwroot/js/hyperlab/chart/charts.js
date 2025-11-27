@@ -20,8 +20,8 @@ var MAX_Y = 'maxY';
 
 var targetPointer;
 
-var backToHomeButtonId = 'buttonBackToHome';
 var backToSearchButtonId = 'buttonBackToSearch';
+var enlargeButtonId = 'buttonEnlarge';
 var enterFullScreenButtonId = 'buttonEnterFullScreen';
 var exitFullScreenButtonId = 'buttonExitFullScreen';
 var openProcessSpectraCharmsButtonId = 'buttonOpenCharms'
@@ -96,10 +96,6 @@ function removeExitFullScreenButton() {
 /* ################################################################################ */
 /* BACK TO SEARCH */
 /* ################################################################################ */
-function backToHomeProcedure() {
-    navigateTo(UrlHome);
-}
-
 function backToSearchProcedure() {
     navigateTo(UrlHub);
 }
@@ -520,6 +516,10 @@ function getTooltip(seriesName, argumentText, valueText) {
 /* -------------------------------------------------------------------------------- */
 /* ---------- CHARTS ACTIONS ---------- */
 /* -------------------------------------------------------------------------------- */
+function enlargeVisualRange() {
+    dxChartResetVisualRange(chartContainer);
+}
+
 function manageZoom(evt) {
     //console.log(`manageZoom - factor: ${evt.zoomFactor}`);
     if (evt.zoomFactor != 1) {

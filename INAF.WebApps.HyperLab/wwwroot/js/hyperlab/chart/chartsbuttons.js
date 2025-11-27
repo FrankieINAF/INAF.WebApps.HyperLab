@@ -1,16 +1,17 @@
-﻿/* ---------- BACK-TO-HOME BUTTON ---------- */
-function addBackToHomeButton() {
-    addMenuItem(backToHomeButtonId, ButtonBackToHomeLabel, ButtonBackToHomeTooltip, 'mif-home', backToHomeProcedure);
+﻿/* ---------- ENLARGE (RESET VISUAL RANGE) BUTTON ---------- */
+function addEnlargeButton() {
+    addButton(enlargeButtonId, ButtonEnlargeLabel, 'mif-enlarge2', enlargeVisualRange);
 }
 
-function removeBackToHomeButtonProcedure() {
-    if (!isButtonAvailable(backToHomeButtonId))
+function removeEnlargeButtonProcedure() {
+    if (!isButtonAvailable(enlargeButtonId))
         return;
-    animateCSS(`${backToHomeButtonId}`, `bounceOutLeft`, FAST, removeBackToHomeButton);
+
+    animateCSS(`${enlargeButtonId}`, `bounceOutUp`, FAST, removeEnlargeButton);
 }
 
-function removeBackToHomeButton() {
-    $(`#${backToHomeButtonId}`).remove();
+function removeEnlargeButton() {
+    $(`#${enlargeButtonId}`).remove();
 }
 
 /* ---------- BACK-TO-SEARCH BUTTON ---------- */

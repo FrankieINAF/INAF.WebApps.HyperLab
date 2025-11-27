@@ -109,6 +109,8 @@ function onCharmsProcessSpectraClosed() {
 
     /* remove event fir checkbox */
     $("#alignmentCheckboxShowLines").off();
+
+    removeEnlargeButtonProcedure();
 }
 
 function onCharmsProcessSpectraOpened() {
@@ -122,6 +124,8 @@ function onCharmsProcessSpectraOpened() {
 
         /* move logout button to make it visible */
         $('#logoutButton').addClass('margin-right-500');
+
+        addEnlargeButton();
 
         isCharmsResetRequested = false;
     }

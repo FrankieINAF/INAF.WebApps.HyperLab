@@ -6,6 +6,7 @@ var helpButtonId = 'buttonHelp';
 
 var guideChartButtonId = 'guideChartButton';
 var guideHubButtonId = 'guideHubButton';
+var backToHomeButtonId = 'buttonBackToHome';
 var openMessagesCharmsButtonId = 'buttonOpenMessagesCharms';
 var searchButtonId = 'buttonSearch';
 var publicAndShareButtonId = 'buttonPublicAndShare';
@@ -42,6 +43,10 @@ function tryHideLogoutButton() {
 function initPageDims() {
     pageW = $('#renderbody').width();
     pageH = $('#renderbody').height();
+}
+
+function backToHomeProcedure() {
+    navigateTo(UrlHome);
 }
 
 /* ################################################################################ */
@@ -91,10 +96,13 @@ function manageNavigation() {
             break;
 
         default: // NAVIGATION_INIT
+            /* top-bar menu */
             addGuideHubButton();
-
             if (isSLabDataManagerAllowed)
                 addSearchButton();
+
+            /* left-side menu */
+            addBackToHomeButton();
             break;
     }
 }
@@ -145,9 +153,22 @@ function setButtonAlignEnabled(id, isEnabled, label) {
 /* ################################################################################ */
 /* ADD/REMOVE BUTTONS */
 /* ################################################################################ */
+function addBackToHomeButton() {
+    addMenuItem(backToHomeButtonId, ButtonBackToHomeLabel, ButtonBackToHomeTooltip, 'mif-home', backToHomeProcedure);
+}
+
+function removeBackToHomeButtonProcedure() {
+    if (!isButtonAvailable(backToHomeButtonId))
+        return;
+    animateCSS(`${backToHomeButtonId}`, `bounceOutLeft`, FAST, removeBackToHomeButton);
+}
+
+function removeBackToHomeButton() {
+    $(`#${backToHomeButtonId}`).remove();
+}
+
 /* ---------- SET GUIDE-FOR-CHART BUTTON ---------- */
 function addGuideChartButton() {
-    //addButton(guideChartButtonId, ButtonGuideLabel, 'mif-help', showGuideChart);
     addImageButton(guideChartButtonId, ButtonGuideLabel, 'help', showGuideChart);
 }
 
