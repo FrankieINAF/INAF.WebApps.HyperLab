@@ -59,13 +59,17 @@ function manageNavigation() {
 
             setTabSelectedProcedure('charmsTabs', OPTIONS_TITLE_ALIGNMENT);
 
+            /* top-bar menu */
             closeCharmsLegend();
-            removeBackToSearchButtonProcedure();
-            removeBackClearToSearchButtonProcedure();
             removeOpenProcessSpectraCharmsButtonProcedure();
             removeCharmsLegendButtonProcedure();
             removeMessagesCharmsButtonProcedure();
             removeCharmsColorSelectorButtonProcedure();
+
+            /* left-side menu */
+            removeBackToHomeButtonProcedure();
+            removeBackToSearchButtonProcedure();
+
             containerFunction = function () {
                 addSearchButton();
                 addCreateChartsButtonProcedure();
@@ -75,11 +79,15 @@ function manageNavigation() {
 
         case NAVIGATION_SHOW_CHART:
         case NAVIGATION_CREATE_CHART:
+            /* top-bar menu */
             addGuideChartButton();
             addCharmsLegendButton();
-            addBackClearToSearchButton();
             addOpenProcessSpectraCharmsButton();
             addEnterFullScreenButton();
+
+            /* left-side menu */
+            addBackToHomeButton();
+            addBackToSearchButton();
             break;
 
         default: // NAVIGATION_INIT

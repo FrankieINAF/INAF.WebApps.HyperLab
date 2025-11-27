@@ -165,6 +165,9 @@ function onSeriesClick(id) {
         const colorValue = $(`#spectrum${id}`).css('color');
         $(`#spectrum${id}`).css('background-color', colorValue);
     }
+
+    /* reset visual range to allow lines out of current visual range to be visualized */
+    dxChartResetVisualRange(chartContainer);
 }
 
 function onSeriesMouseOut(id) {

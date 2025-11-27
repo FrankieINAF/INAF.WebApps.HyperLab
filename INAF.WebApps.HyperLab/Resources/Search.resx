@@ -117,11 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ButtonBackClearToSearchLabel" xml:space="preserve">
-    <value>Clear chart and go back to search</value>
-  </data>
   <data name="ButtonBackToSearchLabel" xml:space="preserve">
-    <value>Back to search (charts are maintained)</value>
+    <value>Search</value>
+  </data>
+  <data name="ButtonBackToSearchTooltip" xml:space="preserve">
+    <value>Clear chart and navigate back to Search page</value>
   </data>
   <data name="ButtonDownloadAsCsvFileLabel" xml:space="preserve">
     <value>Download as CSV file</value>
@@ -618,7 +618,7 @@
   <data name="LoadFilesExternalExplanationXMLFormat" xml:space="preserve">
     <value>Only &lt;u&gt;XML&lt;/u&gt; files generated from spectra saved via the HyperLab web app are accepted.</value>
   </data>
-  <data name="(s" xml:space="preserve">
+  <data name="pippo" xml:space="preserve">
     <value>Start typing a material name and then press enter or click on search icon to get suggestions about available materials.</value>
   </data>
   <data name="SearchSimpleByMaterialTooltip2" xml:space="preserve">
@@ -629,5 +629,11 @@
   </data>
   <data name="ButtonPublicAndShareLabel" xml:space="preserve">
     <value>Make public or share spectra</value>
+  </data>
+  <data name="ButtonBackToHomeLabel" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="ButtonBackToHomeTooltip" xml:space="preserve">
+    <value>Clear chart and navigate back to Home page</value>
   </data>
 </root>

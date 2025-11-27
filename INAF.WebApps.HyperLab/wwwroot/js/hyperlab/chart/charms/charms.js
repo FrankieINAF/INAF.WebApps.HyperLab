@@ -462,6 +462,9 @@ async function manageSelectedSpectrumAsync(selectedSpectrum, idsToBeRemoved) {
         /* manage enabled/disabled tabs depending on SpectrumType of selected spectrum  */
         await manageTabsForSelectedSpectrumAsync(selectedSpectrum);
 
+        /* reset visual range to allow lines out of current visual range to be visualized */
+        dxChartResetVisualRange(chartContainer);
+
         setLoadingCircleIsVisible(false);
     }, 250);
 }
@@ -605,31 +608,6 @@ async function downloadProcessedSpectrumAsync(spectrumType, spectrumId = null) {
     }
 }
 
-//async function getSpectrumByParentIdAndSpectrumTypeAsync(parentId, spectrumType) {
-//    let model = {
-//        Id: parentId,
-//        SpectrumType: spectrumType
-//    };
-
-//    let obj = await doAjaxGetAsync(UrlGetSpectrumIdByParentIdAndSpectrumType, model);
-//    if (obj && obj.IsOk) {
-
-//    }
-//}
-
-//async function getSpectrumIdByParentIdAndSpectrumTypeAsync(parentId, spectrumType, callback) {
-//    let model = {
-//        Id: parentId,
-//        SpectrumType: spectrumType
-//    };
-
-//    let obj = await doAjaxGetAsync(UrlGetSpectrumIdByParentIdAndSpectrumType, model);
-//    if (obj && obj.IsOk) {
-//        if (callback)
-//            callback(obj.Id);
-//    }
-//}
-
 /* ################################################################################ */
 /* RETRIEVE REQUIRED SPECTRUM */
 /* ################################################################################ */
@@ -664,7 +642,7 @@ async function tryGetRequiredSpectrumForParentSpectrumTypeAsync(currentSpectrumT
 }
 
 async function tryGetRequiredSpectrumForChildSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType) {
-
+    throw new Error(`${tryGetRequiredSpectrumForChildSpectrumTypeAsync.name} not implemented`);
 }
 
 /* ################################################################################ */

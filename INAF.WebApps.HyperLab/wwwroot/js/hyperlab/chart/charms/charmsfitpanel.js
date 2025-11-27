@@ -1075,8 +1075,8 @@ function lowlightSegmentForFitting(segmentId) {
 async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1) {
     //console.log(`buildContinuumSegmentAsync - p0: ${p0.X}, p1: ${p1.X}`);
     /* retrieve range for current segment to extract the required set of points from aligned model */
-
-    let pointsInRange = extractSpectrumRange(getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval), p0.X, p1.X);
+    const spectrum = await tryGetRequiredSpectrumAsync(selectedSpectrumForProcessing.SpectrumType, selectedSpectrumTypeForContinuumRemoval);
+    let pointsInRange = extractSpectrumRange(getPointsFromSeriesPointsProcedure(spectrum.Id, selectedSpectrumTypeForContinuumRemoval), p0.X, p1.X);
 
     if (!pointsInRange || pointsInRange.length == 0) {
         showSimpleDialog(ERROR_LABEL, FitNoPointsFoundForSegmentErrorMessage, ALERT);
@@ -1101,26 +1101,17 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1) {
     }
 
     /* procedure for adding/updating the continuum spectrum */
-    let continuumSpectrum = tryAddContinuumSpectrum();
+    const continuumSpectrum = tryAddContinuumSpectrum(spectrum.Id);
 
     /* update chart with new aligned spectrum */
     dxChartBeginUpdate(chartContainer);
 
     /* retrieve current items */
-    let items = dxChartGetItems(chartContainer);
+    const items = dxChartGetItems(chartContainer);
     /* add continuum-spectrum points */
-    let xValues = processingResult.Points.map(p => p.X);
-    let yValues = processingResult.Points.map(p => p.Y);
+    const xValues = processingResult.Points.map(p => p.X);
+    const yValues = processingResult.Points.map(p => p.Y);
     addChartSeriesItems(items, xValues, yValues, continuumSpectrum.Id);
-    //let pointsNum = processingResult.Points.length;
-    //for (var i = 0; i < pointsNum; i++) {
-    //    let x = processingResult.Points[i].X;
-    //    let index = items.findIndex(p => p.X == x);
-    //    if (index > -1)
-    //        items[index][continuumSpectrum.Id] = processingResult.Points[i].Y;
-    //}
-
-    //console.log(`buildContinuumSegmentAsync - pointsNum: ${pointsNum}`);
 
     /* add (if not already present) the continuum series */
     tryAddContinuumSpectrumSeries(continuumSpectrum);
@@ -1159,19 +1150,19 @@ function removeContinuumSegmentForFittingOnChart(segment) {
     dxChartEndUpdate(chartContainer);
 }
 
-function tryAddContinuumSpectrum() {
-    const tempContinuumId = buildTempContinuumId(selectedSpectrumForProcessing.Id);
+function tryAddContinuumSpectrum(spectrumId) {
+    const tempContinuumId = buildTempContinuumId(spectrumId);
     if (isSpectrumOfType(tempContinuumId, SPECTRUM_TYPE_CONTINUUM)) {
         return getSpectrumBySpectrumType(SPECTRUM_TYPE_CONTINUUM)
     }
 
     /* retrieve parent RAW spectrum */
-    let selectedSpectrum = getSpectrumById(selectedSpectrumForProcessing.Id);
+    let selectedSpectrum = getSpectrumById(spectrumId);
 
     /* build spectrum info for being added to 'spectraInfo' */
     let continuumSpectrum = buildSpectrum(
         tempContinuumId,
-        0,
+        spectrumId,
         selectedSpectrum.Name,
         selectedSpectrum.SpectrumLevel,
         SPECTRUM_TYPE_CONTINUUM,

@@ -3,8 +3,44 @@
   "WorkspaceRootPath": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\css\\hyperlab\\common.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\css\\hyperlab\\common.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\commonbuttons.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\commonbuttons.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\chartsbuttons.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\chartsbuttons.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\views\\spectramanager\\partials\\_hubandchartjscommon.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\views\\spectramanager\\partials\\_hubandchartjscommon.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\resources\\search.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\resources\\search.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\commonhubandchart.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\commonhubandchart.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\charts.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\charts.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\chartsarrays.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\chartsarrays.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\views\\spectramanager\\chart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\views\\spectramanager\\chart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\charms\\charms.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\charms\\charms.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmslegend.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -15,12 +51,8 @@
       "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsfitpanel.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\charms\\charms.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\charms\\charms.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsalignmentpanel.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsalignmentpanel.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsfitpanelcore.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsfitpanelcore.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\common.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -42,27 +74,13 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "charmsalignmentpanel.js",
-              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsalignmentpanel.js",
-              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsalignmentpanel.js",
-              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsalignmentpanel.js",
-              "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsalignmentpanel.js",
-              "ViewState": "AgIAAEEAAAAAAAAAAAAAwFUAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-11-25T10:46:44.631Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 11,
               "Title": "charmsfitpanel.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsfitpanel.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsfitpanel.js",
               "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsfitpanel.js",
               "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsfitpanel.js",
-              "ViewState": "AgIAAGIGAAAAAAAAAAAWwAIGAAA3AAAAAAAAAA==",
+              "ViewState": "AgIAAGYEAAAAAAAAAAAswIwEAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2025-11-25T11:17:03.645Z",
               "IsPinned": true,
@@ -70,13 +88,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 9,
               "Title": "charms.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charms.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charms.js",
               "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charms.js",
               "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charms.js",
-              "ViewState": "AgIAAJECAAAAAAAAAAAnwNUCAABvAAAAAAAAAA==",
+              "ViewState": "AgIAAKABAAAAAAAAAAAAANEBAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2025-11-18T14:58:21.932Z",
               "IsPinned": true,
@@ -84,13 +102,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 7,
               "Title": "chartsarrays.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\chartsarrays.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\chartsarrays.js",
               "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\chartsarrays.js",
               "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\chartsarrays.js",
-              "ViewState": "AgIAAGkAAAAAAAAAAAAwwL8AAAAfAAAAAAAAAA==",
+              "ViewState": "AgIAAIkAAAAAAAAAAAAwwPcAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2025-11-26T11:20:39.069Z",
               "IsPinned": true,
@@ -98,20 +116,136 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "common.css",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\css\\hyperlab\\common.css",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\css\\hyperlab\\common.css",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\css\\hyperlab\\common.css*",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\css\\hyperlab\\common.css*",
+              "ViewState": "AgIAANYBAAAAAAAAAAAAAAkCAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-11-27T14:25:52.742Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Search.resx",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Resources\\Search.resx",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Resources\\Search.resx",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Resources\\Search.resx",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\Resources\\Search.resx",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-11-27T14:06:21.793Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "_HubAndChartJsCommon.cshtml",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Views\\SpectraManager\\Partials\\_HubAndChartJsCommon.cshtml",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Views\\SpectraManager\\Partials\\_HubAndChartJsCommon.cshtml",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Views\\SpectraManager\\Partials\\_HubAndChartJsCommon.cshtml",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\Views\\SpectraManager\\Partials\\_HubAndChartJsCommon.cshtml",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T14:05:52.569Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Chart.cshtml",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Views\\SpectraManager\\Chart.cshtml",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Views\\SpectraManager\\Chart.cshtml",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Views\\SpectraManager\\Chart.cshtml",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\Views\\SpectraManager\\Chart.cshtml",
+              "ViewState": "AgIAAHEBAAAAAAAAAAAAAJMBAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T13:59:14.336Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "charmslegend.js",
-              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmslegend.js",
-              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmslegend.js",
-              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmslegend.js",
-              "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmslegend.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAhAAAAAAAAAA==",
+              "Title": "commonbuttons.js",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\commonbuttons.js",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\commonbuttons.js",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\commonbuttons.js",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\commonbuttons.js",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAwBsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-11-27T11:18:32.616Z",
+              "WhenOpened": "2025-11-27T13:46:02.049Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "charts.js",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charts.js",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charts.js",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charts.js",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charts.js",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAAAK0AAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-11-27T13:42:08.296Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "chartsbuttons.js",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\chartsbuttons.js",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\chartsbuttons.js",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\chartsbuttons.js",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\chartsbuttons.js",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwA8AAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-11-27T13:40:18.915Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
+              "Title": "commonhubandchart.js",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\commonhubandchart.js",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\commonhubandchart.js",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\commonhubandchart.js",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\commonhubandchart.js",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAswDAAAABWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-11-27T13:36:12.719Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "charmslegend.js",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmslegend.js",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmslegend.js",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmslegend.js",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmslegend.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKgAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-11-27T13:02:20.663Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "charmsfitpanelcore.js",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsfitpanelcore.js",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsfitpanelcore.js",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsfitpanelcore.js",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsfitpanelcore.js",
+              "ViewState": "AgIAAGoAAAAAAAAAAAAkwIYAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-11-27T11:38:49.709Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
               "Title": "common.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\common.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\common.js",
@@ -196,7 +330,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 14,
               "Title": "appsettings.development.json",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\appsettings.development.json",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\appsettings.development.json",

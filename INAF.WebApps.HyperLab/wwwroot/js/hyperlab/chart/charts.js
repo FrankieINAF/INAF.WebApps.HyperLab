@@ -20,8 +20,8 @@ var MAX_Y = 'maxY';
 
 var targetPointer;
 
+var backToHomeButtonId = 'buttonBackToHome';
 var backToSearchButtonId = 'buttonBackToSearch';
-var backClearToSearchButtonId = 'buttonBackClearToSearch';
 var enterFullScreenButtonId = 'buttonEnterFullScreen';
 var exitFullScreenButtonId = 'buttonExitFullScreen';
 var openProcessSpectraCharmsButtonId = 'buttonOpenCharms'
@@ -96,7 +96,11 @@ function removeExitFullScreenButton() {
 /* ################################################################################ */
 /* BACK TO SEARCH */
 /* ################################################################################ */
-async function backClearToSearchProcedureAsync() {
+function backToHomeProcedure() {
+    navigateTo(UrlHome);
+}
+
+function backToSearchProcedure() {
     navigateTo(UrlHub);
 }
 

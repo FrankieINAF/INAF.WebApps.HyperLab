@@ -10,12 +10,12 @@
 	if (Context.User.Identity != null)
 		isUserAuthenticated = Context.User.Identity.IsAuthenticated;
 
-	<li>
-		<a class="menuitem" href="@Url.Action(nameof(HomeController.Index), GenericHelper.GetControllerName(nameof(HomeController)))">
-			<span class="icon"><span class="mif mif-home"></span></span>
-			<span class="caption fg-white">@Html.Raw(INAF.WebApps.HyperLab.Resources.Home.HomeLabel)</span>
-		</a>
-	</li>
+	// <li>
+	// 	<a class="menuitem" href="@Url.Action(nameof(HomeController.Index), GenericHelper.GetControllerName(nameof(HomeController)))">
+	// 		<span class="icon"><span class="mif mif-home"></span></span>
+	// 		<span class="caption fg-white">@Html.Raw(INAF.WebApps.HyperLab.Resources.Home.HomeLabel)</span>
+	// 	</a>
+	// </li>
 
 	Menu? menu = menuHelper.GetMenu(Context);
 	int index = 0;

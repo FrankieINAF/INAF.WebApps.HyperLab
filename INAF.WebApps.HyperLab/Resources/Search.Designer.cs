@@ -19,7 +19,7 @@ namespace INAF.WebApps.HyperLab.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Search {
@@ -61,29 +61,38 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start typing a material name and then press enter or click on search icon to get suggestions about available materials..
+        ///   Looks up a localized string similar to Home.
         /// </summary>
-        public static string _s {
+        public static string ButtonBackToHomeLabel {
             get {
-                return ResourceManager.GetString("(s", resourceCulture);
+                return ResourceManager.GetString("ButtonBackToHomeLabel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clear chart and go back to search.
+        ///   Looks up a localized string similar to Clear chart and navigate back to Home page.
         /// </summary>
-        public static string ButtonBackClearToSearchLabel {
+        public static string ButtonBackToHomeTooltip {
             get {
-                return ResourceManager.GetString("ButtonBackClearToSearchLabel", resourceCulture);
+                return ResourceManager.GetString("ButtonBackToHomeTooltip", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Back to search (charts are maintained).
+        ///   Looks up a localized string similar to Search.
         /// </summary>
         public static string ButtonBackToSearchLabel {
             get {
                 return ResourceManager.GetString("ButtonBackToSearchLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear chart and navigate back to Search page.
+        /// </summary>
+        public static string ButtonBackToSearchTooltip {
+            get {
+                return ResourceManager.GetString("ButtonBackToSearchTooltip", resourceCulture);
             }
         }
         
@@ -534,6 +543,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string MeteorClassesSuggestionsErrorMessage {
             get {
                 return ResourceManager.GetString("MeteorClassesSuggestionsErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start typing a material name and then press enter or click on search icon to get suggestions about available materials..
+        /// </summary>
+        public static string pippo {
+            get {
+                return ResourceManager.GetString("pippo", resourceCulture);
             }
         }
         

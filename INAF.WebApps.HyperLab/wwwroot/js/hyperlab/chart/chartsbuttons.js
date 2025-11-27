@@ -1,17 +1,32 @@
-﻿/* ---------- BACK-CLEAR-TO-SEARCH BUTTON ---------- */
-function addBackClearToSearchButton() {
-    addButton(backClearToSearchButtonId, ButtonBackClearToSearchLabel, 'mif-cross-light', backClearToSearchProcedureAsync);
+﻿/* ---------- BACK-TO-HOME BUTTON ---------- */
+function addBackToHomeButton() {
+    addMenuItem(backToHomeButtonId, ButtonBackToHomeLabel, ButtonBackToHomeTooltip, 'mif-home', backToHomeProcedure);
 }
 
-function removeBackClearToSearchButtonProcedure() {
-    if (!isButtonAvailable(backClearToSearchButtonId))
+function removeBackToHomeButtonProcedure() {
+    if (!isButtonAvailable(backToHomeButtonId))
+        return;
+    animateCSS(`${backToHomeButtonId}`, `bounceOutLeft`, FAST, removeBackToHomeButton);
+}
+
+function removeBackToHomeButton() {
+    $(`#${backToHomeButtonId}`).remove();
+}
+
+/* ---------- BACK-TO-SEARCH BUTTON ---------- */
+function addBackToSearchButton() {
+    addMenuItem(backToSearchButtonId, ButtonBackToSearchLabel, ButtonBackToSearchTooltip, 'mif-search', backToSearchProcedure);
+}
+
+function removeBackToSearchButtonProcedure() {
+    if (!isButtonAvailable(backToSearchButtonId))
         return;
 
-    animateCSS(`${backClearToSearchButtonId}`, `bounceOutUp`, FAST, removeBackClearToSearchButton);
+    animateCSS(`${backToSearchButtonId}`, `bounceOutLeft`, FAST, removeBackToSearchButton);
 }
 
-function removeBackClearToSearchButton() {
-    $(`#${backClearToSearchButtonId}`).remove();
+function removeBackToSearchButton() {
+    $(`#${backToSearchButtonId}`).remove();
 }
 
 /* ---------- OPEN PROCESS SPECTRA CHARMS BUTTON ---------- */
