@@ -55,16 +55,26 @@ async function initAlignmentAsync() {
         SelectedSegment: 0
     };
 
-    //$('#alignmentPanel').remove();
-
     await loadSegmentsAsync();
 
     await tryShowAlignmentSegmentsAsync();
 }
 
+function isAlignmentPanelLoaded() {
+    return $('#alignmentOptionsPanel').children().length > 0;
+}
+
+async function loadAlignmentPanelAsync() {
+    const alignmentpanelhtml = await getPartialViewWithAjaxGetNoModelAsync(UrlLoadAlignmentPanel);
+    $(function () {
+        onAlignmentPanelLoaded();
+    });
+    $('#alignmentOptionsPanel').html(alignmentpanelhtml);
+}
+
 function onAlignmentPanelLoaded() {
 
-    let callback = async function () { // DO NOT ADD 'let' before callback declaration, 'cause it cause error when changing selected spectrum
+    const callback = async function () { // DO NOT ADD 'let' before callback declaration, 'cause it cause error when changing selected spectrum
         /* load alignment panel items */
         await loadAlignmentValuesAsync();
     };
@@ -124,7 +134,7 @@ function setWhitesSwitchChecked(isChecked) {
 /* ---------- ALIGNMENT LINES ---------- */
 /* -------------------------------------------------------------------------------- */
 function getAlignmentConstantLines(areLabelsVisible = true) {
-    let alignmentSegmentsNum = alignmentModel.Segments.length;
+    const alignmentSegmentsNum = alignmentModel.Segments.length;
     let constantLines = [];
     for (var i = 0; i < alignmentSegmentsNum; i++) {
         constantLines.push(
@@ -143,7 +153,7 @@ function getAlignmentConstantLines(areLabelsVisible = true) {
 }
 
 async function tryShowAlignmentSegmentsAsync() {
-    let obj = await getUserSettingAsync(ALIGNMENT_SHOW_LINES)
+    const obj = await getUserSettingAsync(ALIGNMENT_SHOW_LINES)
     if (obj.IsOk) {
         if (obj.Value == '1') {
             isCheckboxForShowSegmentsChecked = true;
@@ -158,7 +168,7 @@ async function tryShowAlignmentSegmentsAsync() {
 }
 
 function setAlignmentSegmentsVisible(isVisible = true) {
-    let chart = dxChartGetChart(chartContainer);
+    //const chart = dxChartGetChart(chartContainer);
 
     if (isVisible) {
         if (alignmentModel.Segments.length > 0) {
@@ -201,7 +211,7 @@ function initCheckBoxForShowingLines() {
 }
 
 async function loadSegmentsAsync() {
-    let obj = await getUserSettingAsync(ALIGNMENT_SEGMENTS_BOUNDARIES);
+    const obj = await getUserSettingAsync(ALIGNMENT_SEGMENTS_BOUNDARIES);
     if (obj.IsOk) {
         /* save segments  */
         alignmentModel.Segments = obj.Value.split(',');
@@ -211,7 +221,7 @@ async function loadSegmentsAsync() {
 }
 
 async function loadSelectedSegmentAsync() {
-    let obj = await getUserSettingAsync(ALIGNMENT_SELECTED_SEGMENT);
+    const obj = await getUserSettingAsync(ALIGNMENT_SELECTED_SEGMENT);
     if (obj.IsOk) {
         alignmentModel.SelectedSegment = parseInt(obj.Value);
     } else {
@@ -234,7 +244,7 @@ function buildSlider(value, index) {
     let min = value - 100;
     let max = value + 100;
 
-    let id = `slider${index}Container`;
+    const id = `slider${index}Container`;
 
     let html = ``;
     html += `<input type="number" id="slider${index}Target" class="slider-target">`;
@@ -292,9 +302,9 @@ function onChangeSegmentCenter(val, slider) {
 function setSelectedSegment(xValue, isSaveSettingRequired = true) {
     let index = 0;
 
-    let segments = alignmentModel.Segments.map(x => { return parseInt(x); });
+    const segments = alignmentModel.Segments.map(x => { return parseInt(x); });
 
-    let segmentsNum = segments.length;
+    const segmentsNum = segments.length;
     for (var i = 0; i < segmentsNum - 1; i++) {
         if (xValue >= segments[i] && xValue <= segments[i + 1]) {
             index = i;
@@ -313,7 +323,7 @@ function setSelectedSegment(xValue, isSaveSettingRequired = true) {
 }
 
 function setSelectedSegmentMessage(makeVisible = true) {
-    let message = AlignmentChartMiniatureSelectedSegmentMessage
+    const message = AlignmentChartMiniatureSelectedSegmentMessage
         .replace('r_v1', alignmentModel.Segments[alignmentModel.SelectedSegment])
         .replace('r_v2', alignmentModel.Segments[alignmentModel.SelectedSegment + 1]);
 
@@ -326,7 +336,7 @@ function setSelectedSegmentMessage(makeVisible = true) {
 }
 
 function setStripsForMiniature() {
-    let strips = [{
+    const strips = [{
         startValue: alignmentModel.Segments[alignmentModel.SelectedSegment],
         endValue: alignmentModel.Segments[alignmentModel.SelectedSegment + 1],
         color: lightGreenTransparent
@@ -339,7 +349,7 @@ function setStripsForMiniature() {
 /* NUM OF POINTS */
 /* -------------------------------------------------------------------------------- */
 async function loadNumOfPointsForAlignmentAsync() {
-    let obj = await getUserSettingAsync(ALIGNMENT_NUM_OF_POINTS);
+    const obj = await getUserSettingAsync(ALIGNMENT_NUM_OF_POINTS);
     if (obj.IsOk) {
         /* save retrieved value and show it */
         setNumOfPointsForAlignment(parseInt(obj.Value));
@@ -388,7 +398,7 @@ async function initSwitchLoadAutoAlignSpectrumAsync() {
 }
 
 async function loadAutoAlignSpectrumAsync() {
-    let obj = await getUserSettingAsync(ALIGNMENT_AUTO_ALIGN_SPECTRUM);
+    const obj = await getUserSettingAsync(ALIGNMENT_AUTO_ALIGN_SPECTRUM);
     if (obj.IsOk) {
         /* save retrieved value and show it */
         let isChecked = (obj.Value == '1');
@@ -480,10 +490,10 @@ function binarySearchInsert(arr, newItem) {
 
 function createSeriesForWhiteSpectra(idItem, objSpectraInfo, isPointVisible = false) {
     let keyId = getIdValue(idItem);
-    var index = objSpectraInfo.findIndex(x => x.Id == keyId);
-    let name = `${objSpectraInfo[index].Name} (${getSpectrumTypeDescription(objSpectraInfo[index].SpectrumType)})`;
-    let color = getSpectrumTypeColor(getSpectrumTypeString(objSpectraInfo[index].SpectrumType));
-    let series = {
+    const index = objSpectraInfo.findIndex(x => x.Id == keyId);
+    const name = `${objSpectraInfo[index].Name} (${getSpectrumTypeDescription(objSpectraInfo[index].SpectrumType)})`;
+    const color = getSpectrumTypeColor(getSpectrumTypeString(objSpectraInfo[index].SpectrumType));
+    const series = {
         valueField: idItem,
         name: name,
         axis: 'valueAxis',
@@ -516,7 +526,7 @@ async function loadWhiteSpectraForAlignmentAsync() {
     loadingCheckObj.reset();
     loadingCheckObj.startLoading();
 
-    let obj = await doAjaxGetNoModelAsync(UrlGetWhiteSpectraForAlignment);
+    const obj = await doAjaxGetNoModelAsync(UrlGetWhiteSpectraForAlignment);
     if (obj) {
         dxChartBeginUpdate(chartContainer);
 
@@ -526,7 +536,7 @@ async function loadWhiteSpectraForAlignmentAsync() {
         });
 
         /* create new series for ref whites and append them to current series list */
-        let ids = extractSpectraIds(obj.Points);
+        const ids = extractSpectraIds(obj.Points);
         ids.forEach(id => {
             let idseries = createSeriesForWhiteSpectra(id, obj.SpectraInfo);
             addChartSeries(idseries);
@@ -535,10 +545,10 @@ async function loadWhiteSpectraForAlignmentAsync() {
         });
 
         /* retrieve current items */
-        let items = dxChartGetItems(chartContainer);
+        const items = dxChartGetItems(chartContainer);
 
         /* add points and series to existing chart */
-        let pointsNum = obj.Points.length;
+        const pointsNum = obj.Points.length;
         for (var i = 0; i < pointsNum; i++) {
             let index = items.findIndex(x => x.X == obj.Points[i].X);
             if (index == -1) {
@@ -596,7 +606,7 @@ function unloadWhiteSpectraForAlignment() {
     /* remove ref whites from list of info about loaded spectra */
     /* AND */
     /* remove series related to ref white spectra */
-    let refWhitesIdsNum = refWhitesIds.length;
+    const refWhitesIdsNum = refWhitesIds.length;
     for (var i = 0; i < refWhitesIdsNum; i++) {
         /* remove from spectraInfo */
         let index1 = getSpectrumIndexById(refWhitesIds[i]);
@@ -610,8 +620,8 @@ function unloadWhiteSpectraForAlignment() {
     dxChartBeginUpdate(chartContainer);
 
     /* remove points belonging to ref white spectra */
-    let items = dxChartGetItems(chartContainer);
-    let itemsNum = items.length;
+    const items = dxChartGetItems(chartContainer);
+    const itemsNum = items.length;
     for (var i = itemsNum - 1; i >= 0; i--) {
         refWhitesIds.forEach(id => {
             let idItem = buildId(id);
@@ -619,7 +629,7 @@ function unloadWhiteSpectraForAlignment() {
                 delete items[i][idItem];
         });
 
-        let properties = Object.getOwnPropertyNames(items[i])
+        const properties = Object.getOwnPropertyNames(items[i])
         if (properties && properties.length == 1 && properties[0] == 'X')
             items.splice(i, 1);
     }
@@ -645,10 +655,10 @@ function unloadWhiteSpectraForAlignment() {
 function createChartMiniatureProcedure() {
     try {
         /* retrieve selected spewctrum id */
-        if (selectedSpectrumForProcessingId <= 1)
+        if (selectedSpectrumForProcessing.Id <= 1)
             return;
 
-        let dataSource = getSpectrumPointsById(selectedSpectrumForProcessingId);
+        const dataSource = getSpectrumPointsById(selectedSpectrumForProcessing.Id);
         if (!dataSource)
             return;
 
@@ -669,7 +679,7 @@ function createChartMiniature(dataSource) {
     /* dispose existant chart, avoiding issues with zoom when recreating */
     disposeChartMiniature();
 
-    let constantLines = getAlignmentConstantLines(false);
+    const constantLines = getAlignmentConstantLines(false);
 
     let chart = $('#chartMiniature').dxChart({
         /* data */
@@ -758,12 +768,15 @@ function disposeChartMiniature() {
 /* ALIGN SPECTRUM */
 /* ################################################################################ */
 async function alignSpectrumAsync() {
+    if (!isSpectrumAvailableByType(SPECTRUM_TYPE_RAW))
+        return;
+
     setLoadingCircleIsVisible(true);
 
-    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED))
+    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED))
         await removeSpectraProcedureAsync(SPECTRUM_TYPE_ALIGNED);
 
-    let points = getSpectrumPointsById(selectedSpectrumForProcessingId);
+    let points = getSpectrumPointsById(selectedSpectrumForProcessing.Id);
     if (!points) {
         setLoadingCircleIsVisible(false);
         return;
@@ -784,7 +797,7 @@ async function alignSpectrumAsync() {
     if (isSpectrumAvailableByType(SPECTRUM_TYPE_REF_WHITE)) {
         let refWhiteYValuesMax = getRefWhiteYMax();
 
-        let refSpectrumPoints = getSpectrumPointsBySpectrumType(SPECTRUM_TYPE_REF);
+        const refSpectrumPoints = getSpectrumPointsBySpectrumType(SPECTRUM_TYPE_REF);
 
         points = await window.dotNetHelper.invokeMethodAsync("normalizePoints",
             points,
@@ -796,13 +809,13 @@ async function alignSpectrumAsync() {
         return;
     }
 
-    let segments = alignmentModel.Segments.map(x => { return parseFloat(x); });
+    const segments = alignmentModel.Segments.map(x => { return parseFloat(x); });
 
-    let selectedSegmentValue = segments[alignmentModel.SelectedSegment];
-    let isXMinLowestBoundary = segments.findIndex(x => x < selectedSegmentValue) == -1;
-    let isXMaxHighestBoundary = segments.findIndex(x => x > selectedSegmentValue) == -1;
+    const selectedSegmentValue = segments[alignmentModel.SelectedSegment];
+    const isXMinLowestBoundary = segments.findIndex(x => x < selectedSegmentValue) == -1;
+    const isXMaxHighestBoundary = segments.findIndex(x => x > selectedSegmentValue) == -1;
 
-    let alignedPoints = await window.dotNetHelper.invokeMethodAsync("alignSpectrumPoints",
+    const alignedPoints = await window.dotNetHelper.invokeMethodAsync("alignSpectrumPoints",
         points,
         segments,
         segments[alignmentModel.SelectedSegment],
@@ -814,7 +827,7 @@ async function alignSpectrumAsync() {
     let isOk = true;
     if (alignedPoints && alignedPoints.length > 0) {
         /* build and show aligned spectrum */
-        let alignedSpectrum = buildAlignedSpectrum();
+        const alignedSpectrum = buildAlignedSpectrum();
         if (alignedSpectrum) {
             /* add aligned spectrum to chart */
             addProcessedSpectrum(alignedSpectrum, alignedPoints, SPECTRUM_TYPE_ALIGNED);
@@ -846,15 +859,15 @@ async function alignSpectrumAsync() {
 function buildAlignedSpectrum() {
     try {
         /* retrieve info about parent spectrum */
-        let rawSpectrum = getSpectrumById(selectedSpectrumForProcessingId);
+        const rawSpectrum = getSpectrumById(selectedSpectrumForProcessing.Id);
 
         /* build spectrum info for being added to 'spactraInfo' */
-        let alignedSpectrum = buildSpectrum(buildTempAlignedId(),
-                                            selectedSpectrumForProcessingId,
-                                            rawSpectrum.Name,
-                                            rawSpectrum.SpectrumLevel,
-                                            SPECTRUM_TYPE_ALIGNED,
-                                            rawSpectrum.SpectrumSource);
+        const alignedSpectrum = buildSpectrum(buildTempAlignedId(selectedSpectrumForProcessing.Id),
+            selectedSpectrumForProcessing.Id,
+            rawSpectrum.Name,
+            rawSpectrum.SpectrumLevel,
+            SPECTRUM_TYPE_ALIGNED,
+            rawSpectrum.SpectrumSource);
 
         /* save spectrum into 'spoectraInfo' */
         addSpectrumInfo(alignedSpectrum);
@@ -871,7 +884,7 @@ function buildAlignedSpectrumCompleted() {
     setTabEnabled(1, true);
 
     /* load panel for smoothing */
-    loadSmoothingPanel();
+    loadSmoothingPanelAsync();
 
     /* enable management of clicked point on aligned spectrum for fitting */
     setIsPointClickForFitEnabled(true);
@@ -892,7 +905,7 @@ function buildAlignedSpectrumCompleted() {
     refreshCharmsLegend();
 
     /* hide RAW spectrum for clarity */
-    setSpectrumVisibilityByIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_RAW, false);
+    setSpectrumVisibilityByIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_RAW, false);
     /* reset visual range to make all available spectra visible */
     //dxChartResetVisualRange(chartContainer);
 }
@@ -900,11 +913,11 @@ function buildAlignedSpectrumCompleted() {
 function getRefWhiteYMax() {
     let refWhiteYValuesMax = 1.0;
 
-    let refWhiteSpectrum = getSpectrumBySpectrumType(SPECTRUM_TYPE_REF_WHITE);
+    const refWhiteSpectrum = getSpectrumBySpectrumType(SPECTRUM_TYPE_REF_WHITE);
 
     try {
-        let refWhiteSpectrumPoints = getSpectrumPointsById(refWhiteSpectrum.Id);
-        let refWhiteYValues = refWhiteSpectrumPoints.map(p => { return p.Y; });
+        const refWhiteSpectrumPoints = getSpectrumPointsById(refWhiteSpectrum.Id);
+        const refWhiteYValues = refWhiteSpectrumPoints.map(p => { return p.Y; });
         refWhiteYValuesMax = Math.max(...refWhiteYValues);
     } catch (e) {
         console.log(`getRefWhiteYMax ex: ${e}`);
@@ -936,7 +949,7 @@ function getAlignedParentFiles(parentId) {
 }
 
 function getAlignmentSettings() {
-    let segments = alignmentModel.Segments.map(x => { return parseFloat(x); });
+    const segments = alignmentModel.Segments.map(x => { return parseFloat(x); });
 
     return {
         NumOfPoints: alignmentModel.NumOfPoints,
@@ -948,9 +961,9 @@ function getAlignmentSettings() {
 }
 
 async function saveAlignedSpectrumProcedureAsync() {
-    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
-    let cond1 = await checkIsSpectrumOfTypeSavedOnCloudAsync(SPECTRUM_TYPE_ALIGNED, spectrum.Name);
-    let cond2 = isSpectrumOfTypeSavedOnCloud(SPECTRUM_TYPE_ALIGNED);
+    const spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
+    const cond1 = await checkIsSpectrumOfTypeSavedOnCloudAsync(SPECTRUM_TYPE_ALIGNED, spectrum.Name);
+    const cond2 = isSpectrumOfTypeSavedOnCloud(SPECTRUM_TYPE_ALIGNED);
     if (cond1 || cond2)
         askAndExecute(CharmsSpectraProcessingManagementLabel, OverwriteSavedSpectrumQuestion, saveAlignedSpectrumAsync);
     else
@@ -961,7 +974,8 @@ async function saveAlignedSpectrumAsync(showLoadingAndMessage = true) {
     let isSavingOk = true;
 
     try {
-        const spectrum = getSpectrumById(buildTempAlignedId());
+        const tempAlignedId = buildTempAlignedId(selectedSpectrumForProcessing.Id);
+        const spectrum = getSpectrumById(tempAlignedId);
         if (!spectrum)
             return;
 
@@ -969,10 +983,10 @@ async function saveAlignedSpectrumAsync(showLoadingAndMessage = true) {
             setLoadingCircleIsVisible(true);
 
         /* retrieve parent file */
-        const rawSpectrum = getSpectrumById(selectedSpectrumForProcessingId);
+        const rawSpectrum = getSpectrumById(selectedSpectrumForProcessing.Id);
 
         const alignmentSettings = getAlignmentSettings();
-        const parentFiles = getAlignedParentFiles(selectedSpectrumForProcessingId);
+        const parentFiles = getAlignedParentFiles(selectedSpectrumForProcessing.Id);
 
         const xml = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAlignedModelAsXml",
             spectrum.Name,
@@ -1009,10 +1023,10 @@ async function saveAlignedSpectrumAsync(showLoadingAndMessage = true) {
                 updateSpectrumInfoId(index, obj.Id);
 
                 /* 2) update valueField for chart points by replacing the old fake-id with the real one */
-                updateProcessedSpectrumValueField(buildTempAlignedId(), buildId(obj.Id));
+                updateProcessedSpectrumValueField(tempAlignedId, buildId(obj.Id));
 
                 /* 3) update series in chart to ensure correspondance between series and valueField of aligned spectrum */
-                updateProcessedSpectrumSeries(buildTempAlignedId(), buildId(obj.Id), obj.Id, true);
+                updateProcessedSpectrumSeries(tempAlignedId, buildId(obj.Id), obj.Id, true);
 
                 /* call method for checking whether a version of aligned file is already saved on cloud or not */
                 callCheckIsSpectrumOfTypeSavedOnCloudForAligned(spectraInfo[index].Name);
@@ -1053,8 +1067,8 @@ function removeAlignedSpectrumProcedure() {
     switchVisibilityOfChildrenSpectraRemovalMessage('alignedChildrenRemovalWarning', false);
 
     /* check whether children removal warning message is to be shown or not  */
-    let spectrum = getSpectrumAlignedProcedure();
-    //let childSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+    const spectrum = getSpectrumAlignedProcedure();
+    //let childSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
     if (isAnySpectrumChildById(spectrum.Id))
         switchVisibilityOfChildrenSpectraRemovalMessage('alignedChildrenRemovalWarning', true);
 
@@ -1064,9 +1078,9 @@ function removeAlignedSpectrumProcedure() {
 
 async function removeAlignedSpectrumAsync(alignedSpectrum, isRemovalOnCloudRequested = false) {
     /* retrieve index of spectrum in spectraInfo */
-    let index = getSpectrumIndexById(alignedSpectrum.Id);
+    const index = getSpectrumIndexById(alignedSpectrum.Id);
 
-    let seriesname = getSpectrumSeriesNameFromIndex(index);
+    const seriesname = getSpectrumSeriesNameFromIndex(index);
 
     /* remove aligned file from chart */
     removeSpectrumFromChart(seriesname, alignedSpectrum.Id);
@@ -1104,11 +1118,11 @@ async function removeAlignedSpectrumAsync(alignedSpectrum, isRemovalOnCloudReque
 /* RETRIEVE ALIGNMENT SETTINGS */
 /* ################################################################################ */
 async function downloadAlignmentSettingsAsync(id) {
-    let model = {
+    const model = {
         Id: id
     };
 
-    let obj = await doAjaxGetAsync(UrlGetAlignmentSettings, model);
+    const obj = await doAjaxGetAsync(UrlGetAlignmentSettings, model);
     if (obj && obj.IsOk) {
         /* set settings for alignment without saving values as settings */
 
@@ -1126,36 +1140,36 @@ async function downloadAlignmentSettingsAsync(id) {
 }
 
 /* ################################################################################ */
-/* DOWNLOAD ALIGNED SPECTRUM */
+/* EXPORT ALIGNED SPECTRUM */
 /* ################################################################################ */
-async function downloadAlignedSpectrumAsCsvAsync() {
-    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+async function exportAlignedSpectrumAsCsvAsync() {
+    const spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
     if (!spectrum)
         return;
 
-    let txt = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAsTxt",
+    const txt = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAsTxt",
         spectrum.Name,
         SPECTRUM_TYPE_ALIGNED,
         getSpectrumPointsById(spectrum.Id));
     //console.info(txt);
 
-    executeDownloadFile(txt, `${spectrum.Name}_${getSpectrumTypeString(SPECTRUM_TYPE_ALIGNED)}.csv`)
+    executeExportFile(txt, `${spectrum.Name}_${getSpectrumTypeString(SPECTRUM_TYPE_ALIGNED)}.csv`)
 }
 
-async function downloadAlignedSpectrumAsXmlAsync() {
-    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+async function exportAlignedSpectrumAsXmlAsync() {
+    const spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
     if (!spectrum)
         return;
 
-    let alignmentSettings = getAlignmentSettings();
-    let parentFiles = getAlignedParentFiles(selectedSpectrumForProcessingId);
+    const alignmentSettings = getAlignmentSettings();
+    const parentFiles = getAlignedParentFiles(selectedSpectrumForProcessing.Id);
 
-    let xml = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAlignedModelAsXml",
+    const xml = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAlignedModelAsXml",
         spectrum.Name,
         spectrum.SpectrumType,
         getSpectrumPointsById(spectrum.Id),
         alignmentSettings,
         parentFiles);
 
-    executeDownloadFile(xml, `${spectrum.Name}_${getSpectrumTypeString(SPECTRUM_TYPE_ALIGNED)}.xml`)
+    executeExportFile(xml, `${spectrum.Name}_${getSpectrumTypeString(SPECTRUM_TYPE_ALIGNED)}.xml`)
 }

@@ -181,52 +181,18 @@ function updateSpectrumInfoId(index, newId) {
 }
 
 /* ---- GET ----------------------------------------------------------------------- */
-function findIdFromSpectrumTypeAndSpectrumSource(spectrumType) {
-    return spectraInfo.filter(x => x.SpectrumType == spectrumType)
-}
 
-function findChildrenOf(id, spectrumType, spectrumSource) {
-    let spectraToBeRemoved = spectraInfo.filter(x => x.Id != id);
+function getSpectraForLegend() {
+    const spectraTypes = spectraInfo.map(x => x.SpectrumType);
+    const goodSpectraTypes = spectraTypes.filter(x =>
+        x != SPECTRUM_TYPE_REF &&
+        x != SPECTRUM_TYPE_REF_WHITE);
 
-    switch (spectrumSource) {
-        case SPECTRUM_SOURCE_EXTERNAL:
-            spectraToBeRemoved = spectraToBeRemoved.filter(x => x.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL);
-            break;
 
-        default:
-            spectraToBeRemoved = spectraToBeRemoved.filter(x => x.SpectrumSource == SPECTRUM_SOURCE_SLAB);
-            break;
-    }
+    const minGoodSpectrumType = Math.min(...goodSpectraTypes);
 
-    spectraToBeRemoved = spectraToBeRemoved.filter(x =>
-        x.SpectrumType > spectrumType &&
-        x.SpectrumType != SPECTRUM_TYPE_REF &&
-        x.SpectrumType != SPECTRUM_TYPE_REF_WHITE)
-        .map(x => x.Id);
-
-    return spectraToBeRemoved;
-}
-
-function findChildrenOfIdsOtherThan(id, spectrumSource) {
-    let spectraToBeRemoved = spectraInfo.filter(x => x.Id != id);
-
-    switch (spectrumSource) {
-        case SPECTRUM_SOURCE_EXTERNAL:
-            spectraToBeRemoved = spectraToBeRemoved.filter(x => x.SpectrumSource != SPECTRUM_SOURCE_SLAB);
-            break;
-
-        default:
-            spectraToBeRemoved = spectraToBeRemoved.filter(x => x.SpectrumSource != SPECTRUM_SOURCE_EXTERNAL);
-            break;
-    }
-
-    spectraToBeRemoved = spectraToBeRemoved.filter(x =>
-        x.SpectrumType > SPECTRUM_TYPE_RAW &&
-        x.SpectrumType != SPECTRUM_TYPE_REF &&
-        x.SpectrumType != SPECTRUM_TYPE_REF_WHITE)
-        .map(x => x.Id);
-
-    return spectraToBeRemoved;
+    return spectraInfo.filter(x =>
+        x.SpectrumType == minGoodSpectrumType);
 }
 
 function findSpectrumChildrenByIdProcedure(id) {
@@ -314,7 +280,7 @@ function getAncestorSpectrumByIdAndSpectrumType(id, spectrumType) {
             continueLoop = false;
         else {
             ancestorSpectrumId = ancestorSpectrum.Id;
-            if (ancestorSpectrumId == selectedSpectrumForProcessingId)
+            if (ancestorSpectrumId == selectedSpectrumForProcessing.Id)
                 continueLoop = false;
         }
     }
@@ -363,6 +329,14 @@ function getSpectrumBySeriesName(seriesName) {
     const spectrumType = getSpectrumTypeValue(spectrumTypeString);
 
     return spectraInfo.find(x => x.Name == spectrumName && x.SpectrumType == spectrumType);
+}
+
+function getSpectrumBySeriesValueField(valueField) {
+    const series = chartSeries.find(x => x.valueField == valueField);
+    if (!series)
+        return null;
+
+    return getSpectrumBySeriesName(series.name);
 }
 
 function getSpectrumBySpectrumType(spectrumType) {

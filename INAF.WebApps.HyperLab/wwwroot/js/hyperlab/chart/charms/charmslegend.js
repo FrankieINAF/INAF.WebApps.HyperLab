@@ -11,8 +11,7 @@ function createCharmsLegend() {
     closeCharmsColorSelector();
 
     /* find raw spectra */
-    const lowerSpectrumType = Math.min(...spectraInfo.map(x => x.SpectrumType));
-    let rawSpectra = getSpectraBySpectrumType(lowerSpectrumType);
+    let rawSpectra = getSpectraForLegend();
 
     if (!rawSpectra || rawSpectra.length == 0)
         return;
@@ -43,10 +42,10 @@ function createCharmsLegend() {
             });
         }
 
-        if (rawSpectra[i].Id == selectedSpectrumForProcessingId) {
+        if (selectedSpectrumForProcessing && rawSpectra[i].Id == selectedSpectrumForProcessing.Id) {
             const continuumSpectra = getSpectraBySpectrumType(SPECTRUM_TYPE_CONTINUUM);
             if (continuumSpectra.length > 0) {
-                addSpectrumChildToSpectraTree(selectedSpectrumForProcessingId, continuumSpectra[0].Id);
+                addSpectrumChildToSpectraTree(selectedSpectrumForProcessing.Id, continuumSpectra[0].Id);
 
             }
         }

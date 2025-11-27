@@ -1,4 +1,5 @@
 ﻿using INAF.Libraries.Net.DB.HyperLabData;
+using INAF.Libraries.Net.Extensions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
@@ -99,22 +100,13 @@ namespace INAF.WebApps.HyperLab.Helpers
             return Values;
         }
 
-        public ExpandoObject? createSingleSpectrumJson(int parentId,
-                                                      SpectrumType spectrumType,
-                                                      int operationUserId)
+        public ExpandoObject? createSingleSpectrumJson(ISpectrumModel spectrumModel)
         {
-            ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumByParentIdAndSpectrumType(parentId,
-                                                                                                  spectrumType,
-                                                                                                  operationUserId);
-
-            if (spectrumModel == null)
-                return null;
-
             /* extract min,max for all series and then retrieve absolute min,max */
             (double min, double max) seriesBoundaries = getSeriesBoundaries(new List<ISpectrumModel> { spectrumModel });
 
             /* retrieve x values from 1st spectrum */
-            List<double> xValues = spectrumModel.Points.Select(x => x.X).ToList();
+            List<double> xValues = spectrumModel.Points!.Select(x => x.X).ToList();
 
             ExpandoObject resultObject = new ExpandoObject();
             resultObject.AddProperty(nameof(AxisRange), new AxisRange(Enums.Axis.Y, seriesBoundaries.min, seriesBoundaries.max));
@@ -125,7 +117,7 @@ namespace INAF.WebApps.HyperLab.Helpers
             {
                 ExpandoObject Value = new ExpandoObject();
                 Value.AddProperty("X", xValue);
-                var infos = new { spectrumModel.Id, spectrumModel.Points.First(y => y.X == xValue).Y };
+                var infos = new { spectrumModel.Id, spectrumModel.Points!.First(y => y.X == xValue).Y };
                 Value.AddProperty($"id{infos.Id}", infos.Y);
                 Values.Add(Value);
             }

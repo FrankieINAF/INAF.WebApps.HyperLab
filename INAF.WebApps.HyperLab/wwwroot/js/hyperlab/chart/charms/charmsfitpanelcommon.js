@@ -308,8 +308,8 @@ function clearPointsForFittingArray() {
     pointsForFitting = [];
 }
 
-function createPointForFitting(point) {
-    let pointBoundaries = createPointBoundariesForFitting(point);
+function createPointForFitting(point, spectrumId) {
+    let pointBoundaries = createPointBoundariesForFitting(point, spectrumId);
 
     return {
         PXMin: pointBoundaries.MinXPoint,
@@ -446,8 +446,8 @@ function calculateSemiErrorBarHeight() {
     }
 }
 
-function createPointBoundariesForFitting(point) {
-    let points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
+function createPointBoundariesForFitting(point, spectrumId) {
+    let points = getPointsFromSeriesPointsProcedure(spectrumId, selectedSpectrumTypeForContinuumRemoval);
 
     let minXPoint;
     if (isExistingPointByX(points, point.X - fitPointSemiRange))

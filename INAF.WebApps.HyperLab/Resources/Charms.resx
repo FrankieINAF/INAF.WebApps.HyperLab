@@ -150,23 +150,11 @@
   <data name="AlignmentButtonDisabledMessage" xml:space="preserve">
     <value>Load white spectra to enable this button</value>
   </data>
-  <data name="AlignmentButtonDownloadAsCsvLabel" xml:space="preserve">
-    <value>Download aligned spectrum as CSV file</value>
+  <data name="ButtonExportAsCsvLabel" xml:space="preserve">
+    <value>Export spectrum as CSV file</value>
   </data>
-  <data name="FitButtonDownloadAsCsvLabel" xml:space="preserve">
-    <value>Download continuum-removed spectrum as CSV file</value>
-  </data>
-  <data name="SmoothingButtonDownloadAsCsvLabel" xml:space="preserve">
-    <value>Download smoothed spectrum as CSV file</value>
-  </data>
-  <data name="SmoothingButtonDownloadAsXmlLabel" xml:space="preserve">
-    <value>Download smoothed spectrum as XML file</value>
-  </data>
-  <data name="FitButtonDownloadAsXmlLabel" xml:space="preserve">
-    <value>Download continuum-removed spectrum as XML file</value>
-  </data>
-  <data name="AlignmentButtonDownloadAsXmlLabel" xml:space="preserve">
-    <value>Download aligned spectrum as XML file</value>
+  <data name="ButtonExportAsXmlLabel" xml:space="preserve">
+    <value>Export spectrum as XML file</value>
   </data>
   <data name="AlignmentButtonExecuteLabel" xml:space="preserve">
     <value>Align spectrum sections</value>
@@ -240,8 +228,8 @@
   <data name="AlignmentShowHideSlidersLabel" xml:space="preserve">
     <value>Show/hide dividers settings</value>
   </data>
-  <data name="ButtonDownloadLabel" xml:space="preserve">
-    <value>Download</value>
+  <data name="ButtonExportLabel" xml:space="preserve">
+    <value>Export</value>
   </data>
   <data name="CharmsAlreadySavedOnCloudMessage" xml:space="preserve">
     <value>A copy of this processing step is already saved on cloud</value>
@@ -522,12 +510,6 @@
   <data name="TabsSmoothingTitle" xml:space="preserve">
     <value>Smoothing options</value>
   </data>
-  <data name="DownloadAsCSVLabel" xml:space="preserve">
-    <value>CSV</value>
-  </data>
-  <data name="DownloadAsXMLLabel" xml:space="preserve">
-    <value>XML</value>
-  </data>
   <data name="CharmsSelectedSpectrumColorUpdateMessage" xml:space="preserve">
     <value>The color of the selected spectrum has been updated to align with the SpectrumType-Color relationship during spectrum processing</value>
   </data>
@@ -558,7 +540,13 @@
   <data name="CharmsRetrieveFileInfoErrorMessage" xml:space="preserve">
     <value>Sorry, something went wrong while trying to retrieve info about spectrum from cloud</value>
   </data>
-  <data name="CharmsRetrieveParentSpectrumErrorMessage" xml:space="preserve">
-    <value>Sorry, something went wrong while trying to retrieve parent spectrum.</value>
+  <data name="CharmsRetrieveParentSpectrumWarningMessage" xml:space="preserve">
+    <value>Couldn't retrieve parent spectrum type r_v.</value>
+  </data>
+  <data name="FileFormatCsvLabel" xml:space="preserve">
+    <value>CSV</value>
+  </data>
+  <data name="FileFormatXmlLabel" xml:space="preserve">
+    <value>XML</value>
   </data>
 </root>

@@ -1,6 +1,7 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Permissions;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.HyperLabData;
+using INAF.Libraries.Net.Extensions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.WebApps.HyperLab.Attributes;
@@ -9,6 +10,7 @@ using INAF.WebApps.HyperLab.Helpers;
 using INAF.WebApps.HyperLab.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -57,6 +59,37 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         #region GET
+        [Authorize]
+        [CheckIsLoginValid]
+        [HttpGet]
+        public IActionResult GetProcessedSpectrumById(GenericRequestByIdModel model)
+        {
+            var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
+
+            ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumById(model.Id,
+                                                                                  getUserId());
+            if (spectrumModel == null || !spectrumModel.Points.IsAny())
+                return new JsonResult(null);
+
+            return new JsonResult(chartsHelper.createSingleSpectrumJson(spectrumModel));
+        }
+
+        [Authorize]
+        [CheckIsLoginValid]
+        [HttpGet]
+        public IActionResult GetProcessedSpectrumByParentId(GenericRequestByParentIdAndSpectrumTypeModel model)
+        {
+            var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
+
+            ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId,
+                                                                                                       model.SpectrumType,
+                                                                                                       getUserId());
+            if (spectrumModel == null || !spectrumModel.Points.IsAny())
+                return new JsonResult(null);
+
+            return new JsonResult(chartsHelper.createSingleSpectrumJson(spectrumModel));
+        }
+
         [HttpGet]
         public IActionResult GetWhiteSpectraForAlignment()
         {
@@ -105,7 +138,14 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult GetProcessedSpectrum([FromBody] GenericRequestByParentIdAndSpectrumTypeModel model)
         {
             var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
-            return new JsonResult(chartsHelper.createSingleSpectrumJson(model.ParentId, model.SpectrumType, getUserId()));
+
+            ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId, 
+                                                                                                       model.SpectrumType, 
+                                                                                                       getUserId());
+            if (spectrumModel == null || !spectrumModel.Points.IsAny())
+                return new JsonResult(null);
+
+            return new JsonResult(chartsHelper.createSingleSpectrumJson(spectrumModel));
         }
         #endregion
     }

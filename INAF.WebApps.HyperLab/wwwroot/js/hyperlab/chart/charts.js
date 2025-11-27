@@ -329,13 +329,13 @@ function createChart(dataSource, series, axisRange) {
                 let y = parseFloat(evt.target.value);
                 let point = createSimplePoint(x, y);
 
-                let seriesId = evt.target.series.getValueFields()[0];
+                let valueField = evt.target.series.getValueFields()[0];
 
                 let mousePosX = evt.event.clientX;
                 let mousePosY = evt.event.clientY;
                 //console.log(`onPointClick - ${evt.event.clientX}, ${evt.event.clientY}`);
 
-                addRemoveSelectedPointForFittingProcedure(seriesId, point, mousePosX, mousePosY);
+                addRemoveSelectedPointForFittingProcedure(valueField, point, mousePosX, mousePosY);
             }
         },
         //onPointHoverChanged: function(evt) {
@@ -600,6 +600,9 @@ function initChartPanel() {
 /* DOCUMENT READY */
 /* ################################################################################ */
 $(function () {
+    /* define selected spectrum type for continuum removal */
+    selectedSpectrumTypeForContinuumRemoval = SPECTRUM_TYPE_ALIGNED;
+
     tryHideLogoutButton();
 
     /* set y-overflow for page */

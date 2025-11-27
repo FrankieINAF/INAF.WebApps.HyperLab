@@ -54,10 +54,10 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     const segmentSelectId = buildUIElementId(FIT_SEGMENT_PRO, segment.Index, 'Select');
     const segmentContainerId = buildUIElementId(FIT_SEGMENT_PRO_VALUE, segment.Index, 'Container');
 
-    let points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
+    const points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
 
-    let buttonP0Id = `${segmentWithGuidResult.ElementId}_${P0Button}`;
-    let buttonP1Id = `${segmentWithGuidResult.ElementId}_${P1Button}`;
+    const buttonP0Id = `${segmentWithGuidResult.ElementId}_${P0Button}`;
+    const buttonP1Id = `${segmentWithGuidResult.ElementId}_${P1Button}`;
 
     let html = ``;
 
@@ -402,13 +402,13 @@ function showPXMinPXMaxFitting(P0P1Val, parentId, segmentIndex, P) {
     let top = parentRect.top - appbarRect.height;
 
     /* retrieve series points */
-    let seriesPoints = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
+    let seriesPoints = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
     //console.log(seriesPoints);
 
     let segmentSeriesPoints = seriesPoints.filter(p => p.X >= P.PXMin.X && p.X <= P.PXMax.X);
     //console.log(segmentSeriesPoints);
 
-    let spectrumInfo = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
+    let spectrumInfo = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
 
     let newSeriesPoints = [];
     let segmentSeriesPointsNum = segmentSeriesPoints.length;
@@ -672,7 +672,7 @@ async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null,
     removeYMaxValuePointFromChart(currentP0P1Selection.P);
 
     /* find the maximum in the segments defined by the points boundaries */
-    let points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
+    let points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
     pXMinPXMaxResult = await calculateMaxValuePointAsync(points, currentP0P1Selection, selectedFitFunction.Id);
     //console.log(pXMinPXMaxResult);
 
@@ -821,7 +821,7 @@ function addBoundaryPointsPro(items, point) {
 }
 
 async function calculateMaximumInPointRangeAsync(xMin, xMax) {
-    let points = extractSpectrumRange(getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval), xMin, xMax);
+    let points = extractSpectrumRange(getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval), xMin, xMax);
 
     let maxPoint = await window.dotNetHelper.invokeMethodAsync("calculateMaximumInRange",
         points);
@@ -839,7 +839,7 @@ async function updateBoundaryPointProAsync(oldPointForFitting, requestedX, PMinM
     if (items[oldBoundaryIndex][SERIES_FIT_POINT])
         delete items[oldBoundaryIndex][SERIES_FIT_POINT];
 
-    let points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
+    let points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
 
     let spectrumPoint = points.find(p => p.X == requestedX);
     if (!spectrumPoint)

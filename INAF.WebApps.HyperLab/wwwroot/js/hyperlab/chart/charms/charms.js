@@ -14,8 +14,10 @@ var isCharmsResetRequested = true;
 var isSLabSpectrumCurrentlySelected = true;
 var isSLabLowerSpectrumTypeHigherThanRaw = false;
 
-var selectedSpectrumForProcessingId = 0;
-var oldSelectedSpectrumForProcessingId = 0;
+var selectedSpectrumForProcessing = null;
+var oldSelectedSpectrumForProcessing = null;
+
+var availableFilesOnCloudDictionary = {};
 
 /* save list of spectra Id to being processed */
 var spectraForProcessingIds = [];
@@ -97,7 +99,7 @@ function onCharmsProcessSpectraClosed() {
         return;
 
     /* init the id of the selected RAW spectrum for processing */
-    selectedSpectrumForProcessingId = 0;
+    selectedSpectrumForProcessing.Id = 0;
 
     /* disable saving on cloud checkbox 'alignmentCheckboxShowLines' value */
     isCheckboxForShowSegmentsValueToBeSavedOnCloud = false;
@@ -175,13 +177,13 @@ function setTabsForNoRawSpectra() {
     setTabSelectedProcedure('charmsTabs', OPTIONS_TITLE_FIT);
 
     /* load panel for smoothing */
-    loadSmoothingPanel();
+    loadSmoothingPanelAsync();
 }
 
 function showTabsContainer(callback) {
     /* show tabs with animation */
     showByClass('charmsTabsContainer');
-    animateCSS('charmsTabsContainer', 'fadeIn', 'FASTER', callback);
+    animateCSS('charmsTabsContainer', 'fadeIn', FASTER, callback);
 }
 
 /* ################################################################################ */
@@ -244,28 +246,28 @@ function getRefWhiteFile(type) {
 function getSpectrumAlignedProcedure() {
     if (isSLabSpectrumCurrentlySelected) {
         if (isSLabLowerSpectrumTypeHigherThanRaw) {
-            return getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+            return getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
         } else {
-            return getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+            return getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
         }
     } else {
-        return getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+        return getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
     }
 }
 
 function getSpectrumContinuumRemovedProcedure() {
     if (isSLabSpectrumCurrentlySelected) {
-        return getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+        return getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
     } else {
-        return getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_ALIGNED);
+        return getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
     }
 }
 
 function restoreOldSpectraColor() {
-    if (selectedSpectrumForProcessingId == 0)
+    if (selectedSpectrumForProcessing.Id == 0)
         return; // if no spectrum is selected, then do nothing
 
-    let selectedSpectrum = getSpectrumById(selectedSpectrumForProcessingId);
+    let selectedSpectrum = getSpectrumById(selectedSpectrumForProcessing.Id);
     if (!selectedSpectrum || !selectedSpectrum.oldColor)
         return; // if no old color is available, then do nothing
 
@@ -290,6 +292,10 @@ function updateSpectrumColor(spectrum, color) {
 /* ################################################################################ */
 /* SPECTRA TYPES PARENTS */
 /* ################################################################################ */
+function getParentSpectrumType(spectrumType) {
+    return spectraTypesParents[spectrumType];
+}
+
 async function getSpectraTypesParentsAsync() {
     let obj = await doAjaxGetNoModelAsync(UrlGetSpectraTypesParents);
     if (obj) {
@@ -371,23 +377,39 @@ function manageSpectraVisibility(selectedSpectrumId) {
 /* -------------------------------------------------------------------------------- */
 /* SPECTRUM SELECTION MANGEMENT */
 /* -------------------------------------------------------------------------------- */
-function manageTabsForSelectedSpectrum(selectedSpectrum) {
+async function manageTabsForSelectedSpectrumAsync(selectedSpectrum) {
     switch (selectedSpectrum.SpectrumType) {
-        case SPECTRUM_TYPE_RAW:
+        case SPECTRUM_TYPE_ALIGNED:
+            //loadFitPanelAsync();
+            break;
 
+        case SPECTRUM_TYPE_CONTINUUM_REMOVED:
+            /* load alignment panel and download aligned spectrum together with its settings */
+            await loadAlignmentPanelAsync();
+            setTabEnabled(0, true);
+            await loadAlignmentValuesAsync();
+            await downloadProcessedSpectrumAsync(SPECTRUM_TYPE_ALIGNED);
+
+            /* load fit panel and download continuum-removed settings */
+            await loadFitPanelAsync();
+            await downloadContinuumRemovalSettingsAsync(selectedSpectrum.Id);
             break;
     }
 }
 
 async function manageSelectedSpectrumAsync(selectedSpectrum, idsToBeRemoved) {
     /* remember the previous id value */
-    oldSelectedSpectrumForProcessingId = selectedSpectrumForProcessingId;
+    oldSelectedSpectrumForProcessing = selectedSpectrumForProcessing;
 
     setLoadingCircleIsVisible(true);
 
     setTimeout(async function () {
         /* load from cloud relationships between each spectrum type and its parent */
-        getSpectraTypesParentsAsync();
+        await getSpectraTypesParentsAsync();
+
+        const parentSpectrumType = getParentSpectrumType(selectedSpectrum.SpectrumType);
+        if (parentSpectrumType != null)
+            checkIsSpectrumOfTypeSavedOnCloudAsync(parentSpectrumType, selectedSpectrum.Name, false);
 
         /* reset all variables and arrays used for fitting */
         initFit();
@@ -419,7 +441,7 @@ async function manageSelectedSpectrumAsync(selectedSpectrum, idsToBeRemoved) {
         }
 
         /* update visibility for all spectra (set visible the selected one, invisible all the other ones) */
-        manageSpectraVisibility(selectedSpectrumForProcessingId);
+        manageSpectraVisibility(selectedSpectrumForProcessing.Id);
 
         if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL || isSLabLowerSpectrumTypeHigherThanRaw) {
             setIsPointClickForFitEnabled(true);
@@ -432,16 +454,13 @@ async function manageSelectedSpectrumAsync(selectedSpectrum, idsToBeRemoved) {
             setTabEnabled(0, true);
 
             //console.log(`onSelectSpectrum - selected: ${selected}`) // selected is Id, i.e: 5
-            loadPartialViewWithAjaxGetNoModel(UrlLoadAlignmentPanel, 'alignmentOptionsPanel', onAlignmentPanelLoaded); // onAlignmentPanelLoaded defined in charmsalignmentpanel.js
+            await loadAlignmentPanelAsync();
         } else {
             setTabsForNoRawSpectra();
         }
 
-        if (await callCheckIsSpectrumOfTypeSavedOnCloudForContinuumRemovedAsync())
-            setTabEnabled(1, true);
-
         /* manage enabled/disabled tabs depending on SpectrumType of selected spectrum  */
-        manageTabsForSelectedSpectrum(selectedSpectrum);
+        await manageTabsForSelectedSpectrumAsync(selectedSpectrum);
 
         setLoadingCircleIsVisible(false);
     }, 250);
@@ -453,37 +472,37 @@ function onSelectSpectrum(selected) {
 
 async function setSelectedSpectrumForProcessing(selected) {
     let selectedValue = Number.isFinite(selected) ? parseInt(selected) : selected;
-    if (selectedValue == selectedSpectrumForProcessingId)
+    if (selectedSpectrumForProcessing && selectedValue == selectedSpectrumForProcessing.Id)
         return; // if we're opening charms and the selected spectrum is the already selected one, then do nothing
 
     /* remember new id of selected spectrum */
-    selectedSpectrumForProcessingId = selectedValue;
+    //selectedSpectrumForProcessing.Id = selectedValue;
 
-    const selectedSpectrum = getSpectrumById(selectedSpectrumForProcessingId);
+    selectedSpectrumForProcessing = getSpectrumById(selected);
 
     /* fix color for using spectrumType-color association */
-    updateSelectedSpectrumColorToSpectrumTypeColor(selectedSpectrum);
+    updateSelectedSpectrumColorToSpectrumTypeColor(selectedSpectrumForProcessing);
     addMessage(SpectrumTypeColorRelationshipMessage, 3000, INFO);
 
-    if (selectedSpectrum.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL)
+    if (selectedSpectrumForProcessing.SpectrumSource == SPECTRUM_SOURCE_EXTERNAL)
         isSLabSpectrumCurrentlySelected = false;
 
     /* find ids of spectra to be removed when changing selected spectrum */
-    findSpectrumChildrenByIdProcedure(oldSelectedSpectrumForProcessingId);
+    findSpectrumChildrenByIdProcedure(selectedSpectrumForProcessing.Id);
     if (isAnyItem(familyIds)) { // familyIds is filled-up during 'findSpectrumChildrenByIdProcedure'
         let callbackYes = async function () {
-            await manageSelectedSpectrumAsync(selectedSpectrum, familyIds);
+            await manageSelectedSpectrumAsync(selectedSpectrumForProcessing, familyIds);
         };
         let callbackNo = function () {
-            selectedSpectrumForProcessingId = oldSelectedSpectrumForProcessingId;
+            selectedSpectrumForProcessing = oldSelectedSpectrumForProcessing;
 
             /* restore old selected spectrum, no different spectrum selection is set and nothing changes */
-            Metro.getPlugin('#charmsSpectrumSelector', 'select').val(oldSelectedSpectrumForProcessingId);
+            Metro.getPlugin('#charmsSpectrumSelector', 'select').val(selectedSpectrumForProcessing.Id);
         };
 
         showDialogWithActions(WARNING_LABEL, CharmsDeleteProcessedSpectraQuestion, WARNING, YES_LABEL, NO_LABEL, callbackYes, callbackNo);
     } else
-        await manageSelectedSpectrumAsync(selectedSpectrum);
+        await manageSelectedSpectrumAsync(selectedSpectrumForProcessing);
 }
 
 function updateSelectedSpectrumColorToSpectrumTypeColor(selectedSpectrum) {
@@ -509,8 +528,12 @@ function updateSelectedSpectrumColorToSpectrumTypeColor(selectedSpectrum) {
 /* ################################################################################ */
 /* DOWNLOAD PROCESSED SPECTRUM */
 /* ################################################################################ */
-async function downloadProcessedSpectrumAsync(spectrumType) {
-    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessingId, spectrumType)) {
+async function downloadProcessedSpectrumAsync(spectrumType, spectrumId = null) {
+    if (spectrumId == null)
+        spectrumId = selectedSpectrumForProcessing.Id;
+
+    console.log(`downloadProcessedSpectrumAsync - spectrumId: ${spectrumId}, spectrumType: ${spectrumType}`);
+    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(spectrumId, spectrumType)) {
         let message;
         switch (spectrumType) {
             case SPECTRUM_TYPE_ALIGNED:
@@ -524,34 +547,26 @@ async function downloadProcessedSpectrumAsync(spectrumType) {
         return;
     }
 
+    if (!availableFilesOnCloudDictionary[spectrumType] || !availableFilesOnCloudDictionary[spectrumType].IsOk) {
+        setLoadingCircleIsVisible(false);
+        console.log(`downloadProcessedSpectrumAsync - spectrumType: ${spectrumType} is not available on cloud`);
+        return;
+    }
+
+
     setLoadingCircleIsVisible(true);
 
     let model = {
-        ParentId: selectedSpectrumForProcessingId,
+        Id: availableFilesOnCloudDictionary[spectrumType].Id,
         SpectrumType: spectrumType
     }
 
-    let obj = await doAjaxPostAsync(UrlGetProcessedSpectrum, model);
+    let obj = await doAjaxGetAsync(UrlGetProcessedSpectrumById, model);
     if (obj) {
         setLoadingCircleIsVisible(true); // trick for avoiding mysterious disappearing of loading
 
-        /* check for parent spectrum: if parent has been retrieved from cloud or saved, its Id is an integer.
-           If parent spectrum has only been built-up then its Id is created by buildTempAlignedId, buildTempContinuumRemovedId, etc.  */
-        parentSpectrum = getSpectrumById(obj.SpectraInfo.ParentId);
-        if (!parentSpectrum) {
-            const parentType = spectraTypesParents[obj.SpectraInfo.SpectrumType];
-            parentSpectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, parentType);
-            if (!parentSpectrum) {
-                showSimpleDialog(ERROR_LABEL, CharmsRetrieveParentSpectrumErrorMessage, ALERT);
-                setLoadingCircleIsVisible(false);
-                return;
-            }
-
-            /* set correct ParentId */
-            obj.SpectraInfo.ParentId = parentSpectrum.Id;
-        }
-
         /* save spectrum into 'spectraInfo' */
+        console.log(`downloadProcessedSpectrumAsync - saving spectrumType: ${spectrumType} with ParentId: ${obj.SpectraInfo.ParentId}`);
         addSpectrumInfo(obj.SpectraInfo);
 
         /* add processed spectrum to chart */
@@ -574,9 +589,6 @@ async function downloadProcessedSpectrumAsync(spectrumType) {
                 isBuildingUpContinuum = true; // used to avoid removing loading while building up continuum
                 selectedSpectrumTypeForContinuumRemoval = SPECTRUM_TYPE_ALIGNED; // used for building up points for continuum
                 await downloadContinuumRemovalSettingsAsync(obj.SpectraInfo.Id);
-
-                ///* save boundaries points as missing points to enable continuum-removed recalculation if points are added/removed */
-                //setMissingPointsFromDownloadedContinuumRemoved(obj.Points, Object.keys(obj.Points[0]));
                 break;
 
             default:
@@ -593,31 +605,71 @@ async function downloadProcessedSpectrumAsync(spectrumType) {
     }
 }
 
-async function getSpectrumByParentIdAndSpectrumTypeAsync(parentId, spectrumType) {
-    let model = {
-        Id: parentId,
-        SpectrumType: spectrumType
-    };
+//async function getSpectrumByParentIdAndSpectrumTypeAsync(parentId, spectrumType) {
+//    let model = {
+//        Id: parentId,
+//        SpectrumType: spectrumType
+//    };
 
-    let obj = await doAjaxGetAsync(UrlGetSpectrumIdByParentIdAndSpectrumType, model);
-    if (obj && obj.IsOk) {
+//    let obj = await doAjaxGetAsync(UrlGetSpectrumIdByParentIdAndSpectrumType, model);
+//    if (obj && obj.IsOk) {
 
-    }
+//    }
+//}
+
+//async function getSpectrumIdByParentIdAndSpectrumTypeAsync(parentId, spectrumType, callback) {
+//    let model = {
+//        Id: parentId,
+//        SpectrumType: spectrumType
+//    };
+
+//    let obj = await doAjaxGetAsync(UrlGetSpectrumIdByParentIdAndSpectrumType, model);
+//    if (obj && obj.IsOk) {
+//        if (callback)
+//            callback(obj.Id);
+//    }
+//}
+
+/* ################################################################################ */
+/* RETRIEVE REQUIRED SPECTRUM */
+/* ################################################################################ */
+async function tryGetRequiredSpectrumAsync(currentSpectrumType, requiredSpectrumType) {
+    if (currentSpectrumType > requiredSpectrumType) 
+        return await tryGetRequiredSpectrumForParentSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType);
+    else if (currentSpectrumType < requiredSpectrumType)
+        return await tryGetRequiredSpectrumForChildSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType);
 }
 
-async function getSpectrumIdByParentIdAndSpectrumTypeAsync(parentId, spectrumType, callback) {
-    let model = {
-        Id: parentId,
-        SpectrumType: spectrumType
-    };
+async function tryGetRequiredSpectrumForParentSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType) {
+    const parentSpectrumType = getParentSpectrumType(currentSpectrumType);
 
-    let obj = await doAjaxGetAsync(UrlGetSpectrumIdByParentIdAndSpectrumType, model);
-    if (obj && obj.IsOk) {
-        if (callback)
-            callback(obj.Id);
+    if (!parentSpectrumType || parentSpectrumType != requiredSpectrumType)
+        return null;
+
+    if (!selectedSpectrumForProcessing.ParentId || selectedSpectrumForProcessing.ParentId == 0)
+        return null;
+
+    let spectrum = getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.ParentId, requiredSpectrumType);
+    if (spectrum)
+        return spectrum;
+    else {
+        const obj = await checkIsSpectrumOfTypeSavedOnCloudAsync(requiredSpectrumType, selectedSpectrumForProcessing.Name, false);
+        if (!obj || !obj.IsOk)
+            return null;
+
+        return await downloadProcessedSpectrumAsync(spectrumType, obj.Id);
     }
+
+    return null;
 }
 
+async function tryGetRequiredSpectrumForChildSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType) {
+
+}
+
+/* ################################################################################ */
+/* MANAGE TEXT OF CLOUD ICON */
+/* ################################################################################ */
 function getTextIdFromSpectrumType(spectrumType) {
     let desc = getSpectrumTypeDescription(spectrumType);
 
@@ -643,9 +695,6 @@ function getTextIdFromSpectrumType(spectrumType) {
     return temp.join('');
 }
 
-/* ################################################################################ */
-/* MANAGE TEXT OF CLOUD ICON */
-/* ################################################################################ */
 function setCloudTextAndIconStatus(spectrumType, isSpectrumFromCloud) {
     let temp = getTextIdFromSpectrumType(spectrumType);
     let textId = `${temp}CloudText`;
@@ -666,23 +715,28 @@ function setCloudTextAndIconStatus(spectrumType, isSpectrumFromCloud) {
 /* ################################################################################ */
 /* CHECK IS SAVED ON CLOUD */
 /* ################################################################################ */
+function addOrUpdateAvailableFileOnCloudDictionary(spectrumType, isOk, id) {
+    const dictionaryItem = {
+        IsOk: isOk,
+        Id: id
+    }
+    availableFilesOnCloudDictionary[spectrumType] = dictionaryItem;
+}
+
 async function checkIsSpectrumOfTypeSavedOnCloudAsync(spectrumType, filename = null, isUIUpdateRequired = true) {
     if (!isUserAuthenticated)
-        return false;
+        return null;
 
     let file;
     if (filename != null)
         file = getSpectrumByName(filename);
     else
-        file = getSpectrumById(selectedSpectrumForProcessingId);
+        file = getSpectrumById(selectedSpectrumForProcessing.Id);
 
     if (file == null) {
         showSimpleDialog(WARNING_LABEL, CharmsRetrieveFileInfoErrorMessage, WARNING);
         return false;
     }
-
-    //if (spectrumSource == null)
-    //spectrumSource = SPECTRUM_SOURCE_SLAB;
 
     let model = {
         Filename: file.Name,
@@ -693,6 +747,8 @@ async function checkIsSpectrumOfTypeSavedOnCloudAsync(spectrumType, filename = n
 
     let obj = await doAjaxGetAsync(UrlIsSpectrumTypeSavedOnCloud, model);
     if (obj) {
+        //console.log(`checkIsSpectrumOfTypeSavedOnCloudAsync - spectrumType: ${spectrumType}, isOk: ${obj.IsOk}, id: ${obj.Id}`);
+        addOrUpdateAvailableFileOnCloudDictionary(spectrumType, obj.IsOk, obj.Id);
         /* save status of spectrum in 'spectraInfo' */
         saveSavedOnCloudStatus(obj.IsOk, spectrumType);
 
@@ -700,10 +756,10 @@ async function checkIsSpectrumOfTypeSavedOnCloudAsync(spectrumType, filename = n
             /* show/hide icon on panel  */
             setCloudIconOnPanel(obj.IsOk, spectrumType);
 
-        return obj.IsOk;
+        return obj;
     }
     else
-        return false;
+        return null;
 }
 
 async function deleteRecursivelySpectrumChildrenOnCloudAsync(rawId, spectrumType) {
@@ -725,7 +781,7 @@ async function deleteRecursivelySpectrumChildrenOnCloudAsync(rawId, spectrumType
 }
 
 function isSpectrumOfTypeSavedOnCloud(spectrumType) {
-    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, spectrumType);
+    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, spectrumType);
     if (!spectrum)
         return false;
 
@@ -733,7 +789,7 @@ function isSpectrumOfTypeSavedOnCloud(spectrumType) {
 }
 
 function saveSavedOnCloudStatus(isSavedOnCloud, spectrumType) {
-    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, spectrumType);
+    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, spectrumType);
     if (!spectrum)
         return;
 
@@ -759,7 +815,7 @@ async function removeSpectraProcedureAsync(spectrumType, dialogId, checkboxId) {
 
     executeAfter(async function () {
         /* retrieve all spectra, children of selected RAW spectrum, ordered in descending order */
-        let spectra = buildFamilyTreeForSpectrum(selectedSpectrumForProcessingId);
+        let spectra = buildFamilyTreeForSpectrum(selectedSpectrumForProcessing.Id);
 
         if (spectra.length == 0)
             return;
@@ -784,7 +840,7 @@ async function removeSpectraProcedureAsync(spectrumType, dialogId, checkboxId) {
 
         /* if removal on cloud is requested, then we have to remove all spectra obtained by next processing steps */
         if (isRemovalOnCloudRequested)
-            await deleteRecursivelySpectrumChildrenOnCloudAsync(selectedSpectrumForProcessingId, spectrumType);
+            await deleteRecursivelySpectrumChildrenOnCloudAsync(selectedSpectrumForProcessing.Id, spectrumType);
 
         setLoadingCircleIsVisible(false);
     }, JS_DELAY_200);
@@ -792,7 +848,7 @@ async function removeSpectraProcedureAsync(spectrumType, dialogId, checkboxId) {
 
 async function removeSpectraProcedureSimpleAsync() {
     /* retrieve all spectra, children of selected RAW spectrum, ordered in descending order */
-    let spectra = buildFamilyTreeForSpectrum(selectedSpectrumForProcessingId);
+    let spectra = buildFamilyTreeForSpectrum(selectedSpectrumForProcessing.Id);
 
     if (spectra.length == 0)
         return;
@@ -849,7 +905,7 @@ async function getChildrenSpectraTypesAsync(spectrumType) {
 }
 
 function getIsSpectrumSavedOnCloud(spectrumType) {
-    let index = getSpectrumIndexByParentIdAndSpectrumType(selectedSpectrumForProcessingId, spectrumType);
+    let index = getSpectrumIndexByParentIdAndSpectrumType(selectedSpectrumForProcessing.Id, spectrumType);
 
     /* check whether aligned spectrum has been saved on cloud or not */
     let isSpectrumSavedOnCloud = false;
@@ -1018,9 +1074,10 @@ function getPointsFromSeriesPoints(seriesPoints) {
     return seriesPoints.map(x => { return { X: parseFloat(x.argument), Y: parseFloat(x.value), YStdDev: 0 }; });
 }
 
-function getPointsFromSeriesPointsProcedure(rawId, spectrumType) {
+function getPointsFromSeriesPointsProcedure(spectrumId, spectrumType) {
+    const spectrum = getSpectrumByRawIdAndSpectrumType(spectrumId, spectrumType);
     /* retrieve series points */
-    let seriesPoints = getSeriesPointsProcedure(rawId, spectrumType);
+    let seriesPoints = getSeriesPointsProcedure(spectrum.Id, spectrumType);
     return getPointsFromSeriesPoints(seriesPoints);
 }
 
@@ -1028,11 +1085,8 @@ function getPointAtFromSeriesPoints(seriesPoints, index) {
     return seriesPoints[index].map(x => { return { X: parseFloat(x.argument), Y: parseFloat(x.value) }; });
 }
 
-function getSeriesPointsProcedure(rawId, spectrumType) {
-    //selectedSpectrumTypeForContinuumRemoval
-    let spectrum = getChildSpectrumByRawIdAndSpectrumType(rawId, spectrumType);
-    if (!spectrum && (!isSLabSpectrumCurrentlySelected || isSLabLowerSpectrumTypeHigherThanRaw))
-        spectrum = getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessingId, selectedSpectrumTypeForContinuumRemoval);
+function getSeriesPointsProcedure(spectrumId, spectrumType) {
+    const spectrum = getSpectrumByIdAndSpectrumType(spectrumId, spectrumType);
     /* retrieve index of spectrum in spectraInfo */
     let index = getSpectrumIndexById(spectrum.Id);
     /* retrieve series name */
@@ -1053,8 +1107,8 @@ function getSpectrumPointsById(id) {
     return getPointsFromSeriesPoints(seriesPoints);
 }
 
-function getSpectrumPointsByRawIdAndSpectrumType(rawId, spectrumType) {
-    let spectrum = getSpectrumByRawIdAndSpectrumType(rawId, spectrumType);
+function getSpectrumPointsByRawIdAndSpectrumType(spectrumId, spectrumType) {
+    let spectrum = getSpectrumByRawIdAndSpectrumType(spectrumId, spectrumType);
     return getSpectrumPointsById(spectrum.Id);
 }
 
@@ -1088,7 +1142,7 @@ function addProcessedSpectrum(processedSpectrum, processedPoints, spectrumType) 
     /* retrieve current items */
     let items = dxChartGetItems(chartContainer);
     /* get id of raw spectrum */
-    let rawId = buildId(selectedSpectrumForProcessingId);
+    let rawId = buildId(selectedSpectrumForProcessing.Id);
 
     /* retrieve keys of 'alignedPoint' entity and uses the right one for adding point to spectrum:
        when adding from locally calculated aligned spectrum, the key is 'Y', while when adding
@@ -1123,19 +1177,19 @@ function addProcessedSpectrum(processedSpectrum, processedPoints, spectrumType) 
     dxChartResetVisualRange(chartContainer);
 }
 
-function buildTempAlignedId() {
-    return `${SPECTRUM_OF_TYPE_ALIGNED_TEMP_ID}${selectedSpectrumForProcessingId}`;
+function buildTempAlignedId(id) {
+    return `${SPECTRUM_OF_TYPE_ALIGNED_TEMP_ID}${id}`;
 }
 
-function buildTempContinuumId() {
-    return `${SPECTRUM_OF_TYPE_CONTINUUM_TEMP_ID}${selectedSpectrumForProcessingId}`;
+function buildTempContinuumId(id) {
+    return `${SPECTRUM_OF_TYPE_CONTINUUM_TEMP_ID}${id}`;
 }
 
-function buildTempContinuumRemovedId() {
-    return `${SPECTRUM_OF_TYPE_CONTINUUM_REMOVED_TEMP_ID}${selectedSpectrumForProcessingId}`;
+function buildTempContinuumRemovedId(id) {
+    return `${SPECTRUM_OF_TYPE_CONTINUUM_REMOVED_TEMP_ID}${id}`;
 }
 
-function buildTempSmoothedSpectrumId(spectrumType, smoothingType) {
+function buildTempSmoothedSpectrumId(id, spectrumType, smoothingType) {
     let key;
 
     switch (smoothingType) {
@@ -1147,7 +1201,7 @@ function buildTempSmoothedSpectrumId(spectrumType, smoothingType) {
             key = SPECTRUM_OF_TYPE_SMOOTHED_WHOLE_SPECTRUM_TEMP_ID;
             break;
     }
-    return `${getSpectrumTypeString(spectrumType)}_${key}${selectedSpectrumForProcessingId}`;
+    return `${getSpectrumTypeString(spectrumType)}_${key}${id}`;
 }
 
 function getIdValueFromTempAlignedId(id) {

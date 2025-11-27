@@ -172,6 +172,10 @@ function removeGuideHubButton() {
 
 /*  */
 function addPublicAndShareButtons() {
+    var item = $('#buttonsAppBar').find(`#${publicAndShareButtonId}`);
+    if (item[0])
+        return;
+
     let html = `<div id="${publicAndShareButtonId}" class="multi-action" style="height: 36px">`;
     html += `<button class="action-button rotate-minus bg-transparent second fg-white" title="${ButtonPublicAndShareLabel}" onclick="$(this).toggleClass('active')" >`;
     html += `<span class="icon"><span class="mif-external"></span></span>`;
@@ -473,7 +477,7 @@ async function downloadSpectrumAsCsvAsync(id) {
         let obj = await doAjaxGetAsync(UrlGetSpectrumAsCsv, model);
         if (obj.IsOk) {
             setLoadingCircleIsVisible(false);
-            executeDownloadFile(obj.ResponseObject.Csv, `${obj.ResponseObject.Filename}_${getSpectrumTypeString(obj.ResponseObject.TypeId)}.csv`)
+            executeExportFile(obj.ResponseObject.Csv, `${obj.ResponseObject.Filename}_${getSpectrumTypeString(obj.ResponseObject.TypeId)}.csv`)
         } else
             isOk = false;
     } catch (e) {
@@ -499,7 +503,7 @@ async function downloadSpectrumAsXmlAsync(id) {
         let obj = await doAjaxGetAsync(UrlGetSpectrumAsXml, model);
         if (obj.IsOk) {
             setLoadingCircleIsVisible(false);
-            executeDownloadFile(obj.ResponseObject.Xml, `${obj.ResponseObject.Filename}_${getSpectrumTypeString(obj.ResponseObject.TypeId)}.xml`)
+            executeExportFile(obj.ResponseObject.Xml, `${obj.ResponseObject.Filename}_${getSpectrumTypeString(obj.ResponseObject.TypeId)}.xml`)
         } else
             isOk = false;
     } catch (e) {

@@ -160,24 +160,6 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download aligned spectrum as CSV file.
-        /// </summary>
-        public static string AlignmentButtonDownloadAsCsvLabel {
-            get {
-                return ResourceManager.GetString("AlignmentButtonDownloadAsCsvLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Download aligned spectrum as XML file.
-        /// </summary>
-        public static string AlignmentButtonDownloadAsXmlLabel {
-            get {
-                return ResourceManager.GetString("AlignmentButtonDownloadAsXmlLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Align spectrum sections.
         /// </summary>
         public static string AlignmentButtonExecuteLabel {
@@ -412,11 +394,29 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download.
+        ///   Looks up a localized string similar to Export spectrum as CSV file.
         /// </summary>
-        public static string ButtonDownloadLabel {
+        public static string ButtonExportAsCsvLabel {
             get {
-                return ResourceManager.GetString("ButtonDownloadLabel", resourceCulture);
+                return ResourceManager.GetString("ButtonExportAsCsvLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export spectrum as XML file.
+        /// </summary>
+        public static string ButtonExportAsXmlLabel {
+            get {
+                return ResourceManager.GetString("ButtonExportAsXmlLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        public static string ButtonExportLabel {
+            get {
+                return ResourceManager.GetString("ButtonExportLabel", resourceCulture);
             }
         }
         
@@ -511,11 +511,11 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorry, something went wrong while trying to retrieve parent spectrum..
+        ///   Looks up a localized string similar to Couldn&apos;t retrieve parent spectrum type r_v..
         /// </summary>
-        public static string CharmsRetrieveParentSpectrumErrorMessage {
+        public static string CharmsRetrieveParentSpectrumWarningMessage {
             get {
-                return ResourceManager.GetString("CharmsRetrieveParentSpectrumErrorMessage", resourceCulture);
+                return ResourceManager.GetString("CharmsRetrieveParentSpectrumWarningMessage", resourceCulture);
             }
         }
         
@@ -639,18 +639,18 @@ namespace INAF.WebApps.HyperLab.Resources {
         /// <summary>
         ///   Looks up a localized string similar to CSV.
         /// </summary>
-        public static string DownloadAsCSVLabel {
+        public static string FileFormatCsvLabel {
             get {
-                return ResourceManager.GetString("DownloadAsCSVLabel", resourceCulture);
+                return ResourceManager.GetString("FileFormatCsvLabel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to XML.
         /// </summary>
-        public static string DownloadAsXMLLabel {
+        public static string FileFormatXmlLabel {
             get {
-                return ResourceManager.GetString("DownloadAsXMLLabel", resourceCulture);
+                return ResourceManager.GetString("FileFormatXmlLabel", resourceCulture);
             }
         }
         
@@ -687,24 +687,6 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string FitButtonDisabledMessage {
             get {
                 return ResourceManager.GetString("FitButtonDisabledMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Download continuum-removed spectrum as CSV file.
-        /// </summary>
-        public static string FitButtonDownloadAsCsvLabel {
-            get {
-                return ResourceManager.GetString("FitButtonDownloadAsCsvLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Download continuum-removed spectrum as XML file.
-        /// </summary>
-        public static string FitButtonDownloadAsXmlLabel {
-            get {
-                return ResourceManager.GetString("FitButtonDownloadAsXmlLabel", resourceCulture);
             }
         }
         
@@ -1119,24 +1101,6 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SmoothingAutoSaveSegmentsMessage {
             get {
                 return ResourceManager.GetString("SmoothingAutoSaveSegmentsMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Download smoothed spectrum as CSV file.
-        /// </summary>
-        public static string SmoothingButtonDownloadAsCsvLabel {
-            get {
-                return ResourceManager.GetString("SmoothingButtonDownloadAsCsvLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Download smoothed spectrum as XML file.
-        /// </summary>
-        public static string SmoothingButtonDownloadAsXmlLabel {
-            get {
-                return ResourceManager.GetString("SmoothingButtonDownloadAsXmlLabel", resourceCulture);
             }
         }
         

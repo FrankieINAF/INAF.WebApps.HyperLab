@@ -56,7 +56,7 @@
     var AlignmentSaveSuccessMessage = "@Html.Raw(Charms.AlignmentSaveSuccessMessage)";
 
     var CharmsRetrieveFileInfoErrorMessage = "@Html.Raw(Charms.CharmsRetrieveFileInfoErrorMessage)";
-    var CharmsRetrieveParentSpectrumErrorMessage = "@Html.Raw(Charms.CharmsRetrieveParentSpectrumErrorMessage)";
+    var CharmsRetrieveParentSpectrumWarningMessage = "@Html.Raw(Charms.CharmsRetrieveParentSpectrumWarningMessage)";
     var CharmsSelectedSpectrumColorUpdateMessage = "@Html.Raw(Charms.CharmsSelectedSpectrumColorUpdateMessage)";
     var CharmsSelectedSpectrumColorRestoreMessage = "@Html.Raw(Charms.CharmsSelectedSpectrumColorRestoreMessage)";
 
@@ -175,6 +175,8 @@
 
     /* ChartsController */
     var UrlGetProcessedSpectrum = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.GetProcessedSpectrum)';
+    var UrlGetProcessedSpectrumById = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.GetProcessedSpectrumById)';
+    var UrlGetProcessedSpectrumByParentId = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.GetProcessedSpectrumByParentId)';
     var UrlGetWhiteSpectraForAlignment = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.GetWhiteSpectraForAlignment)';
     var UrlLoadAlignmentPanel = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.LoadAlignmentPanel)';
     var UrlLoadChartError = '/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.LoadChartError)';

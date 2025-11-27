@@ -89,7 +89,7 @@ async function startBandAnalysisProcedureAsync(x0, x1) {
     }
 
     /* let's find the series name */
-    let spectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    let spectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
     if (!spectrum) {
         setLoadingCircleIsVisible(false);
         showSimpleDialog(ERROR_LABEL, BandAnalysisNoSpectrumFoundErrorMessage, ALERT);
@@ -98,7 +98,7 @@ async function startBandAnalysisProcedureAsync(x0, x1) {
 
     let seriesIndex = findChartSeriesIndexByValueFieldId(spectrum.Id);
     if (seriesIndex == -1) {
-        seriesIndex = findChartSeriesIndexByValueFieldId(buildTempContinuumRemovedId());
+        seriesIndex = findChartSeriesIndexByValueFieldId(buildTempContinuumRemovedId(selectedSpectrumForProcessing.Id));
         if (seriesIndex == -1) {
             setLoadingCircleIsVisible(false);
             showSimpleDialog(ERROR_LABEL, BandAnalysisNoSpectrumFoundErrorMessage, ALERT);
@@ -138,7 +138,7 @@ async function executeBandAnalysisAsync(series, items) {
     clearBandAnalysisProcedure(items);
 
     /* find points in range selected by the highlightened band */
-    const seriesPoints = dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED)));
+    const seriesPoints = dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED)));
     const pointsInRange = extractSpectrumRange(getPointsFromSeriesPoints(seriesPoints), lastSelectedSegmentForBand.P0.P.X, lastSelectedSegmentForBand.P1.P.X);
 
     /* extract y values from points */
@@ -559,7 +559,7 @@ function removeHighlightenedBand(items) {
 /* ################################################################################ */
 async function getBandsAnalysisDataAsync() {
     let model = {
-        FileId: selectedSpectrumForProcessingId,
+        FileId: selectedSpectrumForProcessing.Id,
     };
 
     let obj = await doAjaxGetAsync(UrlGetBandsAnalysisData, model);
@@ -635,7 +635,7 @@ async function downloadBandAnalysisDataAsync(id) {
         setBandArea(obj.ResponseObject[0].BandArea);
 
         /* find points in range selected by the highlightened band */
-        let seriesPoints = dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED)));
+        let seriesPoints = dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED)));
         let pointsInRange = extractSpectrumRange(getPointsFromSeriesPoints(seriesPoints), obj.ResponseObject[0].LeftBoundary, obj.ResponseObject[0].RightBoundary);
 
         /* extract y values from points */
@@ -679,7 +679,7 @@ async function saveBandAnalysisDataProcedureAsync() {
     setLoadingCircleIsVisible(true);
 
     let model = {
-        FileId: selectedSpectrumForProcessingId,
+        FileId: selectedSpectrumForProcessing.Id,
         LeftBoundary: bandAnalysis.boundaries[0],
         RightBoundary: bandAnalysis.boundaries[1],
     };
@@ -708,7 +708,7 @@ async function saveBandAnalysisDataAsync() {
 
     let model = {
         Id: 0,
-        FileId: selectedSpectrumForProcessingId,
+        FileId: selectedSpectrumForProcessing.Id,
         LeftBoundary: bandAnalysis.boundaries[0],
         RightBoundary: bandAnalysis.boundaries[1],
         BandArea: bandAnalysis.area,
@@ -741,14 +741,14 @@ async function saveBandAnalysisDataAsync() {
 /* ################################################################################ */
 /* DOWNLOAD BAND ANALYSIS DATA */
 /* ################################################################################ */
-async function downloadCommonProcedureAsync (methodName) {
-    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessingId, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+async function exportCommonProcedureAsync (methodName) {
+    const spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
     if (!spectrum)
         return;
 
-    let model = {
+    const model = {
         Id: 0,
-        FileId: selectedSpectrumForProcessingId,
+        FileId: selectedSpectrumForProcessing.Id,
         LeftBoundary: bandAnalysis.boundaries[0],
         RightBoundary: bandAnalysis.boundaries[1],
         BandArea: bandAnalysis.area,
@@ -759,7 +759,7 @@ async function downloadCommonProcedureAsync (methodName) {
         Fwhm: bandAnalysis.fwhmResult.fwhm,
     }
 
-    let txt = await window.dotNetHelper.invokeMethodAsync(methodName,
+    const txt = await window.dotNetHelper.invokeMethodAsync(methodName,
         spectrum.Name,
         model);
 
@@ -773,14 +773,14 @@ async function downloadCommonProcedureAsync (methodName) {
     };
 }
 
-async function downloadBandAnalysisDataAsCsvAsync() {
-    let result = await downloadCommonProcedureAsync("getBandAnalysisAsTxt");
+async function exportBandAnalysisDataAsCsvAsync() {
+    const result = await exportCommonProcedureAsync("getBandAnalysisAsTxt");
 
-    executeDownloadFile(result.Text, `${result.Name}_${BandAnalysisForFileLabel}_${result.Model.LeftBoundary}-${result.Model.RightBoundary}.csv`)
+    executeExportFile(result.Text, `${result.Name}_${BandAnalysisForFileLabel}_${result.Model.LeftBoundary}-${result.Model.RightBoundary}.csv`)
 }
 
-async function downloadBandAnalysisDataAsXmlAsync() {
+async function exportBandAnalysisDataAsXmlAsync() {
     let result = await downloadCommonProcedureAsync("getBandAnalysisAsXml");
 
-    executeDownloadFile(result.Text, `${result.Name}_${BandAnalysisForFileLabel}_${result.Model.LeftBoundary}-${result.Model.RightBoundary}.xml`)
+    executeExportFile(result.Text, `${result.Name}_${BandAnalysisForFileLabel}_${result.Model.LeftBoundary}-${result.Model.RightBoundary}.xml`)
 }

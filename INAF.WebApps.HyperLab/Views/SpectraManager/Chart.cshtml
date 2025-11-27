@@ -281,11 +281,11 @@
                                     <span class="icon"><span class="mif-file-download"></span></span>
                                 </button>
                                 <ul class="actions drop-bottom">
-                                    <li class="bg-cyan" title="@Html.Raw(CharmsBandAnalysis.BandAnalysisButtonDownloadAsCsvLabel)" onclick="downloadBandAnalysisDataAsCsvAsync()">
-                                        <p class="text-small fg-white text-center text-bold">@Html.Raw(Charms.DownloadAsCSVLabel)</p>
+                                    <li class="bg-cyan" title="@Html.Raw(CharmsBandAnalysis.BandAnalysisButtonDownloadAsCsvLabel)" onclick="exportBandAnalysisDataAsCsvAsync()">
+                                        <p class="text-small fg-white text-center text-bold">@Html.Raw(Charms.FileFormatCsvLabel)</p>
                                     </li>
-                                    <li class="bg-cyan" title="@Html.Raw(CharmsBandAnalysis.BandAnalysisButtonDownloadAsXmlLabel)" onclick="downloadBandAnalysisDataAsXmlAsync()">
-                                        <p class="text-small fg-white text-center text-bold">@Html.Raw(Charms.DownloadAsXMLLabel)</p>
+                                    <li class="bg-cyan" title="@Html.Raw(CharmsBandAnalysis.BandAnalysisButtonDownloadAsXmlLabel)" onclick="exportBandAnalysisDataAsXmlAsync()">
+                                        <p class="text-small fg-white text-center text-bold">@Html.Raw(Charms.FileFormatXmlLabel)</p>
                                     </li>
                                 </ul>
                             </div>
@@ -342,8 +342,8 @@
 <div id="charmMessagesNotifications" data-role="charms" data-cls-charms="charms-messages-panel" data-position="bottom">
     <div class="d-flex" style="height: 500px">
         <div class="d-flex flex-self-end flex-column">
-            <div id="messagesNotificationsContainer" class="flex-self-center messages-notifications-container overflow-y-auto">
-                <ul id="messagesNotifications" class="items-list"></ul>
+            <div id="messagesNotificationsContainer" class="flex-self-center messages-notifications-container">
+                <ul id="messagesNotifications" class="items-list overflow-y-auto"></ul>
             </div>
         </div>
     </div>

@@ -67,7 +67,7 @@ function animateCSS(element, animation, speed = 'faster', callback = null, delay
 
             node.addEventListener('animationend', handleAnimationEnd, { once: true });
         } catch (e) {
-            console.log(`animateCSS - ex: ${e} - elem: ${element}`);
+            console.log(`${animateCSS.name} - ex: ${e} - elem: ${element}`);
         }
     });
 }
@@ -94,7 +94,7 @@ function animateCSSAsync(element, animation, speed = 'faster', callback = null, 
 
             node.addEventListener('animationend', handleAnimationEnd, { once: true });
         } catch (e) {
-            console.log(`animateCSS - ex: ${e} - elem: ${element}`);
+            console.log(`${animateCSSAsync.name} - ex: ${e} - elem: ${element}`);
         }
     });
 }
@@ -130,7 +130,7 @@ function delay(millisecs) {
     return new Promise(resolve => setTimeout(resolve, millisecs));
 }
 
-function executeDownloadFile(data, filename) {
+function executeExportFile(data, filename) {
     const blob = new Blob([data], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -966,6 +966,16 @@ async function doAjaxPostNoModelAsync(url, failcallback) {
 /* -------------------------------------------------------------------------------- */
 /* ---------- ASYNC/AWAIT PARTIAL VIEW ---------- */
 /* -------------------------------------------------------------------------------- */
+function getPartialViewWithAjaxGetNoModelAsync(url) {
+    return $.ajax({
+        type: GET,
+        url: url,
+        cache: false,
+        async: true,
+        dataType: "html",
+    });
+}
+
 function loadPartialViewWithAjaxGet(url, model, targetId, donecallback, failcallback) {
     setLoadingCircleIsVisible(true);
 
@@ -977,10 +987,11 @@ function loadPartialViewWithAjaxGet(url, model, targetId, donecallback, failcall
         dataType: "html",
         data: model,
     }).done(function (obj) {
+        $(function () {
+            if (donecallback)
+                donecallback();
+        });
         $(`#${targetId}`).html(obj);
-
-        if (donecallback)
-            donecallback();
 
         setLoadingCircleIsVisible(false);
     }).fail(function (xhr, status, error) {
@@ -1005,10 +1016,11 @@ function loadPartialViewWithAjaxGetNoModel(url, targetId, donecallback, failcall
         async: true,
         dataType: "html",
     }).done(function (obj) {
+        $(function () {
+            if (donecallback)
+                donecallback();
+        });
         $(`#${targetId}`).html(obj);
-
-        if (donecallback)
-            donecallback();
 
         setLoadingCircleIsVisible(false);
     }).fail(function (xhr, status, error) {
@@ -1038,10 +1050,11 @@ function loadPartialViewWithAjaxPost(url, model, targetId, donecallback, failcal
                 $('input:hidden[name="__RequestVerificationToken"]').val()
         }
     }).done(function (obj) {
+        $(function () {
+            if (donecallback)
+                donecallback();
+        });
         $(`#${targetId}`).html(obj);
-
-        if (donecallback)
-            donecallback();
 
         setLoadingCircleIsVisible(false);
     }).fail(function (xhr, status, error) {
@@ -1070,10 +1083,11 @@ function loadPartialViewWithAjaxPostNoModel(url, targetId, donecallback, failcal
                 $('input:hidden[name="__RequestVerificationToken"]').val()
         }
     }).done(function (obj) {
+        $(function () {
+            if (donecallback)
+                donecallback();
+        });
         $(`#${targetId}`).html(obj);
-
-        if (donecallback)
-            donecallback();
 
         setLoadingCircleIsVisible(false);
     }).fail(function (xhr, status, error) {
@@ -1104,10 +1118,11 @@ function loadPartialViewWithAjaxJsonPost(url, model, targetId, donecallback, fai
                 $('input:hidden[name="__RequestVerificationToken"]').val()
         }
     }).done(function (obj) {
+        $(function () {
+            if (donecallback)
+                donecallback();
+        });
         $(`#${targetId}`).html(obj);
-
-        if (donecallback)
-            donecallback();
 
         setLoadingCircleIsVisible(false);
     }).fail(function (xhr, status, error) {
