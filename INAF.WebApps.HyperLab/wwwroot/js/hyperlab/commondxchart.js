@@ -16,6 +16,25 @@ function dxChartEndUpdate(container) {
 /* -------------------------------------------------------------------------------- */
 /* VISUAL RANGE */
 /* -------------------------------------------------------------------------------- */
+function dxChartGetYValuesBoundaries(container) {
+    const items = dxChartGetItems(container);
+
+    const keys = Object.keys(items[0]);
+    const goodKeys = keys.filter(x => x.includes('id'));
+
+    let values = [];
+    items.forEach(item => {
+        goodKeys.forEach(key => {
+            values.push(item[key]);
+        });
+    });
+
+    const minYValue = Math.min(...values);
+    const maxYValue = Math.max(...values);
+
+    return { minYValue, maxYValue };
+}
+
 function dxChartGetVisualRangeX(container) {
     return container.dxChart("getArgumentAxis", "argumentAxis").visualRange();
 }
@@ -66,23 +85,37 @@ function dxChartHideSeries(container, seriesName) {
             return;
 
         container.dxChart("getSeriesByName", seriesName).hide();
+
+        dxChartResetVisualRange(container);
     } catch (e) {
         console.log(`${dxChartHideSeries.name} - seriesName: ${seriesName} - ex: ${e}`);
     }
 }
 
 function dxChartSetSeriesVisible(container, seriesName, isVisible) {
-    if (isVisible)
-        container.dxChart("getSeriesByName", seriesName).show();
-    else
-        container.dxChart("getSeriesByName", seriesName).hide();
+    try {
+        if (isVisible)
+            container.dxChart("getSeriesByName", seriesName).show();
+        else
+            container.dxChart("getSeriesByName", seriesName).hide();
 
-    dxChartResetVisualRange(container);
+        dxChartResetVisualRange(container);
+    } catch (e) {
+        console.log(`${dxChartSetSeriesVisible.name} - seriesName: ${seriesName} - ex: ${e}`);
+    }
 }
 
 function dxChartShowSeries(container, seriesName) {
-    if (!container.dxChart("getSeriesByName", seriesName).isVisible())
-        container.dxChart("getSeriesByName", seriesName).hide();
+    try {
+        if (dxChartGetSeriesByName(container, seriesName) == null)
+            return;
+
+        container.dxChart("getSeriesByName", seriesName).show();
+
+        dxChartResetVisualRange(container);
+    } catch (e) {
+        console.log(`${dxChartShowSeries.name} - seriesName: ${seriesName} - ex: ${e}`);
+    }
 }
 
 function dxChartUpdateSeries(container, chartSeries) {

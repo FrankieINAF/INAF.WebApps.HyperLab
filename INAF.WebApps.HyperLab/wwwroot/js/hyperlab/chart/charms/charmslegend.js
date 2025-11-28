@@ -66,7 +66,7 @@ function createCharmsLegend() {
         let rawcolor = getSeriesColor(rawSpectrumId);
 
         let opacity = 1;
-        let series = getSeriesFromId(rawSpectrumId);
+        let series = getSeriesFromSpectrumId(rawSpectrumId);
         if (!series.isVisible()) opacity = 0.5;
 
         let mainliobj = $('<li/>', {
@@ -92,7 +92,7 @@ function createCharmsLegend() {
 
                 let isOpaque = true;
 
-                let series = getSeriesFromId(childId);
+                let series = getSeriesFromSpectrumId(childId);
                 if (!series.isVisible()) {
                     opacity = 0.5;
                     isOpaque = false;
@@ -149,17 +149,17 @@ function onNodeClick(evt) {
 }
 
 function onSeriesClick(id) {
-    const series = getSeriesFromId(id);
+    const series = getSeriesFromSpectrumId(id);
 
     const isSeriesContinuum = series.name.includes(getSpectrumTypeString(8));
 
     if (series.isVisible()) {
-        series.hide()
+        dxChartHideSeries(chartContainer, series.name);
         $(`#spectrum${id}`).css('background-color', 'transparent');
         if (isSeriesContinuum)
             setSpectrumVisibilityByName(SERIES_FIT_POINTS, false);
     } else {
-        series.show();
+        dxChartShowSeries(chartContainer, series.name);
         if (isSeriesContinuum)
             setSpectrumVisibilityByName(SERIES_FIT_POINTS, true);
         const colorValue = $(`#spectrum${id}`).css('color');
@@ -167,18 +167,18 @@ function onSeriesClick(id) {
     }
 
     /* reset visual range to allow lines out of current visual range to be visualized */
-    dxChartResetVisualRange(chartContainer);
+    //dxChartResetVisualRange(chartContainer);
 }
 
 function onSeriesMouseOut(id) {
-    let seriesName = getSeriesNameFromId(id);
-    let series = dxChartGetSeriesByName(chartContainer, seriesName);
+    const seriesName = getSeriesNameFromSpectrumId(id);
+    const series = dxChartGetSeriesByName(chartContainer, seriesName);
     series.clearSelection();
 }
 
 function onSeriesMouseOver(id) {
-    let seriesName = getSeriesNameFromId(id);
-    let series = dxChartGetSeriesByName(chartContainer, seriesName);
+    const seriesName = getSeriesNameFromSpectrumId(id);
+    const series = dxChartGetSeriesByName(chartContainer, seriesName);
     series.select();
 }
 

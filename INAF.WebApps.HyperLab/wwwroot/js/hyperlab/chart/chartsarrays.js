@@ -1,10 +1,12 @@
 ﻿var familyIds = [];
 
 function hideSpectraToBeHidden() {
-    let spectraToBeHidden = chartSeries.filter(x => !x.isVisible);
+    let spectraToBeHidden = dxChartGetAllSeries(chartContainer).filter(x => !x.isVisible());
+    dxChartBeginUpdate(chartContainer);
     spectraToBeHidden.forEach(function (item) {
         dxChartHideSeries(chartContainer, item.name);
     });
+    dxChartEndUpdate(chartContainer);
 
     return spectraToBeHidden.length;
 }
@@ -343,7 +345,7 @@ function getSpectrumBySpectrumType(spectrumType) {
     return spectraInfo.find(x => x.SpectrumType == spectrumType);
 }
 
-function getSpectrumIndexById(id) {
+function getSpectrumIndexBySpectrumId(id) {
     return spectraInfo.findIndex(x => x.Id == id);
 }
 
@@ -427,7 +429,7 @@ function isSpectrumAvailableByType(spectrumType) {
 
 function removeSpectraById(ids) {
     ids.forEach(function (id) {
-        let index = getSpectrumIndexById(id);
+        let index = getSpectrumIndexBySpectrumId(id);
         if (index > -1) {
             /* retrieve id on chart series */
             const seriesId = buildId(id);
@@ -448,14 +450,14 @@ function setSpectrumVisibilityByIdAndSpectrumType(id, spectrumType, isVisible) {
     if (!spectrum)
         return;
 
-    let series = getSeriesFromId(spectrum.Id);
+    let series = getSeriesFromSpectrumId(spectrum.Id);
     if (!series)
         return;
 
     if (isVisible)
-        series.show();
+        dxChartHideSeries(chartContainer, series.name);
     else {
-        series.hide();
+        dxChartShowSeries(chartContainer, series.name);
         addMessage(AutoSetSpectrumInvisibleMessage.replace('r_v', getSpectrumTypeDescription(spectrumType)), 3000, INFO);
     }
 }
@@ -466,9 +468,9 @@ function setSpectrumVisibilityByName(name, isVisible) {
         return;
 
     if (isVisible)
-        series.show();
+        dxChartShowSeries(chartContainer, series.name);
     else
-        series.hide();
+        dxChartHideSeries(chartContainer, series.name);
 }
 
 /* ################################################################################ */
@@ -507,7 +509,7 @@ function findChartSeriesIndexByName(name) {
 }
 
 function getSeriesColor(id) {
-    let index = getSpectrumIndexById(id);
+    let index = getSpectrumIndexBySpectrumId(id);
     if (index < 0)
         return;
 
@@ -521,8 +523,8 @@ function getSeriesColor(id) {
     }
 }
 
-function getSeriesFromId(id) {
-    let seriesName = getSeriesNameFromId(id);
+function getSeriesFromSpectrumId(spectrumId) {
+    let seriesName = getSeriesNameFromSpectrumId(spectrumId);
     return dxChartGetSeriesByName(chartContainer, seriesName);
 }
 
@@ -530,13 +532,13 @@ function getSeriesIndexByValueField(valueField) {
     return chartSeries.findIndex(x => x.valueField == valueField);
 }
 
-function getSeriesNameFromId(id) {
-    let index = getSpectrumIndexById(id);
+function getSeriesNameFromSpectrumId(spectrumId) {
+    let index = getSpectrumIndexBySpectrumId(spectrumId);
     return getSpectrumSeriesNameFromIndex(index);
 }
 
 function getSeriesPoints(id) {
-    let index = getSpectrumIndexById(id);
+    let index = getSpectrumIndexBySpectrumId(id);
     if (index < 0)
         return;
 

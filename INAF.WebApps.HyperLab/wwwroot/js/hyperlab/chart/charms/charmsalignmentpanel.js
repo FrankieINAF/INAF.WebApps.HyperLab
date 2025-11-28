@@ -10,9 +10,6 @@ var timeoutSpectrumTypeColor;
 var isSavedOnCloudFileRemovalRequested = false;
 var isHidingRefWhitesRequested = false;
 
-/* we want to know which spectra are ref whites */
-var refWhitesIds = [];
-
 const loadingCheckObj = {
     IsLoading: false,
     IsError: false,
@@ -45,8 +42,6 @@ var PARENT_ID = 'ParentId';
 async function initAlignmentAsync() {
     spectraForProcessingIds = [];
 
-    refWhitesIds = [];
-
     isSavedOnCloudFileRemovalRequested = false;
 
     alignmentModel = {
@@ -67,6 +62,7 @@ function isAlignmentPanelLoaded() {
 async function loadAlignmentPanelAsync() {
     const alignmentpanelhtml = await getPartialViewWithAjaxGetNoModelAsync(UrlLoadAlignmentPanel);
     $(function () {
+        isHidingRefWhitesRequested = true;
         onAlignmentPanelLoaded();
     });
     $('#alignmentOptionsPanel').html(alignmentpanelhtml);
@@ -499,7 +495,6 @@ function createSeriesForWhiteSpectra(idItem, objSpectraInfo, isPointVisible = fa
         axis: 'valueAxis',
         point: { visible: isPointVisible },
         color: color,
-        isVisible: true,
     };
 
     return series;
@@ -522,6 +517,22 @@ function extractSpectraIds(points) {
     return ids;
 }
 
+function getRefWhiteIds() {
+    return spectraInfo.filter(x =>
+        x.SpectrumType == SPECTRUM_TYPE_REF ||
+        x.SpectrumType == SPECTRUM_TYPE_REF_WHITE)
+        .map(x => x.Id);
+}
+
+function setRefWhitesHidden() {
+    const refWhitesIds = getRefWhiteIds();
+    refWhitesIds.forEach(function (id) {
+        const series = getSeriesFromSpectrumId(id);
+        if (series.isVisible())
+            dxChartHideSeries(chartContainer, series.name);
+    });
+}
+
 async function loadWhiteSpectraForAlignmentAsync() {
     loadingCheckObj.reset();
     loadingCheckObj.startLoading();
@@ -538,10 +549,8 @@ async function loadWhiteSpectraForAlignmentAsync() {
         /* create new series for ref whites and append them to current series list */
         const ids = extractSpectraIds(obj.Points);
         ids.forEach(id => {
-            let idseries = createSeriesForWhiteSpectra(id, obj.SpectraInfo);
-            addChartSeries(idseries);
-            /* save ids of ref whites */
-            refWhitesIds.push(getIdValue(id));
+            const whiteSeries = createSeriesForWhiteSpectra(id, obj.SpectraInfo);
+            addChartSeries(whiteSeries);
         });
 
         /* retrieve current items */
@@ -568,13 +577,10 @@ async function loadWhiteSpectraForAlignmentAsync() {
                 });
             }
         }
+        dxChartEndUpdate(chartContainer);
 
         /* update chart series */
         dxChartUpdateSeries(chartContainer, chartSeries);
-
-        dxChartEndUpdate(chartContainer);
-
-        hideSpectraToBeHidden();
 
         /* reset visual range to make ref whites appear in chart */
         if (!isCheckboxChecked('charmsSwitchAutoAlignSpectrum') && !isCheckboxChecked('charmsSwitchAutoDownloadAlignedSpectrum'))
@@ -606,10 +612,11 @@ function unloadWhiteSpectraForAlignment() {
     /* remove ref whites from list of info about loaded spectra */
     /* AND */
     /* remove series related to ref white spectra */
+    const refWhitesIds = getRefWhiteIds();
     const refWhitesIdsNum = refWhitesIds.length;
     for (var i = 0; i < refWhitesIdsNum; i++) {
         /* remove from spectraInfo */
-        let index1 = getSpectrumIndexById(refWhitesIds[i]);
+        let index1 = getSpectrumIndexBySpectrumId(refWhitesIds[i]);
         removeSpectrumByIndex(index1);
 
         /* remove from chartSeries */
@@ -641,9 +648,6 @@ function unloadWhiteSpectraForAlignment() {
     /* reset visual range to make ref whites disappear in chart */
     //dxChartRefresh(chartContainer);
     dxChartResetVisualRange(chartContainer);
-
-    /* clean array with ids of ref white spectra */
-    refWhitesIds = [];
 
     /* enable button for alignment and change title */
     setButtonAlignEnabled('alignmentButtonExecute', false, AlignmentButtonDisabledMessage);
@@ -898,7 +902,7 @@ function buildAlignedSpectrumCompleted() {
     /* set hidden the checkbox for removing file on cloud (because of the used HTML & css, we need to do it manually, since the 'd-none' class doesn't work) */
     hideElemMetroUIElem('checkboxRemoveAlignedSpectrumOnCloud');
 
-    /* add ref white ids to spectra to be hidden */
+    /* hide ref whites */
     setRefWhitesHidden();
 
     /* refresh legend, if opened */
@@ -924,17 +928,6 @@ function getRefWhiteYMax() {
     }
 
     return refWhiteYValuesMax;
-}
-
-function setRefWhitesHidden() {
-    refWhitesIds.forEach(function (id) {
-        const valueField = buildId(id);
-        const series = chartSeries.find(x => x.valueField == valueField);
-
-        series.isVisible = false;
-
-        dxChartHideSeries(chartContainer, series.name);
-    });
 }
 
 /* ################################################################################ */
@@ -1013,7 +1006,7 @@ async function saveAlignedSpectrumAsync(showLoadingAndMessage = true) {
         const obj = await doAjaxPostAsync(UrlSaveSpectrumOfTypeAligned, saveSpectrumRequest);
         if (obj) {
             if (obj.IsOk) {
-                let index = getSpectrumIndexById(spectrum.Id);
+                let index = getSpectrumIndexBySpectrumId(spectrum.Id);
 
                 /* add ParentId property to aligned spectrum */
                 spectraInfo[index][PARENT_ID] = rawSpectrum.Id;
@@ -1078,7 +1071,7 @@ function removeAlignedSpectrumProcedure() {
 
 async function removeAlignedSpectrumAsync(alignedSpectrum, isRemovalOnCloudRequested = false) {
     /* retrieve index of spectrum in spectraInfo */
-    const index = getSpectrumIndexById(alignedSpectrum.Id);
+    const index = getSpectrumIndexBySpectrumId(alignedSpectrum.Id);
 
     const seriesname = getSpectrumSeriesNameFromIndex(index);
 

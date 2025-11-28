@@ -401,7 +401,7 @@ function createSeriesFromPoint(firstPoint) {
         let keyId = getIdValue(keys[i]);
         if (isNaN(keyId)) // for local spectra used by unauthenticated users
             keyId = keys[i];
-        var index = getSpectrumIndexById(keyId);
+        var index = getSpectrumIndexBySpectrumId(keyId);
         let name = getSpectrumSeriesNameFromIndex(index);
         let color = getSpectrumTypeColor(getSpectrumTypeString(spectraInfo[index].SpectrumType));
 
@@ -423,7 +423,6 @@ function createSeriesFromPoint(firstPoint) {
             name: name,
             axis: 'valueAxis',
             color: color,
-            isVisible: true,
         });
     }
 
@@ -456,7 +455,7 @@ function createSeriesFromPoints(points) {
                 let keyId = getIdValue(keys[j]);
                 if (isNaN(keyId)) // for local spectra used by unauthenticated users
                     keyId = keys[j];
-                var index = getSpectrumIndexById(keyId);
+                var index = getSpectrumIndexBySpectrumId(keyId);
                 let name = getSpectrumSeriesNameFromIndex(index);
                 let color = getSpectrumTypeColor(getSpectrumTypeString(spectraInfo[index].SpectrumType));
 
@@ -479,7 +478,6 @@ function createSeriesFromPoints(points) {
                     name: name,
                     axis: 'valueAxis',
                     color: palette.simpleSet[paletteCounter],
-                    isVisible: true,
                 });
 
                 paletteCounter++;
@@ -517,7 +515,8 @@ function getTooltip(seriesName, argumentText, valueText) {
 /* ---------- CHARTS ACTIONS ---------- */
 /* -------------------------------------------------------------------------------- */
 function enlargeVisualRange() {
-    dxChartResetVisualRange(chartContainer);
+    const { minYValue, maxYValue } = dxChartGetYValuesBoundaries(chartContainer);
+    dxChartSetVisualRangeY(chartContainer, [minYValue, maxYValue]);
 }
 
 function manageZoom(evt) {

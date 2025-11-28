@@ -105,7 +105,7 @@ function roundValue(value) {
 
 
 function updateVisualRangesFromDataSource(chartX, chartY) {
-    chartMagnifierSeries = chartSeries.filter(x => x.isVisible);
+    chartMagnifierSeries = dxChartGetAllSeries(chartContainer).filter(x => x.isVisible());
 
     if (!chartMagnifierSeries || chartMagnifierSeries.length == 0)
         return;
@@ -156,7 +156,7 @@ function updateChartMagnifierSeriesVisibility() {
         if (!chartMagnifierSeries)
             continue;
         //console.log(`chartSeries[${i}].name:'${chartSeries[i].name}', chartSeries[${i}].isVisible(): ${chartSeries[i].isVisible()}`);
-        chartSeries[i].isVisible() ? chartMagnifierSeries.show() : chartMagnifierSeries.hide();
+        chartSeries[i].isVisible() ? dxChartShowSeries(chartContainer, chartMagnifierSeries.name) : dxChartHideSeries(chartContainer, chartMagnifierSeries.name);
     }
 
 }

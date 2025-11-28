@@ -105,7 +105,7 @@ function updateSpectraColor(spectrumType, color) {
 
     let spectraNum = spectra.length;
     for (var i = 0; i < spectraNum; i++) {
-        let index = findChartSeriesIndexByName(getSeriesNameFromId(spectra[i].Id));
+        let index = findChartSeriesIndexByName(getSeriesNameFromSpectrumId(spectra[i].Id));
         if (index == -1)
             continue;
 

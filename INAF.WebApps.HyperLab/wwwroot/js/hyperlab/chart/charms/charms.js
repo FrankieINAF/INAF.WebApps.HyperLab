@@ -296,6 +296,14 @@ function updateSpectrumColor(spectrum, color) {
 /* ################################################################################ */
 /* SPECTRA TYPES PARENTS */
 /* ################################################################################ */
+function getChildrenSpectraTypes(spectrumType) {
+    const keys = Object.keys(spectraTypesParents).filter(
+        key => spectraTypesParents[key] === spectrumType
+    );
+    
+    return keys.map(key => parseInt(key));
+}
+
 function getParentSpectrumType(spectrumType) {
     return spectraTypesParents[spectrumType];
 }
@@ -342,7 +350,7 @@ function loadSpectraToBeProcessed() {
         html += `<option value="0">${SelectItemLabel}</option>`;
         let spectraNum = spectraForProcessingIds.length;
         for (var i = 0; i < spectraNum; i++) {
-            let index = getSpectrumIndexById(spectraForProcessingIds[i]);
+            let index = getSpectrumIndexBySpectrumId(spectraForProcessingIds[i]);
             html += `<option value="${spectraForProcessingIds[i]}">${spectraInfo[index].Name}</option>`;
         }
         html += `</select>`;
@@ -363,17 +371,14 @@ function loadSpectraToBeProcessed() {
 
 function manageSpectraVisibility(selectedSpectrumId) {
     /* show selected spectrum */
-    let seriesName = getSpectrumSeriesNameFromIndex(getSpectrumIndexById(selectedSpectrumId));
+    let seriesName = getSpectrumSeriesNameFromIndex(getSpectrumIndexBySpectrumId(selectedSpectrumId));
     dxChartShowSeries(chartContainer, seriesName);
 
     /* hide all other spectra */
     let spectraNum = spectraInfo.length;
     for (var i = 0; i < spectraNum; i++) {
         if (spectraInfo[i].Id != selectedSpectrumId) {
-            let seriesName = getSpectrumSeriesNameFromIndex(getSpectrumIndexById(spectraInfo[i].Id));
-            let index = chartSeries.findIndex(x => x.name == seriesName);
-            chartSeries[index].isVisible = false; // set attribute for being used later
-            dxChartHideSeries(chartContainer, seriesName);
+            dxChartHideSeries(chartContainer, getSeriesNameFromSpectrumId(spectraInfo[i].Id));
         }
     }
 }
@@ -383,6 +388,13 @@ function manageSpectraVisibility(selectedSpectrumId) {
 /* -------------------------------------------------------------------------------- */
 async function manageTabsForSelectedSpectrumAsync(selectedSpectrum) {
     switch (selectedSpectrum.SpectrumType) {
+        case SPECTRUM_TYPE_RAW:
+            /* set as enabled the alignment tab */
+            setTabEnabled(0, true);
+
+            await loadAlignmentPanelAsync();
+            break;
+
         case SPECTRUM_TYPE_ALIGNED:
             //loadFitPanelAsync();
             break;
@@ -391,7 +403,10 @@ async function manageTabsForSelectedSpectrumAsync(selectedSpectrum) {
             /* load alignment panel and download aligned spectrum together with its settings */
             await loadAlignmentPanelAsync();
             setTabEnabled(0, true);
+            /* load ref spectra and values for alignment */
             await loadAlignmentValuesAsync();
+            //setRefWhitesHidden();
+            /* download aligned spectrum */
             await downloadProcessedSpectrumAsync(SPECTRUM_TYPE_ALIGNED);
 
             /* load fit panel and download continuum-removed settings */
@@ -453,15 +468,15 @@ async function manageSelectedSpectrumAsync(selectedSpectrum, idsToBeRemoved) {
         }
 
         /* load info for creating UI of alignment panel  */
-        if (isSLabConditionForSpectrumTypeNotHigherThanRaw()) {
-            /* set as enabled the alignment tab */
-            setTabEnabled(0, true);
+        //if (isSLabConditionForSpectrumTypeNotHigherThanRaw()) {
+        //    /* set as enabled the alignment tab */
+        //    setTabEnabled(0, true);
 
-            //console.log(`onSelectSpectrum - selected: ${selected}`) // selected is Id, i.e: 5
-            await loadAlignmentPanelAsync();
-        } else {
-            setTabsForNoRawSpectra();
-        }
+        //    //console.log(`onSelectSpectrum - selected: ${selected}`) // selected is Id, i.e: 5
+        //    await loadAlignmentPanelAsync();
+        //} else {
+        //    setTabsForNoRawSpectra();
+        //}
 
         /* manage enabled/disabled tabs depending on SpectrumType of selected spectrum  */
         await manageTabsForSelectedSpectrumAsync(selectedSpectrum);
@@ -616,7 +631,7 @@ async function downloadProcessedSpectrumAsync(spectrumType, spectrumId = null) {
 /* RETRIEVE REQUIRED SPECTRUM */
 /* ################################################################################ */
 async function tryGetRequiredSpectrumAsync(currentSpectrumType, requiredSpectrumType) {
-    if (currentSpectrumType > requiredSpectrumType) 
+    if (currentSpectrumType > requiredSpectrumType)
         return await tryGetRequiredSpectrumForParentSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType);
     else if (currentSpectrumType < requiredSpectrumType)
         return await tryGetRequiredSpectrumForChildSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType);
@@ -646,7 +661,25 @@ async function tryGetRequiredSpectrumForParentSpectrumTypeAsync(currentSpectrumT
 }
 
 async function tryGetRequiredSpectrumForChildSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType) {
-    throw new Error(`${tryGetRequiredSpectrumForChildSpectrumTypeAsync.name} not implemented`);
+    const childrenSpectraTypes = getChildrenSpectraTypes(currentSpectrumType);
+
+    if (!childrenSpectraTypes || childrenSpectraTypes.length == 0)
+        return null;
+
+    if (!childrenSpectraTypes.includes(requiredSpectrumType))
+        return null;
+
+    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, requiredSpectrumType);
+    if (spectrum)
+        return spectrum;
+    //else {
+    //    const obj = await checkIsSpectrumOfTypeSavedOnCloudAsync(requiredSpectrumType, selectedSpectrumForProcessing.Name, false);
+    //    if (!obj || !obj.IsOk)
+    //        return null;
+    //    return await downloadProcessedSpectrumAsync(spectrumType, obj.Id);
+    //}
+
+    return null;
 }
 
 /* ################################################################################ */
@@ -948,7 +981,7 @@ async function removeSpectrumOnCloudAsync(id) {
     let isRemovalOk = true;
 
     try {
-        let model = {
+        const model = {
             Id: id
         };
 
@@ -1070,7 +1103,7 @@ function getPointAtFromSeriesPoints(seriesPoints, index) {
 function getSeriesPointsProcedure(spectrumId, spectrumType) {
     const spectrum = getSpectrumByIdAndSpectrumType(spectrumId, spectrumType);
     /* retrieve index of spectrum in spectraInfo */
-    let index = getSpectrumIndexById(spectrum.Id);
+    let index = getSpectrumIndexBySpectrumId(spectrum.Id);
     /* retrieve series name */
     let seriesname = getSpectrumSeriesNameFromIndex(index);
     /* retrieve series points */
@@ -1078,7 +1111,7 @@ function getSeriesPointsProcedure(spectrumId, spectrumType) {
 }
 
 function getSpectrumPointsById(id) {
-    let index = getSpectrumIndexById(id);
+    let index = getSpectrumIndexBySpectrumId(id);
     if (index < 0)
         return;
 
@@ -1221,7 +1254,7 @@ function updateProcessedSpectrumSeries(oldId, newId, newIdValue, isPointVisible 
     }
 
     /* add series with newId */
-    let index = getSpectrumIndexById(newIdValue);
+    let index = getSpectrumIndexBySpectrumId(newIdValue);
     let color = getSpectrumTypeColor(getSpectrumTypeString(spectraInfo[index].SpectrumType));
     let processedSeries = createSeriesFromSpectrumName(newId, getSpectrumSeriesNameFromIndex(index), color, isPointVisible);
     addChartSeries(processedSeries);

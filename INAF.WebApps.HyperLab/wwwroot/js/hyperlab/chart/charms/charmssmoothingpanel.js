@@ -944,7 +944,7 @@ async function saveSmoothedSpectrumAsync(spectrum, smoothingType, destSpectrumTy
         const obj = await doAjaxPostAsync(UrlSaveSpectrumOfTypeSmoothed, saveSpectrumRequest);
         if (obj) {
             if (obj.IsOk) {
-                const index = getSpectrumIndexById(spectrum.Id);
+                const index = getSpectrumIndexBySpectrumId(spectrum.Id);
 
                 /* add ParentId property to aligned spectrum */
                 spectraInfo[index][PARENT_ID] = srcSpectrum.Id;
@@ -1022,7 +1022,7 @@ async function removeSmoothedSpectrumProcedure(smoothingType) {
 
 async function removeSmoothedSpectrumAsync(smoothedSpectrum, isRemovalOnCloudRequested = false) {
     /* retrieve index of spectrum in spectraInfo */
-    let index = getSpectrumIndexById(smoothedSpectrum.Id);
+    let index = getSpectrumIndexBySpectrumId(smoothedSpectrum.Id);
 
     let seriesname = getSpectrumSeriesNameFromIndex(index);
 

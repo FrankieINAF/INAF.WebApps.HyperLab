@@ -516,7 +516,6 @@ async function highlightBandAsync(seriesName, segmentForFitting, items) {
         axis: 'valueAxis',
         color: BAND_AREA_COLOR,
         showInLegend: false,
-        isVisible: true
     };
     addChartSeries(bandSeries);
     dxChartUpdateSeries(chartContainer, chartSeries);

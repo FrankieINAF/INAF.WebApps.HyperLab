@@ -596,13 +596,12 @@ function addPXMinPXMaxFitToChart(yValues) {
 
 function tryAddPXMinPXMaxFitPointsSeries() {
     if (!isPXMinPXMaxChartSeriesAvailableByName(SERIES_PXMIN_PXMAX_FIT)) {
-        let pMinPMaxFitSeries = {
+        const pMinPMaxFitSeries = {
             valueField: SERIES_PXMIN_PXMAX_FIT_POINT,
             name: SERIES_PXMIN_PXMAX_FIT,
             axis: 'valueAxis',
             color: 'green',
             point: { visible: true, size: 12, color: 'green' },
-            isVisible: true,
         };
         addPXMinPXMaxChartSeries(pMinPMaxFitSeries);
         dxChartUpdateSeries(appendixChartContainer, pXMinPXMaxSeries);
@@ -610,7 +609,7 @@ function tryAddPXMinPXMaxFitPointsSeries() {
 }
 
 function addPXMinPXMaxMaxValuePointToChart() {
-    let items = dxChartGetItems(appendixChartContainer);
+    const items = dxChartGetItems(appendixChartContainer);
 
     //console.log(`${addPMinPMaxMaxValuePoint.name} - adding ${currentP0P1Selection.P.X}, ${currentP0P1Selection.P.Y}...`);
     setPointOnChart(items, currentP0P1Selection.P.X, currentP0P1Selection.P.Y, SERIES_PXMIN_PXMAX_MAX_VALUE_POINT);
@@ -618,13 +617,12 @@ function addPXMinPXMaxMaxValuePointToChart() {
 
 function tryAddPXMinPXMaxMaxValuePointSeries() {
     if (!isPXMinPXMaxChartSeriesAvailableByName(SERIES_PXMIN_PXMAX_MAX_VALUE)) {
-        let pMinPMaxMaxValueSeries = {
+        const pMinPMaxMaxValueSeries = {
             valueField: SERIES_PXMIN_PXMAX_MAX_VALUE_POINT,
             name: SERIES_PXMIN_PXMAX_MAX_VALUE,
             axis: 'valueAxis',
             width: 0,
             point: { visible: true, size: 12, color: 'white' },
-            isVisible: true,
         };
         addPXMinPXMaxChartSeries(pMinPMaxMaxValueSeries);
         dxChartUpdateSeries(appendixChartContainer, pXMinPXMaxSeries);
@@ -633,8 +631,8 @@ function tryAddPXMinPXMaxMaxValuePointSeries() {
 
 async function onPXMinPXMaxFitFunctionSelectProAsync(val, option, item) {
     //console.log(val);
-    let value = Metro.getPlugin(`#${this.id}`, 'select').val();
-    let textId = `${value.slice(0, value.length - 3)}${value.slice(value.length - 2)}Text`;
+    const value = Metro.getPlugin(`#${this.id}`, 'select').val();
+    const textId = `${value.slice(0, value.length - 3)}${value.slice(value.length - 2)}Text`;
     await pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId)
 }
 
@@ -643,21 +641,21 @@ async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null,
     tryRemovePXMinPXMaxMaxValueSeries();
 
     /* retrieve the function value */
-    let numbers = val.replace(FIT_SEGMENT_PRO, '');
-    let functionId = parseInt(numbers.charAt(1));
+    const numbers = val.replace(FIT_SEGMENT_PRO, '');
+    const functionId = parseInt(numbers.charAt(1));
 
     /* retrieve info about segment and function */
-    let functionIndex = getPXMinPXMaxFunctionIndexFromId(val);
+    const functionIndex = getPXMinPXMaxFunctionIndexFromId(val);
 
     /* retrieve the selected fit function */
-    let selectedFitFunction = pXMinPXMaxMaxValueFunctions[functionIndex];
+    const selectedFitFunction = pXMinPXMaxMaxValueFunctions[functionIndex];
     if (!selectedFitFunction)
         return;
 
-    let fixedVal = val.replace(FIT_SEGMENT_PRO, '');
+    const fixedVal = val.replace(FIT_SEGMENT_PRO, '');
 
     /* retrieve segment index */
-    let segmentIndex = parseInt(fixedVal.substring(0, 1));
+    const segmentIndex = parseInt(fixedVal.substring(0, 1));
 
     /* determine whether selected point is P0 or P1 */
     let P0P1Val = P0;
@@ -672,12 +670,12 @@ async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null,
     removeYMaxValuePointFromChart(currentP0P1Selection.P);
 
     /* find the maximum in the segments defined by the points boundaries */
-    let points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
+    const points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
     pXMinPXMaxResult = await calculateMaxValuePointAsync(points, currentP0P1Selection, selectedFitFunction.Id);
     //console.log(pXMinPXMaxResult);
 
     /* retrieve the yvalue on chart from the y-max-value x-coord */
-    let point = points.find(p => p.X == pXMinPXMaxResult.maxValuePoint.X);
+    const point = points.find(p => p.X == pXMinPXMaxResult.maxValuePoint.X);
 
     /* update y-max-value x-coord */
     currentP0P1Selection.P = pXMinPXMaxResult.maxValuePoint;
@@ -690,11 +688,11 @@ async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null,
     /* when fit function values are available, then add them to chart */
     if (pXMinPXMaxResult.yValues && pXMinPXMaxResult.yValues.length > 0) {
         /* extract points in range defined by P0/P1 XMin-XMax */
-        let range = extractSpectrumRange(points, segmentsForFitting[segmentIndex][P0P1Val].PXMin.X, segmentsForFitting[segmentIndex][P0P1Val].PXMax.X);
+        const range = extractSpectrumRange(points, segmentsForFitting[segmentIndex][P0P1Val].PXMin.X, segmentsForFitting[segmentIndex][P0P1Val].PXMax.X);
 
         /* extract min-max for yvalues in range */
-        let rangeYValues = range.map(p => { return p.Y });
-        let fitYValues = updateSegmentYRange(rangeYValues, pXMinPXMaxResult.yValues);
+        const rangeYValues = range.map(p => { return p.Y });
+        const fitYValues = updateSegmentYRange(rangeYValues, pXMinPXMaxResult.yValues);
 
         addPXMinPXMaxFitToChart(fitYValues);
     }
@@ -712,19 +710,19 @@ async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null,
     if (!isNextSegmentUpdateRequired)
         return;
 
-    let currentSegmentBaseId = val.slice(0, val.length - 4);
-    let _currentSegmentIndex = val.slice(val.length - 4, val.length - 3);
-    let currentSegmentIndex = parseInt(_currentSegmentIndex);
+    const currentSegmentBaseId = val.slice(0, val.length - 4);
+    const _currentSegmentIndex = val.slice(val.length - 4, val.length - 3);
+    const currentSegmentIndex = parseInt(_currentSegmentIndex);
 
-    let nextSegmentId = `${currentSegmentBaseId}${currentSegmentIndex + 1}`;
+    const nextSegmentId = `${currentSegmentBaseId}${currentSegmentIndex + 1}`;
     if (P0P1Val == P0)
         nextSegmentId = `${currentSegmentBaseId}${currentSegmentIndex - 1}`;
 
     if ($(`#${nextSegmentId}`).length == 0)
         return;
 
-    let nextVal = `${nextSegmentId}${functionId}${P0}`;
-    let nextTextId = `${nextSegmentId}${P0}Text`;
+    const nextVal = `${nextSegmentId}${functionId}${P0}`;
+    const nextTextId = `${nextSegmentId}${P0}Text`;
     if (P0P1Val == P0) {
         nextVal = `${nextSegmentId}${functionId}${P1}`;
         nextTextId = `${nextSegmentId}${P1}Text`;
@@ -740,10 +738,10 @@ function tryRemovePXMinPXMaxMaxValueSeries() {
         return;
 
     /* remove points */
-    let items = dxChartGetItems(appendixChartContainer);
+    const items = dxChartGetItems(appendixChartContainer);
 
     dxChartBeginUpdate(appendixChartContainer);
-    let itemsNum = items.length;
+    const itemsNum = items.length;
     for (var i = 0; i < itemsNum; i++) {
         if (items[i][SERIES_PXMIN_PXMAX_FIT_POINT])
             delete items[i][SERIES_PXMIN_PXMAX_FIT_POINT];
@@ -751,7 +749,7 @@ function tryRemovePXMinPXMaxMaxValueSeries() {
     dxChartEndUpdate(appendixChartContainer);
 
     /* remove series */
-    let seriesIndex = findPXMinPXMaxChartSeriesIndexByName(SERIES_PXMIN_PXMAX_FIT);
+    const seriesIndex = findPXMinPXMaxChartSeriesIndexByName(SERIES_PXMIN_PXMAX_FIT);
     removePXMinPXMaxChartSeriesAt(seriesIndex);
     dxChartUpdateSeries(appendixChartContainer, pXMinPXMaxSeries);
 }
@@ -763,7 +761,7 @@ function hidePXMinPXMaxFitting(elemid) {
     if (isAppendixPinned)
         return;
 
-    let callback = function () {
+    const callback = function () {
         $(`#${elemid}`).remove();
         isAppendixAlreadyAvailable = false;
     };
@@ -779,7 +777,7 @@ function addPXMinPXMaxChartSeries(series) {
 }
 
 function isPXMinPXMaxChartSeriesAvailableByName(name) {
-    let index = pXMinPXMaxSeries.findIndex(x => x.name == name);
+    const index = pXMinPXMaxSeries.findIndex(x => x.name == name);
     return (index > -1);
 }
 
@@ -795,9 +793,9 @@ function removePXMinPXMaxChartSeriesAt(index) {
 }
 
 function removeYMaxValuePointFromChart(point) {
-    let items = dxChartGetItems(appendixChartContainer);
+    const items = dxChartGetItems(appendixChartContainer);
 
-    let index = items.findIndex(p => p.X == point.X);
+    const index = items.findIndex(p => p.X == point.X);
     if (index < 0)
         return;
     if (items[index][SERIES_PXMIN_PXMAX_MAX_VALUE_POINT]) {
@@ -821,35 +819,35 @@ function addBoundaryPointsPro(items, point) {
 }
 
 async function calculateMaximumInPointRangeAsync(xMin, xMax) {
-    let points = extractSpectrumRange(getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval), xMin, xMax);
+    const points = extractSpectrumRange(getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval), xMin, xMax);
 
-    let maxPoint = await window.dotNetHelper.invokeMethodAsync("calculateMaximumInRange",
+    const maxPoint = await window.dotNetHelper.invokeMethodAsync("calculateMaximumInRange",
         points);
     //console.log(`${calculateMaximumInPointRangeAsync.name} - point_x: ${xMin}, maxPoint_x: ${maxPoint.X}`);
     return maxPoint;
 }
 
 async function updateBoundaryPointProAsync(oldPointForFitting, requestedX, PMinMax, spinnerId) {
-    let items = dxChartGetItems(chartContainer);
+    const items = dxChartGetItems(chartContainer);
 
     /* find index of boundary in items array */
-    let oldBoundaryIndex = items.findIndex(p => p.X == oldPointForFitting[PMinMax].X);
+    const oldBoundaryIndex = items.findIndex(p => p.X == oldPointForFitting[PMinMax].X);
 
     /* remove the old point */
     if (items[oldBoundaryIndex][SERIES_FIT_POINT])
         delete items[oldBoundaryIndex][SERIES_FIT_POINT];
 
-    let points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
+    const points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
 
-    let spectrumPoint = points.find(p => p.X == requestedX);
+    const spectrumPoint = points.find(p => p.X == requestedX);
     if (!spectrumPoint)
         return;
 
     /* set y-interval for points to be used as boundaries of selected point in pro-fit-mode */
-    let minY = spectrumPoint.Y - errorBarSemiHeight;
-    let maxY = spectrumPoint.Y + errorBarSemiHeight;
+    const minY = spectrumPoint.Y - errorBarSemiHeight;
+    const maxY = spectrumPoint.Y + errorBarSemiHeight;
 
-    let newBoundaryIndex = items.findIndex(p => p.X == requestedX);
+    const newBoundaryIndex = items.findIndex(p => p.X == requestedX);
     items[newBoundaryIndex][SERIES_FIT_POINT] = spectrumPoint.Y;
     items[newBoundaryIndex][MIN_Y] = minY;
     items[newBoundaryIndex][MAX_Y] = maxY;
@@ -858,13 +856,13 @@ async function updateBoundaryPointProAsync(oldPointForFitting, requestedX, PMinM
     oldPointForFitting[PMinMax].X = requestedX;
 
     /* update maxPoint in the boundaries-defined range */
-    let xMin = requestedX;
-    let xMax = oldPointForFitting.PXMax.X;
+    const xMin = requestedX;
+    const xMax = oldPointForFitting.PXMax.X;
     if (PMinMax == PXMax) {
         xMin = oldPointForFitting.PXMin.X;
         xMax = requestedX;
     }
-    let maxPoint = await calculateMaximumInPointRangeAsync(xMin, xMax);
+    const maxPoint = await calculateMaximumInPointRangeAsync(xMin, xMax);
 
     updatePointsForFittingArray(oldPointForFitting, maxPoint);
 
@@ -881,6 +879,6 @@ async function updateBoundaryPointProAsync(oldPointForFitting, requestedX, PMinM
     hideSpectraToBeHidden();
 
     /* update segment centeron charms UI */
-    let targetId = spinnerId.replace(PMinMax, spinnerId);
+    const targetId = spinnerId.replace(PMinMax, spinnerId);
     $(`#${targetId}`).text(maxPoint.X);
 }
