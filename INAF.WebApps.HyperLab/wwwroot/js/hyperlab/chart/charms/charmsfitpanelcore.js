@@ -60,7 +60,7 @@ function appendToListCore(html) {
     $('#fitSegmentsListCore').append(html);
 }
 
-function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = false) {
+function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = false, isHidingOtherSpectraRequired = true) {
     loadingCheckObj.reset();
     loadingCheckObj.startLoading();
 
@@ -105,7 +105,7 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
     $(async function () {
         //console.log('------------------------------------------------------------------------------------------')
         //console.log(`createSegmentFittingUICore - ready - segmentSelectId: ${segmentSelectId}`);
-        await onSegmentFunctionSelectCoreAsync(Metro.getPlugin(`#${segmentSelectId}`, 'select').val());
+        await onSegmentFunctionSelectCoreAsync(Metro.getPlugin(`#${segmentSelectId}`, 'select').val(), null, null, isHidingOtherSpectraRequired);
         //console.log(`${createSegmentFittingUICore.name} - ready - isBuildingUpContinuum: ${isBuildingUpContinuum}, isFromUserAction: ${isFromUserAction}, isLast: ${isLast}`);
         if (isFromUserAction) {
             /* if conditions are satisfied, then auto recalculate continuum-remved */
@@ -124,7 +124,7 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
     };
 }
 
-async function onSegmentFunctionSelectCoreAsync(val, option, item) {
+async function onSegmentFunctionSelectCoreAsync(val, option, item, isHidingOtherSpectraRequired = true) {
     //console.log(`onSegmentFunctionSelectCoreAsync ${val}`);
 
     let result = onSegmentFunctionSelectBase(val, FIT_SEGMENT_CORE, FIT_SEGMENT_CORE_VALUE);
@@ -132,7 +132,7 @@ async function onSegmentFunctionSelectCoreAsync(val, option, item) {
         return;
 
     /* add/update continuum segment */
-    await buildContinuumSegmentAsync(result.SelectedFitFunction, segmentsForFitting[result.SegmentIndex].P0.P, segmentsForFitting[result.SegmentIndex].P1.P);
+    await buildContinuumSegmentAsync(result.SelectedFitFunction, segmentsForFitting[result.SegmentIndex].P0.P, segmentsForFitting[result.SegmentIndex].P1.P, isHidingOtherSpectraRequired);
 }
 
 function removeSegmentForFittingUICore(segment) {

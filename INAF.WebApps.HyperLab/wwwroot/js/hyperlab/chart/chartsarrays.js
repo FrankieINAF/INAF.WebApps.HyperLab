@@ -166,7 +166,6 @@ async function retrieveSpectrumTypeFromStringAsync(key) {
     }
 }
 
-
 /* ################################################################################ */
 /* SPECTRA INFO */
 /* ################################################################################ */
@@ -247,7 +246,7 @@ function getChildSpectrumByIdAndSpectrumType(spectrumId, spectrumType) {
     return childSpectrum;
 }
 
-function getChildSpectrumByRawIdAndSpectrumType(rawId, spectrumType) {
+function getChildSpectrumByRawIdAndSpectrumTypeOld(rawId, spectrumType) {
     let childSpectrum;
     let continueLoop = true;
 
@@ -265,11 +264,34 @@ function getChildSpectrumByRawIdAndSpectrumType(rawId, spectrumType) {
                 }
                 else
                     id = spectra[i].Id;
+                //{
+                //    childSpectrum = getChildSpectrumByRawIdAndSpectrumType(spectra[i].Id, spectrumType);
+                //    if (childSpectrum != null && childSpectrum.SpectrumType == spectrumType)
+                //        continueLoop = false;
+                //}
             }
         }
     }
 
     return childSpectrum;
+}
+
+function getChildSpectrumByRawIdAndSpectrumType(id, spectrumType) {
+    let queue = [];
+    let continueLoop = true;
+    queue.push(getSpectraByParentId(id));
+
+    while (continueLoop && queue.length > 0) {
+        let spectrum = queue.shift();
+        if (spectrum.SpectrumType == spectrumType) {
+            return spectrum;
+        } else {
+            let children = getSpectraByParentId(spectrum.Id);
+            children.forEach(function (child) {
+                queue.push(child);
+            });
+        }
+    }
 }
 
 function getAncestorSpectrumByIdAndSpectrumType(id, spectrumType) {

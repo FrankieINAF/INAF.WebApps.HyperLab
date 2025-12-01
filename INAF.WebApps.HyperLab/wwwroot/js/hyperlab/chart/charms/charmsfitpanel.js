@@ -530,6 +530,17 @@ function onFitNumOfPointsForMissingPointsChange(curr, request, real) {
     tryCallEnqueueSaveSetting(FIT_NUM_OF_POINTS_FOR_MISSING_POINTS, real, timeoutNumOfPointsForMissingPoints);
 }
 
+function setFitMode(fitTypeId) {
+    switch (fitTypeId) {
+        case FIT_MODE_CORE:
+            currentFitMode = FIT_MODE_CORE;
+            break;
+        default:
+            currentFitMode = FIT_MODE_PRO;
+            break;
+    }
+}
+
 function setNumOfPointsForMissingPoints(value) {
     Metro.getPlugin('#inputNumOfPointsForFit', 'spinner').val(value);
 }
@@ -642,7 +653,7 @@ function addRemoveSelectedPointForFittingProcedure(valueField, point, mousePosX,
     }
 }
 
-async function addSelectedPointForFittingAsync(point, isFromUserAction = false, isLast = false) {
+async function addSelectedPointForFittingAsync(point, isFromUserAction = false, isLast = false, isHidingOtherSpectraRequired = true) {
     if (!isExistantInPointsForFittingArray(point)) {
         const callback = async function () {
             /* save point in dedicated array */
@@ -668,16 +679,14 @@ async function addSelectedPointForFittingAsync(point, isFromUserAction = false, 
             else
                 pointUICallback();
 
-            await manageNewPointAsync(point, isFromUserAction, isLast);
+            await manageNewPointAsync(point, isFromUserAction, isLast, isHidingOtherSpectraRequired);
 
             /* add series of points for fitting, if not already existant */
             tryAddFitPointsSeries();
 
             /* mantain hidden all not necessary spectra */
-            executeAfter(function () {
-                hideSpectraOtherThanTypes([SPECTRUM_TYPE_ALIGNED, SPECTRUM_TYPE_CONTINUUM]);
-                //dxChartResetVisualRange(chartContainer);
-            }, 100);
+            if (isHidingOtherSpectraRequired)
+                executeAfter(function () { hideSpectraOtherThanTypes([SPECTRUM_TYPE_ALIGNED, SPECTRUM_TYPE_CONTINUUM]); }, 100);
         };
 
         /* execute callback after pulse animation completed  */
@@ -770,7 +779,7 @@ function insertPulse(left, top, className) {
 /* ################################################################################ */
 /* MANAGE ADDED/REMOVED POINT */
 /* ################################################################################ */
-async function manageNewPointAsync(point, isFromUserAction = false, isLast = false) {
+async function manageNewPointAsync(point, isFromUserAction = false, isLast = false, isHidingOtherSpectraRequired = true) {
     if (isPointForFittingInExistingSegment(point)) {
         /* find index of existing segment to be replaced */
         const index = findExistingSegmentFotFittingIndex(point.P.X);
@@ -793,10 +802,10 @@ async function manageNewPointAsync(point, isFromUserAction = false, isLast = fal
 
         if (point.P.X <= minX) {
             const pointAfter = getNextItemInPointsForFittingArray(point);
-            await addNewSegmentProcedureAsync(point, pointAfter, isFromUserAction, isLast); // add as 1st segment
+            await addNewSegmentProcedureAsync(point, pointAfter, isFromUserAction, isLast, isHidingOtherSpectraRequired); // add as 1st segment
         } else if (point.P.X >= maxX) {
             const pointBefore = getPreviousItemInPointsForFittingArray(point);
-            await addNewSegmentProcedureAsync(pointBefore, point, isFromUserAction, isLast); // add as last segment
+            await addNewSegmentProcedureAsync(pointBefore, point, isFromUserAction, isLast, isHidingOtherSpectraRequired); // add as last segment
         }
     }
 }
@@ -889,7 +898,7 @@ function manageRemovedPoint(point) {
 /* ################################################################################ */
 /* MANAGE SEGMENTS DEFINED BY SELECTED POINTS */
 /* ################################################################################ */
-async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isLast = false) {
+async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isLast = false, isHidingOtherSpectraRequired = true) {
     //console.log(`${addNewSegment.name} - isFromUserAction: ${isFromUserAction}, isLast: ${isLast}`);
     let segment = createSegmentForFitting(p0, p1);
     addSegmentForFitting(segment)
@@ -903,13 +912,13 @@ async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isL
     switch (currentFitMode) {
         case FIT_MODE_CORE:
             /* create UI element on charms and build the continuum segment on chart */
-            result = createSegmentFittingUICore(segment, isFromUserAction, isLast);
+            result = createSegmentFittingUICore(segment, isFromUserAction, isLast, isHidingOtherSpectraRequired);
             //addSegmentToDictionary(FIT_SEGMENT_CORE, result.Guid, segment.Index);
             break;
 
         case FIT_MODE_PRO:
             /* create UI element on charms and build the continuum segment on chart */
-            result = await createSegmentFittingUIProAsync(segment, isFromUserAction, isLast);
+            result = await createSegmentFittingUIProAsync(segment, isFromUserAction, isLast, isHidingOtherSpectraRequired);
             //addSegmentToDictionary(FIT_SEGMENT_PRO, result.Guid, segment.Index);
             break;
     }
@@ -1082,7 +1091,7 @@ function lowlightSegmentForFitting(segmentId) {
 }
 
 /* MANAGE ADDING/UPDATING OF SEGMENT ON UI */
-async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1) {
+async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1, isHidingOtherSpectraRequired = true) {
     //console.log(`buildContinuumSegmentAsync - p0: ${p0.X}, p1: ${p1.X}`);
     /* retrieve range for current segment to extract the required set of points from aligned model */
     const spectrum = await tryGetRequiredSpectrumAsync(selectedSpectrumForProcessing.SpectrumType, selectedSpectrumTypeForContinuumRemoval);
@@ -1112,7 +1121,7 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1) {
 
     /* procedure for adding/updating the continuum spectrum */
     let spectrumIdForContinuum = spectrum.Id;
-    if (!Number.isInteger(spectrumIdForContinuum)) 
+    if (!Number.isInteger(spectrumIdForContinuum))
         spectrumIdForContinuum = selectedSpectrumForProcessing.Id;
     const continuumSpectrum = tryAddContinuumSpectrum(spectrumIdForContinuum);
 
@@ -1136,7 +1145,8 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1) {
     if (isBuildingUpContinuum)
         dxChartResetVisualRange(chartContainer);
 
-    hideSpectraOtherThanTypes([SPECTRUM_TYPE_ALIGNED, SPECTRUM_TYPE_CONTINUUM]);
+    if (isHidingRefWhitesRequested)
+        hideSpectraOtherThanTypes([SPECTRUM_TYPE_ALIGNED, SPECTRUM_TYPE_CONTINUUM]);
     /* mantain hidden all not necessary spectra */
     //hideSpectraToBeHidden();
 
@@ -1373,7 +1383,7 @@ async function calculateMissingPointAsync(missingPointPosition) {
             numOfPointsForMissingPoints);
         //console.log(`calculateMissingPoint - missingPointPosition: ${missingPointPosition}, missingPoint: (${missingPoint.X},${missingPoint.Y})`);
 
-        let missingPointBoundaries = createPointBoundariesForFitting(missingPoint, spectrum.Id);
+        const missingPointBoundaries = createPointBoundariesFromSpectrumForFitting(missingPoint, spectrum.Id);
 
         return {
             PXMin: missingPointBoundaries.MinXPoint,
@@ -1655,7 +1665,7 @@ function getContinuumRemovedParentFiles(parentId) {
 
 function getContinuumRemovalSettings() {
     return {
-        FitTypeId: currentFitMode,
+        FitModeId: currentFitMode,
         NumOfPointsForAveragingMissingPointX: getNumOfPointsForMissingPoints(),
         Segments: getSegments()
     }
@@ -1706,15 +1716,6 @@ async function saveContinuumRemovedSpectrumAsync(spectrum) {
     try {
         setLoadingCircleIsVisible(true);
 
-        /* save aligned for building the parent-child chain */
-        //if (!isSpectrumOfTypeSavedOnCloud(SPECTRUM_TYPE_ALIGNED)) {
-        //    if (! await saveAlignedSpectrumAsync(false)) {
-        //        setLoadingCircleIsVisible(false);
-        //        showSimpleDialog(ERROR_LABEL, AlignmentSaveErrorMessage, ALERT);
-        //        return;
-        //    }
-        //}
-
         /* retrieve parent file */
         /* retrieve aligned spectrum */
         let isAlignedSaved = true;
@@ -1728,15 +1729,6 @@ async function saveContinuumRemovedSpectrumAsync(spectrum) {
             showSimpleDialog(ERROR_LABEL, AlignmentSaveErrorMessage, ALERT);
             return;
         }
-
-        //const alignedSpectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
-        //if (!alignedSpectrum) {
-        //    setLoadingCircleIsVisible(false);
-        //    showSimpleDialog(ERROR_LABEL, AlignmentSaveErrorMessage, ALERT);
-        //    return;
-        //}
-
-
 
         const parentFiles = getContinuumRemovedParentFiles(selectedSpectrumForProcessing.Id);
 
@@ -1903,6 +1895,8 @@ async function downloadContinuumRemovalSettingsAsync(id) {
 
     const obj = await doAjaxGetAsync(UrlGetContinuumRemovalSettings, model);
     if (obj && obj.IsOk) {
+        /* set fit mode */
+        setFitMode(obj.ResponseObject.FitModeId);
         /* set settings for continuum-removal without saving values as settings */
         setNumOfPointsForMissingPoints(parseInt(obj.ResponseObject.NumOfPointsForAveragingMissingPointX));
 
@@ -1922,19 +1916,18 @@ async function downloadContinuumRemovalSettingsAsync(id) {
             return;
         }
 
-        async function addPointAsync(x, spectrumId, isFromUserAction = false, isLast = false) {
+        async function addPointAsync(x, spectrumId, xStart = null, xEnd = null, isFromUserAction = false, isLast = false) {
             let y = getYCoord(x, alignedPoints);
 
             if (y > 0) {
-                await addSelectedPointForFittingAsync(createPointForFitting(createSimplePoint(x, y), spectrumId), isFromUserAction, isLast);
+                await addSelectedPointForFittingAsync(createPointForFitting(createSimplePoint(x, y), spectrumId, xStart, xEnd), isFromUserAction, isLast, false);
             }
         }
 
         /* add points of continuum and build it up */
         const segmentsNum = obj.ResponseObject.Segments.length;
         for (var i = 0; i < segmentsNum; i++) {
-            let x = obj.ResponseObject.Segments[i].XStart;
-            await addPointAsync(x, alignedSpectrum.Id);
+            await addPointAsync(obj.ResponseObject.Segments[i].XStart, alignedSpectrum.Id, obj.ResponseObject.Segments[i].XStart, obj.ResponseObject.Segments[i].XEnd);
         }
         /* add XEnd from last segment to complete continuum */
         await addPointAsync(obj.ResponseObject.Segments[segmentsNum - 1].XEnd, alignedSpectrum.Id, false, true);

@@ -308,8 +308,12 @@ function clearPointsForFittingArray() {
     pointsForFitting = [];
 }
 
-function createPointForFitting(point, spectrumId) {
-    let pointBoundaries = createPointBoundariesForFitting(point, spectrumId);
+function createPointForFitting(point, spectrumId, pointMinX = null, pointMaxX = null) {
+    let pointBoundaries;
+    if (pointMinX !== null && pointMaxX !== null)
+        pointBoundaries = createPointBoundariesFromSettingsForFitting(spectrumId, pointMinX, pointMaxX);
+    else
+        pointBoundaries = createPointBoundariesFromSpectrumForFitting(point, spectrumId);
 
     return {
         PXMin: pointBoundaries.MinXPoint,
@@ -433,6 +437,20 @@ function updatePointsForFittingArray(oldPoint, newPoint) {
 }
 
 /* ANCILLARY */
+function calculatePointsYRange(minXPoint, maxXPoint) {
+    /* error-bar semi-height is calculated only once, to have always the same height */
+    calculateSemiErrorBarHeight();
+
+    /* set y-interval for points to be used as boundaries of selected point in pro-fit-mode */
+    minXPoint[MIN_Y] = minXPoint.Y - errorBarSemiHeight;
+    minXPoint[MAX_Y] = minXPoint.Y + errorBarSemiHeight;
+
+    maxXPoint[MIN_Y] = maxXPoint.Y - errorBarSemiHeight;
+    maxXPoint[MAX_Y] = maxXPoint.Y + errorBarSemiHeight;
+
+    return [minXPoint, maxXPoint];
+}
+
 function calculateSemiErrorBarHeight() {
     /* error-bar semi-height is calculated only once, to have always the same height */
     if (!errorBarSemiHeight) {
@@ -442,12 +460,26 @@ function calculateSemiErrorBarHeight() {
             minorTickInterval = dxChartGetUnofficialValueAxisMinorTickInterval(chartContainer);
 
         errorBarSemiHeight = minorTickInterval;
-        //console.log(`calculate errorBarSemiHeight: ${errorBarSemiHeight}`);
     }
 }
 
-function createPointBoundariesForFitting(point, spectrumId) {
-    let points = getPointsFromSeriesPointsProcedure(spectrumId, selectedSpectrumTypeForContinuumRemoval);
+function createPointBoundariesFromSettingsForFitting(spectrumId, xMin, xMax) {
+    const points = getPointsFromSeriesPointsProcedure(spectrumId, selectedSpectrumTypeForContinuumRemoval);
+
+    let minXPoint = getPointLowerThanX(points, xMin);
+    let maxXPoint = getPointHigherThanX(points, xMax);
+
+    /* calculate Y-range for minXPoint and maxXPoint */
+    [minXPoint, maxXPoint] = calculatePointsYRange(minXPoint, maxXPoint);
+
+    return {
+        MinXPoint: minXPoint,
+        MaxXPoint: maxXPoint
+    };
+}
+
+function createPointBoundariesFromSpectrumForFitting(point, spectrumId) {
+    const points = getPointsFromSeriesPointsProcedure(spectrumId, selectedSpectrumTypeForContinuumRemoval);
 
     let minXPoint;
     if (isExistingPointByX(points, point.X - fitPointSemiRange))
@@ -465,15 +497,8 @@ function createPointBoundariesForFitting(point, spectrumId) {
         maxXPoint = getPointHigherThanX(points, maxX);
     }
 
-    /* error-bar semi-height is calculated only once, to have always the same height */
-    calculateSemiErrorBarHeight();
-
-    /* set y-interval for points to be used as boundaries of selected point in pro-fit-mode */
-    minXPoint[MIN_Y] = minXPoint.Y - errorBarSemiHeight;
-    minXPoint[MAX_Y] = minXPoint.Y + errorBarSemiHeight;
-
-    maxXPoint[MIN_Y] = maxXPoint.Y - errorBarSemiHeight;
-    maxXPoint[MAX_Y] = maxXPoint.Y + errorBarSemiHeight;
+    /* calculate Y-range for minXPoint and maxXPoint */
+    [minXPoint, maxXPoint] = calculatePointsYRange(minXPoint, maxXPoint);
 
     return {
         MinXPoint: minXPoint,

@@ -45,7 +45,7 @@ async function calculateMaxValuePointAsync(points, pointForFitting, pMinPMaxMaxV
         pMinPMaxMaxValueFunction);
 }
 
-async function createSegmentFittingUIProAsync(segment, isFromUserAction = false, isLast = false) {
+async function createSegmentFittingUIProAsync(segment, isFromUserAction = false, isLast = false, isHidingOtherSpectraRequired = true) {
 
     const segmentWithGuidResult = buildUIElementIdWithGuid(FIT_SEGMENT_PRO);
 
@@ -192,7 +192,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
         });
 
         /* action to automatically calculate fitted segment depending on selected function */
-        await onSegmentFunctionSelectProAsync(Metro.getPlugin(`#${segmentSelectId}`, 'select').val());
+        await onSegmentFunctionSelectProAsync(Metro.getPlugin(`#${segmentSelectId}`, 'select').val(), null, null, isHidingOtherSpectraRequired);
         //console.log(`createSegmentUI - ready - isBuildingUpContinuum: ${isBuildingUpContinuum}, isFromUserAction: ${isFromUserAction}, isLast: ${isLast}`);
         if (isFromUserAction) {
             /* if conditions are satisfied, then auto recalculate continuum-remved */
@@ -286,7 +286,7 @@ async function onBoundaryValueChangedProcedureAsync(id, spinnerId, curr, request
     setLoadingCircleIsVisible(false);
 }
 
-async function onSegmentFunctionSelectProAsync(val, option, item) {
+async function onSegmentFunctionSelectProAsync(val, option, item, isHidingOtherSpectraRequired = true) {
     //console.log(`onSegmentFunctionSelectProAsync ${val}`);
 
     let result = onSegmentFunctionSelectBase(val, FIT_SEGMENT_PRO, FIT_SEGMENT_PRO_VALUE);
@@ -294,7 +294,7 @@ async function onSegmentFunctionSelectProAsync(val, option, item) {
         return;
 
     /* add/update continuum segment */
-    await buildContinuumSegmentAsync(result.SelectedFitFunction, segmentsForFitting[result.SegmentIndex].P0.P, segmentsForFitting[result.SegmentIndex].P1.P);
+    await buildContinuumSegmentAsync(result.SelectedFitFunction, segmentsForFitting[result.SegmentIndex].P0.P, segmentsForFitting[result.SegmentIndex].P1.P, isHidingOtherSpectraRequired);
 }
 
 function removeSegmentForFittingUIPro(segment) {
