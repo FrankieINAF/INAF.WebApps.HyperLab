@@ -300,7 +300,7 @@ function getChildrenSpectraTypes(spectrumType) {
     const keys = Object.keys(spectraTypesParents).filter(
         key => spectraTypesParents[key] === spectrumType
     );
-    
+
     return keys.map(key => parseInt(key));
 }
 
@@ -389,10 +389,9 @@ function manageSpectraVisibility(selectedSpectrumId) {
 async function manageTabsForSelectedSpectrumAsync(selectedSpectrum) {
     switch (selectedSpectrum.SpectrumType) {
         case SPECTRUM_TYPE_RAW:
+            await loadAlignmentPanelAsync();
             /* set as enabled the alignment tab */
             setTabEnabled(0, true);
-
-            await loadAlignmentPanelAsync();
             break;
 
         case SPECTRUM_TYPE_ALIGNED:
@@ -402,16 +401,18 @@ async function manageTabsForSelectedSpectrumAsync(selectedSpectrum) {
         case SPECTRUM_TYPE_CONTINUUM_REMOVED:
             /* load alignment panel and download aligned spectrum together with its settings */
             await loadAlignmentPanelAsync();
+            /* set as enabled the alignment tab */
             setTabEnabled(0, true);
             /* load ref spectra and values for alignment */
             await loadAlignmentValuesAsync();
-            //setRefWhitesHidden();
             /* download aligned spectrum */
             await downloadProcessedSpectrumAsync(SPECTRUM_TYPE_ALIGNED);
 
             /* load fit panel and download continuum-removed settings */
             await loadFitPanelAsync();
             await downloadContinuumRemovalSettingsAsync(selectedSpectrum.Id);
+            /* hide whites used for alignment */
+            executeAfter(function () { setRefWhitesHidden(); }, 1000);
             break;
     }
 }
@@ -832,8 +833,10 @@ async function removeSpectraProcedureAsync(spectrumType, dialogId, checkboxId) {
         /* retrieve all spectra, children of selected RAW spectrum, ordered in descending order */
         let spectra = buildFamilyTreeForSpectrum(selectedSpectrumForProcessing.Id);
 
-        if (spectra.length == 0)
+        if (spectra.length == 0) {
+            setLoadingCircleIsVisible(false);
             return;
+        }
 
         /* filter only spectra with spectrumType greater than or equal to the selected one for being removed */
         let spectraToBeRemoved = spectra.filter(x => x.SpectrumType >= spectrumType);
@@ -1135,6 +1138,14 @@ function getSpectrumPointsBySpectrumType(spectrumType) {
 function isExistingPointByX(points, x) {
     let index = points.findIndex(p => p.X == x);
     return (index >= 0);
+}
+
+function getSpectrumPointsByIdAndSpectrumTypeProcedure(spectrumId, spectrumType) {
+    let spectrumPoints = getSpectrumPointsByRawIdAndSpectrumType(spectrumId, spectrumType);
+    if (!spectrumPoints)
+        spectrumPoints = getSpectrumPointsByIdAndSpectrumType(spectrumId, spectrumType);
+
+    return spectrumPoints;
 }
 
 /* ################################################################################ */

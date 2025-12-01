@@ -35,7 +35,7 @@ var HIGHLIGHTED_SEGMENT_TEMP_ID = 'highlightedSegment_id';
 
 var POINT_RADIUS = 12;
 
-var currentFitMode = FIT_CORE_MODE;
+var currentFitMode = FIT_MODE_CORE;
 var errorBarSemiHeight;
 
 var PULSE_TIMEOUT = 1000;
@@ -56,19 +56,21 @@ async function loadFitPanelAsync(extcallback = null) {
 
         const fitpanelhtml = await getPartialViewWithAjaxGetNoModelAsync(UrlLoadFitPanel);
         $(function () {
-            onFitPanelLoaded(extcallback)
+            onFitPanelLoadedAsync(extcallback)
         });
         $('#fitoptions').html(fitpanelhtml);
 
         /* add raw spectrum to the ones to be hidden */
-        if (isSLabConditionForSpectrumTypeNotHigherThanRaw()) //when a SLab RAW spectrum is loaded and under processing we hide it in this phase, otherwise avoid to hide it
-            dxChartSetSeriesVisible(chartContainer, getSeriesNameFromSpectrumId(selectedSpectrumForProcessing.Id), false);
+        //if (isSLabConditionForSpectrumTypeNotHigherThanRaw()) //when a SLab RAW spectrum is loaded and under processing we hide it in this phase, otherwise avoid to hide it
+        //    dxChartSetSeriesVisible(chartContainer, getSeriesNameFromSpectrumId(selectedSpectrumForProcessing.Id), false);
 
         isFitTabSelected = true;
     }
 }
 
-function onFitPanelLoaded(extcallback = null) {
+async function onFitPanelLoadedAsync(extcallback = null) {
+    await loadFitPanelValuesAsync();
+
     /* check whether contunuum-removed is available on cloud */
     callCheckIsSpectrumOfTypeSavedOnCloudForContinuumRemovedAsync();
 
@@ -126,7 +128,7 @@ function initFit() {
     hide('fitoptions');
 
     /* init the switch for showing/hiding constant lines for fit points */
-    loadFitPanelValuesAsync();
+    //loadFitPanelValuesAsync();
 }
 
 function initFitArrays() {
@@ -178,16 +180,16 @@ async function initSwitchCoreProModeAsync() {
 
         /* if any point exists, then ask for resetting points and segment */
         let callbackYes = function () {
-            tryCallEnqueueSaveSetting(FIT_SET_CORE_PRO_MODE, (isChecked ? FIT_PRO_MODE : FIT_CORE_MODE));
+            tryCallEnqueueSaveSetting(FIT_SET_CORE_PRO_MODE, (isChecked ? FIT_MODE_PRO : FIT_MODE_CORE));
 
             /* trick to let switch button changing status on UI, without wating for in-memory operations completion  */
             setTimeout(function () {
                 switch (currentFitMode) {
-                    case FIT_CORE_MODE:
+                    case FIT_MODE_CORE:
                         switchToCoreMode();
                         break;
 
-                    case FIT_PRO_MODE:
+                    case FIT_MODE_PRO:
                         switchToProMode();
                         break;
                 }
@@ -207,9 +209,9 @@ function getFitMode(isChecked) {
     let mode;
 
     if (!isChecked)
-        mode = FIT_CORE_MODE;
+        mode = FIT_MODE_CORE;
     else
-        mode = FIT_PRO_MODE;
+        mode = FIT_MODE_PRO;
 
     return mode;
 }
@@ -217,9 +219,18 @@ function getFitMode(isChecked) {
 async function loadFitCoreProModeAsync() {
     let obj = await getUserSettingAsync(FIT_SET_CORE_PRO_MODE);
     if (obj.IsOk) {
-        currentFitMode = obj.Value;
+        switch (obj.Value) {
+            case 'FIT_CORE_MODE':
+                currentFitMode = FIT_MODE_CORE;
+                break;
+
+            case 'FIT_PRO_MODE':
+                currentFitMode = FIT_MODE_PRO;
+                break;
+        }
+
         /* save retrieved value and show it */
-        let isChecked = (obj.Value == FIT_PRO_MODE);
+        const isChecked = (currentFitMode == FIT_MODE_PRO);
 
         /* set switch button to the right status */
         setSwitchCoreProMode(isChecked);
@@ -529,7 +540,7 @@ function setNumOfPointsForMissingPoints(value) {
 async function addFitPointToChartAsync(point, isFromUserAction = false) {
     let items = dxChartGetItems(chartContainer);
 
-    if (currentFitMode == FIT_CORE_MODE) {
+    if (currentFitMode == FIT_MODE_CORE) {
         setPointOnChart(items, point.P.X, point.P.Y, SERIES_FIT_POINT);
     } else {
         dxChartBeginUpdate(chartContainer);
@@ -641,12 +652,12 @@ async function addSelectedPointForFittingAsync(point, isFromUserAction = false, 
 
             const pointUICallback = function () {
                 switch (currentFitMode) {
-                    case FIT_CORE_MODE:
+                    case FIT_MODE_CORE:
                         /* create UI element on charms */
                         addPointUI(point);
                         break;
 
-                    case FIT_PRO_MODE:
+                    case FIT_MODE_PRO:
                         /* do nothing */
                         break;
                 }
@@ -664,7 +675,7 @@ async function addSelectedPointForFittingAsync(point, isFromUserAction = false, 
 
             /* mantain hidden all not necessary spectra */
             executeAfter(function () {
-                hideSpectraToBeHidden();
+                hideSpectraOtherThanTypes([SPECTRUM_TYPE_ALIGNED, SPECTRUM_TYPE_CONTINUUM]);
                 //dxChartResetVisualRange(chartContainer);
             }, 100);
         };
@@ -680,9 +691,9 @@ async function addSelectedPointForFittingAsync(point, isFromUserAction = false, 
 
 /* clean panel on charms from points settings */
 function cleanPointsPanel() {
-    if (currentFitMode == FIT_CORE_MODE) {
+    if (currentFitMode == FIT_MODE_CORE) {
         emptyListOfSegmentsOnCharms('fitSegmentsListCore', 'fitSegmentsListContainerCore');
-    } else if (currentFitMode == FIT_PRO_MODE) {
+    } else if (currentFitMode == FIT_MODE_PRO) {
         emptyListOfSegmentsOnCharms('fitSegmentsListPro', 'fitSegmentsListContainerPro');
     }
 }
@@ -732,9 +743,9 @@ function removeSelectedPointFromFitting(point, mousePosX = null, mousePosY = nul
 function removePointFromFitting(point) {
     let pointForFitting;
 
-    if (currentFitMode == FIT_CORE_MODE)
+    if (currentFitMode == FIT_MODE_CORE)
         pointForFitting = findInPointsForFittingArrayByP(point);
-    else if (currentFitMode == FIT_PRO_MODE)
+    else if (currentFitMode == FIT_MODE_PRO)
         pointForFitting = findInPointsForFittingArrayByPMax(point);
 
     if (!pointForFitting)
@@ -786,7 +797,6 @@ async function manageNewPointAsync(point, isFromUserAction = false, isLast = fal
         } else if (point.P.X >= maxX) {
             const pointBefore = getPreviousItemInPointsForFittingArray(point);
             await addNewSegmentProcedureAsync(pointBefore, point, isFromUserAction, isLast); // add as last segment
-
         }
     }
 }
@@ -801,11 +811,11 @@ function manageRemovedPoint(point) {
     if (point.P.X <= minX) {
         /* remove 1st segment on UI */
         switch (currentFitMode) {
-            case FIT_CORE_MODE:
+            case FIT_MODE_CORE:
                 removeSegmentForFittingUICore(segmentsForFitting[0]);
                 break;
 
-            case FIT_PRO_MODE:
+            case FIT_MODE_PRO:
                 removeSegmentForFittingUIPro(segmentsForFitting[0]);
                 break;
         }
@@ -817,11 +827,11 @@ function manageRemovedPoint(point) {
     } else if (point.P.X >= maxX) {
         /* remove last segment on UI */
         switch (currentFitMode) {
-            case FIT_CORE_MODE:
+            case FIT_MODE_CORE:
                 removeSegmentForFittingUICore(segmentsForFitting[segmentsForFitting.length - 1]);
                 break;
 
-            case FIT_PRO_MODE:
+            case FIT_MODE_PRO:
                 removeSegmentForFittingUIPro(segmentsForFitting[segmentsForFitting.length - 1]);
                 break;
         }
@@ -841,11 +851,11 @@ function manageRemovedPoint(point) {
         let p1 = segmentsForFitting[index].P1;
         /* remove n-th segment on UI */
         switch (currentFitMode) {
-            case FIT_CORE_MODE:
+            case FIT_MODE_CORE:
                 removeSegmentForFittingUICore(segmentsForFitting[index]);
                 break;
 
-            case FIT_PRO_MODE:
+            case FIT_MODE_PRO:
                 removeSegmentForFittingUIPro(segmentsForFitting[index]);
                 break;
         }
@@ -856,11 +866,11 @@ function manageRemovedPoint(point) {
 
         /* remove n-th segment on UI */
         switch (currentFitMode) {
-            case FIT_CORE_MODE:
+            case FIT_MODE_CORE:
                 removeSegmentForFittingUICore(segmentsForFitting[index - 1]);
                 break;
 
-            case FIT_PRO_MODE:
+            case FIT_MODE_PRO:
                 removeSegmentForFittingUIPro(segmentsForFitting[index - 1]);
                 break;
         }
@@ -891,13 +901,13 @@ async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isL
     /* add segment-related UI item  */
     let result;
     switch (currentFitMode) {
-        case FIT_CORE_MODE:
+        case FIT_MODE_CORE:
             /* create UI element on charms and build the continuum segment on chart */
             result = createSegmentFittingUICore(segment, isFromUserAction, isLast);
             //addSegmentToDictionary(FIT_SEGMENT_CORE, result.Guid, segment.Index);
             break;
 
-        case FIT_PRO_MODE:
+        case FIT_MODE_PRO:
             /* create UI element on charms and build the continuum segment on chart */
             result = await createSegmentFittingUIProAsync(segment, isFromUserAction, isLast);
             //addSegmentToDictionary(FIT_SEGMENT_PRO, result.Guid, segment.Index);
@@ -908,12 +918,12 @@ async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isL
 
     if (segmentsForFitting.length == 1 && segment.Index == 0) {
         switch (currentFitMode) {
-            case FIT_CORE_MODE:
+            case FIT_MODE_CORE:
                 appendToListCore(result.Html);
                 setPanelForFitCoreVisible();
                 break;
 
-            case FIT_PRO_MODE:
+            case FIT_MODE_PRO:
                 appendToListPro(result.Html);
                 setPanelForFitProVisible();
                 break;
@@ -949,11 +959,11 @@ async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isL
 async function replaceSegmentForFittingAtProcedureAsync(index, p, isFromUserAction = false, isLast = false) {
     /* remove n-th segment on UI */
     switch (currentFitMode) {
-        case FIT_CORE_MODE:
+        case FIT_MODE_CORE:
             removeSegmentForFittingUICore(segmentsForFitting[index]);
             break;
 
-        case FIT_PRO_MODE:
+        case FIT_MODE_PRO:
             removeSegmentForFittingUIPro(segmentsForFitting[index]);
             break;
     }
@@ -1101,7 +1111,10 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1) {
     }
 
     /* procedure for adding/updating the continuum spectrum */
-    const continuumSpectrum = tryAddContinuumSpectrum(spectrum.Id);
+    let spectrumIdForContinuum = spectrum.Id;
+    if (!Number.isInteger(spectrumIdForContinuum)) 
+        spectrumIdForContinuum = selectedSpectrumForProcessing.Id;
+    const continuumSpectrum = tryAddContinuumSpectrum(spectrumIdForContinuum);
 
     /* update chart with new aligned spectrum */
     dxChartBeginUpdate(chartContainer);
@@ -1123,8 +1136,9 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1) {
     if (isBuildingUpContinuum)
         dxChartResetVisualRange(chartContainer);
 
+    hideSpectraOtherThanTypes([SPECTRUM_TYPE_ALIGNED, SPECTRUM_TYPE_CONTINUUM]);
     /* mantain hidden all not necessary spectra */
-    hideSpectraToBeHidden();
+    //hideSpectraToBeHidden();
 
     /* try to start procedure for removing continuum, if conditions are satisfied */
     await tryCalculateContinuumRemovedAsync();
@@ -1228,9 +1242,9 @@ function removeFitPointsSeriesPoints() {
     let pointsForFittingNum = pointsForFitting.length;
     for (var i = pointsForFittingNum - 1; i >= 0; i--) {
         /* save point x coord */
-        if (currentFitMode == FIT_CORE_MODE)
+        if (currentFitMode == FIT_MODE_CORE)
             xValues.push(pointsForFitting[i].P.X);
-        else if (currentFitMode == FIT_PRO_MODE) {
+        else if (currentFitMode == FIT_MODE_PRO) {
             xValues.push(pointsForFitting[i].PXMax.X);
             xValues.push(pointsForFitting[i].PXMin.X);
         }
@@ -1310,9 +1324,6 @@ function buildContinuumRemovedSpectrumCompleted(filename) {
     /* set hidden the checkbox for removing file on cloud (because of the used HTML & css, we need to do it manually, since the 'd-none' class doesn't work) */
     hideElemMetroUIElem('checkboxRemoveContinuumRemovedSpectrumOnCloud');
 
-    /* refresh legend, if opened */
-    refreshCharmsLegend();
-
     if (isShowBreaksOnValueAxisForContinuumRemovedRequested)
         fitShowBreaksOnValueAxis();
 
@@ -1326,11 +1337,14 @@ function buildContinuumRemovedSpectrumCompleted(filename) {
     if (continuumSpectrum)
         setSpectrumVisibilityByIdAndSpectrumType(continuumSpectrum.Id, SPECTRUM_TYPE_CONTINUUM, false);
 
-    /* hide points for clarity */
+    /* hide all spectra but the continuum-removed one */
+    hideSpectraOtherThanType(SPECTRUM_TYPE_CONTINUUM_REMOVED);
+
+    /* hide points for clarity (this series is not hidden by the previous 'hideSpectraOtherThanType' function */
     setSpectrumVisibilityByName(SERIES_FIT_POINTS, false);
 
-    /* mantain hidden all not necessary spectra */
-    hideSpectraToBeHidden();
+    /* refresh legend, if opened */
+    refreshCharmsLegend();
 
     /* refresh chart */
     executeAfter(dxChartResetVisualRange(chartContainer), 200);
@@ -1394,13 +1408,14 @@ function setMissingPointsFromDownloadedContinuumRemoved() {
 }
 
 async function startRemoveContinuumProcedureAsync() {
-    setLoadingCircleIsVisible(true);
-
     /* if continuum removed spectrum is already present, recalculate it and exit */
-    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED)) {
+    if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED) ||
+        isAnySpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED)) {
         await tryAutoRecalculateContinuumRemovedAsync();
         return;
     }
+
+    setLoadingCircleIsVisible(true);
 
     /* reset array to let re-calculate them */
     resetMissingPoints();
@@ -1437,14 +1452,14 @@ async function tryCalculateContinuumRemovedAsync() {
         return;
 
     /* retrieve points of continuum for removing it from aligned */
-    let continuumPoints = getSpectrumPointsByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM);
+    let continuumPoints = getSpectrumPointsByIdAndSpectrumTypeProcedure(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM);
     if (!continuumPoints) {
-        showSimpleDialog(ERROR_LABEL, ContinuumRemovalExecutionErrorMessage, ALERT);
+        //showSimpleDialog(ERROR_LABEL, ContinuumRemovalExecutionErrorMessage, ALERT);
         return;
     }
 
     /* retrieve points of aligned for calculating continuum-removed spectrum */
-    let points = getSpectrumPointsByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
+    let points = getSpectrumPointsByIdAndSpectrumTypeProcedure(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
     if (!points) {
         showSimpleDialog(ERROR_LABEL, ContinuumRemovalExecutionErrorMessage, ALERT);
         return;
@@ -1480,6 +1495,7 @@ async function tryCalculateContinuumRemovedAsync() {
             /* set text of cloud icon */
             setCloudTextAndIconStatus(SPECTRUM_TYPE_CONTINUUM_REMOVED, false);
 
+            /* enable tab for band analysis */
             setTabEnabled(3, true);
         }
         else
@@ -1506,14 +1522,17 @@ async function tryAutoRecalculateContinuumRemovedAsync() {
     if (isRemovingContinuum)
         return;
 
-    if (!isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED))
+    if (!isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED) &&
+        !isAnySpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED))
         return;
 
     /* retrieve current visual range */
     const visualRange = dxChartGetVisualRangeY(chartContainer);
 
     /* retieve and remove the continuum-removed spectrum */
-    const continuumRemovedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    let continuumRemovedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    if (!continuumRemovedSpectrum)
+        continuumRemovedSpectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
     await removeContinuumRemovedSpectrumAsync(continuumRemovedSpectrum, false);
 
     /* restore previous visual range for a better UX during process */
@@ -1636,6 +1655,7 @@ function getContinuumRemovedParentFiles(parentId) {
 
 function getContinuumRemovalSettings() {
     return {
+        FitTypeId: currentFitMode,
         NumOfPointsForAveragingMissingPointX: getNumOfPointsForMissingPoints(),
         Segments: getSegments()
     }
@@ -1651,7 +1671,11 @@ function getSegments() {
         segments.push({
             Id: 0,
             XStart: segmentsForFitting[i].P0.P.X,
+            XStartMin: (currentFitMode == FIT_MODE_PRO) ? segmentsForFitting[i].P0.PXMin.X : null,
+            XStartMax: (currentFitMode == FIT_MODE_PRO) ? segmentsForFitting[i].P0.PXMax.X : null,
             XEnd: segmentsForFitting[i].P1.P.X,
+            XEndMin: (currentFitMode == FIT_MODE_PRO) ? segmentsForFitting[i].P1.PXMin.X : null,
+            XEndMax: (currentFitMode == FIT_MODE_PRO) ? segmentsForFitting[i].P1.PXMax.X : null,
             FitMethodName: fitFunction.MethodName,
             ParameterValue: segmentsForFitting[i].FitFunctionParameterValue
         });
@@ -1804,7 +1828,7 @@ function setSegmentsId(segments) {
 }
 
 /* ################################################################################ */
-/* REMOVE CONTINUUM REMOVED */
+/* DELETE CONTINUUM REMOVED */
 /* ################################################################################ */
 function removeContinuumRemovedSpectrumProcedure() {
     /* hide children removal warning message if it has previously been shown */

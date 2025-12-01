@@ -311,14 +311,13 @@ function getSpectrumByName(filename) {
 }
 
 function getSpectrumByRawIdAndSpectrumType(rawId, spectrumType) {
-    let spectrum;
+    let spectrum = spectraInfo.find(x => x.Id == rawId);
+    if (!spectrum)
+        return null;
 
-    let rawSpectrum = spectraInfo.find(x => x.Id == rawId);
-    let rawSpectrumName = rawSpectrum.Name;
+    let spectrumName = spectrum.Name;
 
-    spectrum = spectraInfo.find(x => x.Name == rawSpectrumName && x.SpectrumType == spectrumType);
-
-    return spectrum;
+    return spectraInfo.find(x => x.Name == spectrumName && x.SpectrumType == spectrumType);
 }
 
 function getSpectrumBySeriesName(seriesName) {
@@ -443,6 +442,33 @@ function removeSpectraById(ids) {
 
 function removeSpectrumByIndex(index) {
     return spectraInfo.splice(index, 1);
+}
+
+/* ################################################################################ */
+/* SET SPECTRA VISIBILITY */
+/* ################################################################################ */
+function hideSpectraOtherThanType(spectrumType) {
+    let spectraNum = spectraInfo.length;
+    for (var i = 0; i < spectraNum; i++) {
+        let series = getSeriesFromSpectrumId(spectraInfo[i].Id);
+        if (!series)
+            continue;
+
+        if (spectraInfo[i].SpectrumType != spectrumType)
+            dxChartHideSeries(chartContainer, series.name);
+    }
+}
+
+function hideSpectraOtherThanTypes(spectrumTypes) {
+    let spectraNum = spectraInfo.length;
+    for (var i = 0; i < spectraNum; i++) {
+        let series = getSeriesFromSpectrumId(spectraInfo[i].Id);
+        if (!series)
+            continue;
+
+        if (!spectrumTypes.includes(spectraInfo[i].SpectrumType))
+            dxChartHideSeries(chartContainer, series.name);
+    }
 }
 
 function setSpectrumVisibilityByIdAndSpectrumType(id, spectrumType, isVisible) {

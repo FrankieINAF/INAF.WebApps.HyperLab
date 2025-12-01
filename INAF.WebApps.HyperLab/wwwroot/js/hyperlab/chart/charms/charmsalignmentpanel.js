@@ -841,6 +841,9 @@ async function alignSpectrumAsync() {
 
             /* set text of cloud icon */
             setCloudTextAndIconStatus(SPECTRUM_TYPE_ALIGNED, false);
+
+            /* hide all spectra but the aligned one */
+            hideSpectraOtherThanType(SPECTRUM_TYPE_ALIGNED);
         }
         else
             isOk = false
@@ -902,14 +905,12 @@ function buildAlignedSpectrumCompleted() {
     /* set hidden the checkbox for removing file on cloud (because of the used HTML & css, we need to do it manually, since the 'd-none' class doesn't work) */
     hideElemMetroUIElem('checkboxRemoveAlignedSpectrumOnCloud');
 
-    /* hide ref whites */
-    setRefWhitesHidden();
+    /* hide RAW spectrum for clarity */
+    setSpectrumVisibilityByIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_RAW, false);
 
     /* refresh legend, if opened */
     refreshCharmsLegend();
 
-    /* hide RAW spectrum for clarity */
-    setSpectrumVisibilityByIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_RAW, false);
     /* reset visual range to make all available spectra visible */
     //dxChartResetVisualRange(chartContainer);
 }
