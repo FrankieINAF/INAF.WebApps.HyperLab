@@ -36,20 +36,26 @@ async function loadAlignmentPanelAsync() {
     const alignmentpanelhtml = await getPartialViewWithAjaxGetNoModelAsync(UrlLoadAlignmentPanel);
     $(function () {
         isHidingRefWhitesRequested = true;
-        onAlignmentPanelLoaded();
+        onAlignmentPanelLoadedAsync();
     });
     $('#alignmentOptionsPanel').html(alignmentpanelhtml);
 }
 
-function onAlignmentPanelLoaded() {
+async function onAlignmentPanelLoadedAsync() {
+    await loadAlignmentValuesAsync();
+    loadingCheckObj.stopLoading();
+}
 
-    const callback = async function () { // DO NOT ADD 'let' before callback declaration, 'cause it cause error when changing selected spectrum
-        /* load alignment panel items */
-        await loadAlignmentValuesAsync();
-        loadingCheckObj.stopLoading();
-    };
-    /* show tabs with animation */
-    showTabsContainer(callback);
+async function loadAlignmentPanelProcedureAsync() {
+    loadingCheckObj.startLoading();
+    /* load alignment panel and download aligned spectrum together with its settings */
+    await loadAlignmentPanelAsync();
+    /* set as enabled the alignment tab */
+    setTabEnabled(0, true);
+    if (loadingCheckObj.IsLoading) {
+        //console.log('alignSpectrumAsync - loadingCheckObj.IsLoading');
+        await waitForBooleanValueAsync(() => !loadingCheckObj.IsLoading, 100);
+    }
 }
 
 function callCheckIsSpectrumOfTypeSavedOnCloudForAligned(filename = null) {
@@ -929,7 +935,7 @@ function getAlignmentSettings() {
 }
 
 async function saveAlignedSpectrumProcedureAsync() {
-    const spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
+    const spectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
     const cond1 = await checkIsSpectrumOfTypeSavedOnCloudAsync(SPECTRUM_TYPE_ALIGNED, spectrum.Name);
     const cond2 = isSpectrumOfTypeSavedOnCloud(SPECTRUM_TYPE_ALIGNED);
     if (cond1 || cond2)
@@ -1036,7 +1042,7 @@ function removeAlignedSpectrumProcedure() {
 
     /* check whether children removal warning message is to be shown or not  */
     const spectrum = getSpectrumAlignedProcedure();
-    //let childSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
+    //let childSpectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
     if (isAnySpectrumChildById(spectrum.Id))
         switchVisibilityOfChildrenSpectraRemovalMessage('alignedChildrenRemovalWarning', true);
 
@@ -1111,7 +1117,7 @@ async function downloadAlignmentSettingsAsync(id) {
 /* EXPORT ALIGNED SPECTRUM */
 /* ################################################################################ */
 async function exportAlignedSpectrumAsCsvAsync() {
-    const spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
+    const spectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
     if (!spectrum)
         return;
 
@@ -1125,7 +1131,7 @@ async function exportAlignedSpectrumAsCsvAsync() {
 }
 
 async function exportAlignedSpectrumAsXmlAsync() {
-    const spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
+    const spectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
     if (!spectrum)
         return;
 

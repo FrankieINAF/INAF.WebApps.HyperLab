@@ -408,7 +408,7 @@ function showPXMinPXMaxFitting(P0P1Val, parentId, segmentIndex, P) {
     let segmentSeriesPoints = seriesPoints.filter(p => p.X >= P.PXMin.X && p.X <= P.PXMax.X);
     //console.log(segmentSeriesPoints);
 
-    let spectrumInfo = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
+    let spectrumInfo = getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
 
     let newSeriesPoints = [];
     let segmentSeriesPointsNum = segmentSeriesPoints.length;
@@ -714,15 +714,15 @@ async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null,
     const _currentSegmentIndex = val.slice(val.length - 4, val.length - 3);
     const currentSegmentIndex = parseInt(_currentSegmentIndex);
 
-    const nextSegmentId = `${currentSegmentBaseId}${currentSegmentIndex + 1}`;
+    let nextSegmentId = `${currentSegmentBaseId}${currentSegmentIndex + 1}`;
     if (P0P1Val == P0)
         nextSegmentId = `${currentSegmentBaseId}${currentSegmentIndex - 1}`;
 
     if ($(`#${nextSegmentId}`).length == 0)
         return;
 
-    const nextVal = `${nextSegmentId}${functionId}${P0}`;
-    const nextTextId = `${nextSegmentId}${P0}Text`;
+    let nextVal = `${nextSegmentId}${functionId}${P0}`;
+    let nextTextId = `${nextSegmentId}${P0}Text`;
     if (P0P1Val == P0) {
         nextVal = `${nextSegmentId}${functionId}${P1}`;
         nextTextId = `${nextSegmentId}${P1}Text`;
@@ -856,8 +856,8 @@ async function updateBoundaryPointProAsync(oldPointForFitting, requestedX, PMinM
     oldPointForFitting[PMinMax].X = requestedX;
 
     /* update maxPoint in the boundaries-defined range */
-    const xMin = requestedX;
-    const xMax = oldPointForFitting.PXMax.X;
+    let xMin = requestedX;
+    let xMax = oldPointForFitting.PXMax.X;
     if (PMinMax == PXMax) {
         xMin = oldPointForFitting.PXMin.X;
         xMax = requestedX;

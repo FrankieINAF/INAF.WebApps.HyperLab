@@ -89,7 +89,7 @@ async function startBandAnalysisProcedureAsync(x0, x1) {
     }
 
     /* let's find the series name */
-    let spectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    let spectrum = getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
     if (!spectrum) {
         setLoadingCircleIsVisible(false);
         showSimpleDialog(ERROR_LABEL, BandAnalysisNoSpectrumFoundErrorMessage, ALERT);
@@ -138,7 +138,7 @@ async function executeBandAnalysisAsync(series, items) {
     clearBandAnalysisProcedure(items);
 
     /* find points in range selected by the highlightened band */
-    const seriesPoints = dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED)));
+    const seriesPoints = dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED)));
     const pointsInRange = extractSpectrumRange(getPointsFromSeriesPoints(seriesPoints), lastSelectedSegmentForBand.P0.P.X, lastSelectedSegmentForBand.P1.P.X);
 
     /* extract y values from points */
@@ -634,7 +634,7 @@ async function downloadBandAnalysisDataAsync(id) {
         setBandArea(obj.ResponseObject[0].BandArea);
 
         /* find points in range selected by the highlightened band */
-        let seriesPoints = dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED)));
+        let seriesPoints = dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED)));
         let pointsInRange = extractSpectrumRange(getPointsFromSeriesPoints(seriesPoints), obj.ResponseObject[0].LeftBoundary, obj.ResponseObject[0].RightBoundary);
 
         /* extract y values from points */
@@ -741,7 +741,7 @@ async function saveBandAnalysisDataAsync() {
 /* DOWNLOAD BAND ANALYSIS DATA */
 /* ################################################################################ */
 async function exportCommonProcedureAsync (methodName) {
-    const spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    const spectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
     if (!spectrum)
         return;
 

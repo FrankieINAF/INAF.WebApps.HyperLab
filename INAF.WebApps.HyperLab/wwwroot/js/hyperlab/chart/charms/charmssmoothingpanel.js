@@ -35,7 +35,7 @@ async function onSrcSpectrumTypeSelected(selected) {
     /* update cloud icons on panel */
     setCloudIconOnPanel(availableFilesOnCloudDictionary[destSpectrumType], destSpectrumType);
 
-    const srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, destSpectrumType);
+    const srcSpectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, destSpectrumType);
     setButtonsEnabled(srcSpectrum != null, smoothingType);
 }
 
@@ -90,6 +90,17 @@ async function loadSmoothingPanelAsync() {
     $('#smoothingoptions').html(smoothingpanelhtml);
 }
 
+async function loadSmoothingPanelProcedureAsync() {
+    loadingCheckObj.startLoading();
+    await loadSmoothingPanelAsync();
+    /* set as enabled the smoothing tab */
+    setTabEnabled(2, true);
+    if (loadingCheckObj.IsLoading) {
+        //console.log('alignSpectrumAsync - loadingCheckObj.IsLoading');
+        await waitForBooleanValueAsync(() => !loadingCheckObj.IsLoading, 100);
+    }
+}
+
 async function onSmoothingPanelLoadedAsync() {
     /* check which smoothed spectra are already saved on cloud */
     const callAlignedSmoothedBySegments = callCheckIsSpectrumOfTypeSavedOnCloudForSmoothedAsync(null, SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_SEGMENTS, false);
@@ -108,6 +119,13 @@ async function onSmoothingPanelLoadedAsync() {
 
     const currentSrcSpectrumTypeVal = getSrcSpectrumTypeVal();
     setCloudIconOnPanel(availableFilesOnCloudDictionary[currentSrcSpectrumTypeVal], currentSrcSpectrumTypeVal);
+
+    /* enable tab for smoothing spectrum */
+    setTabEnabled(2, true);
+
+    /* load elements of panel */
+    await loadSmoothingPanelValuesAsync();
+    loadingCheckObj.stopLoading();
 }
 
 /* ################################################################################ */
@@ -165,16 +183,25 @@ function getAvailableSrcSpectrumTypesNum() {
 
     let availableNum = 0;
 
-    findSpectrumChildrenByIdProcedure(selectedSpectrumForProcessing.Id);
-    if (!isSLabSpectrumCurrentlySelected || isSLabConditionForSpectrumTypeHigherThanRaw())
+    /* find the spectrum with the lower spectrum type among the ones related to the selected one */
+    const spectraWithSameName = getSpectraByName(selectedSpectrumForProcessing.Name);
+    const lowerSpectrumType = spectraWithSameName.sort((a, b) => a.SpectrumType - b.SpectrumType)[0].SpectrumType;
+    const lowerSpectrumTypeSpectrum = getSpectrumBySpectrumType(lowerSpectrumType);
+
+    /* search for descendants */
+    findSpectrumChildrenByIdProcedure(lowerSpectrumTypeSpectrum.Id);
+    if ((!isSLabSpectrumCurrentlySelected || isSLabConditionForSpectrumTypeHigherThanRaw()) && !familyIds.includes(selectedSpectrumForProcessing.Id))
         familyIds.push(selectedSpectrumForProcessing.Id);
+
+    /* push the id of the lower spectrum-type spectrum */
+    familyIds.push(lowerSpectrumTypeSpectrum.Id);
 
     familyIds.forEach(function (item) {
         const spectrumInfo = getSpectrumById(item);
         if (!spectrumInfo)
             return;
-        /* check if the spectrum is available by id and type */
 
+        /* check if the spectrum is available by id and type */
         srcSpectrumTypes.forEach(function (item2) {
             if (spectrumInfo.SpectrumType == item2)
                 availableNum++;
@@ -185,11 +212,13 @@ function getAvailableSrcSpectrumTypesNum() {
 }
 
 function selectTargetSpectrumType() {
-    let availableNum = getAvailableSrcSpectrumTypesNum();
+    const availableNum = getAvailableSrcSpectrumTypesNum();
+    if (availableNum == 0)
+        return;
 
-    /* get the current src spectrum type andd set as selected in select element even if it is hidden because
+    /* get the current src spectrum type and set as selected in select element even if it is hidden because
        its value is used by the availableFilesOnCloudDictionary */
-    let srcSpectrumType = getSrcSpectrumType();
+    const srcSpectrumType = getSrcSpectrumType();
     setSrcSpectrumTypeVal(srcSpectrumType);
 
     if (availableNum == 1) {
@@ -208,9 +237,9 @@ function getSrcSpectrumType() {
 
     if (availableNum == 1) {
         if (isSLabSpectrumCurrentlySelected) {
-            if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED))
+            if (isAnySpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED))
                 srcSpectrumType = SPECTRUM_TYPE_ALIGNED;
-            else if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED))
+            else if (isAnySpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED))
                 srcSpectrumType = SPECTRUM_TYPE_CONTINUUM_REMOVED;
         } else {
             if (isSpectrumAvailableByType(SPECTRUM_TYPE_ALIGNED))
@@ -816,7 +845,7 @@ function buildSmoothedSpectrum(smoothingType, srcSpectrumType, destSpectrumType)
         let baseSpectrum = getSpectrumById(selectedSpectrumForProcessing.Id);
 
         /* retrieve info about parent spectrum */
-        let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, srcSpectrumType);
+        let srcSpectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, srcSpectrumType);
         if (srcSpectrum == null && srcSpectrumType == SPECTRUM_TYPE_ALIGNED)
             srcSpectrum = baseSpectrum;
 
@@ -869,7 +898,7 @@ async function saveSmoothedSpectrumProcedureAsync(smoothingType) {
 
     let spectrum = getSpectrumById(buildTempSmoothedSpectrumId(selectedSpectrumForProcessing.Id, getSrcSpectrumType(), smoothingType));
     if (!spectrum)
-        spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, getSrcSpectrumType());
+        spectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, getSrcSpectrumType());
 
     if (!spectrum) {
         showSimpleDialog(ERROR_LABEL, SmoothedSaveErrorMessage, ALERT);
@@ -895,7 +924,7 @@ async function saveSmoothedSpectrumAsync(spectrum, smoothingType, destSpectrumTy
 
         /* retrieve parent file */
         /* usually the 1st method works... */
-        let srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, srcSpectrumType);
+        let srcSpectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, srcSpectrumType);
         /* but when an aligned spectrum is the main parent, we need this second search to get info */
         if (!srcSpectrum)
             srcSpectrum = getSpectrumById(selectedSpectrumForProcessing.Id);
@@ -1068,16 +1097,16 @@ async function removeSmoothedSpectrumAsync(smoothedSpectrum, isRemovalOnCloudReq
 /* ################################################################################ */
 async function exportSmoothedSpectrumAsCsvAsync() {
     /* retrieve spectrumType of spectrum to be processed */
-    let srcSpectrumType = getSrcSpectrumType();
+    const srcSpectrumType = getSrcSpectrumType();
 
     /* retrieve spectrumType of processed spectrum */
-    let destSpectrumType = await getDestSpectrumTypeAsync(currentSmoothingType, srcSpectrumType);
+    const destSpectrumType = await getDestSpectrumTypeAsync(currentSmoothingType, srcSpectrumType);
 
-    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, destSpectrumType);
+    const spectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, destSpectrumType);
     if (!spectrum)
         return;
 
-    let txt = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAsTxt",
+    const txt = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAsTxt",
         spectrum.Name,
         destSpectrumType,
         getSpectrumPointsById(spectrum.Id),);
@@ -1088,28 +1117,17 @@ async function exportSmoothedSpectrumAsCsvAsync() {
 
 async function exportSmoothedSpectrumAsXmlAsync() {
     /* retrieve spectrumType of spectrum to be processed */
-    let srcSpectrumType = getSrcSpectrumType();
+    const srcSpectrumType = getSrcSpectrumType();
 
     /* retrieve spectrumType of processed spectrum */
-    let destSpectrumType = await getDestSpectrumTypeAsync(currentSmoothingType, srcSpectrumType);
+    const destSpectrumType = await getDestSpectrumTypeAsync(currentSmoothingType, srcSpectrumType);
 
-    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, destSpectrumType);
+    const spectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, destSpectrumType);
     if (!spectrum)
         return;
 
     /* retrieve parent file */
-    let srcSpectrum = null;
-    switch (spectrum.SpectrumSource) {
-        case SPECTRUM_SOURCE_SLAB:
-            srcSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, srcSpectrumType);
-            break;
-
-        case SPECTRUM_SOURCE_EXTERNAL:
-            srcSpectrum = getChildSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, srcSpectrumType);
-            break;
-
-        default:
-    }
+    const srcSpectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, srcSpectrumType);
     if (srcSpectrum.Id == buildTempSmoothedSpectrumId(selectedSpectrumForProcessing.Id, srcSpectrumType, currentSmoothingType))
         srcSpectrum.Id = 0;
 
@@ -1132,11 +1150,11 @@ async function exportSmoothedSpectrumAsXmlAsync() {
             break;
     }
 
-    let smoothingSettings = {
+    const smoothingSettings = {
         Segments: smoothingOptions
     };
 
-    let xml = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeSmoothedModelAsXml",
+    const xml = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeSmoothedModelAsXml",
         spectrum.Name,
         spectrum.SpectrumType,
         getSpectrumPointsById(spectrum.Id),

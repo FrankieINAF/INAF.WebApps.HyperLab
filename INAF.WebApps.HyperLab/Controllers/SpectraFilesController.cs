@@ -107,7 +107,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult GetSmoothingSettings(GenericRequestByIdModel model)
         {
             SmoothingSettingsModel? smoothingSettings = dbHandlerHyperLabData.getSmoothingSettings(model.Id,
-                                                                                               getUserId());
+                                                                                                   getUserId());
             if (smoothingSettings != null)
             {
                 switch (getCallerContext())
@@ -215,8 +215,6 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new JsonResult(new GenericResponseModel(fileSpectrumModel));
         }
 
-        [Authorize]
-        [CheckIsLoginValid]
         [HttpGet]
         public IActionResult GetSpectrumById(GenericRequestByIdModel model)
         {
@@ -229,8 +227,6 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        [Authorize]
-        [CheckIsLoginValid]
         public IActionResult GetSpectrumByParentIdAndSpectrumType(GenericRequestByParentIdAndSpectrumTypeModel model)
         {
             ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId,
@@ -312,6 +308,25 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                         getUserId());
 
             return new JsonResult(spectrumModel);
+        }
+
+        [HttpGet]
+        public IActionResult GetSpectrumParentIdById(GenericRequestByIdModel model)
+        {
+            var spectrum = dbHandlerHyperLabData.getSpectrumById(model.Id, getUserId());
+            if (spectrum == null)
+                return new EmptyResult();
+            return new JsonResult(new GenericResponseModel() { IsOk = true, Id = spectrum.ParentId.HasValue ? spectrum.ParentId.Value : 0 });
+        }
+
+        [HttpGet]
+        public IActionResult GetSpectrumTypeById(GenericRequestByIdModel model)
+        {
+            var spectrum = dbHandlerHyperLabData.getSpectrumById(model.Id, getUserId());
+            if (spectrum == null)
+                return new EmptyResult();
+
+            return new JsonResult(new GenericValueStringResponseModel() { IsOk = true, Value = ((int)spectrum.Type).ToString() });
         }
 
         [HttpGet]

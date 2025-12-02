@@ -171,56 +171,71 @@ async function retrieveSpectrumTypeFromStringAsync(key) {
 /* ################################################################################ */
 /* ---- RETRIEVE REQUIRED SPECTRUM ------------------------------------------------ */
 async function tryGetRequiredSpectrumAsync(currentSpectrumType, requiredSpectrumType) {
-    if (currentSpectrumType > requiredSpectrumType)
-        return await tryGetRequiredSpectrumForParentSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType);
-    else if (currentSpectrumType < requiredSpectrumType)
-        return await tryGetRequiredSpectrumForChildSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType);
-}
-
-async function tryGetRequiredSpectrumForParentSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType) {
-    const parentSpectrumType = getParentSpectrumType(currentSpectrumType);
-
-    if (!parentSpectrumType || parentSpectrumType != requiredSpectrumType)
+    const spectrum = getSpectrumByNameAndSpectrumType(selectedSpectrumForProcessing.Name, currentSpectrumType);
+    if (!spectrum)
         return null;
 
-    if (!selectedSpectrumForProcessing.ParentId || selectedSpectrumForProcessing.ParentId == 0)
-        return null;
-
-    let spectrum = getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.ParentId, requiredSpectrumType);
-    if (spectrum)
-        return spectrum;
-    else {
+    const requiredSpectrum = getSpectrumByNameAndSpectrumType(selectedSpectrumForProcessing.Name, requiredSpectrumType);
+    if (!requiredSpectrum) {
         const obj = await checkIsSpectrumOfTypeSavedOnCloudAsync(requiredSpectrumType, selectedSpectrumForProcessing.Name, false);
         if (!obj || !obj.IsOk)
             return null;
 
-        return await downloadProcessedSpectrumAsync(spectrumType, obj.Id);
+        return await downloadProcessedSpectrumAsync(requiredSpectrumType, obj.Id);
     }
 
-    return null;
+    return requiredSpectrum;
 }
 
-async function tryGetRequiredSpectrumForChildSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType) {
-    const childrenSpectraTypes = getChildrenSpectraTypes(currentSpectrumType);
+//async function tryGetRequiredSpectrumOldAsync(currentSpectrumType, requiredSpectrumType) {
+//    if (currentSpectrumType > requiredSpectrumType)
+//        return await tryGetRequiredSpectrumForParentSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType);
+//    else if (currentSpectrumType < requiredSpectrumType)
+//        return await tryGetRequiredSpectrumForChildSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType);
+//}
 
-    if (!childrenSpectraTypes || childrenSpectraTypes.length == 0)
-        return null;
+//async function tryGetRequiredSpectrumForParentSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType) {
+//    const parentSpectrumType = getParentSpectrumType(currentSpectrumType);
 
-    if (!childrenSpectraTypes.includes(requiredSpectrumType))
-        return null;
+//    if (!parentSpectrumType || parentSpectrumType != requiredSpectrumType)
+//        return null;
 
-    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, requiredSpectrumType);
-    if (spectrum)
-        return spectrum;
-    //else {
-    //    const obj = await checkIsSpectrumOfTypeSavedOnCloudAsync(requiredSpectrumType, selectedSpectrumForProcessing.Name, false);
-    //    if (!obj || !obj.IsOk)
-    //        return null;
-    //    return await downloadProcessedSpectrumAsync(spectrumType, obj.Id);
-    //}
+//    if (!selectedSpectrumForProcessing.ParentId || selectedSpectrumForProcessing.ParentId == 0)
+//        return null;
 
-    return null;
-}
+//    let spectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.ParentId, requiredSpectrumType);
+//    if (spectrum)
+//        return spectrum;
+
+
+//    const obj = await checkIsSpectrumOfTypeSavedOnCloudAsync(requiredSpectrumType, selectedSpectrumForProcessing.Name, false);
+//    if (!obj || !obj.IsOk)
+//        return null;
+
+//    return await downloadProcessedSpectrumAsync(requiredSpectrumType, obj.Id);
+//}
+
+//async function tryGetRequiredSpectrumForChildSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType) {
+//    const childrenSpectraTypes = getChildrenSpectraTypes(currentSpectrumType);
+
+//    if (!childrenSpectraTypes || childrenSpectraTypes.length == 0)
+//        return null;
+
+//    if (!childrenSpectraTypes.includes(requiredSpectrumType))
+//        return null;
+
+//    let spectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, requiredSpectrumType);
+//    if (spectrum)
+//        return spectrum;
+//    //else {
+//    //    const obj = await checkIsSpectrumOfTypeSavedOnCloudAsync(requiredSpectrumType, selectedSpectrumForProcessing.Name, false);
+//    //    if (!obj || !obj.IsOk)
+//    //        return null;
+//    //    return await downloadProcessedSpectrumAsync(spectrumType, obj.Id);
+//    //}
+
+//    return null;
+//}
 
 /* ---- SET ----------------------------------------------------------------------- */
 function addSpectrumInfo(spectrumInfo) {
@@ -234,21 +249,7 @@ function updateSpectrumInfoId(index, newId) {
     spectraInfo[index].Id = newId;
 }
 
-/* ---- GET ----------------------------------------------------------------------- */
-
-function getSpectraForLegend() {
-    const spectraTypes = spectraInfo.map(x => x.SpectrumType);
-    const goodSpectraTypes = spectraTypes.filter(x =>
-        x != SPECTRUM_TYPE_REF &&
-        x != SPECTRUM_TYPE_REF_WHITE);
-
-
-    const minGoodSpectrumType = Math.min(...goodSpectraTypes);
-
-    return spectraInfo.filter(x =>
-        x.SpectrumType == minGoodSpectrumType);
-}
-
+/* ---- FIND ---------------------------------------------------------------------- */
 function findSpectrumChildrenByIdProcedure(id) {
     familyIds = [];
     findSpectrumChildrenById(id);
@@ -267,75 +268,16 @@ function findSpectrumChildrenById(id) {
     }
 }
 
-function getAllSpectraHavingSameNameByRawId(rawId) {
-    let rawSpectrum = spectraInfo.find(x => x.Id == rawId);
-
-    return spectraInfo.filter(x => x.Name == rawSpectrum.Name);
-}
-
-function getChildSpectrumByIdAndSpectrumType(spectrumId, spectrumType) {
-    let childSpectrum;
-    let continueLoop = true;
-
-    let id = spectrumId;
-    while (continueLoop) {
-        let spectra = getSpectraByParentId(id);
-        spectra.push(getSpectrumByIdAndSpectrumType(id, spectrumType));
-        if (spectra.length == 0)
-            continueLoop = false;
-        else {
-            let spectraNum = spectra.length;
-            for (var i = 0; i < spectraNum; i++) {
-                if (spectra[i].SpectrumType == spectrumType) {
-                    childSpectrum = spectra[i];
-                    continueLoop = false;
-                }
-                else
-                    id = spectra[i].Id;
-            }
-        }
-    }
-
-    return childSpectrum;
-}
-
-function getChildSpectrumByRawIdAndSpectrumTypeOld(rawId, spectrumType) {
-    let childSpectrum;
-    let continueLoop = true;
-
-    let id = rawId;
-    while (continueLoop) {
-        let spectra = getSpectraByParentId(id);
-        if (spectra.length == 0)
-            continueLoop = false;
-        else {
-            const spectraNum = spectra.length;
-            for (var i = 0; i < spectraNum; i++) {
-                if (spectra[i].SpectrumType == spectrumType) {
-                    childSpectrum = spectra[i];
-                    continueLoop = false;
-                }
-                else
-                    id = spectra[i].Id;
-                //{
-                //    childSpectrum = getChildSpectrumByRawIdAndSpectrumType(spectra[i].Id, spectrumType);
-                //    if (childSpectrum != null && childSpectrum.SpectrumType == spectrumType)
-                //        continueLoop = false;
-                //}
-            }
-        }
-    }
-
-    return childSpectrum;
-}
-
-function getChildSpectrumByRawIdAndSpectrumType(id, spectrumType) {
+function findSpectrumByIdAndSpectrumType(id, spectrumType) {
     let queue = [];
     let continueLoop = true;
+    queue.push(getSpectrumById(id));
     queue.push(getSpectraByParentId(id));
 
     while (continueLoop && queue.length > 0) {
         let spectrum = queue.shift();
+        if (!spectrum)
+            continue;
         if (spectrum.SpectrumType == spectrumType) {
             return spectrum;
         } else {
@@ -347,22 +289,36 @@ function getChildSpectrumByRawIdAndSpectrumType(id, spectrumType) {
     }
 }
 
-function getAncestorSpectrumByIdAndSpectrumType(id, spectrumType) {
-    let continueLoop = true;
-    let spectrum = getSpectrumByIdAndSpectrumType(id, spectrumType);
-    let ancestorSpectrumId = spectrum.ParentId;
-    while (continueLoop) {
-        let ancestorSpectrum = getSpectrumById(ancestorSpectrumId);
-        if (ancestorSpectrum == null)
-            continueLoop = false;
-        else {
-            ancestorSpectrumId = ancestorSpectrum.Id;
-            if (ancestorSpectrumId == selectedSpectrumForProcessing.Id)
-                continueLoop = false;
-        }
-    }
+/* ---- GET ----------------------------------------------------------------------- */
+function getAllSpectraTypesButRefOnes() {
+    const spectraTypes = spectraInfo.map(x => x.SpectrumType);
+    return spectraTypes.filter(x =>
+        x != SPECTRUM_TYPE_REF &&
+        x != SPECTRUM_TYPE_REF_WHITE);
+}
 
-    return ancestorSpectrumId;
+function getSpectraForLegend() {
+    const goodSpectraTypes = getAllSpectraTypesButRefOnes();
+
+
+    const minGoodSpectrumType = Math.min(...goodSpectraTypes);
+
+    return spectraInfo.filter(x =>
+        x.SpectrumType == minGoodSpectrumType);
+}
+
+function getAllSpectraHavingSameNameByRawId(rawId) {
+    let rawSpectrum = spectraInfo.find(x => x.Id == rawId);
+
+    return spectraInfo.filter(x => x.Name == rawSpectrum.Name);
+}
+
+function getSpectraByName(filename) {
+    return spectraInfo.filter(x => x.Name == filename);
+}
+
+function getSpectrumByNameAndSpectrumType(filename, spectrumType) {
+    return spectraInfo.find(x => x.Name == filename && x.SpectrumType == spectrumType);
 }
 
 function getSpectraBySpectrumType(spectrumType) {
@@ -377,22 +333,18 @@ function getSpectrumById(id) {
     return spectraInfo.find(x => x.Id == id);
 }
 
-function getSpectrumByIdAndSpectrumType(id, spectrumType) {
-    return spectraInfo.find(x => x.Id == id && x.SpectrumType == spectrumType);
-}
-
-function getSpectrumByName(filename) {
-    return spectraInfo.find(x => x.Name == filename);
-}
-
-function getSpectrumByRawIdAndSpectrumType(rawId, spectrumType) {
-    let spectrum = spectraInfo.find(x => x.Id == rawId);
+function getSpectrumByLowerSpectrumTypeIdAndSpectrumType(id, spectrumType) {
+    let spectrum = spectraInfo.find(x => x.Id == id);
     if (!spectrum)
         return null;
 
     let spectrumName = spectrum.Name;
 
     return spectraInfo.find(x => x.Name == spectrumName && x.SpectrumType == spectrumType);
+}
+
+function getSpectrumByName(filename) {
+    return spectraInfo.find(x => x.Name == filename);
 }
 
 function getSpectrumBySeriesName(seriesName) {
@@ -431,7 +383,7 @@ function getSpectrumIndexByParentIdAndSpectrumType(parentId, spectrumType) {
     return spectraInfo.findIndex(x => x.ParentId == parentId && x.SpectrumType == spectrumType);
 }
 
-function getSpectrumNameById(id) {
+function getSpectrumNameBySpectrumId(id) {
     let spectrum = spectraInfo.find(x => x.Id == id);
     return spectrum.Name;
 }
@@ -479,13 +431,13 @@ function isAnySpectrumChildById(id) {
 }
 
 function isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(rawId, spectrumType) {
-    let childSpectrum = getChildSpectrumByRawIdAndSpectrumType(rawId, spectrumType);
+    let childSpectrum = findSpectrumByIdAndSpectrumType(rawId, spectrumType);
 
     return (childSpectrum != null);
 }
 
-function isAnySpectrumByRawIdAndSpectrumType(rawId, spectrumType) {
-    let spectrum = getSpectrumByRawIdAndSpectrumType(rawId, spectrumType);
+function isAnySpectrumByLowerSpectrumTypeIdAndSpectrumType(rawId, spectrumType) {
+    let spectrum = getSpectrumByLowerSpectrumTypeIdAndSpectrumType(rawId, spectrumType);
     return (spectrum != null);
 }
 
@@ -547,7 +499,7 @@ function hideSpectraOtherThanTypes(spectrumTypes) {
 }
 
 function setSpectrumVisibilityByIdAndSpectrumType(id, spectrumType, isVisible) {
-    let spectrum = getSpectrumByIdAndSpectrumType(id, spectrumType);
+    let spectrum = findSpectrumByIdAndSpectrumType(id, spectrumType);
     if (!spectrum)
         return;
 

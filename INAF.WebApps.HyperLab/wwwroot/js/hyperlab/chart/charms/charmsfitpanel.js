@@ -68,6 +68,17 @@ async function loadFitPanelAsync(extcallback = null) {
     }
 }
 
+async function loadFitPanelProcedureAsync(extcallback = null) {
+    loadingCheckObj.startLoading();
+    await loadFitPanelAsync(extcallback);
+    /* set as enabled the alignment tab */
+    setTabEnabled(1, true);
+    if (loadingCheckObj.IsLoading) {
+        //console.log('alignSpectrumAsync - loadingCheckObj.IsLoading');
+        await waitForBooleanValueAsync(() => !loadingCheckObj.IsLoading, 100);
+    }
+}
+
 async function onFitPanelLoadedAsync(extcallback = null) {
     await loadFitPanelValuesAsync();
 
@@ -84,6 +95,8 @@ async function onFitPanelLoadedAsync(extcallback = null) {
         hideFitStartingMessageContainer();
         extcallback();
     }
+
+    loadingCheckObj.stopLoading();
 }
 
 async function onFitPanelLoadingAsync() {
@@ -1094,7 +1107,7 @@ function lowlightSegmentForFitting(segmentId) {
 async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1, isHidingOtherSpectraRequired = true) {
     //console.log(`buildContinuumSegmentAsync - p0: ${p0.X}, p1: ${p1.X}`);
     /* retrieve range for current segment to extract the required set of points from aligned model */
-    const spectrum = await tryGetRequiredSpectrumAsync(selectedSpectrumForProcessing.SpectrumType, selectedSpectrumTypeForContinuumRemoval);
+    const spectrum = await tryGetRequiredSpectrumAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED, selectedSpectrumTypeForContinuumRemoval);
     let pointsInRange = extractSpectrumRange(getPointsFromSeriesPointsProcedure(spectrum.Id, selectedSpectrumTypeForContinuumRemoval), p0.X, p1.X);
 
     if (!pointsInRange || pointsInRange.length == 0) {
@@ -1338,12 +1351,12 @@ function buildContinuumRemovedSpectrumCompleted(filename) {
         fitShowBreaksOnValueAxis();
 
     /* hide ALIGNED spectrum for clarity */
-    const alignedSpectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
+    const alignedSpectrum = getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
     if (alignedSpectrum)
         setSpectrumVisibilityByIdAndSpectrumType(alignedSpectrum.Id, SPECTRUM_TYPE_ALIGNED, false);
 
     /* remove all segments for fitting for clarity */
-    const continuumSpectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM);
+    const continuumSpectrum = getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM);
     if (continuumSpectrum)
         setSpectrumVisibilityByIdAndSpectrumType(continuumSpectrum.Id, SPECTRUM_TYPE_CONTINUUM, false);
 
@@ -1373,7 +1386,7 @@ async function calculateMissingPointAsync(missingPointPosition) {
     let missingPoint;
 
     try {
-        const spectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
+        const spectrum = getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
         const points = getSpectrumPointsById(spectrum.Id);
         const numOfPointsForMissingPoints = getNumOfPointsForMissingPoints();
 
@@ -1402,7 +1415,7 @@ function getNumOfPointsForMissingPoints() {
 function setMissingPointsFromDownloadedContinuumRemoved() {
     try {
         const continuumPoints = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM);
-        //let continuumPoints = getPointsFromSeriesPoints(dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM))));
+        //let continuumPoints = getPointsFromSeriesPoints(dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM))));
 
         /* set missing point 0 */
         trySaveMissingPoint(createPointForFitting(createSimplePoint(continuumPoints[0].X, continuumPoints[0].Y), spectrum.Id));
@@ -1420,7 +1433,7 @@ function setMissingPointsFromDownloadedContinuumRemoved() {
 async function startRemoveContinuumProcedureAsync() {
     /* if continuum removed spectrum is already present, recalculate it and exit */
     if (isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED) ||
-        isAnySpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED)) {
+        isAnySpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED)) {
         await tryAutoRecalculateContinuumRemovedAsync();
         return;
     }
@@ -1458,7 +1471,7 @@ async function startRemoveContinuumProcedureAsync() {
 
 async function tryCalculateContinuumRemovedAsync() {
     /* avoid starting procedure when continuum-removed has been downloaded from cloud and app is downloading segments */
-    if (isAnySpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED))
+    if (isAnySpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED))
         return;
 
     /* retrieve points of continuum for removing it from aligned */
@@ -1533,16 +1546,16 @@ async function tryAutoRecalculateContinuumRemovedAsync() {
         return;
 
     if (!isAnyChildSpectrumByRawIdAndSpectrumTypeAvailable(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED) &&
-        !isAnySpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED))
+        !isAnySpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED))
         return;
 
     /* retrieve current visual range */
     const visualRange = dxChartGetVisualRangeY(chartContainer);
 
     /* retieve and remove the continuum-removed spectrum */
-    let continuumRemovedSpectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    let continuumRemovedSpectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
     if (!continuumRemovedSpectrum)
-        continuumRemovedSpectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+        continuumRemovedSpectrum = getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
     await removeContinuumRemovedSpectrumAsync(continuumRemovedSpectrum, false);
 
     /* restore previous visual range for a better UX during process */
@@ -1903,7 +1916,8 @@ async function downloadContinuumRemovalSettingsAsync(id) {
         if (obj.ResponseObject.Segments.length == 0)
             return;
 
-        const alignedSpectrum = await tryGetRequiredSpectrumAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED, SPECTRUM_TYPE_ALIGNED);
+        await tryGetRequiredSpectrumAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED, SPECTRUM_TYPE_ALIGNED);
+        const alignedSpectrum = getSpectrumByNameAndSpectrumType(selectedSpectrumForProcessing.Name, SPECTRUM_TYPE_ALIGNED);
         if (!alignedSpectrum) {
             showSimpleDialog(ERROR_LABEL, FitDownloadContinuumRemovalSettingsErrorMessage, ALERT);
             return;
@@ -1975,11 +1989,11 @@ window.addEventListener(EVENT_SEGMENTS_LOADED_DOWNLOAD_CONTINUUM_REMOVED, (e) =>
 /* DOWNLOAD CONTINUUM-REMOVED SPECTRUM */
 /* ################################################################################ */
 async function exportContinuumRemovedSpectrumAsCsvAsync() {
-    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    const spectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
     if (!spectrum)
         return;
 
-    let txt = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAsTxt",
+    const txt = await window.dotNetHelper.invokeMethodAsync("getSpectrumOfTypeAsTxt",
         spectrum.Name,
         SPECTRUM_TYPE_CONTINUUM_REMOVED,
         getSpectrumPointsById(spectrum.Id),);
@@ -1989,7 +2003,7 @@ async function exportContinuumRemovedSpectrumAsCsvAsync() {
 }
 
 async function exportContinuumRemovedSpectrumAsXmlAsync() {
-    const spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
+    const spectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
     if (!spectrum)
         return;
 

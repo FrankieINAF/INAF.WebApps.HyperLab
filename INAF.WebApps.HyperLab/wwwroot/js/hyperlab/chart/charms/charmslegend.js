@@ -19,9 +19,9 @@ function createCharmsLegend() {
     initSpectraTree();
 
     /* add ref spectrum to list */
-    const refSpectrums = getSpectraBySpectrumType(SPECTRUM_TYPE_REF);
-    if (refSpectrums.length > 0)
-        addSpectrumToSpectraTree(refSpectrums[0].Id);
+    const refSpectra = getSpectraBySpectrumType(SPECTRUM_TYPE_REF);
+    if (refSpectra.length > 0)
+        addSpectrumToSpectraTree(refSpectra[0].Id);
 
     /* add ref-white spectrum to list */
     const refWhiteSpectrums = getSpectraBySpectrumType(SPECTRUM_TYPE_REF_WHITE);
@@ -58,7 +58,7 @@ function createCharmsLegend() {
     let spectreTreeItemsNum = getSpectraTreeItemsNum();
     for (var i = 0; i < spectreTreeItemsNum; i++) {
         let rawSpectrumId = spectraTree[i].Id;
-        let name = `${getSpectrumNameById(rawSpectrumId)} (${getSpectrumTypeById(rawSpectrumId)})`;
+        let name = `${getSpectrumNameBySpectrumId(rawSpectrumId)} (${getSpectrumTypeById(rawSpectrumId)})`;
 
         if (name == SERIES_HIGHLIGHTED_SEGMENT)
             continue;
