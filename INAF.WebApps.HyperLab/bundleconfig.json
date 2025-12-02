@@ -41,6 +41,7 @@
       "wwwroot/js/hyperlab/chart/charts.js",
       "wwwroot/js/hyperlab/chart/chartsbuttons.js",
       "wwwroot/js/hyperlab/chart/chartsarrays.js",
+      "wwwroot/js/hyperlab/chart/chartspoints.js",
       "wwwroot/js/hyperlab/chart/chartsunauthorized.js",
       "wwwroot/js/hyperlab/charmsmessages.js"
     ],

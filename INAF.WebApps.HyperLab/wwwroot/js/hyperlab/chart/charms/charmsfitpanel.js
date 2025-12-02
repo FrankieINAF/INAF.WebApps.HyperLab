@@ -549,7 +549,7 @@ function setNumOfPointsForMissingPoints(value) {
 /* MANAGE VISUALIZATION OF SERIES CONTAINING SELECTED POINTS */
 /* ################################################################################ */
 async function addFitPointToChartAsync(point, isFromUserAction = false) {
-    let items = dxChartGetItems(chartContainer);
+    const items = dxChartGetItems(chartContainer);
 
     if (currentFitMode == FIT_MODE_CORE) {
         setPointOnChart(items, point.P.X, point.P.Y, SERIES_FIT_POINT);
@@ -1338,12 +1338,12 @@ function buildContinuumRemovedSpectrumCompleted(filename) {
         fitShowBreaksOnValueAxis();
 
     /* hide ALIGNED spectrum for clarity */
-    let alignedSpectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
+    const alignedSpectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_ALIGNED);
     if (alignedSpectrum)
         setSpectrumVisibilityByIdAndSpectrumType(alignedSpectrum.Id, SPECTRUM_TYPE_ALIGNED, false);
 
     /* remove all segments for fitting for clarity */
-    let continuumSpectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM);
+    const continuumSpectrum = getSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM);
     if (continuumSpectrum)
         setSpectrumVisibilityByIdAndSpectrumType(continuumSpectrum.Id, SPECTRUM_TYPE_CONTINUUM, false);
 
@@ -1927,10 +1927,16 @@ async function downloadContinuumRemovalSettingsAsync(id) {
         /* add points of continuum and build it up */
         const segmentsNum = obj.ResponseObject.Segments.length;
         for (var i = 0; i < segmentsNum; i++) {
-            await addPointAsync(obj.ResponseObject.Segments[i].XStart, alignedSpectrum.Id, obj.ResponseObject.Segments[i].XStart, obj.ResponseObject.Segments[i].XEnd);
+            await addPointAsync(obj.ResponseObject.Segments[i].XStart, alignedSpectrum.Id, obj.ResponseObject.Segments[i].XStartMin, obj.ResponseObject.Segments[i].XStartMax);
         }
         /* add XEnd from last segment to complete continuum */
-        await addPointAsync(obj.ResponseObject.Segments[segmentsNum - 1].XEnd, alignedSpectrum.Id, false, true);
+        await addPointAsync(obj.ResponseObject.Segments[segmentsNum - 1].XEnd, alignedSpectrum.Id, obj.ResponseObject.Segments[segmentsNum - 1].XEndMin, obj.ResponseObject.Segments[segmentsNum - 1].XEndMax, false, true);
+
+        /* if required, show breaks on value axis to enhance visualization */
+        executeAfter(() => {
+            if (isShowBreaksOnValueAxisForContinuumRemovedRequested)
+                fitShowBreaksOnValueAxis();
+        }, 500);
 
         /* enable the band analysis tab */
         setTabEnabled(3, true);

@@ -10,33 +10,6 @@ var timeoutSpectrumTypeColor;
 var isSavedOnCloudFileRemovalRequested = false;
 var isHidingRefWhitesRequested = false;
 
-const loadingCheckObj = {
-    IsLoading: false,
-    IsError: false,
-
-    setError: function (isError) {
-        this.IsError = isError;
-    },
-
-    setIsLoading: function (isLoading) {
-        this.IsLoading = isLoading;
-    },
-
-    startLoading: function () {
-        this.setIsLoading(true);
-        this.setError(false);
-    },
-
-    stopLoading: function () {
-        this.setIsLoading(false);
-    },
-
-    reset: function () {
-        this.setIsLoading(false);
-        this.setError(false);
-    }
-};
-
 var PARENT_ID = 'ParentId';
 
 async function initAlignmentAsync() {
@@ -73,6 +46,7 @@ function onAlignmentPanelLoaded() {
     const callback = async function () { // DO NOT ADD 'let' before callback declaration, 'cause it cause error when changing selected spectrum
         /* load alignment panel items */
         await loadAlignmentValuesAsync();
+        loadingCheckObj.stopLoading();
     };
     /* show tabs with animation */
     showTabsContainer(callback);

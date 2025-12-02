@@ -169,6 +169,59 @@ async function retrieveSpectrumTypeFromStringAsync(key) {
 /* ################################################################################ */
 /* SPECTRA INFO */
 /* ################################################################################ */
+/* ---- RETRIEVE REQUIRED SPECTRUM ------------------------------------------------ */
+async function tryGetRequiredSpectrumAsync(currentSpectrumType, requiredSpectrumType) {
+    if (currentSpectrumType > requiredSpectrumType)
+        return await tryGetRequiredSpectrumForParentSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType);
+    else if (currentSpectrumType < requiredSpectrumType)
+        return await tryGetRequiredSpectrumForChildSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType);
+}
+
+async function tryGetRequiredSpectrumForParentSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType) {
+    const parentSpectrumType = getParentSpectrumType(currentSpectrumType);
+
+    if (!parentSpectrumType || parentSpectrumType != requiredSpectrumType)
+        return null;
+
+    if (!selectedSpectrumForProcessing.ParentId || selectedSpectrumForProcessing.ParentId == 0)
+        return null;
+
+    let spectrum = getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.ParentId, requiredSpectrumType);
+    if (spectrum)
+        return spectrum;
+    else {
+        const obj = await checkIsSpectrumOfTypeSavedOnCloudAsync(requiredSpectrumType, selectedSpectrumForProcessing.Name, false);
+        if (!obj || !obj.IsOk)
+            return null;
+
+        return await downloadProcessedSpectrumAsync(spectrumType, obj.Id);
+    }
+
+    return null;
+}
+
+async function tryGetRequiredSpectrumForChildSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType) {
+    const childrenSpectraTypes = getChildrenSpectraTypes(currentSpectrumType);
+
+    if (!childrenSpectraTypes || childrenSpectraTypes.length == 0)
+        return null;
+
+    if (!childrenSpectraTypes.includes(requiredSpectrumType))
+        return null;
+
+    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, requiredSpectrumType);
+    if (spectrum)
+        return spectrum;
+    //else {
+    //    const obj = await checkIsSpectrumOfTypeSavedOnCloudAsync(requiredSpectrumType, selectedSpectrumForProcessing.Name, false);
+    //    if (!obj || !obj.IsOk)
+    //        return null;
+    //    return await downloadProcessedSpectrumAsync(spectrumType, obj.Id);
+    //}
+
+    return null;
+}
+
 /* ---- SET ----------------------------------------------------------------------- */
 function addSpectrumInfo(spectrumInfo) {
     if (isSpectrumAvailableById(spectrumInfo.Id))

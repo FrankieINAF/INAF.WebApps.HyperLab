@@ -395,16 +395,23 @@ async function manageTabsForSelectedSpectrumAsync(selectedSpectrum) {
             break;
 
         case SPECTRUM_TYPE_ALIGNED:
+            await loadAlignmentPanelAsync();
             //loadFitPanelAsync();
             break;
 
         case SPECTRUM_TYPE_CONTINUUM_REMOVED:
+            loadingCheckObj.startLoading();
             /* load alignment panel and download aligned spectrum together with its settings */
             await loadAlignmentPanelAsync();
             /* set as enabled the alignment tab */
             setTabEnabled(0, true);
+            if (loadingCheckObj.IsLoading) {
+                //console.log('alignSpectrumAsync - loadingCheckObj.IsLoading');
+                await waitForBooleanValueAsync(() => !loadingCheckObj.IsLoading, 100);
+            }
+
             /* load ref spectra and values for alignment */
-            await loadAlignmentValuesAsync();
+            //await loadAlignmentValuesAsync();
             /* download aligned spectrum */
             await downloadProcessedSpectrumAsync(SPECTRUM_TYPE_ALIGNED);
 
@@ -467,17 +474,6 @@ async function manageSelectedSpectrumAsync(selectedSpectrum, idsToBeRemoved) {
             setIsPointClickForFitEnabled(true);
             setJoystickVisible(true);
         }
-
-        /* load info for creating UI of alignment panel  */
-        //if (isSLabConditionForSpectrumTypeNotHigherThanRaw()) {
-        //    /* set as enabled the alignment tab */
-        //    setTabEnabled(0, true);
-
-        //    //console.log(`onSelectSpectrum - selected: ${selected}`) // selected is Id, i.e: 5
-        //    await loadAlignmentPanelAsync();
-        //} else {
-        //    setTabsForNoRawSpectra();
-        //}
 
         /* manage enabled/disabled tabs depending on SpectrumType of selected spectrum  */
         await manageTabsForSelectedSpectrumAsync(selectedSpectrum);
@@ -626,61 +622,6 @@ async function downloadProcessedSpectrumAsync(spectrumType, spectrumId = null) {
         setLoadingCircleIsVisible(false);
         showSimpleDialog(ERROR_LABEL, CharmsCloudDownloadErrorMessage, ALERT);
     }
-}
-
-/* ################################################################################ */
-/* RETRIEVE REQUIRED SPECTRUM */
-/* ################################################################################ */
-async function tryGetRequiredSpectrumAsync(currentSpectrumType, requiredSpectrumType) {
-    if (currentSpectrumType > requiredSpectrumType)
-        return await tryGetRequiredSpectrumForParentSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType);
-    else if (currentSpectrumType < requiredSpectrumType)
-        return await tryGetRequiredSpectrumForChildSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType);
-}
-
-async function tryGetRequiredSpectrumForParentSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType) {
-    const parentSpectrumType = getParentSpectrumType(currentSpectrumType);
-
-    if (!parentSpectrumType || parentSpectrumType != requiredSpectrumType)
-        return null;
-
-    if (!selectedSpectrumForProcessing.ParentId || selectedSpectrumForProcessing.ParentId == 0)
-        return null;
-
-    let spectrum = getSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.ParentId, requiredSpectrumType);
-    if (spectrum)
-        return spectrum;
-    else {
-        const obj = await checkIsSpectrumOfTypeSavedOnCloudAsync(requiredSpectrumType, selectedSpectrumForProcessing.Name, false);
-        if (!obj || !obj.IsOk)
-            return null;
-
-        return await downloadProcessedSpectrumAsync(spectrumType, obj.Id);
-    }
-
-    return null;
-}
-
-async function tryGetRequiredSpectrumForChildSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType) {
-    const childrenSpectraTypes = getChildrenSpectraTypes(currentSpectrumType);
-
-    if (!childrenSpectraTypes || childrenSpectraTypes.length == 0)
-        return null;
-
-    if (!childrenSpectraTypes.includes(requiredSpectrumType))
-        return null;
-
-    let spectrum = getChildSpectrumByRawIdAndSpectrumType(selectedSpectrumForProcessing.Id, requiredSpectrumType);
-    if (spectrum)
-        return spectrum;
-    //else {
-    //    const obj = await checkIsSpectrumOfTypeSavedOnCloudAsync(requiredSpectrumType, selectedSpectrumForProcessing.Name, false);
-    //    if (!obj || !obj.IsOk)
-    //        return null;
-    //    return await downloadProcessedSpectrumAsync(spectrumType, obj.Id);
-    //}
-
-    return null;
 }
 
 /* ################################################################################ */
@@ -1027,125 +968,6 @@ function switchVisibilityOfChildrenSpectraRemovalMessage(id, isVisible) {
     } else {
         $(`#${id}`).removeClass('d-flex').addClass('d-none');
     }
-}
-
-/* ################################################################################ */
-/* MANAGE POINTS */
-/* ################################################################################ */
-function extractSpectrumXMax(points) {
-    return Math.max(...points.map(p => p.X));
-}
-
-function extractSpectrumXMin(points) {
-    return Math.min(...points.map(p => p.X));
-}
-
-function extractSpectrumRange(points, x0, x1) {
-    if (x1 <= x0)
-        return null;
-
-    return points.filter(p => p.X >= x0 && p.X <= x1);
-}
-
-function getPointHigherThanX(points, x) {
-    /* find the 1st point with X greater-equal to x */
-    let point = points.find(p => p.X >= x);
-    if (!point)
-        return null;
-
-    return point;
-}
-
-function getPointLowerThanX(points, x) {
-    /* find the 1st point with X lower-equal to x */
-    /* 1) filter all points with X lower-equal to x */
-    let lowerXPoints = points.filter(p => p.X <= x);
-    if (lowerXPoints.length == 0)
-        return null;
-
-    /* 2) retrieve the last point */
-    let point = lowerXPoints[lowerXPoints.length - 1];
-    if (!point)
-        return null;
-
-    return point;
-}
-
-function getPointsMaxX(points) {
-    return points[points.length - 1].X
-}
-
-function getPointsMinX(points) {
-    return points[0].X
-}
-
-function getPointFromSeriesPoints(seriesPoints, x) {
-    let seriesPoint = seriesPoints.find(p => parseFloat(p.argument) == x);
-
-    return {
-        X: parseFloat(seriesPoint.argument),
-        Y: parseFloat(seriesPoint.value)
-    };
-}
-
-function getPointsFromSeriesPoints(seriesPoints) {
-    return seriesPoints.map(x => { return { X: parseFloat(x.argument), Y: parseFloat(x.value), YStdDev: 0 }; });
-}
-
-function getPointsFromSeriesPointsProcedure(spectrumId, spectrumType) {
-    const spectrum = getSpectrumByRawIdAndSpectrumType(spectrumId, spectrumType);
-    /* retrieve series points */
-    let seriesPoints = getSeriesPointsProcedure(spectrum.Id, spectrumType);
-    return getPointsFromSeriesPoints(seriesPoints);
-}
-
-function getPointAtFromSeriesPoints(seriesPoints, index) {
-    return seriesPoints[index].map(x => { return { X: parseFloat(x.argument), Y: parseFloat(x.value) }; });
-}
-
-function getSeriesPointsProcedure(spectrumId, spectrumType) {
-    const spectrum = getSpectrumByIdAndSpectrumType(spectrumId, spectrumType);
-    /* retrieve index of spectrum in spectraInfo */
-    let index = getSpectrumIndexBySpectrumId(spectrum.Id);
-    /* retrieve series name */
-    let seriesname = getSpectrumSeriesNameFromIndex(index);
-    /* retrieve series points */
-    return dxChartGetSeriesPoints(chartContainer, seriesname);
-}
-
-function getSpectrumPointsById(id) {
-    let index = getSpectrumIndexBySpectrumId(id);
-    if (index < 0)
-        return;
-
-    let seriesPoints = dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromIndex(index));
-    if (!seriesPoints)
-        return null;
-
-    return getPointsFromSeriesPoints(seriesPoints);
-}
-
-function getSpectrumPointsByRawIdAndSpectrumType(spectrumId, spectrumType) {
-    let spectrum = getSpectrumByRawIdAndSpectrumType(spectrumId, spectrumType);
-    return getSpectrumPointsById(spectrum.Id);
-}
-
-function getSpectrumPointsBySpectrumType(spectrumType) {
-    let spectrum = getSpectrumBySpectrumType(spectrumType);
-    return getSpectrumPointsById(spectrum.Id);
-}
-
-function isExistingPointByX(points, x) {
-    let index = points.findIndex(p => p.X == x);
-    return (index >= 0);
-}
-
-function getSpectrumPointsByIdAndSpectrumTypeProcedure(spectrumId, spectrumType) {
-    let spectrumPoints = getSpectrumPointsByRawIdAndSpectrumType(spectrumId, spectrumType);
-    if (!spectrumPoints)
-        spectrumPoints = getSpectrumPointsByIdAndSpectrumType(spectrumId, spectrumType);
-
-    return spectrumPoints;
 }
 
 /* ################################################################################ */
