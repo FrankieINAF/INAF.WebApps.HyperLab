@@ -431,9 +431,21 @@ async function manageTabsForSelectedSpectrumAsync(selectedSpectrum) {
                 /* hide all spectra but the selected one */
                 hideSpectraOtherThanType(selectedSpectrum.SpectrumType);
                 /* set selected spectrumType as target for smoothing */
-                selectTargetSpectrumType();
+                preparePageForSmoothingPanelVisualization();
+
+                switch (selectedSpectrum.SpectrumType) {
+                    case SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_SEGMENTS:
+                    case SPECTRUM_TYPE_ALIGNED_SMOOTHED:
+                        setSrcSpectrumTypeVal(SPECTRUM_TYPE_ALIGNED);
+                        break;
+
+                    case SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED_BY_SEGMENTS:
+                    case SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED:
+                        setSrcSpectrumTypeVal(SPECTRUM_TYPE_CONTINUUM_REMOVED);
+                        break;
+                }
             }, 500);
-            break; 
+            break;
     }
 }
 
@@ -626,7 +638,9 @@ async function checkIsSpectrumOfTypeSavedOnCloudAsync(spectrumType, filename = n
         file = getSpectrumById(selectedSpectrumForProcessing.Id);
 
     if (file == null) {
-        showSimpleDialog(WARNING_LABEL, CharmsRetrieveFileInfoErrorMessage, WARNING);
+        console.log(`checkIsSpectrumOfTypeSavedOnCloudAsync - error retrieving file info for spectrumType: ${spectrumType}`);
+        if (isUIUpdateRequired)
+            showSimpleDialog(WARNING_LABEL, CharmsRetrieveFileInfoErrorMessage, WARNING);
         return false;
     }
 
@@ -673,7 +687,7 @@ async function deleteRecursivelySpectrumChildrenOnCloudAsync(rawId, spectrumType
 }
 
 async function retrieveSpectrumTypeFromSpectrumId(id) {
-    const model = { 
+    const model = {
         Id: id
     };
 
@@ -780,7 +794,7 @@ async function downloadProcessedSpectrumAsync(spectrumType, spectrumId = null, a
             case SPECTRUM_TYPE_ALIGNED_SMOOTHED:
             case SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED_BY_SEGMENTS:
             case SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED:
-
+                await downloadSmoothingSettingsBySegmentsAsync(obj.SpectraInfo.Id, spectrumType);
                 break;
 
             default:

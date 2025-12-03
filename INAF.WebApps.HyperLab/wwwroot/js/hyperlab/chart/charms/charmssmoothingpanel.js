@@ -18,6 +18,15 @@ var smoothingWholeSpectrumOptions;
 var INCREASE = 'increase';
 var DECREASE = 'decrease';
 
+function preparePageForSmoothingPanelVisualization() {
+    /* select target spectrum type for continuum removal */
+    selectTargetSpectrumType();
+
+    /* clear constant lines from continuum-removal panel */
+    removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS);
+    updateConstantLines();
+}
+
 function getSrcSpectrumTypeVal() {
     return Metro.getPlugin('#srcSpectrumTypeList', 'select').val();
 }
@@ -531,13 +540,8 @@ function getSmoothingType() {
 async function loadSmoothingSegmentsOptionsAsync() {
     let obj = await getUserSettingAsync(SMOOTHING_SEGMENTS_SETTINGS);
     if (obj && obj.IsOk) {
-        /* empty container to avoid duplications */
-        $('#smoothingBySegmentsOptionsContainer').empty();
-
-        /* init array with segments */
-        initSmoothingSegmentsOptions();
-
         /* deserialize retrieved XML to extract smoothing segments */
+        const segments = [];
         let smoothingSettingsModel = await dotNetHelper.invokeMethodAsync("deserializeFromXml", obj.Value);
         if (smoothingSettingsModel && smoothingSettingsModel.segments && smoothingSettingsModel.segments.length > 0) {
             let segmentsNum = smoothingSettingsModel.segments.length;
@@ -547,16 +551,31 @@ async function loadSmoothingSegmentsOptionsAsync() {
                     smoothingSettingsModel.segments[i].xEnd,
                     smoothingSettingsModel.segments[i].windowSize,
                     smoothingSettingsModel.segments[i].polynomialOrder);
-                addOrUpdateSmoothingSegment(segment);
-
-                buildSmoothingSegmentUI(segment, BY_SEGMENTS, i);
+                segments.push(segment);
             }
 
-            $('#smoothingBySegmentsButtonExecute').removeClass('disabled');
+            setSmoothingSegmentsOptions(segments);
         }
         else
             showSimpleDialog(ERROR_LABEL, SmoothingRetrieveSettingsModelErrorMessage, ALERT);
     }
+}
+
+function setSmoothingSegmentsOptions(segments) {
+    /* empty container to avoid duplications */
+    $('#smoothingBySegmentsOptionsContainer').empty();
+
+    /* init array with segments */
+    initSmoothingSegmentsOptions();
+
+    let segmentsNum = segments.length;
+    for (var i = 0; i < segmentsNum; i++) {
+        addOrUpdateSmoothingSegment(segments[i]);
+
+        buildSmoothingSegmentUI(segments[i], BY_SEGMENTS, i);
+    }
+
+    $('#smoothingBySegmentsButtonExecute').removeClass('disabled');
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -735,9 +754,6 @@ async function trySaveSmoothingSettingsAsync(segmentType, isForced = false) {
 async function loadSmoothingWholeSpectrumOptionsAsync() {
     let obj = await getUserSettingAsync(SMOOTHING_WHOLE_SPECTRUM_SETTINGS);
     if (obj && obj.IsOk) {
-        /* empty container to avoid duplications */
-        $('#smoothingByWholeSpectrumOptionsContainer').empty();
-
         /* deserialize retrieved XML to extract smoothing segments */
         let smoothingSettingsModel = await dotNetHelper.invokeMethodAsync("deserializeFromXml", obj.Value);
         if (smoothingSettingsModel && smoothingSettingsModel.segments && smoothingSettingsModel.segments.length > 0) {
@@ -747,13 +763,20 @@ async function loadSmoothingWholeSpectrumOptionsAsync() {
                 smoothingSettingsModel.segments[0].windowSize,
                 smoothingSettingsModel.segments[0].polynomialOrder);
 
-            buildSmoothingSegmentUI(smoothingWholeSpectrumOptions, BY_WHOLE_SPECTRUM, 0, false, false);
-
-            $('#smoothingByWholeSpectrumButtonExecute').removeClass('disabled');
+            setSmoothingWholeSpectrumOptions(smoothingWholeSpectrumOptions);
         }
         else
             showSimpleDialog(ERROR_LABEL, SmoothingRetrieveSettingsModelErrorMessage, ALERT);
     }
+}
+
+function setSmoothingWholeSpectrumOptions(segment) {
+    /* empty container to avoid duplications */
+    $('#smoothingByWholeSpectrumOptionsContainer').empty();
+
+    buildSmoothingSegmentUI(segment, BY_WHOLE_SPECTRUM, 0, false, false);
+
+    $('#smoothingByWholeSpectrumButtonExecute').removeClass('disabled');
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -1041,7 +1064,7 @@ async function saveSmoothedSpectrumAsync(spectrum, smoothingType, destSpectrumTy
 /* ################################################################################ */
 /* RETRIEVE SMOOTHED SETTINGS */
 /* ################################################################################ */
-async function downloadSmoothingSettingsAsync(id) {
+async function downloadSmoothingSettingsBySegmentsAsync(id, spectrumType) {
     const model = {
         Id: id
     };
@@ -1049,6 +1072,17 @@ async function downloadSmoothingSettingsAsync(id) {
     const obj = await doAjaxGetAsync(UrlGetSmoothingSettings, model);
     if (obj && obj.IsOk) {
         console.log(`downloadSmoothingSettingsAsync - retrieved settings: ${obj}`);
+        switch (spectrumType) {
+            case SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_SEGMENTS:
+            case SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED_BY_SEGMENTS:
+                setSmoothingSegmentsOptions(obj.Segments);
+                break;
+
+            case SPECTRUM_TYPE_ALIGNED_REMOVED_SMOOTHED:
+            case SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED:
+                setSmoothingWholeSpectrumOptions(obj.Segments[0]);
+                break;
+        }
     } else {
         showSimpleDialog(ERROR_LABEL, SmoothedDownloadSettingsErrorMessage, ALERT);
     }

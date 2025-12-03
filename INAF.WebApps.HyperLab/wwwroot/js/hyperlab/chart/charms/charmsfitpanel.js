@@ -41,7 +41,7 @@ var errorBarSemiHeight;
 var PULSE_TIMEOUT = 1000;
 
 async function callCheckIsSpectrumOfTypeSavedOnCloudForContinuumRemovedAsync(filename = null) {
-    return await checkIsSpectrumOfTypeSavedOnCloudAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED, filename);
+    return await checkIsSpectrumOfTypeSavedOnCloudAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED, filename, false);
 }
 
 function isFitPanelLoaded() {
@@ -65,6 +65,13 @@ async function loadFitPanelAsync(extcallback = null) {
         //    dxChartSetSeriesVisible(chartContainer, getSeriesNameFromSpectrumId(selectedSpectrumForProcessing.Id), false);
 
         isFitTabSelected = true;
+    }
+
+    /* update constant lines visualization */
+    if (isCheckboxChecked('fitChechboxShowLines')) {
+        resetShownConstantLines();
+        addOrUpdateConstantLines(getFitPointsConstantLines(), CHART_CONSTANT_LINES_FIT_POINTS);
+        updateConstantLines();
     }
 }
 
