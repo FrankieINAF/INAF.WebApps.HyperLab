@@ -187,56 +187,6 @@ async function tryGetRequiredSpectrumAsync(currentSpectrumType, requiredSpectrum
     return requiredSpectrum;
 }
 
-//async function tryGetRequiredSpectrumOldAsync(currentSpectrumType, requiredSpectrumType) {
-//    if (currentSpectrumType > requiredSpectrumType)
-//        return await tryGetRequiredSpectrumForParentSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType);
-//    else if (currentSpectrumType < requiredSpectrumType)
-//        return await tryGetRequiredSpectrumForChildSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType);
-//}
-
-//async function tryGetRequiredSpectrumForParentSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType) {
-//    const parentSpectrumType = getParentSpectrumType(currentSpectrumType);
-
-//    if (!parentSpectrumType || parentSpectrumType != requiredSpectrumType)
-//        return null;
-
-//    if (!selectedSpectrumForProcessing.ParentId || selectedSpectrumForProcessing.ParentId == 0)
-//        return null;
-
-//    let spectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.ParentId, requiredSpectrumType);
-//    if (spectrum)
-//        return spectrum;
-
-
-//    const obj = await checkIsSpectrumOfTypeSavedOnCloudAsync(requiredSpectrumType, selectedSpectrumForProcessing.Name, false);
-//    if (!obj || !obj.IsOk)
-//        return null;
-
-//    return await downloadProcessedSpectrumAsync(requiredSpectrumType, obj.Id);
-//}
-
-//async function tryGetRequiredSpectrumForChildSpectrumTypeAsync(currentSpectrumType, requiredSpectrumType) {
-//    const childrenSpectraTypes = getChildrenSpectraTypes(currentSpectrumType);
-
-//    if (!childrenSpectraTypes || childrenSpectraTypes.length == 0)
-//        return null;
-
-//    if (!childrenSpectraTypes.includes(requiredSpectrumType))
-//        return null;
-
-//    let spectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, requiredSpectrumType);
-//    if (spectrum)
-//        return spectrum;
-//    //else {
-//    //    const obj = await checkIsSpectrumOfTypeSavedOnCloudAsync(requiredSpectrumType, selectedSpectrumForProcessing.Name, false);
-//    //    if (!obj || !obj.IsOk)
-//    //        return null;
-//    //    return await downloadProcessedSpectrumAsync(spectrumType, obj.Id);
-//    //}
-
-//    return null;
-//}
-
 /* ---- SET ----------------------------------------------------------------------- */
 function addSpectrumInfo(spectrumInfo) {
     if (isSpectrumAvailableById(spectrumInfo.Id))
@@ -484,6 +434,8 @@ function hideSpectraOtherThanType(spectrumType) {
         if (spectraInfo[i].SpectrumType != spectrumType)
             dxChartHideSeries(chartContainer, series.name);
     }
+
+    addMessage(SpectraHiddenMessage.replace('r_v', getSpectrumTypeDescription(spectrumType)), 3000, INFO);
 }
 
 function hideSpectraOtherThanTypes(spectrumTypes) {

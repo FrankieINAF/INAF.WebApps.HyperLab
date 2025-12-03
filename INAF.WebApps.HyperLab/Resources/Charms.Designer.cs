@@ -1042,6 +1042,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, something went wrong while trying to download smoothing settings for current smoothed spectrum.
+        /// </summary>
+        public static string SmoothedDownloadSettingsErrorMessage {
+            get {
+                return ResourceManager.GetString("SmoothedDownloadSettingsErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, something went wrong while trying to delete the smoothed spectrum.
         /// </summary>
         public static string SmoothedRemovalErrorMessage {
@@ -1299,6 +1308,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string SmoothingWholeSpectrumTabTitle {
             get {
                 return ResourceManager.GetString("SmoothingWholeSpectrumTabTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spectra other than r_v have been hidden for better visualization.
+        /// </summary>
+        public static string SpectraHiddenMessage {
+            get {
+                return ResourceManager.GetString("SpectraHiddenMessage", resourceCulture);
             }
         }
         

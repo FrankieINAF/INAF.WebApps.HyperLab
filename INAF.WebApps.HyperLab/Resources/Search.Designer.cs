@@ -493,7 +493,7 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;u&gt;CSV&lt;/u&gt; files must consist in 2 columns: wavelength, value. No header allowed..
+        ///   Looks up a localized string similar to &lt;u&gt;CSV&lt;/u&gt; files must consist in 2 columns: wavelength, value..
         /// </summary>
         public static string LoadFilesExternalExplanationCSVFormat {
             get {

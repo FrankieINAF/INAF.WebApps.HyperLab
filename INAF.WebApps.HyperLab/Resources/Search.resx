@@ -613,7 +613,7 @@
     <value>Couldn't save file on cloud. Missing parent files for current spectrum type.</value>
   </data>
   <data name="LoadFilesExternalExplanationCSVFormat" xml:space="preserve">
-    <value>&lt;u&gt;CSV&lt;/u&gt; files must consist in 2 columns: wavelength, value. No header allowed.</value>
+    <value>&lt;u&gt;CSV&lt;/u&gt; files must consist in 2 columns: wavelength, value.</value>
   </data>
   <data name="LoadFilesExternalExplanationXMLFormat" xml:space="preserve">
     <value>Only &lt;u&gt;XML&lt;/u&gt; files generated from spectra saved via the HyperLab web app are accepted.</value>

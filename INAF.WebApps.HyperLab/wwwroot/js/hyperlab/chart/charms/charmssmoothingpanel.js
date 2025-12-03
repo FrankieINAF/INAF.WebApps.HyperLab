@@ -346,7 +346,7 @@ function buildSmoothingSegmentUI(smoothingSegment, segmentType, index, useButton
 /* -------------------------------------------------------------------------------- */
 /* ---------- SEGMENTS UI BUTTONS ---------- */
 /* -------------------------------------------------------------------------------- */
-function addSmoothingSegmentUI(segmentType, index) {
+function addOrUpdateSmoothingSegmentUI(segmentType, index) {
     /* when we add a new segment, what we do is the following:
        1) we retrieve the boundaries, the range of the segment 'next to the current one' and, then, the semi-range
        2) we increase the index of all segments following the current one to let a free place for the new segment
@@ -381,7 +381,7 @@ function addSmoothingSegmentUI(segmentType, index) {
     updateSmoothingSegmentUIProperty(segmentType, index + 2, X_START, xstart + semiRange);
 
     /* 6 */
-    addSmoothingSegment(createSmoothingSegment(index + 1,
+    addOrUpdateSmoothingSegment(createSmoothingSegment(index + 1,
         xstart,
         xstart + semiRange,
         0,
@@ -488,7 +488,7 @@ function updateSmoothingSegmentUIProperty(segmentType, index, targetPropertyName
 /* ---------- SEGMENTS UI ---------- */
 /* -------------------------------------------------------------------------------- */
 function getSmoothingSegmentUIButtonAdd(segmentType, index) {
-    return `<button class="button primary cycle small margin-top-8" title="${SmoothingAddNewSegmentLabel}" onclick="${addSmoothingSegmentUI.name}('${segmentType}', ${index})"><span class="mif-plus"></span></button>`;
+    return `<button class="button primary cycle small margin-top-8" title="${SmoothingAddNewSegmentLabel}" onclick="${addOrUpdateSmoothingSegmentUI.name}('${segmentType}', ${index})"><span class="mif-plus"></span></button>`;
 }
 
 function getSmoothingSegmentUIButtonRemove(segmentType, index) {
@@ -531,6 +531,9 @@ function getSmoothingType() {
 async function loadSmoothingSegmentsOptionsAsync() {
     let obj = await getUserSettingAsync(SMOOTHING_SEGMENTS_SETTINGS);
     if (obj && obj.IsOk) {
+        /* empty container to avoid duplications */
+        $('#smoothingBySegmentsOptionsContainer').empty();
+
         /* init array with segments */
         initSmoothingSegmentsOptions();
 
@@ -544,7 +547,7 @@ async function loadSmoothingSegmentsOptionsAsync() {
                     smoothingSettingsModel.segments[i].xEnd,
                     smoothingSettingsModel.segments[i].windowSize,
                     smoothingSettingsModel.segments[i].polynomialOrder);
-                addSmoothingSegment(segment);
+                addOrUpdateSmoothingSegment(segment);
 
                 buildSmoothingSegmentUI(segment, BY_SEGMENTS, i);
             }
@@ -616,10 +619,12 @@ function initSmoothingSegmentsOptions() {
     smoothingSegmentsOptions = [];
 }
 
-function addSmoothingSegment(segment) {
+function addOrUpdateSmoothingSegment(segment) {
     let index = smoothingSegmentsOptions.findIndex(x => x.XStart == segment.XStart && x.XEnd == segment.XEnd);
     if (index == -1)
         smoothingSegmentsOptions.push(segment);
+    else
+        smoothingSegmentsOptions[index] = segment;
 
     /* re-order array items by xStart value ascending */
     updateSmoothingSegmentsByXStart();
@@ -730,6 +735,9 @@ async function trySaveSmoothingSettingsAsync(segmentType, isForced = false) {
 async function loadSmoothingWholeSpectrumOptionsAsync() {
     let obj = await getUserSettingAsync(SMOOTHING_WHOLE_SPECTRUM_SETTINGS);
     if (obj && obj.IsOk) {
+        /* empty container to avoid duplications */
+        $('#smoothingByWholeSpectrumOptionsContainer').empty();
+
         /* deserialize retrieved XML to extract smoothing segments */
         let smoothingSettingsModel = await dotNetHelper.invokeMethodAsync("deserializeFromXml", obj.Value);
         if (smoothingSettingsModel && smoothingSettingsModel.segments && smoothingSettingsModel.segments.length > 0) {
@@ -1030,6 +1038,21 @@ async function saveSmoothedSpectrumAsync(spectrum, smoothingType, destSpectrumTy
     }
 }
 
+/* ################################################################################ */
+/* RETRIEVE SMOOTHED SETTINGS */
+/* ################################################################################ */
+async function downloadSmoothingSettingsAsync(id) {
+    const model = {
+        Id: id
+    };
+
+    const obj = await doAjaxGetAsync(UrlGetSmoothingSettings, model);
+    if (obj && obj.IsOk) {
+        console.log(`downloadSmoothingSettingsAsync - retrieved settings: ${obj}`);
+    } else {
+        showSimpleDialog(ERROR_LABEL, SmoothedDownloadSettingsErrorMessage, ALERT);
+    }
+}
 /* ################################################################################ */
 /* REMOVE SMOOTHED SPECTRUM */
 /* ################################################################################ */

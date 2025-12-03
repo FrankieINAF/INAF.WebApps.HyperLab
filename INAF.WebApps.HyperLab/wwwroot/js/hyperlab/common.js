@@ -46,8 +46,9 @@ const loadingCheckObj = {
 };
 
 function isNumber(str) {
-    return !isNaN(str);
+    return !isNaN(parseFloat(str)) && isFinite(str);
 }
+
 
 function showPageItems(isLeftMenuVisible, callback) {
     if (isLeftMenuVisible)

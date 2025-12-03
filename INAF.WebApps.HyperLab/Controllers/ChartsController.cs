@@ -114,7 +114,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             switch (getCallerContext())
             {
-                case Libraries.Net.HyperLab.CommonModels.Values.Enums.CallerContext.Web:
+                case CallerContext.Web:
                     var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
                     List<ISpectrumModel> spectraModels = dbHandlerHyperLabData.getSpectraByIdProcedure(model.Ids,
                                                                                                        getUserId());
@@ -122,7 +122,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                         return new EmptyResult();
                     return new JsonResult(chartsHelper.createMultipleSpectraJson(spectraModels, getUserId()));
 
-                case Libraries.Net.HyperLab.CommonModels.Values.Enums.CallerContext.App:
+                case CallerContext.App:
                     var spectra = dbHandlerHyperLabData.getSpectraByIdProcedure(model.Ids, getUserId());
                     if (spectra != null && spectra.Count > 0)
                         return new JsonResult(spectra);

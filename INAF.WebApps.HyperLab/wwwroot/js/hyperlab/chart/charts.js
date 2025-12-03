@@ -144,21 +144,31 @@ async function loadChartsProcedureAsync() {
 async function loadChartsFromCloudAsync() {
     setLoadingCircleIsVisible(true);
 
-    var model = {
-        Ids: selectedSpectra
-    };
-    //console.log(selectedSpectra);
+    let isOk = true;
 
-    let obj = await doAjaxPostAsync(UrlGetSpectra, model);
-    if (obj) {
-        //console.log(obj);
-        spectraInfo = obj.SpectraInfo;
-        points = obj.Points;
-        chartSeries = createSeriesFromPoints(obj.Points);
-        createChart(obj.Points, chartSeries, obj.AxisRange);
-        isChartLoaded = true;
-        setLoadingCircleIsVisible(false);
-    } else {
+    try {
+        var model = {
+            Ids: selectedSpectra
+        };
+        //console.log(selectedSpectra);
+
+        let obj = await doAjaxPostAsync(UrlGetSpectra, model);
+        if (obj) {
+            //console.log(obj);
+            spectraInfo = obj.SpectraInfo;
+            points = obj.Points;
+            chartSeries = createSeriesFromPoints(obj.Points);
+            createChart(obj.Points, chartSeries, obj.AxisRange);
+            isChartLoaded = true;
+            setLoadingCircleIsVisible(false);
+        } else
+            isOk = false;
+    } catch (e) {
+        isOk = false;
+        console.log(`${loadChartsFromCloudAsync.name} - ex: ${e}`);
+    }
+    
+    if (!isOk) {
         setLoadingCircleIsVisible(false);
         isChartLoaded = false;
         addClass('charts', 'no-spectra-background');

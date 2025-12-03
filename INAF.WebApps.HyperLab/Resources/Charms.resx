@@ -423,6 +423,9 @@
   <data name="SmoothedByWholeSpectrumSaveSuccessMessage" xml:space="preserve">
     <value>The smoothed (by whole spectrum) spectrum has been successfully saved on cloud!</value>
   </data>
+  <data name="SmoothedDownloadSettingsErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to download smoothing settings for current smoothed spectrum</value>
+  </data>
   <data name="SmoothingAddNewSegmentLabel" xml:space="preserve">
     <value>Add new segment for smoothing next to this</value>
   </data>
@@ -548,5 +551,8 @@
   </data>
   <data name="FileFormatXmlLabel" xml:space="preserve">
     <value>XML</value>
+  </data>
+  <data name="SpectraHiddenMessage" xml:space="preserve">
+    <value>Spectra other than r_v have been hidden for better visualization</value>
   </data>
 </root>

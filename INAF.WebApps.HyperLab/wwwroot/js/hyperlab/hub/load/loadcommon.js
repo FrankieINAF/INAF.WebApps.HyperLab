@@ -135,7 +135,9 @@ function parseCSV(text) {
         if (values.length < 2)
             continue;
 
-        if (!Number.isNaN(values[0]) && !Number.isNaN(values[1])) {
+        //console.log(`VALUES, ${values[0]}, ${values[1]}`);
+        if (isNumber(values[0]) && isNumber(values[1])) {
+            //console.log(`ADDING, ${values[0]}, ${values[1]}`);
             points.push(createSpectrumElement(values[0], values[1]));
         }
     }

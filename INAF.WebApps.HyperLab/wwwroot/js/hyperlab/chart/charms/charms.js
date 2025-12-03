@@ -168,22 +168,6 @@ function resetCharmsProcessSpectra() {
     clearBandAnalysisProcedureCaller();
 }
 
-//function setTabsForNoRawSpectra() {
-//    showTabsContainer();
-
-//    /* set tab for alignment as disabled */
-//    setTabEnabled(0, false);
-
-//    /* set fit tab as enabled */
-//    setTabEnabled(1, true);
-
-//    /* set fit tab as selected */
-//    setTabSelectedProcedure('charmsTabs', OPTIONS_TITLE_FIT);
-
-//    /* load panel for smoothing */
-//    loadSmoothingPanelAsync();
-//}
-
 function showTabsContainer(callback) {
     /* show tabs with animation */
     showByClass('charmsTabsContainer');
@@ -434,7 +418,7 @@ async function manageTabsForSelectedSpectrumAsync(selectedSpectrum) {
                     /* load fit panel */
                     await loadFitPanelProcedureAsync();
                     /* download continuum-removed spectrum */
-                    await downloadProcessedSpectrumAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED, selectedSpectrum.ParentId);
+                    await downloadProcessedSpectrumAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED, selectedSpectrum.ParentId, false);
                     break;
                 default:
             }
@@ -443,7 +427,12 @@ async function manageTabsForSelectedSpectrumAsync(selectedSpectrum) {
 
             /* set the active tab as the smoothing one */
             setTabSelectedProcedure('charmsTabs', OPTIONS_TITLE_SMOOTHING);
-            executeAfter(function () { selectTargetSpectrumType(); }, 500);
+            executeAfter(function () {
+                /* hide all spectra but the selected one */
+                hideSpectraOtherThanType(selectedSpectrum.SpectrumType);
+                /* set selected spectrumType as target for smoothing */
+                selectTargetSpectrumType();
+            }, 500);
             break; 
     }
 }
@@ -569,8 +558,6 @@ function updateSelectedSpectrumColorToSpectrumTypeColor(selectedSpectrum) {
 
     addMessage(CharmsSelectedSpectrumColorUpdateMessage, 3000, INFO);
 }
-
-
 
 /* ################################################################################ */
 /* MANAGE TEXT OF CLOUD ICON */
@@ -726,7 +713,7 @@ function setCloudIconOnPanel(isSavedOnCloud, spectrumType) {
 /* -------------------------------------------------------------------------------- */
 /* DOWNLOAD PROCESSED SPECTRUM */
 /* -------------------------------------------------------------------------------- */
-async function downloadProcessedSpectrumAsync(spectrumType, spectrumId = null) {
+async function downloadProcessedSpectrumAsync(spectrumType, spectrumId = null, areBreaksVisible = true) {
     if (spectrumId == null)
         spectrumId = selectedSpectrumForProcessing.Id;
 
@@ -781,12 +768,19 @@ async function downloadProcessedSpectrumAsync(spectrumType, spectrumId = null) {
 
             case SPECTRUM_TYPE_CONTINUUM_REMOVED:
                 /* actions needed to update UI after aligned spectrum has been added */
-                buildContinuumRemovedSpectrumCompleted();
+                buildContinuumRemovedSpectrumCompleted(areBreaksVisible);
 
                 /* retrieve and show settings used for removing continuum from currently selected spectrum */
                 isBuildingUpContinuum = true; // used to avoid removing loading while building up continuum
                 selectedSpectrumTypeForContinuumRemoval = SPECTRUM_TYPE_ALIGNED; // used for building up points for continuum
-                await downloadContinuumRemovalSettingsAsync(obj.SpectraInfo.Id);
+                await downloadContinuumRemovalSettingsAsync(obj.SpectraInfo.Id, areBreaksVisible);
+                break;
+
+            case SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_SEGMENTS:
+            case SPECTRUM_TYPE_ALIGNED_SMOOTHED:
+            case SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED_BY_SEGMENTS:
+            case SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED:
+
                 break;
 
             default:
@@ -1107,6 +1101,14 @@ function getIdValueFromTempContinuumRemoved(id) {
 
 function getTempAlignedIdValue(id) {
     return id.replace(SPECTRUM_OF_TYPE_ALIGNED_TEMP_ID, '');
+}
+
+function getYCoord(x, points) {
+    let point = points.find(p => p.X >= x && p.X <= x);
+    if (point)
+        return point.Y;
+    else
+        return 0;
 }
 
 function isSpectrumOfType(destId, destSpectrumType) {

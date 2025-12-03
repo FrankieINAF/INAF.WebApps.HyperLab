@@ -1107,7 +1107,13 @@ function lowlightSegmentForFitting(segmentId) {
 async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1, isHidingOtherSpectraRequired = true) {
     //console.log(`buildContinuumSegmentAsync - p0: ${p0.X}, p1: ${p1.X}`);
     /* retrieve range for current segment to extract the required set of points from aligned model */
-    const spectrum = await tryGetRequiredSpectrumAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED, selectedSpectrumTypeForContinuumRemoval);
+    /* attempt 1 - this works when opening processed spectra and we're retrieving parent spectra */
+    let spectrum = await tryGetRequiredSpectrumAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED, selectedSpectrumTypeForContinuumRemoval);
+    /* attempt 2 - this works when we've opened a raw spectrum and we're processing it */
+    if (!spectrum)
+        spectrum = getSpectrumByNameAndSpectrumType(selectedSpectrumForProcessing.Name, selectedSpectrumTypeForContinuumRemoval);
+    if (!spectrum)
+        return;
     let pointsInRange = extractSpectrumRange(getPointsFromSeriesPointsProcedure(spectrum.Id, selectedSpectrumTypeForContinuumRemoval), p0.X, p1.X);
 
     if (!pointsInRange || pointsInRange.length == 0) {
@@ -1158,7 +1164,7 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1, isHidingO
     if (isBuildingUpContinuum)
         dxChartResetVisualRange(chartContainer);
 
-    if (isHidingRefWhitesRequested)
+    if (isHidingOtherSpectraRequired)
         hideSpectraOtherThanTypes([SPECTRUM_TYPE_ALIGNED, SPECTRUM_TYPE_CONTINUUM]);
     /* mantain hidden all not necessary spectra */
     //hideSpectraToBeHidden();
@@ -1335,7 +1341,7 @@ function buildContinuumRemovedSpectrum() {
     }
 }
 
-function buildContinuumRemovedSpectrumCompleted(filename) {
+function buildContinuumRemovedSpectrumCompleted(filename = null, areBreaksVisible = false) {
     /* call method for checking whether a version of continuum-removed file is already saved on cloud or not */
     callCheckIsSpectrumOfTypeSavedOnCloudForContinuumRemovedAsync(filename);
 
@@ -1347,7 +1353,7 @@ function buildContinuumRemovedSpectrumCompleted(filename) {
     /* set hidden the checkbox for removing file on cloud (because of the used HTML & css, we need to do it manually, since the 'd-none' class doesn't work) */
     hideElemMetroUIElem('checkboxRemoveContinuumRemovedSpectrumOnCloud');
 
-    if (isShowBreaksOnValueAxisForContinuumRemovedRequested)
+    if (areBreaksVisible)
         fitShowBreaksOnValueAxis();
 
     /* hide ALIGNED spectrum for clarity */
@@ -1513,7 +1519,7 @@ async function tryCalculateContinuumRemovedAsync() {
             addProcessedSpectrum(continuumRemovedSpectrum, processingResult.Points, SPECTRUM_TYPE_CONTINUUM_REMOVED);
 
             /* actions needed to update UI after continuum-removed spectrum hs been added */
-            buildContinuumRemovedSpectrumCompleted(continuumRemovedSpectrum.Name);
+            buildContinuumRemovedSpectrumCompleted(continuumRemovedSpectrum.Name, isShowBreaksOnValueAxisForContinuumRemovedRequested);
 
             /* set text of cloud icon */
             setCloudTextAndIconStatus(SPECTRUM_TYPE_CONTINUUM_REMOVED, false);
@@ -1887,21 +1893,7 @@ async function removeContinuumRemovedSpectrumAsync(continuumRemovedSpectrum, isR
 /* ################################################################################ */
 /* RETRIEVE CONTINUUM-REMOVAL SETTINGS */
 /* ################################################################################ */
-function downloadContinuumRemovedSpectrumProcedure() {
-    if (!isFitTabSelected) {
-        /* when the 'fit options' tab has NOT been opened by user action... */
-
-        isContinuumRemovedDownloadRequested = true;
-
-        /* load the fit panel */
-        loadFitPanelAsync();
-    } else {
-        /* when the 'fit options' tab has been opened by user action... */
-        downloadProcessedSpectrumAsync(SPECTRUM_TYPE_CONTINUUM_REMOVED);
-    }
-}
-
-async function downloadContinuumRemovalSettingsAsync(id) {
+async function downloadContinuumRemovalSettingsAsync(id, areBreaksVisible = false) {
     const model = {
         Id: id
     };
@@ -1947,24 +1939,14 @@ async function downloadContinuumRemovalSettingsAsync(id) {
         await addPointAsync(obj.ResponseObject.Segments[segmentsNum - 1].XEnd, alignedSpectrum.Id, obj.ResponseObject.Segments[segmentsNum - 1].XEndMin, obj.ResponseObject.Segments[segmentsNum - 1].XEndMax, false, true);
 
         /* if required, show breaks on value axis to enhance visualization */
-        executeAfter(() => {
-            if (isShowBreaksOnValueAxisForContinuumRemovedRequested)
-                fitShowBreaksOnValueAxis();
-        }, 500);
+        if (areBreaksVisible)
+            executeAfter(() => { fitShowBreaksOnValueAxis(); }, 500);
 
         /* enable the band analysis tab */
         setTabEnabled(3, true);
     } else {
         showSimpleDialog(ERROR_LABEL, FitDownloadContinuumRemovalSettingsErrorMessage, ALERT);
     }
-}
-
-function getYCoord(x, points) {
-    let point = points.find(p => p.X >= x && p.X <= x);
-    if (point)
-        return point.Y;
-    else
-        return 0;
 }
 
 /* -------------------------------------------------------------------------------- */
