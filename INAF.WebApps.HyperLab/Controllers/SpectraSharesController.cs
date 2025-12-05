@@ -1,7 +1,7 @@
-﻿using INAF.Libraries.Net.DB.HyperLabData;
+﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
+using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Shares;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 
