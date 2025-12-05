@@ -20,6 +20,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using INAF.Libraries.Net.HyperLab.CommonModels.Resources;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
