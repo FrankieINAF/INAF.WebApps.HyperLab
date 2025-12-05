@@ -27,33 +27,6 @@ var spectraTypesParents = {};
 
 var isBuildingUpContinuum = false;
 
-const loadingCheckObj = {
-    IsLoading: false,
-    IsError: false,
-
-    setError: function (isError) {
-        this.IsError = isError;
-    },
-
-    setIsLoading: function (isLoading) {
-        this.IsLoading = isLoading;
-    },
-
-    startLoading: function () {
-        this.setIsLoading(true);
-        this.setError(false);
-    },
-
-    stopLoading: function () {
-        this.setIsLoading(false);
-    },
-
-    reset: function () {
-        this.setIsLoading(false);
-        this.setError(false);
-    }
-};
-
 function isSLabConditionForSpectrumTypeHigherThanRaw() {
     return isSLabSpectrumCurrentlySelected && isSLabLowerSpectrumTypeHigherThanRaw;
 }

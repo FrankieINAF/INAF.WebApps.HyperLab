@@ -7,7 +7,6 @@ using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
