@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.9.34622.214
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11222.15 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INAF.WebApps.HyperLab", "INAF.WebApps.HyperLab\INAF.WebApps.HyperLab.csproj", "{48BA97E5-2980-432D-A2FB-F88973BA9054}"
 EndProject
@@ -26,6 +26,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "INAF.Libraries.Net.ScienceModels", "..\..\Libraries\Net\INAF.Libraries.Net.ScienceModels\INAF.Libraries.Net.ScienceModels\INAF.Libraries.Net.ScienceModels.csproj", "{418C97A8-D5F5-4BDF-8B62-01ED164773B7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "INAF.Libraries.Net.Parallelization", "..\..\Libraries\Net\INAF.Libraries.Net.Parallelization\INAF.Libraries.Net.Parallelization\INAF.Libraries.Net.Parallelization.csproj", "{A42B7EF5-1DEA-5F12-2A19-7226C7F754A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "INAF.Libraries.Net.CommonResources", "..\..\Libraries\Net\INAF.Libraries.Net.CommonResources\INAF.Libraries.Net.CommonResources\INAF.Libraries.Net.CommonResources.csproj", "{AD2CFF5C-D62E-CD6F-0B44-AF639B01A017}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{A42B7EF5-1DEA-5F12-2A19-7226C7F754A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A42B7EF5-1DEA-5F12-2A19-7226C7F754A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A42B7EF5-1DEA-5F12-2A19-7226C7F754A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD2CFF5C-D62E-CD6F-0B44-AF639B01A017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD2CFF5C-D62E-CD6F-0B44-AF639B01A017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD2CFF5C-D62E-CD6F-0B44-AF639B01A017}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD2CFF5C-D62E-CD6F-0B44-AF639B01A017}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

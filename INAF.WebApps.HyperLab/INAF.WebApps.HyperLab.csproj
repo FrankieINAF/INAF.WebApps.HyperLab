@@ -227,6 +227,7 @@
 		</ItemGroup>
 
 		<ItemGroup>
+				<ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.CommonResources\INAF.Libraries.Net.CommonResources\INAF.Libraries.Net.CommonResources.csproj" />
 				<ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.Extensions\INAF.Libraries.Net.Extensions\INAF.Libraries.Net.Extensions.csproj" />
 				<ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLab.Data\INAF.Libraries.Net.DB.HyperLab.Data\INAF.Libraries.Net.DB.HyperLab.Data.csproj" />
 				<ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLab.Users\INAF.Libraries.Net.DB.HyperLab.Users\INAF.Libraries.Net.DB.HyperLab.Users.csproj" />
@@ -319,11 +320,6 @@
 						<DesignTime>True</DesignTime>
 						<AutoGen>True</AutoGen>
 						<DependentUpon>SharedStuff.resx</DependentUpon>
-				</Compile>
-				<Compile Update="Resources\Users.Designer.cs">
-						<DesignTime>True</DesignTime>
-						<AutoGen>True</AutoGen>
-						<DependentUpon>Users.resx</DependentUpon>
 				</Compile>
 		</ItemGroup>
 
@@ -436,10 +432,6 @@
 				<EmbeddedResource Update="Resources\SharedStuff.resx">
 						<Generator>PublicResXFileCodeGenerator</Generator>
 						<LastGenOutput>SharedStuff.Designer.cs</LastGenOutput>
-				</EmbeddedResource>
-				<EmbeddedResource Update="Resources\Users.resx">
-						<Generator>PublicResXFileCodeGenerator</Generator>
-						<LastGenOutput>Users.Designer.cs</LastGenOutput>
 				</EmbeddedResource>
 		</ItemGroup>
 

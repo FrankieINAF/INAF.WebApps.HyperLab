@@ -36,7 +36,7 @@ namespace INAF.WebApps.HyperLab.Extensions
             {
                 int.TryParse(httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out userId);
             }
-            catch (Exception ex)
+            catch (Exception)
             { }
 
             return userId;

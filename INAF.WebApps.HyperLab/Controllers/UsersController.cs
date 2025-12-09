@@ -1,4 +1,5 @@
-﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
+﻿using INAF.Libraries.Net.CommonResources;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Permissions;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
@@ -124,7 +125,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             int operationUserId = getUserId();
             if (model.Id == operationUserId)
             {
-                return new BadRequestObjectResult(new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Users.SelfDeletingErrorMessage });
+                return new BadRequestObjectResult(new GenericValueStringResponseModel() { IsOk = false, ExMsg = Users.SelfDeletingErrorMessage });
             }
             else
             {
@@ -179,7 +180,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             logErrorMessage(ModelState.Values);
             var modelForError = usersFactory.createUserForInsert();
-            modelForError.ErrorMessage = Resources.Users.UpsertUserModelStateNotValidMessage;
+            modelForError.ErrorMessage = Users.UpsertUserModelStateNotValidMessage;
             return PartialView(modelForError);
         }
         #endregion
@@ -198,8 +199,8 @@ namespace INAF.WebApps.HyperLab.Controllers
             }
             catch (Exception)
             {
-                logger.LogError(Resources.Users.CheckIsUserExistantErrorMessage);
-                return new BadRequestObjectResult(Resources.Users.CheckIsUserExistantErrorMessage);
+                logger.LogError(Users.CheckIsUserExistantErrorMessage);
+                return new BadRequestObjectResult(Users.CheckIsUserExistantErrorMessage);
             }
 
             if (!dbHandlerHyperLabUsers.isUserExistant(model.Name, model.LastName, model.Email))

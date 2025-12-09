@@ -1,14 +1,15 @@
-﻿using INAF.Libraries.Net.DB.HyperLabUsers;
+﻿using INAF.Libraries.Net.CommonResources;
 using INAF.Libraries.Net.CommonWebAppHelpers;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Permissions;
+using INAF.Libraries.Net.DB.HyperLabUsers;
+using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.WebApps.HyperLab.Extensions;
 using INAF.WebApps.HyperLab.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 using static INAF.WebApps.HyperLab.Values.Enums;
 using static Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary;
-using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
-using INAF.Libraries.Net.CommonWebAppModels.Models.Permissions;
-using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 
 namespace INAF.WebApps.HyperLab.Controllers.Base
 {
@@ -101,7 +102,7 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
 
         protected int getUserId()
         {
-            string token = HttpContext.GetToken();
+            string? token = HttpContext.GetToken();
             if (string.IsNullOrEmpty(token))
                 return HttpContext.GetUserId();
             else
@@ -142,11 +143,11 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
 
             /* error when an empty array is passed */
             if (fields.Length == 0)
-                return (false, Resources.Users.CheckIsUserExistantFieldsEmptyErrorMessage);
+                return (false, Users.CheckIsUserExistantFieldsEmptyErrorMessage);
 
             /* error when an odd number of items in array passed */
             if (fields.Length % 2 > 0)
-                return (false, Resources.Users.CheckIsUserExistantFieldsNumErrorMessage);
+                return (false, Users.CheckIsUserExistantFieldsNumErrorMessage);
 
             bool[] results = new bool[fields.Length / 2];
             int counter = 0;

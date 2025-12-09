@@ -1,4 +1,5 @@
-﻿using INAF.Libraries.Net.CommonWebAppHelpers;
+﻿using INAF.Libraries.Net.CommonResources;
+using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Authentication;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
@@ -6,7 +7,6 @@ using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.Extensions;
-using INAF.Libraries.Net.HyperLab.CommonModels.Resources;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.Libraries.Net.HyperLab.CommonWebAppHelpers;
 using INAF.WebApps.HyperLab.Controllers.Base;
@@ -609,7 +609,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* if user has a valid login then no action is required */
             if (dbHandlerHyperLabUsers.isUserExistantAndValidLogin(model.Name, model.LastName, model.Email))
-                return new GenericValueStringResponseModel() { IsOk = true, ExMsg = Resources.Users.UserAlreadyExistantMessage };
+                return new GenericValueStringResponseModel() { IsOk = true, ExMsg = Users.UserAlreadyExistantMessage };
 
             /* encrypt password */
             string encryptedPassword = getEncrypted(model.Password!);
@@ -643,7 +643,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Account.PasswordResetRequestBadRequest };
 
             if (!dbHandlerHyperLabUsers.isUserExistant(model.Email))
-                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Users.UserNotExistantErrorMessage };
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Users.UserNotExistantErrorMessage };
 
             /* encrypt password */
             string encryptedPassword = getEncrypted(model.Password!);
@@ -693,10 +693,10 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Account.PasswordResetRequestBadRequest };
 
             if (!dbHandlerHyperLabUsers.isUserExistant(email!))
-                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Users.UserNotExistantErrorMessage };
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Users.UserNotExistantErrorMessage };
 
             if (!dbHandlerHyperLabUsers.isUserExistantAndValidLogin(email!))
-                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Resources.Users.UserNotConfirmedErrorMessage };
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Users.UserNotConfirmedErrorMessage };
 
             /* generate confirmation token and set token expiration date-time */
             string passwordResetToken = Guid.NewGuid().ToString();
