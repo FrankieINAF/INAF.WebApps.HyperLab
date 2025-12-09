@@ -219,24 +219,32 @@ function findSpectrumChildrenById(id) {
 }
 
 function findSpectrumByIdAndSpectrumType(id, spectrumType) {
-    let queue = [];
-    let continueLoop = true;
-    queue.push(getSpectrumById(id));
-    queue.push(getSpectraByParentId(id));
+    var queue = [];
 
-    while (continueLoop && queue.length > 0) {
-        let spectrum = queue.shift();
+    var root = getSpectrumById(id);
+    if (root) queue.push(root);
+
+    var rootChildren = getSpectraByParentId(id) || [];
+    for (var i = 0; i < rootChildren.length; i++) {
+        queue.push(rootChildren[i]);
+    }
+
+    while (queue.length > 0) {
+        var spectrum = queue.shift();
         if (!spectrum)
             continue;
+
         if (spectrum.SpectrumType == spectrumType) {
             return spectrum;
         } else {
-            let children = getSpectraByParentId(spectrum.Id);
-            children.forEach(function (child) {
-                queue.push(child);
-            });
+            var children = getSpectraByParentId(spectrum.Id) || [];
+            for (var j = 0; j < children.length; j++) {
+                queue.push(children[j]);
+            }
         }
     }
+
+    return null;
 }
 
 /* ---- GET ----------------------------------------------------------------------- */

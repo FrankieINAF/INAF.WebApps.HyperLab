@@ -17,6 +17,33 @@ var isSLabLowerSpectrumTypeHigherThanRaw = false;
 var selectedSpectrumForProcessing = null;
 var oldSelectedSpectrumForProcessing = null;
 
+const loadingCheckObj = {
+    IsLoading: false,
+    IsError: false,
+
+    setError: function (isError) {
+        this.IsError = isError;
+    },
+
+    setIsLoading: function (isLoading) {
+        this.IsLoading = isLoading;
+    },
+
+    startLoading: function () {
+        this.setIsLoading(true);
+        this.setError(false);
+    },
+
+    stopLoading: function () {
+        this.setIsLoading(false);
+    },
+
+    reset: function () {
+        this.setIsLoading(false);
+        this.setError(false);
+    }
+};
+
 var availableFilesOnCloudDictionary = {};
 
 /* save list of spectra Id to being processed */

@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\chartsarrays.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\chartsarrays.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsalignmentpanel.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsalignmentpanel.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\controllers\\sampleandmeasurementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\controllers\\sampleandmeasurementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -33,21 +41,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 18,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "SampleAndMeasurementController.cs",
-              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Controllers\\SampleAndMeasurementController.cs",
-              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Controllers\\SampleAndMeasurementController.cs",
-              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Controllers\\SampleAndMeasurementController.cs",
-              "RelativeToolTip": "INAF.WebApps.HyperLab\\Controllers\\SampleAndMeasurementController.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAawJAAAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-09T10:21:57.547Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:131:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
@@ -118,7 +113,44 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "charmsalignmentpanel.js",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsalignmentpanel.js",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsalignmentpanel.js",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsalignmentpanel.js",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\charms\\charmsalignmentpanel.js",
+              "ViewState": "AgIAAOIBAAAAAAAAAAAAAPYCAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-12-09T11:39:09.473Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "chartsarrays.js",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\chartsarrays.js",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\chartsarrays.js",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\chartsarrays.js",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\hyperlab\\chart\\chartsarrays.js",
+              "ViewState": "AgIAANIAAAAAAAAAAAAAAOcAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-12-09T11:29:47.061Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "SampleAndMeasurementController.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Controllers\\SampleAndMeasurementController.cs",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Controllers\\SampleAndMeasurementController.cs",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Controllers\\SampleAndMeasurementController.cs",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\Controllers\\SampleAndMeasurementController.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAQwJAAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-09T10:21:57.547Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "appsettings.development.json",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\appsettings.development.json",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\appsettings.development.json",
@@ -126,12 +158,11 @@
               "RelativeToolTip": "INAF.WebApps.HyperLab\\appsettings.development.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-12-09T09:49:14.856Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-09T09:49:14.856Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "Extensions.cs",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Extensions\\Extensions.cs",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Extensions\\Extensions.cs",
@@ -143,7 +174,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "BaseController.cs",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Controllers\\Base\\BaseController.cs",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Controllers\\Base\\BaseController.cs",
@@ -156,7 +187,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "AccountController.cs",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Controllers\\AccountController.cs",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Controllers\\AccountController.cs",
@@ -169,7 +200,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "DbHandlerHyperLabUsersTokens.cs",
               "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\DbHandlerHyperLabUsersTokens.cs",
               "RelativeDocumentMoniker": "..\\..\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\DbHandlerHyperLabUsersTokens.cs",

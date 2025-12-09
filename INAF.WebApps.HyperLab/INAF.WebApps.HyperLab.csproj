@@ -89,7 +89,9 @@
 				<Content Remove="wwwroot\js\hyperlab\chart\charts.js" />
 				<Content Remove="wwwroot\js\hyperlab\chart\chartsarrays.js" />
 				<Content Remove="wwwroot\js\hyperlab\chart\chartsbuttons.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\chartspoints.js" />
 				<Content Remove="wwwroot\js\hyperlab\chart\chartsunauthorized.js" />
+				<Content Remove="wwwroot\js\hyperlab\chart\joystickchart.js" />
 				<Content Remove="wwwroot\js\hyperlab\chart\joystickManager.js" />
 				<Content Remove="wwwroot\js\hyperlab\common.js" />
 				<Content Remove="wwwroot\js\hyperlab\commonbuttons.js" />
@@ -98,11 +100,13 @@
 				<Content Remove="wwwroot\js\hyperlab\commonhubandchart.js" />
 				<Content Remove="wwwroot\js\hyperlab\commonhubandchartsandsharedstuff.js" />
 				<Content Remove="wwwroot\js\hyperlab\commonlists.js" />
+				<Content Remove="wwwroot\js\hyperlab\guide\guide.js" />
 				<Content Remove="wwwroot\js\hyperlab\home\index.js" />
 				<Content Remove="wwwroot\js\hyperlab\hub\blazorglobal.js" />
 				<Content Remove="wwwroot\js\hyperlab\hub\complexsearchesintro.js" />
 				<Content Remove="wwwroot\js\hyperlab\hub\complexsearchesmanagement.js" />
 				<Content Remove="wwwroot\js\hyperlab\hub\hub.js" />
+				<Content Remove="wwwroot\js\hyperlab\hub\hubsearchcommon.js" />
 				<Content Remove="wwwroot\js\hyperlab\hub\hubSearchComplex.js" />
 				<Content Remove="wwwroot\js\hyperlab\hub\hubSearchSimple.js" />
 				<Content Remove="wwwroot\js\hyperlab\hub\info.js" />
@@ -186,11 +190,13 @@
 				<None Include="wwwroot\js\hyperlab\commonhub.js" />
 				<None Include="wwwroot\js\hyperlab\commonhubandchart.js" />
 				<None Include="wwwroot\js\hyperlab\commonhubandchartsandsharedstuff.js" />
+				<None Include="wwwroot\js\hyperlab\guide\guide.js" />
 				<None Include="wwwroot\js\hyperlab\home\index.js" />
 				<None Include="wwwroot\js\hyperlab\blazorglobal.js" />
 				<None Include="wwwroot\js\hyperlab\hub\complexsearchesintro.js" />
 				<None Include="wwwroot\js\hyperlab\hub\complexsearchesmanagement.js" />
 				<None Include="wwwroot\js\hyperlab\hub\hub.js" />
+				<None Include="wwwroot\js\hyperlab\hub\hubsearchcommon.js" />
 				<None Include="wwwroot\js\hyperlab\hub\hubsearchcomplex.js" />
 				<None Include="wwwroot\js\hyperlab\hub\hubsearchsimple.js" />
 				<None Include="wwwroot\js\hyperlab\hub\info.js" />
@@ -227,6 +233,10 @@
 		</ItemGroup>
 
 		<ItemGroup>
+		  <Page Include="wwwroot\js\hyperlab\chart\chartspoints.js" />
+		</ItemGroup>
+
+		<ItemGroup>
 				<ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.CommonResources\INAF.Libraries.Net.CommonResources\INAF.Libraries.Net.CommonResources.csproj" />
 				<ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.Extensions\INAF.Libraries.Net.Extensions\INAF.Libraries.Net.Extensions.csproj" />
 				<ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLab.Data\INAF.Libraries.Net.DB.HyperLab.Data\INAF.Libraries.Net.DB.HyperLab.Data.csproj" />
@@ -238,6 +248,10 @@
 				<ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.Log\INAF.Libraries.Net.Log\INAF.Libraries.Net.Log.csproj" />
 				<ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.Math\INAF.Libraries.Net.Math\INAF.Libraries.Net.Math.csproj" />
 				<ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.ScienceModels\INAF.Libraries.Net.ScienceModels\INAF.Libraries.Net.ScienceModels.csproj" />
+		</ItemGroup>
+
+		<ItemGroup>
+		  <None Include="wwwroot\js\hyperlab\chart\joystickchart.js" />
 		</ItemGroup>
 
 		<ItemGroup>
