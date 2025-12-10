@@ -4,6 +4,7 @@ using INAF.Libraries.Net.CommonWebAppModels.Models.Permissions;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
+using INAF.Libraries.Net.CommonWebAppModels.Models.WebApp.Users;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
@@ -88,7 +89,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public IActionResult GetUserDetailsSimple()
         {
-            Libraries.Net.HyperLab.CommonModels.Models.WebApp.Users.UserSimpleModel user = dbHandlerHyperLabUsers.getUserDetailsSimple(getUserId());
+            UserSimpleModel user = dbHandlerHyperLabUsers.getUserDetailsSimple(getUserId());
             if (user != null)
                 return new JsonResult(user);
             else
