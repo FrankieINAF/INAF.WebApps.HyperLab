@@ -215,6 +215,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.Simbio.Data\INAF.Libraries.Net.DB.Simbio.Data\INAF.Libraries.Net.DB.Simbio.Data.csproj" />
+    <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.CommonResources\INAF.Libraries.Net.CommonResources\INAF.Libraries.Net.CommonResources.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\INAF.Libraries.Net.Extensions\INAF.Libraries.Net.Extensions\INAF.Libraries.Net.Extensions.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLab.Data\INAF.Libraries.Net.DB.HyperLab.Data\INAF.Libraries.Net.DB.HyperLab.Data.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLab.Users\INAF.Libraries.Net.DB.HyperLab.Users\INAF.Libraries.Net.DB.HyperLab.Users.csproj" />
