@@ -10,6 +10,7 @@ using INAF.Libraries.Net.Math.Fit.Linear;
 using INAF.Libraries.Net.Math.Fit.Spline;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers;
+using INAF.WebApps.HyperLab.ExternalServices;
 using INAF.WebApps.HyperLab.Helpers;
 using INAF.WebApps.HyperLab.Helpers.Factories;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -129,10 +130,12 @@ builder.Services
     .AddTransient<ContinuumRemovalHelper>()
     .AddTransient<EncryptionHelper>()
     .AddTransient<FitMethodsHelper>()
+    .AddTransient<HttpClient>()
     .AddTransient<LinearFitHelper>()
     .AddTransient<LinearProcessingHelper>()
     .AddTransient<MenuHelper>()
     .AddTransient<MissingPointHelper>()
+    .AddTransient<MultiAppAuthenticationService>()
     .AddTransient<PMinPMaxHelper>()
     .AddTransient<SampleTypesHelper>()
     .AddTransient<SearchByMaterialHelper>()
