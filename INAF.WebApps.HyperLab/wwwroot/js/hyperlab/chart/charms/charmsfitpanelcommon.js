@@ -138,7 +138,7 @@ function clearSegmentsForFitting() {
 
 function getFirstSegmentId(currentFitMode) {
     let suffix = 'Core';
-    if (currentFitMode == FIT_PRO_MODE)
+    if (currentFitMode == FIT_MODE_PRO)
         suffix = 'Pro';
 
     return $(`#fitSegmentsList${suffix}`).children().first().attr('id');

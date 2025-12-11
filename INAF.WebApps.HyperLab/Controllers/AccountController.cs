@@ -1,11 +1,12 @@
-﻿using INAF.Libraries.Net.CommonWebAppHelpers;
+﻿using INAF.Libraries.Net.CommonResources;
+using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Authentication;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.Extensions;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.Libraries.Net.HyperLab.CommonWebAppHelpers;
 using INAF.WebApps.HyperLab.Controllers.Base;
@@ -20,7 +21,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using INAF.Libraries.Net.HyperLab.CommonModels.Resources;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {

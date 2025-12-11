@@ -1,16 +1,15 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
 using INAF.Libraries.Net.Extensions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.SearchesManagement;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Helpers;
 using INAF.WebApps.HyperLab.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Controllers.HyperLab

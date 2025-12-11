@@ -35,7 +35,7 @@ var HIGHLIGHTED_SEGMENT_TEMP_ID = 'highlightedSegment_id';
 
 var POINT_RADIUS = 12;
 
-var currentFitMode = FIT_CORE_MODE;
+var currentFitMode = FIT_MODE_CORE;
 var errorBarSemiHeight;
 
 var PULSE_TIMEOUT = 1000;
@@ -165,16 +165,16 @@ async function initSwitchCoreProModeAsync() {
 
         /* if any point exists, then ask for resetting points and segment */
         let callbackYes = function () {
-            tryCallEnqueueSaveSetting(FIT_SET_CORE_PRO_MODE, (isChecked ? FIT_PRO_MODE : FIT_CORE_MODE));
+            tryCallEnqueueSaveSetting(FIT_SET_MODE_CORE_PRO, (isChecked ? FIT_MODE_PRO : FIT_MODE_CORE));
 
             /* trick to let switch button changing status on UI, without wating for in-memory operations completion  */
             setTimeout(function () {
                 switch (currentFitMode) {
-                    case FIT_CORE_MODE:
+                    case FIT_MODE_CORE:
                         switchToCoreMode();
                         break;
 
-                    case FIT_PRO_MODE:
+                    case FIT_MODE_PRO:
                         switchToProMode();
                         break;
                 }
@@ -194,19 +194,19 @@ function getFitMode(isChecked) {
     let mode;
 
     if (!isChecked)
-        mode = FIT_CORE_MODE;
+        mode = FIT_MODE_CORE;
     else
-        mode = FIT_PRO_MODE;
+        mode = FIT_MODE_PRO;
 
     return mode;
 }
 
 async function loadFitCoreProModeAsync() {
-    let obj = await getUserSettingAsync(FIT_SET_CORE_PRO_MODE);
+    let obj = await getUserSettingAsync(FIT_SET_MODE_CORE_PRO);
     if (obj.IsOk) {
         currentFitMode = obj.Value;
         /* save retrieved value and show it */
-        let isChecked = (obj.Value == FIT_PRO_MODE);
+        let isChecked = (obj.Value == FIT_MODE_PRO);
 
         /* set switch button to the right status */
         setSwitchCoreProMode(isChecked);
@@ -529,7 +529,7 @@ function setNumOfPointsForMissingPoints(value) {
 async function addFitPointToChartAsync(point, isFromUserAction = false) {
     let items = dxChartGetItems(chartContainer);
 
-    if (currentFitMode == FIT_CORE_MODE) {
+    if (currentFitMode == FIT_MODE_CORE) {
         setPointOnChart(items, point.P.X, point.P.Y, SERIES_FIT_POINT);
     } else {
         dxChartBeginUpdate(chartContainer);
@@ -643,12 +643,12 @@ async function addSelectedPointForFittingAsync(point, isFromUserAction = false, 
 
             let pointUICallback = function () {
                 switch (currentFitMode) {
-                    case FIT_CORE_MODE:
+                    case FIT_MODE_CORE:
                         /* create UI element on charms */
                         addPointUI(point);
                         break;
 
-                    case FIT_PRO_MODE:
+                    case FIT_MODE_PRO:
                         /* do nothing */
                         break;
                 }
@@ -682,13 +682,13 @@ async function addSelectedPointForFittingAsync(point, isFromUserAction = false, 
 
 /* clean panel on charms from points settings */
 function cleanPointsPanel() {
-    if (currentFitMode == FIT_CORE_MODE) {
+    if (currentFitMode == FIT_MODE_CORE) {
         //let callback = function () {
         //    $('#fitSegmentsListCore').empty();
         //};
         //animateCSS('fitSegmentsListCore', 'fadeOut', FASTER, callback);
         emptyListOfSegmentsOnCharms('fitSegmentsListCore', 'fitSegmentsListContainerCore');
-    } else if (currentFitMode == FIT_PRO_MODE) {
+    } else if (currentFitMode == FIT_MODE_PRO) {
         //let callback = function () {
         //    $('#fitSegmentsListPro').empty();
         //};
@@ -742,9 +742,9 @@ function removeSelectedPointFromFitting(point, mousePosX = null, mousePosY = nul
 function removePointFromFitting(point) {
     let pointForFitting;
 
-    if (currentFitMode == FIT_CORE_MODE)
+    if (currentFitMode == FIT_MODE_CORE)
         pointForFitting = findInPointsForFittingArrayByP(point);
-    else if (currentFitMode == FIT_PRO_MODE)
+    else if (currentFitMode == FIT_MODE_PRO)
         pointForFitting = findInPointsForFittingArrayByPMax(point);
 
     if (!pointForFitting)
@@ -809,11 +809,11 @@ function manageRemovedPoint(point) {
     if (point.P.X <= minX) {
         /* remove 1st segment on UI */
         switch (currentFitMode) {
-            case FIT_CORE_MODE:
+            case FIT_MODE_CORE:
                 removeSegmentForFittingUICore(segmentsForFitting[0]);
                 break;
 
-            case FIT_PRO_MODE:
+            case FIT_MODE_PRO:
                 removeSegmentForFittingUIPro(segmentsForFitting[0]);
                 break;
         }
@@ -825,11 +825,11 @@ function manageRemovedPoint(point) {
     } else if (point.P.X >= maxX) {
         /* remove last segment on UI */
         switch (currentFitMode) {
-            case FIT_CORE_MODE:
+            case FIT_MODE_CORE:
                 removeSegmentForFittingUICore(segmentsForFitting[segmentsForFitting.length - 1]);
                 break;
 
-            case FIT_PRO_MODE:
+            case FIT_MODE_PRO:
                 removeSegmentForFittingUIPro(segmentsForFitting[segmentsForFitting.length - 1]);
                 break;
         }
@@ -849,11 +849,11 @@ function manageRemovedPoint(point) {
         let p1 = segmentsForFitting[index].P1;
         /* remove n-th segment on UI */
         switch (currentFitMode) {
-            case FIT_CORE_MODE:
+            case FIT_MODE_CORE:
                 removeSegmentForFittingUICore(segmentsForFitting[index]);
                 break;
 
-            case FIT_PRO_MODE:
+            case FIT_MODE_PRO:
                 removeSegmentForFittingUIPro(segmentsForFitting[index]);
                 break;
         }
@@ -864,11 +864,11 @@ function manageRemovedPoint(point) {
 
         /* remove n-th segment on UI */
         switch (currentFitMode) {
-            case FIT_CORE_MODE:
+            case FIT_MODE_CORE:
                 removeSegmentForFittingUICore(segmentsForFitting[index - 1]);
                 break;
 
-            case FIT_PRO_MODE:
+            case FIT_MODE_PRO:
                 removeSegmentForFittingUIPro(segmentsForFitting[index - 1]);
                 break;
         }
@@ -899,13 +899,13 @@ async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isL
     /* add segment-related UI item  */
     let result;
     switch (currentFitMode) {
-        case FIT_CORE_MODE:
+        case FIT_MODE_CORE:
             /* create UI element on charms and build the continuum segment on chart */
             result = createSegmentFittingUICore(segment, isFromUserAction, isLast);
             //addSegmentToDictionary(FIT_SEGMENT_CORE, result.Guid, segment.Index);
             break;
 
-        case FIT_PRO_MODE:
+        case FIT_MODE_PRO:
             /* create UI element on charms and build the continuum segment on chart */
             result = await createSegmentFittingUIProAsync(segment, isFromUserAction, isLast);
             //addSegmentToDictionary(FIT_SEGMENT_PRO, result.Guid, segment.Index);
@@ -916,12 +916,12 @@ async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isL
 
     if (segmentsForFitting.length == 1 && segment.Index == 0) {
         switch (currentFitMode) {
-            case FIT_CORE_MODE:
+            case FIT_MODE_CORE:
                 appendToListCore(result.Html);
                 setPanelForFitCoreVisible();
                 break;
 
-            case FIT_PRO_MODE:
+            case FIT_MODE_PRO:
                 appendToListPro(result.Html);
                 setPanelForFitProVisible();
                 break;
@@ -957,11 +957,11 @@ async function addNewSegmentProcedureAsync(p0, p1, isFromUserAction = false, isL
 async function replaceSegmentForFittingAtProcedureAsync(index, p, isFromUserAction = false, isLast = false) {
     /* remove n-th segment on UI */
     switch (currentFitMode) {
-        case FIT_CORE_MODE:
+        case FIT_MODE_CORE:
             removeSegmentForFittingUICore(segmentsForFitting[index]);
             break;
 
-        case FIT_PRO_MODE:
+        case FIT_MODE_PRO:
             removeSegmentForFittingUIPro(segmentsForFitting[index]);
             break;
     }
@@ -1241,9 +1241,9 @@ function removeFitPointsSeriesPoints() {
     let pointsForFittingNum = pointsForFitting.length;
     for (var i = pointsForFittingNum - 1; i >= 0; i--) {
         /* save point x coord */
-        if (currentFitMode == FIT_CORE_MODE)
+        if (currentFitMode == FIT_MODE_CORE)
             xValues.push(pointsForFitting[i].P.X);
-        else if (currentFitMode == FIT_PRO_MODE) {
+        else if (currentFitMode == FIT_MODE_PRO) {
             xValues.push(pointsForFitting[i].PXMax.X);
             xValues.push(pointsForFitting[i].PXMin.X);
         }
