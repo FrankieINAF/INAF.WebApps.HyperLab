@@ -9,6 +9,8 @@
     var STC = '@Enums.Channel.STC.ToString()';
     var VIHI = '@Enums.Channel.VIHI.ToString()';
 
+    var ChartsNoObservationsFoundMessage = "@Html.Raw(SimbioCharts.ChartsNoObservationsFoundMessage)";
+
     var FeatureCategoryAll = "@Html.Raw(SimbioMap.FeatureCategoryAll)";
     var FeatureCategoryAlbedo = "@Html.Raw(SimbioMap.FeatureCategoryAlbedo)";
     var FeatureCategoryAlbedos = "@Html.Raw(SimbioMap.FeatureCategoryAlbedos)";
@@ -38,9 +40,11 @@
 
     var UrlGetFootprintsByStp = '/@GenericHelper.GetControllerName(nameof(DataController))/@nameof(DataController.GetFootprintsByStp)';
 
+    var UrlGetStps = '/@GenericHelper.GetControllerName(nameof(DataController))/@nameof(DataController.GetStps)';
     var UrlGetStpsWithFootprints = '/@GenericHelper.GetControllerName(nameof(DataController))/@nameof(DataController.GetStpsWithFootprints)';
 
     var UrlGetFeatures = '/@GenericHelper.GetControllerName(nameof(DataController))/@nameof(DataController.GetFeatures)';
+    var UrlGetObservationsForCharts = '/@GenericHelper.GetControllerName(nameof(DataController))/@nameof(DataController.GetObservationsForCharts)';
     var UrlGetTargetInfo = '/@GenericHelper.GetControllerName(nameof(DataController))/@nameof(DataController.GetTargetInfo)';
     var UrlGetTargetsWithObsCoords = '/@GenericHelper.GetControllerName(nameof(DataController))/@nameof(DataController.GetTargetsWithObsCoords)';
 

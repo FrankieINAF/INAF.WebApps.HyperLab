@@ -244,7 +244,8 @@
     "inputFiles": [
       "wwwroot/js/src/simbio/data/mapcommons.js",
       "wwwroot/js/src/simbio/data/map.js",
-      "wwwroot/js/src/simbio/data/mapfeatures.js"
+      "wwwroot/js/src/simbio/data/mapfeatures.js",
+      "wwwroot/js/src/simbio/data/charts.js"
     ],
     "minify": { "enabled": false },
     "includeInProject": true

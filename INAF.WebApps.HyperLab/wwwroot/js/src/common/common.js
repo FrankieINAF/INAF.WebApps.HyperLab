@@ -906,7 +906,7 @@ async function doAjaxPostDefaultContentTypeAsync(url, model, failcallback) {
             }
         });
     } catch (e) {
-        console.log(`${url} - ex:` + e.responseText);
+        //console.log(`${url} - ex:` + e.responseText);
         if (failcallback)
             failcallback();
     }

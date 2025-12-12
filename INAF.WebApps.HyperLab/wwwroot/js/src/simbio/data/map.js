@@ -213,9 +213,9 @@ function initSwitchShowHideSearchOfFootprints() {
         let isChecked = isCheckboxChecked('showHideSearchOfFootprints');
 
         if (isChecked)
-            showByClassDFlexItem('selectStpContainer');
+            showByClassDFlexItem('selectStpForFootprintsContainer');
         else
-            hideByClassDFlexItem('selectStpContainer');
+            hideByClassDFlexItem('selectStpForFootprintsContainer');
     });
 }
 
@@ -227,10 +227,10 @@ async function retrieveStpsWithFootprintsAsync() {
     if (stps == null || stps.length == 0)
         return;
 
-    Metro.getPlugin('#selectStp', 'select').addOption('Select STP');
+    Metro.getPlugin('#selectStpForFootprints', 'select').addOption('Select STP');
     const stpsCount = stps.length;
     for (var i = 0; i < stpsCount; i++) {
-        Metro.getPlugin('#selectStp', 'select').addOption(stps[i]);
+        Metro.getPlugin('#selectStpForFootprints', 'select').addOption(stps[i]);
     }
 }
 

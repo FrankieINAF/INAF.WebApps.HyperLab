@@ -59,5 +59,14 @@ namespace INAF.WebApps.HyperLab.Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, no observations found for selected stp.
+        /// </summary>
+        public static string ChartsNoObservationsFoundMessage {
+            get {
+                return ResourceManager.GetString("ChartsNoObservationsFoundMessage", resourceCulture);
+            }
+        }
     }
 }

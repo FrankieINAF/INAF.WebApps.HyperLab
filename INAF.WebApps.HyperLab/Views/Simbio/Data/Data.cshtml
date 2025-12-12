@@ -24,12 +24,12 @@
                     <div id="featuresDropdown"
                          data-role="dropdown"
                          data-toggle-element="#loadHideFeatures"
-                         data-on-drop="openCloseFeaturesDropdown"
-                         data-on-up="openCloseFeaturesDropdown">
+                         data-on-drop="onFeaturesDropdownOpenClose"
+                         data-on-up="onFeaturesDropdownOpenClose">
                         <div class="d-flex flex-column">
                             <p class="fg-black">@Html.Raw(SimbioMap.FeaturesShowHideLabel)</p>
                             <div><input id="showHideFeaturesAll" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-left-48" data-caption="@Html.Raw(SimbioMap.FeatureCategoryAll)"></div>
-                            <div class="d-flex"><img src="~/images/simbiomap/features/featuresAlbedo.png"/><input id="showHideFeaturesAlbedos" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-top-8" data-caption="@Html.Raw(SimbioMap.FeatureCategoryAlbedos)"></div>
+                            <div class="d-flex"><img src="~/images/simbiomap/features/featuresAlbedo.png" /><input id="showHideFeaturesAlbedos" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-top-8" data-caption="@Html.Raw(SimbioMap.FeatureCategoryAlbedos)"></div>
                             <div class="d-flex"><img src="~/images/simbiomap/features/featuresCrater.png" /><input id="showHideFeaturesCraters" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-top-8" data-caption="@Html.Raw(SimbioMap.FeatureCategoryCraters)"></div>
                             <div class="d-flex"><img src="~/images/simbiomap/features/featuresDorsum.png" /><input id="showHideFeaturesDorsa" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-top-8" data-caption="@Html.Raw(SimbioMap.FeatureCategoryDorsa)"></div>
                             <div class="d-flex"><img src="~/images/simbiomap/features/featuresFossa.png" /><input id="showHideFeaturesFossae" type="checkbox" data-role="checkbox" data-cls-check="bd-black" data-cls-checkbox="margin-top-8" data-caption="@Html.Raw(SimbioMap.FeatureCategoryFossae)"></div>
@@ -76,8 +76,8 @@
                         <div class="margin-top-4"><p class="fg-black">@Html.Raw(SimbioMap.SelectorsShowHideSearchOfFootprints)</p></div>
                     </div>
                     <!-- SEARCH BOX -->
-                    <div id="selectStpContainer" class="d-none">
-                        <select id="selectStp" data-role="select" data-on-item-select="retrieveFootprintsByStpAsync"></select>
+                    <div id="selectStpForFootprintsContainer" class="d-none">
+                        <select id="selectStpForFootprints" data-role="select" data-on-item-select="retrieveFootprintsByStpAsync"></select>
                     </div>
                 </div>
             </div>
@@ -109,8 +109,13 @@
             </div>
         </div>
     </div>
-    
+
     <!-- CHART -->
+    <div class="w-100-fs w-25-lg">
+        <div id="selectStpForChartContainer" class="d-none">
+            <select id="selectStpForChart" data-role="select" data-on-item-select="retrieveObservationsForChartsAsync"></select>
+        </div>
+    </div>
 </div>
 
 <div id="charmsSelectedItem" data-role="charms" data-cls-charms="charms-panel" data-position="right" data-on-open="onCharmsSelectedItemOpened()">
@@ -216,6 +221,7 @@
 <environment names="Development">
     <script type="module" src="~/js/src/simbio/data/map.js"></script>
     <script type="module" src="~/js/src/simbio/data/mapfeatures.js"></script>
+    <script type="module" src="~/js/src/simbio/data/charts.js"></script>
     <script type="module">
         import {
             hideCharmsSelectedItem,
@@ -235,8 +241,8 @@
         window.retrieveFootprintsByStpAsync = retrieveFootprintsByStpAsync;
         window.searchForTarget = searchForTarget;
 
-        import { 
-            hideFeatureTooltip 
+        import {
+            hideFeatureTooltip
         } from '/js/src/simbio/data/mapfeatures.js';
         /* following lines are required to access imported function by global scope */
         window.hideFeatureTooltip = hideFeatureTooltip;

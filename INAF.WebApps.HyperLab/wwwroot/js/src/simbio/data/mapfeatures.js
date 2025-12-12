@@ -44,14 +44,18 @@ function initCheckboxFeatures(featureCategory) {
         if (isChecked) {
             if (featureCategory == FeatureCategoryAll)
                 retrieveMapFeaturesAllProcedure(featureCategory);
-            else
-                retrieveMapFeaturesAsync(featureCategory);
+            else {
+                if (!isAllFeatureRequest)
+                    retrieveMapFeaturesAsync(featureCategory);
+            }
         }
         else {
             if (featureCategory == FeatureCategoryAll)
                 removeMapFeaturesAllProcedure();
-            else
-                removeMapFeatures(featureCategory);
+            else {
+                if (!isAllFeatureRequest)
+                    removeMapFeatures(featureCategory);
+            }
         }
     });
 }
@@ -78,7 +82,7 @@ function removeMapFeaturesAllProcedure() {
     isAllFeatureRequest = false;
 
     featuresCategoriesArray.forEach(function (featureName) {
-        console.log(`removeMapFeaturesAllProcedure: ${featureName}`);
+        //console.log(`removeMapFeaturesAllProcedure: ${featureName}`);
         $(`#showHideFeatures${featureName}`).prop('checked', false).trigger('change');
     });
 }
@@ -106,9 +110,9 @@ async function retrieveMapFeaturesAsync(featureCategory) {
         Text: text
     };
 
-    let obj = await doAjaxGetAsync(UrlGetFeatures, model);
+    const obj = await doAjaxGetAsync(UrlGetFeatures, model);
     if (obj && obj.length > 0) {
-        console.log(obj);
+        //console.log(obj);
         const featuresNum = obj.length;
         for (let i = 0; i < featuresNum; i++) {
             let lonlat = new LonLat(obj[i].Longitude, obj[i].Latitude);

@@ -1,9 +1,11 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
 using INAF.Libraries.Net.DB.Simbio.Data;
 using INAF.Libraries.Net.Extensions;
 using INAF.Libraries.Net.Simbio.CommonModels.Models.Features;
 using INAF.Libraries.Net.Simbio.CommonModels.Models.Footprints;
 using INAF.Libraries.Net.Simbio.CommonModels.Models.GeoInfo;
+using INAF.Libraries.Net.Simbio.CommonModels.Models.Observations;
 using INAF.Libraries.Net.Simbio.CommonModels.Models.Targets;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Resources;
@@ -47,6 +49,17 @@ namespace INAF.WebApps.HyperLab.Controllers.Simbio
         }
         #endregion
 
+        #region OBSERVATIONS
+        [HttpGet]
+        public IActionResult GetObservationsForCharts(GenericRequestByValueModel model)
+        {
+            IEnumerable<ObservationOutputModel>? observations = dbHandlerSimbio.getObservationsForCharts(model.Value);
+            if (observations.IsAny())
+                return new JsonResult(new GenericResponseModel(observations!));
+            else
+                return new JsonResult(GenericResponseModel.CreateErrorResponse());
+        }
+        #endregion
 
         #region TARGETS
         [HttpGet]
@@ -85,6 +98,15 @@ namespace INAF.WebApps.HyperLab.Controllers.Simbio
         public IActionResult GetStpsWithFootprints()
         {
             IEnumerable<string>? stpValues = dbHandlerSimbio.getStpsWithFootprints();
+            return new JsonResult(stpValues);
+        }
+        #endregion
+
+        #region STPs
+        [HttpGet]
+        public IActionResult GetStps()
+        {
+            IEnumerable<string>? stpValues = dbHandlerSimbio.getStps();
             return new JsonResult(stpValues);
         }
         #endregion

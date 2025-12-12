@@ -310,7 +310,7 @@ function updateSpectrumColor(spectrum, color) {
 /* SPECTRA TYPES PARENTS */
 /* ################################################################################ */
 async function getSpectraTypesParentsAsync() {
-    let obj = await doAjaxGetNoModelAsync(UrlGetSpectraTypesParents);
+    const obj = await doAjaxGetNoModelAsync(UrlGetSpectraTypesParents);
     if (obj) {
         let keys = Object.keys(obj);
         keys.forEach(function (key) {
@@ -548,12 +548,12 @@ async function downloadProcessedSpectrumAsync(spectrumType) {
 
     setLoadingCircleIsVisible(true);
 
-    let model = {
+    const model = {
         ParentId: selectedSpectrumForProcessingId,
         SpectrumType: spectrumType
     }
 
-    let obj = await doAjaxPostAsync(UrlGetProcessedSpectrum, model);
+    const obj = await doAjaxPostAsync(UrlGetProcessedSpectrum, model);
     if (obj) {
         setLoadingCircleIsVisible(true); // trick for avoiding mysterious disappearing of loading
 
@@ -599,24 +599,24 @@ async function downloadProcessedSpectrumAsync(spectrumType) {
 }
 
 async function getSpectrumByParentIdAndSpectrumTypeAsync(parentId, spectrumType) {
-    let model = {
+    const model = {
         Id: parentId,
         SpectrumType: spectrumType
     };
 
-    let obj = await doAjaxGetAsync(UrlGetSpectrumIdByParentIdAndSpectrumType, model);
+    const obj = await doAjaxGetAsync(UrlGetSpectrumIdByParentIdAndSpectrumType, model);
     if (obj && obj.IsOk) {
 
     }
 }
 
 async function getSpectrumIdByParentIdAndSpectrumTypeAsync(parentId, spectrumType, callback) {
-    let model = {
+    const model = {
         Id: parentId,
         SpectrumType: spectrumType
     };
 
-    let obj = await doAjaxGetAsync(UrlGetSpectrumIdByParentIdAndSpectrumType, model);
+    const obj = await doAjaxGetAsync(UrlGetSpectrumIdByParentIdAndSpectrumType, model);
     if (obj && obj.IsOk) {
         if (callback)
             callback(obj.Id);
@@ -669,14 +669,14 @@ async function checkIsSpectrumOfTypeSavedOnCloudAsync(name, spectrumType, spectr
     if (spectrumSource == null)
         spectrumSource = SPECTRUM_SOURCE_SLAB;
 
-    let model = {
+    const model = {
         Filename: name,
         SpectrumType: spectrumType,
         SpectrumSource: spectrumSource,
         SpectrumLevel: spectrumLevel
     };
 
-    let obj = await doAjaxGetAsync(UrlIsSpectrumTypeSavedOnCloud, model);
+    const obj = await doAjaxGetAsync(UrlIsSpectrumTypeSavedOnCloud, model);
     if (obj) {
         /* save status of spectrum in 'spectraInfo' */
         saveSavedOnCloudStatus(obj.IsOk, spectrumType);
@@ -694,7 +694,7 @@ async function deleteRecursivelySpectrumChildrenOnCloudAsync(rawId, spectrumType
     let isRemovalOk = true;
 
     try {
-        let model = {
+        const model = {
             Id: rawId,
             SpectrumType: spectrumType
         };
@@ -894,7 +894,7 @@ async function removeSpectrumOnCloudAsync(id) {
     let isRemovalOk = true;
 
     try {
-        let model = {
+        const model = {
             Id: id
         };
 
