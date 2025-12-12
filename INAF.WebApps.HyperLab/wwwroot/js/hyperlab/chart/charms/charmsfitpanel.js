@@ -200,7 +200,7 @@ async function initSwitchCoreProModeAsync() {
 
         /* if any point exists, then ask for resetting points and segment */
         let callbackYes = function () {
-            tryCallEnqueueSaveSetting(FIT_SET_CORE_PRO_MODE, (isChecked ? FIT_MODE_PRO : FIT_MODE_CORE));
+            tryCallEnqueueSaveSetting(FIT_SET_MODE_CORE_PRO, (isChecked ? FIT_MODE_PRO : FIT_MODE_CORE));
 
             /* trick to let switch button changing status on UI, without wating for in-memory operations completion  */
             setTimeout(function () {
@@ -237,7 +237,7 @@ function getFitMode(isChecked) {
 }
 
 async function loadFitCoreProModeAsync() {
-    let obj = await getUserSettingAsync(FIT_SET_CORE_PRO_MODE);
+    let obj = await getUserSettingAsync(FIT_SET_MODE_CORE_PRO);
     if (obj.IsOk) {
         switch (obj.Value) {
             case 'FIT_CORE_MODE':
