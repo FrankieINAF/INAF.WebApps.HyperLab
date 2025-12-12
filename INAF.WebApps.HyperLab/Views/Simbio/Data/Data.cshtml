@@ -5,7 +5,6 @@
 
 @{
     ViewBag.Title = SimbioMap.SimbioMapPageTitle;
-
 }
 
 <link href="~/lib/openglobus/css/og.css" rel="stylesheet">
@@ -207,7 +206,7 @@
 }
 
 <script type="text/javascript">
-    currentView = '/@GenericHelper.GetControllerName(nameof(MapController))/@nameof(MapController.Map)';
+    currentView = '/@GenericHelper.GetControllerName(nameof(DataController))/@nameof(DataController.Data)';
     var footprintsArray = [];
 
     var selectedTargetName = null;
@@ -215,9 +214,8 @@
 </script>
 <script type="module" src="~/lib/openglobus/js/og.es.js"></script>
 <environment names="Development">
-    @* <script type="module" src="~/js/src/simbio/map/mapcommons.js"></script> *@
-    <script type="module" src="~/js/src/simbio/map/map.js"></script>
-    <script type="module" src="~/js/src/simbio/map/mapfeatures.js"></script>
+    <script type="module" src="~/js/src/simbio/data/map.js"></script>
+    <script type="module" src="~/js/src/simbio/data/mapfeatures.js"></script>
     <script type="module">
         import {
             hideCharmsSelectedItem,
@@ -227,7 +225,7 @@
             restoreDefaultVisualization,
             retrieveFootprintsByStpAsync,
             searchForTarget
-        } from '/js/src/simbio/map/map.js';
+        } from '/js/src/simbio/data/map.js';
         /* following lines are required to access imported function by global scope */
         window.hideCharmsSelectedItem = hideCharmsSelectedItem;
         window.onCharmsSelectedItemOpened = onCharmsSelectedItemOpened;
@@ -239,13 +237,13 @@
 
         import { 
             hideFeatureTooltip 
-        } from '/js/src/simbio/map/mapfeatures.js';
+        } from '/js/src/simbio/data/mapfeatures.js';
         /* following lines are required to access imported function by global scope */
         window.hideFeatureTooltip = hideFeatureTooltip;
     </script>
 </environment>
 <environment names="Production">
-    <script type="module" src="~/js/dist/simbio/map/mapbundle.js" asp-append-version="true"></script>
+    <script type="module" src="~/js/dist/simbio/data/databundle.js" asp-append-version="true"></script>
     <script type="module">
         import {
             hideCharmsSelectedItem,
@@ -255,7 +253,7 @@
             restoreDefaultVisualization,
             retrieveFootprintsByStpAsync,
             searchForTarget
-        } from '/js/dist/simbio/map/mapbundle.js';
+        } from '/js/dist/simbio/data/databundle.js';
         /* following lines are required to access imported function by global scope */
         window.hideCharmsSelectedItem = hideCharmsSelectedItem;
         window.hideFeatureTooltip = hideFeatureTooltip;

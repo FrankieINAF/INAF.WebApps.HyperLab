@@ -67,8 +67,7 @@
             <div class="suggest-box bg-darkGrayBlue">
                 <div class="data-box">
                     @{
-                        var details = dbHandler.getUserDetailsSimple(Context.GetUserId());
-                        string userName = $"{details.Name} {details.LastName}";
+                        string? userName = @Context.GetUserName();
                         if (string.IsNullOrEmpty(userName))
                         {
                             userName = "Guest";
@@ -79,12 +78,18 @@
                             roleName = "Guest";
                         }
                         string img = $"/images/appbars/{roleName}.png";
+
                     }
                     <img src="@img" class="avatar">
-                    <div class="ml-4 avatar-title flex-column">
-                        <a href="#" class="d-block fg-white text-medium no-decor"><span class="reduce-1">@userName</span></a>
-                        <p class="m-0"><span class="fg-green mr-2">●</span><span class="text-small navview-pane-text">online</span></p>
-                    </div>
+                    @{
+                        if (!string.IsNullOrEmpty(userName))
+                        {
+                            <div class="ml-4 avatar-title flex-column">
+                                <a href="#" class="d-block fg-white text-medium no-decor"><span class="reduce-1">@userName</span></a>
+                                <p class="m-0"><span class="fg-green mr-2">●</span><span class="text-small navview-pane-text">online</span></p>
+                            </div>
+                        }
+                    }
                 </div>
                 <img src="~/images/appbars/AppAdmin.png" class="avatar holder ml-2">
             </div>

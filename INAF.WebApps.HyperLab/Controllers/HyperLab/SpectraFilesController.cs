@@ -1,4 +1,5 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
@@ -12,7 +13,6 @@ using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.SpectrumVersions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests.SaveSpectrum;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
-using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.Libraries.Net.Math.Models;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
@@ -504,8 +504,8 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
             int bandOverlapRange = dbHandlerHyperLabUsers.getUserSettingsBandOverlapRange(getUserId());
 
             bool isOverlapping = dbHandlerHyperLabData.isBandOverlappingWithExistingOne(model.FileId,
-                                                                                        model.BandLeftBoundary,
-                                                                                        model.BandRightBoundary,
+                                                                                        model.LeftBoundary,
+                                                                                        model.RightBoundary,
                                                                                         bandOverlapRange,
                                                                                         getUserId());
             return new JsonResult(new GenericResponseModel() { BoolValue = isOverlapping });
@@ -516,8 +516,8 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
         {
             (bool isOk, int id) result = await dbHandlerHyperLabData.upsertBandAnalysisDataAsync(model.FileId,
                                                                                                  model.Id,
-                                                                                                 model.BandLeftBoundary,
-                                                                                                 model.BandRightBoundary,
+                                                                                                 model.LeftBoundary,
+                                                                                                 model.RightBoundary,
                                                                                                  model.BandCenterX,
                                                                                                  model.BandDepth,
                                                                                                  model.BandArea,

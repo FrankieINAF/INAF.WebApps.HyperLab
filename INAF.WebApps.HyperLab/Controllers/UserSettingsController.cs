@@ -1,4 +1,5 @@
-﻿using INAF.Libraries.Net.DB.HyperLabUsers;
+﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
+using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;

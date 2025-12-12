@@ -240,11 +240,11 @@
   },
   /* SIMBIO */
   {
-    "outputFileName": "wwwroot/js/dist/simbio/map/mapbundle.js",
+    "outputFileName": "wwwroot/js/dist/simbio/data/databundle.js",
     "inputFiles": [
-      "wwwroot/js/src/simbio/map/mapcommons.js",
-      "wwwroot/js/src/simbio/map/map.js",
-      "wwwroot/js/src/simbio/map/mapfeatures.js"
+      "wwwroot/js/src/simbio/data/mapcommons.js",
+      "wwwroot/js/src/simbio/data/map.js",
+      "wwwroot/js/src/simbio/data/mapfeatures.js"
     ],
     "minify": { "enabled": false },
     "includeInProject": true
