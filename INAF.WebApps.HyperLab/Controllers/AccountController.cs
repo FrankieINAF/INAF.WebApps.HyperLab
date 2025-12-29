@@ -26,13 +26,16 @@ namespace INAF.WebApps.HyperLab.Controllers
     public class AccountController : BaseController
     {
         private readonly string ACCOUNT_ERROR_MODEL = "AccountErrorModel";
+        private readonly AuthorizationHelper authorizationHelper;
         private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
 
         public AccountController(IServiceProvider serviceProvider,
                                  IConfiguration configuration,
                                  ILogger<AccountController> logger,
+                                 AuthorizationHelper authorizationHelper,
                                  DbHandlerHyperLabUsers dbHandlerHyperLabUsers) : base(serviceProvider, configuration, logger)
         {
+            this.authorizationHelper = authorizationHelper;
             this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
         }
 
@@ -106,9 +109,10 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (ModelState.IsValid)
             {
                 logger.LogInformation($"{nameof(Login)} - user: {model.UserName}");
-                (bool isAuthenticated, UserModel? user) result = await tryAuthenticateForWebAsync(model.UserName!, model.Password!, model.RememberMe);
-                logger.LogInformation($"{nameof(Login)} - isAuthenticated: {result.isAuthenticated}");
-                if (result.isAuthenticated)
+
+                GenericResponseModel? result = await authorizationHelper.Login(model, HttpContext.RequestAborted);
+                logger.LogInformation($"{nameof(Login)} - isAuthenticated: {result?.IsOk}");
+                if (result?.IsOk == true)
                     return RedirectToAction(nameof(SpectraManagerController.Hub), GenericHelper.GetControllerName(nameof(SpectraManagerController)));
             }
             else

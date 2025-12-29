@@ -1,0 +1,22 @@
+﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
+
+namespace INAF.WebApps.HyperLab.Helpers
+{
+    public class AuthorizationHelper
+    {
+        private readonly IServiceProvider serviceProvider;
+        private readonly ILogger<AuthorizationHelper> logger;
+
+        public AuthorizationHelper(IServiceProvider serviceProvider,
+                                   ILogger<AuthorizationHelper> logger)
+        {
+            this.serviceProvider = serviceProvider;
+            this.logger = logger;
+        }
+
+        public void Login(LoginModel model)
+        {
+
+        }
+    }
+}

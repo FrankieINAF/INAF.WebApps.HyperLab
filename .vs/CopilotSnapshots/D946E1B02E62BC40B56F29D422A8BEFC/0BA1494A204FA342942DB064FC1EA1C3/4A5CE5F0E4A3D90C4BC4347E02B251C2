@@ -1,0 +1,123 @@
+﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
+using System.Text;
+using System.Text.Json;
+
+namespace INAF.WebApps.HyperLab.Helpers
+{
+    public class AuthorizationHelper
+    {
+        private readonly IServiceProvider serviceProvider;
+        private readonly IConfiguration configuration;
+        private readonly ILogger<AuthorizationHelper> logger;
+        private readonly IHttpClientFactory httpClientFactory;
+
+        private readonly string authServiceBaseUrl;
+
+        public AuthorizationHelper(IServiceProvider serviceProvider,
+                                   IConfiguration configuration,
+                                   ILogger<AuthorizationHelper> logger,
+                                   IHttpClientFactory httpClientFactory)
+        {
+            this.serviceProvider = serviceProvider;
+            this.configuration = configuration;
+            this.logger = logger;
+            this.httpClientFactory = httpClientFactory;
+
+            authServiceBaseUrl = configuration.GetValue<string>("AppSettings:AuthService:BaseUrl") 
+                                 ?? throw new ArgumentNullException("AppSettings:AuthService:BaseUrl configuration is missing");
+        }
+
+        public async Task<UserModel?> Login(LoginModel model, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var loginUrl = $"{authServiceBaseUrl}api/auth/login";
+                
+                var response = await SendPostRequestAsync<LoginModel, UserModel>(loginUrl, model, cancellationToken);
+                
+                return response;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error occurred during login for user {UserName}", model.UserName);
+                return null;
+            }
+        }
+
+        public async Task<TResponse?> SendPostRequestAsync<TRequest, TResponse>(
+            string url,
+            TRequest requestData,
+            CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                using var httpClient = httpClientFactory.CreateClient();
+                
+                var jsonContent = JsonSerializer.Serialize(requestData);
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                logger.LogInformation("Sending POST request to {Url}", url);
+
+                var response = await httpClient.PostAsync(url, content, cancellationToken);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
+                    var result = JsonSerializer.Deserialize<TResponse>(responseContent);
+
+                    logger.LogInformation("POST request to {Url} completed successfully", url);
+                    return result;
+                }
+                else
+                {
+                    logger.LogError("POST request to {Url} failed with status code {StatusCode}", 
+                        url, response.StatusCode);
+                    return default;
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error occurred while sending POST request to {Url}", url);
+                throw;
+            }
+        }
+
+        public async Task<string?> SendPostRequestAsync<TRequest>(
+            string url,
+            TRequest requestData,
+            CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                using var httpClient = httpClientFactory.CreateClient();
+                
+                var jsonContent = JsonSerializer.Serialize(requestData);
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                logger.LogInformation("Sending POST request to {Url}", url);
+
+                var response = await httpClient.PostAsync(url, content, cancellationToken);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
+                    
+                    logger.LogInformation("POST request to {Url} completed successfully", url);
+                    return responseContent;
+                }
+                else
+                {
+                    logger.LogError("POST request to {Url} failed with status code {StatusCode}", 
+                        url, response.StatusCode);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error occurred while sending POST request to {Url}", url);
+                throw;
+            }
+        }
+    }
+}
