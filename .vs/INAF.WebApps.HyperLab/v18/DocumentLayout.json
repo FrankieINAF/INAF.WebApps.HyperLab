@@ -98,27 +98,28 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AuthorizationHelper.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Helpers\\AuthorizationHelper.cs",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Helpers\\AuthorizationHelper.cs",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Helpers\\AuthorizationHelper.cs*",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\Helpers\\AuthorizationHelper.cs*",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAWwCkAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-29T14:40:47.565Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Program.cs",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Program.cs",
               "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Program.cs",
               "RelativeToolTip": "INAF.WebApps.HyperLab\\Program.cs",
-              "ViewState": "AgIAAGcAAAAAAAAAAAAQwJAAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAADkAAAAAAAAAAAAvwEsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-29T08:05:15.31Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AuthorizationHelper.cs",
-              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Helpers\\AuthorizationHelper.cs",
-              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Helpers\\AuthorizationHelper.cs",
-              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Helpers\\AuthorizationHelper.cs",
-              "RelativeToolTip": "INAF.WebApps.HyperLab\\Helpers\\AuthorizationHelper.cs",
-              "ViewState": "AgIAACsAAAAAAAAAAAAAAH4AAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-29T08:05:10.982Z",
+              "WhenOpened": "2025-12-29T08:05:15.31Z",
               "EditorCaption": ""
             },
             {
@@ -129,7 +130,7 @@
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Controllers\\AccountController.cs",
               "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Controllers\\AccountController.cs",
               "RelativeToolTip": "INAF.WebApps.HyperLab\\Controllers\\AccountController.cs",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAYwHwAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAF0AAAAAAAAAAAArwGcAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-17T11:33:29.04Z",
               "EditorCaption": ""

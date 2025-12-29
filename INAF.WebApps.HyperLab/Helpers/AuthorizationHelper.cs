@@ -3,6 +3,7 @@ using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Authentication;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
 using System.Net;
 using System.Text;
 using System.Text.Json;
@@ -38,21 +39,21 @@ namespace INAF.WebApps.HyperLab.Helpers
             authServiceBaseUrl = configuration.GetValue<string>("AppSettings:AuthService:BaseUrl") ?? throw new ArgumentNullException("AppSettings:AuthService:BaseUrl configuration is missing");
         }
 
-        public async Task<GenericResponseModel?> LoginAsync(LoginModel model, 
-                                                       CancellationToken cancellationToken = default)
+        public async Task<UserModel?> LoginAsync(LoginModel model, 
+                                                            CancellationToken cancellationToken = default)
         {
             try
             {
                 var loginUrl = $"{authServiceBaseUrl}/Account/Login";
 
 
-                var response = await sendPostRequestAsync<LoginModel, GenericResponseModel>(loginUrl, model, cancellationToken);
+                var response = await sendPostRequestAsync<LoginModel, UserModel>(loginUrl, model, cancellationToken);
 
                 return response;
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error occurred during login for user {UserName}", model.UserName);
+                logger.LogError(ex, "Error occurred during LoginAsync.");
                 return null;
             }
         }
