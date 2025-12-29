@@ -110,7 +110,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 logger.LogInformation($"{nameof(Login)} - user: {model.UserName}");
 
-                GenericResponseModel? result = await authorizationHelper.Login(model, HttpContext.RequestAborted);
+                GenericResponseModel? result = await authorizationHelper.LoginAsync(model, HttpContext.RequestAborted);
                 logger.LogInformation($"{nameof(Login)} - isAuthenticated: {result?.IsOk}");
                 if (result?.IsOk == true)
                     return RedirectToAction(nameof(SpectraManagerController.Hub), GenericHelper.GetControllerName(nameof(SpectraManagerController)));
