@@ -40,21 +40,34 @@ namespace INAF.WebApps.HyperLab.Helpers
         }
 
         public async Task<UserModel?> LoginAsync(LoginModel model, 
-                                                            CancellationToken cancellationToken = default)
+                                                 CancellationToken cancellationToken = default)
         {
             try
             {
                 var loginUrl = $"{authServiceBaseUrl}/Account/Login";
-
-
                 var response = await sendPostRequestAsync<LoginModel, UserModel>(loginUrl, model, cancellationToken);
-
                 return response;
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error occurred during LoginAsync.");
                 return null;
+            }
+        }
+
+        public async Task<RegistrationStatusResponseModel?> RegisterAsync(RegistrationModel model,
+                                                                          CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var registerUrl = $"{authServiceBaseUrl}/Account/Register";
+                var response = await sendPostRequestAsync<RegistrationModel, RegistrationStatusResponseModel>(registerUrl, model, cancellationToken);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error occurred during RegisterAsync.");
+                throw;
             }
         }
 
