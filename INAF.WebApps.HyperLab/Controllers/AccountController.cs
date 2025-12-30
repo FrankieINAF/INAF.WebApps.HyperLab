@@ -431,6 +431,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
                 }
 
+
                 switch (response.Status)
                 {
                     case Libraries.Net.CommonWebAppModels.Values.Enums.RegistrationStatus.Registered:
