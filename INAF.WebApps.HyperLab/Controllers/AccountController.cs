@@ -119,6 +119,13 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return View();
                 }
 
+                if (user.Login == null || !user.Login.IsAuthorized)
+                {
+                    logger.LogError($"{nameof(Login)} - user is not authorized - user: {model.UserName}");
+                    ModelState.Clear();
+                    return View();
+                }
+
                 /* add cookie auth for web access */
                 var identity = new ClaimsIdentity(new[] {
                             new Claim(ClaimTypes.Name, user.getCompleteName()),
@@ -423,7 +430,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             if (ModelState.IsValid)
             {
-                RegistrationStatusResponseModel? response = await authorizationHelper.RegisterAsync(model, HttpContext.RequestAborted);
+                RegistrationStatusResponseModel? response = await authorizationHelper.registerAsync(model, HttpContext.RequestAborted);
                 if (response == null)
                 {
                     AccountErrorModel errorModel = new AccountErrorModel(Account.AccountErrorGenericTitle, Account.AccountErrorGenericMessage);
@@ -460,7 +467,19 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             if (ModelState.IsValid)
             {
-                return await registerAsync(model);
+                RegistrationStatusResponseModel? response = await authorizationHelper.registerAsync(model, HttpContext.RequestAborted);
+                if (response == null)
+                    return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Account.AccountErrorGenericMessage };
+
+                switch (response.Status)
+                {
+                    case Libraries.Net.CommonWebAppModels.Values.Enums.RegistrationStatus.Registered:
+                        return new GenericValueStringResponseModel() { IsOk = true, Value = response.ExMsg ?? string.Empty };
+                    case Libraries.Net.CommonWebAppModels.Values.Enums.RegistrationStatus.Error:
+                        return new GenericValueStringResponseModel() { IsOk = false, ExMsg = response.ExMsg };
+                }
+
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Account.AccountErrorGenericMessage };
             }
             else
             {
@@ -704,7 +723,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (!dbHandlerHyperLabUsers.isLoginExistantForPasswordReset(email))
             {
                 errorModel = new AccountErrorModel(Account.PasswordResetErrorEmailNotExistantTitle, Account.PasswordResetErrorEmailNotExistantMessage);
-                
+
                 if (getCallerContext() == Enums.CallerContext.Web)
                     HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
 
@@ -718,7 +737,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return (true, null);
 
             errorModel = new AccountErrorModel(Account.AccountErrorGenericTitle, response.ExMsg);
-            
+
             if (getCallerContext() == Enums.CallerContext.Web)
                 HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
 

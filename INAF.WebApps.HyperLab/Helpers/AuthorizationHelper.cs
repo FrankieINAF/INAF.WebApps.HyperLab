@@ -55,12 +55,12 @@ namespace INAF.WebApps.HyperLab.Helpers
             }
         }
 
-        public async Task<RegistrationStatusResponseModel?> RegisterAsync(RegistrationModel model,
+        public async Task<RegistrationStatusResponseModel?> registerAsync(RegistrationModel model,
                                                                           CancellationToken cancellationToken = default)
         {
             try
             {
-                var registerUrl = $"{authServiceBaseUrl}/Account/Register";
+                var registerUrl = $"{authServiceBaseUrl}/Account/Registration";
                 var response = await sendPostRequestAsync<RegistrationModel, RegistrationStatusResponseModel>(registerUrl, model, cancellationToken);
                 return response;
             }
