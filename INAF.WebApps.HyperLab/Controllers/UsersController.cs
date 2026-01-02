@@ -87,9 +87,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         //}
 
         [HttpGet]
-        public IActionResult GetUserDetailsSimple()
+        public async Task<IActionResult> GetUserDetailsSimple()
         {
-            UserSimpleModel user = dbHandlerHyperLabUsers.getUserDetailsSimple(getUserId());
+            UserSimpleModel user = dbHandlerHyperLabUsers.getUserDetailsSimple(await getUserIdAsync());
             if (user != null)
                 return new JsonResult(user);
             else
@@ -97,9 +97,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetUserPermissions()
+        public async Task<IActionResult> GetUserPermissions()
         {
-            List<PermissionModel>? permissions = dbHandlerHyperLabUsers.getUserPermissions(getUserId(),
+            List<PermissionModel>? permissions = dbHandlerHyperLabUsers.getUserPermissions(await getUserIdAsync(),
                                                                                            getCallerContext());
             if (permissions?.Count > 0)
                 return new JsonResult(permissions);
@@ -123,7 +123,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteUser([FromBody] GenericRequestByIdModel model)
         {
-            int operationUserId = getUserId();
+            int operationUserId = await getUserIdAsync();
             if (model.Id == operationUserId)
             {
                 return new BadRequestObjectResult(new GenericValueStringResponseModel() { IsOk = false, ExMsg = Users.SelfDeletingErrorMessage });

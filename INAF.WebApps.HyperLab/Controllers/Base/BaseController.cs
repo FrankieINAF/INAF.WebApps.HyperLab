@@ -1,12 +1,15 @@
 ﻿using INAF.Libraries.Net.CommonResources;
 using INAF.Libraries.Net.CommonWebAppHelpers;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Permissions;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.WebApps.HyperLab.Extensions;
+using INAF.WebApps.HyperLab.Helpers;
 using INAF.WebApps.HyperLab.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Threading.Tasks;
 using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 using static INAF.WebApps.HyperLab.Values.Enums;
 using static Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary;
@@ -15,6 +18,8 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
 {
     public class BaseController : Controller
     {
+        private readonly string USER_ID = "UserId";
+
         protected readonly IConfiguration? configuration;
         protected readonly IServiceProvider serviceProvider;
         protected readonly ILogger<BaseController> logger;
@@ -80,7 +85,10 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
             string exMsg = string.Empty;
             var errors = values.Where(x => x.Errors.Count > 0);
             foreach (var error in errors)
-                exMsg += error.Errors.FirstOrDefault().ErrorMessage + ". ";
+            {
+                if (error.Errors.Count > 0 && error.Errors.FirstOrDefault() != null)
+                    exMsg += error.Errors.First().ErrorMessage + ". ";
+            }
 
             return exMsg;
         }
@@ -100,19 +108,30 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
             return dbHandlerHyperLabUsers.getScientificResponsibleUserId();
         }
 
-        protected int getUserId()
+        protected async Task<int> getUserIdAsync()
         {
             string? token = HttpContext.GetToken();
             if (string.IsNullOrEmpty(token))
+                // Web app caller
                 return HttpContext.GetUserId();
             else
             {
-                var dbHandlerHyperLabUsers = serviceProvider.GetRequiredService<DbHandlerHyperLabUsers>();
-                return dbHandlerHyperLabUsers.getUserIdFromToken(token);
+                if (HttpContext.Session.ContainsKey(USER_ID))
+                    return int.Parse(HttpContext.Session.GetString(USER_ID) ?? "0");
+                else
+                {
+                    // App caller
+                    AuthorizationHelper authorizationHelper = serviceProvider.GetRequiredService<AuthorizationHelper>();
+                    int userId = await authorizationHelper.getUserIdAsync();
+                    if (userId > 0)
+                        HttpContext.Session.SetString(USER_ID, userId.ToString());
+
+                    return userId;
+                }
             }
         }
 
-        protected (bool isUserAuthenticated, List<PermissionModel>? permissions) getUserStatus()
+        protected async Task<(bool isUserAuthenticated, List<PermissionModel>? permissions)> getUserStatusAsync()
         {
             bool isUserAuthenticated = false;
             var cookieValue = HttpContext.Request.Cookies[Values.Constants.HYPERLAB_WEB_APP_COOKIES];
@@ -123,7 +142,7 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
             }
 
             var dbHandlerHyperLabUsers = serviceProvider.GetRequiredService<DbHandlerHyperLabUsers>();
-            List<PermissionModel>? permissions = dbHandlerHyperLabUsers.getUserPermissions(getUserId(), Enums.CallerContext.Web);
+            List<PermissionModel>? permissions = dbHandlerHyperLabUsers.getUserPermissions(await getUserIdAsync(), Enums.CallerContext.Web);
 
             return (isUserAuthenticated, permissions);
         }

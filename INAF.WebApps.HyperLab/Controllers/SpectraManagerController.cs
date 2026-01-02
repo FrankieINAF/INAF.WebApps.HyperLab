@@ -34,10 +34,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         #region VIEWS
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Chart([FromForm] NavigateToChartModel model)
+        public async Task<IActionResult> Chart([FromForm] NavigateToChartModel model)
         {
             HttpContext.Session.SetString(Constants.LAST_PAGE, nameof(Chart));
-            (bool isUserAuthenticated, List<PermissionModel>? permissions) status = getUserStatus();
+            (bool isUserAuthenticated, List<PermissionModel>? permissions) status = await getUserStatusAsync();
 
             IEnumerable<int>? Ids = model.SelectedSpectra ?? Array.Empty<int>();
             SelectedSpectraModel? selectedSpectra = null;
@@ -52,7 +52,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult Hub()
+        public async Task<IActionResult> Hub()
         {
             string? lastSearch = string.Empty;
             if (HttpContext.Session.ContainsKey(Constants.LAST_PAGE))
@@ -64,7 +64,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             else
                 HttpContext.Session.SetString(Constants.LAST_PAGE, nameof(Hub));
 
-            (bool isUserAuthenticated, List<PermissionModel>? permissions) status = getUserStatus();
+            (bool isUserAuthenticated, List<PermissionModel>? permissions) status = await getUserStatusAsync();
 
             var sampleTypesHelper = serviceProvider.GetRequiredService<SampleTypesHelper>();
             SampleTypeValuesContainerExtended sampleTypeValuesContainerExtended = SampleTypeValuesContainerExtended.Create(sampleTypesHelper.getSampleTypeValuesContainer());
@@ -127,10 +127,12 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             IEnumerable<SharedSpectrumModel>? spectraSharedWithMe = null;
             IEnumerable<SharedSpectrumModel>? spectraSharedByMe = null;
+
+            int userId = await getUserIdAsync();
             var tasks = new List<Task>
             {
-                Task.Run(() => spectraSharedWithMe = getSharedSpectra(getUserId(), dbHandlerHyperLabData.getSharedSpectraForSubjectUser)),
-                Task.Run(() => spectraSharedByMe = getSharedSpectra(getUserId(), dbHandlerHyperLabData.getSharedSpectraByOwnerUser))
+                Task.Run(() => spectraSharedWithMe = getSharedSpectra(userId, dbHandlerHyperLabData.getSharedSpectraForSubjectUser)),
+                Task.Run(() => spectraSharedByMe = getSharedSpectra(userId, dbHandlerHyperLabData.getSharedSpectraByOwnerUser))
             };
             await Task.WhenAll(tasks);
 

@@ -1,12 +1,12 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
-using INAF.Libraries.Net.CommonWebAppModels.Models.Authentication;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Web;
 
 namespace INAF.WebApps.HyperLab.Helpers
 {
@@ -39,18 +39,49 @@ namespace INAF.WebApps.HyperLab.Helpers
             authServiceBaseUrl = configuration.GetValue<string>("AppSettings:AuthService:BaseUrl") ?? throw new ArgumentNullException("AppSettings:AuthService:BaseUrl configuration is missing");
         }
 
-        public async Task<UserModel?> LoginAsync(LoginModel model, 
+        public async Task<JwtTokenModel?> getTokenAsync(int userId, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var getTokenUrl = $"{authServiceBaseUrl}/Account/GetToken";
+                var model = new GenericRequestByIdModel { Id = userId };
+                var response = await sendGetRequestAsync<GenericRequestByIdModel, JwtTokenModel>(getTokenUrl, model, cancellationToken);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error occurred during {nameof(getTokenAsync)}.");
+                return null;
+            }
+        }
+
+        public async Task<int> getUserIdAsync(CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var getUserIdUrl = $"{authServiceBaseUrl}/Account/GetUserId";
+                var response = await sendGetRequestAsync<GenericRequestByIdModel, int>(getUserIdUrl, null, cancellationToken);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error occurred during {nameof(getUserIdAsync)}.");
+                return default;
+            }
+        }
+
+        public async Task<UserModel?> loginAsync(JwtLoginModel model,
                                                  CancellationToken cancellationToken = default)
         {
             try
             {
                 var loginUrl = $"{authServiceBaseUrl}/Account/Login";
-                var response = await sendPostRequestAsync<LoginModel, UserModel>(loginUrl, model, cancellationToken);
+                var response = await sendPostRequestAsync<JwtLoginModel, UserModel>(loginUrl, model, cancellationToken);
                 return response;
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error occurred during LoginAsync.");
+                logger.LogError(ex, $"Error occurred during {nameof(loginAsync)}.");
                 return null;
             }
         }
@@ -66,47 +97,101 @@ namespace INAF.WebApps.HyperLab.Helpers
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error occurred during RegisterAsync.");
+                logger.LogError(ex, $"Error occurred during {nameof(registerAsync)}.");
                 throw;
             }
         }
 
         #region SEND REQUESTS/MANAGE RESPONSES
-        private async Task<TResponse?> sendGetRequestAsync<TResponse>(
+        private string buildQueryStringFromModel<T>(T? model = default)
+        {
+            if (model == null)
+                return string.Empty;
+
+            var properties = typeof(T).GetProperties();
+            var queryParams = new List<string>();
+
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(model);
+                if (value != null)
+                {
+                    var valueString = value.ToString();
+                    if (!string.IsNullOrEmpty(valueString))
+                    {
+                        queryParams.Add($"{property.Name}={Uri.EscapeDataString(valueString)}");
+                    }
+                }
+            }
+
+            return string.Join("&", queryParams);
+        }
+
+        private async Task<TResponse?> sendGetRequestAsync<TRequest, TResponse>(
             string url,
-            string text,
+            TRequest? requestData = default,
             CancellationToken cancellationToken = default)
         {
+            TResponse? result = default;
+
             try
             {
                 using var httpClient = httpClientFactory.CreateClient();
 
+                string? queryString = buildQueryStringFromModel(requestData);
+                var requestUri = string.IsNullOrEmpty(queryString) ? url : $"{url}?{queryString}";
 
-                var requestUri = $"{url}?Text={Uri.EscapeDataString(text ?? string.Empty)}";
+                httpClient.DefaultRequestHeaders.Add("X-Calling-Application", appName);
 
-                logger.LogInformation($"Sending GET request to {requestUri}");
+                bool continueLoop = true;
+                int counter = 0;
 
-                var response = await httpClient.GetAsync(requestUri, cancellationToken);
-
-                if (response.IsSuccessStatusCode)
+                while (continueLoop)
                 {
-                    var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
-                    var result = JsonSerializer.Deserialize<TResponse>(responseContent);
+                    var savedToken = httpContextAccessor.HttpContext?.Session.GetString("AuthServiceToken");
+                    if (!string.IsNullOrEmpty(savedToken))
+                    {
+                        httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {savedToken}");
+                    }
 
-                    logger.LogInformation($"GET request to {requestUri} completed successfully");
-                    return result;
+                    logger.LogInformation($"Sending GET request to {requestUri}");
+
+                    var response = await httpClient.GetAsync(requestUri, cancellationToken);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
+                        result = JsonSerializer.Deserialize<TResponse>(responseContent);
+
+                        logger.LogInformation($"GET request to {requestUri} completed successfully");
+                        continueLoop = false;
+                    }
+                    else
+                    {
+                        logger.LogError($"GET request to {requestUri} failed with status code {response.StatusCode}");
+
+                        /* when receiving 401, then refresh token, otherwise return null */
+                        if (response.StatusCode == HttpStatusCode.Unauthorized)
+                        {
+                            JwtTokenModel? jwtTokenModel = await manageUnauthorizedResponseAsync(response);
+                            if (jwtTokenModel == null)
+                                continueLoop = false;
+                        }
+                        else
+                            continueLoop = false;
+                    }
                 }
-                else
-                {
-                    logger.LogError($"GET request to {requestUri} failed with status code {response.StatusCode}");
-                    return default;
-                }
+
+                counter++;
+                if (counter >= MAX_ATTEMPTS)
+                    continueLoop = false;
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error occurred while sending GET request to {Url}", url);
-                throw;
             }
+
+            return result;
         }
 
         private async Task<TResponse?> sendPostRequestAsync<TRequest, TResponse>(
@@ -171,7 +256,6 @@ namespace INAF.WebApps.HyperLab.Helpers
             catch (Exception ex)
             {
                 logger.LogError(ex, $"Error occurred while sending POST request to {url}");
-                throw;
             }
 
             return result;
@@ -199,13 +283,13 @@ namespace INAF.WebApps.HyperLab.Helpers
                         logger.LogInformation("Unauthorized response requires new token. Attempting to get token for web app.");
 
                         var getTokenUrl = $"{authServiceBaseUrl}/Account/GetTokenForWebApp";
-                        jwtToken = await sendGetRequestAsync<JwtTokenModel>(getTokenUrl, appName);
+                        var model = new GenericRequestByTextModel { Text = appName };
+                        jwtToken = await sendGetRequestAsync<GenericRequestByTextModel, JwtTokenModel>(getTokenUrl, model);
 
                         if (jwtToken != null && jwtToken.IsAuthenticated && !string.IsNullOrEmpty(jwtToken.Token))
                         {
                             logger.LogInformation("Successfully obtained new token. Retrying Login.");
 
-                            // Store token in session
                             httpContextAccessor.HttpContext?.Session.SetString("AuthServiceToken", jwtToken.Token);
                         }
                         else

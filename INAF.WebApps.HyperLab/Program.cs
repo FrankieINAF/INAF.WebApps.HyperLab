@@ -109,8 +109,16 @@ builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(5); // Set the timeout for the session
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set the timeout for the session
+    options.Cookie.HttpOnly = true; // against XSS (Cross-Site Scripting) attacks
     options.Cookie.IsEssential = true;
+
+    if (builder.Environment.IsDevelopment())
+        options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+    else
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+
+    options.Cookie.SameSite = SameSiteMode.Lax;
 });
 
 /* SERVICES */
@@ -159,6 +167,7 @@ app.UseExceptionHandler("/Home/Error");
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
+
     //    app.UseSwagger();
     //    app.UseSwaggerUI(options =>
     //    {

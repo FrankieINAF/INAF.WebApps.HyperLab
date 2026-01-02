@@ -27,9 +27,9 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region GET
         [HttpGet]
-        public IActionResult GetDefaultColors(bool searchForDefaults)
+        public async Task<IActionResult> GetDefaultColors(bool searchForDefaults)
         {
-            IEnumerable<KeyValueResponseModel> result = dbHandlerHyperLabUsers.getColors(getUserId(),
+            IEnumerable<KeyValueResponseModel> result = dbHandlerHyperLabUsers.getColors(await getUserIdAsync(),
                                                                                          searchForDefaults);
 
             if (result.Any())
@@ -39,12 +39,12 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetUserSetting(KeyRequestModel model)
+        public async Task<IActionResult> GetUserSetting(KeyRequestModel model)
         {
             if (string.IsNullOrEmpty(model.Key))
                 return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
 
-            (bool isOk, string? value) result = dbHandlerHyperLabUsers.getUserSettingsValue(getUserId(),
+            (bool isOk, string? value) result = dbHandlerHyperLabUsers.getUserSettingsValue(await getUserIdAsync(),
                                                                                             model.Key);
 
             if (result.isOk)
@@ -56,12 +56,12 @@ namespace INAF.WebApps.HyperLab.Controllers
         [Authorize]
         [CheckIsLoginValid]
         [HttpGet]
-        public IActionResult GetUserSettingsByWildcard(KeyRequestModel model)
+        public async Task<IActionResult> GetUserSettingsByWildcard(KeyRequestModel model)
         {
             if (string.IsNullOrEmpty(model.Key))
                 return new JsonResult(KeysValuesResponseModel.CreateErrorResponse());
 
-            (bool isOk, List<KeyValueResponseModel>? values) result = dbHandlerHyperLabUsers.getUserSettingsValuesByWildcard(getUserId(),
+            (bool isOk, List<KeyValueResponseModel>? values) result = dbHandlerHyperLabUsers.getUserSettingsValuesByWildcard(await getUserIdAsync(),
                                                                                                                              model.Key);
 
             if (result.isOk)
@@ -77,7 +77,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpPost]
         public async Task<IActionResult> SetUserSetting([FromBody] KeyValueRequestModel model)
         {
-            bool isOk = await dbHandlerHyperLabUsers.setUserSettingsValueAsync(getUserId(),
+            bool isOk = await dbHandlerHyperLabUsers.setUserSettingsValueAsync(await getUserIdAsync(),
                                                                   model.Key,
                                                                   model.Value);
             if (isOk)

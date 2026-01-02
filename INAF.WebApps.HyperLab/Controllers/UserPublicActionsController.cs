@@ -18,9 +18,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetMenu(SearchRequestByNullableIdModel model)
+        public async Task<IActionResult> GetMenu(SearchRequestByNullableIdModel model)
         {
-            int userId = getUserId();
+            int userId = await getUserIdAsync();
             List<MenuItem>? menuItems = dbHandlerHyperLabUsers.getMenuItemsForApp(userId, model.Id);
             if (menuItems?.Count > 0)
                 return new JsonResult(menuItems);

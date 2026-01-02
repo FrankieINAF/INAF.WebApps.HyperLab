@@ -1,12 +1,11 @@
 ﻿using INAF.Libraries.Net.CommonResources;
 using INAF.Libraries.Net.CommonWebAppHelpers;
+using INAF.Libraries.Net.CommonWebAppModels.Extensions;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
-using INAF.Libraries.Net.CommonWebAppModels.Models.Authentication;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
-using INAF.Libraries.Net.Extensions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.Libraries.Net.HyperLab.CommonWebAppHelpers;
 using INAF.WebApps.HyperLab.Controllers.Base;
@@ -54,9 +53,9 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region CHECK LOGIN/TOKEN
         [HttpGet]
-        public JsonResult IsLoginValid()
+        public async Task<JsonResult> IsLoginValid()
         {
-            return new JsonResult(dbHandlerHyperLabUsers.isLoginValid(getUserId()));
+            return new JsonResult(dbHandlerHyperLabUsers.isLoginValid(await getUserIdAsync()));
         }
 
         [HttpGet]
@@ -110,7 +109,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 logger.LogInformation($"{nameof(Login)} - user: {model.UserName}");
 
-                UserModel? user = await authorizationHelper.LoginAsync(model, HttpContext.RequestAborted);
+                UserModel? user = await authorizationHelper.loginAsync(model.ToJwtLoginModel(), HttpContext.RequestAborted);
                 logger.LogInformation($"{nameof(Login)} - isAuthenticated: {user != null}");
                 if (user == null)
                 {
@@ -162,15 +161,21 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             if (ModelState.IsValid)
             {
-                return new JsonResult(await tryAuthenticateForJwtAsync(model));
-            }
-            else
-            {
-                logErrorMessage(ModelState.Values);
+                UserModel? user = await authorizationHelper.loginAsync(model, HttpContext.RequestAborted);
+                logger.LogInformation($"{nameof(Login)} - isAuthenticated: {user != null}");
+
+                if (user == null)
+                    return new JsonResult(JwtTokenModel.GetEmptyToken());
+
+                JwtTokenModel? jwtTokenModel = await authorizationHelper.getTokenAsync(user.Id);
+                if (jwtTokenModel == null)
+                    return new JsonResult(JwtTokenModel.GetEmptyToken());
+
+                return new JsonResult(jwtTokenModel);
             }
 
-            ModelState.Clear();
-            return View();
+            logErrorMessage(ModelState.Values);
+            return new JsonResult(JwtTokenModel.GetEmptyToken());
         }
 
         public async Task<IActionResult> Logout()
@@ -505,193 +510,157 @@ namespace INAF.WebApps.HyperLab.Controllers
         #endregion
 
         #region PRIVATE
-        private async Task<JwtTokenModel> createNewTokenForUserAsync(UserModel user)
-        {
-            using RSA rsa = RSA.Create();
-            rsa.ImportRSAPrivateKey( // Convert the loaded key from base64 to bytes.
-                source: Convert.FromBase64String(configuration[$"{appPrefixForUserSecrets}:JwtToken:PrivateKey"]), // Use the private key to sign tokens
-                bytesRead: out int _); // Discard the out variable 
-
-            var signingCredentials = new SigningCredentials(
-                key: new RsaSecurityKey(rsa),
-                algorithm: SecurityAlgorithms.RsaSha256 // Important to use RSA version of the SHA algo 
-            );
-
-
-            string nameIdentifier = string.Join(string.Empty, user.Name, user.LastName, user.Id);
-
-            /* generate a new token for user */
-            var token = new JwtSecurityToken(audience: configuration.GetSection("AppSettings:JwtToken:Audience").Value,
-                                             issuer: configuration.GetSection("AppSettings:JwtToken:Issuer").Value,
-                                             claims: new Claim[] { new Claim(ClaimTypes.NameIdentifier, nameIdentifier) },
-                                             notBefore: DateTime.UtcNow,
-                                             expires: DateTime.UtcNow.AddDays(int.Parse(configuration.GetSection("AppSettings:JwtToken:TokenTimeoutDays").Value)),
-                                             signingCredentials: signingCredentials);
-
-
-            /* extract token string */
-            string tokenstring = new JwtSecurityTokenHandler().WriteToken(token);
-
-            string oldtokenstring = dbHandlerHyperLabUsers.getTokenFromUserId(user.Id);
-
-            if (string.IsNullOrEmpty(oldtokenstring))
-            {
-                /* save user-token relationship in DB */
-                await dbHandlerHyperLabUsers.saveUserTokenAsync(user.Id,
-                                                                tokenstring,
-                                                                user.Id);
-            }
-            else
-            {
-                /* save user-token relationship in DB */
-                await dbHandlerHyperLabUsers.updateUserTokenAsync(user.Id,
-                                                                  tokenstring);
-            }
-
-
-            /* return result */
-            return new JwtTokenModel(tokenstring, user.CompleteName, token.ValidTo);
-        }
-
-        private async Task getTokenAsync(string? code = null)
-        {
-            try
-            {
-                /* create request model for retrieving suggestions for current text */
-                var parameters = new Dictionary<string, string> {
-                    { "client_id", "APP-28MJC162XY2CSSCT" },
-                    { "client_secret", "77ae6944-8fe5-41fe-904c-17b6583f70d7" },
-                    { "grant_type", "authorization_code" },
-                    { "redirect_uri", "/Account/ExternalLoginCallback" },
-                    { "code", code! }
-                };
-
-                var encodedContent = new FormUrlEncodedContent(parameters);
-
-                /* retrieve url for querying web service */
-                var url = "https://orcid.org/oauth/token";
-
-                /* send request to web service */
-                using (var httpClient = new HttpClient())
-                {
-                    using (var response = await httpClient.PostAsync(new Uri(url), encodedContent))
-                    {
-                        if (response.IsSuccessStatusCode)
-                        {
-                            string responseContent = await response.Content.ReadAsStringAsync();
-                            System.Diagnostics.Debug.WriteLine($"responseContent: {responseContent}");
-                        }
-                        else
-                        {
-                            string errorContent = await response.Content.ReadAsStringAsync();
-                            logger.LogError($"Error in {nameof(getTokenAsync)}: {errorContent}");
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"{nameof(getTokenAsync)} - ex: {ex.Message}");
-            }
-        }
-
-        private async Task<JwtTokenModel> tryAuthenticateForJwtAsync(JwtLoginModel model)
-        {
-            /* try to authenticate user by username/password */
-            (bool isAuthenticated, UserModel? user) resultForWeb = await tryAuthenticateForWebAsync(model.UserName, model.Password);
-
-            if (resultForWeb.user == null)
-                return JwtTokenModel.GetEmptyToken();
-
-            if (resultForWeb.isAuthenticated)
-            {
-                string existingtokenstring = dbHandlerHyperLabUsers.getTokenFromUserId(resultForWeb.user.Id);
-                if (!string.IsNullOrEmpty(existingtokenstring))
-                {
-                    var securityToken = new JwtSecurityToken(existingtokenstring);
-
-                    if (DateTime.UtcNow >= securityToken.ValidTo)
-                        return await createNewTokenForUserAsync(resultForWeb.user);
-
-                    /* return result */
-                    return new JwtTokenModel(existingtokenstring, resultForWeb.user.getCompleteName(), securityToken.ValidTo);
-                }
-                else
-                    return await createNewTokenForUserAsync(resultForWeb.user);
-            }
-
-            return JwtTokenModel.GetEmptyToken();
-        }
-
-        private async Task<(bool isAuthenticated, UserModel? user)> tryAuthenticateForWebAsync(string userName,
-                                                                                               string password,
-                                                                                               bool rememberMe = false)
-        {
-            bool isAuthenticated = false;
-            UserModel? user = null;
-
-            string encryptedPwd = getEncrypted(password);
-            user = dbHandlerHyperLabUsers.tryLogin(userName, encryptedPwd);
-            if (user != null)
-            {
-                /* add cookie auth for web access */
-                var identity = new ClaimsIdentity(new[] {
-                            new Claim(ClaimTypes.Name, user.getCompleteName()),
-                            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-                        }, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                var principal = new ClaimsPrincipal(identity);
-
-                if (rememberMe)
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties
-                    {
-                        AllowRefresh = true,
-                        IsPersistent = rememberMe,
-                        IssuedUtc = DateTime.UtcNow
-                    });
-                else
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-                isAuthenticated = true;
-            }
-
-            return (isAuthenticated, user);
-        }
-
-        //private async Task<GenericValueStringResponseModel> registerAsync(RegistrationModel model)
+        //private async Task<JwtTokenModel> createNewTokenForUserAsync(UserModel user)
         //{
-        //    /* if no data has been passed, then an error is raised */
-        //    if (string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.LastName) || string.IsNullOrEmpty(model.Email))
-        //        return new GenericValueStringResponseModel() { IsOk = false, ExMsg = INAF.Libraries.Net.CommonWebAppModels.Resources.Login.RegistrationBadRequest };
+        //    using RSA rsa = RSA.Create();
+        //    rsa.ImportRSAPrivateKey( // Convert the loaded key from base64 to bytes.
+        //        source: Convert.FromBase64String(configuration[$"{appPrefixForUserSecrets}:JwtToken:PrivateKey"]), // Use the private key to sign tokens
+        //        bytesRead: out int _); // Discard the out variable 
 
-        //    /* if user has a valid login then no action is required */
-        //    if (dbHandlerHyperLabUsers.isUserExistantAndValidLogin(model.Name, model.LastName, model.Email))
-        //        return new GenericValueStringResponseModel() { IsOk = true, ExMsg = Users.UserAlreadyExistantMessage };
+        //    var signingCredentials = new SigningCredentials(
+        //        key: new RsaSecurityKey(rsa),
+        //        algorithm: SecurityAlgorithms.RsaSha256 // Important to use RSA version of the SHA algo 
+        //    );
 
-        //    /* encrypt password */
-        //    string encryptedPassword = getEncrypted(model.Password!);
 
-        //    /* generate confirmation token */
-        //    string confirmationToken = Guid.NewGuid().ToString();
+        //    string nameIdentifier = string.Join(string.Empty, user.Name, user.LastName, user.Id);
 
-        //    /* set token expiration date */
-        //    string tokenExpiration = configuration!.GetSection("AppSettings:ConfirmationToken:TokenTimeoutDays").Value ?? "1";
-        //    DateTime tokenExpirationDateTime = DateTime.UtcNow.AddDays(int.Parse(tokenExpiration));
+        //    /* generate a new token for user */
+        //    var token = new JwtSecurityToken(audience: configuration.GetSection("AppSettings:JwtToken:Audience").Value,
+        //                                     issuer: configuration.GetSection("AppSettings:JwtToken:Issuer").Value,
+        //                                     claims: new Claim[] { new Claim(ClaimTypes.NameIdentifier, nameIdentifier) },
+        //                                     notBefore: DateTime.UtcNow,
+        //                                     expires: DateTime.UtcNow.AddDays(int.Parse(configuration.GetSection("AppSettings:JwtToken:TokenTimeoutDays").Value)),
+        //                                     signingCredentials: signingCredentials);
 
-        //    /* save new user */
-        //    if (await dbHandlerHyperLabUsers.upsertUserProcedureAsync(id: model.Id,
-        //                                                              name: model.Name.ToLowerInvariant().FirstCharToUpperCase(),
-        //                                                              lastName: model.LastName.ToLowerInvariant().FirstCharToUpperCase(),
-        //                                                              userName: model.Email.ToLowerInvariant(),
-        //                                                              email: model.Email.ToLowerInvariant(),
-        //                                                              encryptedPassword: encryptedPassword,
-        //                                                              confirmationToken: confirmationToken,
-        //                                                              tokenExpirationDateTime: tokenExpirationDateTime,
-        //                                                              roleId: (int)INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums.RoleType.User,
-        //                                                              operationUserId: getUserId()))
-        //        return new GenericValueStringResponseModel() { IsOk = true };
+
+        //    /* extract token string */
+        //    string tokenstring = new JwtSecurityTokenHandler().WriteToken(token);
+
+        //    string oldtokenstring = dbHandlerHyperLabUsers.getTokenFromUserId(user.Id);
+
+        //    if (string.IsNullOrEmpty(oldtokenstring))
+        //    {
+        //        /* save user-token relationship in DB */
+        //        await dbHandlerHyperLabUsers.saveUserTokenAsync(user.Id,
+        //                                                        tokenstring,
+        //                                                        user.Id);
+        //    }
         //    else
-        //        return new GenericValueStringResponseModel() { IsOk = false, ExMsg = INAF.Libraries.Net.CommonWebAppModels.Resources.Login.RegistrationBadRequest };
+        //    {
+        //        /* save user-token relationship in DB */
+        //        await dbHandlerHyperLabUsers.updateUserTokenAsync(user.Id,
+        //                                                          tokenstring);
+        //    }
+
+
+        //    /* return result */
+        //    return new JwtTokenModel(tokenstring, user.CompleteName, token.ValidTo);
+        //}
+
+        //private async Task getTokenAsync(string? code = null)
+        //{
+        //    try
+        //    {
+        //        /* create request model for retrieving suggestions for current text */
+        //        var parameters = new Dictionary<string, string> {
+        //            { "client_id", "APP-28MJC162XY2CSSCT" },
+        //            { "client_secret", "77ae6944-8fe5-41fe-904c-17b6583f70d7" },
+        //            { "grant_type", "authorization_code" },
+        //            { "redirect_uri", "/Account/ExternalLoginCallback" },
+        //            { "code", code! }
+        //        };
+
+        //        var encodedContent = new FormUrlEncodedContent(parameters);
+
+        //        /* retrieve url for querying web service */
+        //        var url = "https://orcid.org/oauth/token";
+
+        //        /* send request to web service */
+        //        using (var httpClient = new HttpClient())
+        //        {
+        //            using (var response = await httpClient.PostAsync(new Uri(url), encodedContent))
+        //            {
+        //                if (response.IsSuccessStatusCode)
+        //                {
+        //                    string responseContent = await response.Content.ReadAsStringAsync();
+        //                    System.Diagnostics.Debug.WriteLine($"responseContent: {responseContent}");
+        //                }
+        //                else
+        //                {
+        //                    string errorContent = await response.Content.ReadAsStringAsync();
+        //                    logger.LogError($"Error in {nameof(getTokenAsync)}: {errorContent}");
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        logger.LogError($"{nameof(getTokenAsync)} - ex: {ex.Message}");
+        //    }
+        //}
+
+        //private async Task<JwtTokenModel> tryAuthenticateForJwtAsync(JwtLoginModel model)
+        //{
+        //    /* try to authenticate user by username/password */
+        //    (bool isAuthenticated, UserModel? user) resultForWeb = await tryAuthenticateForWebAsync(model.UserName, model.Password);
+
+        //    if (resultForWeb.user == null)
+        //        return JwtTokenModel.GetEmptyToken();
+
+        //    if (resultForWeb.isAuthenticated)
+        //    {
+        //        string existingtokenstring = dbHandlerHyperLabUsers.getTokenFromUserId(resultForWeb.user.Id);
+        //        if (!string.IsNullOrEmpty(existingtokenstring))
+        //        {
+        //            var securityToken = new JwtSecurityToken(existingtokenstring);
+
+        //            if (DateTime.UtcNow >= securityToken.ValidTo)
+        //                return await createNewTokenForUserAsync(resultForWeb.user);
+
+        //            /* return result */
+        //            return new JwtTokenModel(existingtokenstring, resultForWeb.user.getCompleteName(), securityToken.ValidTo);
+        //        }
+        //        else
+        //            return await createNewTokenForUserAsync(resultForWeb.user);
+        //    }
+
+        //    return JwtTokenModel.GetEmptyToken();
+        //}
+
+        //private async Task<(bool isAuthenticated, UserModel? user)> tryAuthenticateForWebAsync(string userName,
+        //                                                                                       string password,
+        //                                                                                       bool rememberMe = false)
+        //{
+        //    bool isAuthenticated = false;
+        //    UserModel? user = null;
+
+        //    string encryptedPwd = getEncrypted(password);
+        //    user = dbHandlerHyperLabUsers.tryLogin(userName, encryptedPwd);
+        //    if (user != null)
+        //    {
+        //        /* add cookie auth for web access */
+        //        var identity = new ClaimsIdentity(new[] {
+        //                    new Claim(ClaimTypes.Name, user.getCompleteName()),
+        //                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+        //                }, CookieAuthenticationDefaults.AuthenticationScheme);
+
+        //        var principal = new ClaimsPrincipal(identity);
+
+        //        if (rememberMe)
+        //            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties
+        //            {
+        //                AllowRefresh = true,
+        //                IsPersistent = rememberMe,
+        //                IssuedUtc = DateTime.UtcNow
+        //            });
+        //        else
+        //            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+        //        isAuthenticated = true;
+        //    }
+
+        //    return (isAuthenticated, user);
         //}
 
         private async Task<GenericValueStringResponseModel> resetPasswordAsync(PasswordResetModel model)
