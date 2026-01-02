@@ -19,6 +19,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -53,34 +54,13 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region CHECK LOGIN/TOKEN
         [HttpGet]
-        public async Task<JsonResult> IsLoginValid()
+        public async Task<JsonResult> IsUserTokenValid()
         {
-            return new JsonResult(dbHandlerHyperLabUsers.isLoginValid(await getUserIdAsync()));
-        }
+            string? userToken = HttpContext.GetToken();
+            if (userToken == null)
+                return new JsonResult(false);
 
-        [HttpGet]
-        public JsonResult IsTokenValid()
-        {
-            bool isValid = false;
-
-            try
-            {
-                string? token = HttpContext.GetToken();
-
-                if (string.IsNullOrEmpty(token))
-                    return new JsonResult(isValid);
-
-                if (!dbHandlerHyperLabUsers.isTokenValid(token))
-                    return new JsonResult(isValid);
-
-                var tokenValidationHelper = serviceProvider.GetRequiredService<TokenValidationHelper>();
-                isValid = tokenValidationHelper.isValidToken(token);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"{nameof(IsTokenValid)} - ex: {ex.Message}");
-                isValid = false;
-            }
+            bool isValid = await authorizationHelper.isUserTokenValid(userToken);
 
             return new JsonResult(isValid);
         }
@@ -167,7 +147,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 if (user == null)
                     return new JsonResult(JwtTokenModel.GetEmptyToken());
 
-                JwtTokenModel? jwtTokenModel = await authorizationHelper.getTokenAsync(user.Id);
+                JwtTokenModel? jwtTokenModel = await authorizationHelper.getTokenForUserAsync(user.Id);
                 if (jwtTokenModel == null)
                     return new JsonResult(JwtTokenModel.GetEmptyToken());
 
@@ -178,9 +158,17 @@ namespace INAF.WebApps.HyperLab.Controllers
             return new JsonResult(JwtTokenModel.GetEmptyToken());
         }
 
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            if (await authorizationHelper.logoutAsync(await getUserIdAsync()))
+            {
+                logger.LogInformation($"{nameof(Logout)} - user logged out: {getUserIdAsync().Result}");
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            }
+            else
+                logger.LogWarning($"{nameof(Logout)} - error logging out user: {getUserIdAsync().Result}");
+
             return RedirectToAction(nameof(SpectraManagerController.Hub), GenericHelper.GetControllerName(nameof(SpectraManagerController)));
         }
 

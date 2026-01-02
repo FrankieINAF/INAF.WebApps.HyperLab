@@ -39,18 +39,19 @@ namespace INAF.WebApps.HyperLab.Helpers
             authServiceBaseUrl = configuration.GetValue<string>("AppSettings:AuthService:BaseUrl") ?? throw new ArgumentNullException("AppSettings:AuthService:BaseUrl configuration is missing");
         }
 
-        public async Task<JwtTokenModel?> getTokenAsync(int userId, CancellationToken cancellationToken = default)
+        public async Task<JwtTokenModel?> getTokenForUserAsync(int userId, CancellationToken cancellationToken = default)
         {
             try
             {
-                var getTokenUrl = $"{authServiceBaseUrl}/Account/GetToken";
+                var getTokenUrl = $"{authServiceBaseUrl}/Account/GetTokenForUser";
                 var model = new GenericRequestByIdModel { Id = userId };
-                var response = await sendGetRequestAsync<GenericRequestByIdModel, JwtTokenModel>(getTokenUrl, model, cancellationToken);
-                return response;
+                var jwtToken = await sendGetRequestAsync<GenericRequestByIdModel, JwtTokenModel>(getTokenUrl, model, cancellationToken);
+                System.Diagnostics.Debug.WriteLine($"[AuthorizationHelper] getTokenForUserAsync: Retrieved token {jwtToken.Token}");
+                return jwtToken;
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, $"Error occurred during {nameof(getTokenAsync)}.");
+                logger.LogError(ex, $"Error occurred during {nameof(getTokenForUserAsync)}.");
                 return null;
             }
         }
@@ -70,6 +71,21 @@ namespace INAF.WebApps.HyperLab.Helpers
             }
         }
 
+        public async Task<bool> isUserTokenValid(string userToken)
+        {
+            try
+            {
+                var validateTokenUrl = $"{authServiceBaseUrl}/Account/IsUserTokenValid";
+                var response = await sendGetRequestAsync<GenericRequestByTextModel, bool>(validateTokenUrl, new GenericRequestByTextModel(userToken));
+                return response;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error occurred during {nameof(isUserTokenValid)}.");
+                return false;
+            }
+        }
+
         public async Task<UserModel?> loginAsync(JwtLoginModel model,
                                                  CancellationToken cancellationToken = default)
         {
@@ -83,6 +99,21 @@ namespace INAF.WebApps.HyperLab.Helpers
             {
                 logger.LogError(ex, $"Error occurred during {nameof(loginAsync)}.");
                 return null;
+            }
+        }
+
+        public async Task<bool> logoutAsync(int userId, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var logoutUrl = $"{authServiceBaseUrl}/Account/Logout";
+                var response = await sendPostRequestAsync<GenericRequestByIdModel, bool>(logoutUrl, new GenericRequestByIdModel(userId), cancellationToken);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error occurred during {nameof(logoutAsync)}.");
+                return false;
             }
         }
 
