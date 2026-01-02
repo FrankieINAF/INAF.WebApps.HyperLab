@@ -7,7 +7,6 @@ using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
-using INAF.Libraries.Net.HyperLab.CommonWebAppHelpers;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Extensions;
 using INAF.WebApps.HyperLab.Helpers;
@@ -15,10 +14,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace INAF.WebApps.HyperLab.Controllers
@@ -174,8 +170,11 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         public async Task<IActionResult> LogoutForJwt()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)));
+            bool isLoggedOut = await authorizationHelper.logoutAsync(await getUserIdAsync());
+            if (isLoggedOut)
+                return new JsonResult(GenericResponseModel.CreateSuccessResponse());
+            else
+                return new JsonResult(GenericResponseModel.CreateErrorResponse());
         }
         #endregion
 
@@ -195,18 +194,17 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 logger.LogInformation($"{nameof(Confirmation)} - IsValid - user: {model.Id}");
                 /* if login has already been confirmed, then send user to registration completed page */
-                if (dbHandlerHyperLabUsers.isLoginAlreadyConfirmed(model.Token))
+                if (await authorizationHelper.isLoginAlreadyConfirmedAsync(model.Token))
                     return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
 
-                (bool isOk, string exMsg) confirmationResult = await dbHandlerHyperLabUsers.tryConfirmLoginAsync(model.Id,
-                                                                                                                 model.Token!);
+                bool isOk = await authorizationHelper.confirmLoginAsync(model.Id, model.Token!);
 
-                logger.LogInformation($"{nameof(Confirmation)} - IsValid - confirmationResult: isOk:{confirmationResult.isOk}, exMsg: {confirmationResult.exMsg}");
+                logger.LogInformation($"{nameof(Confirmation)} - IsValid - confirmationResult: isOk:{isOk}");
                 /* if confirmation is ok, then send user to registration completed page */
-                if (confirmationResult.isOk)
+                if (isOk)
                 {
                     /* retrieve user data to fix userId in shares and then fix them, when existant */
-                    LoginModel? loginModel = dbHandlerHyperLabUsers.getLoginFromToken(model.Token);
+                    LoginModel? loginModel = await authorizationHelper.getLoginFromTokenAsync(model.Token);
                     if (loginModel != null)
                     {
                         var dbHandlerHyperLabData = serviceProvider.GetRequiredService<DbHandlerHyperLabData>();
@@ -263,11 +261,14 @@ namespace INAF.WebApps.HyperLab.Controllers
             AccountErrorModel? errorModel = null;
             if (ModelState.IsValid)
             {
-                (bool isOk, AccountErrorModel? errorModel) result = await sendPasswordResetEmailAsync(model.Email!);
-                if (result.isOk)
+                GenericValueStringResponseModel response = await authorizationHelper.passwordResetSendEmailAsync(model);
+                if (response.IsOk)
                     return RedirectToAction(nameof(PasswordResetStarted), GenericHelper.GetControllerName(nameof(AccountController)));
                 else
+                {
+                    logger.LogError($"{nameof(PasswordResetSendEmail)} - error sending password reset email - email: {model.Email} - error: {response.ExMsg}");
                     return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
+                }
             }
             else
             {
@@ -289,11 +290,11 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             if (ModelState.IsValid)
             {
-                (bool isOk, AccountErrorModel? errorModel) result = await sendPasswordResetEmailAsync(model.Email!);
-                if (result.isOk)
+                GenericValueStringResponseModel response = await authorizationHelper.passwordResetSendEmailAsync(model);
+                if (response.IsOk)
                     return GenericValueStringResponseModel.CreateSuccessResponse();
                 else
-                    return GenericValueStringResponseModel.CreateErrorResponse(result.errorModel?.ErrorMessage ?? string.Empty);
+                    return GenericValueStringResponseModel.CreateErrorResponse(response.ExMsg ?? string.Empty);
             }
             else
             {
@@ -324,7 +325,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult PasswordResetExecute(IncomingLoginConfirmationModel model)
+        public async Task<IActionResult> PasswordResetExecute(IncomingLoginConfirmationModel model)
         {
             AccountErrorModel? errorModel = null;
 
@@ -339,26 +340,25 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             if (ModelState.IsValid)
             {
-                /* check if provided token is waiting for password reset */
-                logger.LogInformation($"{nameof(PasswordResetExecute)} - IsValid - user: {model.Id}");
-                if (!dbHandlerHyperLabUsers.isLoginWaitingForPasswordReset(model.Token))
+                GenericResponseModel response = await authorizationHelper.passwordResetExecuteAsync(model);
+                if (!string.IsNullOrEmpty(response.ExMsg))
                 {
-                    errorModel = new AccountErrorModel(Account.PasswordResetErrorEmailNotSetForResetTitle, Account.PasswordResetErrorEmailNotSetForResetMessage);
+                    logger.LogError($"{nameof(PasswordResetExecute)} - error in password reset execute - token: {model.Token} - error: {response.ExMsg}");
+                    errorModel = new AccountErrorModel(Account.AccountErrorGenericTitle, response.ExMsg);
+                    HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
+                    return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
+
+                }
+
+                if (response.ResponseObject == null || !(response.ResponseObject is LoginModel))
+                {
+                    logger.LogError($"{nameof(PasswordResetExecute)} - response.ResponseObject is null or not LoginModel - user: {model.Id}");
+                    errorModel = new AccountErrorModel(Account.AccountErrorGenericTitle, Account.AccountErrorGenericMessage);
                     HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
                     return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
                 }
 
-                /* try to retrieve login from token */
-                LoginModel? loginModel = dbHandlerHyperLabUsers.getLoginForPasswordResetFromToken(model.Token);
-                if (loginModel == null)
-                {
-                    logger.LogError($"{nameof(PasswordResetExecute)} - loginModel is null - user: {model.Token}");
-                    errorModel = new AccountErrorModel(Account.PasswordResetErrorTokenTitle, Account.PasswordResetErrorInvalidTokenMessage);
-                    HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
-                    return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
-                }
-
-                return View(new PasswordResetModel() { Email = loginModel.UserName });
+                return View(new PasswordResetModel() { Email = (response.ResponseObject as LoginModel)!.UserName });
             }
 
             logger.LogInformation($"{nameof(PasswordResetExecute)} - NOT VALID - user: {model.Id}");
@@ -382,7 +382,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (ModelState.IsValid)
             {
                 logger.LogInformation($"{nameof(PasswordReset)} - email: {model.Email}");
-                GenericValueStringResponseModel response = await resetPasswordAsync(model);
+                GenericValueStringResponseModel response = await authorizationHelper.passwordResetAsync(model);
                 if (response.IsOk)
                     return RedirectToAction(nameof(PasswordResetCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
             }
@@ -494,236 +494,6 @@ namespace INAF.WebApps.HyperLab.Controllers
         public IActionResult RegistrationConfirmed()
         {
             return View();
-        }
-        #endregion
-
-        #region PRIVATE
-        //private async Task<JwtTokenModel> createNewTokenForUserAsync(UserModel user)
-        //{
-        //    using RSA rsa = RSA.Create();
-        //    rsa.ImportRSAPrivateKey( // Convert the loaded key from base64 to bytes.
-        //        source: Convert.FromBase64String(configuration[$"{appPrefixForUserSecrets}:JwtToken:PrivateKey"]), // Use the private key to sign tokens
-        //        bytesRead: out int _); // Discard the out variable 
-
-        //    var signingCredentials = new SigningCredentials(
-        //        key: new RsaSecurityKey(rsa),
-        //        algorithm: SecurityAlgorithms.RsaSha256 // Important to use RSA version of the SHA algo 
-        //    );
-
-
-        //    string nameIdentifier = string.Join(string.Empty, user.Name, user.LastName, user.Id);
-
-        //    /* generate a new token for user */
-        //    var token = new JwtSecurityToken(audience: configuration.GetSection("AppSettings:JwtToken:Audience").Value,
-        //                                     issuer: configuration.GetSection("AppSettings:JwtToken:Issuer").Value,
-        //                                     claims: new Claim[] { new Claim(ClaimTypes.NameIdentifier, nameIdentifier) },
-        //                                     notBefore: DateTime.UtcNow,
-        //                                     expires: DateTime.UtcNow.AddDays(int.Parse(configuration.GetSection("AppSettings:JwtToken:TokenTimeoutDays").Value)),
-        //                                     signingCredentials: signingCredentials);
-
-
-        //    /* extract token string */
-        //    string tokenstring = new JwtSecurityTokenHandler().WriteToken(token);
-
-        //    string oldtokenstring = dbHandlerHyperLabUsers.getTokenFromUserId(user.Id);
-
-        //    if (string.IsNullOrEmpty(oldtokenstring))
-        //    {
-        //        /* save user-token relationship in DB */
-        //        await dbHandlerHyperLabUsers.saveUserTokenAsync(user.Id,
-        //                                                        tokenstring,
-        //                                                        user.Id);
-        //    }
-        //    else
-        //    {
-        //        /* save user-token relationship in DB */
-        //        await dbHandlerHyperLabUsers.updateUserTokenAsync(user.Id,
-        //                                                          tokenstring);
-        //    }
-
-
-        //    /* return result */
-        //    return new JwtTokenModel(tokenstring, user.CompleteName, token.ValidTo);
-        //}
-
-        //private async Task getTokenAsync(string? code = null)
-        //{
-        //    try
-        //    {
-        //        /* create request model for retrieving suggestions for current text */
-        //        var parameters = new Dictionary<string, string> {
-        //            { "client_id", "APP-28MJC162XY2CSSCT" },
-        //            { "client_secret", "77ae6944-8fe5-41fe-904c-17b6583f70d7" },
-        //            { "grant_type", "authorization_code" },
-        //            { "redirect_uri", "/Account/ExternalLoginCallback" },
-        //            { "code", code! }
-        //        };
-
-        //        var encodedContent = new FormUrlEncodedContent(parameters);
-
-        //        /* retrieve url for querying web service */
-        //        var url = "https://orcid.org/oauth/token";
-
-        //        /* send request to web service */
-        //        using (var httpClient = new HttpClient())
-        //        {
-        //            using (var response = await httpClient.PostAsync(new Uri(url), encodedContent))
-        //            {
-        //                if (response.IsSuccessStatusCode)
-        //                {
-        //                    string responseContent = await response.Content.ReadAsStringAsync();
-        //                    System.Diagnostics.Debug.WriteLine($"responseContent: {responseContent}");
-        //                }
-        //                else
-        //                {
-        //                    string errorContent = await response.Content.ReadAsStringAsync();
-        //                    logger.LogError($"Error in {nameof(getTokenAsync)}: {errorContent}");
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        logger.LogError($"{nameof(getTokenAsync)} - ex: {ex.Message}");
-        //    }
-        //}
-
-        //private async Task<JwtTokenModel> tryAuthenticateForJwtAsync(JwtLoginModel model)
-        //{
-        //    /* try to authenticate user by username/password */
-        //    (bool isAuthenticated, UserModel? user) resultForWeb = await tryAuthenticateForWebAsync(model.UserName, model.Password);
-
-        //    if (resultForWeb.user == null)
-        //        return JwtTokenModel.GetEmptyToken();
-
-        //    if (resultForWeb.isAuthenticated)
-        //    {
-        //        string existingtokenstring = dbHandlerHyperLabUsers.getTokenFromUserId(resultForWeb.user.Id);
-        //        if (!string.IsNullOrEmpty(existingtokenstring))
-        //        {
-        //            var securityToken = new JwtSecurityToken(existingtokenstring);
-
-        //            if (DateTime.UtcNow >= securityToken.ValidTo)
-        //                return await createNewTokenForUserAsync(resultForWeb.user);
-
-        //            /* return result */
-        //            return new JwtTokenModel(existingtokenstring, resultForWeb.user.getCompleteName(), securityToken.ValidTo);
-        //        }
-        //        else
-        //            return await createNewTokenForUserAsync(resultForWeb.user);
-        //    }
-
-        //    return JwtTokenModel.GetEmptyToken();
-        //}
-
-        //private async Task<(bool isAuthenticated, UserModel? user)> tryAuthenticateForWebAsync(string userName,
-        //                                                                                       string password,
-        //                                                                                       bool rememberMe = false)
-        //{
-        //    bool isAuthenticated = false;
-        //    UserModel? user = null;
-
-        //    string encryptedPwd = getEncrypted(password);
-        //    user = dbHandlerHyperLabUsers.tryLogin(userName, encryptedPwd);
-        //    if (user != null)
-        //    {
-        //        /* add cookie auth for web access */
-        //        var identity = new ClaimsIdentity(new[] {
-        //                    new Claim(ClaimTypes.Name, user.getCompleteName()),
-        //                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-        //                }, CookieAuthenticationDefaults.AuthenticationScheme);
-
-        //        var principal = new ClaimsPrincipal(identity);
-
-        //        if (rememberMe)
-        //            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties
-        //            {
-        //                AllowRefresh = true,
-        //                IsPersistent = rememberMe,
-        //                IssuedUtc = DateTime.UtcNow
-        //            });
-        //        else
-        //            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-        //        isAuthenticated = true;
-        //    }
-
-        //    return (isAuthenticated, user);
-        //}
-
-        private async Task<GenericValueStringResponseModel> resetPasswordAsync(PasswordResetModel model)
-        {
-            if (string.IsNullOrEmpty(model.Email))
-                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Account.PasswordResetRequestBadRequest };
-
-            if (!dbHandlerHyperLabUsers.isUserExistant(model.Email))
-                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Users.UserNotExistantErrorMessage };
-
-            /* encrypt password */
-            string encryptedPassword = getEncrypted(model.Password!);
-
-            /* generate confirmation token and set token expiration date-time */
-            string passwordResetToken = Guid.NewGuid().ToString();
-
-            /* update db */
-            if (await dbHandlerHyperLabUsers.resetPasswordAsync(model.Email,
-                                                                encryptedPassword))
-                return new GenericValueStringResponseModel() { IsOk = true };
-            else
-                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Account.PasswordResetRequestBadModel };
-        }
-
-        private async Task<(bool isOk, AccountErrorModel? errorModel)> sendPasswordResetEmailAsync(string email)
-        {
-            AccountErrorModel? errorModel = null;
-
-            if (!dbHandlerHyperLabUsers.isLoginExistantForPasswordReset(email))
-            {
-                errorModel = new AccountErrorModel(Account.PasswordResetErrorEmailNotExistantTitle, Account.PasswordResetErrorEmailNotExistantMessage);
-
-                if (getCallerContext() == Enums.CallerContext.Web)
-                    HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
-
-                return (false, errorModel);
-            }
-
-            logger.LogInformation($"{nameof(PasswordResetSendEmail)} - email: {email}");
-            GenericValueStringResponseModel response = await setUserLoginForPasswordResetAsync(email);
-
-            if (response.IsOk)
-                return (true, null);
-
-            errorModel = new AccountErrorModel(Account.AccountErrorGenericTitle, response.ExMsg);
-
-            if (getCallerContext() == Enums.CallerContext.Web)
-                HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
-
-            return (false, errorModel);
-        }
-
-        private async Task<GenericValueStringResponseModel> setUserLoginForPasswordResetAsync(string email)
-        {
-            if (string.IsNullOrEmpty(email))
-                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Account.PasswordResetRequestBadRequest };
-
-            if (!dbHandlerHyperLabUsers.isUserExistant(email!))
-                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Users.UserNotExistantErrorMessage };
-
-            if (!dbHandlerHyperLabUsers.isUserExistantAndValidLogin(email!))
-                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Users.UserNotConfirmedErrorMessage };
-
-            /* generate confirmation token and set token expiration date-time */
-            string passwordResetToken = Guid.NewGuid().ToString();
-
-            DateTime tokenExpirationDateTime = DateTime.UtcNow.AddHours(1);
-
-            /* update db */
-            if (await dbHandlerHyperLabUsers.setPasswordForResetAsync(email,
-                                                                      passwordResetToken,
-                                                                      tokenExpirationDateTime))
-                return new GenericValueStringResponseModel() { IsOk = true };
-            else
-                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = Account.PasswordResetRequestBadModel };
         }
         #endregion
     }

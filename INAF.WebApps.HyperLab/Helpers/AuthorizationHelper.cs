@@ -39,6 +39,37 @@ namespace INAF.WebApps.HyperLab.Helpers
             authServiceBaseUrl = configuration.GetValue<string>("AppSettings:AuthService:BaseUrl") ?? throw new ArgumentNullException("AppSettings:AuthService:BaseUrl configuration is missing");
         }
 
+        public async Task<bool> confirmLoginAsync(int userId, string token)
+        {
+            try
+            {
+                var confirmLoginUrl = $"{authServiceBaseUrl}/Account/ConfirmLogin";
+                var response = await sendPostRequestAsync<GenericRequestByIdAndTextModel, bool>(confirmLoginUrl, new GenericRequestByIdAndTextModel(userId, token), CancellationToken.None);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error occurred during {nameof(confirmLoginAsync)}.");
+                return false;
+            }
+        }
+
+        public async Task<LoginModel> getLoginFromTokenAsync(string token, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var getLoginFromTokenUrl = $"{authServiceBaseUrl}/Account/GetLoginFromToken";
+                var model = new GenericRequestByTextModel(token);
+                var loginModel = await sendGetRequestAsync<GenericRequestByTextModel, LoginModel>(getLoginFromTokenUrl, model, cancellationToken);
+                return loginModel ?? new LoginModel();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error occurred during {nameof(getLoginFromTokenAsync)}.");
+                return new LoginModel();
+            }
+        }
+
         public async Task<JwtTokenModel?> getTokenForUserAsync(int userId, CancellationToken cancellationToken = default)
         {
             try
@@ -68,6 +99,21 @@ namespace INAF.WebApps.HyperLab.Helpers
             {
                 logger.LogError(ex, $"Error occurred during {nameof(getUserIdAsync)}.");
                 return default;
+            }
+        }
+
+        public async Task<bool> isLoginAlreadyConfirmedAsync(string token, CancellationToken cancellationToken = default)
+        {
+            var isLoginAlreadyConfirmedUrl = $"{authServiceBaseUrl}/Account/IsLoginAlreadyConfirmed";
+            try
+            {
+                var response = await sendGetRequestAsync<GenericRequestByTextModel, bool>(isLoginAlreadyConfirmedUrl, new GenericRequestByTextModel(token), cancellationToken);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error occurred during {nameof(isLoginAlreadyConfirmedAsync)}.");
+                return false;
             }
         }
 
@@ -114,6 +160,54 @@ namespace INAF.WebApps.HyperLab.Helpers
             {
                 logger.LogError(ex, $"Error occurred during {nameof(logoutAsync)}.");
                 return false;
+            }
+        }
+
+        public async Task<GenericValueStringResponseModel> passwordResetAsync(PasswordResetModel model,
+                                                                              CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var passwordChangeUrl = $"{authServiceBaseUrl}/Account/PasswordReset";
+                var response = await sendPostRequestAsync<PasswordResetModel, GenericValueStringResponseModel>(passwordChangeUrl, model, cancellationToken);
+                return response ?? new GenericValueStringResponseModel { IsOk = false, Value = "Failed to change password." };
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error occurred during {nameof(passwordResetAsync)}.");
+                return new GenericValueStringResponseModel { IsOk = false, Value = "An error occurred while changing password." };
+            }
+        }
+
+        public async Task<GenericResponseModel> passwordResetExecuteAsync(IncomingLoginConfirmationModel model,
+                                                                          CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var passwordResetExecuteUrl = $"{authServiceBaseUrl}/Account/PasswordResetExecute";
+                var response = await sendPostRequestAsync<IncomingLoginConfirmationModel, GenericResponseModel>(passwordResetExecuteUrl, model, cancellationToken);
+                return response ?? new GenericResponseModel { IsOk = false, ResponseObject = "Failed to execute password reset." };
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error occurred during {nameof(passwordResetExecuteAsync)}.");
+                return new GenericResponseModel { IsOk = false, ResponseObject = "An error occurred while executing password reset." };
+            }
+        }
+
+        public async Task<GenericValueStringResponseModel> passwordResetSendEmailAsync(PasswordResetRequestModel model,
+                                                                                       CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var passwordResetSendEmailUrl = $"{authServiceBaseUrl}/Account/PasswordResetSendEmail";
+                var response = await sendPostRequestAsync<PasswordResetRequestModel, GenericValueStringResponseModel>(passwordResetSendEmailUrl, model, cancellationToken);
+                return response ?? new GenericValueStringResponseModel { IsOk = false, Value = "Failed to send password reset email." };
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error occurred during {nameof(passwordResetSendEmailAsync)}.");
+                return new GenericValueStringResponseModel { IsOk = false, Value = "An error occurred while sending password reset email." };
             }
         }
 
