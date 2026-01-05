@@ -2,12 +2,6 @@
 {
     public sealed class Enums
     {
-        public enum Caller
-        {
-            App = 0,
-            WebApp
-        }
-
         public enum ControllerOperationStatus
         {
             None = -1,
