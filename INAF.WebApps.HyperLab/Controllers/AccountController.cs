@@ -6,7 +6,6 @@ using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
-using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Extensions;
 using INAF.WebApps.HyperLab.Helpers;
@@ -15,7 +14,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -350,7 +349,10 @@ namespace INAF.WebApps.HyperLab.Controllers
 
                 }
 
-                if (response.ResponseObject == null || !(response.ResponseObject is LoginModel))
+                string? userName = string.Empty;
+                if (response.ResponseObject is JsonElement el && el.ValueKind == JsonValueKind.String)
+                    userName = el.GetString();
+                else
                 {
                     logger.LogError($"{nameof(PasswordResetExecute)} - response.ResponseObject is null or not LoginModel - user: {model.Id}");
                     errorModel = new AccountErrorModel(Account.AccountErrorGenericTitle, Account.AccountErrorGenericMessage);
@@ -358,7 +360,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
                 }
 
-                return View(new PasswordResetModel() { Email = (response.ResponseObject as LoginModel)!.UserName });
+                return View(new PasswordResetModel() { Email = userName });
             }
 
             logger.LogInformation($"{nameof(PasswordResetExecute)} - NOT VALID - user: {model.Id}");

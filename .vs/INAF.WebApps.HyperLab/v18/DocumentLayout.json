@@ -51,9 +51,9 @@
               "Title": "AccountController.cs",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Controllers\\AccountController.cs",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Controllers\\AccountController.cs",
-              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Controllers\\AccountController.cs*",
-              "RelativeToolTip": "INAF.WebApps.HyperLab\\Controllers\\AccountController.cs*",
-              "ViewState": "AgIAAMkBAAAAAAAAAAAAAPEBAAASAAAAAAAAAA==",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-17T11:33:29.04Z",
               "IsPinned": true,
@@ -65,13 +65,12 @@
               "Title": "AuthorizationHelper.cs",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Helpers\\AuthorizationHelper.cs",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Helpers\\AuthorizationHelper.cs",
-              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Helpers\\AuthorizationHelper.cs*",
-              "RelativeToolTip": "INAF.WebApps.HyperLab\\Helpers\\AuthorizationHelper.cs*",
-              "ViewState": "AgIAAEgAAAAAAAAAAAAmwKUAAAA5AAAAAAAAAA==",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Helpers\\AuthorizationHelper.cs",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\Helpers\\AuthorizationHelper.cs",
+              "ViewState": "AgIAAHcAAAAAAAAAAIAywLsAAABuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-30T09:16:10.342Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
@@ -200,8 +199,7 @@
               "RelativeToolTip": "..\\..\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\DbHandlerHyperLabUsersUsers.cs",
               "ViewState": "AgIAAEwBAAAAAAAAAAAtwIgBAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-30T07:57:55.262Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-30T07:57:55.262Z"
             },
             {
               "$type": "Document",
@@ -213,8 +211,7 @@
               "RelativeToolTip": "..\\..\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\DbHandlerHyperLabUsersLogin.cs",
               "ViewState": "AgIAAEYAAAAAAAAAAAAgwF0AAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-30T07:57:33.315Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-30T07:57:33.315Z"
             },
             {
               "$type": "Document",
@@ -256,6 +253,10 @@
             },
             {
               "$type": "Bookmark",
+              "Name": "ST:0:0:{004be353-6879-467c-9d1e-9ac23cdf6d49}"
+            },
+            {
+              "$type": "Bookmark",
               "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
             },
             {
@@ -265,10 +266,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{ca8cc5c7-0231-406a-95cd-aa5ed6ac0190}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{004be353-6879-467c-9d1e-9ac23cdf6d49}"
             }
           ]
         },
