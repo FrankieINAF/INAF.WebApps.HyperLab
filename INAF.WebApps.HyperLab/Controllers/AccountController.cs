@@ -9,6 +9,7 @@ using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Extensions;
+using INAF.WebApps.HyperLab.Values;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -99,6 +100,10 @@ namespace INAF.WebApps.HyperLab.Controllers
                     ModelState.Clear();
                     return View();
                 }
+
+                /* set session token */
+                if (!string.IsNullOrEmpty(user.Token))
+                    HttpContext.Session.SetString(Constants.USER_TOKEN, user.Token);
 
                 /* add cookie auth for web access */
                 var identity = new ClaimsIdentity(new[] {

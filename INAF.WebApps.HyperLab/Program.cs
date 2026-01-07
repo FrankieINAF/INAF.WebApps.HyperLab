@@ -167,6 +167,7 @@ var app = builder.Build();
 app.UseExceptionHandler("/Home/Error");
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseWebAssemblyDebugging();
 
     //    app.UseSwagger();
