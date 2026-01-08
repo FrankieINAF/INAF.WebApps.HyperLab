@@ -101,7 +101,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return View();
                 }
 
-                /* set session token */
+                /* set session token: is used in 'CheckIsLoginValidAttribute' for validating user */
                 if (!string.IsNullOrEmpty(user.Token))
                     HttpContext.Session.SetString(Constants.USER_TOKEN, user.Token);
 
@@ -150,6 +150,10 @@ namespace INAF.WebApps.HyperLab.Controllers
                 JwtTokenModel? jwtTokenModel = await authorizationHelper.getTokenForUserAsync(user.Id);
                 if (jwtTokenModel == null)
                     return new JsonResult(JwtTokenModel.GetEmptyToken());
+
+                /* set session token */
+                if (!string.IsNullOrEmpty(jwtTokenModel.Token))
+                    HttpContext.Session.SetString(Constants.USER_TOKEN, jwtTokenModel.Token);
 
                 return new JsonResult(jwtTokenModel);
             }

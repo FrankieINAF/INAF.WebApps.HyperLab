@@ -1,7 +1,6 @@
 ﻿using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.CommonWebAppHelpers.Helpers;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
-using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonWebAppHelpers;
 using INAF.WebApps.HyperLab.Controllers;
 using INAF.WebApps.HyperLab.Extensions;
@@ -13,42 +12,11 @@ namespace INAF.WebApps.HyperLab.Attributes
 {
     public class CheckIsLoginValidAttribute : ActionFilterAttribute
     {
-        public override async void OnActionExecuting(ActionExecutingContext filterContext)
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var authorizationHelper = filterContext.HttpContext.RequestServices.GetRequiredService<AuthorizationHelper>();
-            var tokenValidationHelper = filterContext.HttpContext.RequestServices.GetRequiredService<TokenValidationHelper>();
-            var logger = filterContext.HttpContext.RequestServices.GetRequiredService<ILogger<CheckIsLoginValidAttribute>>();
+            var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<CheckIsLoginValidAttribute>>();
 
-            /* retrieve token from 'Authorization' header (App) */
-            string? token = filterContext.HttpContext.GetToken();
-            if (string.IsNullOrEmpty(token))
-            {
-                /* if no token is found in 'Authorization' header (App), then recover it from session (web app):
-                 * it has been saved on login */
-                token = filterContext.HttpContext.Session.GetString(Constants.USER_TOKEN);
-
-                if (string.IsNullOrEmpty(token))
-                {
-                    int userId = filterContext.HttpContext.GetUserId();
-                    JwtTokenModel? jwtToken = await authorizationHelper.getTokenForUserAsync(userId);
-                    if (jwtToken != null)
-                        token = jwtToken.Token;
-                }
-                
-            }
-
-            if (string.IsNullOrEmpty(token) || !tokenValidationHelper.isValidToken(token))
-            {
-                if (!string.IsNullOrEmpty(token))
-                    logger.LogWarning("Invalid or expired token detected. Redirecting to login page.");
-                else 
-                    logger.LogWarning("No token found. Redirecting to login page.");
-
-                filterContext.Result = new RedirectResult(GenericHelper.GetUrl(GenericHelper.GetControllerName(nameof(AccountController)), nameof(AccountController.Login)));
-                return;
-            }
-
-            string expirationTokenString = filterContext.HttpContext.Session.GetString(Constants.USER_TOKEN_EXPIRATION_DATETIME) ?? string.Empty;
+            string expirationTokenString = context.HttpContext.Session.GetString(Constants.USER_TOKEN_EXPIRATION_DATETIME) ?? string.Empty;
             if (!string.IsNullOrEmpty(expirationTokenString))
             {
                 if (DateTime.TryParse(expirationTokenString, out DateTime expirationDateTime))
@@ -56,21 +24,59 @@ namespace INAF.WebApps.HyperLab.Attributes
                     if (DateTime.UtcNow < expirationDateTime)
                     {
                         // Token is still valid according to session expiration time
+                        await next();
+                        return;
+                    }
+                    else
+                    {
+                        context.Result = new RedirectResult(GenericHelper.GetUrl(GenericHelper.GetControllerName(nameof(AccountController)), nameof(AccountController.Login)));
+                        logger.LogWarning("Login is not valid. Redirecting to login page.");
                         return;
                     }
                 }
             }
 
-            /* redirect to action depending on login */
-            bool isLoginValid = await authorizationHelper.isLoginValidAsync(token);
-            if (isLoginValid)
+            var authorizationHelper = context.HttpContext.RequestServices.GetRequiredService<AuthorizationHelper>();
+            var tokenValidationHelper = context.HttpContext.RequestServices.GetRequiredService<TokenValidationHelper>();
+
+            /* retrieve token from 'Authorization' header (App) */
+            string? token = context.HttpContext.GetToken();
+            if (string.IsNullOrEmpty(token))
             {
-                DateTime expirationDateTime = tokenValidationHelper.getExpirationDateTime(token);
-                filterContext.HttpContext.Session.SetString(Constants.USER_TOKEN_EXPIRATION_DATETIME, expirationDateTime.ToString("o"));
+                /* if no token is found in 'Authorization' header (App), then recover it from session (web app):
+                 * it has been saved on login */
+                token = context.HttpContext.Session.GetString(Constants.USER_TOKEN);
+
+                /* if no token is found in session (web app), then recover it from authorization app using userId taken from cookies */
+                if (string.IsNullOrEmpty(token))
+                {
+                    int userId = context.HttpContext.GetUserId();
+                    JwtTokenModel? jwtToken = await authorizationHelper.getTokenForUserAsync(userId);
+                    if (jwtToken != null)
+                        token = jwtToken.Token;
+                }
+
             }
-            if (!isLoginValid)
+
+            if (string.IsNullOrEmpty(token))
             {
-                filterContext.Result = new RedirectResult(GenericHelper.GetUrl(GenericHelper.GetControllerName(nameof(AccountController)), nameof(AccountController.Login)));
+                logger.LogWarning("No token found. Redirecting to login page.");
+
+                context.Result = new RedirectResult(GenericHelper.GetUrl(GenericHelper.GetControllerName(nameof(AccountController)), nameof(AccountController.Login)));
+                return;
+            }
+
+            /* if a token is found, then check it */
+            (bool isLoginValid, string expirationDateTimeString) result = await authorizationHelper.isLoginValidAsync(token);
+            if (result.isLoginValid)
+            {
+                /* if token is valid, save it and let user go to the requested page  */
+                context.HttpContext.Session.SetString(Constants.USER_TOKEN_EXPIRATION_DATETIME, result.expirationDateTimeString);
+                await next();
+            }
+            else
+            {
+                context.Result = new RedirectResult(GenericHelper.GetUrl(GenericHelper.GetControllerName(nameof(AccountController)), nameof(AccountController.Login)));
                 logger.LogWarning("Login is not valid. Redirecting to login page.");
             }
         }

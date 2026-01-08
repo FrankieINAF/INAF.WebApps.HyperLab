@@ -27,7 +27,7 @@ var config = builder.Configuration;
 string? validIssuer = config.GetSection("AppSettings:JwtToken:Issuer").Value;
 string? validAudience = config.GetSection("AppSettings:JwtToken:Audience").Value;
 
-RsaSecurityKey rsaSecurityKey = (new TokenValidationParametersHelper(config)).getRsaSecurityKey();
+RsaSecurityKey rsaSecurityKey = (new TokenValidationParametersHelper(config)).getRsaPublicKey();
 builder.Services.AddSingleton<RsaSecurityKey>(rsaSecurityKey);
 
 
