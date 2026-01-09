@@ -1240,4 +1240,18 @@ function submitForm(formObj) {
 /* ##################################################################################  */
 $(document).ready(function () {
     checkScreenDims();
+    
+    /* Global AJAX error handler for HTTP status codes */
+    $(document).ajaxError(function(event, xhr, settings, thrownError) {
+        /* Handle 401 Unauthorized - authentication required */
+        if (xhr.status === 401) {
+            console.log('401 Unauthorized. Redirecting to login page.');
+            window.location.href = '/Account/Login';
+        }
+        /* Handle 403 Forbidden - insufficient permissions */
+        else if (xhr.status === 403) {
+            console.log('403 Forbidden. Redirecting to login page.');
+            window.location.href = '/Account/Login';
+        }
+    });
 });

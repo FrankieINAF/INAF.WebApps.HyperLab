@@ -29,8 +29,7 @@ namespace INAF.WebApps.HyperLab.Attributes
                     }
                     else
                     {
-                        context.Result = new RedirectResult(GenericHelper.GetUrl(GenericHelper.GetControllerName(nameof(AccountController)), nameof(AccountController.Login)));
-                        logger.LogWarning("Login is not valid. Redirecting to login page.");
+                        handleUnauthorizedAccess(context, logger, "Login is not valid. Redirecting to login page.");
                         return;
                     }
                 }
@@ -60,9 +59,7 @@ namespace INAF.WebApps.HyperLab.Attributes
 
             if (string.IsNullOrEmpty(token))
             {
-                logger.LogWarning("No token found. Redirecting to login page.");
-
-                context.Result = new RedirectResult(GenericHelper.GetUrl(GenericHelper.GetControllerName(nameof(AccountController)), nameof(AccountController.Login)));
+                handleUnauthorizedAccess(context, logger, "No token found. Redirecting to login page.");
                 return;
             }
 
@@ -76,9 +73,33 @@ namespace INAF.WebApps.HyperLab.Attributes
             }
             else
             {
-                context.Result = new RedirectResult(GenericHelper.GetUrl(GenericHelper.GetControllerName(nameof(AccountController)), nameof(AccountController.Login)));
-                logger.LogWarning("Login is not valid. Redirecting to login page.");
+                handleUnauthorizedAccess(context, logger, "Login is not valid. Redirecting to login page.");
             }
+        }
+
+        private void handleUnauthorizedAccess(ActionExecutingContext context, ILogger logger, string logMessage)
+        {
+            logger.LogWarning(logMessage);
+
+            string loginUrl = GenericHelper.GetUrl(GenericHelper.GetControllerName(nameof(AccountController)), nameof(AccountController.Login));
+
+            /* Check if this is an AJAX request */
+            if (isAjaxRequest(context.HttpContext.Request))
+            {
+                /* Return 401 Unauthorized for AJAX requests - client-side handler will redirect */
+                context.Result = new UnauthorizedResult();
+            }
+            else
+            {
+                /* Return redirect for regular page requests */
+                context.Result = new RedirectResult(loginUrl);
+            }
+        }
+
+        private bool isAjaxRequest(HttpRequest request)
+        {
+            return request.Headers["X-Requested-With"] == "XMLHttpRequest" ||
+                   request.Headers.Accept.ToString().Contains("application/json");
         }
     }
 }
