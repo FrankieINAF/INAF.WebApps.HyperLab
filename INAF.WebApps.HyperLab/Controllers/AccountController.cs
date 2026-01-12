@@ -189,7 +189,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         #region CONFIRMATION
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Confirmation(IncomingLoginConfirmationModel model)
+        public async Task<IActionResult> Confirmation(IncomingLoginValidationModel model)
         {
             /* check if token is null */
             if (string.IsNullOrEmpty(model.Token))
@@ -202,15 +202,16 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 logger.LogInformation($"{nameof(Confirmation)} - IsValid - user: {model.Id}");
                 /* if login has already been confirmed, then send user to registration completed page */
-                if (await authorizationHelper.isLoginAlreadyConfirmedAsync(model.Token))
+                GenericResponseModel? isconfirmedResponse = await authorizationHelper.isLoginConfirmedAsync(model.Token);
+                if (isconfirmedResponse != null && isconfirmedResponse.IsOk)
                     return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
 
-                bool isOk = await authorizationHelper.confirmLoginAsync(model.Id, model.Token!);
-
-                logger.LogInformation($"{nameof(Confirmation)} - IsValid - confirmationResult: isOk:{isOk}");
+                GenericResponseModel? confirmResponse = await authorizationHelper.confirmLoginAsync(model.Id, model.Token!);
                 /* if confirmation is ok, then send user to registration completed page */
-                if (isOk)
+                if (confirmResponse != null)
                 {
+                    logger.LogInformation($"{nameof(Confirmation)} - IsValid - confirmationResult: isOk:{confirmResponse.IsOk}");
+
                     /* retrieve user data to fix userId in shares and then fix them, when existant */
                     LoginModel? loginModel = await authorizationHelper.getLoginFromTokenAsync(model.Token);
                     if (loginModel != null)
@@ -333,7 +334,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> PasswordResetExecute(IncomingLoginConfirmationModel model)
+        public async Task<IActionResult> PasswordResetExecute(IncomingLoginValidationModel model)
         {
             AccountErrorModel? errorModel = null;
 
