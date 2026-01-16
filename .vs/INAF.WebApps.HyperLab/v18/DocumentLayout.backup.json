@@ -3,22 +3,22 @@
   "WorkspaceRootPath": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7D9A1427-9128-4C0E-8174-2783B900CBD7}|..\\..\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users.csproj|g:\\projects\\inaf\\libraries\\net\\db\\inaf.libraries.net.db.hyperlab.users\\inaf.libraries.net.db.hyperlab.users\\dbhandlerhyperlabusersusers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{7D9A1427-9128-4C0E-8174-2783B900CBD7}|..\\..\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users.csproj|g:\\projects\\inaf\\libraries\\net\\db\\inaf.libraries.net.db.hyperlab.users\\inaf.libraries.net.db.hyperlab.users\\dbhandlerhyperlabuserslogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A176BB89-91FC-4705-A9A0-43AD96CDBF05}|..\\..\\Libraries\\Net\\INAF.Libraries.Net.Extensions\\INAF.Libraries.Net.Extensions\\INAF.Libraries.Net.Extensions.csproj|g:\\projects\\inaf\\libraries\\net\\inaf.libraries.net.extensions\\inaf.libraries.net.extensions\\extensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\bundleconfig.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\bundleconfig.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -28,7 +28,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 21,
+          "SelectedChildIndex": 17,
           "Children": [
             {
               "$type": "Bookmark",
@@ -100,41 +100,53 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "DbHandlerHyperLabUsersUsers.cs",
-              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\DbHandlerHyperLabUsersUsers.cs",
-              "RelativeDocumentMoniker": "..\\..\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\DbHandlerHyperLabUsersUsers.cs",
-              "ToolTip": "G:\\Projects\\INAF\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\DbHandlerHyperLabUsersUsers.cs",
-              "RelativeToolTip": "..\\..\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\DbHandlerHyperLabUsersUsers.cs",
-              "ViewState": "AgIAAEwBAAAAAAAAAAAtwIgBAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-30T07:57:55.262Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "DbHandlerHyperLabUsersLogin.cs",
-              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\DbHandlerHyperLabUsersLogin.cs",
-              "RelativeDocumentMoniker": "..\\..\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\DbHandlerHyperLabUsersLogin.cs",
-              "ToolTip": "G:\\Projects\\INAF\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\DbHandlerHyperLabUsersLogin.cs",
-              "RelativeToolTip": "..\\..\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\DbHandlerHyperLabUsersLogin.cs",
-              "ViewState": "AgIAAEYAAAAAAAAAAAAgwF0AAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-30T07:57:33.315Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Program.cs",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Program.cs",
               "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Program.cs",
               "RelativeToolTip": "INAF.WebApps.HyperLab\\Program.cs",
-              "ViewState": "AgIAADkAAAAAAAAAAAAvwEsAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAADgvx0AAABaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-29T08:05:15.31Z"
+              "WhenOpened": "2026-01-12T15:24:53.922Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Extensions.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\Net\\INAF.Libraries.Net.Extensions\\INAF.Libraries.Net.Extensions\\Extensions.cs",
+              "RelativeDocumentMoniker": "..\\..\\Libraries\\Net\\INAF.Libraries.Net.Extensions\\INAF.Libraries.Net.Extensions\\Extensions.cs",
+              "ToolTip": "G:\\Projects\\INAF\\Libraries\\Net\\INAF.Libraries.Net.Extensions\\INAF.Libraries.Net.Extensions\\Extensions.cs",
+              "RelativeToolTip": "..\\..\\Libraries\\Net\\INAF.Libraries.Net.Extensions\\INAF.Libraries.Net.Extensions\\Extensions.cs",
+              "ViewState": "AgIAAGkAAAAAAAAAAAA4wAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-12T15:19:05.014Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DbHandlerHyperLabUsersLogin.cs",
+              "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\DbHandlerHyperLabUsersLogin.cs",
+              "RelativeDocumentMoniker": "..\\..\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\DbHandlerHyperLabUsersLogin.cs",
+              "ToolTip": "G:\\Projects\\INAF\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\DbHandlerHyperLabUsersLogin.cs",
+              "RelativeToolTip": "..\\..\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Users\\INAF.Libraries.Net.DB.HyperLab.Users\\DbHandlerHyperLabUsersLogin.cs",
+              "ViewState": "AgIAAPkBAAAAAAAAAAAewJUCAABaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-12T15:11:27.552Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "bundleconfig.json",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\bundleconfig.json",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\bundleconfig.json",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\bundleconfig.json",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\bundleconfig.json",
+              "ViewState": "AgIAABoAAAAAAAAAAABRwDoAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-01-09T15:24:44.262Z"
             },
             {
               "$type": "Document",
@@ -144,23 +156,9 @@
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Controllers\\AccountController.cs",
               "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Controllers\\AccountController.cs",
               "RelativeToolTip": "INAF.WebApps.HyperLab\\Controllers\\AccountController.cs",
-              "ViewState": "AgIAADMAAAAAAAAAAAAlwHMAAABVAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-17T11:33:29.04Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "appsettings.development.json",
-              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\appsettings.development.json",
-              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\appsettings.development.json",
-              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\appsettings.development.json*",
-              "RelativeToolTip": "INAF.WebApps.HyperLab\\appsettings.development.json*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-12-19T13:49:05.983Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-07T09:17:35.203Z"
             }
           ]
         },
@@ -187,6 +185,10 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{a80febb4-e7e0-4147-b476-21aaf2453969}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{004be353-6879-467c-9d1e-9ac23cdf6d49}"
             },
             {
               "$type": "Bookmark",
