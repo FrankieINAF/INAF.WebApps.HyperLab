@@ -83,6 +83,7 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+/* add blazor */
 builder.Services.AddServerSideBlazor()
     .AddCircuitOptions(options => options.DetailedErrors = true)
     .AddHubOptions(options => options.MaximumReceiveMessageSize = 1024 * 1024);
@@ -197,7 +198,6 @@ app.UseBlazorFrameworkFiles();
 app.MapStaticAssets();
 app.UseCookiePolicy();
 
-
 app.UseRouting();
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
@@ -209,17 +209,18 @@ app.UseAuthorization();
 
 app.UseSession();
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), ".well-known", "acme-challenge")),
-    RequestPath = "/.well-known/acme-challenge",
-    ServeUnknownFileTypes = true // Permette di servire file senza estensione
-});
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), ".well-known", "acme-challenge")),
+//    RequestPath = "/.well-known/acme-challenge",
+//    ServeUnknownFileTypes = true // Permette di servire file senza estensione
+//});
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+
 app.MapBlazorHub();
 
 app.Run();

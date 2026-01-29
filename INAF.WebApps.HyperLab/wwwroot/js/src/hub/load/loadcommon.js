@@ -68,7 +68,7 @@ async function loadFilesAsync(files, source) {
     if (files == null || files.length == 0)
         return;
 
-    showByClassDFlexItem('loadedFilesContainer', true);
+    showByClassDFlexItem('loadedFilesContainer');
 
     /* remove locally saved files, if any is available */
     removeItemsFromSessionStorage(STORAGE_ITEM);

@@ -438,9 +438,23 @@ namespace INAF.WebApps.HyperLab.Controllers
                 RegistrationStatusResponseModel? response = await authorizationHelper.registerAsync(model, HttpContext.RequestAborted);
                 if (response == null)
                 {
+                    logger.LogError($"{nameof(Registration)} - response is null after registration attempt - email: {model.Email}");
                     AccountErrorModel errorModel = new AccountErrorModel(Account.AccountErrorGenericTitle, Account.AccountErrorGenericMessage);
                     HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
-                    return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
+                    return RedirectToAction(nameof(RegistrationError), GenericHelper.GetControllerName(nameof(AccountController)));
+                }
+
+                /* create user in HyperLab DB for users */
+                if (!await dbHandlerHyperLabUsers.upsertUserProcedureAsync(response.Id,
+                                                                           model.Name!,
+                                                                           model.LastName!,
+                                                                           model.Email!,
+                                                                           model.Email!,
+                                                                           (int)INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums.RoleType.User,
+                                                                           await getUserIdAsync()))
+                {
+                    logger.LogError($"{nameof(Registration)} - error creating user in HyperLabUsers DB - email: {model.Email}");
+                    return RedirectToAction(nameof(RegistrationError), GenericHelper.GetControllerName(nameof(AccountController)));
                 }
 
 
@@ -456,15 +470,16 @@ namespace INAF.WebApps.HyperLab.Controllers
                         }
 
                     case Libraries.Net.CommonWebAppModels.Values.Enums.RegistrationStatus.Error:
+                        logger.LogError($"{nameof(Registration)} - error in registration - email: {model.Email} - error: {response.ExMsg}");
                         AccountErrorModel errorModel = new AccountErrorModel(Account.ConfirmationErrorTitle, response.ExMsg);
                         HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
-                        return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
+                        return RedirectToAction(nameof(RegistrationError), GenericHelper.GetControllerName(nameof(AccountController)));
                 }
             }
 
             logErrorMessage(ModelState.Values);
             ModelState.Clear();
-            return RedirectToAction(nameof(AccountError), GenericHelper.GetControllerName(nameof(AccountController)));
+            return RedirectToAction(nameof(RegistrationError), GenericHelper.GetControllerName(nameof(AccountController)));
         }
 
         [HttpPost]
@@ -504,6 +519,13 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         [AllowAnonymous]
         public IActionResult RegistrationConfirmed()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult RegistrationError()
         {
             return View();
         }

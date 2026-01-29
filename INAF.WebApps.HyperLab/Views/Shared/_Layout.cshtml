@@ -65,6 +65,9 @@
             </div>
             <!-- USER -->
             <div class="suggest-box bg-darkGrayBlue">
+                @{
+                    string img = string.Empty;
+                }
                 <div class="data-box">
                     @{
                         string? userName = @Context.GetUserName();
@@ -77,7 +80,7 @@
                         {
                             roleName = "Guest";
                         }
-                        string img = $"/images/appbars/{roleName}.png";
+                        img = $"/images/appbars/{roleName}.png";
                     }
                     <img src="@img" class="avatar">
                     <div class="ml-4 avatar-title flex-column">
@@ -85,7 +88,7 @@
                         <p class="m-0"><span class="fg-green mr-2">●</span><span class="text-small navview-pane-text">online</span></p>
                     </div>
                 </div>
-                <img src="~/images/appbars/AppAdmin.png" class="avatar holder ml-2">
+                <img src="@img" class="avatar holder ml-2">
             </div>
             <!-- MENU -->
             <div id="divMenu" class="navview-menu-container bg-darkGrayBlue">
