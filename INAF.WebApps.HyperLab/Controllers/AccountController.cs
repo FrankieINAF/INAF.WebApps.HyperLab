@@ -166,7 +166,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 if (dbHandlerHyperLabUsers.isLoginAlreadyConfirmed(model.Token))
                     return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
 
-                (bool isOk, string exMsg) confirmationResult = await dbHandlerHyperLabUsers.tryConfirmLoginAsync(model.Id,
+                (bool isOk, string exMsg) confirmationResult = await dbHandlerHyperLabUsers.tryConfirmLoginAsync(int.Parse(model.Id!),
                                                                                                                  model.Token!);
 
                 logger.LogInformation($"{nameof(Confirmation)} - IsValid - confirmationResult: isOk:{confirmationResult.isOk}, exMsg: {confirmationResult.exMsg}");

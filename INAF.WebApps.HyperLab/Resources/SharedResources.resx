@@ -198,6 +198,9 @@
   <data name="SubmitLabel" xml:space="preserve">
     <value>Submit</value>
   </data>
+  <data name="TeamSign" xml:space="preserve">
+    <value>The HyperLab Team</value>
+  </data>
   <data name="WarningLabel" xml:space="preserve">
     <value>Warning!</value>
   </data>

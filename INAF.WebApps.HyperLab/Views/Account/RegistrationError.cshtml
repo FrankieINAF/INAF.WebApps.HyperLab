@@ -1,5 +1,48 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model AccountErrorModel
+
+@using INAF.Libraries.Net.CommonResources
+@using INAF.Libraries.Net.CommonWebAppModels.Models.Account
+@using INAF.Libraries.Net.HyperLab.CommonModels.Resources
+@using INAF.WebApps.HyperLab.Resources
+
 @{
+    Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
+
+    ViewBag.Title = "HyperLab Registration Error";
 }
+
+<environment names="Development">
+    <link rel="stylesheet" href="~/css/hyperlab/common.css" />
+    <link rel="stylesheet" href="~/css/hyperlab/account/login.css" />
+    <link rel="stylesheet" href="~/css/hyperlab/account/errorpage.css" />
+</environment>
+<environment names="Production">
+    <link rel="stylesheet" href="~/css/dist/account/accounterrorbundle.min.css" asp-append-version="true" />
+</environment>
+<div>
+    <div class="d-flex flex-column-fs flex-row-xl">
+        <!-- TEXT/IMAGES -->
+        @{
+            await Html.RenderPartialAsync("Partials/_TextImages");
+        }
+
+        <!-- FORM -->
+        <div class="col-form-width form-cell-background h-vh-75-fs h-vh-100-xl d-flex flex-align-center">
+            <!-- ERROR MESSAGE CONTAINER -->
+            <div class="error-box-container bg-red p-6 mx-auto border bd-default win-shadow">
+                <div class="error-box">
+                    <!-- MESSAGE -->
+                    <div class="row cell-fs-12">
+                        <p class="text-leader text-medium fg-white">@Html.Raw(Model.ErrorTitle)</p>
+                        <p class="text-normal fg-white text-just margin-top-16">@Html.Raw(Model.ErrorMessage)</p>
+                        <p class="text-normal fg-white margin-top-8">@Html.Raw(SharedResources.TeamSign)</p>
+                    </div>
+                    <!-- CONTACT US -->
+                    @{
+                        await Html.RenderPartialAsync("Partials/_ContactUs");
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
