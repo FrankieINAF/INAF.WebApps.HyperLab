@@ -39,11 +39,11 @@
                 <div class="cell-sm-12 cell-md-8 d-flex">
                     <div class="login-container bg-white mx-auto border bd-default win-shadow flex-self-center">
                         <div class="row cell-fs-12">
-                            <h2 class="text-medium text-center fg-black">@Html.Raw(CommonResources.Login.LoginTitle)</h2>
+                            <h2 class="text-medium text-center fg-black">@Html.Raw(CommonResources.Account.LoginTitle)</h2>
                             <hr class="thin mt-4 mb-4 bg-white">
                             <!-- LOGIN MESSAGE ROW -->
                             <div class="row cell-fs-12 d-flex flex-justify-center">
-                                <div><span class="margin-left-24 text-secondary text-center fg-black">@Html.Raw(CommonResources.Login.LoginMessage)</span></div>
+                                <div><span class="margin-left-24 text-secondary text-center fg-black">@Html.Raw(CommonResources.Account.LoginMessage)</span></div>
                             </div>
                             <div class="login-form">
                                 <form id="formLogin"
@@ -63,7 +63,7 @@
                                                 { "data_role", "input" },
                                                 { "data-prepend", "<span class='mif-envelop'>" },
                                                 { "data-validate", "required" },
-                                                { "placeholder", Html.Raw(CommonResources.Login.LoginUsernamePlaceholder) },
+                                                { "placeholder", Html.Raw(CommonResources.Account.LoginUsernamePlaceholder) },
                                                 })
                                                 @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                                             </div>
@@ -74,7 +74,7 @@
                                                 { "data_role", "input" },
                                                 { "data-prepend", "<span class='mif-key'>" },
                                                 { "data-validate", "required" },
-                                                { "placeholder", Html.Raw(CommonResources.Login.PasswordPlaceholder) }
+                                                { "placeholder", Html.Raw(CommonResources.Account.PasswordPlaceholder) }
                                                 })
                                                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                                             </div>
@@ -90,7 +90,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="cell-fs-4 cell-sm-2">
-                                                    @Html.CheckBoxFor(m => m.RememberMe, new Dictionary<string, object> { { "data-role", "checkbox" }, { "class", "place-right" }, { "data-caption", @Html.Raw(CommonResources.Login.RememberMeLabel) }, { "id", "checkboxRememberMe" } })
+                                                    @Html.CheckBoxFor(m => m.RememberMe, new Dictionary<string, object> { { "data-role", "checkbox" }, { "class", "place-right" }, { "data-caption", @Html.Raw(CommonResources.Account.RememberMeLabel) }, { "id", "checkboxRememberMe" } })
                                                 </div>
                                             </div>
                                         </div>
@@ -100,7 +100,7 @@
                         </div>
                         <!-- SIGN UP ROW -->
                         <div class="row cell-fs-12 d-flex flex-justify-center">
-                            <div><span class="text-secondary text-center fg-black">@Html.Raw(CommonResources.Login.RegistrationMessage)</span></div>
+                            <div><span class="text-secondary text-center fg-black">@Html.Raw(CommonResources.Account.RegistrationMessage)</span></div>
                         </div>
                         <!-- SIGN IN ROW-->
                         <div class="row">
@@ -109,7 +109,7 @@
                                 <div>
                                     <button class="image-button success" onclick="navigateTo('/@GenericHelper.GetControllerName(nameof(AccountController))/@nameof(AccountController.Registration)')">
                                         <span class="mif-user-check icon"></span>
-                                        <span class="caption">@Html.Raw(CommonResources.Login.RegistrationLabel)</span>
+                                        <span class="caption">@Html.Raw(CommonResources.Account.RegistrationLabel)</span>
                                     </button>
                                 </div>
                                 <!-- BUTTON ORCID -->

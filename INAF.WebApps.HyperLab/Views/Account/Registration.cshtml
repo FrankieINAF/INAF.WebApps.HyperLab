@@ -46,7 +46,7 @@
                                       method="post"
                                       action="/@GenericHelper.GetControllerName(nameof(AccountController))/@nameof(AccountController.Registration)"
                                       target="_self">
-                                    <span class="text-medium text-center fg-black h6">@Html.Raw(CommonResources.Login.RegistrationTitle)</span>
+                                    <span class="text-medium text-center fg-black h6">@Html.Raw(CommonResources.Account.RegistrationTitle)</span>
                                     @* <hr class="thin mt-4 mb-4 bg-white"> *@
 
                                     @Html.AntiForgeryToken()
@@ -60,7 +60,7 @@
                                                 { "data_role", "input" },
                                                 { "data-prepend", "<span class='mif-pencil'>" },
                                                 { "data-validate", "required" },
-                                                { "placeholder", Html.Raw(CommonResources.Login.NamePlaceholder) },
+                                                { "placeholder", Html.Raw(CommonResources.Account.NamePlaceholder) },
                                                 })
                                                 @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
                                             </div>
@@ -71,7 +71,7 @@
                                                 { "data_role", "input" },
                                                 { "data-prepend", "<span class='mif-pencil'>" },
                                                 { "data-validate", "required" },
-                                                { "placeholder", Html.Raw(CommonResources.Login.LastNamePlaceholder) },
+                                                { "placeholder", Html.Raw(CommonResources.Account.LastNamePlaceholder) },
                                                 })
                                                 @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
                                             </div>
@@ -82,17 +82,17 @@
                                                 { "data_role", "input" },
                                                 { "data-prepend", "<span class='mif-envelop'>" },
                                                 { "data-validate", "required" },
-                                                { "placeholder", Html.Raw(CommonResources.Login.EmailPlaceholder) },
+                                                { "placeholder", Html.Raw(CommonResources.Account.EmailPlaceholder) },
                                                 })
                                                 @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                                             </div>
 
                                             <p class="margin-top-8">
-                                                <span class="text-secondary">@Html.Raw(CommonResources.Login.PasswordRulesMessage1)</span>
+                                                <span class="text-secondary">@Html.Raw(CommonResources.Account.PasswordRulesMessage1)</span>
                                                 <ol class="decimal text-small">
-                                                    <li>@Html.Raw(CommonResources.Login.PasswordRulesMessage2)</li>
-                                                    <li>@Html.Raw(CommonResources.Login.PasswordRulesMessage3)</li>
-                                                    <li>@Html.Raw(CommonResources.Login.PasswordRulesMessage4)</li>
+                                                    <li>@Html.Raw(CommonResources.Account.PasswordRulesMessage2)</li>
+                                                    <li>@Html.Raw(CommonResources.Account.PasswordRulesMessage3)</li>
+                                                    <li>@Html.Raw(CommonResources.Account.PasswordRulesMessage4)</li>
                                                 </ol>
                                             </p>
                                             <!-- PASSWORD -->
@@ -102,7 +102,7 @@
                                                 { "data_role", "input" },
                                                 { "data-prepend", "<span class='mif-key'>" },
                                                 { "data-validate", "required" },
-                                                { "placeholder", Html.Raw(CommonResources.Login.PasswordPlaceholder) }
+                                                { "placeholder", Html.Raw(CommonResources.Account.PasswordPlaceholder) }
                                                 })
                                                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                                             </div>
@@ -113,7 +113,7 @@
                                                 { "data_role", "input" },
                                                 { "data-prepend", "<span class='mif-key'>" },
                                                 { "data-validate", "required" },
-                                                { "placeholder", Html.Raw(CommonResources.Login.ConfirmPasswordPlaceholder) }
+                                                { "placeholder", Html.Raw(CommonResources.Account.ConfirmPasswordPlaceholder) }
                                                 })
                                                 @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger"})
                                             </div>

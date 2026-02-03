@@ -426,7 +426,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 logErrorMessage(ModelState.Values);
                 ModelState.Clear();
-                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = INAF.Libraries.Net.CommonWebAppModels.Resources.Login.RegistrationBadModel };
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = INAF.Libraries.Net.CommonWebAppModels.Resources.Account.RegistrationBadModel };
             }
         }
 
@@ -603,7 +603,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             /* if no data has been passed, then an error is raised */
             if (string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.LastName) || string.IsNullOrEmpty(model.Email))
-                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = INAF.Libraries.Net.CommonWebAppModels.Resources.Login.RegistrationBadRequest };
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = INAF.Libraries.Net.CommonWebAppModels.Resources.Account.RegistrationBadRequest };
 
             /* if user has a valid login then no action is required */
             if (dbHandlerHyperLabUsers.isUserExistantAndValidLogin(model.Name, model.LastName, model.Email))
@@ -632,7 +632,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                       operationUserId: getUserId()))
                 return new GenericValueStringResponseModel() { IsOk = true };
             else
-                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = INAF.Libraries.Net.CommonWebAppModels.Resources.Login.RegistrationBadRequest };
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = INAF.Libraries.Net.CommonWebAppModels.Resources.Account.RegistrationBadRequest };
         }
 
         private async Task<GenericValueStringResponseModel> resetPasswordAsync(PasswordResetModel model)
