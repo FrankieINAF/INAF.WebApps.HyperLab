@@ -204,9 +204,11 @@ namespace INAF.WebApps.HyperLab.Controllers
                 /* if login has already been confirmed, then send user to registration completed page */
                 GenericResponseModel? isconfirmedResponse = await authorizationHelper.isLoginConfirmedAsync(model.Token);
                 if (isconfirmedResponse != null && isconfirmedResponse.IsOk)
-                    return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
+                    return RedirectToAction(nameof(RegistrationConfirmed), GenericHelper.GetControllerName(nameof(AccountController)));
 
-                GenericResponseModel? confirmResponse = await authorizationHelper.confirmLoginAsync(model.Id, model.Token!);
+                var encryptionHelper = serviceProvider.GetRequiredService<EncryptionHelper>();
+                string encryptedId = encryptionHelper.fromUrlSafeBase64(model.Id!);
+                GenericResponseModel? confirmResponse = await authorizationHelper.confirmLoginAsync(encryptedId, model.Token!);
                 /* if confirmation is ok, then send user to registration completed page */
                 if (confirmResponse != null)
                 {
@@ -444,23 +446,18 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return RedirectToAction(nameof(RegistrationError), GenericHelper.GetControllerName(nameof(AccountController)));
                 }
 
-                /* create user in HyperLab DB for users */
-                if (!await dbHandlerHyperLabUsers.upsertUserProcedureAsync(response.Id,
-                                                                           model.Name!,
-                                                                           model.LastName!,
-                                                                           model.Email!,
-                                                                           model.Email!,
-                                                                           (int)INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums.RoleType.User,
-                                                                           await getUserIdAsync()))
-                {
-                    logger.LogError($"{nameof(Registration)} - error creating user in HyperLabUsers DB - email: {model.Email}");
-                    return RedirectToAction(nameof(RegistrationError), GenericHelper.GetControllerName(nameof(AccountController)));
-                }
-
-
                 switch (response.Status)
                 {
                     case Libraries.Net.CommonWebAppModels.Values.Enums.RegistrationStatus.Registered:
+                        /* create user in HyperLab DB for users */
+                        if (!await dbHandlerHyperLabUsers.upsertUserProcedureAsync(response.Id,
+                                                                                   (int)INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums.RoleType.User,
+                                                                                   await getUserIdAsync()))
+                        {
+                            logger.LogError($"{nameof(Registration)} - error creating user in HyperLabUsers DB - email: {model.Email}");
+                            return RedirectToAction(nameof(RegistrationError), GenericHelper.GetControllerName(nameof(AccountController)));
+                        }
+
                         if (string.IsNullOrEmpty(response.ExMsg))
                             return RedirectToAction(nameof(RegistrationCompleted), GenericHelper.GetControllerName(nameof(AccountController)));
                         else

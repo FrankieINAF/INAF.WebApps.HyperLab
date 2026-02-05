@@ -168,7 +168,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 (bool isOk, int id) result = await dbHandlerHyperLabData.upsertMineralDataSimpleAsync(materialModel.Id,
                                                                                                       materialModel.Name,
                                                                                                       materialModel.Formula);
-                return new JsonResult(new GenericValueStringResponseModel(result.isOk, result.id, materialModel.Name));
+                return new JsonResult(new GenericMixedValuesResponseModel(result.isOk, result.id, materialModel.Name));
             }
 
             logErrorMessage(ModelState.Values);

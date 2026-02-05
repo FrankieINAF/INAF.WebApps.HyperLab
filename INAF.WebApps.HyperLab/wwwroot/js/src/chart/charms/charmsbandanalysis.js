@@ -687,7 +687,7 @@ async function saveBandAnalysisDataProcedureAsync() {
 
     let obj = await doAjaxPostAsync(UrlIsBandOverlappingWithExistingOne, model);
     if (obj) {
-        if (!obj.BoolValue)
+        if (!obj.Value)
             await saveBandAnalysisDataAsync();
         else
             askAndExecute(BandAnalysisManagementLabel, BandAnalysisCheckOverlapQuestion, saveBandAnalysisDataAsync);

@@ -524,7 +524,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                         model.RightBoundary,
                                                                                         bandOverlapRange,
                                                                                         await getUserIdAsync());
-            return new JsonResult(new GenericResponseModel() { BoolValue = isOverlapping });
+            return new JsonResult(new GenericBoolValueResponseModel(isOverlapping));
         }
 
         [HttpPost]

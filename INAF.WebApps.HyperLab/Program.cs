@@ -11,11 +11,9 @@ using INAF.Libraries.Net.Math.Fit.Spline;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers;
 using INAF.WebApps.HyperLab.Helpers;
-using INAF.WebApps.HyperLab.Helpers.Factories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using System.Text.Json.Serialization;
@@ -149,8 +147,7 @@ builder.Services
     .AddTransient<SplineFitHelper>()
     .AddTransient<SplineProcessingHelper>()
     .AddTransient<TokenValidationHelper>()
-    .AddTransient<TokenValidationParametersHelper>()
-    .AddTransient<UsersFactory>();
+    .AddTransient<TokenValidationParametersHelper>();
 
 builder.Services.AddHttpClient();
 
