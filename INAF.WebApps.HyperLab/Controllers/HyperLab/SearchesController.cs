@@ -35,17 +35,17 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
 
         #region SEARCH COMPLEX
         [HttpGet]
-        public IActionResult SearchComplexById(GenericRequestByIdModel model,
-                                               bool saveSessionVariable = true)
+        public async Task<IActionResult> SearchComplexById(GenericRequestByIdModel model,
+                                                           bool saveSessionVariable = true)
         {
             ComplexSearchSavingModel? complexSearchModel = dbHandlerHyperLabData.getSavedComplexSearch(model.Id,
-                                                                                                       getUserId());
+                                                                                                       await getUserIdAsync());
             if (complexSearchModel == null || complexSearchModel.Conditions == null || !complexSearchModel.Conditions.Any())
                 return new EmptyResult();
 
             List<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(complexSearchModel.Conditions,
                                                                                                 complexSearchModel.RequestedLevels!,
-                                                                                                getUserId());
+                                                                                                await getUserIdAsync());
 
             if (saveSessionVariable)
                 setLastSearchSession(model, Enums.SearchType.Complex);
@@ -64,15 +64,15 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SearchComplexByModel(ComplexSearchSavingModel complexSearchModel,
-                                                  bool saveSessionVariable = true)
+        public async Task<IActionResult> SearchComplexByModel(ComplexSearchSavingModel complexSearchModel,
+                                                              bool saveSessionVariable = true)
         {
             if (complexSearchModel == null || !complexSearchModel.Conditions.IsAny())
                 return new EmptyResult();
 
             List<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(complexSearchModel.Conditions!,
                                                                                                 complexSearchModel.RequestedLevels!,
-                                                                                                getUserId());
+                                                                                                await getUserIdAsync());
 
             switch (getCallerContext())
             {
@@ -89,15 +89,15 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
 
         #region SEARCH SIMPLE
         [HttpPost]
-        public IActionResult SearchSimpleGroupsByFilename([FromBody] SearchRequestByTextModel model,
-                                                          bool saveSessionVariable = true)
+        public async Task<IActionResult> SearchSimpleGroupsByFilename([FromBody] SearchRequestByTextModel model,
+                                                                       bool saveSessionVariable = true)
         {
             if (model == null || !isRequestOkByText(model.Text, model.RequestedLevels))
                 return new EmptyResult();
 
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByFilename(model.Text!,
                                                                                                                       model.RequestedLevels!,
-                                                                                                                      getUserId());
+                                                                                                                      await getUserIdAsync());
 
             if (saveSessionVariable)
                 setLastSearchSession(model, Enums.SearchType.SimpleByFilename);
@@ -115,8 +115,8 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
         }
 
         [HttpPost]
-        public IActionResult SearchSimpleGroupsByMaterial([FromBody] SearchRequestByParametersModel model,
-                                                          bool saveSessionVariable = true)
+        public async Task<IActionResult> SearchSimpleGroupsByMaterial([FromBody] SearchRequestByParametersModel model,
+                                                                      bool saveSessionVariable = true)
         {
             if (model == null || !isRequestOkById(model.Id, model.RequestedLevels))
                 return new EmptyResult();
@@ -125,7 +125,7 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = searchByMaterialHelper.searchByMaterial(model.Id,
                                                                                                            model.Type!,
                                                                                                            model.RequestedLevels!,
-                                                                                                           getUserId());
+                                                                                                           await getUserIdAsync());
 
             if (saveSessionVariable)
                 setLastSearchSession(model, Enums.SearchType.SimpleByMaterial);
@@ -143,15 +143,15 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
         }
 
         [HttpPost]
-        public IActionResult SearchSimpleGroupsByMineralType([FromBody] SearchRequestByIdModel model,
-                                                             bool saveSessionVariable = true)
+        public async Task<IActionResult> SearchSimpleGroupsByMineralType([FromBody] SearchRequestByIdModel model,
+                                                                         bool saveSessionVariable = true)
         {
             if (model == null || !isRequestOkById(model.Id, model.RequestedLevels))
                 return new EmptyResult();
 
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByMineralType(model.Id,
                                                                                                                          model.RequestedLevels!,
-                                                                                                                         getUserId());
+                                                                                                                         await getUserIdAsync());
 
             if (saveSessionVariable)
                 setLastSearchSession(model, Enums.SearchType.SimpleByMineralType);
@@ -169,15 +169,15 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
         }
 
         [HttpPost]
-        public IActionResult SearchSimpleGroupsByOriginType([FromBody] SearchRequestByIdModel model,
-                                                            bool saveSessionVariable = true)
+        public async Task<IActionResult> SearchSimpleGroupsByOriginType([FromBody] SearchRequestByIdModel model,
+                                                                        bool saveSessionVariable = true)
         {
             if (model == null || !isRequestOkById(model.Id, model.RequestedLevels))
                 return new EmptyResult();
 
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByOriginType(model.Id,
                                                                                                                         model.RequestedLevels!,
-                                                                                                                        getUserId());
+                                                                                                                        await getUserIdAsync());
 
             if (saveSessionVariable)
                 setLastSearchSession(model, Enums.SearchType.SimpleByOriginType);
@@ -195,15 +195,15 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
         }
 
         [HttpPost]
-        public IActionResult SearchSimpleGroupsBySampleName([FromBody] SearchRequestByTextModel model,
-                                                            bool saveSessionVariable = true)
+        public async Task<IActionResult> SearchSimpleGroupsBySampleName([FromBody] SearchRequestByTextModel model,
+                                                                        bool saveSessionVariable = true)
         {
             if (model == null || !isRequestOkByText(model.Text, model.RequestedLevels))
                 return new EmptyResult();
 
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleName(model.Text!,
                                                                                                                         model.RequestedLevels!,
-                                                                                                                        getUserId());
+                                                                                                                        await getUserIdAsync());
 
             if (saveSessionVariable)
                 setLastSearchSession(model, Enums.SearchType.SimpleBySampleName);
@@ -221,15 +221,15 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
         }
 
         [HttpPost]
-        public IActionResult SearchSimpleGroupsBySampleType([FromBody] SearchRequestByIdModel model,
-                                                            bool saveSessionVariable = true)
+        public async Task<IActionResult> SearchSimpleGroupsBySampleType([FromBody] SearchRequestByIdModel model,
+                                                                         bool saveSessionVariable = true)
         {
             if (model == null || !isRequestOkById(model.Id, model.RequestedLevels))
                 return new EmptyResult();
 
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleType(model.Id,
                                                                                                                         model.RequestedLevels!,
-                                                                                                                        getUserId());
+                                                                                                                        await getUserIdAsync());
 
             if (saveSessionVariable)
                 setLastSearchSession(model, Enums.SearchType.SimpleBySampleType);
@@ -249,10 +249,10 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
 
         #region DETAILS
         [HttpGet]
-        public IActionResult SearchGroupItems(GenericRequestByIdModel model)
+        public async Task<IActionResult> SearchGroupItems(GenericRequestByIdModel model)
         {
             List<SpectrumInfoModel>? spectrumInfoModels = dbHandlerHyperLabData.searchGroupItems(model.Id,
-                                                                                                 getUserId());
+                                                                                                 await getUserIdAsync());
             if (spectrumInfoModels?.Count > 0)
                 return new JsonResult(spectrumInfoModels);
             else
@@ -262,13 +262,13 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
 
         #region SUGGESTIONS
         [HttpGet]
-        public IActionResult GetSampleNameSuggestions(GenericRequestByTextModel model)
+        public async Task<IActionResult> GetSampleNameSuggestions(GenericRequestByTextModel model)
         {
             if (string.IsNullOrEmpty(model.Text) || model.Text.Length < 3)
                 return new EmptyResult();
 
             List<string>? sampleNames = dbHandlerHyperLabData.getSampleNameSuggestions(model.Text,
-                                                                                       getUserId());
+                                                                                       await getUserIdAsync());
             if (sampleNames?.Count > 0)
                 return new JsonResult(sampleNames);
             else
@@ -282,7 +282,7 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
         public async Task<IActionResult> DeleteComplexSearch([FromBody] GenericRequestByIdModel model)
         {
             bool isOk = await dbHandlerHyperLabData.deleteComplexSearchAsync(model.Id,
-                                                                             getUserId());
+                                                                             await getUserIdAsync());
             return new JsonResult(new GenericResponseModel() { IsOk = isOk });
         }
 
@@ -290,22 +290,22 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
         public async Task<IActionResult> DeleteComplexSearchForJwt([FromBody] GenericRequestByIdModel model)
         {
             bool isOk = await dbHandlerHyperLabData.deleteComplexSearchAsync(model.Id,
-                                                                             getUserId());
+                                                                             await getUserIdAsync());
             return new JsonResult(new GenericResponseModel() { IsOk = isOk });
         }
 
         [HttpGet]
-        public IActionResult GetSavedComplexSearchInfo(GenericRequestByIdModel model)
+        public async Task<IActionResult> GetSavedComplexSearchInfo(GenericRequestByIdModel model)
         {
             ComplexSearchDetailedInfoModel? result = dbHandlerHyperLabData.getSavedComplexSearchInfo(model.Id,
-                                                                                                     getUserId());
+                                                                                                     await getUserIdAsync());
             return new JsonResult(result);
         }
 
         [HttpGet]
-        public IActionResult GetSavedComplexSearches()
+        public async Task<IActionResult> GetSavedComplexSearches()
         {
-            IEnumerable<ComplexSearchGeneralInfoModel>? savedSearches = dbHandlerHyperLabData.getSavedComplexSearches(getUserId());
+            IEnumerable<ComplexSearchGeneralInfoModel>? savedSearches = dbHandlerHyperLabData.getSavedComplexSearches(await getUserIdAsync());
             return new JsonResult(savedSearches);
         }
 
@@ -318,9 +318,9 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
         }
 
         [HttpGet]
-        public IActionResult IsComplexSearchNameAvailable(GenericRequestByTextModel model)
+        public async Task<IActionResult> IsComplexSearchNameAvailable(GenericRequestByTextModel model)
         {
-            bool isAvailable = dbHandlerHyperLabData.isComplexSearchNameAvailable(model.Text, getUserId());
+            bool isAvailable = dbHandlerHyperLabData.isComplexSearchNameAvailable(model.Text, await getUserIdAsync());
             return new JsonResult(new GenericResponseModel() { IsOk = isAvailable });
         }
 
@@ -348,7 +348,7 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
                                                                                           model.Name,
                                                                                           model.RequestedLevels,
                                                                                           model.Conditions,
-                                                                                          getUserId());
+                                                                                          await getUserIdAsync());
 
                 switch (saveSearchResult.queryResult)
                 {
@@ -386,11 +386,11 @@ namespace INAF.WebApps.HyperLab.Controllers.HyperLab
         private IEnumerable<ISpectraGroupInfoModel>? retrieveSpectraFilesForGroups(IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo,
                                                                                    List<int> levelIds)
         {
-            spectraFilesInfo?.ForEach(spectraGroupInfo =>
+            spectraFilesInfo?.ForEach(async spectraGroupInfo =>
             {
                 List<SpectrumInfoModel>? spectrumInfoModels = dbHandlerHyperLabData.searchGroupItems(spectraGroupInfo.Id,
                                                                                                      levelIds,
-                                                                                                     getUserId());
+                                                                                                     await getUserIdAsync());
                 if (spectrumInfoModels?.Count > 0)
                     spectraGroupInfo.Spectra = spectrumInfoModels;
             });

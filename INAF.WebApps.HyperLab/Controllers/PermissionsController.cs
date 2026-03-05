@@ -21,19 +21,19 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public JsonResult IsUpsertUserPermissionGranted()
+        public async Task<JsonResult> IsUpsertUserPermissionGranted()
         {
             bool isAllowed = dbHandlerHyperLabUsers.isPermissionGranted((int)Enums.Permissions.UpsertUser,
-                                                           getUserId());
+                                                           await getUserIdAsync());
 
             return new JsonResult(isAllowed);
         }
 
         [HttpGet]
-        public JsonResult IsSaveOnCloudFromAppPermissionGranted()
+        public async Task<JsonResult> IsSaveOnCloudFromAppPermissionGranted()
         {
             bool isAllowed = dbHandlerHyperLabUsers.isPermissionGranted((int)Enums.Permissions.SaveOnCloudFromApp,
-                                                           getUserId());
+                                                           await getUserIdAsync());
 
             return new JsonResult(isAllowed);
         }

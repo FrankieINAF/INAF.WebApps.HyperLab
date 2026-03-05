@@ -1,5 +1,5 @@
-using BundlerMinifier;
 using INAF.Libraries.Net.CommonWebAppHelpers;
+using INAF.Libraries.Net.CommonWebAppHelpers.Helpers;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonHelpers;
@@ -11,12 +11,10 @@ using INAF.Libraries.Net.Math.Fit.Spline;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers;
 using INAF.WebApps.HyperLab.Helpers;
-using INAF.WebApps.HyperLab.Helpers.Factories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using System.Text.Json.Serialization;
@@ -84,6 +82,7 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+/* add blazor */
 builder.Services.AddServerSideBlazor()
     .AddCircuitOptions(options => options.DetailedErrors = true)
     .AddHubOptions(options => options.MaximumReceiveMessageSize = 1024 * 1024);
@@ -111,8 +110,16 @@ builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(5); // Set the timeout for the session
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set the timeout for the session
+    options.Cookie.HttpOnly = true; // against XSS (Cross-Site Scripting) attacks
     options.Cookie.IsEssential = true;
+
+    if (builder.Environment.IsDevelopment())
+        options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+    else
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+
+    options.Cookie.SameSite = SameSiteMode.Lax;
 });
 
 builder.Services.AddDataProtection()
@@ -130,6 +137,7 @@ builder.Services
     .AddScoped<ChartsHelper>()
 
     /* TRANSIENT SERVICES */
+    .AddTransient<AuthorizationHelper>()
     .AddTransient<ConnectionStringBuilder>()
     .AddTransient<ContinuumRemovalHelper>()
     .AddTransient<EncryptionHelper>()
@@ -144,8 +152,9 @@ builder.Services
     .AddTransient<SplineFitHelper>()
     .AddTransient<SplineProcessingHelper>()
     .AddTransient<TokenValidationHelper>()
-    .AddTransient<TokenValidationParametersHelper>()
-    .AddTransient<UsersFactory>();
+    .AddTransient<TokenValidationParametersHelper>();
+
+builder.Services.AddHttpClient();
 
 /* logging */
 builder.Logging.ClearProviders();
@@ -161,7 +170,9 @@ var app = builder.Build();
 app.UseExceptionHandler("/Home/Error");
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseWebAssemblyDebugging();
+
     //    app.UseSwagger();
     //    app.UseSwaggerUI(options =>
     //    {
@@ -189,7 +200,6 @@ app.UseBlazorFrameworkFiles();
 app.MapStaticAssets();
 app.UseCookiePolicy();
 
-
 app.UseRouting();
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
@@ -212,6 +222,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+
 app.MapBlazorHub();
 
 app.Run();

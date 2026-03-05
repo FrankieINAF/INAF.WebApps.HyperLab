@@ -2,7 +2,7 @@
   {
     "outputFileName": "wwwroot/js/dist/apps/appsbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/apps/apps.js"
+      "wwwroot/js/src/apps/apps.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -10,7 +10,7 @@
   {
     "outputFileName": "wwwroot/js/dist/blazorglobalbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/blazorglobal.js"
+      "wwwroot/js/src/blazorglobal.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -18,16 +18,16 @@
   {
     "outputFileName": "wwwroot/js/dist/chart/charmsbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/chart/charms/charms.js",
-      "wwwroot/js/hyperlab/chart/charms/charmslegend.js",
-      "wwwroot/js/hyperlab/chart/charms/charmscolorselector.js",
-      "wwwroot/js/hyperlab/chart/charms/charmsalignmentpanel.js",
-      "wwwroot/js/hyperlab/chart/charms/charmsfitpanel.js",
-      "wwwroot/js/hyperlab/chart/charms/charmsfitpanelcore.js",
-      "wwwroot/js/hyperlab/chart/charms/charmsfitpanelpro.js",
-      "wwwroot/js/hyperlab/chart/charms/charmsfitpanelcommon.js",
-      "wwwroot/js/hyperlab/chart/charms/charmssmoothingpanel.js",
-      "wwwroot/js/hyperlab/chart/charms/charmsbandanalysis.js"
+      "wwwroot/js/src/chart/charms/charms.js",
+      "wwwroot/js/src/chart/charms/charmslegend.js",
+      "wwwroot/js/src/chart/charms/charmscolorselector.js",
+      "wwwroot/js/src/chart/charms/charmsalignmentpanel.js",
+      "wwwroot/js/src/chart/charms/charmsfitpanel.js",
+      "wwwroot/js/src/chart/charms/charmsfitpanelcore.js",
+      "wwwroot/js/src/chart/charms/charmsfitpanelpro.js",
+      "wwwroot/js/src/chart/charms/charmsfitpanelcommon.js",
+      "wwwroot/js/src/chart/charms/charmssmoothingpanel.js",
+      "wwwroot/js/src/chart/charms/charmsbandanalysis.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -35,15 +35,15 @@
   {
     "outputFileName": "wwwroot/js/dist/chart/chartbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/commonbuttons.js",
-      "wwwroot/js/hyperlab/commonhubandchart.js",
-      "wwwroot/js/hyperlab/commonhubandchartsandsharedstuff.js",
-      "wwwroot/js/hyperlab/chart/charts.js",
-      "wwwroot/js/hyperlab/chart/chartsbuttons.js",
-      "wwwroot/js/hyperlab/chart/chartsarrays.js",
-      "wwwroot/js/hyperlab/chart/chartspoints.js",
-      "wwwroot/js/hyperlab/chart/chartsunauthorized.js",
-      "wwwroot/js/hyperlab/charmsmessages.js"
+      "wwwroot/js/src/commonbuttons.js",
+      "wwwroot/js/src/commonhubandchart.js",
+      "wwwroot/js/src/commonhubandchartsandsharedstuff.js",
+      "wwwroot/js/src/chart/charts.js",
+      "wwwroot/js/src/chart/chartsbuttons.js",
+      "wwwroot/js/src/chart/chartsarrays.js",
+      "wwwroot/js/src/chart/chartspoints.js",
+      "wwwroot/js/src/chart/chartsunauthorized.js",
+      "wwwroot/js/src/charmsmessages.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -52,10 +52,10 @@
     "outputFileName": "wwwroot/js/dist/commonbundle.js",
     "inputFiles": [
       "wwwroot/lib/luxon/luxon.min.js",
-      "wwwroot/js/hyperlab/commonbuttons.js",
-      "wwwroot/js/hyperlab/common.js",
-      "wwwroot/js/hyperlab/layout.js",
-      "wwwroot/js/hyperlab/commondxchart.js"
+      "wwwroot/js/src/commonbuttons.js",
+      "wwwroot/js/src/common.js",
+      "wwwroot/js/src/layout.js",
+      "wwwroot/js/src/commondxchart.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -75,7 +75,7 @@
   {
     "outputFileName": "wwwroot/js/dist/guide/guidebundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/guide/guide.js"
+      "wwwroot/js/src/guide/guide.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -83,24 +83,24 @@
   {
     "outputFileName": "wwwroot/js/dist/hub/hubbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/commonbuttons.js",
-      "wwwroot/js/hyperlab/commonhubandchart.js",
-      "wwwroot/js/hyperlab/commonhubandchartsandsharedstuff.js",
-      "wwwroot/js/hyperlab/hub/hub.js",
-      "wwwroot/js/hyperlab/hub/hubsearchcommon.js",
-      "wwwroot/js/hyperlab/hub/hubsearchsimple.js",
-      "wwwroot/js/hyperlab/hub/hubsearchcomplex.js",
-      "wwwroot/js/hyperlab/hub/complexsearchesmanagement.js",
-      "wwwroot/js/hyperlab/hub/complexsearchesintro.js",
-      "wwwroot/js/hyperlab/hub/info.js",
-      "wwwroot/js/hyperlab/hub/load/loadcommoncheckxml.js",
-      "wwwroot/js/hyperlab/hub/load/loadgetfileslistitemancillary.js",
-      "wwwroot/js/hyperlab/hub/load/loadcommon.js",
-      "wwwroot/js/hyperlab/hub/load/loadexternalauthenticated.js",
-      "wwwroot/js/hyperlab/hub/load/loadexternalunauthenticated.js",
-      "wwwroot/js/hyperlab/hub/load/loadslab.js",
-      "wwwroot/js/hyperlab/chart/charms/charms.js",
-      "wwwroot/js/hyperlab/charmsmessages.js"
+      "wwwroot/js/src/commonbuttons.js",
+      "wwwroot/js/src/commonhubandchart.js",
+      "wwwroot/js/src/commonhubandchartsandsharedstuff.js",
+      "wwwroot/js/src/hub/hub.js",
+      "wwwroot/js/src/hub/hubsearchcommon.js",
+      "wwwroot/js/src/hub/hubsearchsimple.js",
+      "wwwroot/js/src/hub/hubsearchcomplex.js",
+      "wwwroot/js/src/hub/complexsearchesmanagement.js",
+      "wwwroot/js/src/hub/complexsearchesintro.js",
+      "wwwroot/js/src/hub/info.js",
+      "wwwroot/js/src/hub/load/loadcommoncheckxml.js",
+      "wwwroot/js/src/hub/load/loadgetfileslistitemancillary.js",
+      "wwwroot/js/src/hub/load/loadcommon.js",
+      "wwwroot/js/src/hub/load/loadexternalauthenticated.js",
+      "wwwroot/js/src/hub/load/loadexternalunauthenticated.js",
+      "wwwroot/js/src/hub/load/loadslab.js",
+      "wwwroot/js/src/chart/charms/charms.js",
+      "wwwroot/js/src/charmsmessages.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -108,7 +108,7 @@
   {
     "outputFileName": "wwwroot/js/dist/home/indexbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/home/index.js"
+      "wwwroot/js/src/home/index.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -117,8 +117,8 @@
     "outputFileName": "wwwroot/js/dist/chart/joystickbundle.js",
     "inputFiles": [
       "wwwroot/lib/joystick/joystick.js",
-      "wwwroot/js/hyperlab/chart/joystickmanager.js",
-      "wwwroot/js/hyperlab/chart/joystickchart.js"
+      "wwwroot/js/src/chart/joystickmanager.js",
+      "wwwroot/js/src/chart/joystickchart.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -127,8 +127,8 @@
     "outputFileName": "wwwroot/js/dist/jquerybundle.js",
     "inputFiles": [
       "wwwroot/lib/jquery/jquery.min.js",
-      "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
-      "wwwroot/lib/jquery-validation/dist/additional-methods.min.js",
+      "wwwroot/lib/jquery-validation/jquery.validate.min.js",
+      "wwwroot/lib/jquery-validation/additional-methods.min.js",
       "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "wwwroot/lib/jquery-dateFormat/dist/jquery-dateFormat.js",
       "wwwroot/lib/jquery-contextMenu/jquery.contextMenu.js",
@@ -142,9 +142,9 @@
   {
     "outputFileName": "wwwroot/js/dist/account/loginbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/common.js",
-      "wwwroot/js/hyperlab/account/login.js",
-      "wwwroot/js/hyperlab/account/orcidauth.js"
+      "wwwroot/js/src/common.js",
+      "wwwroot/js/src/account/login.js",
+      "wwwroot/js/src/account/orcidauth.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -162,9 +162,9 @@
   {
     "outputFileName": "wwwroot/js/dist/materials/mineralsbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/materials/upsertminerals.js",
-      "wwwroot/js/hyperlab/commonlists.js",
-      "wwwroot/js/hyperlab/commonsearch.js"
+      "wwwroot/js/src/materials/upsertminerals.js",
+      "wwwroot/js/src/commonlists.js",
+      "wwwroot/js/src/commonsearch.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -172,7 +172,7 @@
   {
     "outputFileName": "wwwroot/js/dist/account/passwordresetexecutebundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/account/passwordresetexecute.js"
+      "wwwroot/js/src/account/passwordresetexecute.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -180,7 +180,7 @@
   {
     "outputFileName": "wwwroot/js/dist/account/passwordresetrequestbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/account/passwordresetrequest.js"
+      "wwwroot/js/src/account/passwordresetrequest.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -188,7 +188,7 @@
   {
     "outputFileName": "wwwroot/js/dist/account/registrationbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/account/registration.js"
+      "wwwroot/js/src/account/registration.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -196,7 +196,7 @@
   {
     "outputFileName": "wwwroot/js/dist/hub/sampleandmeasurementinfo/sampleinfoeditorbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/hub/sampleandmeasurementinfo/sampleinfoeditor.js"
+      "wwwroot/js/src/hub/sampleandmeasurementinfo/sampleinfoeditor.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -204,9 +204,9 @@
   {
     "outputFileName": "wwwroot/js/dist/sharedstuff/sharedstuffbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/commonhubandchartsandsharedstuff.js",
-      "wwwroot/js/hyperlab/commonhubandsharedstuff.js",
-      "wwwroot/js/hyperlab/sharedstuff/sharedstuff.js"
+      "wwwroot/js/src/commonhubandchartsandsharedstuff.js",
+      "wwwroot/js/src/commonhubandsharedstuff.js",
+      "wwwroot/js/src/sharedstuff/sharedstuff.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -214,7 +214,7 @@
   {
     "outputFileName": "wwwroot/js/dist/users/upsertuserbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/users/upsertuser.js"
+      "wwwroot/js/src/users/upsertuser.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -222,8 +222,8 @@
   {
     "outputFileName": "wwwroot/js/dist/queue/queuebundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/queue/queue.js",
-      "wwwroot/js/hyperlab/queue/commonsaveusersettings.js"
+      "wwwroot/js/src/queue/queue.js",
+      "wwwroot/js/src/queue/commonsaveusersettings.js"
     ],
     "minify": { "enabled": false },
     "includeInProject": true
@@ -231,9 +231,9 @@
   {
     "outputFileName": "wwwroot/js/dist/users/userslistbundle.js",
     "inputFiles": [
-      "wwwroot/js/hyperlab/users/userslist.js",
-      "wwwroot/js/hyperlab/commonlists.js",
-      "wwwroot/js/hyperlab/commonsearch.js"
+      "wwwroot/js/src/users/userslist.js",
+      "wwwroot/js/src/commonlists.js",
+      "wwwroot/js/src/commonsearch.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -244,9 +244,9 @@
   {
     "outputFileName": "wwwroot/css/dist/account/accounterrorbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/common.css",
-      "wwwroot/css/hyperlab/account/errorpage.css",
-      "wwwroot/css/hyperlab/account/login.css"
+      "wwwroot/css/src/common.css",
+      "wwwroot/css/src/account/errorpage.css",
+      "wwwroot/css/src/account/login.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -254,7 +254,7 @@
   {
     "outputFileName": "wwwroot/css/dist/apps/appsbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/apps/apps.css"
+      "wwwroot/css/src/apps/apps.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -262,8 +262,8 @@
   {
     "outputFileName": "wwwroot/css/dist/commonbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/common.css",
-      "wwwroot/css/hyperlab/commonvalidation.css",
+      "wwwroot/css/src/common.css",
+      "wwwroot/css/src/commonvalidation.css",
       "wwwroot/lib/animate.css/animate.css"
     ],
     "includeInProject": true,
@@ -272,8 +272,8 @@
   {
     "outputFileName": "wwwroot/css/dist/account/commonlayoutnonavigationbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/commonlayoutnonavigation.css",
-      "wwwroot/css/hyperlab/common.css"
+      "wwwroot/css/src/commonlayoutnonavigation.css",
+      "wwwroot/css/src/common.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -281,8 +281,8 @@
   {
     "outputFileName": "wwwroot/css/dist/home/cookiebannerbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/common.css",
-      "wwwroot/css/hyperlab/home/cookiebanner.css"
+      "wwwroot/css/src/common.css",
+      "wwwroot/css/src/home/cookiebanner.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -302,7 +302,7 @@
   {
     "outputFileName": "wwwroot/css/dist/errorpagebundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/errorpage.css"
+      "wwwroot/css/src/errorpage.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -310,7 +310,7 @@
   {
     "outputFileName": "wwwroot/css/dist/guide/guidebundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/guide/guide.css"
+      "wwwroot/css/src/guide/guide.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -318,10 +318,10 @@
   {
     "outputFileName": "wwwroot/css/dist/hubandchart/hubandchartbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/hubandchart/hub.css",
-      "wwwroot/css/hyperlab/hubandchart/searches.css",
-      "wwwroot/css/hyperlab/hubandchart/hubandchart.css",
-      "wwwroot/css/hyperlab/hubandchart/charms.css"
+      "wwwroot/css/src/hubandchart/hub.css",
+      "wwwroot/css/src/hubandchart/searches.css",
+      "wwwroot/css/src/hubandchart/hubandchart.css",
+      "wwwroot/css/src/hubandchart/charms.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -329,7 +329,7 @@
   {
     "outputFileName": "wwwroot/css/dist/home/indexbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/home/index.css"
+      "wwwroot/css/src/home/index.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -347,9 +347,9 @@
   {
     "outputFileName": "wwwroot/css/dist/account/loginbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/common.css",
-      "wwwroot/css/hyperlab/account/confirmationcompleted.css",
-      "wwwroot/css/hyperlab/account/login.css"
+      "wwwroot/css/src/common.css",
+      "wwwroot/css/src/account/confirmationcompleted.css",
+      "wwwroot/css/src/account/login.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -371,8 +371,8 @@
   {
     "outputFileName": "wwwroot/css/dist/materials/mineralsbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/commonlists.css",
-      "wwwroot/css/hyperlab/materials/minerals.css"
+      "wwwroot/css/src/commonlists.css",
+      "wwwroot/css/src/materials/minerals.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -380,9 +380,9 @@
   {
     "outputFileName": "wwwroot/css/dist/account/registrationconfirmedbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/common.css",
-      "wwwroot/css/hyperlab/account/login.css",
-      "wwwroot/css/hyperlab/account/registrationconfirmed.css"
+      "wwwroot/css/src/common.css",
+      "wwwroot/css/src/account/login.css",
+      "wwwroot/css/src/account/registrationconfirmed.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -390,7 +390,7 @@
   {
     "outputFileName": "wwwroot/css/dist/hubandchart/sharebundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/hubandchart/share.css"
+      "wwwroot/css/src/hubandchart/share.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
@@ -406,9 +406,9 @@
   {
     "outputFileName": "wwwroot/css/dist/users/usersbundle.css",
     "inputFiles": [
-      "wwwroot/css/hyperlab/commonlists.css",
-      "wwwroot/css/hyperlab/users/users.css",
-      "wwwroot/css/hyperlab/users/userdata.css"
+      "wwwroot/css/src/commonlists.css",
+      "wwwroot/css/src/users/users.css",
+      "wwwroot/css/src/users/userdata.css"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }

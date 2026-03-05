@@ -43,8 +43,8 @@
 
     <script type="text/javascript" src="~/js/dist/jquerybundle.min.js"></script>
     <environment names="Development">
-        <script type="text/javascript" src="~/js/hyperlab/queue/queue.js" asp-append-version="true"></script>
-        <script type="text/javascript" src="~/js/hyperlab/queue/commonsaveusersettings.js" asp-append-version="true"></script>
+        <script type="text/javascript" src="~/js/src/queue/queue.js" asp-append-version="true"></script>
+        <script type="text/javascript" src="~/js/src/queue/commonsaveusersettings.js" asp-append-version="true"></script>
         <script type="text/javascript" src="~/js/dist/metro/metrobundle.min.js"></script>
     </environment>
     <environment names="Production">
@@ -60,11 +60,14 @@
                 <button class="pull-button">
                     <span class="mif-menu fg-white"></span>
                 </button>
-                <img src="~/images/em_spectrum_400x400.png" width="52" height="52" class="d-none-fs d-block-xl margin-left-16" />
+                <img src="~/images/app_logo.png" width="52" height="52" class="d-none-fs d-block-xl margin-left-16" />
                 @*<span class="text-light m-0 fg-white pl-7" style="line-height: 52px">@Html.Raw(SharedResources.SlabLabel)</span>*@
             </div>
             <!-- USER -->
             <div class="suggest-box bg-darkGrayBlue">
+                @{
+                    string img = string.Empty;
+                }
                 <div class="data-box">
                     @{
                         string? userName = @Context.GetUserName();
@@ -77,7 +80,7 @@
                         {
                             roleName = "Guest";
                         }
-                        string img = $"/images/appbars/{roleName}.png";
+                        img = $"/images/appbars/{roleName}.png";
                     }
                     <img src="@img" class="avatar">
                     <div class="ml-4 avatar-title flex-column">
@@ -85,7 +88,7 @@
                         <p class="m-0"><span class="fg-green mr-2">●</span><span class="text-small navview-pane-text">online</span></p>
                     </div>
                 </div>
-                <img src="~/images/appbars/AppAdmin.png" class="avatar holder ml-2">
+                <img src="@img" class="avatar holder ml-2">
             </div>
             <!-- MENU -->
             <div id="divMenu" class="navview-menu-container bg-darkGrayBlue">
@@ -136,7 +139,7 @@
     <div id="pageCover" class="d-none flex-align-center page-cover">
         <div id="pageCoverLogo" class="row cell-fs-12">
             <div class="d-flex flex-column flex-align-center">
-                <img src="~/images/em_spectrum_400x400.png" class="intro-logo" />
+                <img src="~/images/app_logo.png" class="intro-logo" />
                 <span class="h2 fg-white text-bold text-center">@Html.Raw(SharedResources.WelcomeMessage)</span>
                 <div data-role="activity" data-type="ring" data-style="light"></div>
             </div>

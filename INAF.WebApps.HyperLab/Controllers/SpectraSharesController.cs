@@ -28,7 +28,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (model == null || model.SpectraIds == null || !model.SpectraIds.Any() || model.UsersToShare == null || !model.UsersToShare.Any())
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
 
-            List<ShareResultAddModel> results = await dbHandlerHyperLabData.upsertSharesBetweenOwnerUserAndUsersAsync(getUserId(), 
+            List<ShareResultAddModel> results = await dbHandlerHyperLabData.upsertSharesBetweenOwnerUserAndUsersAsync(await getUserIdAsync(), 
                                                                                                                       model.SpectraIds, 
                                                                                                                       model.UsersToShare);
             foreach (ShareResultAddModel result in results)
@@ -52,7 +52,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (model == null || model.Shares == null || !model.Shares.Any())
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
 
-            int operationUserId = getUserId();
+            int operationUserId = await getUserIdAsync();
             List<ShareResultRemoveModel> results = await dbHandlerHyperLabData.removeSharesBetweenOwnerUserAndUsersAsync(operationUserId,
                                                                                                                          model.Shares,
                                                                                                                          operationUserId);
@@ -81,7 +81,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (model == null || model.SpectraIds == null || !model.SpectraIds.Any())
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
             
-            if (await dbHandlerHyperLabData.setSpectraAsPublicAsync(model.SpectraIds, getUserId()))
+            if (await dbHandlerHyperLabData.setSpectraAsPublicAsync(model.SpectraIds, await getUserIdAsync()))
                 return new JsonResult(GenericResponseModel.CreateSuccessResponse());
             else
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());

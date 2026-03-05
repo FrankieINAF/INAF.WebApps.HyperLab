@@ -12,9 +12,9 @@
 }
 
 <environment names="Development">
-<link rel="stylesheet" href="~/css/hyperlab/common.css" />
-<link rel="stylesheet" href="~/css/hyperlab/account/login.css" />
-<link rel="stylesheet" href="~/css/hyperlab/account/errorpage.css" />
+<link rel="stylesheet" href="~/css/src/common.css" />
+<link rel="stylesheet" href="~/css/src/account/login.css" />
+<link rel="stylesheet" href="~/css/src/account/errorpage.css" />
 </environment>
 <environment names="Production">
     <link rel="stylesheet" href="~/css/dist/account/accounterrorbundle.min.css" asp-append-version="true" />
@@ -35,7 +35,7 @@
                     <div class="row cell-fs-12">
                         <p class="text-leader text-medium fg-white">@Html.Raw(Model.ErrorTitle)</p>
                         <p class="text-normal fg-white text-just margin-top-16">@Html.Raw(Model.ErrorMessage)</p>
-                        <p class="text-normal fg-white margin-top-8">@Html.Raw(SharedResources.TeamSign)</p>
+                        <p class="text-normal fg-white margin-top-8">@Html.Raw(SharedResources.HyperLabTeamSignature)</p>
                     </div>
                     <!-- CONTACT US -->
                     @{

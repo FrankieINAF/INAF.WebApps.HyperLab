@@ -42,10 +42,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         #region GET
         #region SPECTRA PROCESSING SETTINGS
         [HttpGet]
-        public IActionResult GetAlignmentSettings(GenericRequestByIdModel model)
+        public async Task<IActionResult> GetAlignmentSettings(GenericRequestByIdModel model)
         {
             AlignmentSettingsModel? alignmentSettingsModel = dbHandlerHyperLabData.getAlignmentSettings(model.Id,
-                                                                                                        getUserId());
+                                                                                                        await getUserIdAsync());
             if (alignmentSettingsModel != null)
             {
                 switch (getCallerContext())
@@ -73,10 +73,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetContinuumRemovalSettings(GenericRequestByIdModel model)
+        public async Task<IActionResult> GetContinuumRemovalSettings(GenericRequestByIdModel model)
         {
             ContinuumRemovalSettingsModel? continuumRemovalSettingsModel = dbHandlerHyperLabData.getContinuumRemovalSettings(model.Id,
-                                                                                                                             getUserId());
+                                                                                                                             await getUserIdAsync());
 
             if (continuumRemovalSettingsModel != null)
             {
@@ -105,10 +105,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSmoothingSettings(GenericRequestByIdModel model)
+        public async Task<IActionResult> GetSmoothingSettings(GenericRequestByIdModel model)
         {
             SmoothingSettingsModel? smoothingSettings = dbHandlerHyperLabData.getSmoothingSettings(model.Id,
-                                                                                                   getUserId());
+                                                                                                   await getUserIdAsync());
             if (smoothingSettings != null)
             {
                 switch (getCallerContext())
@@ -138,17 +138,17 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region CHECK SPECTRUM SAVED ON CLOUD
         [HttpGet]
-        public IActionResult IsAnySpectrumTypeSavedOnCloud(IsAnySpectrumTypeSavedOnCloudRequestModel model)
+        public async Task<IActionResult> IsAnySpectrumTypeSavedOnCloud(IsAnySpectrumTypeSavedOnCloudRequestModel model)
         {
             if (string.IsNullOrEmpty(model.Filename) || model.SpectrumTypes == null || !model.SpectrumTypes.Any())
                 return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
 
-            (bool isSaved, int id) result = dbHandlerHyperLabData.isAnySpectrumTypeSaved(model.Filename, model.SpectrumTypes, getUserId());
+            (bool isSaved, int id) result = dbHandlerHyperLabData.isAnySpectrumTypeSaved(model.Filename, model.SpectrumTypes, await getUserIdAsync());
             return new JsonResult(result.ToGenericValueStringResponse());
         }
 
         [HttpGet]
-        public IActionResult IsSpectrumTypeSavedOnCloud(IsSpectrumTypeSavedOnCloudRequestModel model)
+        public async Task<IActionResult> IsSpectrumTypeSavedOnCloud(IsSpectrumTypeSavedOnCloudRequestModel model)
         {
             if (string.IsNullOrEmpty(model.Filename))
                 return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
@@ -157,31 +157,31 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                       model.SpectrumType,
                                                                                       model.SpectrumSource,
                                                                                       model.SpectrumLevel,
-                                                                                      getUserId());
+                                                                                      await getUserIdAsync());
             return new JsonResult(result.ToGenericValueStringResponse());
         }
 
         [HttpGet]
-        public IActionResult IsSpectrumTypeSavedWithCountOnCloud(IsSpectrumTypeSavedOnCloudRequestModel model)
+        public async Task<IActionResult> IsSpectrumTypeSavedWithCountOnCloud(IsSpectrumTypeSavedOnCloudRequestModel model)
         {
             if (string.IsNullOrEmpty(model.Filename))
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
 
-            int count = dbHandlerHyperLabData.isSpectrumTypeSavedWithCount(model.Filename, model.SpectrumType, model.SpectrumLevel, getUserId());
+            int count = dbHandlerHyperLabData.isSpectrumTypeSavedWithCount(model.Filename, model.SpectrumType, model.SpectrumLevel, await getUserIdAsync());
             return new JsonResult(new GenericResponseModel(count));
         }
         #endregion
 
         [HttpGet]
-        public IActionResult GetSpectrumAsCsv(GenericRequestByIdModel model)
+        public async Task<IActionResult> GetSpectrumAsCsv(GenericRequestByIdModel model)
         {
             SpectrumModel? spectrumMinimalInfo = dbHandlerHyperLabData.getSpectrumMinimalInfo(model.Id,
-                                                                                              getUserId());
+                                                                                              await getUserIdAsync());
             if (spectrumMinimalInfo == null)
                 return new EmptyResult();
 
             List<PointModel>? points = dbHandlerHyperLabData.getSpectrumPointsById(model.Id,
-                                                                                   getUserId());
+                                                                                   await getUserIdAsync());
 
             if (points == null || !points.Any())
                 return new EmptyResult();
@@ -206,10 +206,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSpectrumAsXml(GenericRequestByIdModel model)
+        public async Task<IActionResult> GetSpectrumAsXml(GenericRequestByIdModel model)
         {
             var fileSpectrumModel = dbHandlerHyperLabData.getSpectrumInfo(model.Id,
-                                                                          getUserId());
+                                                                          await getUserIdAsync());
             if (fileSpectrumModel == null)
                 return new EmptyResult();
 
@@ -217,10 +217,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSpectrumById(GenericRequestByIdModel model)
+        public async Task<IActionResult> GetSpectrumById(GenericRequestByIdModel model)
         {
             ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumById(model.Id,
-                                                                                  getUserId());
+                                                                                  await getUserIdAsync());
             if (spectrumModel == null)
                 return new EmptyResult();
 
@@ -228,11 +228,11 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSpectrumByParentIdAndSpectrumType(GenericRequestByParentIdAndSpectrumTypeModel model)
+        public async Task<IActionResult> GetSpectrumByParentIdAndSpectrumType(GenericRequestByParentIdAndSpectrumTypeModel model)
         {
             ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId,
                                                                                                        model.SpectrumType,
-                                                                                                       getUserId());
+                                                                                                       await getUserIdAsync());
             if (spectrumModel != null)
             {
                 switch (getCallerContext())
@@ -252,10 +252,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSpectrumData(GenericRequestByIdModel model)
+        public async Task<IActionResult> GetSpectrumData(GenericRequestByIdModel model)
         {
             RawRefSpectrumDataModel? rawRefSpectrumData = dbHandlerHyperLabData.getSpectrumDataInfo(model.Id,
-                                                                                                    getUserId());
+                                                                                                    await getUserIdAsync());
             if (rawRefSpectrumData != null)
                 return new JsonResult(rawRefSpectrumData);
             else
@@ -263,10 +263,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSpectrumFile(GenericRequestByIdModel model)
+        public async Task<IActionResult> GetSpectrumFile(GenericRequestByIdModel model)
         {
             FileSpectrumModel? parentSpectrum = dbHandlerHyperLabData.getSpectrumInfo(model.Id,
-                                                                                      getUserId());
+                                                                                      await getUserIdAsync());
             if (parentSpectrum != null)
                 return new JsonResult(parentSpectrum);
             else
@@ -274,7 +274,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSpectrumIdByNameAndSpectrumType(GenericRequestByParametersModel model)
+        public async Task<IActionResult> GetSpectrumIdByNameAndSpectrumType(GenericRequestByParametersModel model)
         {
             if (string.IsNullOrEmpty(model.Text) || string.IsNullOrEmpty(model.Type))
                 return new EmptyResult();
@@ -283,7 +283,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                        model.Type.ToSpectrumType(),
                                                                                        model.Source.ToSpectrumSource(),
                                                                                        model.Level,
-                                                                                       getUserId());
+                                                                                       await getUserIdAsync());
             if (spectrum != null)
                 return new JsonResult(spectrum);
             else
@@ -291,11 +291,11 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSpectrumIdByParentIdAndSpectrumType(IdAndSpectrumTypeRequestModel model)
+        public async Task<IActionResult> GetSpectrumIdByParentIdAndSpectrumType(IdAndSpectrumTypeRequestModel model)
         {
             int id = dbHandlerHyperLabData.getSpectrumIdByParentIdAndSpectrumType(model.Id,
                                                                                   model.SpectrumType,
-                                                                                  getUserId());
+                                                                                  await getUserIdAsync());
             if (id != int.MinValue)
                 return new JsonResult(new GenericResponseModel() { IsOk = true, Id = id });
             else
@@ -303,27 +303,27 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSpectrumFilename(GenericRequestByIdModel model)
+        public async Task<IActionResult> GetSpectrumFilename(GenericRequestByIdModel model)
         {
             SpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumMinimalInfo(model.Id,
-                                                                                        getUserId());
+                                                                                        await getUserIdAsync());
 
             return new JsonResult(spectrumModel);
         }
 
         [HttpGet]
-        public IActionResult GetSpectrumParentIdById(GenericRequestByIdModel model)
+        public async Task<IActionResult> GetSpectrumParentIdById(GenericRequestByIdModel model)
         {
-            var spectrum = dbHandlerHyperLabData.getSpectrumById(model.Id, getUserId());
+            var spectrum = dbHandlerHyperLabData.getSpectrumById(model.Id, await getUserIdAsync());
             if (spectrum == null)
                 return new EmptyResult();
             return new JsonResult(new GenericResponseModel() { IsOk = true, Id = spectrum.ParentId.HasValue ? spectrum.ParentId.Value : 0 });
         }
 
         [HttpGet]
-        public IActionResult GetSpectrumTypeById(GenericRequestByIdModel model)
+        public async Task<IActionResult> GetSpectrumTypeById(GenericRequestByIdModel model)
         {
-            var spectrum = dbHandlerHyperLabData.getSpectrumById(model.Id, getUserId());
+            var spectrum = dbHandlerHyperLabData.getSpectrumById(model.Id, await getUserIdAsync());
             if (spectrum == null)
                 return new EmptyResult();
 
@@ -342,7 +342,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetSpectrumVersions(IsSpectrumTypeSavedOnCloudRequestModel model)
+        public async Task<IActionResult> GetSpectrumVersions(IsSpectrumTypeSavedOnCloudRequestModel model)
         {
             if (string.IsNullOrEmpty(model.Filename))
                 return new EmptyResult();
@@ -351,7 +351,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                                             model.SpectrumType,
                                                                                                             model.SpectrumSource,
                                                                                                             model.SpectrumLevel,
-                                                                                                            getUserId());
+                                                                                                            await getUserIdAsync());
 
             if (spectrumVersions != null && spectrumVersions.Any())
                 return new JsonResult(spectrumVersions);
@@ -364,13 +364,13 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteRecursivelySpectrumChildren([FromBody] DeleteSpectrumRequestModel model)
         {
-            return new JsonResult(await dbHandlerHyperLabData.deleteRecursivelyChildrenAsync(model.Id, model.SpectrumType, getUserId()));
+            return new JsonResult(await dbHandlerHyperLabData.deleteRecursivelyChildrenAsync(model.Id, model.SpectrumType, await getUserIdAsync()));
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteSpectrum([FromBody] DeleteSpectrumRequestModel model)
         {
-            if (await dbHandlerHyperLabData.deleteSpectrumFileProcedureAsync(model.Id, getUserId()))
+            if (await dbHandlerHyperLabData.deleteSpectrumFileProcedureAsync(model.Id, await getUserIdAsync()))
                 return new JsonResult(GenericResponseModel.CreateSuccessResponse());
             else
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
@@ -388,7 +388,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* save file */
             (bool isOk, int id) result = await dbHandlerHyperLabData.saveSpectrumFileOfTypeRawProcedureAsync(model,
-                                                                                                             getUserId(),
+                                                                                                             await getUserIdAsync(),
                                                                                                              getScientificResponsibleUserId());
             return new JsonResult(result.ToGenericValueStringResponse());
         }
@@ -404,7 +404,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* save file */
             (bool isOk, int id) result = await dbHandlerHyperLabData.saveSpectrumFileOfTypeAlignedProcedureAsync(model,
-                                                                                                                 getUserId(),
+                                                                                                                 await getUserIdAsync(),
                                                                                                                  getScientificResponsibleUserId());
             return new JsonResult(result.ToGenericValueStringResponse());
         }
@@ -420,7 +420,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* save file */
             (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerHyperLabData.upsertSpectrumFileOfTypeContinuumRemovedProcedureAsync(model,
-                                                                                                                                                                       getUserId(),
+                                                                                                                                                                       await getUserIdAsync(),
                                                                                                                                                                        getScientificResponsibleUserId());
             return new JsonResult(result.ToSegmentsProcessingResponseModel());
         }
@@ -436,7 +436,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* save file */
             (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerHyperLabData.saveAsCopySpectrumFileOfTypeContinuumRemovedProcedureAsync(model,
-                                                                                                                                                                           getUserId(),
+                                                                                                                                                                           await getUserIdAsync(),
                                                                                                                                                                            getScientificResponsibleUserId());
             return new JsonResult(result.ToSegmentsProcessingResponseModel());
         }
@@ -452,7 +452,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* save file */
             (bool isOk, int id) result = await dbHandlerHyperLabData.saveSpectrumFileOfTypeRawProcedureAsync(model,
-                                                                                                             getUserId(),
+                                                                                                             await getUserIdAsync(),
                                                                                                              getScientificResponsibleUserId());
             return new JsonResult(result.ToGenericValueStringResponse());
         }
@@ -468,7 +468,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* save file */
             (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerHyperLabData.saveSpectrumFileOfTypeSmoothedProcedureAsync(model,
-                                                                                                                                                             getUserId(),
+                                                                                                                                                             await getUserIdAsync(),
                                                                                                                                                              getScientificResponsibleUserId());
             return new JsonResult(result.ToSegmentsProcessingResponseModel());
         }
@@ -484,7 +484,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             /* save file */
             (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = await dbHandlerHyperLabData.saveAsCopySpectrumFileOfTypeSmoothedProcedureAsync(model,
-                                                                                                                                                                   getUserId(),
+                                                                                                                                                                   await getUserIdAsync(),
                                                                                                                                                                    getScientificResponsibleUserId());
             return new JsonResult(result.ToSegmentsProcessingResponseModel());
         }
@@ -493,10 +493,10 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region BAND ANALYSIS
         [HttpGet]
-        public IActionResult GetBandAnalysisData(BandAnalysisModel model)
+        public async Task<IActionResult> GetBandAnalysisDataAsync(BandAnalysisModel model)
         {
             var bandAnalysisModel = dbHandlerHyperLabData.getBandAnalysisData(model.Id,
-                                                                          getUserId());
+                                                                              await getUserIdAsync());
             if (bandAnalysisModel != null)
                 return new JsonResult(new GenericResponseModel() { IsOk = true, ResponseObject = bandAnalysisModel });
             else
@@ -504,10 +504,10 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetBandsAnalysisData(BandAnalysisModel model)
+        public async Task<IActionResult> GetBandsAnalysisDataAsync(BandAnalysisModel model)
         {
             var bandsAnalysisModel = dbHandlerHyperLabData.getBandsAnalysisData(model.FileId,
-                                                                            getUserId());
+                                                                                await getUserIdAsync());
             if (bandsAnalysisModel != null)
                 return new JsonResult(new GenericResponseModel() { IsOk = true, ResponseObject = bandsAnalysisModel });
             else
@@ -515,9 +515,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpPost]
-        public IActionResult IsBandOverlappingWithExistingOne([FromBody] BandAnalysisModel model)
+        public async Task<IActionResult> IsBandOverlappingWithExistingOne([FromBody] BandAnalysisModel model)
         {
-            int bandOverlapRange = dbHandlerHyperLabUsers.getUserSettingsBandOverlapRange(getUserId());
+            int bandOverlapRange = dbHandlerHyperLabUsers.getUserSettingsBandOverlapRange(await getUserIdAsync());
 
             bool isOverlapping = dbHandlerHyperLabData.isBandOverlappingWithExistingOne(model.FileId,
                                                                                         model.LeftBoundary,
@@ -539,7 +539,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                                  model.BandArea,
                                                                                                  model.FwhmLeftBoundary,
                                                                                                  model.FwhmRightBoundary,
-                                                                                                 getUserId());
+                                                                                                 await getUserIdAsync());
             if (result.isOk)
                 return new JsonResult(new GenericResponseModel() { Id = result.id, IsOk = true });
             else

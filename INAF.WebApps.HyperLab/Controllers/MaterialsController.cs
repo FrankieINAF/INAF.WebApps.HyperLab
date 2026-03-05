@@ -155,7 +155,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> DeleteMineral([FromBody] GenericRequestByIdModel model)
         {
             bool isOk = await dbHandlerHyperLabData.deleteMineralAsync(model.Id,
-                                                                       getUserId());
+                                                                       await getUserIdAsync());
             return new JsonResult(new GenericValueStringResponseModel() { IsOk = isOk, Id = model.Id });
         }
 

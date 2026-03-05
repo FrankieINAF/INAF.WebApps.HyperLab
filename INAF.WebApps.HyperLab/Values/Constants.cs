@@ -6,5 +6,8 @@
 
         public const string LAST_PAGE = "LastPage";
         public const string LAST_SEARCH = "LastSearch";
+
+        public const string USER_TOKEN = "UserToken";
+        public const string USER_TOKEN_EXPIRATION_DATETIME = "UserTokenExpirationDateTime";
     }
 }
