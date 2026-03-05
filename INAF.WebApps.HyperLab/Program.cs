@@ -14,6 +14,7 @@ using INAF.WebApps.HyperLab.Helpers;
 using INAF.WebApps.HyperLab.Helpers.Factories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
@@ -114,6 +115,10 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(@"C:\CommonFiles\keys"))
+    .SetApplicationName("HyperLab");
+
 /* SERVICES */
 builder.Services
     /* ATTRIBUTES */
@@ -198,8 +203,8 @@ app.UseSession();
 
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), ".well-known", "acme-challenge")),
-    RequestPath = "/.well-known/acme-challenge",
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), ".well-known", "pki-validation")),
+    RequestPath = "/.well-known/pki-validation",
     ServeUnknownFileTypes = true // Permette di servire file senza estensione
 });
 
