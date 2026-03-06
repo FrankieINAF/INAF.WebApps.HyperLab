@@ -2,12 +2,15 @@
 using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.Extensions;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Pages;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Helpers;
 using INAF.WebApps.HyperLab.Models;
+using INAF.WebApps.HyperLab.Values;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
@@ -25,6 +28,27 @@ namespace INAF.WebApps.HyperLab.Controllers
             this.dbHandlerHyperLabData = dbHandlerHyperLabData;
         }
 
+        #region VIEWS
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Chart([FromForm] NavigateToChartModel model)
+        {
+            HttpContext.Session.SetString(Constants.LAST_PAGE, nameof(Chart));
+            (bool isUserAuthenticated, List<PermissionModel>? permissions) status = await getUserStatusAsync();
+
+            IEnumerable<int>? Ids = model.SelectedSpectra ?? Array.Empty<int>();
+            SelectedSpectraModel? selectedSpectra = null;
+            if (model.SelectedSpectra != null && model.SelectedSpectra.Length > 0)
+            {
+                selectedSpectra = new SelectedSpectraModel() { Ids = Ids };
+            }
+
+            ChartPageModel chartPageModel = new ChartPageModel(status.isUserAuthenticated, status.permissions, selectedSpectra);
+
+            return View(chartPageModel);
+        }
+
+        #region PARTIAL VIEWS
         [HttpGet]
         public async Task<IActionResult> LoadAlignmentPanel()
         {
@@ -57,6 +81,8 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             return PartialView("Partials/_SmoothingPanel", partialViewModel);
         }
+        #endregion
+        #endregion
 
         #region GET
         [Authorize]

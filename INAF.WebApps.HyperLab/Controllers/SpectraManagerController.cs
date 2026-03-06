@@ -3,9 +3,7 @@ using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Info;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Pages;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Shares;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Extensions;
@@ -14,7 +12,6 @@ using INAF.WebApps.HyperLab.Models;
 using INAF.WebApps.HyperLab.Values;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-//using Newtonsoft.Json;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -33,25 +30,6 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         #region VIEWS
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Chart([FromForm] NavigateToChartModel model)
-        {
-            HttpContext.Session.SetString(Constants.LAST_PAGE, nameof(Chart));
-            (bool isUserAuthenticated, List<PermissionModel>? permissions) status = await getUserStatusAsync();
-
-            IEnumerable<int>? Ids = model.SelectedSpectra ?? Array.Empty<int>();
-            SelectedSpectraModel? selectedSpectra = null;
-            if (model.SelectedSpectra != null && model.SelectedSpectra.Length > 0)
-            {
-                selectedSpectra = new SelectedSpectraModel() { Ids = Ids };
-            }
-
-            ChartPageModel chartPageModel = new ChartPageModel(status.isUserAuthenticated, status.permissions, selectedSpectra);
-
-            return View(chartPageModel);
-        }
-
         [HttpGet]
         public async Task<IActionResult> Hub()
         {
@@ -59,7 +37,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (HttpContext.Session.ContainsKey(Constants.LAST_PAGE))
             {
                 string? lastPage = HttpContext.Session.GetString(Constants.LAST_PAGE);
-                if (!string.IsNullOrEmpty(lastPage) && lastPage.Equals(nameof(Chart)))
+                if (!string.IsNullOrEmpty(lastPage) && lastPage.Equals(nameof(ChartsController.Chart)))
                     lastSearch = HttpContext.Session.GetObjectString(Constants.LAST_SEARCH);
             }
             else
