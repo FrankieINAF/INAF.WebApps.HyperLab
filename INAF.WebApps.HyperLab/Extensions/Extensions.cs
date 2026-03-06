@@ -1,4 +1,5 @@
-﻿using INAF.Libraries.Net.DB.HyperLabData.Models.DbValues;
+﻿using INAF.Libraries.Net.CommonWebAppHelpers.Helpers;
+using INAF.Libraries.Net.DB.HyperLabData.Models.DbValues;
 using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData;
 using System.Dynamic;
@@ -9,6 +10,8 @@ namespace INAF.WebApps.HyperLab.Extensions
 {
     public static class Extensions
     {
+        private static readonly string USER_ID = "UserId";
+
         public static void AddProperty(this ExpandoObject expando, string propertyName, object propertyValue)
         {
             // ExpandoObject supports IDictionary so we can extend it like this
@@ -57,7 +60,6 @@ namespace INAF.WebApps.HyperLab.Extensions
                         return httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", string.Empty);
                     else
                         return null;
-                    //return httpContext.Request.Headers.Authorization.First().Replace("Bearer ", string.Empty);
                 }
                 else
                     return null;
@@ -65,6 +67,29 @@ namespace INAF.WebApps.HyperLab.Extensions
             catch (Exception)
             {
                 return null;
+            }
+        }
+
+        public static async Task<int> GetUserIdAsync(this HttpContext httpContext)
+        {
+            string? token = httpContext.GetToken();
+            if (string.IsNullOrEmpty(token))
+                // Web app caller
+                return httpContext.GetUserId();
+            else
+            {
+                if (httpContext.Session.ContainsKey(USER_ID))
+                    return int.Parse(httpContext.Session.GetString(USER_ID) ?? "0");
+                else
+                {
+                    // App caller
+                    AuthorizationHelper authorizationHelper = httpContext.RequestServices.GetRequiredService<AuthorizationHelper>();
+                    int userId = await authorizationHelper.getUserIdAsync();
+                    if (userId > 0)
+                        httpContext.Session.SetString(USER_ID, userId.ToString());
+
+                    return userId;
+                }
             }
         }
 

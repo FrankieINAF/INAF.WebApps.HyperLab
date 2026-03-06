@@ -523,7 +523,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                                                                                         model.LeftBoundary,
                                                                                         model.RightBoundary,
                                                                                         bandOverlapRange,
-                                                                                        getUserId());
+                                                                                        await getUserIdAsync());
             return new JsonResult(new GenericResponseModel() { IsOk = isOverlapping });
         }
 

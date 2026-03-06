@@ -85,7 +85,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 logger.LogInformation($"{nameof(Login)} - user: {model.UserName}");
 
-                UserModel? user = await authorizationHelper.loginAsync(model.ToJwtLoginModel(), HttpContext.RequestAborted);
+                LoginCheckUserModel? user = await authorizationHelper.loginAsync(model.ToJwtLoginModel(), HttpContext.RequestAborted);
                 logger.LogInformation($"{nameof(Login)} - isAuthenticated: {user != null}");
                 if (user == null)
                 {
@@ -94,7 +94,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return View();
                 }
 
-                if (user.Login == null || !user.Login.IsAuthorized)
+                if (!user.IsAuthorized)
                 {
                     logger.LogError($"{nameof(Login)} - user is not authorized - user: {model.UserName}");
                     ModelState.Clear();
@@ -103,12 +103,12 @@ namespace INAF.WebApps.HyperLab.Controllers
 
                 /* set session token: is used in 'CheckIsLoginValidAttribute' for validating user */
                 if (!string.IsNullOrEmpty(user.Token))
-                    HttpContext.Session.SetString(Constants.USER_TOKEN, user.Token);
+                    HttpContext.Session.SetString(INAF.Libraries.Net.CommonWebAppModels.Values.Constants.USER_TOKEN, user.Token);
 
                 /* add cookie auth for web access */
                 var identity = new ClaimsIdentity(new[] {
                             new Claim(ClaimTypes.Name, user.getCompleteName()),
-                            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
                         }, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 var principal = new ClaimsPrincipal(identity);
@@ -141,7 +141,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserModel? user = await authorizationHelper.loginAsync(model, HttpContext.RequestAborted);
+                LoginCheckUserModel? user = await authorizationHelper.loginAsync(model, HttpContext.RequestAborted);
                 logger.LogInformation($"{nameof(Login)} - isAuthenticated: {user != null}");
 
                 if (user == null)
@@ -153,7 +153,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
                 /* set session token */
                 if (!string.IsNullOrEmpty(jwtTokenModel.Token))
-                    HttpContext.Session.SetString(Constants.USER_TOKEN, jwtTokenModel.Token);
+                    HttpContext.Session.SetString(INAF.Libraries.Net.CommonWebAppModels.Values.Constants.USER_TOKEN, jwtTokenModel.Token);
 
                 return new JsonResult(jwtTokenModel);
             }

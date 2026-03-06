@@ -1,10 +1,10 @@
 ﻿using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.CommonWebAppHelpers.Helpers;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
-using INAF.Libraries.Net.HyperLab.CommonWebAppHelpers;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
+using INAF.Libraries.Net.CommonWebAppModels.Values;
 using INAF.WebApps.HyperLab.Controllers;
 using INAF.WebApps.HyperLab.Extensions;
-using INAF.WebApps.HyperLab.Values;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -14,8 +14,18 @@ namespace INAF.WebApps.HyperLab.Attributes
     {
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
+            var authorizationHelper = context.HttpContext.RequestServices.GetRequiredService<AuthorizationHelper>();
             var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<CheckIsLoginValidAttribute>>();
 
+            int userId = await context.HttpContext.GetUserIdAsync();
+
+            if (userId <= 0)
+            {
+                handleUnauthorizedAccess(context, logger, "No token found. Redirecting to login page.");
+                return;
+            }
+
+            /* if the expiration-date has already been saved in session, use it */
             string expirationTokenString = context.HttpContext.Session.GetString(Constants.USER_TOKEN_EXPIRATION_DATETIME) ?? string.Empty;
             if (!string.IsNullOrEmpty(expirationTokenString))
             {
@@ -35,10 +45,8 @@ namespace INAF.WebApps.HyperLab.Attributes
                 }
             }
 
-            var authorizationHelper = context.HttpContext.RequestServices.GetRequiredService<AuthorizationHelper>();
-            var tokenValidationHelper = context.HttpContext.RequestServices.GetRequiredService<TokenValidationHelper>();
-
-            /* retrieve token from 'Authorization' header (App) */
+            /* if expiration-date has not yet been saved... */
+            /* 1) retrieve token from 'Authorization' header (App) */
             string? token = context.HttpContext.GetToken();
             if (string.IsNullOrEmpty(token))
             {
@@ -49,7 +57,7 @@ namespace INAF.WebApps.HyperLab.Attributes
                 /* if no token is found in session (web app), then recover it from authorization app using userId taken from cookies */
                 if (string.IsNullOrEmpty(token))
                 {
-                    int userId = context.HttpContext.GetUserId();
+                    
                     JwtTokenModel? jwtToken = await authorizationHelper.getTokenForUserAsync(userId);
                     if (jwtToken != null)
                         token = jwtToken.Token;
@@ -57,6 +65,7 @@ namespace INAF.WebApps.HyperLab.Attributes
 
             }
 
+            /* if token is empty, then manage unauthorized access */
             if (string.IsNullOrEmpty(token))
             {
                 handleUnauthorizedAccess(context, logger, "No token found. Redirecting to login page.");
@@ -64,17 +73,21 @@ namespace INAF.WebApps.HyperLab.Attributes
             }
 
             /* if a token is found, then check it */
-            (bool isLoginValid, string expirationDateTimeString) result = await authorizationHelper.isLoginValidAsync(token);
-            if (result.isLoginValid)
+            GenericMixedValuesResponseModel? result = await authorizationHelper.getLoginValidityAsync(token);
+            if (result == null)
             {
-                /* if token is valid, save it and let user go to the requested page  */
-                context.HttpContext.Session.SetString(Constants.USER_TOKEN_EXPIRATION_DATETIME, result.expirationDateTimeString);
-                await next();
+                handleUnauthorizedAccess(context, logger, "Token is not valid. Redirecting to login page.");
+                return;
             }
-            else
+
+            if (!result.IsOk || string.IsNullOrEmpty(result.StringValue))
             {
                 handleUnauthorizedAccess(context, logger, "Login is not valid. Redirecting to login page.");
+                return;
             }
+
+            context.HttpContext.Session.SetString(Constants.USER_TOKEN_EXPIRATION_DATETIME, result.StringValue);
+            await next();
         }
 
         private void handleUnauthorizedAccess(ActionExecutingContext context, ILogger logger, string logMessage)

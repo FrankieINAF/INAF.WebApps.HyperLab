@@ -153,7 +153,7 @@ function getSpectrumTypeColor(spectrumTypeDescription) {
         let item = spectraTypeColors.find(x => x.Key == key);
         return item.Value;
     } catch (e) {
-        console.log(`${getSpectraTypeColor.name} - ex: ${e}`);
+        console.log(`${getSpectrumTypeColor.name} - ex: ${e}`);
         return null;
     }
 }
