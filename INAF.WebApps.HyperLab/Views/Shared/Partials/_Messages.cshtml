@@ -1,0 +1,29 @@
+﻿@using INAF.WebApps.HyperLab.Resources
+
+<div id="charmsMessages" data-role="charms" data-cls-charms="charms-legend-panel overflow-y-auto" data-position="left">
+    <!-- ARROW + TITLE -->
+    <div class="row">
+        <!-- ARROW -->
+        <div class="cell-fs-4 cell-md-2">
+            <div class="button light cycle outline float-left pointer fg-white" title="@Html.Raw(Charms.CharmsHideLabel)" onclick="toggleCharmsMessages()">
+                <span class="mif-arrow-left"></span>
+            </div>
+        </div>
+        <!-- TITLE -->
+        <div class="cell-fs-4 cell-md-8 text-center">
+            <span class="text-bold text-leader fg-white">@Html.Raw(CharmsMessages.MessagesTitle)</span>
+        </div>
+        <!-- CLEAR ALL -->
+        <div class="cell-fs-4 cell-md-2">
+            <div class="button light cycle outline float-left pointer fg-white" title="@Html.Raw(CharmsMessages.ButtonClearAllLabel)" onclick="clearMessages()">
+                <span class="mif-bin"></span>
+            </div>
+        </div>
+    </div>
+    <!-- LABEL -->
+    <div class="row cell-fs-12">
+        <span class="text-secondary fg-white">@Html.Raw(CharmsMessages.MessagesListLabel)</span>
+    </div>
+    <!-- LEGEND -->
+    <div id="messagesContainer" class="row cell-fs-12 overflow-y-auto"></div>
+</div>
