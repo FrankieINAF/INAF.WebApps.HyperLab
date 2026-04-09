@@ -524,7 +524,12 @@ namespace INAF.WebApps.HyperLab.Controllers
         [AllowAnonymous]
         public IActionResult RegistrationError()
         {
-            return View();
+            AccountErrorModel? errorModel = HttpContext.Session.GetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL);
+            if (errorModel == null)
+                errorModel = new AccountErrorModel(Account.AccountErrorGenericTitle, Account.AccountErrorGenericMessage);
+            else
+                HttpContext.Session.Remove(ACCOUNT_ERROR_MODEL);
+            return View(errorModel);
         }
         #endregion
     }

@@ -1,0 +1,1667 @@
+﻿using INAF.Libraries.Net.CommonWebAppHelpers;
+using INAF.Libraries.Net.DB.HyperLab.Data.Tables;
+using INAF.Libraries.Net.Extensions;
+using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Files;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.SpectrumVersions;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests.SaveSpectrum;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
+using INAF.Libraries.Net.HyperLabCommonHelpers;
+using INAF.Libraries.Net.Math.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using System.Xml;
+using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
+
+namespace INAF.Libraries.Net.DB.HyperLabData
+{
+    public partial class DbHandlerHyperLabData
+    {
+        #region COMMON QUERIES
+        private SpectraFiles? queryGetSpectrumFromId(int id,
+                                                     int operationUserId,
+                                                     HyperLabDataContext context)
+        {
+            return (from s in context.SpectraFiles
+                    where s.Id == id
+                    && !s.IsDeleted
+                    select s)
+                    .AsEnumerable()
+                    .FirstOrDefault(x => isUserAuthorized(x, operationUserId) || isSpectrumSharedWithUser(context, x, operationUserId));
+        }
+
+        private SpectraFiles? queryGetSpectrumFromIdAsNoTracking(int id,
+                                                                 int operationUserId,
+                                                                 HyperLabDataContext context)
+        {
+            return (from s in context.SpectraFiles
+                    where s.Id == id
+                    && !s.IsDeleted
+                    select s)
+                    .AsNoTrackingWithIdentityResolution()
+                    .AsEnumerable()
+                    .FirstOrDefault(x => isUserAuthorized(x, operationUserId) || isSpectrumSharedWithUser(context, x, operationUserId));
+        }
+
+        private SpectraFiles? queryGetSpectrumFromNameAndType(string name,
+                                                              int typeId,
+                                                              int sourceId,
+                                                              int levelId,
+                                                              int operationUserId,
+                                                              HyperLabDataContext context)
+        {
+            return queryGetQueryFromNameAndType(name,
+                                                typeId,
+                                                sourceId,
+                                                levelId,
+                                                operationUserId,
+                                                context)?
+                   .FirstOrDefault();
+        }
+
+        private IEnumerable<SpectraFiles>? queryGetQueryFromNameAndType(string name,
+                                                                        int typeId,
+                                                                        int sourceId,
+                                                                        int levelId,
+                                                                        int operationUserId,
+                                                                        HyperLabDataContext context)
+        {
+            return (from sf in context.SpectraFiles
+                    where EF.Functions.Like(sf.Filename, $"{name}%")
+                    && sf.TypeId == typeId
+                    && sf.SourceId == sourceId
+                    && sf.LevelId == levelId
+                    && !sf.IsDeleted
+                    select sf)
+                    .AsNoTrackingWithIdentityResolution()
+                    .AsEnumerable()
+                    .Where(x => isUserAuthorized(x, operationUserId) || isSpectrumSharedWithUser(context, x, operationUserId));
+        }
+        #endregion
+
+        public async Task<bool> deleteRecursivelyChildrenAsync(int parentId,
+                                                               SpectrumType spectrumType,
+                                                               int operationUserId)
+        {
+            bool isOk = true;
+
+            using (var context = getDataContext())
+            {
+                try
+                {
+                    List<int> ids = executeRawSqlQueryForList<int>($"WITH cte AS (" +
+                                                                   $"SELECT Id, ParentId, TypeId, IsDeleted " +
+                                                                   $"FROM SpectraFiles " +
+                                                                   $"WHERE Id = ${parentId} " +
+                                                                   $"AND {getUserAuthorizationFilter(operationUserId)} " +
+                                                                   $"AND IsDeleted = 0 " +
+                                                                   $"UNION ALL " +
+                                                                   $"SELECT sf.Id, sf.ParentId, sf.TypeId, sf.IsDeleted " +
+                                                                   $"FROM cte INNER JOIN SpectraFiles sf on cte.id = sf.ParentId) " +
+                                                                   $"SELECT Id " +
+                                                                   $"FROM cte where TypeId > {(int)spectrumType} " +
+                                                                   $"AND cte.IsDeleted = 0",
+                                                                   x => Convert.ToInt32(x[0]),
+                                                                   context);
+
+                    if (ids.Any())
+                    {
+                        foreach (var id in ids)
+                        {
+                            isOk = await deleteSpectrumFileProcedureAsync(id,
+                                                                          operationUserId,
+                                                                          context);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    isOk = false;
+                    logError(nameof(deleteRecursivelyChildrenAsync), ex);
+                }
+            }
+
+            return isOk;
+        }
+
+        public int getParentRawSpectrumId(int id,
+                                          int operationUserId,
+                                          HyperLabDataContext? extcontext = null)
+        {
+            int parentId = int.MinValue;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var spectrum = queryGetSpectrumFromIdAsNoTracking(id,
+                                                                  operationUserId,
+                                                                  context);
+
+                if (spectrum == null || spectrum.ParentId == null)
+                    return int.MinValue;
+
+                parentId = spectrum.ParentId.Value;
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getParentRawSpectrumId), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return parentId;
+        }
+
+        public SpectrumModel? getSpectrumMinimalInfo(int id,
+                                                     int operationUserId)
+        {
+            SpectrumModel? spectrumModel = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    var spectrum = queryGetSpectrumFromIdAsNoTracking(id,
+                                                                      operationUserId,
+                                                                      context);
+
+                    if (spectrum == null)
+                        return null;
+
+                    spectrumModel = new SpectrumModel()
+                    {
+                        Id = spectrum.Id,
+                        Filename = spectrum.Filename,
+                        TypeId = spectrum.TypeId,
+                        Type = spectrum.TypeId.ToSpectrumType(),
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getSpectrumMinimalInfo), ex);
+            }
+
+            return spectrumModel;
+        }
+
+        public SpectrumModel? getSpectrumIdByNameAndType(string name,
+                                                         SpectrumType spectrumType,
+                                                         SpectrumSource spectrumSource,
+                                                         SpectrumLevel spectrumLevel,
+                                                         int operationUserId)
+        {
+            SpectrumModel? spectrumModel = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    var spectrum = queryGetSpectrumFromNameAndType(name,
+                                                                   (int)spectrumType,
+                                                                   (int)spectrumSource,
+                                                                   (int)spectrumLevel,
+                                                                   operationUserId,
+                                                                   context);
+
+                    if (spectrum == null)
+                        return null;
+
+                    spectrumModel = new SpectrumModel()
+                    {
+                        Id = spectrum.Id
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getSpectrumIdByNameAndType), ex);
+            }
+
+            return spectrumModel;
+        }
+
+        public RawRefSpectrumDataModel? getSpectrumDataInfo(int id,
+                                                            int operationUserId)
+        {
+            RawRefSpectrumDataModel? spectrumModel = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    var spectrum = queryGetSpectrumFromIdAsNoTracking(id,
+                                                                      operationUserId,
+                                                                      context);
+
+                    if (spectrum == null)
+                        return null;
+
+                    if (spectrum != null && !string.IsNullOrEmpty(spectrum.XmlContent))
+                    {
+                        XmlHelper xmlHelper = new XmlHelper();
+
+                        XmlDocument doc = new XmlDocument();
+                        doc.LoadXml(spectrum.XmlContent);
+
+                        XmlNodeList? elements = doc.SelectNodes("/Spectrum/Elements/Element");
+
+                        int linesNum = elements?.Count ?? 0;
+
+                        double xMin = double.MaxValue;
+                        double xMax = double.MinValue;
+                        double yMin = double.MaxValue;
+                        double yMax = double.MinValue;
+
+                        var firstElement = elements?.Item(0);
+
+                        if (firstElement != null)
+                        {
+                            string? wavelength = xmlHelper.getAttributeValue(spectrum.XmlContent, "//Element", "Wavelength");
+                            xMin = wavelength.ToDoubleInvariant();
+
+                            string? yvalue = xmlHelper.getAttributeValue(spectrum.XmlContent, "//Element", "Value");
+                            yMin = yvalue.ToDoubleInvariant();
+                        }
+
+                        var lastElement = elements?.Item(linesNum - 1);
+                        if (lastElement != null)
+                        {
+                            string? wavelength = xmlHelper.getAttributeValue(spectrum.XmlContent, "//Element[last()]", "Wavelength");
+                            xMax = wavelength.ToDoubleInvariant();
+
+                            string? yvalue = xmlHelper.getAttributeValue(spectrum.XmlContent, "//Element[last()]", "Value");
+                            yMax = yvalue.ToDoubleInvariant();
+                        }
+
+                        spectrumModel = new RawRefSpectrumDataModel()
+                        {
+                            LinesNum = linesNum,
+                            XRange = [xMin, xMax],
+                            YRange = [yMin, yMax]
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getSpectrumDataInfo), ex);
+            }
+
+            return spectrumModel;
+
+        }
+
+        public FileSpectrumModel? getSpectrumInfo(int id,
+                                                  int operationUserId)
+        {
+            FileSpectrumModel? spectrumModel = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    var spectrum = queryGetSpectrumFromIdAsNoTracking(id,
+                                                                      operationUserId,
+                                                                      context);
+
+                    if (spectrum == null)
+                        return null;
+
+                    spectrumModel = new FileSpectrumModel()
+                    {
+                        Filename = spectrum.Filename,
+                        TypeId = spectrum.TypeId,
+                        Type = spectrum.TypeId.ToSpectrumType(),
+                        Level = spectrum.LevelId.ToSpectrumLevel(),
+                        Description = !string.IsNullOrEmpty(spectrum.Description) ? spectrum.Description : string.Empty,
+                        Xml = spectrum.XmlContent,
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getSpectrumInfo), ex);
+            }
+
+            return spectrumModel;
+        }
+
+        private SpectrumType getSpectrumFileType(int id,
+                                                 int operationUserId,
+                                                 HyperLabDataContext? extcontext = null)
+        {
+            SpectrumType spectrumType = SpectrumType.None;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var spectrum = queryGetSpectrumFromIdAsNoTracking(id,
+                                                                  operationUserId,
+                                                                  context);
+
+                if (spectrum == null)
+                    return SpectrumType.None;
+
+                spectrumType = spectrum.TypeId.ToSpectrumType();
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getSpectrumFileType), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return spectrumType;
+        }
+
+        public ISpectrumModel? getSpectrum(int id,
+                                           int operationUserId,
+                                           HyperLabDataContext? extcontext = null)
+        {
+            ISpectrumModel? spectrumModel = null;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var spectrum = queryGetSpectrumFromIdAsNoTracking(id,
+                                                                  operationUserId,
+                                                                  context);
+
+                if (spectrum == null)
+                    return null;
+
+                spectrumModel = new SpectrumModel()
+                {
+                    Id = spectrum.Id,
+                    Filename = spectrum.Filename,
+                    ParentId = spectrum.ParentId,
+                    Type = spectrum.TypeId.ToSpectrumType(),
+                    Level = spectrum.LevelId.ToSpectrumLevel(),
+                    InsertDateTimeJs = spectrum.InsertDateTime.ToUnixTimeJs(),
+                    EditDateTimeJs = spectrum.EditDateTime.HasValue ? ((DateTime)spectrum.EditDateTime).ToUnixTimeJs() : null,
+                };
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getSpectrum), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return spectrumModel;
+        }
+
+        public IEnumerable<SpectrumVersionModel>? getSpectrumVersions(string filename,
+                                                                      SpectrumType spectrumType,
+                                                                      SpectrumSource spectrumSource,
+                                                                      SpectrumLevel spectrumLevel,
+                                                                      int operationUserId)
+        {
+            IEnumerable<SpectrumVersionModel>? spectrumVersions = null;
+
+            using (var context = getDataContext())
+            {
+                try
+                {
+                    var query = queryGetQueryFromNameAndType(filename,
+                                                             (int)spectrumType,
+                                                             (int)spectrumSource,
+                                                             (int)spectrumLevel,
+                                                             operationUserId,
+                                                             context);
+
+                    if (query != null && query.Any())
+                    {
+                        spectrumVersions = query
+                                            .Select(x => new SpectrumVersionModel()
+                                            {
+                                                Id = x.Id,
+                                                Filename = x.Filename,
+                                                ParentId = x.ParentId,
+                                                Type = x.TypeId.ToSpectrumType(),
+                                                Level = x.LevelId.ToSpectrumLevel(),
+                                                InsertDateTime = x.InsertDateTime
+                                            })
+                                            .OrderByDescending(x => x.InsertDateTime)
+                                            .ToList();
+
+                        foreach (var spectrumVersion in spectrumVersions)
+                        {
+                            var points = executeRawSqlQueryForList<PointModel>($"exec dbo.GetSpectrumElements @id={spectrumVersion.Id}",
+                                                                               x => new PointModel(Convert.ToDouble(x[0]), Convert.ToDouble(x[1])),
+                                                                               context);
+                            spectrumVersion.Points = points;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logError(nameof(getSpectrumVersions), ex);
+                }
+            }
+
+            return spectrumVersions;
+        }
+
+        public (bool isOk, int id) isAnySpectrumTypeSaved(string filename,
+                                                          IEnumerable<SpectrumType> spectrumTypes,
+                                                          int operationUserId)
+        {
+            (bool isSaved, int id) result = (false, int.MinValue);
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    IEnumerable<int> spectrumTypeValues = spectrumTypes.Cast<int>();
+
+                    var item = (from x in context.SpectraFiles
+                                where x.Filename.Equals(filename)
+                                && spectrumTypeValues.Contains(x.TypeId)
+                                && !x.IsDeleted
+                                select x)
+                                .AsNoTrackingWithIdentityResolution()
+                                .AsEnumerable()
+                                .FirstOrDefault(x => isUserAuthorized(x, operationUserId) || isSpectrumSharedWithUser(context, x, operationUserId));
+
+                    if (item != null)
+                    {
+                        result.isSaved = true;
+                        result.id = item.Id;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(isAnySpectrumTypeSaved), ex);
+            }
+
+            return result;
+        }
+
+        public (bool isSaved, int id) isSpectrumTypeSaved(string filename,
+                                                          SpectrumType spectrumType,
+                                                          SpectrumSource spectrumSource,
+                                                          SpectrumLevel spectrumLevel,
+                                                          int operationUserId,
+                                                          HyperLabDataContext? extcontext = null)
+        {
+            (bool isSaved, int id) result = (false, int.MinValue);
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var spectrum = queryGetSpectrumFromNameAndType(filename,
+                                                               (int)spectrumType,
+                                                               (int)spectrumSource,
+                                                               (int)spectrumLevel,
+                                                               operationUserId,
+                                                               context);
+
+                if (spectrum != null)
+                {
+                    result.isSaved = true;
+                    result.id = spectrum.Id;
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(isSpectrumTypeSaved), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return result;
+        }
+
+        public int isSpectrumTypeSavedWithCount(string filename,
+                                                SpectrumType spectrumType,
+                                                SpectrumLevel spectrumLevel,
+                                                int operationUserId,
+                                                HyperLabDataContext? extcontext = null)
+        {
+            int count = 0;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var query = (from x in context.SpectraFiles
+                             where x.Filename.Equals(filename)
+                             && x.TypeId == (int)spectrumType
+                             && x.LevelId == (int)spectrumLevel
+                             && x.InsertUserId == operationUserId
+                             && !x.IsDeleted
+                             select x)
+                             .AsNoTrackingWithIdentityResolution();
+
+                if (query.Any())
+                    count = query.Count();
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(isSpectrumTypeSavedWithCount), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return count;
+        }
+
+        #region SAVE
+        /* save ALIGNED file */
+        public async Task<(bool isOk, int id)> saveSpectrumFileOfTypeAlignedProcedureAsync(SaveSpectrumOfTypeAlignedRequestModel saveSpectrumRequest,
+                                                                                           int operationUserId,
+                                                                                           int scientificResponsibleUserId)
+        {
+            (bool isOk, int id) result = (false, int.MinValue);
+
+            if (saveSpectrumRequest.SpectrumFile == null ||
+                string.IsNullOrEmpty(saveSpectrumRequest.SpectrumFile.Filename) ||
+                string.IsNullOrEmpty(saveSpectrumRequest.SpectrumFile.Xml) ||
+                saveSpectrumRequest.AlignmentSettings == null ||
+                saveSpectrumRequest.AlignmentSettings.AlignmentSegmentBoundaries == null ||
+                saveSpectrumRequest.ParentFiles == null ||
+                saveSpectrumRequest.ParentFiles.RefFile == null ||
+                saveSpectrumRequest.ParentFiles.RefWhiteFile == null)
+                return result;
+
+            using (var context = getDataContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    /* 1) upsert spectrum data */
+                    result = await upsertSpectrumFileAsync(saveSpectrumRequest.SpectrumFile.Id,
+                                                           saveSpectrumRequest.SpectrumFile.Filename,
+                                                           saveSpectrumRequest.SpectrumFile.Type,
+                                                           saveSpectrumRequest.SpectrumFile.ParentId,
+                                                           saveSpectrumRequest.SpectrumFile.Level,
+                                                           saveSpectrumRequest.SpectrumFile.Source,
+                                                           saveSpectrumRequest.EnvironmentType,
+                                                           saveSpectrumRequest.SpectrumFile.Description,
+                                                           saveSpectrumRequest.SpectrumFile.Xml,
+                                                           operationUserId,
+                                                           scientificResponsibleUserId,
+                                                           context);
+
+                    if (result.isOk)
+                    {
+                        (bool isOk, int id) alignmentSettingsResult = await upsertSpectrumAlignmentSettingsAsync(saveSpectrumRequest.AlignmentSettings.NumOfPoints,
+                                                                                                                 saveSpectrumRequest.AlignmentSettings.AlignmentSegmentBoundaries.Min,
+                                                                                                                 saveSpectrumRequest.AlignmentSettings.AlignmentSegmentBoundaries.Max,
+                                                                                                                 result.id,
+                                                                                                                 saveSpectrumRequest.ParentFiles.RefFile.Id,
+                                                                                                                 saveSpectrumRequest.ParentFiles.RefWhiteFile.Id,
+                                                                                                                 operationUserId,
+                                                                                                                 context);
+
+                        if (alignmentSettingsResult.isOk)
+                            result.isOk = await upsertLinkSpectrumFileAlignmentSettingsAsync(result.id,
+                                                                                             alignmentSettingsResult.id,
+                                                                                             operationUserId,
+                                                                                             context);
+                        else
+                            result.isOk &= alignmentSettingsResult.isOk;
+                    }
+
+                    if (result.isOk)
+                        await transaction.CommitAsync();
+                    else
+                        await transaction.RollbackAsync();
+                }
+            }
+
+            return result;
+        }
+
+        /* upsert CONTINUUM-REMOVED file */
+        /* NEW COPY */
+        public async Task<(bool isOk, int id, List<SegmentResponseModel> segmentsResult)> saveAsCopySpectrumFileOfTypeContinuumRemovedProcedureAsync(SaveSpectrumOfTypeContinuumRemovedRequestModel saveSpectrumRequest,
+                                                                                                                                                     int operationUserId,
+                                                                                                                                                     int scientificResponsibleUserId)
+        {
+            (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = (false, int.MinValue, new List<SegmentResponseModel>());
+
+            if (saveSpectrumRequest.SpectrumFile == null ||
+                saveSpectrumRequest.SpectrumFile.ParentId == null ||
+                string.IsNullOrEmpty(saveSpectrumRequest.SpectrumFile.Filename) ||
+                string.IsNullOrEmpty(saveSpectrumRequest.SpectrumFile.Xml) ||
+                saveSpectrumRequest.ContinuumRemovalSettings == null ||
+                saveSpectrumRequest.ContinuumRemovalSettings.Segments == null)
+                return result;
+
+            using (var context = getDataContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    int version = getSpectrumFileVersion((int)saveSpectrumRequest.SpectrumFile.ParentId, context);
+
+                    (bool isOk, int id) addFileResult = await addSpectrumFileAsync(saveSpectrumRequest.SpectrumFile.Filename,
+                                                                                   saveSpectrumRequest.SpectrumFile.Type,
+                                                                                   saveSpectrumRequest.SpectrumFile.ParentId,
+                                                                                   saveSpectrumRequest.SpectrumFile.Level,
+                                                                                   saveSpectrumRequest.SpectrumFile.Source,
+                                                                                   saveSpectrumRequest.EnvironmentType,
+                                                                                   saveSpectrumRequest.SpectrumFile.Description,
+                                                                                   saveSpectrumRequest.SpectrumFile.Xml,
+                                                                                   operationUserId,
+                                                                                   scientificResponsibleUserId,
+                                                                                   context);
+
+                    if (addFileResult.isOk)
+                    {
+                        /* save file id */
+                        result.id = addFileResult.id;
+
+                        /* save file version */
+                        if (await setSpectrumFileVersionAsync(addFileResult.id,
+                                                              (int)saveSpectrumRequest.SpectrumFile.ParentId,
+                                                              version,
+                                                              operationUserId,
+                                                              context))
+                        {
+                            /* save segments for continuum */
+                            (bool isOk, List<SegmentResponseModel> segmentsResult) continuumResult = await upsertContinuumFitSettingsAsync(addFileResult.id,
+                                                                                                                                           saveSpectrumRequest.ContinuumRemovalSettings.NumOfPointsForAveragingMissingPointX,
+                                                                                                                                           saveSpectrumRequest.ContinuumRemovalSettings.FitModeId,
+                                                                                                                                           saveSpectrumRequest.ContinuumRemovalSettings.Segments,
+                                                                                                                                           operationUserId,
+                                                                                                                                           context);
+
+                            result.isOk = continuumResult.isOk;
+                        }
+                    }
+
+                    /* close transaction */
+                    if (result.isOk)
+                        await transaction.CommitAsync();
+                    else
+                        await transaction.RollbackAsync();
+                }
+            }
+
+            return result;
+        }
+
+        /* REPLACE EXISTING */
+        public async Task<(bool isOk, int id, List<SegmentResponseModel> segmentsResult)> upsertSpectrumFileOfTypeContinuumRemovedProcedureAsync(SaveSpectrumOfTypeContinuumRemovedRequestModel saveSpectrumRequest,
+                                                                                                                                                 int operationUserId,
+                                                                                                                                                 int scientificResponsibleUserId)
+        {
+            (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = (false, int.MinValue, new List<SegmentResponseModel>());
+
+            if (saveSpectrumRequest.SpectrumFile == null ||
+                saveSpectrumRequest.SpectrumFile.ParentId == null ||
+                string.IsNullOrEmpty(saveSpectrumRequest.SpectrumFile.Filename) ||
+                string.IsNullOrEmpty(saveSpectrumRequest.SpectrumFile.Xml) ||
+                saveSpectrumRequest.ContinuumRemovalSettings == null ||
+                saveSpectrumRequest.ContinuumRemovalSettings.Segments == null)
+                return result;
+
+            using (var context = getDataContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    /* 1) upsert spectrum data */
+                    (bool isOk, int id) spectrumResult = await upsertSpectrumFileAsync(saveSpectrumRequest.SpectrumFile.Id,
+                                                                                       saveSpectrumRequest.SpectrumFile.Filename,
+                                                                                       saveSpectrumRequest.SpectrumFile.Type,
+                                                                                       saveSpectrumRequest.SpectrumFile.ParentId,
+                                                                                       saveSpectrumRequest.SpectrumFile.Level,
+                                                                                       saveSpectrumRequest.SpectrumFile.Source,
+                                                                                       saveSpectrumRequest.EnvironmentType,
+                                                                                       saveSpectrumRequest.SpectrumFile.Description,
+                                                                                       saveSpectrumRequest.SpectrumFile.Xml,
+                                                                                       operationUserId,
+                                                                                       scientificResponsibleUserId,
+                                                                                       context);
+
+                    if (spectrumResult.isOk)
+                    {
+                        (bool isOk, List<SegmentResponseModel> segmentsResult) settingsResult = await upsertContinuumFitSettingsAsync(spectrumResult.id,
+                                                                                                                                      saveSpectrumRequest.ContinuumRemovalSettings.NumOfPointsForAveragingMissingPointX,
+                                                                                                                                      saveSpectrumRequest.ContinuumRemovalSettings.FitModeId,
+                                                                                                                                      saveSpectrumRequest.ContinuumRemovalSettings.Segments,
+                                                                                                                                      operationUserId,
+                                                                                                                                      context);
+
+                        result.isOk = settingsResult.isOk;
+                        if (result.isOk)
+                        {
+                            result.id = spectrumResult.id;
+                            result.segmentsResult = settingsResult.segmentsResult;
+                        }
+                    }
+
+                    if (result.isOk)
+                        await transaction.CommitAsync();
+                    else
+                        await transaction.RollbackAsync();
+                }
+            }
+
+            return result;
+        }
+
+        /* save RAW file */
+        public async Task<(bool isOk, int id)> saveSpectrumFileOfTypeRawProcedureAsync(SaveSpectrumOfTypeRawRequestModel saveSpectrumRequest,
+                                                                                       int operationUserId,
+                                                                                       int scientificResponsibleUserId)
+        {
+            (bool isOk, int id) result = (false, int.MinValue);
+
+            if (saveSpectrumRequest.SpectrumFile == null ||
+                string.IsNullOrEmpty(saveSpectrumRequest.SpectrumFile.Filename) ||
+                string.IsNullOrEmpty(saveSpectrumRequest.SpectrumFile.Xml))
+                return result;
+
+            saveSpectrumRequest.SpectrumFile.Filename = saveSpectrumRequest.SpectrumFile.Filename.Replace(" ", "_");
+
+            using (var context = getDataContext())
+            {
+                result = await upsertSpectrumFileAsync(saveSpectrumRequest.SpectrumFile.Id,
+                                                       saveSpectrumRequest.SpectrumFile.Filename,
+                                                       saveSpectrumRequest.SpectrumFile.Type,
+                                                       saveSpectrumRequest.SpectrumFile.ParentId,
+                                                       saveSpectrumRequest.SpectrumFile.Level,
+                                                       saveSpectrumRequest.SpectrumFile.Source,
+                                                       saveSpectrumRequest.EnvironmentType,
+                                                       saveSpectrumRequest.SpectrumFile.Description,
+                                                       saveSpectrumRequest.SpectrumFile.Xml,
+                                                       operationUserId,
+                                                       scientificResponsibleUserId,
+                                                       context);
+            }
+
+            return result;
+        }
+
+        /* save SMOOTHED file */
+        public async Task<(bool isOk, int id, List<SegmentResponseModel>)> saveSpectrumFileOfTypeSmoothedProcedureAsync(SaveSpectrumOfTypeSmoothedRequestModel saveSpectrumRequest,
+                                                                                                                        int operationUserId,
+                                                                                                                        int scientificResponsibleUserId)
+        {
+            (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = (false, int.MinValue, new List<SegmentResponseModel>());
+
+            if (saveSpectrumRequest.SpectrumFile == null ||
+                string.IsNullOrEmpty(saveSpectrumRequest.SpectrumFile.Filename) ||
+                string.IsNullOrEmpty(saveSpectrumRequest.SpectrumFile.Xml) ||
+                saveSpectrumRequest.SmoothingSettings == null ||
+                saveSpectrumRequest.SmoothingSettings.Segments == null)
+                return result;
+
+            using (var context = getDataContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    /* 1) upsert spectrum data */
+                    (bool isOk, int id) spectrumResult = await upsertSpectrumFileAsync(saveSpectrumRequest.SpectrumFile.Id,
+                                                                                       saveSpectrumRequest.SpectrumFile.Filename,
+                                                                                       saveSpectrumRequest.SpectrumFile.Type,
+                                                                                       saveSpectrumRequest.SpectrumFile.ParentId,
+                                                                                       saveSpectrumRequest.SpectrumFile.Level,
+                                                                                       saveSpectrumRequest.SpectrumFile.Source,
+                                                                                       saveSpectrumRequest.EnvironmentType,
+                                                                                       saveSpectrumRequest.SpectrumFile.Description,
+                                                                                       saveSpectrumRequest.SpectrumFile.Xml,
+                                                                                       operationUserId,
+                                                                                       scientificResponsibleUserId,
+                                                                                       context);
+
+                    if (spectrumResult.isOk)
+                    {
+                        (bool isOk, List<SegmentResponseModel> segmentsResult) settingsResult = await upsertSmoothingSettingsProcedureAsync(spectrumResult.id,
+                                                                                                                                            saveSpectrumRequest.SmoothingSettings.Segments,
+                                                                                                                                            operationUserId,
+                                                                                                                                            context);
+
+                        if (settingsResult.isOk)
+                        {
+                            if (await removeNotUsedSmoothingSegmentsAsync(spectrumResult.id,
+                                                                          saveSpectrumRequest.SmoothingSettings.Segments,
+                                                                          operationUserId,
+                                                                          context))
+                            {
+                                result.isOk = true;
+                                result.id = spectrumResult.id;
+                                result.segmentsResult = settingsResult.segmentsResult;
+                            }
+                        }
+                    }
+
+                    if (result.isOk)
+                        await transaction.CommitAsync();
+                    else
+                        await transaction.RollbackAsync();
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<(bool isOk, int id, List<SegmentResponseModel> segmentsResult)> saveAsCopySpectrumFileOfTypeSmoothedProcedureAsync(SaveSpectrumOfTypeSmoothedRequestModel saveSpectrumRequest,
+                                                                                                                                             int operationUserId,
+                                                                                                                                             int scientificResponsibleUserId)
+        {
+            (bool isOk, int id, List<SegmentResponseModel> segmentsResult) result = (false, int.MinValue, new List<SegmentResponseModel>());
+
+            if (saveSpectrumRequest.SpectrumFile == null ||
+                saveSpectrumRequest.SpectrumFile.ParentId == null ||
+                string.IsNullOrEmpty(saveSpectrumRequest.SpectrumFile.Filename) ||
+                string.IsNullOrEmpty(saveSpectrumRequest.SpectrumFile.Xml) ||
+                saveSpectrumRequest.SmoothingSettings == null ||
+                saveSpectrumRequest.SmoothingSettings.Segments == null)
+                return result;
+
+            using (var context = getDataContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    int version = getSpectrumFileVersion((int)saveSpectrumRequest.SpectrumFile.ParentId, context);
+
+                    (bool isOk, int id) addFileResult = await addSpectrumFileAsync(saveSpectrumRequest.SpectrumFile.Filename,
+                                                                                   saveSpectrumRequest.SpectrumFile.Type,
+                                                                                   saveSpectrumRequest.SpectrumFile.ParentId,
+                                                                                   saveSpectrumRequest.SpectrumFile.Level,
+                                                                                   saveSpectrumRequest.SpectrumFile.Source,
+                                                                                   saveSpectrumRequest.EnvironmentType,
+                                                                                   saveSpectrumRequest.SpectrumFile.Description,
+                                                                                   saveSpectrumRequest.SpectrumFile.Xml,
+                                                                                   operationUserId,
+                                                                                   scientificResponsibleUserId,
+                                                                                   context);
+
+                    if (addFileResult.isOk)
+                    {
+                        /* save file id */
+                        result.id = addFileResult.id;
+
+                        /* save file version */
+                        if (await setSpectrumFileVersionAsync(addFileResult.id,
+                                                              (int)saveSpectrumRequest.SpectrumFile.ParentId,
+                                                              version,
+                                                              operationUserId,
+                                                              context))
+                        {
+                            (bool isOk, List<SegmentResponseModel> segmentsResult) settingsResult = await upsertSmoothingSettingsProcedureAsync(addFileResult.id,
+                                                                                                                                                saveSpectrumRequest.SmoothingSettings.Segments,
+                                                                                                                                                operationUserId,
+                                                                                                                                                context);
+
+                            if (settingsResult.isOk)
+                            {
+                                if (await removeNotUsedSmoothingSegmentsAsync(addFileResult.id,
+                                                                              saveSpectrumRequest.SmoothingSettings.Segments,
+                                                                              operationUserId,
+                                                                              context))
+                                {
+                                    result.isOk = true;
+                                    result.id = addFileResult.id;
+                                    result.segmentsResult = settingsResult.segmentsResult;
+                                }
+                            }
+
+                            result.isOk = settingsResult.isOk;
+                        }
+                    }
+
+                    /* close transaction */
+                    if (result.isOk)
+                        await transaction.CommitAsync();
+                    else
+                        await transaction.RollbackAsync();
+                }
+            }
+
+            return result;
+        }
+
+        /* save INFO (SAMPLE DATA + MEASUREMENT INFO) */
+        public async Task<(bool isOk, int id)> saveSpectrumInfoProcedureAsync(InfoSelectedValuesModel infoSelectedValues,
+                                                                              int operationUserId,
+                                                                              int scientificResponsibleId)
+        {
+            (bool isOk, int id) result = (false, int.MinValue);
+
+            if (infoSelectedValues == null ||
+                string.IsNullOrEmpty(infoSelectedValues.Name) ||
+                infoSelectedValues.SampleDataSelectedValues == null ||
+                infoSelectedValues.SpectrumFileMeasurementInfoValues == null)
+                return result;
+
+            using (var context = getDataContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    result.id = infoSelectedValues.FileId;
+
+                    if (!await upsertSampleDataAsync(infoSelectedValues.FileId,
+                                                     infoSelectedValues.Name,
+                                                     infoSelectedValues.SampleDataSelectedValues.SampleTypeId,
+                                                     infoSelectedValues.SampleDataSelectedValues.GrainSizeTypeId,
+                                                     infoSelectedValues.SampleDataSelectedValues.GrainSizeLowerValueId,
+                                                     infoSelectedValues.SampleDataSelectedValues.GrainSizeUpperValueId,
+                                                     infoSelectedValues.SampleDataSelectedValues.OriginTypeId,
+                                                     infoSelectedValues.SampleDataSelectedValues.MineralTypeId,
+                                                     infoSelectedValues.SampleDataSelectedValues.Minerals,
+                                                     infoSelectedValues.SampleDataSelectedValues.Rock!,
+                                                     infoSelectedValues.SampleDataSelectedValues.MeteoriteClass!,
+                                                     operationUserId,
+                                                     context))
+                    {
+                        await transaction.RollbackAsync();
+                        return result;
+                    }
+
+                    if (!await upsertMeasurementInfoAsync(infoSelectedValues.FileId,
+                                                          infoSelectedValues.SpectrumFileMeasurementInfoValues.NumOfAcquiredSpectra,
+                                                          infoSelectedValues.SpectrumFileMeasurementInfoValues.NumOfAcquisitionsForSpectrum,
+                                                          infoSelectedValues.SpectrumFileMeasurementInfoValues.IncidenceAngle,
+                                                          infoSelectedValues.SpectrumFileMeasurementInfoValues.EmissionAngle,
+                                                          operationUserId,
+                                                          context))
+                    {
+                        await transaction.RollbackAsync();
+                        return result;
+                    }
+
+                    if (infoSelectedValues.SpectrumFileMeasurementInfoValues.InputSpectra?.Count > 0)
+                        result.isOk = await upsertInputFilesAsync(infoSelectedValues.FileId,
+                                                                  infoSelectedValues.SpectrumFileMeasurementInfoValues.InputSpectra,
+                                                                  infoSelectedValues.EnvironmentType,
+                                                                  operationUserId,
+                                                                  scientificResponsibleId,
+                                                                  context);
+                    else
+                    {
+                        result.isOk = true;
+                        result.id = infoSelectedValues.FileId;
+                    }
+
+                    if (result.isOk)
+                        await transaction.CommitAsync();
+                    else
+                        await transaction.RollbackAsync();
+                }
+            }
+
+            return result;
+        }
+
+        #region private
+        private int getSpectrumFileVersion(int parentId,
+                                           HyperLabDataContext? extcontext = null)
+        {
+            int version = int.MinValue;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var items = (from x in context.SpectrumFileVersions.AsNoTrackingWithIdentityResolution()
+                             where x.SpectrumFileParentId == parentId
+                             && !x.IsDeleted
+                             select x.Version)
+                             .ToList();
+
+                if (items?.Count > 0)
+                {
+                    version = items.Max() + 1;
+                }
+                else
+                    version = 1;
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getSpectrumFileVersion), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return version;
+        }
+
+        private async Task<bool> setSpectrumFileVersionAsync(int spectrumFileId,
+                                                             int parentId,
+                                                             int version,
+                                                             int operationUserId,
+                                                             HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var item = new SpectrumFileVersions()
+                {
+                    Version = version,
+                    SpectrumFileId = spectrumFileId,
+                    SpectrumFileParentId = parentId,
+
+                    InsertDateTime = DateTime.UtcNow,
+                    InsertUserId = operationUserId,
+                };
+
+                context.SpectrumFileVersions.Add(item);
+
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(setSpectrumFileVersionAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        private async Task<(bool isOk, int id)> upsertSpectrumFileAsync(int fileId,
+                                                                        string name,
+                                                                        SpectrumType spectrumType,
+                                                                        int? parentId,
+                                                                        SpectrumLevel level,
+                                                                        SpectrumSource source,
+                                                                        EnvironmentType environmentType,
+                                                                        string description,
+                                                                        string xml,
+                                                                        int operationUserId,
+                                                                        int scientificResponsibleUserId,
+                                                                        HyperLabDataContext? extcontext = null)
+        {
+            (bool isOk, int id) result = (false, int.MinValue);
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                (bool isSaved, int id) isSavedResult = isSpectrumTypeSaved(name,
+                                                                           spectrumType,
+                                                                           source,
+                                                                           level,
+                                                                           operationUserId,
+                                                                           context);
+
+                if (isSavedResult.isSaved)
+                {
+                    result = await updateSpectrumFileAsync(isSavedResult.id,
+                                                           name,
+                                                           spectrumType,
+                                                           parentId,
+                                                           level,
+                                                           source,
+                                                           environmentType,
+                                                           description,
+                                                           xml,
+                                                           operationUserId,
+                                                           scientificResponsibleUserId,
+                                                           context);
+                    result.id = isSavedResult.id;
+                }
+                else
+                {
+                    result = await addSpectrumFileAsync(name,
+                                                        spectrumType,
+                                                        parentId,
+                                                        level,
+                                                        source,
+                                                        environmentType,
+                                                        description,
+                                                        xml,
+                                                        operationUserId,
+                                                        scientificResponsibleUserId,
+                                                        extcontext);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.isOk = false;
+                logError(nameof(upsertSpectrumFileAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return result;
+        }
+
+        private async Task<(bool isOk, int id)> addSpectrumFileAsync(string name,
+                                                                     SpectrumType spectrumType,
+                                                                     int? parentId,
+                                                                     SpectrumLevel level,
+                                                                     SpectrumSource source,
+                                                                     EnvironmentType environmentType,
+                                                                     string description,
+                                                                     string xml,
+                                                                     int operationUserId,
+                                                                     int scientificResponsibleUserId,
+                                                                     HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+            int id = int.MinValue;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var file = new SpectraFiles()
+                {
+                    Filename = name,
+                    TypeId = (int)spectrumType,
+                    ParentId = (parentId != null ? (int)parentId : null),
+                    LevelId = (int)level,
+                    SourceId = (int)source,
+                    Description = description,
+                    XmlContent = xml,
+
+                    OwnerUserId = getScientificResponsibleIdOrUserId(operationUserId, scientificResponsibleUserId, spectrumType),
+
+                    InsertDateTime = DateTime.UtcNow,
+                    InsertUserId = operationUserId
+                };
+
+                context.SpectraFiles.Add(file);
+                await context.SaveChangesAsync();
+
+                id = file.Id;
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(addSpectrumFileAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return (isOk, id);
+        }
+
+        private async Task<(bool isOk, int id)> updateSpectrumFileAsync(int id,
+                                                                        string name,
+                                                                        SpectrumType spectrumType,
+                                                                        int? parentId,
+                                                                        SpectrumLevel level,
+                                                                        SpectrumSource source,
+                                                                        EnvironmentType environmentType,
+                                                                        string description,
+                                                                        string xml,
+                                                                        int operationUserId,
+                                                                        int scientificResponsibleUserId,
+                                                                        HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var file = (from x in context.SpectraFiles
+                            where x.Id == id
+                            select x)
+                            .FirstOrDefault();
+
+                if (file != null)
+                {
+                    file.Filename = name;
+                    file.TypeId = (int)spectrumType;
+                    if (parentId != null)
+                        file.ParentId = (int)parentId;
+                    file.SourceId = (int)source;
+                    file.LevelId = (int)level;
+                    file.SourceId = (int)source;
+                    file.Description = description;
+                    file.XmlContent = xml;
+
+                    file.OwnerUserId = getScientificResponsibleIdOrUserId(operationUserId, scientificResponsibleUserId, spectrumType);
+
+                    file.EditDateTime = DateTime.UtcNow;
+                    file.EditUserId = operationUserId;
+
+                    await context.SaveChangesAsync();
+
+                    id = file.Id;
+                }
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(updateSpectrumFileAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return (isOk, id);
+        }
+        #endregion
+        #endregion
+
+        #region DELETE
+        //public void simDeleteSpectrumFile(int id,
+        //                                  int operationUserId,
+        //                                  HyperLabDataContext? extcontext = null)
+        //{
+        //    HyperLabDataContext context = getDataContext(extcontext);
+
+        //    /* retrieve spectrum type */
+        //    SpectrumType spectrumType = getSpectrumFileType(id,
+        //                                                    operationUserId,
+        //                                                    context);
+
+        //    System.Diagnostics.Debug.WriteLine($"{nameof(simDeleteSpectrumFile)} - id: {id}");
+
+        //    simDeleteChildrenSpectraTypes(id,
+        //                                  spectrumType,
+        //                                  operationUserId,
+        //                                  context);
+
+        //    if (extcontext == null)
+        //        closeDataContext(context);
+        //}
+
+        //private void simDeleteChildrenSpectraTypes(int id,
+        //                                           SpectrumType spectrumType,
+        //                                           int operationUserId,
+        //                                           HyperLabDataContext? extcontext = null)
+        //{
+        //    HyperLabDataContext context = getDataContext(extcontext);
+
+        //    IEnumerable<SpectrumType> childrenSpectraTypes = getChildrenSpectraTypes(spectrumType,
+        //                                                                             context);
+
+        //    if (!childrenSpectraTypes.Any())
+        //    {
+        //        System.Diagnostics.Debug.WriteLine($"{nameof(simDeleteChildrenSpectraTypes)} - NO children for id: {id}, spectrumType: {spectrumType.ToString()}");
+        //        return;
+        //    }
+
+        //    foreach (var childSpectrumType in childrenSpectraTypes)
+        //    {
+        //        System.Diagnostics.Debug.WriteLine($"testing id: {id}, spectrumType: {childSpectrumType.ToString()}...");
+        //        int childId = getChildIdForSpectrumType(id,
+        //                                                childSpectrumType,
+        //                                                context);
+
+        //        /* if no child id is found, then skip this step */
+        //        if (childId == int.MinValue || childId == 0)
+        //            continue;
+
+        //        System.Diagnostics.Debug.WriteLine($"deleting id: {childId}...");
+        //        simDeleteSpectrumFile(childId,
+        //                              operationUserId,
+        //                              context);
+
+        //        System.Diagnostics.Debug.WriteLine("----------------------------------------");
+        //    }
+
+        //    if (extcontext == null)
+        //        closeDataContext(context);
+        //}
+
+        public async Task<bool> deleteSpectrumFileProcedureAsync(int id,
+                                                                 int operationUserId,
+                                                                 HyperLabDataContext? extcontext = null,
+                                                                 IDbContextTransaction? exttransaction = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            IDbContextTransaction transaction = getDataContextTransaction(context, exttransaction);
+
+            try
+            {
+                /* retrieve spectrum type */
+                SpectrumType spectrumType = getSpectrumFileType(id,
+                                                                operationUserId,
+                                                                context);
+
+                System.Diagnostics.Debug.WriteLine($"{nameof(deleteSpectrumFileProcedureAsync)} - id: {id}, spectrumType: {spectrumType.ToString()}");
+                if (await deleteSpectrumFileAsync(id, operationUserId, context))
+                {
+                    switch (spectrumType)
+                    {
+                        case SpectrumType.Raw:
+                            isOk = await deleteRawSpectrumFileRelatedDataProcedureAsync(id,
+                                                                                        operationUserId,
+                                                                                        context);
+                            break;
+                        case SpectrumType.Ref:
+                            break;
+                        case SpectrumType.Aligned:
+                            /* delete alignment settings */
+                            isOk = await deleteAlignmentSettingsAsync(id,
+                                                                      operationUserId,
+                                                                      context);
+                            break;
+                        case SpectrumType.RefWhite:
+                            break;
+                        case SpectrumType.Continuum:
+                            break;
+                        case SpectrumType.ContinuumRemoved:
+                            /* delete settings for continuum removal */
+                            isOk = await deleteContinuumRemovedSettingsAsync(id,
+                                                                             operationUserId,
+                                                                             context);
+                            break;
+                    }
+
+                    isOk = await deleteChildrenSpectraTypesAsync(id,
+                                                                 spectrumType,
+                                                                 operationUserId,
+                                                                 context,
+                                                                 transaction);
+                }
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(deleteSpectrumFileProcedureAsync), ex);
+            }
+
+            if (exttransaction == null)
+            {
+                if (isOk)
+                    await transaction.CommitAsync();
+                else
+                    await transaction.RollbackAsync();
+
+                transaction.Dispose();
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        #region private
+        private async Task<bool> deleteSpectrumFileAsync(int id,
+                                                         int operationUserId,
+                                                         HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var spectrum = queryGetSpectrumFromId(id,
+                                                      operationUserId,
+                                                      context);
+
+                if (spectrum == null)
+                    return false;
+
+                System.Diagnostics.Debug.WriteLine($"deleting id: {id}, spectrumType: {spectrum.TypeId.ToSpectrumType().ToString()}...");
+                spectrum.IsDeleted = true;
+                spectrum.DeleteDateTime = DateTime.UtcNow;
+                spectrum.DeleteUserId = operationUserId;
+
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(deleteSpectrumFileAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        private async Task<bool> deleteChildrenSpectraTypesAsync(int id,
+                                                                 SpectrumType spectrumType,
+                                                                 int operationUserId,
+                                                                 HyperLabDataContext? extcontext = null,
+                                                                 IDbContextTransaction? exttransaction = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                IEnumerable<SpectrumType> childrenSpectraTypes = getChildrenSpectraTypes(spectrumType,
+                                                                                         context);
+                /* if no children spectra types are found, then we're finished */
+                if (!childrenSpectraTypes.Any())
+                    return true;
+
+                foreach (var childSpectrumType in childrenSpectraTypes)
+                {
+                    System.Diagnostics.Debug.Write($"testing parentId: {id}, spectrumType: {childSpectrumType.ToString()}...");
+                    int childId = getChildIdForSpectrumType(id,
+                                                            childSpectrumType,
+                                                            context);
+
+                    /* if no child id is found, then skip this step */
+                    if (childId == int.MinValue || childId == 0)
+                    {
+                        System.Diagnostics.Debug.WriteLine("NO");
+                        continue;
+                    }
+
+                    System.Diagnostics.Debug.WriteLine("");
+                    //System.Diagnostics.Debug.WriteLine($"deleting id: {childId}...");
+                    if (!await deleteSpectrumFileProcedureAsync(childId,
+                                                                operationUserId,
+                                                                context,
+                                                                exttransaction))
+                        return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(deleteChildrenSpectraTypesAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        #region RAW
+        private async Task<bool> deleteRawSpectrumFileRelatedDataProcedureAsync(int id,
+                                                                                int operationUserId,
+                                                                                HyperLabDataContext context)
+        {
+            /* remove sample-data related to current spectrum */
+            if (!await deleteSampleDataAsync(id,
+                                             operationUserId,
+                                             context))
+                return false;
+
+            if (!await deleteMeasurementInfoAsync(id,
+                                                  operationUserId,
+                                                  context))
+                return false;
+
+            return true;
+        }
+        #endregion
+
+        public List<SpectrumType> getChildrenSpectraTypes(SpectrumType spectrumType,
+                                                          HyperLabDataContext? extcontext = null)
+        {
+            List<SpectrumType> childrenSpectraTypes = new List<SpectrumType>();
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                childrenSpectraTypes = (from x in context.ReadOnlyLinkSpectrumTypeChildrenSpectraTypes.AsNoTrackingWithIdentityResolution()
+                                        where x.SpectrumTypeId == (int)spectrumType
+                                        select x.ChildSpectrumTypeId.ToSpectrumType())
+                                        .ToList();
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getChildrenSpectraTypes), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return childrenSpectraTypes;
+        }
+
+        private int getChildIdForSpectrumType(int parentId,
+                                              SpectrumType spectrumType,
+                                              HyperLabDataContext? extcontext = null)
+        {
+            int childrenId = int.MinValue;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                childrenId = (from st in context.SpectraFiles.AsNoTrackingWithIdentityResolution()
+                              where st.ParentId == parentId
+                              && st.TypeId == (int)spectrumType
+                              && !st.IsDeleted
+                              select st.Id)
+                              .FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getChildIdForSpectrumType), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return childrenId;
+        }
+        #endregion
+        #endregion
+
+        #region SPECTRA-TYPES
+        public Dictionary<int, int> getSpectraTypesParents()
+        {
+            Dictionary<int, int> keyValuePairs = new();
+
+            using (var context = getDataContext())
+            {
+                try
+                {
+                    var items = (from x in context.ReadOnlyLinkSpectrumTypeParentSpectrumType.AsNoTrackingWithIdentityResolution()
+                                 select x).ToList();
+
+                    foreach (var item in items)
+                    {
+                        keyValuePairs.Add(item.SpectrumTypeId, item.ParentSpectrumTypeId);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logError(nameof(getSpectraTypesParents), ex);
+                }
+            }
+
+            return keyValuePairs;
+        }
+
+        public SpectrumType getSpectrumTypeByTypeLabel(string text)
+        {
+            SpectrumType spectrumType = SpectrumType.None;
+
+            using (var context = getDataContext())
+            {
+                try
+                {
+                    var item = (from x in context.ReadOnlySpectrumTypes.AsNoTrackingWithIdentityResolution()
+                                where x.Type.Equals(text)
+                                select x)
+                                .FirstOrDefault();
+                    if (item != null)
+                        spectrumType = item.Id.ToSpectrumType();
+                }
+                catch (Exception ex)
+                {
+                    logError(nameof(getSpectrumTypeByTypeLabel), ex);
+                }
+            }
+            return spectrumType;
+        }
+        #endregion
+
+        #region CHECK FILE MD5
+        public KeysValuesResponseModel isWhiteSpectrum(string md5)
+        {
+            KeysValuesResponseModel response = KeysValuesResponseModel.CreateErrorResponse();
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    var item = (from x in context.ReadOnlyWhiteSpectra.AsNoTrackingWithIdentityResolution()
+                                where x.Checksum.Equals(md5)
+                                select x)
+                               .FirstOrDefault();
+
+                    if (item != null)
+                    {
+                        response = new KeysValuesResponseModel()
+                        {
+                            IsOk = true,
+                            Responses = [
+                                new KeyValueResponseModel()
+                                {
+                                    Key =INAF.Libraries.Net.HyperLab.CommonModels.Values.Constants.IS_WHITE,
+                                    Value = true.ToJsString()
+                                },
+                                new KeyValueResponseModel()
+                                {
+                                    Key =INAF.Libraries.Net.HyperLab.CommonModels.Values.Constants.WHITE_TYPE,
+                                    Value = item.SpectrumTypeId.ToSpectrumType().ToString()
+                                }
+                            ]
+                        };
+                    }
+                    else
+                        response = new KeysValuesResponseModel()
+                        {
+                            IsOk = true,
+                            Responses = [
+                                new KeyValueResponseModel()
+                                {
+                                    Key =INAF.Libraries.Net.HyperLab.CommonModels.Values.Constants.IS_WHITE,
+                                    Value = false.ToJsString()
+                                }
+                            ]
+                        };
+
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(isWhiteSpectrum), ex);
+            }
+
+            return response;
+        }
+        #endregion
+    }
+}
