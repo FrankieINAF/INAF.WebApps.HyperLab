@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
+using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
 
@@ -27,7 +28,28 @@ var config = builder.Configuration;
 string? validIssuer = config.GetSection("AppSettings:JwtToken:Issuer").Value;
 string? validAudience = config.GetSection("AppSettings:JwtToken:Audience").Value;
 
-RsaSecurityKey rsaSecurityKey = (new TokenValidationParametersHelper(config)).getRsaPublicKey();
+var tokenValidationParametersHelper = new TokenValidationParametersHelper(config);
+RsaSecurityKey rsaSecurityKey = tokenValidationParametersHelper.getRsaPublicKey();
+RsaSecurityKey additionalRsaSecurityKey = tokenValidationParametersHelper.getAdditionalRsaPublicKey();
+List<SecurityKey> issuerSigningKeys = new() { additionalRsaSecurityKey };
+
+string? appPrefixForUserSecrets = config.GetSection("AppSettings:AppPrefixForUserSecrets").Value;
+if (!string.IsNullOrWhiteSpace(appPrefixForUserSecrets))
+{
+    string? additionalPublicKey = config.GetSection($"{appPrefixForUserSecrets}:JwtToken:AdditionalPublicKey").Value;
+    if (!string.IsNullOrWhiteSpace(additionalPublicKey))
+    {
+        byte[] publicKeyBytes = Convert.FromBase64String(additionalPublicKey);
+        using var rsa = RSA.Create();
+        rsa.ImportRSAPublicKey(publicKeyBytes, out int _);
+
+        using var sha256 = SHA256.Create();
+        string keyId = Convert.ToBase64String(sha256.ComputeHash(publicKeyBytes));
+
+        issuerSigningKeys.Add(new RsaSecurityKey(rsa.ExportParameters(false)) { KeyId = keyId });
+    }
+}
+
 builder.Services.AddSingleton<RsaSecurityKey>(rsaSecurityKey);
 
 
@@ -58,7 +80,8 @@ builder.Services.AddAuthentication(options =>
     })
     .AddJwtBearer(options =>
     {
-        options.IncludeErrorDetails = true; // <- great for debugging
+        options.RequireHttpsMetadata = !builder.Environment.IsDevelopment();
+        //options.IncludeErrorDetails = true; // <- great for debugging
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -68,7 +91,9 @@ builder.Services.AddAuthentication(options =>
             ValidateIssuerSigningKey = true,
             RequireExpirationTime = true,
             ValidateLifetime = true,
-            IssuerSigningKey = rsaSecurityKey
+            IssuerSigningKeys = issuerSigningKeys,
+            TryAllIssuerSigningKeys = true,
+            ClockSkew = TimeSpan.FromMinutes(2)
         };
     })
     .AddPolicyScheme("JWT_OR_COOKIE", "JWT_OR_COOKIE", options =>
@@ -76,7 +101,7 @@ builder.Services.AddAuthentication(options =>
         options.ForwardDefaultSelector = context =>
         {
             string? authorization = context.Request.Headers[HeaderNames.Authorization];
-            if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer "))
+            if (!string.IsNullOrWhiteSpace(authorization))
                 return JwtBearerDefaults.AuthenticationScheme;
 
             return CookieAuthenticationDefaults.AuthenticationScheme;

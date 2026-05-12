@@ -141,15 +141,15 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             if (ModelState.IsValid)
             {
-                LoginCheckUserModel? user = await authorizationHelper.loginAsync(model, HttpContext.RequestAborted);
-                logger.LogInformation($"{nameof(Login)} - isAuthenticated: {user != null}");
+                JwtTokenModel? jwtTokenModel = await authorizationHelper.loginForJwtAsync(model, HttpContext.RequestAborted);
+                logger.LogInformation($"{nameof(Login)} - isAuthenticated: {jwtTokenModel != null}");
 
-                if (user == null)
-                    return new JsonResult(JwtTokenModel.GetEmptyToken());
-
-                JwtTokenModel? jwtTokenModel = await authorizationHelper.getTokenForUserAsync(user.Id);
                 if (jwtTokenModel == null)
                     return new JsonResult(JwtTokenModel.GetEmptyToken());
+
+                //JwtTokenModel? jwtTokenModel = await authorizationHelper.getTokenForUserAsync(user.UserId);
+                //if (jwtTokenModel == null)
+                //    return new JsonResult(JwtTokenModel.GetEmptyToken());
 
                 /* set session token */
                 if (!string.IsNullOrEmpty(jwtTokenModel.Token))
@@ -303,7 +303,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 GenericValueStringResponseModel response = await authorizationHelper.passwordResetSendEmailAsync(model);
                 if (response.IsOk)
-                    return GenericValueStringResponseModel.CreateSuccessResponse();
+                    return response;
                 else
                     return GenericValueStringResponseModel.CreateErrorResponse(response.ExMsg ?? string.Empty);
             }

@@ -54,15 +54,15 @@ namespace INAF.WebApps.HyperLab.Extensions
         {
             try
             {
-                if (!string.IsNullOrEmpty(httpContext.Request.Headers["Authorization"]))
-                {
-                    if (httpContext.Request.Headers["Authorization"].Count > 0)
-                        return httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", string.Empty);
-                    else
-                        return null;
-                }
-                else
+                string authorization = httpContext.Request.Headers["Authorization"].ToString();
+                if (string.IsNullOrWhiteSpace(authorization))
                     return null;
+
+                const string bearerPrefix = "Bearer ";
+                if (authorization.StartsWith(bearerPrefix, StringComparison.OrdinalIgnoreCase))
+                    return authorization[bearerPrefix.Length..].Trim();
+
+                return authorization.Trim();
             }
             catch (Exception)
             {
@@ -72,20 +72,23 @@ namespace INAF.WebApps.HyperLab.Extensions
 
         public static async Task<int> GetUserIdAsync(this HttpContext httpContext)
         {
-            string? token = httpContext.GetToken();
-            if (string.IsNullOrEmpty(token))
+            string? userToken = httpContext.GetToken();
+            if (string.IsNullOrEmpty(userToken))
                 // Web app caller
                 return httpContext.GetUserId();
             else
             {
+                /* try to retrieve the saved userId, if any */
                 if (httpContext.Session.ContainsKey(USER_ID))
                     return int.Parse(httpContext.Session.GetString(USER_ID) ?? "0");
                 else
                 {
+                    
                     // App caller
                     AuthorizationHelper authorizationHelper = httpContext.RequestServices.GetRequiredService<AuthorizationHelper>();
-                    int userId = await authorizationHelper.getUserIdAsync();
+                    int userId = await authorizationHelper.getUserIdAsync(userToken);
                     if (userId > 0)
+                        /* when a valid userId is retrieved, then it is saved to avoid calling multauthapp at each request */
                         httpContext.Session.SetString(USER_ID, userId.ToString());
 
                     return userId;

@@ -57,7 +57,6 @@ namespace INAF.WebApps.HyperLab.Attributes
                 /* if no token is found in session (web app), then recover it from authorization app using userId taken from cookies */
                 if (string.IsNullOrEmpty(token))
                 {
-                    
                     JwtTokenModel? jwtToken = await authorizationHelper.getTokenForUserAsync(userId);
                     if (jwtToken != null)
                         token = jwtToken.Token;
