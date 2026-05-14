@@ -56,9 +56,9 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (userToken == null)
                 return new JsonResult(false);
 
-            bool isValid = await authorizationHelper.isUserTokenValid(userToken);
+            GenericBoolValueResponseModel? genericBoolValueResponse = await authorizationHelper.isUserTokenValid(userToken);
 
-            return new JsonResult(isValid);
+            return new JsonResult(genericBoolValueResponse?.BoolValue ?? false);
         }
         #endregion
 
@@ -165,7 +165,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            if (await authorizationHelper.logoutAsync(await getUserIdAsync()))
+            GenericBoolValueResponseModel? logoutResponse = await authorizationHelper.logoutAsync(await getUserIdAsync());
+            if (logoutResponse != null && logoutResponse.BoolValue)
             {
                 logger.LogInformation($"{nameof(Logout)} - user logged out: {getUserIdAsync().Result}");
                 await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -178,8 +179,8 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         public async Task<IActionResult> LogoutForJwt()
         {
-            bool isLoggedOut = await authorizationHelper.logoutAsync(await getUserIdAsync());
-            if (isLoggedOut)
+            GenericBoolValueResponseModel? logoutResponse = await authorizationHelper.logoutAsync(await getUserIdAsync());
+            if (logoutResponse != null && logoutResponse.BoolValue)
                 return new JsonResult(GenericResponseModel.CreateSuccessResponse());
             else
                 return new JsonResult(GenericResponseModel.CreateErrorResponse());
@@ -202,17 +203,17 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 logger.LogInformation($"{nameof(Confirmation)} - IsValid - user: {model.Id}");
                 /* if login has already been confirmed, then send user to registration completed page */
-                GenericResponseModel? isconfirmedResponse = await authorizationHelper.isLoginConfirmedAsync(model.Token);
-                if (isconfirmedResponse != null && isconfirmedResponse.IsOk)
+                GenericBoolValueResponseModel? isConfirmedResponse = await authorizationHelper.isLoginConfirmedAsync(model.Token);
+                if (isConfirmedResponse != null && isConfirmedResponse.BoolValue)
                     return RedirectToAction(nameof(RegistrationConfirmed), GenericHelper.GetControllerName(nameof(AccountController)));
 
                 var encryptionHelper = serviceProvider.GetRequiredService<EncryptionHelper>();
                 string encryptedId = encryptionHelper.fromUrlSafeBase64(model.Id!);
-                GenericResponseModel? confirmResponse = await authorizationHelper.confirmLoginAsync(encryptedId, model.Token!);
+                GenericBoolValueResponseModel? confirmResponse = await authorizationHelper.confirmLoginAsync(encryptedId, model.Token!);
                 /* if confirmation is ok, then send user to registration completed page */
                 if (confirmResponse != null)
                 {
-                    logger.LogInformation($"{nameof(Confirmation)} - IsValid - confirmationResult: isOk:{confirmResponse.IsOk}");
+                    logger.LogInformation($"{nameof(Confirmation)} - IsValid - confirmationResult: isOk:{confirmResponse.BoolValue}");
 
                     /* retrieve user data to fix userId in shares and then fix them, when existant */
                     LoginModel? loginModel = await authorizationHelper.getLoginFromTokenAsync(model.Token);
