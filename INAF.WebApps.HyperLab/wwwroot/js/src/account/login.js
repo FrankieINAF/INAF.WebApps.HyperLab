@@ -8,6 +8,8 @@ formLogin.data('validator', null);
 $.validator.unobtrusive.parse(formLogin);
 
 $("#submitButton").click(function () {
+    $('#invalidLoginMessage').empty();
+
     if (!$(formLogin).valid()) {
         formLogin.addClass("ani-ring");
         setTimeout(function () {

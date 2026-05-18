@@ -118,8 +118,11 @@
                                                 @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger"})
                                             </div>
                                             <!-- SUBMIT + REMEMBER ME-->
-                                            <div class="form-group mt-10">
-                                                <button id="submitButton" class="button">@Html.Raw(SharedResources.SubmitLabel)</button>
+                                            <div class="form-group mt-10 d-flex flex-justify-center">
+                                                <button id="submitButton" class="image-button primary">
+                                                    <span class="mif-checkmark icon"></span>
+                                                    <span class="caption">@Html.Raw(SharedResources.SubmitLabel)</span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

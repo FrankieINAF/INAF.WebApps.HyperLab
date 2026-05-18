@@ -75,24 +75,9 @@
     z-index: 10
 }
 
-.hyperlab-title {
-    margin-top: 1.25rem;
-    margin-bottom: 1.25rem;
-    line-height: 1;
-    font-size: 56px;
-}
 
-.inaf-image {
-    width: 50%;
-}
 
-.spectrum-image {
-    width: 50%;
-}
 
-.items-width {
-    width: 100%;
-}
 
 /* xl */
 @media screen and (max-width: 1200px) {

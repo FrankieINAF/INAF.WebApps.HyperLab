@@ -1,13 +1,11 @@
 ﻿@model LoginModel
 
-@using INAF.WebApps.HyperLab.Controllers
-@using INAF.WebApps.HyperLab.Helpers
-@using INAF.Libraries.Net.CommonResources;
-@using INAF.Libraries.Net.CommonWebAppModels.Models.Account
-@using INAF.WebApps.HyperLab.Resources
-@using INAF.Libraries.Net.CommonWebAppHelpers
-@using INAF.Libraries.Net.HyperLab.CommonModels.Resources
 @using CommonResources = INAF.Libraries.Net.CommonWebAppModels.Resources
+@using INAF.Libraries.Net.CommonResources;
+@using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.Libraries.Net.CommonWebAppModels.Models.Account
+@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Resources
 
 @{
     Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
@@ -78,8 +76,16 @@
                                                 })
                                                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                                             </div>
+
+                                            @if (Model != null && !string.IsNullOrEmpty(Model.ExMsg))
+                                            {
+                                                <div id="invalidLoginMessage" class="text-secondary text-danger d-flex flex-justify-center margin-top-16">
+                                                    @Html.Raw(Model.ExMsg)
+                                                </div>
+                                            }
+
                                             <!-- SUBMIT + REMEMBER ME-->
-                                            <div class="row margin-top-32">
+                                            <div class="row margin-top-24">
                                                 <div class="d-none-fs cell-sm-2">&nbsp;</div>
                                                 <div class="cell-fs-8 cell-sm-8 d-flex flex-justify-center">
                                                     <div>

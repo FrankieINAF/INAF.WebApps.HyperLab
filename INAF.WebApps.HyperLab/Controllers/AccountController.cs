@@ -86,19 +86,19 @@ namespace INAF.WebApps.HyperLab.Controllers
                 logger.LogInformation($"{nameof(Login)} - user: {model.UserName}");
 
                 LoginCheckUserModel? user = await authorizationHelper.loginAsync(model.ToJwtLoginModel(), HttpContext.RequestAborted);
-                logger.LogInformation($"{nameof(Login)} - isAuthenticated: {user != null}");
+                logger.LogInformation($"{nameof(Login)} - isAuthenticated: {user?.Id > 0}");
                 if (user == null)
                 {
                     logger.LogError($"{nameof(Login)} - user is null after authentication - user: {model.UserName}");
                     ModelState.Clear();
-                    return View();
+                    return View(new LoginModel() {  ExMsg = Libraries.Net.CommonResources.Account.LoginErrorMessage });
                 }
 
                 if (!user.IsAuthorized)
                 {
                     logger.LogError($"{nameof(Login)} - user is not authorized - user: {model.UserName}");
                     ModelState.Clear();
-                    return View();
+                    return View(new LoginModel() { ExMsg = user.ExMsg });
                 }
 
                 /* set session token: is used in 'CheckIsLoginValidAttribute' for validating user */

@@ -263,6 +263,7 @@
     "outputFileName": "wwwroot/css/dist/commonbundle.css",
     "inputFiles": [
       "wwwroot/css/src/common.css",
+      "wwwroot/css/src/commonhyperlab.css",
       "wwwroot/css/src/commonvalidation.css",
       "wwwroot/lib/animate.css/animate.css"
     ],
@@ -272,6 +273,7 @@
   {
     "outputFileName": "wwwroot/css/dist/account/commonlayoutnonavigationbundle.css",
     "inputFiles": [
+      "wwwroot/css/src/commonhyperlab.css",
       "wwwroot/css/src/commonlayoutnonavigation.css",
       "wwwroot/css/src/common.css"
     ],
@@ -302,6 +304,7 @@
   {
     "outputFileName": "wwwroot/css/dist/errorpagebundle.css",
     "inputFiles": [
+      "wwwroot/css/src/commonhyperlab.css",
       "wwwroot/css/src/errorpage.css"
     ],
     "includeInProject": true,
