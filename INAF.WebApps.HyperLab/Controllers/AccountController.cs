@@ -165,15 +165,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            GenericBoolValueResponseModel? logoutResponse = await authorizationHelper.logoutAsync(await getUserIdAsync());
-            if (logoutResponse != null && logoutResponse.BoolValue)
-            {
-                logger.LogInformation($"{nameof(Logout)} - user logged out: {getUserIdAsync().Result}");
-                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            }
-            else
-                logger.LogWarning($"{nameof(Logout)} - error logging out user: {getUserIdAsync().Result}");
-
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction(nameof(SpectraManagerController.Hub), GenericHelper.GetControllerName(nameof(SpectraManagerController)));
         }
 
@@ -469,7 +461,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
                     case Libraries.Net.CommonWebAppModels.Values.Enums.RegistrationStatus.Error:
                         logger.LogError($"{nameof(Registration)} - error in registration - email: {model.Email} - error: {response.ExMsg}");
-                        AccountErrorModel errorModel = new AccountErrorModel(Account.ConfirmationErrorTitle, response.ExMsg);
+                        AccountErrorModel errorModel = new AccountErrorModel(Account.RegistrationErrorTitle, response.ExMsg);
                         HttpContext.Session.SetObject<AccountErrorModel>(ACCOUNT_ERROR_MODEL, errorModel);
                         return RedirectToAction(nameof(RegistrationError), GenericHelper.GetControllerName(nameof(AccountController)));
                 }
