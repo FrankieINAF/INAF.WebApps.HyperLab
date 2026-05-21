@@ -26,6 +26,8 @@ var enterFullScreenButtonId = 'buttonEnterFullScreen';
 var exitFullScreenButtonId = 'buttonExitFullScreen';
 var openProcessSpectraCharmsButtonId = 'buttonOpenCharms'
 
+var isUserAuthenticated = false;
+
 /* ################################################################################ */
 /* BUTTONS */
 /* ################################################################################ */
@@ -613,6 +615,10 @@ function initChartPanel() {
 /* DOCUMENT READY */
 /* ################################################################################ */
 $(function () {
+    executeAfter(async function () {
+        isUserAuthenticated = await isUserAuthenticatedAsync();
+    }, 10);
+
     /* define selected spectrum type for continuum removal */
     selectedSpectrumTypeForContinuumRemoval = SPECTRUM_TYPE_ALIGNED;
 

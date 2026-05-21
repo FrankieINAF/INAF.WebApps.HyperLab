@@ -7,6 +7,8 @@
 @using INAF.Libraries.Net.Extensions
 
 <script type="text/javascript">
+    var UrlHome = '/@GenericHelper.GetControllerName(nameof(HomeController))/@nameof(HomeController.Index)';
+
     var UTC_OFFSET_HOURS = @System.TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).Hours;
 
     var JS_DELAY_200 = 200

@@ -36,13 +36,17 @@ var red = '#a8071e';
 var usersToShare = [];
 
 function tryHideLogoutButton() {
-    if (!isUserAuthenticated)
+    if (!isUserAuthenticatedAsync())
         hideByClass('logoutButton');
 }
 
 function initPageDims() {
     pageW = $('#renderbody').width();
     pageH = $('#renderbody').height();
+}
+
+async function isUserAuthenticatedAsync() {
+    return await doAjaxGetNoModelAsync(UrlIsUserAuthenticated);
 }
 
 function backToHomeProcedure() {
@@ -76,7 +80,7 @@ function manageNavigation() {
             removeBackToSearchButtonProcedure();
 
             containerFunction = function () {
-                addSearchButton();
+                tryAddSearchButtonAsync();
                 addCreateChartsButtonProcedure();
             };
             executeAfter(containerFunction, 500);
@@ -98,8 +102,7 @@ function manageNavigation() {
         default: // NAVIGATION_INIT
             /* top-bar menu */
             addGuideHubButton();
-            if (isSLabDataManagerAllowed)
-                addSearchButton();
+            tryAddSearchButtonAsync();
 
             /* left-side menu */
             addBackToHomeButton();

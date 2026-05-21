@@ -334,7 +334,10 @@ function showSearchInfo() {
 /* BUTTONS */
 /* ################################################################################ */
 /* ---------- SEARCH BUTTON ---------- */
-function addSearchButton() {
+async function tryAddSearchButtonAsync() {
+    if (!await isUserAuthenticatedAsync())
+        return;
+    
     addButton(searchButtonId, ButtonSearchLabel, 'mif-search', search);
 }
 
@@ -369,7 +372,7 @@ function tryRestoreLastSearch() {
     if (!lastSearchJson)
         return;
 
-    console.log(`lastSearchJson: ${lastSearchJson}`);
+    //console.log(`lastSearchJson: ${lastSearchJson}`);
 
     const lastSearch = JSON.parse(lastSearchJson);
     const searchType = lastSearch.SearchType;
@@ -487,7 +490,7 @@ $(function () {
 
     $('#searchtitle').on('click', function () {
         loadingType = LOADING_TYPE_SEARCH;
-        addSearchButton();
+        tryAddSearchButtonAsync();
     });
 
     $('#loadtitle').on('click', function () {

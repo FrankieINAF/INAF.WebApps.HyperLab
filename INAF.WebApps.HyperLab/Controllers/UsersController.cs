@@ -1,11 +1,10 @@
 ﻿using INAF.Libraries.Net.CommonResources;
 using INAF.Libraries.Net.CommonWebAppHelpers.Helpers;
-using INAF.Libraries.Net.CommonWebAppModels.Models.Account;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Permissions;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
-using INAF.Libraries.Net.CommonWebAppModels.Models.Users;
 using INAF.Libraries.Net.CommonWebAppModels.Models.WebApp.Users;
+using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
@@ -20,18 +19,21 @@ namespace INAF.WebApps.HyperLab.Controllers
     public partial class UsersController : BaseController
     {
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly DbHandlerHyperLabData dbHandlerHyperLabData;
         private readonly AuthorizationHelper authorizationHelper;
         private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
 
         public UsersController(IServiceProvider serviceProvider,
                                ILogger<UsersController> logger,
                                IWebHostEnvironment webHostEnvironment,
-                               AuthorizationHelper authorizationHelper,
-                               DbHandlerHyperLabUsers dbHandlerHyperLabUsers) : base(serviceProvider, logger)
+                               DbHandlerHyperLabData dbHandlerHyperLabData,
+                               DbHandlerHyperLabUsers dbHandlerHyperLabUsers,
+                               AuthorizationHelper authorizationHelper) : base(serviceProvider, logger)
         {
             this.webHostEnvironment = webHostEnvironment;
-            this.authorizationHelper = authorizationHelper;
+            this.dbHandlerHyperLabData = dbHandlerHyperLabData;
             this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
+            this.authorizationHelper = authorizationHelper;
         }
 
         #region VIEWS

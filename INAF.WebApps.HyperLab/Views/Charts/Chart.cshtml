@@ -16,13 +16,6 @@
         spectraIds = Model.SelectedSpectraModel.Ids;
     }
 
-    bool IsSLabDataManagerAllowed = false;
-    if (Model.Permissions != null && Model.Permissions.Any())
-    {
-        IsSLabDataManagerAllowed = Model.Permissions.Any(p => p.Id == (int)INAF.WebApps.HyperLab.Values.Enums.Permissions.SLabManager);
-    }
-
-    var UrlHome = $"/{GenericHelper.GetControllerName(nameof(HomeController))}/{nameof(HomeController.Index)}";
     var UrlHub = $"/{GenericHelper.GetControllerName(nameof(SpectraManagerController))}/{nameof(SpectraManagerController.Hub)}";
 }
 
@@ -398,11 +391,7 @@
     <script type="text/javascript" src="~/js/dist/guide/guidebundle.min.js" asp-append-version="true"></script>
 </environment>
 
-<script type="text/javascript">
-    var isSLabDataManagerAllowed = @IsSLabDataManagerAllowed.ToJsString();
-    var isUserAuthenticated = @Model.IsUserAuthenticated.ToJsString();
-    
-    var UrlHome = '@UrlHome';
+<script type="text/javascript">   
     var UrlHub = '@UrlHub';
 
     /* fill 'selectedSpectra' array with ids retrieved by back-end */
