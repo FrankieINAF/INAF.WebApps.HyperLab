@@ -58,7 +58,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             GenericBoolValueResponseModel? genericBoolValueResponse = await authorizationHelper.isUserTokenValid(userToken);
 
-            return new JsonResult(genericBoolValueResponse?.BoolValue ?? false);
+            return new JsonResult(genericBoolValueResponse ?? new GenericBoolValueResponseModel(false));
         }
         #endregion
 

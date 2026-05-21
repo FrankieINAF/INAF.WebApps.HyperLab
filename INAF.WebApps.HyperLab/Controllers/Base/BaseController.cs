@@ -123,7 +123,7 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
                 {
                     // App caller
                     AuthorizationHelper authorizationHelper = serviceProvider.GetRequiredService<AuthorizationHelper>();
-                    int userId = await authorizationHelper.getUserIdAsync();
+                    int userId = await authorizationHelper.getUserIdAsync(token);
                     if (userId > 0)
                         HttpContext.Session.SetString(USER_ID, userId.ToString());
 
