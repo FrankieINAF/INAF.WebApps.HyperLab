@@ -1,0 +1,43 @@
+﻿@using INAF.Libraries.Net.CommonWebAppModels.Models.Account
+@using INAF.WebApps.HyperLab.Resources
+
+@{
+    Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
+
+    ViewBag.Title = "HyperLab Error";
+}
+
+<environment names="Development">
+    <link rel="stylesheet" href="~/css/src/commonhyperlab.css" />
+    <link rel="stylesheet" href="~/css/src/errorpage.css" />
+</environment>
+<environment names="Production">
+    <link rel="stylesheet" href="~/css/dist/errorpagebundle.min.css" asp-append-version="true" />
+</environment>
+<div>
+    <div class="d-flex flex-column-fs flex-row-xl">
+        <!-- TEXT/IMAGES -->
+        @{
+            await Html.RenderPartialAsync("Partials/_TextImages");
+        }
+
+        <!-- FORM -->
+        <div class="col-form-width form-cell-background h-vh-75-fs h-vh-100-xl d-flex flex-align-center">
+            <!-- ERROR MESSAGE CONTAINER -->
+            <div class="error-box-container bg-red p-6 mx-auto border bd-default win-shadow">
+                <div class="error-box">
+                    <!-- MESSAGE -->
+                    <div class="row cell-fs-12">
+                        <p class="text-leader text-medium fg-white">@Html.Raw(Home.ErrorPageTitle)</p>
+                        <p class="text-normal fg-white text-just margin-top-16">@Html.Raw(Home.ErrorPageText)</p>
+                        <p class="text-normal fg-white margin-top-8">@Html.Raw(SharedResources.HyperLabTeamSignature)</p>
+                    </div>
+                    <!-- CONTACT US -->
+                    @{
+                        await Html.RenderPartialAsync("Partials/_ContactUs");
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
