@@ -28,12 +28,12 @@ function callEnqueueSaveSetting(key, value, jsDelay, timeout) {
     timeout = setTimeout(function () { enqueueSaveSetting(getQueueItem(key, value)); }, jsDelay);
 }
 
-function tryCallEnqueueSaveSetting(key, value, jsDelay = JS_DELAY_200, timeout = null) {
-    if (isUserAuthenticated)
+async function tryCallEnqueueSaveSetting(key, value, jsDelay = JS_DELAY_200, timeout = null) {
+    if (await isUserAuthenticatedAsync())
         callEnqueueSaveSetting(key, value, jsDelay, timeout);
 }
 
-function tryCallEnqueueSaveSetting(key, value, timeout = null) {
-    if (isUserAuthenticated)
+async function tryCallEnqueueSaveSetting(key, value, timeout = null) {
+    if (await isUserAuthenticatedAsync())
         callEnqueueSaveSetting(key, value, JS_DELAY_200, timeout);
 }

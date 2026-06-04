@@ -9,7 +9,7 @@ var areSavedComplexSearchesAvailable = false;
 var DEFAULT_WAIT_ms = 1000;
 
 async function setListviewSearchConditionsUI() {
-    if (!await isUserAuthenticatedAsync())
+    if (!isUserAuthenticated)
         return;
 
     if (isMobile()) {

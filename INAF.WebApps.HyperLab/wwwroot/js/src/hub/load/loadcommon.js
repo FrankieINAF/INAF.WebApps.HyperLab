@@ -68,8 +68,6 @@ async function loadFilesAsync(files, source) {
     if (files == null || files.length == 0)
         return;
 
-    //const isUserAuthenticated = await isUserAuthenticatedAsync();
-
     showByClassDFlexItem('loadedFilesContainer');
 
     /* remove locally saved files, if any is available */
@@ -296,7 +294,7 @@ async function saveFileAsync(filename) {
 /* BUILD LIST ITEM */
 /* ################################################################################ */
 async function addFilesListItemAsync(filename, spectrumType, source, isLoaded) {
-    $('#loadedFilesList').append(getFilesListItem(filename, spectrumType, source, isLoaded));
+    $('#loadedFilesList').append(getFilesListItem(filename, spectrumType, source, isLoaded, isUserAuthenticated));
 
     if (!isLoaded)
         return;
@@ -336,7 +334,7 @@ async function checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, spect
     let obj = await doAjaxGetAsync(UrlIsSpectrumTypeSavedOnCloud, model);
     if (obj) {
         /* update list of loaded spectra */
-        updateListItem(filename, obj.IsOk);
+        updateListItem(filename, obj.IsOk, isUserAuthenticated);
 
         if (obj.IsOk) {
             /* update the parsed spectrum id */
@@ -347,15 +345,15 @@ async function checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, spect
     }
 }
 
-function getFilesListItem(filename, spectrumType, source, isLoaded) {
+function getFilesListItem(filename, spectrumType, source, isLoaded, isUserAuthenticated) {
     //console.log(`isMobile, ${isMobile()}`);
     if (isMobile())
-        return getFilesListItemMobile(filename, spectrumType, source, isLoaded);
+        return getFilesListItemMobile(filename, spectrumType, source, isLoaded, isUserAuthenticated);
     else
-        return getFilesListItemDesktop(filename, spectrumType, source, isLoaded);
+        return getFilesListItemDesktop(filename, spectrumType, source, isLoaded, isUserAuthenticated);
 }
 
-function getFilesListItemDesktop(filename, spectrumType, source, isLoaded) {
+function getFilesListItemDesktop(filename, spectrumType, source, isLoaded, isUserAuthenticated) {
     let html = ``;
     html += getContainerDiv(filename);
     html += getBinIconDiv(filename);
@@ -365,20 +363,20 @@ function getFilesListItemDesktop(filename, spectrumType, source, isLoaded) {
         html += getSpectrumTypeDiv(filename, spectrumType, '260');
     else
         html += `<div class="margin-horizontal-16" style="width: 260px">&nbsp;</div>`;
-    html += getToSaveIcon(filename);
+    html += getToSaveIcon(filename, null, isUserAuthenticated);
     html += `</div>`;
 
     return html;
 }
 
-function getFilesListItemMobile(filename, spectrumType, source, isLoaded) {
+function getFilesListItemMobile(filename, spectrumType, source, isLoaded, isUserAuthenticated) {
     let html = ``;
     html += getContainerDiv(filename);
     html += `<div id="item_${filename}" class="d-flex flex-row margin-vertical-8">`;
     html += getBinIconDiv(filename);
     html += getLoadResultIcon(isLoaded);
     html += getFilenameDiv(source, filename);
-    html += getToSaveIcon(filename);
+    html += getToSaveIcon(filename, null, isUserAuthenticated);
     html += `</div>`;
     if (source == SPECTRUM_SOURCE_SLAB)
         html += getSpectrumTypeDiv(filename, spectrumType, '250');
@@ -391,7 +389,7 @@ function getFilesListItemMobile(filename, spectrumType, source, isLoaded) {
 /* -------------------------------------------------------------------------------- */
 /* SAVED */
 /* -------------------------------------------------------------------------------- */
-function getSavedIcon(filename) {
+function getSavedIcon(filename, isUserAuthenticated) {
     if (isUserAuthenticated)
         return getSavedOnCloudIcon(filename);
     else
@@ -409,7 +407,7 @@ function getSavedOnCloudIcon(filename) {
 /* -------------------------------------------------------------------------------- */
 /* TO SAVE */
 /* -------------------------------------------------------------------------------- */
-function getToSaveIcon(filename, color) {
+function getToSaveIcon(filename, color, isUserAuthenticated) {
     if (isUserAuthenticated)
         return getToSaveOnCloudIcon(filename, color);
     else
@@ -439,12 +437,13 @@ function getToSaveOnCloudIcon(filename, color) {
 /* -------------------------------------------------------------------------------- */
 /* UPDATE */
 /* -------------------------------------------------------------------------------- */
-function updateListItem(filename, isSaved) {
+function updateListItem(filename, isSaved, isUserAuthenticated) {
     let spectrum = getParsedSpectrum(filename);
-    if (isSaved)
-        $(`#upload_${$.escapeSelector(spectrum.Filename)}`).replaceWith(getSavedIcon(spectrum.Filename));
-    else
-        $(`#uploaded_${$.escapeSelector(spectrum.Filename)}`).replaceWith(getToSaveIcon(spectrum.Filename, 'orange'));
+    if (isSaved) {
+        const content = getSavedIcon(spectrum.Filename, isUserAuthenticated);
+        $(`#upload_${$.escapeSelector(spectrum.Filename)}`).replaceWith(content);
+    } else
+        $(`#uploaded_${$.escapeSelector(spectrum.Filename)}`).replaceWith(getToSaveIcon(spectrum.Filename, 'orange', isUserAuthenticated));
 }
 
 /* ################################################################################ */

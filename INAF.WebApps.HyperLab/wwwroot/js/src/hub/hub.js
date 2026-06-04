@@ -335,7 +335,7 @@ function showSearchInfo() {
 /* ################################################################################ */
 /* ---------- SEARCH BUTTON ---------- */
 async function tryAddSearchButtonAsync() {
-    if (!await isUserAuthenticatedAsync())
+    if (!isUserAuthenticated)
         return;
     
     addButton(searchButtonId, ButtonSearchLabel, 'mif-search', search);
@@ -473,7 +473,9 @@ function onWindowResize() {
     }, 200);
 }
 
-$(function () {
+$(async function () {
+    await checkIsUserAutenthicatedAsync();
+
     tryHideLogoutButton();
 
     /* fill arrays for search */

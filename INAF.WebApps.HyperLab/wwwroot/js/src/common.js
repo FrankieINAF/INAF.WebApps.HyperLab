@@ -490,6 +490,10 @@ function isCheckboxChecked(id) {
     return $(`#${id}`).is(':checked');
 }
 
+function isExistant(id) {
+    return $(`#${id}`).length > 0;
+}
+
 function setLoadingCircleIsVisible(isVisible) {
     try {
         if (isVisible) {

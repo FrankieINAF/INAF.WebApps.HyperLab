@@ -1190,7 +1190,7 @@ async function exportSmoothedSpectrumAsXmlAsync() {
 
     /* un-authenticated users do not save spectra on cloud so they cannot have parent files with valid Id */
     let parentFiles = null;
-    if (isUserAuthenticated)
+    if (await isUserAuthenticatedAsync())
         parentFiles = getSmoothedParentFiles(srcSpectrum.Id);
     //let parentFiles = getSmoothedParentFiles(srcSpectrum.Id);
     //if (!Number.isInteger(parentFiles.ParentFile.Id))

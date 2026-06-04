@@ -29,14 +29,22 @@ var STORAGE_ITEM = "storageItem";
 
 var pageW, pageH;
 
+var isUserAuthenticated = false;
+
+
 var lightGreen = '#90ee90';
 var lightGreenTransparent = '#90ee9099';
 var red = '#a8071e';
 
 var usersToShare = [];
 
+async function checkIsUserAutenthicatedAsync() {
+    const isUserAuthenticatedResponse = await isUserAuthenticatedAsync(); // to be sure that the authentication check is completed before adding the item to the list (and consequently before showing the save icon)
+    isUserAuthenticated = isUserAuthenticatedResponse.IsOk;
+}
+
 function tryHideLogoutButton() {
-    if (!isUserAuthenticatedAsync())
+    if (!isUserAuthenticated)
         hideByClass('logoutButton');
 }
 
@@ -46,7 +54,13 @@ function initPageDims() {
 }
 
 async function isUserAuthenticatedAsync() {
-    return await doAjaxGetNoModelAsync(UrlIsUserAuthenticated);
+    setLoadingCircleIsVisible(true);
+
+    const isUserAuthenticatedResponse = await doAjaxGetNoModelAsync(UrlIsUserAuthenticated);
+
+    setLoadingCircleIsVisible(false);
+
+    return isUserAuthenticatedResponse;
 }
 
 function backToHomeProcedure() {
