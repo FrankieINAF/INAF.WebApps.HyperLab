@@ -64,8 +64,8 @@ function showCharmsMessagesNotifications(item, duration) {
         /* if no messages are still present, then animate messages button */
         if ($('#messagesNotifications').children().length == 0) {
             /* close charms */
-            if (isExistant('charmMessagesNotifications') && Metro.getPlugin('#charmMessagesNotifications', 'charms').isOpen())
-                Metro.getPlugin('#charmMessagesNotifications', 'charms').close();
+            if (isExistant('charmMessagesNotifications') && Metro.charms.isOpen('#charmMessagesNotifications'))
+                Metro.charms.close('#charmMessagesNotifications');
             /* animate button */
             $('#buttonOpenMessagesCharms').addClass('ani-shuttle');
             setTimeout(function () { $('#buttonOpenMessagesCharms').removeClass('ani-shuttle'); }, 5000);
@@ -76,9 +76,9 @@ function showCharmsMessagesNotifications(item, duration) {
 
 
     if (isExistant('charmMessagesNotifications') && !Metro.charms.isOpen('#charmMessagesNotifications'))
-        Metro.getPlugin('#charmMessagesNotifications', 'charms').open();
+        Metro.charms.open('#charmMessagesNotifications');
 }
 
 function toggleCharmsMessages() {
-    Metro.getPlugin('#charmsMessages', 'charms').toggle();
+    Metro.charms.toggle('#charmsMessages');
 }

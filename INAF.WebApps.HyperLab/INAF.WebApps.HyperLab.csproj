@@ -339,33 +339,6 @@
 				<Content Update="appsettings.staging.json">
 						<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 				</Content>
-				<Content Update="wwwroot\js\dist\account\loginbundle.js">
-						<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-				</Content>
-				<Content Update="wwwroot\js\dist\account\registrationbundle.js">
-						<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-				</Content>
-				<Content Update="wwwroot\js\dist\home\indexbundle.js">
-						<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-				</Content>
-				<Content Update="wwwroot\js\dist\jquerybundle.js">
-						<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-				</Content>
-				<Content Update="wwwroot\js\dist\materials\mineralsbundle.js">
-						<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-				</Content>
-				<Content Update="wwwroot\js\dist\queue\queuebundle.js">
-						<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-				</Content>
-				<Content Update="wwwroot\js\dist\sharedstuff\sharedstuffbundle.js">
-						<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-				</Content>
-				<Content Update="wwwroot\js\dist\users\upsertuserbundle.js">
-						<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-				</Content>
-				<Content Update="wwwroot\js\dist\users\userslistbundle.js">
-						<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-				</Content>
 				<Content Update="wwwroot\lib\metro\css\metro.css">
 						<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 						<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
