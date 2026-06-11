@@ -1,4 +1,5 @@
-﻿using INAF.Libraries.Net.CommonResources;
+﻿using INAF.Libraries.Net.CommonHelpers;
+using INAF.Libraries.Net.CommonResources;
 using INAF.Libraries.Net.CommonWebAppHelpers;
 using INAF.Libraries.Net.CommonWebAppHelpers.Helpers;
 using INAF.Libraries.Net.CommonWebAppModels.Extensions;
@@ -146,10 +147,6 @@ namespace INAF.WebApps.HyperLab.Controllers
 
                 if (jwtTokenModel == null)
                     return new JsonResult(JwtTokenModel.GetEmptyToken());
-
-                //JwtTokenModel? jwtTokenModel = await authorizationHelper.getTokenForUserAsync(user.UserId);
-                //if (jwtTokenModel == null)
-                //    return new JsonResult(JwtTokenModel.GetEmptyToken());
 
                 /* set session token */
                 if (!string.IsNullOrEmpty(jwtTokenModel.Token))
