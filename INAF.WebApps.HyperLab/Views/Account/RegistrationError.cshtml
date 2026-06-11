@@ -1,9 +1,7 @@
 ﻿@model AccountErrorModel
 
-@using INAF.Libraries.Net.CommonResources
 @using INAF.Libraries.Net.CommonWebAppModels.Models.Account
-@using INAF.Libraries.Net.HyperLab.CommonModels.Resources
-@using INAF.WebApps.HyperLab.Resources
+@using Resources = INAF.WebApps.HyperLab.Resources
 
 @{
     Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
@@ -35,7 +33,7 @@
                     <div class="row cell-fs-12">
                         <p class="text-leader text-medium fg-white">@Html.Raw(Model.ErrorTitle)</p>
                         <p class="text-normal fg-white text-just margin-top-16">@Html.Raw(Model.ErrorMessage)</p>
-                        <p class="text-normal fg-white margin-top-8">@Html.Raw(SharedResources.TeamSign)</p>
+                        <p class="text-normal fg-white margin-top-8">@Html.Raw(Resources.SharedResources.TeamSign)</p>
                     </div>
                     <!-- CONTACT US -->
                     @{

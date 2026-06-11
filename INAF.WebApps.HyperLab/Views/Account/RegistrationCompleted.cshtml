@@ -1,5 +1,5 @@
-﻿@using INAF.WebApps.HyperLab.Resources
-@using CommonResources = INAF.Libraries.Net.CommonWebAppModels.Resources
+﻿@using Resources = INAF.WebApps.HyperLab.Resources
+@using CommonResources = INAF.Libraries.Net.CommonResources
 
 @{
     Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
@@ -34,7 +34,7 @@
                                     <p class="text-medium">@Html.Raw(CommonResources.Account.LoginConfirmationRequiredTitle)</p>
                                     <p class="text-normal text-just margin-top-16">@Html.Raw(CommonResources.Account.LoginConfirmationRequiredMessage1)</p>
                                     <p class="text-normal text-just margin-top-16">@Html.Raw(CommonResources.Account.LoginConfirmationRequiredMessage2)</p>
-                                    <p class="text-normal text-just margin-top-16">@Html.Raw(SharedResources.HyperLabTeamSignature)</p>
+                                    <p class="text-normal text-just margin-top-16">@Html.Raw(Resources.SharedResources.HyperLabTeamSignature)</p>
                                 </div>
                                 <!-- BUTTON TO LOGIN  -->
                                 <div class="row cell-fs-12 margin-top-8 d-flex flex-justify-center">

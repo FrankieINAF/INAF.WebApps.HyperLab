@@ -142,7 +142,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             if (ModelState.IsValid)
             {
                 JwtTokenModel? jwtTokenModel = await authorizationHelper.loginForJwtAsync(model, HttpContext.RequestAborted);
-                logger.LogInformation($"{nameof(Login)} - isAuthenticated: {jwtTokenModel != null}");
+                logger.LogInformation($"{nameof(LoginForJwt)} - isAuthenticated: {jwtTokenModel != null}");
 
                 if (jwtTokenModel == null)
                     return new JsonResult(JwtTokenModel.GetEmptyToken());
@@ -495,7 +495,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             {
                 logErrorMessage(ModelState.Values);
                 ModelState.Clear();
-                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = INAF.Libraries.Net.CommonWebAppModels.Resources.Account.RegistrationBadModel };
+                return new GenericValueStringResponseModel() { IsOk = false, ExMsg = INAF.Libraries.Net.CommonResources.Account.RegistrationBadModel };
             }
         }
 

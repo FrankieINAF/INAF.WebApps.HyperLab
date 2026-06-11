@@ -21,7 +21,7 @@ namespace INAF.WebApps.HyperLab.Attributes
 
             if (userId <= 0)
             {
-                handleUnauthorizedAccess(context, logger, "No token found. Redirecting to login page.");
+                handleUnauthorizedAccess(context, logger, "userId <= 0 - No token found. Redirecting to login page.");
                 return;
             }
 

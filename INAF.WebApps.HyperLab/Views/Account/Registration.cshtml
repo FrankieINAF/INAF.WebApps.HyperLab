@@ -1,13 +1,11 @@
 ﻿@model RegistrationModel
 
-@using INAF.WebApps.HyperLab.Controllers
-@using INAF.WebApps.HyperLab.Helpers
-@using INAF.WebApps.HyperLab.Resources
+@using CommonResources = INAF.Libraries.Net.CommonResources
 @using INAF.Libraries.Net.CommonResources;
 @using INAF.Libraries.Net.CommonWebAppHelpers
 @using INAF.Libraries.Net.CommonWebAppModels.Models.Account
-@using INAF.Libraries.Net.HyperLab.CommonModels.Resources
-@using CommonResources = INAF.Libraries.Net.CommonWebAppModels.Resources
+@using INAF.WebApps.HyperLab.Controllers
+@using Resources = INAF.WebApps.HyperLab.Resources
 
 @{
     Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
@@ -121,7 +119,7 @@
                                             <div class="form-group mt-10 d-flex flex-justify-center">
                                                 <button id="submitButton" class="image-button primary">
                                                     <span class="mif-checkmark icon"></span>
-                                                    <span class="caption">@Html.Raw(SharedResources.SubmitLabel)</span>
+                                                    <span class="caption">@Html.Raw(Resources.SharedResources.SubmitLabel)</span>
                                                 </button>
                                             </div>
                                         </div>

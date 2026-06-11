@@ -1,6 +1,6 @@
 ﻿
-@using INAF.Libraries.Net.CommonResources;@using INAF.WebApps.HyperLab.Resources
-@using INAF.Libraries.Net.HyperLab.CommonModels.Resources
+@using INAF.Libraries.Net.CommonResources;
+@using Resources = INAF.WebApps.HyperLab.Resources
 
 @{
     Layout = "~/Views/Shared/_LayoutNoNavigation.cshtml";
@@ -31,7 +31,7 @@
                     <div class="row cell-fs-12">
                         <p class="text-leader text-medium fg-white">@Html.Raw(Account.ConfirmationErrorTitle)</p>
                         <p class="text-normal fg-white text-just margin-top-16">@Html.Raw(Account.ConfirmationErrorMessage)</p>
-                        <p class="text-normal fg-white margin-top-8">@Html.Raw(SharedResources.HyperLabTeamSignature)</p>
+                        <p class="text-normal fg-white margin-top-8">@Html.Raw(Resources.SharedResources.HyperLabTeamSignature)</p>
                     </div>
                     <!-- CONTACT US -->
                     @{
