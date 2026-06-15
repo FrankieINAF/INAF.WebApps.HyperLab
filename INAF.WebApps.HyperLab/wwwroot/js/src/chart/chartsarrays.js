@@ -77,7 +77,7 @@ async function loadSpectraTypeColorsAsync() {
 
     let url = UrlGetUserSettingsByWildcard;
     if (!await isUserAuthenticatedAsync())
-        url = UrlGetDefaultColors;
+        url = UrlGetColors;
     let obj = await doAjaxGetAsync(url, model);
     if (obj && obj.Responses && obj.IsOk) {
         spectraTypeColors = [];

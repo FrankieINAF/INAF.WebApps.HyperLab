@@ -26,8 +26,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         #region GET
+        [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetDefaultColors(bool searchForDefaults)
+        public async Task<IActionResult> GetColors(bool searchForDefaults)
         {
             IEnumerable<KeyValueResponseModel> result = dbHandlerHyperLabUsers.getColors(await getUserIdAsync(),
                                                                                          searchForDefaults);
