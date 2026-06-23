@@ -186,6 +186,14 @@
     "includeInProject": true
   },
   {
+    "outputFileName": "wwwroot/js/dist/public/publicbundle.js",
+    "inputFiles": [
+      "wwwroot/js/src/public/publicstuff.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
     "outputFileName": "wwwroot/js/dist/account/registrationbundle.js",
     "inputFiles": [
       "wwwroot/js/src/account/registration.js"

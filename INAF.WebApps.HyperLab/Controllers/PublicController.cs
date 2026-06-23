@@ -22,6 +22,12 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
+        public IActionResult PublicStuff()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetMenu(SearchRequestByNullableIdModel model)
         {
             int userId = await getUserIdAsync();
@@ -33,6 +39,16 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         #region PUBLIC STUFF
+        [HttpGet]
+        public IActionResult GetPublicMineralTypeGroups()
+        {
+            var mineralTypes = dbHandlerHyperLabData.getPublicMineralTypeGroups();
+            if (mineralTypes?.Count > 0)
+                return new JsonResult(mineralTypes);
+            else
+                return new EmptyResult();
+        }
+
         [HttpGet]
         public IActionResult GetPublicSampleNameGroups()
         {

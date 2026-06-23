@@ -132,6 +132,7 @@
 
 		<ItemGroup>
 				<Folder Include="wwwroot\js\dist\" />
+				<Folder Include="wwwroot\lib\chartjs\" />
 		</ItemGroup>
 
 		<ItemGroup>
@@ -318,6 +319,11 @@
 						<AutoGen>True</AutoGen>
 						<DependentUpon>Materials.resx</DependentUpon>
 				</Compile>
+				<Compile Update="Resources\PublicStuff.Designer.cs">
+				  <DesignTime>True</DesignTime>
+				  <AutoGen>True</AutoGen>
+				  <DependentUpon>PublicStuff.resx</DependentUpon>
+				</Compile>
 				<Compile Update="Resources\Search.Designer.cs">
 						<DesignTime>True</DesignTime>
 						<AutoGen>True</AutoGen>
@@ -405,6 +411,10 @@
 				<EmbeddedResource Update="Resources\Materials.resx">
 						<Generator>PublicResXFileCodeGenerator</Generator>
 						<LastGenOutput>Materials.Designer.cs</LastGenOutput>
+				</EmbeddedResource>
+				<EmbeddedResource Update="Resources\PublicStuff.resx">
+				  <Generator>PublicResXFileCodeGenerator</Generator>
+				  <LastGenOutput>PublicStuff.Designer.cs</LastGenOutput>
 				</EmbeddedResource>
 				<EmbeddedResource Update="Resources\Search.resx">
 						<Generator>PublicResXFileCodeGenerator</Generator>

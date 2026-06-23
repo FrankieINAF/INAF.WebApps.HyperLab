@@ -1,17 +1,18 @@
 ﻿async function retrievePublicStuffAsync() {
     setLoadingCircleIsVisible(true);
 
+    const callRetrievePublicMineralTypeGroupsAsync = retrievePublicMineralTypeGroupsAsync();
     const callRetrievePublicSampleNameGroupsAsync = retrievePublicSampleNameGroupsAsync();
     const callRetrievePublicSampleTypeGroupsAsync = retrievePublicSampleTypeGroupsAsync();
 
-    await Promise.all([callRetrievePublicSampleNameGroupsAsync, callRetrievePublicSampleTypeGroupsAsync]);
+    await Promise.all([callRetrievePublicMineralTypeGroupsAsync, callRetrievePublicSampleNameGroupsAsync, callRetrievePublicSampleTypeGroupsAsync]);
 
     setLoadingCircleIsVisible(false);
 }
 
 function buildGroupsChart(containerId, items) {
-    var labels = items.Select(x => x.Item.StringValue).ToList();
-    var values = items.Select(x => x.Count).ToList();
+    var labels = items.map(x => x.Item.StringValue);
+    var values = items.map(x => x.Count);
 
     const ctx = document.getElementById(containerId).getContext('2d');
     new Chart(ctx, {
@@ -39,6 +40,19 @@ function buildGroupsChart(containerId, items) {
 }
 
 /* -------------------------------------------------------------------------------- */
+/* MINERAL TYPE GROUPS */
+/* -------------------------------------------------------------------------------- */
+async function retrievePublicMineralTypeGroupsAsync() {
+    try {
+        const items = await doAjaxGetNoModelAsync(UrlGetPublicMineralTypeGroups);
+        if (items && items.length > 0)
+            buildGroupsChart('chartMineralTypes', items);
+    } catch (e) {
+        console.error('Error retrieving public mineral type groups:', e);
+    }
+}
+
+/* -------------------------------------------------------------------------------- */
 /* SAMPLE NAME GROUPS */
 /* -------------------------------------------------------------------------------- */
 async function retrievePublicSampleNameGroupsAsync() {
@@ -47,6 +61,7 @@ async function retrievePublicSampleNameGroupsAsync() {
         if (items && items.length > 0) 
             buildGroupsChart('chartSampleNames', items);
     } catch (e) {
+        console.error('Error retrieving public sample name groups:', e);
     }
 }
 
@@ -59,12 +74,8 @@ async function retrievePublicSampleTypeGroupsAsync() {
         if (items && items.length > 0)
             buildGroupsChart('chartSampleTypes', items);
     } catch (e) {
+        console.error('Error retrieving public sample type groups:', e);
     }
-}
-
-function buildSampleTypeGroupsChart(items) {
-
-
 }
 
 /* ################################################################################ */
@@ -73,7 +84,7 @@ function buildSampleTypeGroupsChart(items) {
 $(async function () {
     showPageItems(true);
 
-    await delay(1000);
+    await delay(200);
 
     retrievePublicStuffAsync();
 });

@@ -19,6 +19,10 @@
     {
       "library": "animate.css@4.1.1",
       "destination": "wwwroot/lib/animate/animate.css/"
+    },
+    {
+      "library": "Chart.js@4.5.0",
+      "destination": "wwwroot/lib/chartjs/Chart.js/"
     }
   ]
 }
