@@ -474,7 +474,6 @@ function onWindowResize() {
 }
 
 $(async function () {
-    console.log('ciao');
     await checkIsUserAutenthicatedAsync();
 
     tryHideLogoutButton();

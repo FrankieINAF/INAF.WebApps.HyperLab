@@ -23,7 +23,7 @@ namespace INAF.WebApps.HyperLab.Helpers
         {
             var menu = new Menu();
 
-            List<MenuItem>? menuItems = dbHandlerHyperLabUsers.getMenuItems(httpContext.GetUserId());
+            List<MenuItem>? menuItems = dbHandlerHyperLabUsers.getMenuItemsForWeb(httpContext.GetUserId());
 
             if (menuItems == null || menuItems.Count == 0)
                 return null;
@@ -67,8 +67,7 @@ namespace INAF.WebApps.HyperLab.Helpers
 
         public List<MenuItem>? GetItemSubMenu(HttpContext httpContext, int parentId)
         {
-            List<MenuItem>? subMenuItems = dbHandlerHyperLabUsers.getMenuItems(httpContext.GetUserId(),
-                                                                               parentId);
+            List<MenuItem>? subMenuItems = dbHandlerHyperLabUsers.getMenuItemsForWeb(httpContext.GetUserId());
 
             //List<MenuItem>? subMenuItems = dbHandlerHyperLabUsers.getItemSubMenu(httpContext.GetUserId(),
             //                                                                     httpContext.GetPermissionContext(),

@@ -110,7 +110,6 @@ function manageNavigation() {
             addEnterFullScreenButton();
 
             /* left-side menu */
-            addBackToHomeButton();
             addBackToSearchButton();
             break;
 
@@ -118,9 +117,6 @@ function manageNavigation() {
             /* top-bar menu */
             addGuideHubButton();
             tryAddSearchButtonAsync();
-
-            /* left-side menu */
-            addBackToHomeButton();
             break;
     }
 }
@@ -171,10 +167,6 @@ function setButtonAlignEnabled(id, isEnabled, label) {
 /* ################################################################################ */
 /* ADD/REMOVE BUTTONS */
 /* ################################################################################ */
-function addBackToHomeButton() {
-    addMenuItem(backToHomeButtonId, ButtonBackToHomeLabel, ButtonBackToHomeTooltip, 'mif-home', backToHomeProcedure);
-}
-
 function removeBackToHomeButtonProcedure() {
     if (!isButtonAvailable(backToHomeButtonId))
         return;
