@@ -18,6 +18,7 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
     public class BaseController : Controller
     {
         private readonly string USER_ID = "UserId";
+        protected readonly string IS_USER_AUTHENTICATED = "IsUserAuthenticated";
 
         protected readonly IConfiguration? configuration;
         protected readonly IServiceProvider serviceProvider;

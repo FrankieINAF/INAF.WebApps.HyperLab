@@ -21,9 +21,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;
 
         public SpectraManagerController(IServiceProvider serviceProvider,
-                                         ILogger<SpectraManagerController> logger,
-                                         DbHandlerHyperLabData dbHandlerHyperLabData,
-                                         DbHandlerHyperLabUsers dbHandlerHyperLabUsers) : base(serviceProvider, logger)
+                                        ILogger<SpectraManagerController> logger,
+                                        DbHandlerHyperLabData dbHandlerHyperLabData,
+                                        DbHandlerHyperLabUsers dbHandlerHyperLabUsers) : base(serviceProvider, logger)
         {
             this.dbHandlerHyperLabData = dbHandlerHyperLabData;
             this.dbHandlerHyperLabUsers = dbHandlerHyperLabUsers;
@@ -44,6 +44,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 HttpContext.Session.SetString(Constants.LAST_PAGE, nameof(Hub));
 
             (bool isUserAuthenticated, List<PermissionModel>? permissions) status = await getUserStatusAsync();
+            HttpContext.Session.SetString(IS_USER_AUTHENTICATED, status.isUserAuthenticated.ToString());
 
             var sampleTypesHelper = serviceProvider.GetRequiredService<SampleTypesHelper>();
             SampleTypeValuesContainerExtended sampleTypeValuesContainerExtended = SampleTypeValuesContainerExtended.Create(sampleTypesHelper.getSampleTypeValuesContainer());

@@ -233,10 +233,11 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
+
+app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseSession();
 
 app.UseStaticFiles(new StaticFileOptions
 {

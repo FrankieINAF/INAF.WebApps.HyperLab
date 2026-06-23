@@ -1,0 +1,37 @@
+﻿using INAF.Libraries.Net.HyperLab.CommonModels.Models.PublicStuff;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace INAF.Libraries.Net.DB.HyperLabData
+{
+    public partial class DbHandlerHyperLabData
+    {
+        public List<SampleTypeGroupModel>? GetSampleTypes()
+        {
+            List<SampleTypeGroupModel>? sampleTypes = null;
+
+            using (var context = getDataContext())
+            {
+                try
+                {
+                    sampleTypes = (from x in context.ReadOnlySampleTypes
+                                   join lsfst in context.LinkSpectrumFileSampleType on x.Id equals lsfst.SampleTypeId
+                                   join sf in context.SpectraFiles on lsfst.SpectrumFileId equals sf.Id
+                                   where !sf.IsDeleted
+                                   && !lsfst.IsDeleted
+                                   select new { x.Value, }
+                                   
+                                   ).ToList();
+                }
+                catch (Exception ex)
+                {
+                    logError(nameof(GetSampleTypes), ex);
+                }
+            }
+
+            return sampleTypes;
+        }
+    }
+}

@@ -92,7 +92,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 {
                     logger.LogError($"{nameof(Login)} - user is null after authentication - user: {model.UserName}");
                     ModelState.Clear();
-                    return View(new LoginModel() {  ExMsg = Libraries.Net.CommonResources.Account.LoginErrorMessage });
+                    return View(new LoginModel() { ExMsg = Libraries.Net.CommonResources.Account.LoginErrorMessage });
                 }
 
                 if (!user.IsAuthorized)
@@ -125,6 +125,8 @@ namespace INAF.WebApps.HyperLab.Controllers
                 }
                 else
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                HttpContext.Session.SetString(IS_USER_AUTHENTICATED, true.ToString());
 
                 return RedirectToAction(nameof(SpectraManagerController.Hub), GenericHelper.GetControllerName(nameof(SpectraManagerController)));
             }
@@ -163,6 +165,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Remove(IS_USER_AUTHENTICATED);
             return RedirectToAction(nameof(SpectraManagerController.Hub), GenericHelper.GetControllerName(nameof(SpectraManagerController)));
         }
 

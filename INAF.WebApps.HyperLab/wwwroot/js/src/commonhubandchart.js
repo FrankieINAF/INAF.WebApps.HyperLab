@@ -57,6 +57,7 @@ async function isUserAuthenticatedAsync() {
     setLoadingCircleIsVisible(true);
 
     const isUserAuthenticatedResponse = await doAjaxGetNoModelAsync(UrlIsUserAuthenticated);
+    //const isUserAuthenticatedResponse = true;
 
     setLoadingCircleIsVisible(false);
 
