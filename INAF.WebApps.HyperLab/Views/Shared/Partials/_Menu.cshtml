@@ -10,13 +10,6 @@
 	if (Context.User.Identity != null)
 		isUserAuthenticated = Context.User.Identity.IsAuthenticated;
 
-	// <li>
-	// 	<a class="menuitem" href="@Url.Action(nameof(HomeController.Index), GenericHelper.GetControllerName(nameof(HomeController)))">
-	// 		<span class="icon"><span class="mif mif-home"></span></span>
-	// 		<span class="caption fg-white">@Html.Raw(INAF.WebApps.HyperLab.Resources.Home.HomeLabel)</span>
-	// 	</a>
-	// </li>
-
 	Menu? menu = menuHelper.GetMenu(Context);
 	int index = 0;
 
@@ -30,32 +23,6 @@
 					<span class="caption fg-white">@item.Label</span>
 				</a>
 			</li>
-			// else
-			// {
-			// 	<li>
-			// 		<a href="#" class="dropdown-toggle">
-			// 			<span class="icon"><span class="@item.Icon"></span></span>
-			// 			<span class="caption fg-white">@item.Label</span>
-			// 		</a>
-			// 		<ul class="navview-menu" data-role="dropdown">
-			// 			@{
-			// 				List<MenuItem>? children = menuHelper.GetItemSubMenu(Context, item.Id);
-			// 				if (children != null)
-			// 				{
-			// 					foreach (var child in children)
-			// 					{
-			// 						<li>
-			// 							<a class="menuhref" href="@Url.Action(child.ActionName, child.ControllerName)">
-			// 								<span class="icon" style="margin-left: 24px"><span class="@child.Icon"></span></span>
-			// 								<span class="caption">@child.Label</span>
-			// 							</a>
-			// 						</li>
-			// 					}
-			// 				}
-			// 			}
-			// 		</ul>
-			// 	</li>
-			// }
 
 			index++;
 		}

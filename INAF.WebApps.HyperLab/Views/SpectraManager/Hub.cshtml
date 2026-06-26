@@ -502,25 +502,19 @@
     </div>
 </div>
 
-<!-- FORM FOR NAVIGATING TO CHART -->
-<form id="formNavigateToChart"
-      method="post"
-      action="/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.Chart)"
-      target="_self">
-    @Html.AntiForgeryToken()
-</form>
-
 @{
-    <!-- CHARMS SHARE -->
+    await Html.RenderPartialAsync("Partials/_NavigateToChart");
+
     await Html.RenderPartialAsync("Partials/_Share");
 
-    <!-- CHARMS - MESSAGES -->
     await Html.RenderPartialAsync("Partials/_Messages");
 }
 
 <!-- common js variables -->
 @{
     await Html.RenderPartialAsync("Partials/_JsCommon");
+    await Html.RenderPartialAsync("Partials/_AllJsCommon");
+    await Html.RenderPartialAsync("Partials/_HubAndPublicStuffJsCommon");
     await Html.RenderPartialAsync("Partials/_HubAndShareJsCommon");
     await Html.RenderPartialAsync("Partials/_HubAndChartJsCommon");
     await Html.RenderPartialAsync("Partials/_HubJsCommon");
@@ -632,8 +626,10 @@
 <script type="text/javascript" src="~/js/dist/devextreme/devextremebundle.min.js" asp-append-version="true"></script>
 <environment names="Development">
     <script type="text/javascript" src="~/js/src/commonbuttons.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/src/commonhubandchartsandsharedstuff.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/src/commonall.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/src/commonallbuttons.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/src/commonhubandchart.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/src/commonhubandpublicstuff.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/src/hub/hub.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/src/hub/hubsearchcommon.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/src/hub/hubsearchsimple.js" asp-append-version="true"></script>

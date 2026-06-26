@@ -147,6 +147,9 @@
   <data name="DeleteLabel" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="DownloadSpectrumErrorMessage" xml:space="preserve">
+    <value>Sorry, something went wrong while trying to download selected spectrum</value>
+  </data>
   <data name="EditLabel" xml:space="preserve">
     <value>Edit</value>
   </data>

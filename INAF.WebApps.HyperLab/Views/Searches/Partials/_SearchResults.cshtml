@@ -158,7 +158,8 @@
 			cls: 'primary',
 			onclick: function() {
 				clearSearchResults();
-				executeAfter(expandSearchPanel, JS_DELAY_200); // 'expandSearchPanel' is defined in hub.js
+				if (doesMetroUIElemExist('panelSearchLoad')) // only for Hub page, not for PublicStuff page
+					executeAfter(expandSearchPanel, JS_DELAY_200); // 'expandSearchPanel' is defined in hub.js
 			}
 		}
 	]

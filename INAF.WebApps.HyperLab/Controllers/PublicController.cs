@@ -40,11 +40,31 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region PUBLIC STUFF
         [HttpGet]
+        public IActionResult GetPublicFilenameGroups()
+        {
+            var filenames = dbHandlerHyperLabData.getPublicFilenameGroups();
+            if (filenames?.Count > 0)
+                return new JsonResult(filenames);
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
         public IActionResult GetPublicMineralTypeGroups()
         {
             var mineralTypes = dbHandlerHyperLabData.getPublicMineralTypeGroups();
             if (mineralTypes?.Count > 0)
                 return new JsonResult(mineralTypes);
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
+        public IActionResult GetPublicOriginTypeGroups()
+        {
+            var originTypes = dbHandlerHyperLabData.getPublicOriginTypeGroups();
+            if (originTypes?.Count > 0)
+                return new JsonResult(originTypes);
             else
                 return new EmptyResult();
         }

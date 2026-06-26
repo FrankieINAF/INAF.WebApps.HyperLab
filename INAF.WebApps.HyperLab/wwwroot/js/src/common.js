@@ -624,6 +624,10 @@ function addCLassToMetroUIElem(id, classname) {
         $(`#${id}`).parent().addClass(classname);
 }
 
+function doesMetroUIElemExist(id) {
+    return Metro.getPlugin(`#${id}`) != null;
+}
+
 function hideElemMetroUIElem(id) {
     if (($(`#${id}`)).length > 0)
         hideElem($(`#${id}`).parent()[0]);

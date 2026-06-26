@@ -1,8 +1,4 @@
-﻿var CHECKBOX = 'checkbox';
-var GROUP_ITEM = 'groupItem';
-var GROUP_ITEMS = 'groupItems';
-
-var SELECTED_SEARCH_TYPE;
+﻿var SELECTED_SEARCH_TYPE;
 var SEARCH_SIMPLE_TYPE = 'searhsimpletype';
 var SEARCH_COMPLEX_TYPE = 'searhcomplextype';
 
@@ -34,162 +30,6 @@ function setUIForChart(isChartVisible) {
 
 function expandSearchPanel() {
     Metro.getPlugin('#panelSearchLoad', 'panel').expand();
-}
-
-/* ################################################################################ */
-/* SELECTED SPECTRA */
-/* ################################################################################ */
-function addOrRemoveSelectedSpectrum(id) {
-    if (isNaN(id))
-        return;
-
-    if (!selectedSpectra.includes(id))
-        addSelectedSpectrum(id);
-    else {
-        removeSelectedSpectrum(id);
-        if (selectedSpectra.length == 0) {
-            removeCreateChartsButtonProcedure();
-            removePublicAndShareButtonsProcedure();
-        }
-    }
-}
-
-function addSelectedSpectrum(id) {
-    selectedSpectra.push(id);
-
-    addCreateChartsButtonProcedure();
-    if (selectedSpectra.length == 1) {
-        addPublicAndShareButtons();
-        addMessage(ChartsUseChartsButtonMessage, 3000, INFO);
-    }
-}
-
-function removeSelectedSpectrum(id) {
-    const index = selectedSpectra.findIndex(x => x == id);
-    //console.log(`removeSelectedSpectrum - id: ${id}, index: ${index}`);
-    selectedSpectra.splice(index, 1);
-    //console.log(`removeSelectedSpectrum - selectedSpectra: ${selectedSpectra}`);
-    if (selectedSpectra.length == 0) {
-        addMessage(ChartsNoSpectraSelectedMessage, 3000, WARNING);
-    }
-}
-
-function resetSelectedSpectra() {
-    selectedSpectra = [];
-}
-
-/* ################################################################################ */
-/* SEARCH RESULTS  */
-/* ################################################################################ */
-function clearSearchResults() {
-    if (!$('#searchResultsContainer').length)
-        return;
-
-    let callback = function () {
-        $('#searchResultsContainer').empty();
-        setOverflowYHidden();
-
-        /* remove buttons added when any spaectrum is selected */
-        removeCreateChartsButtonProcedure();
-        removePublicAndShareButtonsProcedure();
-    };
-    animateCSS('searchResultsContainer', 'backOutDown', FAST, callback);
-}
-
-function showSearchResults(resultsNum) {
-    setOverflowYAuto(true);
-
-    if (isMobile())
-        $('#searchResultsContainer').removeClass('overflow-x-hidden').addClass('overflow-x-auto');
-
-    let callback;
-    if (resultsNum > 0) {
-        callback = function () {
-            //$('#panelSearchLoad').parent().removeClass('h-vh-50');
-            Metro.getPlugin('#panelSearchLoad', 'panel').collapse();
-        };
-    }
-    showByClass('searchResultsContainer');
-    animateCSS('searchResultsContainer', 'backInUp', FAST, callback);
-}
-
-/* ################################################################################ */
-/* SEARCH RESULT (GROUP ITEMS) */
-/* ################################################################################ */
-function buildGroupItems(obj, rowIndex) {
-    let itemsNum = obj.length;
-
-    var text = `<table class="table striped compact table-border row-border row-hover">`;
-    text += `<thead>`;
-    text += `   <th>&nbsp;</th>`;
-    text += `   <th>&nbsp;</th>`;
-    text += `   <th>${FileCsvLabel}</th>`;
-    text += `   <th>${FileXmlLabel}</th>`;
-    text += `   <th>${SearchGroupItemsColTypeLabel}</th>`;
-    text += `   <th>${SearchGroupItemsColInsertDateTimeLabel}</th>`;
-    text += `   <th>${SearchGroupItemsColEditDateTimeLabel}</th>`;
-    text += `</thead>`;
-    text += `<tbody>`;
-    for (var i = 0; i < itemsNum; i++) {
-        let id = `${CHECKBOX}${GROUP_ITEM}${obj[i].Id}`;
-        text += `   <tr>`;
-        text += `    <td><input id="${id}" type="checkbox" data-role="checkbox" data-style="2" data-cls-check="bd-cyan"></td>`;
-        text += `    <td><span class="mif mif-info mif-3x pointer" onclick='showInfo(${obj[i].Id})'></span></td>`;
-        text += `    <td><button class="button primary cycle outline pointer"><span class="mif mif-file-download pointer" title="${ButtonDownloadAsCsvFileLabel}" onclick='downloadSpectrumAsCsvAsync(${obj[i].Id})'></span></button></td>`;
-        text += `    <td><button class="button primary cycle outline pointer"><span class="mif mif-file-download pointer" title="${ButtonDownloadAsXmlFileLabel}" onclick='downloadSpectrumAsXmlAsync(${obj[i].Id})'></span></button></td>`;
-        text += `    <td class="row-text">${getSpectrumTypeDescription(obj[i].SpectrumType)}</td>`;
-        text += `    <td class="row-text">${formatDate(obj[i].InsertDateTimeJs)}</td>`;
-        let editDateTime = '-';
-        if (obj[i].EditDateTimeJs)
-            editDateTime = formatDate(obj[i].EditDateTimeJs);
-        text += `    <td class="row-text">${editDateTime}</td>`;
-        text += `   </tr>`;
-    }
-    text += `</tbody>`;
-    text += '</table>';
-
-    $(`#${GROUP_ITEMS}${rowIndex}`).html(text);
-
-    $(function () {
-        $(`[id^=${CHECKBOX}${GROUP_ITEM}]`).off();
-        $(`[id^=${CHECKBOX}${GROUP_ITEM}]`).on('change', function () {
-            var id = this.id;
-            addOrRemoveSelectedSpectrum(cleanId(id));
-        });
-    });
-
-    /* show 'shrink' icon and hide 'expand' icon */
-    hideByClass(`${GROUP_ITEMS}${rowIndex}IconExpand`);
-    showByClass(`${GROUP_ITEMS}${rowIndex}IconShrink`);
-}
-
-function cleanId(id) {
-    return parseInt(id.replace(`${CHECKBOX}${GROUP_ITEM}`, ''));
-}
-
-function clearGroupItems(rowIndex) {
-    $(`#${GROUP_ITEMS}${rowIndex}`).empty();
-
-    /* hide 'shrink' icon and show 'expand' icon */
-    hideByClass(`${GROUP_ITEMS}${rowIndex}IconShrink`);
-    showByClass(`${GROUP_ITEMS}${rowIndex}IconExpand`);
-}
-
-async function searchGroupItems(rawId, rowIndex) {
-    setLoadingCircleIsVisible(true);
-
-    var model = {
-        Id: rawId
-    };
-
-    let obj = await doAjaxGetAsync(UrlSearchGroupItems, model);
-    if (obj && obj.length > 0) {
-        buildGroupItems(obj, rowIndex);
-        setLoadingCircleIsVisible(false);
-    } else {
-        setLoadingCircleIsVisible(false);
-        showSimpleDialog(WARNING_LABEL, SearchGroupItemsNoResultsMessage, WARNING);
-    }
 }
 
 /* ################################################################################ */
@@ -544,26 +384,10 @@ $(async function () {
             search();
     });
 
-    $('#selectLevelAveragedSimple, #selectLevelSingleAcquisitionSimple').on('change', function (evt) {
-        var checkbox = $(this);
-        var value = parseInt(checkbox.val());
-
-        if (checkbox.is(':checked')) {
-            // Add item to the array if checked
-            if (!requestedLevelsSimple.includes(value)) {
-                requestedLevelsSimple.push(value);
-            }
-        } else {
-            // Remove item from the array if unchecked
-            var index = requestedLevelsSimple.indexOf(value);
-            if (index > -1) {
-                requestedLevelsSimple.splice(index, 1);
-            }
-        }
-    });
+    initializeRequestedLevelsSimple();
 
     // Programmatically set the checkbox as checked
-    executeAfter(function () { $('#selectLevelAveragedSimple').prop('checked', true).trigger('change'); }, 500);
+    //executeAfter(function () { $('#selectLevelAveragedSimple').prop('checked', true).trigger('change'); }, 500);
 
     /* check for screen orientation */
     screen.orientation.addEventListener("change", checkOrientation);

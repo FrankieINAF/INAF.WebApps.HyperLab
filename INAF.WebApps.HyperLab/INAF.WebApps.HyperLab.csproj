@@ -98,7 +98,6 @@
 				<Content Remove="wwwroot\js\src\commondxchart.js" />
 				<Content Remove="wwwroot\js\src\commonhub.js" />
 				<Content Remove="wwwroot\js\src\commonhubandchart.js" />
-				<Content Remove="wwwroot\js\src\commonhubandchartsandsharedstuff.js" />
 				<Content Remove="wwwroot\js\src\commonlists.js" />
 				<Content Remove="wwwroot\js\src\guide\guide.js" />
 				<Content Remove="wwwroot\js\src\home\index.js" />
@@ -189,7 +188,6 @@
 				<None Include="wwwroot\js\src\commonlists.js" />
 				<None Include="wwwroot\js\src\commonhub.js" />
 				<None Include="wwwroot\js\src\commonhubandchart.js" />
-				<None Include="wwwroot\js\src\commonhubandchartsandsharedstuff.js" />
 				<None Include="wwwroot\js\src\guide\guide.js" />
 				<None Include="wwwroot\js\src\home\index.js" />
 				<None Include="wwwroot\js\src\blazorglobal.js" />

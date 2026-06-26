@@ -151,6 +151,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, something went wrong while trying to download selected spectrum.
+        /// </summary>
+        public static string DownloadSpectrumErrorMessage {
+            get {
+                return ResourceManager.GetString("DownloadSpectrumErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string EditLabel {

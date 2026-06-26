@@ -1,7 +1,18 @@
 ﻿@using INAF.Libraries.Net.CommonWebAppHelpers
 @using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Resources
 
 <script type="text/javascript">
+    var FileCsvLabel = "@Html.Raw(Search.FileCsvLabel)";
+    var FileXmlLabel = "@Html.Raw(Search.FileXmlLabel)";
+
+    var SearchGroupItemsColTypeLabel = "@Html.Raw(Search.SearchGroupItemsColTypeLabel)";
+    var SearchGroupItemsColInsertDateTimeLabel = "@Html.Raw(Search.SearchGroupItemsColInsertDateTimeLabel)";
+    var SearchGroupItemsColEditDateTimeLabel = "@Html.Raw(Search.SearchGroupItemsColEditDateTimeLabel)";
+
+    var UrlGetSpectrumAsCsv = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetSpectrumAsCsv)';
+    var UrlGetSpectrumAsXml = '/@GenericHelper.GetControllerName(nameof(SpectraFilesController))/@nameof(SpectraFilesController.GetSpectrumAsXml)';
+    
     var UrlGetPublicFilenameGroups = '/@GenericHelper.GetControllerName(nameof(PublicController))/@nameof(PublicController.GetPublicFilenameGroups)';
     var UrlGetPublicMineralTypeGroups = '/@GenericHelper.GetControllerName(nameof(PublicController))/@nameof(PublicController.GetPublicMineralTypeGroups)';
     var UrlGetPublicOriginTypeGroups = '/@GenericHelper.GetControllerName(nameof(PublicController))/@nameof(PublicController.GetPublicOriginTypeGroups)';

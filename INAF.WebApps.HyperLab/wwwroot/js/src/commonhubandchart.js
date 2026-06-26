@@ -7,9 +7,8 @@ var helpButtonId = 'buttonHelp';
 var guideChartButtonId = 'guideChartButton';
 var guideHubButtonId = 'guideHubButton';
 var backToHomeButtonId = 'buttonBackToHome';
-var openMessagesCharmsButtonId = 'buttonOpenMessagesCharms';
 var searchButtonId = 'buttonSearch';
-var publicAndShareButtonId = 'buttonPublicAndShare';
+
 var setPublicButtonId = 'buttonSetPublic';
 var shareButtonId = 'buttonShare';
 var zoomOutButtonId = 'buttonZoomOut';
@@ -209,71 +208,6 @@ function removeGuideHubButton() {
     $(`#${guideHubButtonId}`).remove();
 }
 
-/*  */
-function addPublicAndShareButtons() {
-    var item = $('#buttonsAppBar').find(`#${publicAndShareButtonId}`);
-    if (item[0])
-        return;
-
-    let html = `<div id="${publicAndShareButtonId}" class="multi-action" style="height: 36px">`;
-    html += `<button class="action-button rotate-minus bg-transparent second fg-white" title="${ButtonPublicAndShareLabel}" onclick="$(this).toggleClass('active')" >`;
-    html += `<span class="icon"><span class="mif-external"></span></span>`;
-    html += `</button >`;
-    html += `<ul class="actions drop-bottom">`;
-    html += `<li class="bg-cyan" title="${ButtonShareLabel}" onclick="${openCharmsShare.name}()"><a href="#"><span class="mif-share pointer"></a></li>`;
-    html += `<li class="bg-cyan" title="${ButtonSetPublicLabel}" onclick="${setAsPublicProcedure.name}()"><a href="#"><span class="mif-vpn-publ pointer"></a></span></li>`;
-    html += `</ul>`;
-    html += `</div >`;
-
-    $('#buttonsAppBar').append($(html));
-    animateCSS(`${publicAndShareButtonId}`, `bounceInDown`, FAST);
-}
-
-function removePublicAndShareButtonsProcedure() {
-    if (!isButtonAvailable(publicAndShareButtonId))
-        return;
-
-    animateCSS(`${publicAndShareButtonId}`, `bounceOutUp`, FAST, removePublicAndShareButtons);
-}
-
-function removePublicAndShareButtons() {
-    $(`#${publicAndShareButtonId}`).remove();
-}
-
-/* ---------- OPEN MESSAGES BUTTON ---------- */
-function addOpenMessagesCharmsButton() {
-    addButton(openMessagesCharmsButtonId, ButtonShowCharmsMessagesLabel, 'mif-chat', toggleCharmsMessages);
-}
-
-function removeMessagesCharmsButtonProcedure() {
-    if (!isButtonAvailable(openMessagesCharmsButtonId))
-        return;
-
-    animateCSS(`${openMessagesCharmsButtonId}`, `bounceOutUp`, FAST, removeMessagesCharmsButton);
-}
-
-function removeMessagesCharmsButton() {
-    $(`#${openMessagesCharmsButtonId}`).remove();
-}
-
-/* ################################################################################ */
-/* CHARMS SHARE */
-/* ################################################################################ */
-function closeCharmsShare() {
-    if (Metro.charms.isOpen('#charmsShare'))
-        Metro.charms.close('#charmsShare');
-}
-
-function openCharmsShare() {
-    if (!Metro.charms.isOpen('#charmsShare'))
-        Metro.charms.open('#charmsShare');
-}
-
-function onCharmsShareOpen() {
-    NumOfSharedSpectra = NumOfSharedSpectra.replace('r_v', selectedSpectra.length);
-    $('#numOfSharedSpectraLabel').text(NumOfSharedSpectra);
-}
-
 /* ################################################################################ */
 /* SHARE SPECTRA */
 /* ################################################################################ */
@@ -465,94 +399,6 @@ function showAddSharesErrors(shareResults) {
     Metro.toast.create(html, null, null, null, options);
 
     return errorsNum;
-}
-
-/* ################################################################################ */
-/* SET SPECTRA AS PUBLIC */
-/* ################################################################################ */
-function setAsPublicProcedure() {
-    showDialogWithAction(WARNING_LABEL, SetAsPublicQuestion, WARNING, YES_LABEL, setAsPublicAsync);
-}
-
-async function setAsPublicAsync() {
-    let isOk = true;
-
-    setLoadingCircleIsVisible(true);
-
-    let model = {
-        SpectraIds: selectedSpectra
-    };
-
-    try {
-        let obj = await doAjaxPostAsync(UrlSetSpectraAsPublic, model);
-        if (obj.IsOk) {
-            setLoadingCircleIsVisible(false);
-            showSimpleDialog(INFO_LABEL, SetAsPublicSuccessMessage, SUCCESS);
-        } else
-            isOk = false;
-    } catch (e) {
-        isOk = false;
-    }
-
-    if (!isOk) {
-        setLoadingCircleIsVisible(false);
-        showSimpleDialog(ERROR_LABEL, SetAsPublicErrorMessage, ALERT);
-    }
-}
-
-/* ################################################################################ */
-/* DOWNLOAD PROCEDURE */
-/* ################################################################################ */
-async function downloadSpectrumAsCsvAsync(id) {
-    let isOk = true;
-
-    setLoadingCircleIsVisible(true);
-
-    let model = {
-        Id: id
-    };
-
-    try {
-        let obj = await doAjaxGetAsync(UrlGetSpectrumAsCsv, model);
-        if (obj.IsOk) {
-            setLoadingCircleIsVisible(false);
-            executeExportFile(obj.ResponseObject.Csv, `${obj.ResponseObject.Filename}_${getSpectrumTypeString(obj.ResponseObject.TypeId)}.csv`)
-        } else
-            isOk = false;
-    } catch (e) {
-        isOk = false;
-    }
-
-    if (!isOk) {
-        setLoadingCircleIsVisible(false);
-        showSimpleDialog(ERROR_LABEL, DownloadSpectrumErrorMessage, ALERT);
-    }
-}
-
-async function downloadSpectrumAsXmlAsync(id) {
-    let isOk = true;
-
-    setLoadingCircleIsVisible(true);
-
-    let model = {
-        Id: id
-    };
-
-    try {
-        let obj = await doAjaxGetAsync(UrlGetSpectrumAsXml, model);
-        if (obj.IsOk) {
-            setLoadingCircleIsVisible(false);
-            executeExportFile(obj.ResponseObject.Xml, `${obj.ResponseObject.Filename}_${getSpectrumTypeString(obj.ResponseObject.TypeId)}.xml`)
-        } else
-            isOk = false;
-    } catch (e) {
-        isOk = false;
-    }
-
-    if (!isOk) {
-        setLoadingCircleIsVisible(false);
-        showSimpleDialog(ERROR_LABEL, DownloadSpectrumErrorMessage, ALERT);
-    }
 }
 
 /* ################################################################################ */

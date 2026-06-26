@@ -1,5 +1,4 @@
-﻿var requestedLevelsSimple = [];
-
+﻿
 /* ################################################################################ */
 /* ANCILLARY FOR SEARCH-BY-MATERIAL */
 /* ################################################################################ */
@@ -38,19 +37,7 @@ function getMaterialForSearch() {
 async function searchSimpleByFilename() {
     let text = $('#selectFilename').val();
 
-    if (!text) {
-        showSimpleDialog(WARNING_LABEL, SearchByFilenameEmptyErrorMessage, WARNING);
-        return;
-    }
-
-    let model = {
-        Text: text,
-        RequestedLevels: requestedLevelsSimple
-    };
-
-    setLoadingCircleIsVisible(true);
-
-    loadPartialViewWithAjaxJsonPost(UrlSearchSimpleGroupsByFilename, model, 'searchResultsContainer');
+    executeSearchSimpleByFilename(text);
 }
 
 async function searchSimpleByMaterial() {

@@ -37,7 +37,7 @@
     "inputFiles": [
       "wwwroot/js/src/commonbuttons.js",
       "wwwroot/js/src/commonhubandchart.js",
-      "wwwroot/js/src/commonhubandchartsandsharedstuff.js",
+      "wwwroot/js/src/commonall.js",
       "wwwroot/js/src/chart/charts.js",
       "wwwroot/js/src/chart/chartsbuttons.js",
       "wwwroot/js/src/chart/chartsarrays.js",
@@ -85,7 +85,9 @@
     "inputFiles": [
       "wwwroot/js/src/commonbuttons.js",
       "wwwroot/js/src/commonhubandchart.js",
-      "wwwroot/js/src/commonhubandchartsandsharedstuff.js",
+      "wwwroot/js/src/commonall.js",
+      "wwwroot/js/src/commonallbuttons.js",
+      "wwwroot/js/src/commonhubandpublicstuff.js",
       "wwwroot/js/src/hub/hub.js",
       "wwwroot/js/src/hub/hubsearchcommon.js",
       "wwwroot/js/src/hub/hubsearchsimple.js",
@@ -188,7 +190,11 @@
   {
     "outputFileName": "wwwroot/js/dist/public/publicbundle.js",
     "inputFiles": [
-      "wwwroot/js/src/public/publicstuff.js"
+      "wwwroot/js/src/commonall.js",
+      "wwwroot/js/src/commonallbuttons.js",
+      "wwwroot/js/src/commonhubandpublicstuff.js",
+      "wwwroot/js/src/public/publicstuff.js",
+      "wwwroot/js/src/charmsmessages.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true
@@ -212,7 +218,7 @@
   {
     "outputFileName": "wwwroot/js/dist/sharedstuff/sharedstuffbundle.js",
     "inputFiles": [
-      "wwwroot/js/src/commonhubandchartsandsharedstuff.js",
+      "wwwroot/js/src/commonall.js",
       "wwwroot/js/src/commonhubandsharedstuff.js",
       "wwwroot/js/src/sharedstuff/sharedstuff.js"
     ],

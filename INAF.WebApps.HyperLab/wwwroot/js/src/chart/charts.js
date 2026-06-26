@@ -8,8 +8,6 @@ var chartConstantLines;
 
 var points = [];
 
-var selectedSpectra = [];
-
 var spectraInfo = [];
 var spectraTree = [];
 var spectraTypeColors = [];
