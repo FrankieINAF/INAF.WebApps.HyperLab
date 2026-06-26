@@ -7,6 +7,11 @@
 <link href="~/css/src/public/publicstuff.css" rel="stylesheet" />
 
 <div class="d-flex flex-column h-100 overflow-x-auto overflow-y-auto" style="max-width: 100%">
+    <!-- PAGE DESCRIPTION -->
+    <div class="d-flex flex-column margin-16">
+        <span class="text-medium text-just">@Html.Raw(PublicStuff.PageDescription)</span>
+   </div>
+
     <!-- LEVELS -->
     <div class="d-flex flex-column margin-left-8">
         <input id="selectLevelAveragedSimple"

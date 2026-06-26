@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\views\\public\\publicstuff.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\views\\public\\publicstuff.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\resources\\publicstuff.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
+      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\resources\\publicstuff.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\wwwroot\\js\\src\\public\\publicstuff.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\wwwroot\\js\\src\\public\\publicstuff.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
@@ -54,16 +62,8 @@
       "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\views\\public\\publicstuff.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\views\\public\\publicstuff.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\bundleconfig.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\bundleconfig.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|g:\\projects\\inaf\\webapps\\inaf.webapps.hyperlab\\inaf.webapps.hyperlab\\resources\\publicstuff.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
-      "RelativeMoniker": "D:0:0:{48BA97E5-2980-432D-A2FB-F88973BA9054}|INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab.csproj|solutionrelative:inaf.webapps.hyperlab\\resources\\publicstuff.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
     }
   ],
   "DocumentGroupContainers": [
@@ -73,11 +73,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 14,
               "Title": "appsettings.development.json",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\appsettings.development.json",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\appsettings.development.json",
@@ -91,13 +91,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "publicstuff.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\src\\public\\publicstuff.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\src\\public\\publicstuff.js",
               "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\src\\public\\publicstuff.js",
               "RelativeToolTip": "INAF.WebApps.HyperLab\\wwwroot\\js\\src\\public\\publicstuff.js",
-              "ViewState": "AgIAAD0AAAAAAAAAAAAAwFwAAABZAAAAAAAAAA==",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAAwG0AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2026-06-23T12:53:22.416Z",
               "IsPinned": true,
@@ -105,13 +105,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 0,
               "Title": "PublicStuff.cshtml",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Views\\Public\\PublicStuff.cshtml",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Views\\Public\\PublicStuff.cshtml",
-              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Views\\Public\\PublicStuff.cshtml",
-              "RelativeToolTip": "INAF.WebApps.HyperLab\\Views\\Public\\PublicStuff.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD4AAAAAAAAAAAAAAA==",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Views\\Public\\PublicStuff.cshtml*",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\Views\\Public\\PublicStuff.cshtml*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-06-23T08:04:09.232Z",
               "IsPinned": true,
@@ -119,7 +119,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "Hub.cshtml",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Views\\SpectraManager\\Hub.cshtml",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Views\\SpectraManager\\Hub.cshtml",
@@ -133,7 +133,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "hub.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\src\\hub\\hub.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\src\\hub\\hub.js",
@@ -147,7 +147,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "commonallbuttons.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\src\\commonallbuttons.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\src\\commonallbuttons.js",
@@ -161,19 +161,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "PublicStuff.resx",
-              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Resources\\PublicStuff.resx",
-              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Resources\\PublicStuff.resx",
-              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Resources\\PublicStuff.resx",
-              "RelativeToolTip": "INAF.WebApps.HyperLab\\Resources\\PublicStuff.resx",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
-              "WhenOpened": "2026-06-23T14:21:18.488Z",
-              "IsPinned": true
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "PublicController.cs",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Controllers\\PublicController.cs",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Controllers\\PublicController.cs",
@@ -187,7 +175,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 1,
+              "Title": "PublicStuff.resx",
+              "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Resources\\PublicStuff.resx",
+              "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Resources\\PublicStuff.resx",
+              "ToolTip": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Resources\\PublicStuff.resx",
+              "RelativeToolTip": "INAF.WebApps.HyperLab\\Resources\\PublicStuff.resx",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2026-06-26T14:29:06.138Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "hubbundle.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\dist\\hub\\hubbundle.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\dist\\hub\\hubbundle.js",
@@ -200,7 +200,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "DbHandlerHyperLabDataPublic.cs",
               "DocumentMoniker": "G:\\Projects\\INAF\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Data\\INAF.Libraries.Net.DB.HyperLab.Data\\DbHandlerHyperLabDataPublic.cs",
               "RelativeDocumentMoniker": "..\\..\\Libraries\\Net\\DB\\INAF.Libraries.Net.DB.HyperLab.Data\\INAF.Libraries.Net.DB.HyperLab.Data\\DbHandlerHyperLabDataPublic.cs",
@@ -213,7 +213,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "SearchesController.cs",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Controllers\\SearchesController.cs",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Controllers\\SearchesController.cs",
@@ -226,7 +226,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "commonhubandpublicstuff.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\src\\commonhubandpublicstuff.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\src\\commonhubandpublicstuff.js",
@@ -239,7 +239,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "_HubAndPublicStuffJsCommon.cshtml",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Views\\Shared\\Partials\\_HubAndPublicStuffJsCommon.cshtml",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Views\\Shared\\Partials\\_HubAndPublicStuffJsCommon.cshtml",
@@ -252,7 +252,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "_HubJsCommon.cshtml",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\Views\\SpectraManager\\Partials\\_HubJsCommon.cshtml",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\Views\\SpectraManager\\Partials\\_HubJsCommon.cshtml",
@@ -265,7 +265,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "hubsearchsimple.js",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\wwwroot\\js\\src\\hub\\hubsearchsimple.js",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\wwwroot\\js\\src\\hub\\hubsearchsimple.js",
@@ -278,7 +278,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "bundleconfig.json",
               "DocumentMoniker": "G:\\Projects\\INAF\\WebApps\\INAF.WebApps.HyperLab\\INAF.WebApps.HyperLab\\bundleconfig.json",
               "RelativeDocumentMoniker": "INAF.WebApps.HyperLab\\bundleconfig.json",

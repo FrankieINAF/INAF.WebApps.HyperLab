@@ -135,4 +135,7 @@
   <data name="PublicStuffPageTitle" xml:space="preserve">
     <value>Public stuff</value>
   </data>
+  <data name="PageDescription" xml:space="preserve">
+    <value>The Public Stuff page displays all spectra made publicly available, providing several interactive tools to explore them. Users can browse the latest 10 public spectra by filename or sample name, and view donut charts that break down how many spectra fall under each search parameter. Selecting a list entry or a donut slice automatically performs a search for all spectra associated with that value.</value>
+  </data>
 </root>

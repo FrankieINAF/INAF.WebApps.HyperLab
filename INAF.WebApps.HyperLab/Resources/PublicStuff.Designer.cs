@@ -88,6 +88,15 @@ namespace INAF.WebApps.HyperLab.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Public Stuff page displays all spectra made publicly available, providing several interactive tools to explore them. Users can browse the latest 10 public spectra by filename or sample name, and view donut charts that break down how many spectra fall under each search parameter. Selecting a list entry or a donut slice automatically performs a search for all spectra associated with that value..
+        /// </summary>
+        public static string PageDescription {
+            get {
+                return ResourceManager.GetString("PageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Public stuff.
         /// </summary>
         public static string PublicStuffPageTitle {
