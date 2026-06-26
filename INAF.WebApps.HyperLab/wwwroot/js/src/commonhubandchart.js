@@ -38,7 +38,7 @@ var red = '#a8071e';
 var usersToShare = [];
 
 async function checkIsUserAutenthicatedAsync() {
-    const isUserAuthenticatedResponse = await isUserAuthenticatedAsync(); // to be sure that the authentication check is completed before adding the item to the list (and consequently before showing the save icon)
+    const isUserAuthenticatedResponse = await isUserAuthenticatedAsync(false); // to be sure that the authentication check is completed before adding the item to the list (and consequently before showing the save icon)
     isUserAuthenticated = isUserAuthenticatedResponse.IsOk;
 }
 
@@ -52,13 +52,17 @@ function initPageDims() {
     pageH = $('#renderbody').height();
 }
 
-async function isUserAuthenticatedAsync() {
-    setLoadingCircleIsVisible(true);
+async function isUserAuthenticatedAsync(useLoading = true) {
+    if (useLoading) {
+        setLoadingCircleIsVisible(true);
+    }
 
     const isUserAuthenticatedResponse = await doAjaxGetNoModelAsync(UrlIsUserAuthenticated);
     //const isUserAuthenticatedResponse = true;
 
-    setLoadingCircleIsVisible(false);
+    if (useLoading) {
+        setLoadingCircleIsVisible(false);
+    }
 
     return isUserAuthenticatedResponse;
 }

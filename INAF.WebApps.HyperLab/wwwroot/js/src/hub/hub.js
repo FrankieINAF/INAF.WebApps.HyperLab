@@ -314,14 +314,16 @@ function onWindowResize() {
 }
 
 $(async function () {
+    setLoadingCircleIsVisible(true);
+
     await checkIsUserAutenthicatedAsync();
 
     tryHideLogoutButton();
 
     /* fill arrays for search */
-    fillSampleTypes();
-    fillMineralTypes();
-    fillOriginTypes();
+    //fillSampleTypes();
+    //fillMineralTypes();
+    //fillOriginTypes();
 
     /* init buttons */
     SELECTED_SEARCH_TYPE = SEARCH_SIMPLE_TYPE;
@@ -340,8 +342,7 @@ $(async function () {
         removeSearchButtonProcedure();
     });
 
-    /* init chartContainer */
-    chartContainer = $('#charts');
+    await retrieveArraysForSearchesAsync();
 
     /* init radio-buttons for selecting search type */
     initSearchTypesButtons();
@@ -384,10 +385,8 @@ $(async function () {
             search();
     });
 
+    /* init requested levels for search and set as checked the 1st one */
     initializeRequestedLevelsSimple();
-
-    // Programmatically set the checkbox as checked
-    //executeAfter(function () { $('#selectLevelAveragedSimple').prop('checked', true).trigger('change'); }, 500);
 
     /* check for screen orientation */
     screen.orientation.addEventListener("change", checkOrientation);
@@ -395,8 +394,8 @@ $(async function () {
 
     /* try execute last search, when available */
     tryRestoreLastSearch();
-    //if (isLastSearchAvailable)
-    //    loadPartialViewWithAjaxPostNoModel(UrlExecuteLastSearch, 'searchResultsContainer');
+
+    setLoadingCircleIsVisible(false);
 });
 
 $(document).on('beforeunload', function () {

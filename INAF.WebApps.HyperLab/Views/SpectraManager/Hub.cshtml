@@ -571,56 +571,6 @@
             executeComplexSearchAsync();
         }
     }
-
-    function fillSampleTypes() {
-    @{
-                if (Model.SampleTypeValuesContainerExtended.SampleDataValues != null && Model.SampleTypeValuesContainerExtended.SampleDataValues.Any())
-                {
-                            StringBuilder sb = new StringBuilder();
-                            int sampleTypesNum = Model.SampleTypeValuesContainerExtended.SampleDataValues.Count;
-                            for (int i = 0; i < sampleTypesNum; i++)
-                            {
-                                        sb.AppendLine($"sampleTypes.push({{key: {Model.SampleTypeValuesContainerExtended.SampleDataValues[i].Id}, value: '{Model.SampleTypeValuesContainerExtended.SampleDataValues[i].Value}' }});");
-                            }
-                            @Html.Raw(sb.ToString())
-    ;
-                }
-    }
-    }
-
-    function fillMineralTypes() {
-    @{
-                if (Model.SampleTypeValuesContainerExtended.MineralTypeValues != null && Model.SampleTypeValuesContainerExtended.MineralTypeValues.Any())
-                {
-                            StringBuilder sb = new StringBuilder();
-                            int mineralTypesNum = Model.SampleTypeValuesContainerExtended.MineralTypeValues.Count;
-                            for (int i = 0; i < mineralTypesNum; i++)
-                            {
-                                        sb.AppendLine($"mineralTypes.push({{key: {Model.SampleTypeValuesContainerExtended.MineralTypeValues[i].Id}, value: '{Model.SampleTypeValuesContainerExtended.MineralTypeValues[i].Value}' }});");
-                            }
-                            @Html.Raw(sb.ToString())
-    ;
-                }
-    }
-    }
-
-    function fillOriginTypes() {
-    @{
-                if (Model.SampleTypeValuesContainerExtended.OriginTypeValues != null && Model.SampleTypeValuesContainerExtended.OriginTypeValues.Any())
-                {
-                            StringBuilder sb = new StringBuilder();
-                            int originTypesNum = Model.SampleTypeValuesContainerExtended.OriginTypeValues.Count;
-                            for (int i = 0; i < originTypesNum; i++)
-                            {
-                                        sb.AppendLine($"originTypes.push({{key: {Model.SampleTypeValuesContainerExtended.OriginTypeValues[i].Id}, value: '{Model.SampleTypeValuesContainerExtended.OriginTypeValues[i].Value}' }});");
-                            }
-                            @Html.Raw(sb.ToString())
-    ;
-                }
-    }
-    }
-
-
 </script>
 <script type="text/javascript" src="~/js/dist/blazorglobalbundle.min.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/js/dist/devextreme/devextremebundle.min.js" asp-append-version="true"></script>

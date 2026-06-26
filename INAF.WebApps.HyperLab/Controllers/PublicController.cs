@@ -38,6 +38,38 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new EmptyResult();
         }
 
+        #region ARRAYS FOR SEARCHES
+        [HttpGet]
+        public IActionResult GetMineralTypes()
+        {
+            var mineralTypes = dbHandlerHyperLabData.getMineralTypes();
+            if (mineralTypes?.Count > 0)
+                return new JsonResult(mineralTypes);
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
+        public IActionResult GetOriginTypes()
+        {
+            var originTypes = dbHandlerHyperLabData.getOriginTypes();
+            if (originTypes?.Count > 0)
+                return new JsonResult(originTypes);
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
+        public IActionResult GetSampleTypes()
+        {
+            var sampleTypes = dbHandlerHyperLabData.getSampleTypes();
+            if (sampleTypes?.Count > 0)
+                return new JsonResult(sampleTypes);
+            else
+                return new EmptyResult();
+        }
+        #endregion
+
         #region PUBLIC STUFF
         [HttpGet]
         public IActionResult GetPublicFilenameGroups()

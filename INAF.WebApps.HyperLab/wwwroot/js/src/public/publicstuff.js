@@ -1,6 +1,4 @@
 ﻿async function retrievePublicStuffAsync() {
-    setLoadingCircleIsVisible(true);
-
     const callRetrievePublicFilenameGroupsAsync = retrievePublicFilenameGroupsAsync();
     const callRetrievePublicMineralTypeGroupsAsync = retrievePublicMineralTypeGroupsAsync();
     const callRetrievePublicOriginTypeGroupsAsync = retrievePublicOriginTypeGroupsAsync();
@@ -8,16 +6,14 @@
     const callRetrievePublicSampleTypeGroupsAsync = retrievePublicSampleTypeGroupsAsync();
 
     await Promise.all([callRetrievePublicFilenameGroupsAsync, callRetrievePublicMineralTypeGroupsAsync, callRetrievePublicOriginTypeGroupsAsync, callRetrievePublicSampleNameGroupsAsync, callRetrievePublicSampleTypeGroupsAsync]);
-
-    setLoadingCircleIsVisible(false);
 }
 
-function buildGroupsChart(containerId, items) {
+function buildGroupsChart(containerId, items, callback) {
     var labels = items.map(x => x.Item.StringValue);
     var values = items.map(x => x.Count);
 
     const ctx = document.getElementById(containerId).getContext('2d');
-    new Chart(ctx, {
+    const myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
             labels: labels,
@@ -35,6 +31,28 @@ function buildGroupsChart(containerId, items) {
             plugins: {
                 legend: {
                     position: 'bottom'
+                }
+            },
+            onClick: (event, activeElements) => {
+                // Controlliamo se l'utente ha cliccato effettivamente su una fetta
+                if (activeElements.length > 0) {
+                    // Prendiamo il primo elemento attivo (la fetta cliccata)
+                    const firstPoint = activeElements[0];
+
+                    // Otteniamo l'indice della fetta e l'indice del dataset
+                    const datasetIndex = firstPoint.datasetIndex;
+                    const index = firstPoint.index;
+
+                    // Recuperiamo i dati associati a quella fetta
+                    const label = myChart.data.labels[index].toLowerCase();
+
+                    let id = 0;
+                    const item = items.find(x => x.Item.StringValue.toLowerCase() === label);
+                    if (item) {
+                        id = item.Item.Id;
+                    }
+
+                    callback(id);
                 }
             }
         }
@@ -65,7 +83,6 @@ async function retrievePublicFilenameGroupsAsync() {
     }
 }
 
-
 /* -------------------------------------------------------------------------------- */
 /* MINERAL TYPE GROUPS */
 /* -------------------------------------------------------------------------------- */
@@ -73,7 +90,7 @@ async function retrievePublicMineralTypeGroupsAsync() {
     try {
         const items = await doAjaxGetNoModelAsync(UrlGetPublicMineralTypeGroups);
         if (items && items.length > 0)
-            buildGroupsChart('chartMineralTypes', items);
+            buildGroupsChart('chartMineralTypes', items, executeSearchSimpleByMineralType);
     } catch (e) {
         console.error('Error retrieving public mineral type groups:', e);
     }
@@ -86,7 +103,7 @@ async function retrievePublicOriginTypeGroupsAsync() {
     try {
         const items = await doAjaxGetNoModelAsync(UrlGetPublicOriginTypeGroups);
         if (items && items.length > 0)
-            buildGroupsChart('chartOriginTypes', items);
+            buildGroupsChart('chartOriginTypes', items, executeSearchSimpleByOriginType);
     } catch (e) {
         console.error('Error retrieving public origin type groups:', e);
     }
@@ -98,8 +115,8 @@ async function retrievePublicOriginTypeGroupsAsync() {
 async function retrievePublicSampleNameGroupsAsync() {
     try {
         const items = await doAjaxGetNoModelAsync(UrlGetPublicSampleNameGroups);
-        if (items && items.length > 0) 
-            buildList('chartSampleNames', items);
+        if (items && items.length > 0)
+            buildList('chartSampleNames', items, executeSearchSimpleBySampleName.name);
     } catch (e) {
         console.error('Error retrieving public sample name groups:', e);
     }
@@ -112,7 +129,7 @@ async function retrievePublicSampleTypeGroupsAsync() {
     try {
         const items = await doAjaxGetNoModelAsync(UrlGetPublicSampleTypeGroups);
         if (items && items.length > 0)
-            buildGroupsChart('chartSampleTypes', items);
+            buildGroupsChart('chartSampleTypes', items, executeSearchSimpleBySampleType);
     } catch (e) {
         console.error('Error retrieving public sample type groups:', e);
     }
@@ -122,11 +139,17 @@ async function retrievePublicSampleTypeGroupsAsync() {
 /* DOCUMENT READY */
 /* ################################################################################ */
 $(async function () {
+    setLoadingCircleIsVisible(true);
+
     showPageItems(true);
 
     await delay(200);
 
     initializeRequestedLevelsSimple();
 
-    retrievePublicStuffAsync();
+    await retrieveArraysForSearchesAsync();
+
+    await retrievePublicStuffAsync();
+
+    setLoadingCircleIsVisible(false);
 });

@@ -34,13 +34,13 @@ function getMaterialForSearch() {
 /* ################################################################################ */
 /* SEARCH */
 /* ################################################################################ */
-async function searchSimpleByFilename() {
+function searchSimpleByFilename() {
     let text = $('#selectFilename').val();
 
     executeSearchSimpleByFilename(text);
 }
 
-async function searchSimpleByMaterial() {
+function searchSimpleByMaterial() {
     let model = getMaterialForSearch();
 
     if (!model)
@@ -51,46 +51,28 @@ async function searchSimpleByMaterial() {
     loadPartialViewWithAjaxJsonPost(UrlSearchSimpleGroupsByMaterial, model, 'searchResultsContainer');
 }
 
-async function searchSimpleByMineralType() {
+function searchSimpleByMineralType() {
     let plugin = Metro.getPlugin('#selectMineralType', 'select');
 
-    setLoadingCircleIsVisible(true);
-
-    loadPartialViewWithAjaxJsonPost(UrlSearchSimpleByMineralType, getModelFromPlugin(plugin), 'searchResultsContainer');
+    executeSearchSimpleByMineralType(parseInt(plugin.val()));
 }
 
-async function searchSimpleByOriginType() {
+function searchSimpleByOriginType() {
     let plugin = Metro.getPlugin('#selectOriginType', 'select');
 
-    setLoadingCircleIsVisible(true);
-
-    loadPartialViewWithAjaxJsonPost(UrlSearchSimpleByOriginType, getModelFromPlugin(plugin), 'searchResultsContainer');
+    executeSearchSimpleByOriginType(parseInt(plugin.val()));
 }
 
-async function searchSimpleBySampleName() {
+function searchSimpleBySampleName() {
     let text = $('#selectSampleName').val();
 
-    if (!text) {
-        showSimpleDialog(WARNING_LABEL, SearchBySampleNameEmptyErrorMessage, WARNING);
-        return;
-    }
-
-    let model = {
-        Text: text,
-        RequestedLevels: requestedLevelsSimple
-    };
-
-    setLoadingCircleIsVisible(true);
-
-    loadPartialViewWithAjaxJsonPost(UrlSearchSimpleGroupsBySampleName, model, 'searchResultsContainer');
+    executeSearchSimpleBySampleName(text);
 }
 
-async function searchSimpleBySampleType() {
+function searchSimpleBySampleType() {
     var plugin = Metro.getPlugin('#selectSampleDataType', 'select');
 
-    setLoadingCircleIsVisible(true);
-
-    loadPartialViewWithAjaxJsonPost(UrlSearchSimpleBySampleType, getModelFromPlugin(plugin), 'searchResultsContainer');
+    executeSearchSimpleBySampleType(parseInt(plugin.val()));
 }
 
 /* -------------------------------------------------------------------------------- */
