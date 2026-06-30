@@ -371,3 +371,12 @@
     height: 500px;
     background-color: rgba(0,0,0,0.8);
 }
+
+.search-by-material-tooltip {
+    position: absolute;
+    top: -80px;
+    left: 140px;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 1000;
+    padding: 8px;
+}

@@ -35,8 +35,8 @@ function expandSearchPanel() {
 /* ################################################################################ */
 /* MATERIALS SUGGESTIONS */
 /* ################################################################################ */
-async function getMaterialsSuggestions(srcElemId, dstElemId, callback1, callback2) {
-    let text = $(`#${srcElemId}`).val();
+async function getMaterialsSuggestions(srcId, dstId, callback1, callback2) {
+    let text = $(`#${srcId}`).val();
 
     if (!text) {
         showSimpleDialog(WARNING_LABEL, SuggestionsNoTextWarningMessage, WARNING);
@@ -51,19 +51,21 @@ async function getMaterialsSuggestions(srcElemId, dstElemId, callback1, callback
         let obj = await doAjaxGetAsync(GetMaterialsSuggestions, model);
         if (obj) {
             /* remember suggestions for creating search request */
-            suggestions[dstElemId] = obj;
+            suggestions[dstId] = obj;
             /* fill the 'select' ui item with suggestions */
-            let plugin = Metro.getPlugin($(`#${dstElemId}`), 'select');
+            let plugin = Metro.getPlugin($(`#${dstId}`), 'select');
             plugin.data(obj);
 
             /* remove the 'error' state from input field */
-            setInputFieldErrorState(srcElemId, false);
+            setInputFieldErrorState(srcId, false);
 
+            /* hide the inpu field */
+            hideElemMetroUIElem(`${srcId}`);
             /* show the 'select' UI element */
-            showFlexMetroUIElem(`${dstElemId}`);
+            showFlexMetroUIElem(`${dstId}`);
 
             if (callback1)
-                callback1(dstElemId);
+                callback1(dstId);
 
             if (callback2)
                 callback2();
@@ -85,6 +87,9 @@ function resetSearchByMaterial(srcId) {
     hideMetroUIElem(`${destId}`);
     let plugin = Metro.getPlugin($(`#${destId}`), 'select');
     plugin.reset();
+
+    /* hide the inpu field */
+    showFlexElemMetroUIElem(`${srcId}`);
 }
 
 function setMaterialSelectWidth() {
@@ -282,14 +287,14 @@ function tryRestoreLastSearch() {
 var isTooltipSearchByMaterialVisible = false;
 
 function hideTooltipSearchByMaterial() {
-    animateCSS('tooltipSelectMaterialInput', 'fadeOut', FAST, function () {
+    animateCSS('tooltipSelectMaterialInput', 'fadeOut', FASTER, function () {
         hide('tooltipSelectMaterialInput');
     });
 }
 
 function showTooltipSearchByMaterial() {
     show('tooltipSelectMaterialInput');
-    animateCSS('tooltipSelectMaterialInput', 'fadeIn', FAST);
+    animateCSS('tooltipSelectMaterialInput', 'fadeIn', FASTER);
 }
 
 function setTooltipSearchByMaterialVisibility() {
