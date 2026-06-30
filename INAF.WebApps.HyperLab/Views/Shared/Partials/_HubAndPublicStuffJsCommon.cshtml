@@ -1,0 +1,35 @@
+﻿@using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.WebApps.HyperLab.Controllers
+@using INAF.WebApps.HyperLab.Resources
+
+<script type="text/javascript">
+    var sampleTypes = [];
+    var originTypes = [];
+    var mineralTypes = [];
+
+    var ChartsUseChartsButtonMessage = "@Html.Raw(Charts.ChartsUseChartsButtonMessage)";
+
+    var ButtonDownloadAsCsvFileLabel = "@Html.Raw(Search.ButtonDownloadAsCsvFileLabel)";
+    var ButtonDownloadAsXmlFileLabel = "@Html.Raw(Search.ButtonDownloadAsXmlFileLabel)";
+    var ButtonGraphSelectedSpectraLabel = " @Html.Raw(Search.ButtonGraphSelectedSpectraLabel)";
+    var ButtonPublicAndShareLabel = "@Html.Raw(Search.ButtonPublicAndShareLabel)";
+    var SearchByFilenameEmptyErrorMessage = "@Html.Raw(Search.SearchByFilenameEmptyErrorMessage)";
+    var SearchByMaterialErrorMessage = "@Html.Raw(Search.SearchByMaterialErrorMessage)";
+    var SearchBySampleNameEmptyErrorMessage = "@Html.Raw(Search.SearchBySampleNameEmptyErrorMessage)";
+    var SearchGroupItemsNoResultsMessage = "@Html.Raw(Search.SearchGroupItemsNoResultsMessage)";
+
+    var DownloadSpectrumErrorMessage = "@Html.Raw(SharedResources.DownloadSpectrumErrorMessage)";
+
+    var UrlGetMineralTypes = '/@GenericHelper.GetControllerName(nameof(PublicController))/@nameof(PublicController.GetMineralTypes)';
+    var UrlGetOriginTypes = '/@GenericHelper.GetControllerName(nameof(PublicController))/@nameof(PublicController.GetOriginTypes)';
+    var UrlGetSampleTypes = '/@GenericHelper.GetControllerName(nameof(PublicController))/@nameof(PublicController.GetSampleTypes)';
+
+    var UrlSearchSimpleGroupsByFilename = '/@GenericHelper.GetControllerName(nameof(SearchesController))/@nameof(SearchesController.SearchSimpleGroupsByFilename)';
+    var UrlSearchSimpleGroupsByMaterial = '/@GenericHelper.GetControllerName(nameof(SearchesController))/@nameof(SearchesController.SearchSimpleGroupsByMaterial)';
+    var UrlSearchSimpleByMineralType = '/@GenericHelper.GetControllerName(nameof(SearchesController))/@nameof(SearchesController.SearchSimpleGroupsByMineralType)';
+    var UrlSearchSimpleByOriginType = '/@GenericHelper.GetControllerName(nameof(SearchesController))/@nameof(SearchesController.SearchSimpleGroupsByOriginType)';
+    var UrlSearchSimpleGroupsBySampleName = '/@GenericHelper.GetControllerName(nameof(SearchesController))/@nameof(SearchesController.SearchSimpleGroupsBySampleName)';
+    var UrlSearchSimpleBySampleType = '/@GenericHelper.GetControllerName(nameof(SearchesController))/@nameof(SearchesController.SearchSimpleGroupsBySampleType)';
+    
+    var UrlSearchGroupItems = '/@GenericHelper.GetControllerName(nameof(SearchesController))/@nameof(SearchesController.SearchGroupItems)';
+</script>

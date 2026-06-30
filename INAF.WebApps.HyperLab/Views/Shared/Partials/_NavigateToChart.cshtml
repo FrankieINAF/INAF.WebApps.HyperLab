@@ -1,0 +1,10 @@
+﻿@using INAF.Libraries.Net.CommonWebAppHelpers
+@using INAF.WebApps.HyperLab.Controllers
+
+<!-- FORM FOR NAVIGATING TO CHART -->
+<form id="formNavigateToChart"
+      method="post"
+      action="/@GenericHelper.GetControllerName(nameof(ChartsController))/@nameof(ChartsController.Chart)"
+      target="_self">
+    @Html.AntiForgeryToken()
+</form>
