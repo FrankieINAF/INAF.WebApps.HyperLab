@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace INAF.WebApps.HyperLab.Controllers
 {
     [Authorize]
-    [CheckIsLoginValid]
+    [IsLoginValid]
     public partial class UsersController : BaseController
     {
         private readonly IWebHostEnvironment webHostEnvironment;

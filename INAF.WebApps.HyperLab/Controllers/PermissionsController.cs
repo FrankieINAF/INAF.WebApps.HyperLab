@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace INAF.WebApps.HyperLab.Controllers
 {
     [Authorize]
-    [CheckIsLoginValid]
+    [IsLoginValid]
     public class PermissionsController : BaseController
     {
         private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;

@@ -37,9 +37,9 @@ var red = '#a8071e';
 
 var usersToShare = [];
 
-async function checkIsUserAutenthicatedAsync() {
-    const isUserAuthenticatedResponse = await isUserAuthenticatedAsync(false); // to be sure that the authentication check is completed before adding the item to the list (and consequently before showing the save icon)
-    isUserAuthenticated = isUserAuthenticatedResponse.IsOk;
+async function checkIsUserAllowedAsync() {
+    const isUserAllowedResponse = await isUserAllowedAsync(false); // to be sure that the authentication check is completed before adding the item to the list (and consequently before showing the save icon)
+    isUserAuthenticated = isUserAllowedResponse.IsOk;
 }
 
 function tryHideLogoutButton() {
@@ -52,19 +52,18 @@ function initPageDims() {
     pageH = $('#renderbody').height();
 }
 
-async function isUserAuthenticatedAsync(useLoading = true) {
+async function isUserAllowedAsync(useLoading = true) {
     if (useLoading) {
         setLoadingCircleIsVisible(true);
     }
 
-    const isUserAuthenticatedResponse = await doAjaxGetNoModelAsync(UrlIsUserAuthenticated);
-    //const isUserAuthenticatedResponse = true;
+    const isUserAllowedResponse = await doAjaxGetNoModelAsync(UrlIsUserAllowed);
 
     if (useLoading) {
         setLoadingCircleIsVisible(false);
     }
 
-    return isUserAuthenticatedResponse;
+    return isUserAllowedResponse;
 }
 
 function backToHomeProcedure() {

@@ -5,6 +5,7 @@ using INAF.Libraries.Net.CommonWebAppModels.Models.Permissions;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.WebApps.HyperLab.Extensions;
+using INAF.WebApps.HyperLab.Helpers;
 using INAF.WebApps.HyperLab.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -145,6 +146,17 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
             List<PermissionModel>? permissions = dbHandlerHyperLabUsers.getUserPermissions(await getUserIdAsync(), Enums.CallerContext.Web);
 
             return (isUserAuthenticated, permissions);
+        }
+
+        protected async Task<bool> isPublicOrAuthorizedSearchAsync()
+        {
+            var isUserAuthenticated = HttpContext.User.Identity?.IsAuthenticated ?? false;
+            if (!isUserAuthenticated)
+                return true;
+
+            var isLoginValidHelper = serviceProvider.GetRequiredService<IsLoginValidHelper>();
+            var response = await isLoginValidHelper.isLoginValidAsync(HttpContext);
+            return (isUserAuthenticated && response.IsOk);
         }
 
         protected bool isRemoteCheckInEditMode(string field1, string field2)

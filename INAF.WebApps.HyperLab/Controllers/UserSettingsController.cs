@@ -54,8 +54,6 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
         }
 
-        [Authorize]
-        [CheckIsLoginValid]
         [HttpGet]
         public async Task<IActionResult> GetUserSettingsByWildcard(KeyRequestModel model)
         {
@@ -74,7 +72,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region POST
         [Authorize]
-        [CheckIsLoginValid]
+        [IsLoginValid]
         [HttpPost]
         public async Task<IActionResult> SetUserSetting([FromBody] KeyValueRequestModel model)
         {

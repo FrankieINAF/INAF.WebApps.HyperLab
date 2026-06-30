@@ -156,7 +156,7 @@ builder.Services.AddDataProtection()
 /* SERVICES */
 builder.Services
     /* ATTRIBUTES */
-    .AddScoped<CheckIsLoginValidAttribute>()
+    .AddScoped<IsLoginValidAttribute>()
 
     /* SCOPED SERVICES */
     .AddScoped<DbHandlerHyperLabData>()

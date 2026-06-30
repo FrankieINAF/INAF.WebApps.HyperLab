@@ -54,7 +54,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         #endregion
 
         [Authorize]
-        [CheckIsLoginValid]
+        [IsLoginValid]
         [HttpPost]
         public IActionResult ExecuteLastSearch()
         {
@@ -101,7 +101,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [Authorize]
-        [CheckIsLoginValid]
+        [IsLoginValid]
         [HttpGet]
         public async Task<IActionResult> SharedStuff()
         {

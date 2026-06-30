@@ -14,7 +14,7 @@ using System.Dynamic;
 namespace INAF.WebApps.HyperLab.Controllers
 {
     [Authorize]
-    [CheckIsLoginValid]
+    [IsLoginValid]
     public class MaterialsController : BaseController
     {
         private readonly DbHandlerHyperLabData dbHandlerHyperLabData;

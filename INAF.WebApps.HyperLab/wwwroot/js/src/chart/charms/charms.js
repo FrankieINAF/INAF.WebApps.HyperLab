@@ -655,7 +655,7 @@ function addOrUpdateAvailableFileOnCloudDictionary(spectrumType, isOk, id) {
 }
 
 async function checkIsSpectrumOfTypeSavedOnCloudAsync(spectrumType, filename = null, isUIUpdateRequired = true) {
-    if (!await isUserAuthenticatedAsync())
+    if (!await isUserAllowedAsync())
         return null;
 
     let file;

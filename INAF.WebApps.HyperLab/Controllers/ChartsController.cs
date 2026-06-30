@@ -1,4 +1,5 @@
-﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Permissions;
+﻿using INAF.Libraries.Net.CommonWebAppHelpers;
+using INAF.Libraries.Net.CommonWebAppModels.Models.Permissions;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.Extensions;
@@ -86,7 +87,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region GET
         [Authorize]
-        [CheckIsLoginValid]
+        [IsLoginValid]
         [HttpGet]
         public async Task<IActionResult> GetProcessedSpectrumById(GenericRequestByIdModel model)
         {
@@ -101,7 +102,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [Authorize]
-        [CheckIsLoginValid]
+        [IsLoginValid]
         [HttpGet]
         public async Task<IActionResult> GetProcessedSpectrumByParentId(GenericRequestByParentIdAndSpectrumTypeModel model)
         {
@@ -130,13 +131,15 @@ namespace INAF.WebApps.HyperLab.Controllers
         #endregion
 
         #region POST
-        [Authorize]
-        [CheckIsLoginValid]
         [HttpPost]
         public async Task<IActionResult> GetSpectra([FromBody] GenericRequestByIdsModel model)
         {
             if (model.Ids == null || model.Ids.Count == 0)
                 return new JsonResult(null);
+
+            /* the following check replace [Authorize] and [IsLoginValid] attributes because this method can be called by both logged users or users using public stuff */
+            if (!await isPublicOrAuthorizedSearchAsync())
+                return RedirectToAction(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)));
 
             int operationUserId = await getUserIdAsync();
             switch (getCallerContext())
@@ -160,7 +163,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [Authorize]
-        [CheckIsLoginValid]
+        [IsLoginValid]
         [HttpPost]
         public async Task<IActionResult> GetProcessedSpectrum([FromBody] GenericRequestByParentIdAndSpectrumTypeModel model)
         {

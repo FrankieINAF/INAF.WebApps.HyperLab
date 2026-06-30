@@ -24,10 +24,9 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult IsUserAuthenticated(GenericRequestByIdModel model)
+        public async Task<IActionResult> IsUserAllowed(GenericRequestByIdModel model)
         {
-            string? isAuthenticated = HttpContext.Session.GetString(IS_USER_AUTHENTICATED);
-            return new JsonResult(new GenericResponseModel() { IsOk = bool.TryParse(isAuthenticated, out bool result) && result });
+            return new JsonResult(new GenericResponseModel() { IsOk = await isPublicOrAuthorizedSearchAsync() });
         }
 
         [HttpGet]

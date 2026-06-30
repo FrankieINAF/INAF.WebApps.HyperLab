@@ -24,7 +24,7 @@ using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 namespace INAF.WebApps.HyperLab.Controllers
 {
     [Authorize]
-    [CheckIsLoginValid]
+    [IsLoginValid]
     public class SpectraFilesController : BaseController
     {
         private readonly DbHandlerHyperLabUsers dbHandlerHyperLabUsers;

@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace INAF.WebApps.HyperLab.Controllers
 {
     [Authorize]
-    [CheckIsLoginValid]
+    [IsLoginValid]
     public class SampleAndMeasurementController : BaseController
     {
         private readonly DbHandlerHyperLabData dbHandlerHyperLabData;

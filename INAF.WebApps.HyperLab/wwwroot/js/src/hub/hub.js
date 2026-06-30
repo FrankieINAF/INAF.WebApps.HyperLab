@@ -316,7 +316,7 @@ function onWindowResize() {
 $(async function () {
     setLoadingCircleIsVisible(true);
 
-    await checkIsUserAutenthicatedAsync();
+    await checkIsUserAllowedAsync();
 
     tryHideLogoutButton();
 

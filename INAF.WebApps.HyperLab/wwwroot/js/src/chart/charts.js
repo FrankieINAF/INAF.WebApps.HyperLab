@@ -129,7 +129,7 @@ async function loadChartsProcedureAsync() {
     manageNavigation();
 
     if (await loadSpectraTypeColorsAsync()) {
-        if (await isUserAuthenticatedAsync())
+        if (await isUserAllowedAsync())
             /* load data and show charts */
             loadChartsFromCloudAsync();
         else
@@ -611,7 +611,7 @@ function initChartPanel() {
 /* DOCUMENT READY */
 /* ################################################################################ */
 $(async function () {
-    await checkIsUserAutenthicatedAsync();
+    await checkIsUserAllowedAsync();
 
     /* define selected spectrum type for continuum removal */
     selectedSpectrumTypeForContinuumRemoval = SPECTRUM_TYPE_ALIGNED;
