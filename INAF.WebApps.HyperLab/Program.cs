@@ -169,6 +169,7 @@ builder.Services
     .AddTransient<ContinuumRemovalHelper>()
     .AddTransient<EncryptionHelper>()
     .AddTransient<FitMethodsHelper>()
+    .AddTransient<IsLoginValidHelper>()
     .AddTransient<LinearFitHelper>()
     .AddTransient<LinearProcessingHelper>()
     .AddTransient<MenuHelper>()

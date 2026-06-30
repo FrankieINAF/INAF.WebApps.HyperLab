@@ -23,6 +23,7 @@ namespace INAF.WebApps.HyperLab.Helpers
         public List<SpectraGroupInfoModel>? searchByMaterial(int id,
                                                              string type,
                                                              List<int> requestedLevels,
+                                                             bool isPublicSearch,
                                                              int operationUserId)
         {
             List<SpectraGroupInfoModel>? spectraGroupInfoModels = null;
@@ -34,6 +35,7 @@ namespace INAF.WebApps.HyperLab.Helpers
                 case MaterialType.MeteorClass:
                     spectraGroupInfoModels = dbHandlerHyperLabData.searchSimpleGroupsByMeteoriteClass(id,
                                                                                                       requestedLevels,
+                                                                                                      isPublicSearch,
                                                                                                       operationUserId);
 
                     break;
@@ -41,12 +43,14 @@ namespace INAF.WebApps.HyperLab.Helpers
                 case MaterialType.Mineral:
                     spectraGroupInfoModels = dbHandlerHyperLabData.searchSimpleGroupsByMineral(id,
                                                                                                requestedLevels,
+                                                                                               isPublicSearch,
                                                                                                operationUserId);
                     break;
 
                 case MaterialType.Rock:
                     spectraGroupInfoModels = dbHandlerHyperLabData.searchSimpleGroupsByRock(id,
                                                                                             requestedLevels,
+                                                                                            isPublicSearch,
                                                                                             operationUserId);
                     break;
             }

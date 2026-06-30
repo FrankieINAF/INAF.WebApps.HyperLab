@@ -1,0 +1,641 @@
+﻿using INAF.Libraries.Net.DB.HyperLab.Data.Tables;
+using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
+using Microsoft.EntityFrameworkCore;
+using System.Text;
+using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
+
+namespace INAF.Libraries.Net.DB.HyperLabData
+{
+    public partial class DbHandlerHyperLabData
+    {
+        #region SIMPLE SEARCH
+        public List<SpectraGroupInfoModel>? searchSimpleGroupsByFilename(string filename,
+                                                                         List<int> requestedLevels,
+                                                                         int operationUserId,
+                                                                         bool isPublicSearch = false)
+        {
+            List<SpectraGroupInfoModel>? spectra = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    spectra = (from sf in context.SpectraFiles
+                               where EF.Functions.Like(sf.Filename, $"{filename}%")
+                               && ((sf.TypeId == (int)SpectrumType.Raw && sf.SourceId == (int)SpectrumSource.SLab)
+                               || (sf.TypeId == (int)SpectrumType.Aligned && sf.SourceId == (int)SpectrumSource.External))
+                               //&& sf.TypeId == (int)SpectrumType.Raw
+                               //&& sf.SourceId == (int)SpectrumSource.SLab
+                               && (!isPublicSearch || sf.IsPublic)
+                               && requestedLevels.Contains(sf.LevelId)
+                               && !sf.IsDeleted
+                               orderby sf.Filename
+                               select sf)
+                               .AsNoTracking()
+                               .AsEnumerable()
+                               .Where(x => isUserAuthorized(x, operationUserId) || isSpectrumSharedWithUser(context, x, operationUserId))
+                               .Select(x => new SpectraGroupInfoModel()
+                               {
+                                   Id = x.Id,
+                                   SpectrumFilename = x.Filename,
+                                   SpectrumLevel = x.LevelId.ToSpectrumLevel(),
+                               })
+                               .ToList();
+                }
+
+                if (spectra?.Count > 0)
+                {
+#if DEBUG
+                    foreach (var spectrum in spectra)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Found spectrum: {spectrum.SpectrumFilename} (ID: {spectrum.Id})");
+                    }
+#endif
+                    setAvailableSpectrumTypes(ref spectra,
+                                              requestedLevels,
+                                              operationUserId);
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(searchSimpleGroupsBySampleName), ex);
+            }
+
+            return spectra;
+        }
+
+        public List<SpectraGroupInfoModel>? searchSimpleGroupsByMineralType(int mineralTypeId,
+                                                                            List<int> requestedLevels,
+                                                                            int operationUserId)
+        {
+            List<SpectraGroupInfoModel>? spectraFileInfoModels = null;
+
+            try
+            {
+                List<SpectraGroupInfoModel>? spectra = null;
+
+                using (var context = getDataContext())
+                {
+                    spectra = (from sf in context.SpectraFiles
+                               join lsfmt in context.LinkSpectrumFileSampleMineralType on sf.Id equals lsfmt.SpectrumFileId into join0
+                               from elem in join0.DefaultIfEmpty()
+                               where elem.SampleMineralTypeId == mineralTypeId
+                               && sf.TypeId == (int)SpectrumType.Raw
+                               && sf.SourceId == (int)SpectrumSource.SLab
+                               && requestedLevels.Contains(sf.LevelId)
+                               && !elem.IsDeleted
+                               && !sf.IsDeleted
+                               select sf)
+                               .AsNoTracking()
+                               .AsEnumerable()
+                               .Where(x => isUserAuthorized(x, operationUserId) || isSpectrumSharedWithUser(context, x, operationUserId))
+                               .Select(x => new SpectraGroupInfoModel()
+                               {
+                                   Id = x.Id,
+                                   SpectrumFilename = x.Filename,
+                                   SpectrumLevel = x.LevelId.ToSpectrumLevel(),
+                                   MineralType = mineralTypeId.ToMineralType()
+                               })
+                               .ToList();
+                }
+
+                if (spectra.Count > 0)
+                {
+                    setAvailableSpectrumTypes(ref spectra,
+                                              requestedLevels,
+                                              operationUserId);
+
+                    spectraFileInfoModels = new List<SpectraGroupInfoModel>();
+
+                    MineralType mineralType = mineralTypeId.ToMineralType();
+
+                    using (var context = getDataContext())
+                    {
+                        foreach (var spectrum in spectra)
+                        {
+                            switch (mineralType)
+                            {
+                                case MineralType.Monomineralic:
+                                    var monoMineral = getMonomineralicMaterialSpectraGroupInfoModel(spectrum,
+                                                                                                    mineralType,
+                                                                                                    operationUserId,
+                                                                                                    context);
+                                    if (monoMineral != null)
+                                        spectraFileInfoModels.Add(monoMineral);
+                                    break;
+                                case MineralType.Mix:
+                                    var mix = getMaterialsSpectraGroupInfoModel(spectrum,
+                                                                              mineralType,
+                                                                              operationUserId,
+                                                                              context);
+                                    if (mix != null)
+                                        spectraFileInfoModels.Add(mix);
+                                    break;
+                                case MineralType.Rock:
+                                    var rock = getRockSpectraGroupInfoModel(spectrum,
+                                                                           mineralType,
+                                                                           operationUserId,
+                                                                           context);
+                                    if (rock != null)
+                                        spectraFileInfoModels.Add(rock);
+                                    break;
+                                case MineralType.Extraterrestrial:
+                                    var meteorite = getMeteorSpectraGroupInfoModel(spectrum,
+                                                                                   mineralType,
+                                                                                   operationUserId,
+                                                                                   context);
+                                    if (meteorite != null)
+                                        spectraFileInfoModels.Add(meteorite);
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(searchSimpleGroupsByMineralType), ex);
+            }
+
+            return spectraFileInfoModels;
+        }
+
+        public List<SpectraGroupInfoModel>? searchSimpleGroupsByOriginType(int origintTypeId,
+                                                                           List<int> requestedLevels,
+                                                                           int operationUserId)
+        {
+            List<SpectraGroupInfoModel>? spectra = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    spectra = (from sf in context.SpectraFiles
+                               join lsfot in context.LinkSpectrumFileSampleOriginType on sf.Id equals lsfot.SpectrumFileId into join0
+                               from elem in join0.DefaultIfEmpty()
+                               where elem.OriginTypeId == origintTypeId
+                               && sf.TypeId == (int)SpectrumType.Raw
+                               && sf.SourceId == (int)SpectrumSource.SLab
+                               && requestedLevels.Contains(sf.LevelId)
+                               && !elem.IsDeleted
+                               && !sf.IsDeleted
+                               select sf)
+                               .AsNoTracking()
+                               .AsEnumerable()
+                               .Where(x => isUserAuthorized(x, operationUserId) || isSpectrumSharedWithUser(context, x, operationUserId))
+                               .Select(x => new SpectraGroupInfoModel()
+                               {
+                                   Id = x.Id,
+                                   SpectrumFilename = x.Filename,
+                                   SpectrumLevel = x.LevelId.ToSpectrumLevel(),
+                               })
+                               .ToList();
+                }
+
+                if (spectra?.Count > 0)
+                {
+                    setAvailableSpectrumTypes(ref spectra,
+                                              requestedLevels,
+                                              operationUserId);
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(searchSimpleGroupsByOriginType), ex);
+            }
+
+            return spectra;
+        }
+
+        public List<SpectraGroupInfoModel>? searchSimpleGroupsBySampleName(string sampleName,
+                                                                           List<int> requestedLevels,
+                                                                           int operationUserId)
+        {
+            List<SpectraGroupInfoModel>? spectra = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    spectra = (from sf in context.SpectraFiles
+                               join lsfst in context.SampleName on sf.Id equals lsfst.SpectrumFileId into join0
+                               from elem in join0.DefaultIfEmpty()
+                               where EF.Functions.Like(elem.Name, $"{sampleName}%")
+                               && sf.TypeId == (int)SpectrumType.Raw
+                               && sf.SourceId == (int)SpectrumSource.SLab
+                               && requestedLevels.Contains(sf.LevelId)
+                               && !elem.IsDeleted
+                               && !sf.IsDeleted
+                               select sf)
+                               .AsNoTracking()
+                               .AsEnumerable()
+                               .Where(x => isUserAuthorized(x, operationUserId) || isSpectrumSharedWithUser(context, x, operationUserId))
+                               .Select(x => new SpectraGroupInfoModel()
+                               {
+                                   Id = x.Id,
+                                   SpectrumFilename = x.Filename,
+                                   SpectrumLevel = x.LevelId.ToSpectrumLevel(),
+                               })
+                               .ToList();
+                }
+
+                if (spectra?.Count > 0)
+                {
+                    setAvailableSpectrumTypes(ref spectra,
+                                              requestedLevels,
+                                              operationUserId);
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(searchSimpleGroupsBySampleName), ex);
+            }
+
+            return spectra;
+        }
+
+        public List<SpectraGroupInfoModel>? searchSimpleGroupsBySampleType(int sampleTypeId,
+                                                                           List<int> requestedLevels,
+                                                                           int operationUserId)
+        {
+            List<SpectraGroupInfoModel>? spectra = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    spectra = (from sf in context.SpectraFiles
+                               join lsfst in context.LinkSpectrumFileSampleType on sf.Id equals lsfst.SpectrumFileId into join0
+                               from elem in join0.DefaultIfEmpty()
+                               where elem.SampleTypeId == sampleTypeId
+                               && sf.TypeId == (int)SpectrumType.Raw
+                               && sf.SourceId == (int)SpectrumSource.SLab
+                               && requestedLevels.Contains(sf.LevelId)
+                               && !elem.IsDeleted
+                               && !sf.IsDeleted
+                               select sf)
+                               .AsNoTracking()
+                               .AsEnumerable()
+                               .Where(x => isUserAuthorized(x, operationUserId) || isSpectrumSharedWithUser(context, x, operationUserId))
+                               .Select(x => new SpectraGroupInfoModel()
+                               {
+                                   Id = x.Id,
+                                   SpectrumFilename = x.Filename,
+                                   SpectrumLevel = x.LevelId.ToSpectrumLevel(),
+                               })
+                               .ToList();
+                }
+
+                if (spectra?.Count > 0)
+                {
+                    setAvailableSpectrumTypes(ref spectra,
+                                              requestedLevels,
+                                              operationUserId);
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(searchSimpleGroupsBySampleType), ex);
+            }
+
+            return spectra;
+        }
+
+        #region private
+        private T? getItem<T>(SpectraGroupInfoModel spectraGroupInfoModel,
+                             MineralType mineralType)
+        {
+            return (T?)Activator.CreateInstance(typeof(T), [ spectraGroupInfoModel.Id,
+                                                            spectraGroupInfoModel.SpectrumFilename,
+                                                            spectraGroupInfoModel.AvailableSpectraTypes,
+                                                            spectraGroupInfoModel.SpectrumLevel,
+                                                            mineralType]);
+        }
+
+        private MineralsSpectraGroupInfoModel? getMaterialsSpectraGroupInfoModel(SpectraGroupInfoModel spectraGroupInfoModel,
+                                                                                MineralType mineralType,
+                                                                                int operationUserId,
+                                                                                HyperLabDataContext extcontext)
+        {
+            MineralsSpectraGroupInfoModel? mineralsSpectraGroupInfoModel = getItem<MineralsSpectraGroupInfoModel>(spectraGroupInfoModel,
+                                                                                                                  mineralType);
+            if (mineralsSpectraGroupInfoModel == null)
+                return null;
+
+            mineralsSpectraGroupInfoModel.Minerals = (from lsfm in extcontext.LinkSpectrumFileImaminerals
+                                                      join rom in extcontext.ReadOnlyImaminerals on lsfm.MineralId equals rom.Id
+                                                      where lsfm.SpectrumId == spectraGroupInfoModel.Id
+                                                      && !lsfm.IsDeleted
+                                                      select new MaterialModel()
+                                                      {
+                                                          Id = rom.Id,
+                                                          Name = rom.Name
+                                                      })
+                                                      .ToList();
+
+            return mineralsSpectraGroupInfoModel;
+        }
+
+        private SingleMaterialSpectraGroupInfoModel? getMeteorSpectraGroupInfoModel(SpectraGroupInfoModel spectraGroupInfoModel,
+                                                                                   MineralType mineralType,
+                                                                                   int operationUserId,
+                                                                                   HyperLabDataContext extcontext)
+        {
+            SingleMaterialSpectraGroupInfoModel? meteorSpectraGroupInfoModel = getItem<SingleMaterialSpectraGroupInfoModel>(spectraGroupInfoModel,
+                                                                                                                            mineralType);
+            if (meteorSpectraGroupInfoModel == null)
+                return null;
+
+            meteorSpectraGroupInfoModel.Mineral = (from lsfmc in extcontext.LinkSpectrumFileMeteoriteClass
+                                                   join rom in extcontext.ReadOnlyMeteoriteClasses on lsfmc.MeteoriteClassId equals rom.Id
+                                                   where lsfmc.SpectrumId == spectraGroupInfoModel.Id
+                                                   && !lsfmc.IsDeleted
+                                                   select new MaterialModel()
+                                                   {
+                                                       Id = rom.Id,
+                                                       Name = rom.Name
+                                                   })
+                                                   .FirstOrDefault();
+
+            return meteorSpectraGroupInfoModel;
+        }
+
+        private SingleMaterialSpectraGroupInfoModel? getMonomineralicMaterialSpectraGroupInfoModel(SpectraGroupInfoModel spectraGroupInfoModel,
+                                                                                                  MineralType mineralType,
+                                                                                                  int operationUserId,
+                                                                                                  HyperLabDataContext extcontext)
+        {
+            SingleMaterialSpectraGroupInfoModel? monoMineralicSpectraGroupInfoModel = getItem<SingleMaterialSpectraGroupInfoModel>(spectraGroupInfoModel,
+                                                                                                                                   mineralType);
+            if (monoMineralicSpectraGroupInfoModel == null)
+                return null;
+
+            monoMineralicSpectraGroupInfoModel.Mineral = (from lsfm in extcontext.LinkSpectrumFileImaminerals
+                                                          join rom in extcontext.ReadOnlyImaminerals on lsfm.MineralId equals rom.Id
+                                                          where lsfm.SpectrumId == spectraGroupInfoModel.Id
+                                                          && !lsfm.IsDeleted
+                                                          select new MaterialModel()
+                                                          {
+                                                              Id = rom.Id,
+                                                              Name = rom.Name
+                                                          })
+                                                          .FirstOrDefault();
+
+            return monoMineralicSpectraGroupInfoModel;
+        }
+
+        private SingleMaterialSpectraGroupInfoModel? getRockSpectraGroupInfoModel(SpectraGroupInfoModel spectraGroupInfoModel,
+                                                                                  MineralType mineralType,
+                                                                                  int operationUserId,
+                                                                                  HyperLabDataContext extcontext)
+        {
+            SingleMaterialSpectraGroupInfoModel? rockSpectraGroupInfoModel = getItem<SingleMaterialSpectraGroupInfoModel>(spectraGroupInfoModel,
+                                                                                                                          mineralType);
+            if (rockSpectraGroupInfoModel == null)
+                return null;
+
+            rockSpectraGroupInfoModel.Mineral = (from lsfr in extcontext.LinkSpectrumFileRock
+                                                 join ror in extcontext.ReadOnlyRocks on lsfr.RockId equals ror.Id
+                                                 where lsfr.SpectrumId == spectraGroupInfoModel.Id
+                                                 && !lsfr.IsDeleted
+                                                 select new MaterialModel()
+                                                 {
+                                                     Id = ror.Id,
+                                                     Name = ror.Name
+                                                 })
+                                                 .FirstOrDefault();
+
+            return rockSpectraGroupInfoModel;
+        }
+        #endregion
+        #endregion
+
+        #region SERCH BY MATERIAL
+        public List<SpectraGroupInfoModel>? searchSimpleGroupsByMeteoriteClass(int id,
+                                                                               List<int> requestedLevels,
+                                                                               int operationUserId)
+        {
+            List<SpectraGroupInfoModel>? spectraFileInfoModels = null;
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    var spectra = (from sf in context.SpectraFiles
+                                   join lsfmc in context.LinkSpectrumFileMeteoriteClass on sf.Id equals lsfmc.SpectrumId into join0
+                                   from elem in join0.DefaultIfEmpty()
+                                   where elem.Id == id
+                                   && sf.TypeId == (int)SpectrumType.Raw
+                                   && sf.SourceId == (int)SpectrumSource.SLab
+                                   && requestedLevels.Contains(sf.LevelId)
+                                   && !elem.IsDeleted
+                                   && !sf.IsDeleted
+                                   select sf)
+                                   .AsNoTracking()
+                                   .AsEnumerable()
+                                   .Where(x => isUserAuthorized(x, operationUserId) || isSpectrumSharedWithUser(context, x, operationUserId))
+                                   .Select(x => new SpectraGroupInfoModel()
+                                   {
+                                       Id = x.Id,
+                                       SpectrumFilename = x.Filename,
+                                       SpectrumLevel = x.LevelId.ToSpectrumLevel(),
+                                       AvailableSpectraTypes = getAvailableSpectraTypes(x.Id, requestedLevels, 0, context)!.ToList(),
+                                       MineralType = MineralType.Extraterrestrial,
+                                   })
+                                   .ToList();
+                    if (spectra?.Count > 0)
+                    {
+                        spectraFileInfoModels = new List<SpectraGroupInfoModel>();
+                        foreach (var spectrum in spectra)
+                        {
+                            var meteorite = getMeteorSpectraGroupInfoModel(spectrum,
+                                                                          MineralType.Extraterrestrial,
+                                                                          0,
+                                                                          context);
+                            if (meteorite != null)
+                                spectraFileInfoModels.Add(meteorite);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(searchSimpleGroupsByMeteoriteClass), ex);
+            }
+            return spectraFileInfoModels;
+        }
+
+        public List<SpectraGroupInfoModel>? searchSimpleGroupsByMineral(int id,
+                                                                        List<int> requestedLevels,
+                                                                        int operationUserId)
+        {
+            List<SpectraGroupInfoModel>? spectraFileInfoModels = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    var spectra = (from sf in context.SpectraFiles
+                                   join lsfm in context.LinkSpectrumFileImaminerals on sf.Id equals lsfm.SpectrumId into join0
+                                   from elem in join0.DefaultIfEmpty()
+                                   where elem.MineralId == id
+                                   && sf.TypeId == (int)SpectrumType.Raw
+                                   && sf.SourceId == (int)SpectrumSource.SLab
+                                   && requestedLevels.Contains(sf.LevelId)
+                                   && !elem.IsDeleted
+                                   && !sf.IsDeleted
+                                   select sf)
+                                   .AsNoTracking()
+                                   .AsEnumerable()
+                                   .Where(x => isUserAuthorized(x, operationUserId) || isSpectrumSharedWithUser(context, x, operationUserId))
+                                   .Select(x => new SpectraGroupInfoModel()
+                                   {
+                                       Id = x.Id,
+                                       SpectrumFilename = x.Filename,
+                                       SpectrumLevel = x.LevelId.ToSpectrumLevel(),
+                                       AvailableSpectraTypes = getAvailableSpectraTypes(x.Id, requestedLevels, operationUserId, context)!.ToList(),
+                                       MineralType = MineralType.Mix,
+                                   })
+                                   .ToList();
+
+                    if (spectra?.Count > 0)
+                    {
+                        spectraFileInfoModels = new List<SpectraGroupInfoModel>();
+                        foreach (var spectrum in spectra)
+                        {
+                            var material = getMaterialsSpectraGroupInfoModel(spectrum,
+                                                                             MineralType.Mix,
+                                                                             operationUserId,
+                                                                             context);
+                            if (material != null)
+                                spectraFileInfoModels.Add(material);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(searchSimpleGroupsByMineral), ex);
+            }
+
+            return spectraFileInfoModels;
+        }
+
+        public List<SpectraGroupInfoModel>? searchSimpleGroupsByRock(int id,
+                                                                     List<int> requestedLevels,
+                                                                     int operationUserId)
+        {
+            List<SpectraGroupInfoModel>? spectraFileInfoModels = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    var spectra = (from sf in context.SpectraFiles
+                                   join lsfr in context.LinkSpectrumFileRock on sf.Id equals lsfr.SpectrumId into join0
+                                   from elem in join0.DefaultIfEmpty()
+                                   where elem.RockId == id
+                                   && sf.TypeId == (int)SpectrumType.Raw
+                                   && sf.SourceId == (int)SpectrumSource.SLab
+                                   && requestedLevels.Contains(sf.LevelId)
+                                   && !elem.IsDeleted
+                                   && !sf.IsDeleted
+                                   select sf)
+                                   .AsNoTracking()
+                                   .AsEnumerable()
+                                   .Where(x => isUserAuthorized(x, operationUserId) || isSpectrumSharedWithUser(context, x, operationUserId))
+                                   .Select(x => new SpectraGroupInfoModel()
+                                   {
+                                       Id = x.Id,
+                                       SpectrumFilename = x.Filename,
+                                       SpectrumLevel = x.LevelId.ToSpectrumLevel(),
+                                       AvailableSpectraTypes = getAvailableSpectraTypes(x.Id, requestedLevels, operationUserId, context)!.ToList(),
+                                       MineralType = MineralType.Rock,
+                                   })
+                                   .ToList();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(searchSimpleGroupsByMineral), ex);
+            }
+
+            return spectraFileInfoModels;
+        }
+        #endregion
+
+        private void setAvailableSpectrumTypes(ref List<SpectraGroupInfoModel> spectraInfoModels,
+                                               List<int> requestedLevels,
+                                               int operationUserId)
+        {
+            using (var context = getDataContext())
+            {
+                foreach (var spectrumInfoModel in spectraInfoModels)
+                {
+                    int requestedLevelsNum = requestedLevels.Count;
+                    for (int j = 0; j < requestedLevelsNum; j++)
+                    {
+                        var groupSpectrumTypes = executeRawSqlQueryForList<SpectrumType>(getRecursiveQueryForRawChildrenSpectra(spectrumInfoModel.Id, requestedLevels[j], operationUserId),
+                                                                                         x => Convert.ToInt32(x[2]).ToSpectrumType(),
+                                                                                         context);
+                        if (groupSpectrumTypes != null && groupSpectrumTypes.Count > 0)
+                            spectrumInfoModel.AvailableSpectraTypes = groupSpectrumTypes;
+                    }
+                }
+            }
+        }
+
+        private List<SpectrumType>? getAvailableSpectraTypes(int spectrumId,
+                                                             List<int> requestedLevels,
+                                                             int operationUserId,
+                                                             HyperLabDataContext extcontext)
+        {
+            return executeRawSqlQueryForList<SpectrumType>(getRecursiveQueryForRawChildrenSpectra(spectrumId, requestedLevels, operationUserId),
+                                                           x => Convert.ToInt32(x[2]).ToSpectrumType(),
+                                                           extcontext);
+        }
+
+        private string getRecursiveQueryForRawChildrenSpectra(int rawId,
+                                                              int levelId,
+                                                              int operationUserId)
+        {
+            return $"WITH cte AS (SELECT * FROM SpectraFiles WHERE Id = {rawId} and LevelId = {levelId} " +
+                   $"AND ({getUserAuthorizationFilter(operationUserId)} OR EXISTS ({getSpectrumSharedWithUserQuery(rawId, operationUserId)})) " +
+                   $"AND IsDeleted = 0 " +
+                   $"UNION ALL " +
+                   $"SELECT sf.* FROM cte " +
+                   $"INNER JOIN SpectraFiles sf on cte.id = sf.ParentId where sf.IsDeleted = 0 and sf.LevelId = {levelId}) " +
+                   $"SELECT Id, Filename, TypeId, LevelId, InsertDateTime, EditDateTime, IsDeleted " +
+                   $"FROM cte;";
+        }
+
+        private string getRecursiveQueryForRawChildrenSpectra(int rawId,
+                                                              List<int> levelIds,
+                                                              int operationUserId)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("declare @level table (id int);");
+            sb.Append($"insert into @level values ");
+            int levelIdsNum = levelIds.Count;
+            for (int i = 0; i < levelIdsNum; i++)
+            {
+                sb.Append($"({levelIds[i]})");
+                if (i < levelIdsNum - 1)
+                    sb.Append(",");
+            }
+            sb.AppendLine(";");
+            sb.AppendLine($"WITH cte AS (SELECT * FROM SpectraFiles WHERE Id = {rawId} and LevelId in (select id from @level) " +
+                          $"AND ({getUserAuthorizationFilter(operationUserId)} OR EXISTS ({getSpectrumSharedWithUserQuery(rawId, operationUserId)})) " +
+                          $"AND IsDeleted = 0 " +
+                          $"UNION ALL " +
+                          $"SELECT sf.* FROM cte " +
+                          $"INNER JOIN SpectraFiles sf on cte.id = sf.ParentId where sf.IsDeleted = 0 and sf.LevelId in (select id from @level) )" +
+                          $"SELECT Id, Filename, TypeId, LevelId, InsertDateTime, EditDateTime, IsDeleted " +
+                          $"FROM cte;");
+            System.Diagnostics.Debug.WriteLine(sb.ToString());
+            return sb.ToString();
+        }
+    }
+}
