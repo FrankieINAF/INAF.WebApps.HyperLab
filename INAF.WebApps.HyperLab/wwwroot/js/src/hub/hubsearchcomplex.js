@@ -12,10 +12,14 @@ async function setListviewSearchConditionsUI() {
     if (!isUserAuthenticated)
         return;
 
+    const listview = $("#listviewSearchConditions").data("listview");
+    if (!listview)
+        return;
+
     if (isMobile()) {
-        $("#listviewSearchConditions").data("listview").view('icons');
+        listview.view('icons');
     } else {
-        $("#listviewSearchConditions").data("listview").view('list');
+        listview.view('list');
     }
 }
 

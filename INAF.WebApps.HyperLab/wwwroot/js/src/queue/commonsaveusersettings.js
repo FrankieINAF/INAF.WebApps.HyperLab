@@ -29,11 +29,11 @@ function callEnqueueSaveSetting(key, value, jsDelay, timeout) {
 }
 
 async function tryCallEnqueueSaveSetting(key, value, jsDelay = JS_DELAY_200, timeout = null) {
-    if (await isUserAllowedAsync())
+    if (await isAuthorizedAsync())
         callEnqueueSaveSetting(key, value, jsDelay, timeout);
 }
 
 async function tryCallEnqueueSaveSetting(key, value, timeout = null) {
-    if (await isUserAllowedAsync())
+    if (await isAuthorizedAsync())
         callEnqueueSaveSetting(key, value, JS_DELAY_200, timeout);
 }

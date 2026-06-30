@@ -557,6 +557,9 @@ function removeHighlightenedBand(items) {
 /* RETRIEVE BAND ANALYSIS DATA LIST */
 /* ################################################################################ */
 async function getBandsAnalysisDataAsync() {
+    if (!await isAuthorizedAsync())
+        return;
+
     let model = {
         FileId: selectedSpectrumForProcessing.Id,
     };

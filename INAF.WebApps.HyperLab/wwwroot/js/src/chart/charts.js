@@ -129,7 +129,7 @@ async function loadChartsProcedureAsync() {
     manageNavigation();
 
     if (await loadSpectraTypeColorsAsync()) {
-        if (await isUserAllowedAsync())
+        if (await isPublicOrAuthorizedAsync())
             /* load data and show charts */
             loadChartsFromCloudAsync();
         else
@@ -611,7 +611,7 @@ function initChartPanel() {
 /* DOCUMENT READY */
 /* ################################################################################ */
 $(async function () {
-    await checkIsUserAllowedAsync();
+    await checkIsPublicOrAuthorizedAsync();
 
     /* define selected spectrum type for continuum removal */
     selectedSpectrumTypeForContinuumRemoval = SPECTRUM_TYPE_ALIGNED;
@@ -647,8 +647,6 @@ $(async function () {
 
     /* add listener for detecting full-screen change and manage buttons */
     setFullScreenChangeListener();
-
-    //targetPointer = $("#targetPointer");
 
     // Center targetPointer in the middle of the 'charts' div
     var chartsDiv = $('#charts');

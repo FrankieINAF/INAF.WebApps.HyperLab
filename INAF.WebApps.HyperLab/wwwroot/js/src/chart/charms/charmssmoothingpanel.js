@@ -120,14 +120,16 @@ async function onSmoothingPanelLoadedAsync() {
     /* wait for all calls to complete */
     const [resAlignedSmoothedBySegments, resAlignedSmoothed, resContinuumRemovedSmoothedBySegments, resContinuumRemovedSmoothed] = await Promise.all([callAlignedSmoothedBySegments, callAlignedSmoothed, callContinuumRemovedSmoothedBySegments, callContinuumRemovedSmoothed]);
 
-    /* store results in dictionary */
-    addOrUpdateAvailableFileOnCloudDictionary(SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_SEGMENTS, resAlignedSmoothedBySegments.IsOk, resAlignedSmoothedBySegments.Id);
-    addOrUpdateAvailableFileOnCloudDictionary(SPECTRUM_TYPE_ALIGNED_SMOOTHED, resAlignedSmoothed.IsOk, resAlignedSmoothed.Id);
-    addOrUpdateAvailableFileOnCloudDictionary(SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED_BY_SEGMENTS, resContinuumRemovedSmoothedBySegments.IsOk, resContinuumRemovedSmoothedBySegments.Id);
-    addOrUpdateAvailableFileOnCloudDictionary(SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED, resContinuumRemovedSmoothed.IsOk, resContinuumRemovedSmoothed.Id);
+    if (resAlignedSmoothedBySegments && resAlignedSmoothed && resContinuumRemovedSmoothedBySegments && resContinuumRemovedSmoothed) {
+        /* store results in dictionary */
+        addOrUpdateAvailableFileOnCloudDictionary(SPECTRUM_TYPE_ALIGNED_SMOOTHED_BY_SEGMENTS, resAlignedSmoothedBySegments.IsOk, resAlignedSmoothedBySegments.Id);
+        addOrUpdateAvailableFileOnCloudDictionary(SPECTRUM_TYPE_ALIGNED_SMOOTHED, resAlignedSmoothed.IsOk, resAlignedSmoothed.Id);
+        addOrUpdateAvailableFileOnCloudDictionary(SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED_BY_SEGMENTS, resContinuumRemovedSmoothedBySegments.IsOk, resContinuumRemovedSmoothedBySegments.Id);
+        addOrUpdateAvailableFileOnCloudDictionary(SPECTRUM_TYPE_CONTINUUM_REMOVED_SMOOTHED, resContinuumRemovedSmoothed.IsOk, resContinuumRemovedSmoothed.Id);
 
-    const currentSrcSpectrumTypeVal = getSrcSpectrumTypeVal();
-    setCloudIconOnPanel(availableFilesOnCloudDictionary[currentSrcSpectrumTypeVal], currentSrcSpectrumTypeVal);
+        const currentSrcSpectrumTypeVal = getSrcSpectrumTypeVal();
+        setCloudIconOnPanel(availableFilesOnCloudDictionary[currentSrcSpectrumTypeVal], currentSrcSpectrumTypeVal);
+    }
 
     /* enable tab for smoothing spectrum */
     setTabEnabled(2, true);
@@ -1190,7 +1192,7 @@ async function exportSmoothedSpectrumAsXmlAsync() {
 
     /* un-authenticated users do not save spectra on cloud so they cannot have parent files with valid Id */
     let parentFiles = null;
-    if (await isUserAllowedAsync())
+    if (await isPublicOrAuthorizedAsync())
         parentFiles = getSmoothedParentFiles(srcSpectrum.Id);
     //let parentFiles = getSmoothedParentFiles(srcSpectrum.Id);
     //if (!Number.isInteger(parentFiles.ParentFile.Id))

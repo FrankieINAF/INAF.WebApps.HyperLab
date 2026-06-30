@@ -489,7 +489,7 @@ async function manageSelectedSpectrumAsync(selectedSpectrum, idsToBeRemoved) {
         await getSpectraTypesParentsAsync();
 
         const parentSpectrumType = getParentSpectrumType(selectedSpectrum.SpectrumType);
-        if (parentSpectrumType != null)
+        if (parentSpectrumType != null && await isAuthorizedAsync())
             checkIsSpectrumOfTypeSavedOnCloudAsync(parentSpectrumType, selectedSpectrum.Name, false);
 
         /* reset all variables and arrays used for fitting */
@@ -655,7 +655,7 @@ function addOrUpdateAvailableFileOnCloudDictionary(spectrumType, isOk, id) {
 }
 
 async function checkIsSpectrumOfTypeSavedOnCloudAsync(spectrumType, filename = null, isUIUpdateRequired = true) {
-    if (!await isUserAllowedAsync())
+    if (!await isAuthorizedAsync())
         return null;
 
     let file;

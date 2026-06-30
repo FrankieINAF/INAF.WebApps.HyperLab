@@ -1998,7 +1998,7 @@ async function exportContinuumRemovedSpectrumAsXmlAsync() {
 
     /* un-authenticated users do not save spectra on cloud so they cannot have parent files with valid Id */
     let parentFiles = null;
-    if (await isUserAllowedAsync())
+    if (await isPublicOrAuthorizedAsync())
         parentFiles = getContinuumRemovedParentFiles(selectedSpectrumForProcessing.Id);
 
     const continuumRemovalSettings = getContinuumRemovalSettings();

@@ -14,22 +14,6 @@ function removeEnlargeButton() {
     $(`#${enlargeButtonId}`).remove();
 }
 
-/* ---------- BACK-TO-SEARCH BUTTON ---------- */
-function addBackToSearchButton() {
-    addMenuItem(backToSearchButtonId, ButtonBackToSearchLabel, ButtonBackToSearchTooltip, 'mif-search', backToSearchProcedure);
-}
-
-function removeBackToSearchButtonProcedure() {
-    if (!isButtonAvailable(backToSearchButtonId))
-        return;
-
-    animateCSS(`${backToSearchButtonId}`, `bounceOutLeft`, FAST, removeBackToSearchButton);
-}
-
-function removeBackToSearchButton() {
-    $(`#${backToSearchButtonId}`).remove();
-}
-
 /* ---------- OPEN PROCESS SPECTRA CHARMS BUTTON ---------- */
 function addOpenProcessSpectraCharmsButton() {
     addButton(openProcessSpectraCharmsButtonId, ButtonOpenCharmsLabel, 'mif-magic-wand', openCharmsProcessSpectra);

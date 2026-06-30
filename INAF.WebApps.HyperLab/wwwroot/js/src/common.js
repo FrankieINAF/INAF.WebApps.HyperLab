@@ -1246,7 +1246,7 @@ function submitForm(formObj) {
 /* ##################################################################################  */
 /* DOCUMENT READY */
 /* ##################################################################################  */
-$(document).ready(function () {
+$(function () {
     checkScreenDims();
     
     /* Global AJAX error handler for HTTP status codes */

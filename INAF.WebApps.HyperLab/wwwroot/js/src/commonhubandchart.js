@@ -37,8 +37,8 @@ var red = '#a8071e';
 
 var usersToShare = [];
 
-async function checkIsUserAllowedAsync() {
-    const isUserAllowedResponse = await isUserAllowedAsync(false); // to be sure that the authentication check is completed before adding the item to the list (and consequently before showing the save icon)
+async function checkIsPublicOrAuthorizedAsync() {
+    const isUserAllowedResponse = await isPublicOrAuthorizedAsync(false); // to be sure that the authentication check is completed before adding the item to the list (and consequently before showing the save icon)
     isUserAuthenticated = isUserAllowedResponse.IsOk;
 }
 
@@ -52,16 +52,19 @@ function initPageDims() {
     pageH = $('#renderbody').height();
 }
 
-async function isUserAllowedAsync(useLoading = true) {
-    if (useLoading) {
+async function isAuthorizedAsync() {
+    const isUserAuthorizedResponse = await doAjaxGetNoModelAsync(UrlIsAuthorized);
+    return isUserAuthorizedResponse.IsOk;
+}
+
+async function isPublicOrAuthorizedAsync(useLoading = true) {
+    if (useLoading)
         setLoadingCircleIsVisible(true);
-    }
 
-    const isUserAllowedResponse = await doAjaxGetNoModelAsync(UrlIsUserAllowed);
+    const isUserAllowedResponse = await doAjaxGetNoModelAsync(UrlIsPublicOrAuthorized);
 
-    if (useLoading) {
+    if (useLoading)
         setLoadingCircleIsVisible(false);
-    }
 
     return isUserAllowedResponse;
 }
@@ -110,9 +113,6 @@ function manageNavigation() {
             addCharmsLegendButton();
             addOpenProcessSpectraCharmsButton();
             addEnterFullScreenButton();
-
-            /* left-side menu */
-            addBackToSearchButton();
             break;
 
         default: // NAVIGATION_INIT
