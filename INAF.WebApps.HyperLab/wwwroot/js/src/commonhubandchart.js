@@ -17,13 +17,6 @@ var OPTIONS_TITLE_ALIGNMENT = 'alignmentoptionstitle';
 var OPTIONS_TITLE_FIT = 'fitoptionstitle';
 var OPTIONS_TITLE_SMOOTHING = 'smoothingoptionstitle';
 
-var NAVIGATION_BACK_TO_SEARCH = 'navigationbacktosearch';
-var NAVIGATION_BACK_CLEAR_CHART = 'navigationbackclearchart';
-var NAVIGATION_CREATE_CHART = 'navigationcreatechart';
-var NAVIGATION_INIT = 'navigationinit';
-var NAVIGATION_SHOW_CHART = 'navigationshowchart';
-var navigationStatus = NAVIGATION_INIT;
-
 var STORAGE_ITEM = "storageItem";
 
 var pageW, pageH;
@@ -115,7 +108,7 @@ function manageNavigation() {
             addEnterFullScreenButton();
             break;
 
-        default: // NAVIGATION_INIT
+        default: // NAVIGATION_HUB
             /* top-bar menu */
             addGuideHubButton();
             tryAddSearchButtonAsync();

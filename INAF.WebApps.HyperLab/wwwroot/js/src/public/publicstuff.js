@@ -139,6 +139,8 @@ async function retrievePublicSampleTypeGroupsAsync() {
 /* DOCUMENT READY */
 /* ################################################################################ */
 $(async function () {
+    navigationStatus = NAVIGATION_PUBLIC_STUFF;
+
     setLoadingCircleIsVisible(true);
 
     showPageItems(true);

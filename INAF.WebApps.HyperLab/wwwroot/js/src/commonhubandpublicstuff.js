@@ -5,6 +5,14 @@ var CHECKBOX = 'checkbox';
 var GROUP_ITEM = 'groupItem';
 var GROUP_ITEMS = 'groupItems';
 
+var NAVIGATION_BACK_TO_SEARCH = 'navigationbacktosearch';
+var NAVIGATION_BACK_CLEAR_CHART = 'navigationbackclearchart';
+var NAVIGATION_CREATE_CHART = 'navigationcreatechart';
+var NAVIGATION_HUB = 'navigationinit';
+var NAVIGATION_PUBLIC_STUFF = 'navigationpublicstuff';
+var NAVIGATION_SHOW_CHART = 'navigationshowchart';
+var navigationStatus = NAVIGATION_HUB;
+
 function initializeRequestedLevelsSimple() {
     $('#selectLevelAveragedSimple, #selectLevelSingleAcquisitionSimple').on('change', function (evt) {
         var checkbox = $(this);
@@ -212,6 +220,9 @@ function addSelectedSpectrum(id) {
 
     addCreateChartsButtonProcedure();
     if (selectedSpectra.length == 1) {
+        if (navigationStatus == NAVIGATION_PUBLIC_STUFF)
+            return;
+
         addPublicAndShareButtons();
         addMessage(ChartsUseChartsButtonMessage, 3000, INFO);
     }

@@ -314,6 +314,8 @@ function onWindowResize() {
 }
 
 $(async function () {
+    navigationStatus = NAVIGATION_HUB;
+
     setLoadingCircleIsVisible(true);
 
     await checkIsPublicOrAuthorizedAsync();

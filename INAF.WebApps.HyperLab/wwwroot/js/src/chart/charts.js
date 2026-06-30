@@ -101,8 +101,6 @@ function backToSearchProcedure() {
 function createChartsProcedure() {
     setMenuCollapsed();
 
-    navigationStatus = NAVIGATION_CREATE_CHART;
-
     executeAfter(loadChartsProcedureAsync, 500);
 }
 
@@ -611,6 +609,8 @@ function initChartPanel() {
 /* DOCUMENT READY */
 /* ################################################################################ */
 $(async function () {
+    navigationStatus = NAVIGATION_CREATE_CHART;
+
     await checkIsPublicOrAuthorizedAsync();
 
     /* define selected spectrum type for continuum removal */
