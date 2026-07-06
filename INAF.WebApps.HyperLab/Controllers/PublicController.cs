@@ -40,6 +40,16 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region ARRAYS FOR SEARCHES
         [HttpGet]
+        public IActionResult GetGrainSizeTypeValues()
+        {
+            var grainSizeTypeValues = dbHandlerHyperLabData.getSampleTypeGrainSizeTypeValues();
+            if (grainSizeTypeValues?.Count > 0)
+                return new JsonResult(grainSizeTypeValues);
+            else
+                return new EmptyResult();
+        }
+
+        [HttpGet]
         public IActionResult GetMineralTypes()
         {
             var mineralTypes = dbHandlerHyperLabData.getMineralTypes();

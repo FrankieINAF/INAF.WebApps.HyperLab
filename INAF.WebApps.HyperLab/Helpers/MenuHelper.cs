@@ -52,7 +52,6 @@ namespace INAF.WebApps.HyperLab.Helpers
                     PageName = "Shares",
                     Label = Resources.SharedStuff.SharedStuffPageTitle,
                     Icon = "mif-shareable",
-                    AppIcon = "mif-shareable",
                     LinkText = $"/{GenericHelper.GetControllerName(nameof(SpectraManagerController))}/{nameof(SpectraManagerController.SharedStuff)}",
                     ParentId = 0
                 };

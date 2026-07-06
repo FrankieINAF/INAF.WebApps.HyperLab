@@ -1,5 +1,5 @@
 ﻿using INAF.Libraries.Net.CommonWebAppHelpers.Helpers;
-using INAF.Libraries.Net.DB.HyperLabData.Models.DbValues;
+using INAF.Libraries.Net.CommonWebAppModels.Models.DbValues;
 using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData;
 using System.Dynamic;
