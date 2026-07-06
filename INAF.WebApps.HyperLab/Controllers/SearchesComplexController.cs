@@ -3,20 +3,11 @@ using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.Extensions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches.Interfaces;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.SearchesManagement;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.WebApps.HyperLab.Attributes;
-using INAF.WebApps.HyperLab.Controllers.Base;
-using INAF.WebApps.HyperLab.Extensions;
-using INAF.WebApps.HyperLab.Helpers;
-using INAF.WebApps.HyperLab.Models;
-using LinqKit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -30,8 +21,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         { }
 
         #region SEARCH COMPLEX
-        [HttpGet]
-        public async Task<IActionResult> SearchComplexById(GenericRequestByIdModel model,
+        [HttpPost]
+        public async Task<IActionResult> SearchComplexById([FromBody] GenericRequestByIdModel model,
                                                            bool saveSessionVariable = true)
         {
             ComplexSearchSavingModel? complexSearchModel = dbHandlerHyperLabData.getSavedComplexSearch(model.Id,
@@ -52,18 +43,17 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return PartialView("~/Views/Searches/Partials/_SearchResults.cshtml", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, complexSearchModel.RequestedLevels!));
+                    return new JsonResult(await retrieveSpectraFilesForGroupsAsync(spectraFilesInfo, complexSearchModel.RequestedLevels!));
             }
 
             return new EmptyResult();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SearchComplexByModel(ComplexSearchSavingModel complexSearchModel,
+        public async Task<IActionResult> SearchComplexByModel([FromBody] ComplexSearchSavingModel complexSearchModel,
                                                               bool saveSessionVariable = true)
         {
-            if (complexSearchModel == null || !complexSearchModel.Conditions.IsAny())
+            if (complexSearchModel == null || !complexSearchModel.Conditions.IsAny() || !complexSearchModel.RequestedLevels.IsAny())
                 return new EmptyResult();
 
             List<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchComplex(complexSearchModel.Conditions!,
@@ -76,7 +66,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                     return PartialView("~/Views/Searches/Partials/_SearchResults.cshtml", new SearchResultsContainer(spectraFilesInfo));
 
                 case Enums.CallerContext.App:
-                    return buildJsonContentResult(retrieveSpectraFilesForGroups(spectraFilesInfo, complexSearchModel.RequestedLevels!));
+                    return new JsonResult(await retrieveSpectraFilesForGroupsAsync(spectraFilesInfo, complexSearchModel.RequestedLevels!));
             }
 
             return new EmptyResult();

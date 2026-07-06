@@ -56,8 +56,8 @@ namespace INAF.WebApps.HyperLab.Controllers
             return Content(jsonResult, "application/json");
         }
 
-        protected async Task<IEnumerable<ISpectraGroupInfoModel>?> retrieveSpectraFilesForGroups(IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo,
-                                                                                     List<int> levelIds)
+        protected async Task<IEnumerable<ISpectraGroupInfoModel>?> retrieveSpectraFilesForGroupsAsync(IEnumerable<ISpectraGroupInfoModel>? spectraFilesInfo,
+                                                                                                      List<int> levelIds)
         {
             foreach (var spectraGroupInfo in spectraFilesInfo ?? Enumerable.Empty<ISpectraGroupInfoModel>())
             {
