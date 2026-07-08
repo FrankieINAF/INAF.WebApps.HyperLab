@@ -94,6 +94,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
 
             ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumById(model.Id,
+                                                                                  isPublicSearch(),
                                                                                   await getUserIdAsync());
             if (spectrumModel == null || !spectrumModel.Points.IsAny())
                 return new JsonResult(null);
@@ -110,6 +111,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId,
                                                                                                        model.SpectrumType,
+                                                                                                       isPublicSearch(),
                                                                                                        await getUserIdAsync());
             if (spectrumModel == null || !spectrumModel.Points.IsAny())
                 return new JsonResult(null);
@@ -126,7 +128,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new JsonResult(null);
 
             var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
-            return new JsonResult(chartsHelper.createRefWhitesJson(ids, 0)); // operationUserId = 0 for 'white' spectra available for everyone (not related to a specific insertUserId)
+            return new JsonResult(chartsHelper.createRefWhitesJson(ids, isPublicSearch(), 0)); // operationUserId = 0 for 'white' spectra available for everyone (not related to a specific insertUserId)
         }
         #endregion
 
@@ -138,7 +140,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new JsonResult(null);
 
             /* the following check replace [Authorize] and [IsLoginValid] attributes because this method can be called by both logged users or users using public stuff */
-            if (!await isPublicOrAuthorizedSearchAsync())
+            if (!isPublicSearch())
                 return RedirectToAction(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)));
 
             int operationUserId = await getUserIdAsync();
@@ -147,13 +149,14 @@ namespace INAF.WebApps.HyperLab.Controllers
                 case CallerContext.Web:
                     var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
                     List<ISpectrumModel> spectraModels = dbHandlerHyperLabData.getSpectraByIdProcedure(model.Ids,
+                                                                                                       false,
                                                                                                        operationUserId);
                     if (spectraModels == null || spectraModels.Count == 0)
                         return new EmptyResult();
                     return new JsonResult(chartsHelper.createMultipleSpectraJson(spectraModels, operationUserId));
 
                 case CallerContext.App:
-                    var spectra = dbHandlerHyperLabData.getSpectraByIdProcedure(model.Ids, operationUserId);
+                    var spectra = dbHandlerHyperLabData.getSpectraByIdProcedure(model.Ids, false, operationUserId);
                     if (spectra != null && spectra.Count > 0)
                         return new JsonResult(spectra);
                     return new EmptyResult();
@@ -171,6 +174,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId, 
                                                                                                        model.SpectrumType, 
+                                                                                                       isPublicSearch(),
                                                                                                        await getUserIdAsync());
             if (spectrumModel == null || !spectrumModel.Points.IsAny())
                 return new JsonResult(null);

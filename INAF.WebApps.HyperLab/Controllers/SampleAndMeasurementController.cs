@@ -33,15 +33,17 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> LoadSpectrumMeasurementInfoView(GenericRequestByIdModel model)
         {
             var generalInfo = dbHandlerHyperLabData.getSpectrumMinimalInfo(model.Id,
+                                                                           isPublicSearch(),
                                                                            await getUserIdAsync());
             if (generalInfo == null)
                 return new EmptyResult();
 
             int spectrumId = model.Id;
             if (generalInfo.Type != Enums.SpectrumType.Raw)
-                spectrumId = dbHandlerHyperLabData.getParentRawSpectrumId(model.Id, await getUserIdAsync());
+                spectrumId = dbHandlerHyperLabData.getParentRawSpectrumId(model.Id, isPublicSearch(), await getUserIdAsync());
 
             var measurementInfo = dbHandlerHyperLabData.getSpectrumFileMeasurementInfo(spectrumId,
+                                                                                       isPublicSearch(),
                                                                                        await getUserIdAsync());
 
             /* create empty model for spectra with no measurement info */
@@ -61,16 +63,16 @@ namespace INAF.WebApps.HyperLab.Controllers
             var sampleDataAvailableValues = sampleTypesHelper.getSampleTypeValuesContainer();
 
             var generalInfo = dbHandlerHyperLabData.getSpectrumMinimalInfo(model.Id,
+                                                                           isPublicSearch(),
                                                                            await getUserIdAsync());
             if (generalInfo == null)
                 return new EmptyResult();
 
             int spectrumId = model.Id;
             if (generalInfo.Type != Enums.SpectrumType.Raw)
-                spectrumId = dbHandlerHyperLabData.getParentRawSpectrumId(model.Id, await getUserIdAsync());
+                spectrumId = dbHandlerHyperLabData.getParentRawSpectrumId(model.Id, isPublicSearch(), await getUserIdAsync());
 
-            var sampleDataSelectedValues = dbHandlerHyperLabData.getSpectrumFileSampleData(spectrumId,
-                                                                                           await getUserIdAsync());
+            var sampleDataSelectedValues = dbHandlerHyperLabData.getSpectrumFileSampleData(spectrumId, isPublicSearch(), await getUserIdAsync());
 
             /* create empty model for spectra with no sample data */
             if (sampleDataSelectedValues == null)
@@ -86,6 +88,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> LoadSpectrumSampleSelectedValuesView(ChangeMineralTypeIdRequestModel model)
         {
             var sampleDataSelectedValues = dbHandlerHyperLabData.getSpectrumFileSampleData(model.Id,
+                                                                                           isPublicSearch(),
                                                                                            await getUserIdAsync());
 
             /* create empty model for spectra with no sample data */
@@ -110,6 +113,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> GetSpectrumMeasurementInfo(int FileId)
         {
             var spectrumMeasurementInfo = dbHandlerHyperLabData.getSpectrumFileMeasurementInfo(FileId,
+                                                                                               isPublicSearch(),
                                                                                                await getUserIdAsync());
             if (spectrumMeasurementInfo != null)
                 return new JsonResult(spectrumMeasurementInfo);
@@ -121,6 +125,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> GetSpectrumSampleData(GenericRequestByIdModel model)
         {
             var spectrumSampleData = dbHandlerHyperLabData.getSpectrumFileSampleData(model.Id,
+                                                                                     isPublicSearch(),
                                                                                      await getUserIdAsync());
             if (spectrumSampleData != null)
                 return new JsonResult(spectrumSampleData);
@@ -155,6 +160,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
                 /* save file */
                 (bool isOk, int id) result = await dbHandlerHyperLabData.saveSpectrumInfoProcedureAsync(model,
+                                                                                                        isPublicSearch(),
                                                                                                         await getUserIdAsync(),
                                                                                                         getScientificResponsibleUserId());
                 return new JsonResult(result.ToGenericValueStringResponse());

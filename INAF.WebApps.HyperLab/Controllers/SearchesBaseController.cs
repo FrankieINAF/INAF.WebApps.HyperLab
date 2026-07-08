@@ -68,6 +68,8 @@ namespace INAF.WebApps.HyperLab.Controllers
                     spectraGroupInfo.Spectra = spectrumInfoModels;
             }
 
+            logger.LogInformation($"{nameof(buildJsonContentResult)} - Retrieved {spectraFilesInfo?.Count()} spectra files for groups.");
+
             return spectraFilesInfo;
         }
 

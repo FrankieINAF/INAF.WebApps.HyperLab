@@ -127,6 +127,7 @@ namespace INAF.WebApps.HyperLab.Helpers
         }
 
         public ExpandoObject createRefWhitesJson(List<int> ids,
+                                                 bool isPublicSearch,
                                                  int operationUserId)
         {
             //string json = string.Empty;
@@ -134,6 +135,7 @@ namespace INAF.WebApps.HyperLab.Helpers
             int idsNum = ids.Count;
 
             List<ISpectrumModel> spectraModels = dbHandlerHyperLabData.getSpectraByIdProcedure(ids,
+                                                                                               isPublicSearch,
                                                                                                operationUserId);
 
             /* extract min,max for all series and then retrieve absolute min,max */

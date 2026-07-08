@@ -33,7 +33,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> IsPublicOrAuthorized(GenericRequestByIdModel model)
         {
-            return new JsonResult(new GenericResponseModel() { IsOk = await isPublicOrAuthorizedSearchAsync() });
+            return new JsonResult(new GenericResponseModel() { IsOk = isPublicSearch() });
         }
 
         [HttpGet]

@@ -1,10 +1,9 @@
 ﻿using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
-using INAF.WebApps.HyperLab.Controllers.Base;
+using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.WebApps.HyperLab.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -26,9 +25,10 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByFilename(model.Text!,
                                                                                                                       model.RequestedLevels!,
-                                                                                                                      await isPublicOrAuthorizedSearchAsync(),
+                                                                                                                      isPublicSearch(),
                                                                                                                       await getUserIdAsync());
 
+            logger.LogInformation($"{nameof(SearchSimpleGroupsByFilename)}: {model.Text} - {spectraFilesInfo?.Count()} results found.");
             if (saveSessionVariable)
                 setLastSearchSession(model, Enums.SearchType.SimpleByFilename);
 
@@ -55,9 +55,10 @@ namespace INAF.WebApps.HyperLab.Controllers
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = searchByMaterialHelper.searchByMaterial(model.Id,
                                                                                                            model.Type!,
                                                                                                            model.RequestedLevels!,
-                                                                                                           await isPublicOrAuthorizedSearchAsync(),
+                                                                                                           isPublicSearch(),
                                                                                                            await getUserIdAsync());
 
+            logger.LogInformation($"{nameof(SearchSimpleGroupsByMaterial)}: {model.Id} - {spectraFilesInfo?.Count()} results found.");
             if (saveSessionVariable)
                 setLastSearchSession(model, Enums.SearchType.SimpleByMaterial);
 
@@ -82,9 +83,10 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByMineralType(model.Id,
                                                                                                                          model.RequestedLevels!,
-                                                                                                                         await isPublicOrAuthorizedSearchAsync(),
+                                                                                                                         isPublicSearch(),
                                                                                                                          await getUserIdAsync());
 
+            logger.LogInformation($"{nameof(SearchSimpleGroupsByMineralType)}: {model.Id} - {spectraFilesInfo?.Count()} results found.");
             if (saveSessionVariable)
                 setLastSearchSession(model, Enums.SearchType.SimpleByMineralType);
 
@@ -109,9 +111,10 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsByOriginType(model.Id,
                                                                                                                         model.RequestedLevels!,
-                                                                                                                        await isPublicOrAuthorizedSearchAsync(),
+                                                                                                                        isPublicSearch(),
                                                                                                                         await getUserIdAsync());
 
+            logger.LogInformation($"{nameof(SearchSimpleGroupsByOriginType)}: {model.Id} - {spectraFilesInfo?.Count()} results found.");
             if (saveSessionVariable)
                 setLastSearchSession(model, Enums.SearchType.SimpleByOriginType);
 
@@ -136,9 +139,10 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleName(model.Text!,
                                                                                                                         model.RequestedLevels!,
-                                                                                                                        await isPublicOrAuthorizedSearchAsync(),
+                                                                                                                        isPublicSearch(),
                                                                                                                         await getUserIdAsync());
 
+            logger.LogInformation($"{nameof(SearchSimpleGroupsBySampleName)}: {model.Text} - {spectraFilesInfo?.Count()} results found.");
             if (saveSessionVariable)
                 setLastSearchSession(model, Enums.SearchType.SimpleBySampleName);
 
@@ -163,9 +167,10 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             IEnumerable<SpectraGroupInfoModel>? spectraFilesInfo = dbHandlerHyperLabData.searchSimpleGroupsBySampleType(model.Id,
                                                                                                                         model.RequestedLevels!,
-                                                                                                                        await isPublicOrAuthorizedSearchAsync(),
+                                                                                                                        isPublicSearch(),
                                                                                                                         await getUserIdAsync());
 
+            logger.LogInformation($"{nameof(SearchSimpleGroupsBySampleType)}: {model.Id} - {spectraFilesInfo?.Count()} results found.");
             if (saveSessionVariable)
                 setLastSearchSession(model, Enums.SearchType.SimpleBySampleType);
 

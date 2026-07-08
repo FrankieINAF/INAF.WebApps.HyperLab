@@ -148,15 +148,9 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
             return (isUserAuthenticated, permissions);
         }
 
-        protected async Task<bool> isPublicOrAuthorizedSearchAsync()
+        protected bool isPublicSearch()
         {
-            var isUserAuthenticated = HttpContext.User.Identity?.IsAuthenticated ?? false;
-            if (!isUserAuthenticated)
-                return true;
-
-            var isLoginValidHelper = serviceProvider.GetRequiredService<IsLoginValidHelper>();
-            var response = await isLoginValidHelper.isLoginValidAsync(HttpContext);
-            return (isUserAuthenticated && response.IsOk);
+            return !HttpContext.User.Identity?.IsAuthenticated ?? false;
         }
 
         protected bool isRemoteCheckInEditMode(string field1, string field2)
