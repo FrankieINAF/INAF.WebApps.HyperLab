@@ -41,6 +41,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new EmptyResult();
 
             List<string>? sampleNames = dbHandlerHyperLabData.getSampleNameSuggestions(model.Text,
+                                                                                       isPublicSearch(),
                                                                                        await getUserIdAsync());
             if (sampleNames?.Count > 0)
                 return new JsonResult(sampleNames);
