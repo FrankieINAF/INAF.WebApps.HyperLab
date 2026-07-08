@@ -30,11 +30,6 @@ var red = '#a8071e';
 
 var usersToShare = [];
 
-async function checkIsPublicOrAuthorizedAsync() {
-    const isUserAllowedResponse = await isPublicOrAuthorizedAsync(false); // to be sure that the authentication check is completed before adding the item to the list (and consequently before showing the save icon)
-    isUserAuthenticated = isUserAllowedResponse.IsOk;
-}
-
 function tryHideLogoutButton() {
     if (!isUserAuthenticated)
         hideByClass('logoutButton');
@@ -47,14 +42,14 @@ function initPageDims() {
 
 async function isAuthorizedAsync() {
     const isUserAuthorizedResponse = await doAjaxGetNoModelAsync(UrlIsAuthorized);
-    return isUserAuthorizedResponse.IsOk;
+    isUserAuthenticated = isUserAuthorizedResponse.IsOk;
 }
 
 async function isPublicOrAuthorizedAsync(useLoading = true) {
     if (useLoading)
         setLoadingCircleIsVisible(true);
 
-    const isUserAllowedResponse = await doAjaxGetNoModelAsync(UrlIsPublicOrAuthorized);
+    const isUserAllowedResponse = await doAjaxGetNoModelAsync(UrlIsPublic);
 
     if (useLoading)
         setLoadingCircleIsVisible(false);
@@ -93,7 +88,7 @@ function manageNavigation() {
             removeBackToSearchButtonProcedure();
 
             containerFunction = function () {
-                tryAddSearchButtonAsync();
+                tryAddSearchButton();
                 addCreateChartsButtonProcedure();
             };
             executeAfter(containerFunction, 500);
@@ -111,7 +106,7 @@ function manageNavigation() {
         default: // NAVIGATION_HUB
             /* top-bar menu */
             addGuideHubButton();
-            tryAddSearchButtonAsync();
+            tryAddSearchButton();
             break;
     }
 }

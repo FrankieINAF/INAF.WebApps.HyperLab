@@ -611,7 +611,7 @@ function initChartPanel() {
 $(async function () {
     navigationStatus = NAVIGATION_CREATE_CHART;
 
-    await checkIsPublicOrAuthorizedAsync();
+    await isAuthorizedAsync();
 
     /* define selected spectrum type for continuum removal */
     selectedSpectrumTypeForContinuumRemoval = SPECTRUM_TYPE_ALIGNED;

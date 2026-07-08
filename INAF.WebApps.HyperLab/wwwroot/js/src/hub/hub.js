@@ -179,7 +179,7 @@ function showSearchInfo() {
 /* BUTTONS */
 /* ################################################################################ */
 /* ---------- SEARCH BUTTON ---------- */
-async function tryAddSearchButtonAsync() {
+async function tryAddSearchButton() {
     if (!isUserAuthenticated)
         return;
     
@@ -323,7 +323,7 @@ $(async function () {
 
     setLoadingCircleIsVisible(true);
 
-    await checkIsPublicOrAuthorizedAsync();
+    await isAuthorizedAsync();
 
     tryHideLogoutButton();
 
@@ -341,7 +341,7 @@ $(async function () {
 
     $('#searchtitle').on('click', function () {
         loadingType = LOADING_TYPE_SEARCH;
-        tryAddSearchButtonAsync();
+        tryAddSearchButton();
     });
 
     $('#loadtitle').on('click', function () {
