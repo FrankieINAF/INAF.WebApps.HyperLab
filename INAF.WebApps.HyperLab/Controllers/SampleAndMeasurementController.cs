@@ -1,7 +1,6 @@
 ﻿using INAF.Libraries.Net.CommonWebAppModels.Models.Requests;
 using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
 using INAF.Libraries.Net.DB.HyperLabData;
-using INAF.Libraries.Net.CommonWebAppModels.Models.DbValues;
 using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Info;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.MeasurementInfo;

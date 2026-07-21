@@ -147,6 +147,50 @@ namespace INAF.WebApps.HyperLab.Controllers
 
             return new JsonResult(sampleDataValuesContainer);
         }
+
+        #region GET FIXED NAME FROM NAME
+        [HttpGet]
+        public async Task<IActionResult> GetMeteoriteClassByName(GenericRequestByTextModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Text))
+                return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
+
+            MaterialBaseModel? materialBaseModel = dbHandlerHyperLabData.getMeteoriteClassByName(model.Text);
+
+            if (materialBaseModel != null && !string.IsNullOrEmpty(materialBaseModel.Name))
+                return new JsonResult(materialBaseModel);
+            else
+                return new JsonResult(null);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetMineralByName(GenericRequestByTextModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Text))
+                return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
+
+            MaterialBaseModel? materialBaseModel = dbHandlerHyperLabData.getMineralByName(model.Text);
+
+            if (materialBaseModel != null && !string.IsNullOrEmpty(materialBaseModel.Name))
+                return new JsonResult(materialBaseModel);
+            else
+                return new JsonResult(null);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetRockByName(GenericRequestByTextModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Text))
+                return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
+
+            MaterialBaseModel? materialBaseModel = dbHandlerHyperLabData.getRockByName(model.Text);
+
+            if (materialBaseModel != null && !string.IsNullOrEmpty(materialBaseModel.Name))
+                return new JsonResult(materialBaseModel);
+            else
+                return new JsonResult(null);
+        }
+        #endregion
         #endregion
 
         #region POST

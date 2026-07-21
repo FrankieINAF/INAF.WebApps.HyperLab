@@ -4,7 +4,6 @@ using INAF.Libraries.Net.CommonWebAppHelpers.Helpers;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonHelpers;
-using INAF.Libraries.Net.HyperLab.CommonWebAppHelpers;
 using INAF.Libraries.Net.HyperLabCommonHelpers;
 using INAF.Libraries.Net.HyperLabCommonHelpers.ProcessingHelpers;
 using INAF.Libraries.Net.Math.Fit.Linear;
