@@ -140,7 +140,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new JsonResult(null);
 
             /* the following check replace [Authorize] and [IsLoginValid] attributes because this method can be called by both logged users or users using public stuff */
-            if (!isPublicSearch())
+            if (!isAuthorizedSearch() && !dbHandlerHyperLabData.isPublicSpectra(model.Ids))
                 return RedirectToAction(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)));
 
             int operationUserId = await getUserIdAsync();
@@ -149,14 +149,14 @@ namespace INAF.WebApps.HyperLab.Controllers
                 case CallerContext.Web:
                     var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
                     List<ISpectrumModel> spectraModels = dbHandlerHyperLabData.getSpectraByIdProcedure(model.Ids,
-                                                                                                       false,
+                                                                                                       isPublicSearch(),
                                                                                                        operationUserId);
                     if (spectraModels == null || spectraModels.Count == 0)
                         return new EmptyResult();
                     return new JsonResult(chartsHelper.createMultipleSpectraJson(spectraModels, operationUserId));
 
                 case CallerContext.App:
-                    var spectra = dbHandlerHyperLabData.getSpectraByIdProcedure(model.Ids, false, operationUserId);
+                    var spectra = dbHandlerHyperLabData.getSpectraByIdProcedure(model.Ids, isPublicSearch(), operationUserId);
                     if (spectra != null && spectra.Count > 0)
                         return new JsonResult(spectra);
                     return new EmptyResult();

@@ -67,6 +67,8 @@ function createCharmsLegend() {
 
         let opacity = 1;
         let series = getSeriesFromSpectrumId(rawSpectrumId);
+        if (!series)
+            continue;
         if (!series.isVisible()) opacity = 0.5;
 
         let mainliobj = $('<li/>', {

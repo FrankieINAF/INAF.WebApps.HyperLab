@@ -103,7 +103,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region GET
         [HttpGet]
-        public IActionResult GetSampleDataValues()
+        public IActionResult GetSampleDataValuesWithGrainsizeValues()
         {
             return new JsonResult(dbHandlerHyperLabData.getSampleTypeValuesWithGrainSizeValues());
         }

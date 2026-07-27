@@ -148,6 +148,11 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
             return (isUserAuthenticated, permissions);
         }
 
+        protected bool isAuthorizedSearch()
+        {
+            return HttpContext.User.Identity?.IsAuthenticated ?? false;
+        }
+
         protected bool isPublicSearch()
         {
             return !HttpContext.User.Identity?.IsAuthenticated ?? false;

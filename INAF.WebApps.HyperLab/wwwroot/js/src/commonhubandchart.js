@@ -49,7 +49,7 @@ async function isPublicOrAuthorizedAsync(useLoading = true) {
     if (useLoading)
         setLoadingCircleIsVisible(true);
 
-    const isUserAllowedResponse = await doAjaxGetNoModelAsync(UrlIsPublic);
+    const isUserAllowedResponse = await doAjaxGetNoModelAsync(UrlIsPublicOrAuthorized);
 
     if (useLoading)
         setLoadingCircleIsVisible(false);

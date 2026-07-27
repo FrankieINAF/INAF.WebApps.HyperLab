@@ -209,7 +209,7 @@ function onGrainSizeUpperLimitSelected(val, option, item) {
 /* SAMPLE DATA TYPE MANAGEMENT */
 /* ################################################################################ */
 async function getSampleDataValuesAsync() {
-    let obj = await doAjaxGetNoModelAsync(UrlGetSampleDataValues);
+    let obj = await doAjaxGetNoModelAsync(GetSampleDataValuesWithGrainsizeValues);
     if (obj) {
         let itemsNum = obj.length;
         for (var i = 0; i < itemsNum; i++) {
