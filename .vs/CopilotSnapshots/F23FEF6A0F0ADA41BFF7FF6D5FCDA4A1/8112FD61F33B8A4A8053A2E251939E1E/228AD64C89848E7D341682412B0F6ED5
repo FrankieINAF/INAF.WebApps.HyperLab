@@ -1,0 +1,154 @@
+﻿using INAF.Libraries.Net.DB.HyperLab.Data.Models;
+using INAF.Libraries.Net.DB.HyperLab.Data.Tables;
+using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Files;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.SearchesManagement;
+using Microsoft.EntityFrameworkCore;
+using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
+
+namespace INAF.Libraries.Net.DB.HyperLabData.Extensions
+{
+    public static class Extensions
+    {
+        public static IQueryable<SpectraFiles> ApplyAccessFilter(this IQueryable<SpectraFiles> query,
+                                                                 HyperLabDataContext context,
+                                                                 bool isPublicSearch,
+                                                                 int operationUserId)
+        {
+            if (isPublicSearch)
+                return query.Where(x => x.IsPublic);
+
+            return query
+                .Where(x => x.InsertUserId == operationUserId || x.OwnerUserId == operationUserId)
+                .Where(sf => !context.LinkSharesSpectraFiles.Any(ls => ls.SpectrumFileId == sf.Id && ls.IsDeleted));
+                //.Where(sf => !context.LinkSharesSpectraFiles
+                //    .Where(ls => ls.SpectrumFileId == sf.Id)
+                //    .Any(ls => context.Shares.Any(ss => ss.Id == ls.ShareId && ss.IsDeleted)));
+        }
+
+        public static IQueryable<SpectrumFileSampleNameDto> ApplyAccessFilter(this IQueryable<SpectrumFileSampleNameDto> query,
+                                                                              HyperLabDataContext context,
+                                                                              bool isPublicSearch,
+                                                                              int operationUserId)
+        {
+            if (isPublicSearch)
+                return query.Where(x => x.Sf.IsPublic);
+
+            return query
+                .Where(x => x.Sf.InsertUserId == operationUserId || x.Sf.OwnerUserId == operationUserId)
+                .Where(x => !context.LinkSharesSpectraFiles.Any(ls => ls.SpectrumFileId == x.Sf.Id && ls.IsDeleted))
+                .Where(x => !context.LinkSharesSpectraFiles
+                    .Where(ls => ls.SpectrumFileId == x.Sf.Id)
+                    .Any(ls => context.Shares.Any(ss => ss.Id == ls.ShareId && ss.IsDeleted)));
+        }
+
+        public static FileSpectrumModel ToSpectrumModel(this SpectraFiles spectrum)
+        {
+            //var elements = new List<PointModel>();
+
+            return new FileSpectrumModel()
+            {
+                Id = spectrum.Id,
+                Filename = spectrum.Filename,
+                ParentId = spectrum.ParentId,
+                Type = spectrum.TypeId.ToSpectrumType(),
+                Level = spectrum.LevelId.ToSpectrumLevel(),
+                Xml = spectrum.XmlContent
+            };
+        }
+
+        public static ComplexSearchDetailedInfoModel FixMaterialTypeConditions(this ComplexSearchDetailedInfoModel complexSearchDetailedInfoModel,
+                                                                               HyperLabDataContext context)
+        {
+            var materialConditions = complexSearchDetailedInfoModel.Conditions.Where(x => x.ConditionType == ConditionType.ConditionMaterial.ToString());
+            foreach (var condition in materialConditions)
+            {
+                switch (condition.MaterialTypeId)
+                {
+                    case 2:
+                        condition.ValueText = (from x in context.ReadOnlyImaminerals
+                                               where x.Id == condition.ValueId
+                                               select x.Name)
+                                               .AsNoTracking()
+                                               .FirstOrDefault();
+                        break;
+
+                    case 3:
+                        condition.ValueText = (from x in context.ReadOnlyRocks
+                                               where x.Id == condition.ValueId
+                                               select x.Name)
+                                               .AsNoTracking()
+                                               .FirstOrDefault();
+                        break;
+
+                    case 4:
+                        condition.ValueText = (from x in context.ReadOnlyMeteoriteClasses
+                                               where x.Id == condition.ValueId
+                                               select x.Name)
+                                               .AsNoTracking()
+                                               .FirstOrDefault();
+                        break;
+                }
+            }
+
+            return complexSearchDetailedInfoModel;
+        }
+
+        public static ComplexSearchDetailedInfoModel FixMineralTypeConditions(this ComplexSearchDetailedInfoModel complexSearchDetailedInfoModel,
+                                                                              HyperLabDataContext context)
+        {
+            var mineralConditions = complexSearchDetailedInfoModel.Conditions.Where(x => x.ConditionType == ConditionType.ConditionMineralType.ToString());
+            if (mineralConditions?.Count() > 0)
+            {
+                foreach (var condition in mineralConditions)
+                {
+                    condition.ValueText = (from x in context.ReadOnlySampleMineralTypeValues
+                                           where x.Id == condition.ValueId
+                                           select x.Value)
+                                           .AsNoTracking()
+                                           .FirstOrDefault();
+                }
+            }
+
+            return complexSearchDetailedInfoModel;
+        }
+
+        public static ComplexSearchDetailedInfoModel FixOriginTypeConditions(this ComplexSearchDetailedInfoModel complexSearchDetailedInfoModel,
+                                                                             HyperLabDataContext context)
+        {
+            var mineralConditions = complexSearchDetailedInfoModel.Conditions.Where(x => x.ConditionType == ConditionType.ConditionOriginType.ToString());
+            if (mineralConditions?.Count() > 0)
+            {
+                foreach (var condition in mineralConditions)
+                {
+                    condition.ValueText = (from x in context.ReadOnlySampleOriginTypeValues
+                                           where x.Id == condition.ValueId
+                                           select x.Value)
+                                           .AsNoTracking()
+                                           .FirstOrDefault();
+                }
+            }
+
+            return complexSearchDetailedInfoModel;
+        }
+
+        public static ComplexSearchDetailedInfoModel FixSampleTypeConditions(this ComplexSearchDetailedInfoModel complexSearchDetailedInfoModel,
+                                                                             HyperLabDataContext context)
+        {
+            var mineralConditions = complexSearchDetailedInfoModel.Conditions.Where(x => x.ConditionType == ConditionType.ConditionSampleType.ToString());
+            if (mineralConditions?.Count() > 0)
+            {
+                foreach (var condition in mineralConditions)
+                {
+                    condition.ValueText = (from x in context.ReadOnlySampleTypes
+                                           where x.Id == condition.ValueId
+                                           select x.Value)
+                                           .AsNoTracking()
+                                           .FirstOrDefault();
+                }
+            }
+
+            return complexSearchDetailedInfoModel;
+        }
+    }
+}

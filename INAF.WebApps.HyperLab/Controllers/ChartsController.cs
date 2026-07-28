@@ -22,7 +22,7 @@ namespace INAF.WebApps.HyperLab.Controllers
     {
         private readonly DbHandlerHyperLabData dbHandlerHyperLabData;
 
-        public ChartsController(IServiceProvider serviceProvider, 
+        public ChartsController(IServiceProvider serviceProvider,
                                 ILogger<ChartsController> logger,
                                 DbHandlerHyperLabData dbHandlerHyperLabData) : base(serviceProvider, logger)
         {
@@ -144,22 +144,24 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return RedirectToAction(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)));
 
             int operationUserId = await getUserIdAsync();
+            List<ISpectrumModel> spectra = dbHandlerHyperLabData.getSpectraByIdProcedure(model.Ids,
+                                                                                         isPublicSearch(),
+                                                                                         operationUserId);
+            //foreach (var spectrum in spectra)
+            //{
+            //    logger.LogInformation($"found spectrum: {spectrum.Id} with num of points: {spectrum.Points?.Count}");
+            //}
+            if (spectra == null || spectra.Count == 0)
+                return new EmptyResult();
+
             switch (getCallerContext())
             {
                 case CallerContext.Web:
                     var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
-                    List<ISpectrumModel> spectraModels = dbHandlerHyperLabData.getSpectraByIdProcedure(model.Ids,
-                                                                                                       isPublicSearch(),
-                                                                                                       operationUserId);
-                    if (spectraModels == null || spectraModels.Count == 0)
-                        return new EmptyResult();
-                    return new JsonResult(chartsHelper.createMultipleSpectraJson(spectraModels, operationUserId));
+                    return new JsonResult(chartsHelper.createMultipleSpectraJson(spectra, operationUserId));
 
                 case CallerContext.App:
-                    var spectra = dbHandlerHyperLabData.getSpectraByIdProcedure(model.Ids, isPublicSearch(), operationUserId);
-                    if (spectra != null && spectra.Count > 0)
-                        return new JsonResult(spectra);
-                    return new EmptyResult();
+                    return new JsonResult(spectra);
             }
 
             return new EmptyResult();
@@ -172,8 +174,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         {
             var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
 
-            ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId, 
-                                                                                                       model.SpectrumType, 
+            ISpectrumModel? spectrumModel = dbHandlerHyperLabData.getSpectrumByParentIdAndSpectrumType(model.ParentId,
+                                                                                                       model.SpectrumType,
                                                                                                        isPublicSearch(),
                                                                                                        await getUserIdAsync());
             if (spectrumModel == null || !spectrumModel.Points.IsAny())
