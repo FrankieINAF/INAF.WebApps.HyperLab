@@ -582,16 +582,12 @@ function showPXMinPXMaxFittingChart(dataSource, series) {
 function addPXMinPXMaxFitToChart(yValues) {
     let items = dxChartGetItems(appendixChartContainer);
 
-    dxChartBeginUpdate(appendixChartContainer);
-
     let yValuesNum = yValues.length;
     for (var i = 0; i < yValuesNum; i++) {
         items[i][SERIES_PXMIN_PXMAX_FIT_POINT] = yValues[i];
     }
 
     tryAddPXMinPXMaxFitPointsSeries();
-
-    dxChartEndUpdate(appendixChartContainer);
 }
 
 function tryAddPXMinPXMaxFitPointsSeries() {
@@ -740,13 +736,11 @@ function tryRemovePXMinPXMaxMaxValueSeries() {
     /* remove points */
     const items = dxChartGetItems(appendixChartContainer);
 
-    dxChartBeginUpdate(appendixChartContainer);
     const itemsNum = items.length;
     for (var i = 0; i < itemsNum; i++) {
         if (items[i][SERIES_PXMIN_PXMAX_FIT_POINT])
             delete items[i][SERIES_PXMIN_PXMAX_FIT_POINT];
     }
-    dxChartEndUpdate(appendixChartContainer);
 
     /* remove series */
     const seriesIndex = findPXMinPXMaxChartSeriesIndexByName(SERIES_PXMIN_PXMAX_FIT);
@@ -799,11 +793,7 @@ function removeYMaxValuePointFromChart(point) {
     if (index < 0)
         return;
     if (items[index][SERIES_PXMIN_PXMAX_MAX_VALUE_POINT]) {
-        dxChartBeginUpdate(appendixChartContainer);
-
         delete items[index][SERIES_PXMIN_PXMAX_MAX_VALUE_POINT];
-
-        dxChartEndUpdate(appendixChartContainer);
     }
 }
 

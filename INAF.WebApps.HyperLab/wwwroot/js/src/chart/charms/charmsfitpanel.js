@@ -454,17 +454,11 @@ function switchToProMode() {
 function tryRemoveSeriesAndPoints(items) {
     initFitArrays();
 
-    ///* start updating chart */
-    //dxChartBeginUpdate(chartContainer);
-
     /* remove continuum */
     tryRemoveContinuumSeriesAndPoints(items);
 
     /* remove user-defied fit points */
     tryRemoveFitSeriesAndPoints(items);
-
-    ///* end updating chart */
-    //dxChartEndUpdate(chartContainer);
 
     dxChartRefresh(chartContainer);
 
@@ -574,8 +568,6 @@ async function addFitPointToChartAsync(point, isFromUserAction = false) {
     if (currentFitMode == FIT_MODE_CORE) {
         setPointOnChart(items, point.P.X, point.P.Y, SERIES_FIT_POINT);
     } else {
-        dxChartBeginUpdate(chartContainer);
-
         let maxPoint;
         if (isFromUserAction)
             maxPoint = await calculateMaximumInPointRangeAsync(point.PXMin.X, point.PXMax.X);
@@ -590,7 +582,6 @@ async function addFitPointToChartAsync(point, isFromUserAction = false) {
         /* in 'pro' mode, add boundary points together with the selected point */
         addBoundaryPointsPro(items, point);
 
-        dxChartEndUpdate(chartContainer);
         dxChartRefresh(chartContainer);
 
         hideSpectraToBeHidden();
@@ -644,14 +635,10 @@ function tryAddFitPointsSeries() {
 function tryRemoveFitPointsSeries() {
     let index = findChartSeriesIndexByName(SERIES_FIT_POINTS);
     if (index > -1) {
-        dxChartBeginUpdate(chartContainer);
-
         deleteChartSeriesItems(dxChartGetItems(chartContainer), SERIES_FIT_POINT);
 
         removeChartSeriesAt(index);
         dxChartUpdateSeries(chartContainer, chartSeries);
-
-        dxChartEndUpdate(chartContainer);
     }
 }
 
@@ -1057,8 +1044,6 @@ function highlightSegmentForFitting(segmentId) {
         let color = getSpectrumTypeColor(getSpectrumTypeString(SPECTRUM_TYPE_CONTINUUM));
         let highlightedSegmentChartSeries = createSeriesFromSpectrumName(id, SERIES_HIGHLIGHTED_SEGMENT, color, true);
 
-        dxChartBeginUpdate(chartContainer);
-
         addChartSeries(highlightedSegmentChartSeries);
 
         for (var i = segmentBoundaryIndexes.X0Index; i <= segmentBoundaryIndexes.X1Index; i++) {
@@ -1067,8 +1052,6 @@ function highlightSegmentForFitting(segmentId) {
         }
 
         dxChartUpdateSeries(chartContainer, chartSeries);
-
-        dxChartEndUpdate(chartContainer);
 
         /* mantain hidden all not necessary spectra */
         hideSpectraToBeHidden();
@@ -1093,8 +1076,6 @@ function lowlightSegmentForFitting(segmentId) {
 
         let id = buildTempHighlightedSegment();
 
-        dxChartBeginUpdate(chartContainer);
-
         let index = findChartSeriesIndexByValueFieldId(id);
         removeChartSeriesAt(index);
         dxChartUpdateSeries(chartContainer, chartSeries);
@@ -1103,7 +1084,6 @@ function lowlightSegmentForFitting(segmentId) {
             delete items[i][id];
         }
 
-        dxChartEndUpdate(chartContainer);
         dxChartResetVisualRange(chartContainer);
     } catch (e) {
         console.log(`lowlightSegment - ex: ${e}`);
@@ -1152,7 +1132,6 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1, isHidingO
     const continuumSpectrum = tryAddContinuumSpectrum(spectrumIdForContinuum);
 
     /* update chart with new aligned spectrum */
-    dxChartBeginUpdate(chartContainer);
 
     /* retrieve current items */
     const items = dxChartGetItems(chartContainer);
@@ -1163,9 +1142,6 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1, isHidingO
 
     /* add (if not already present) the continuum series */
     tryAddContinuumSpectrumSeries(continuumSpectrum);
-
-    /* update chart with new aligned spectrum */
-    dxChartEndUpdate(chartContainer);
 
     dxChartRefresh(chartContainer); // show points and segments
     if (isBuildingUpContinuum)
@@ -1189,15 +1165,11 @@ function removeContinuumSegmentForFittingOnChart(segment) {
     if (index0 == -1 || index1 == -1)
         return;
 
-    dxChartBeginUpdate(chartContainer);
-
     const tempContinuumId = buildTempContinuumId(selectedSpectrumForProcessing.Id);
     for (var i = index0; i <= index1; i++) {
         if (items[i][tempContinuumId])
             delete items[i][tempContinuumId];
     }
-
-    dxChartEndUpdate(chartContainer);
 }
 
 function tryAddContinuumSpectrum(spectrumId) {
@@ -1268,8 +1240,6 @@ function removeContinuum() {
 }
 
 function removeFitPointsSeriesPoints() {
-    dxChartBeginUpdate(chartContainer);
-
     /* remove from chart points */
     /* define x coords of all points to be removed from chart */
     let xValues = [];
@@ -1298,8 +1268,6 @@ function removeFitPointsSeriesPoints() {
         }
     }
     dxChartUpdateSeries(chartContainer, chartSeries);
-
-    dxChartEndUpdate(chartContainer);
 
     /* reset visual range to make ref whites appear in chart */
     dxChartResetVisualRange(chartContainer);

@@ -519,8 +519,6 @@ async function loadWhiteSpectraForAlignmentAsync() {
 
     const obj = await doAjaxGetNoModelAsync(UrlGetWhiteSpectraForAlignment);
     if (obj) {
-        dxChartBeginUpdate(chartContainer);
-
         /* append spectra info items to current series */
         obj.SpectraInfo.forEach(x => {
             addSpectrumInfo(x);
@@ -557,7 +555,6 @@ async function loadWhiteSpectraForAlignmentAsync() {
                 });
             }
         }
-        dxChartEndUpdate(chartContainer);
 
         /* update chart series */
         dxChartUpdateSeries(chartContainer, chartSeries);

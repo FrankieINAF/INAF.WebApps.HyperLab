@@ -2,11 +2,9 @@
 
 function hideSpectraToBeHidden() {
     let spectraToBeHidden = dxChartGetAllSeries(chartContainer).filter(x => !x.isVisible());
-    dxChartBeginUpdate(chartContainer);
     spectraToBeHidden.forEach(function (item) {
         dxChartHideSeries(chartContainer, item.name);
     });
-    dxChartEndUpdate(chartContainer);
 
     return spectraToBeHidden.length;
 }
@@ -580,8 +578,6 @@ function isChartSeriesAvailableByName(name) {
 function removeChartSeriesByFieldId(chartContainer, fieldId) {
     let items = dxChartGetItems(chartContainer);
 
-    dxChartBeginUpdate(chartContainer);
-
     /* remove series */
     let index = findChartSeriesIndexByValueFieldId(fieldId);
     if (index > -1) {
@@ -589,13 +585,9 @@ function removeChartSeriesByFieldId(chartContainer, fieldId) {
         deleteChartSeriesItems(items, fieldId);
         dxChartUpdateSeries(chartContainer, chartSeries);
     }
-
-    dxChartEndUpdate(chartContainer);
 }
 
 function removeChartSeriesByFieldIdProcedure(chartContainer, items, fieldId) {
-    dxChartBeginUpdate(chartContainer);
-
     /* remove series */
     let index = findChartSeriesIndexByValueFieldId(fieldId);
     if (index > -1) {
@@ -603,13 +595,10 @@ function removeChartSeriesByFieldIdProcedure(chartContainer, items, fieldId) {
         deleteChartSeriesItems(items, fieldId);
         dxChartUpdateSeries(chartContainer, chartSeries);
     }
-
-    dxChartEndUpdate(chartContainer);
 }
 
 function removeChartSeriesByFieldsIdProcedure(chartContainer, fieldsId) {
     let items = dxChartGetItems(chartContainer);
-    dxChartBeginUpdate(chartContainer);
     fieldsId.forEach(function (fieldId) {
         /* remove series */
         let index = findChartSeriesIndexByValueFieldId(fieldId);
@@ -619,7 +608,6 @@ function removeChartSeriesByFieldsIdProcedure(chartContainer, fieldsId) {
             dxChartUpdateSeries(chartContainer, chartSeries);
         }
     });
-    dxChartEndUpdate(chartContainer);
 }
 
 function removeChartSeriesByNameProcedure(chartContainer, seriesName) {
@@ -634,16 +622,12 @@ function removeChartSeriesByNameProcedure(chartContainer, seriesName) {
 function removePointsFromChart(chartContainer, xValues, seriesName) {
     let items = dxChartGetItems(chartContainer);
 
-    dxChartBeginUpdate(chartContainer);
-
     let xValuesNum = xValues.length;
     for (var i = 0; i < xValuesNum; i++) {
         let index = items.findIndex(p => p.X == xValues[i]);
         if (items[index][seriesName])
             delete items[index][seriesName];
     }
-
-    dxChartEndUpdate(chartContainer);
 
     dxChartRefresh(chartContainer);
 }

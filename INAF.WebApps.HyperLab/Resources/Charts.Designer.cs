@@ -266,5 +266,23 @@ namespace INAF.WebApps.HyperLab.Resources {
                 return ResourceManager.GetString("ShowMobileLegendLabel", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal zoom scroller.
+        /// </summary>
+        public static string ZoomHorizontalScroller {
+            get {
+                return ResourceManager.GetString("ZoomHorizontalScroller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical zoom scroller.
+        /// </summary>
+        public static string ZoomVerticalScroller {
+            get {
+                return ResourceManager.GetString("ZoomVerticalScroller", resourceCulture);
+            }
+        }
     }
 }

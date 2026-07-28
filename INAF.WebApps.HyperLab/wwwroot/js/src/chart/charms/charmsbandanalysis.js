@@ -320,22 +320,16 @@ function showGaussianFit(items, xValues, yValues, fitResult) {
         invertedFitResultYValues[i] = yValuesYMax - Math.abs(updatedFixedFitResultYValues[i] - yValuesYMax);
     }
 
-    dxChartBeginUpdate(chartContainer);
-
     addChartSeriesItems(items, xValues, invertedFitResultYValues, SERIES_NORMAL_FIT_POINT);
 
     let normalFitSeries = createSeriesFromSpectrumName(SERIES_NORMAL_FIT_POINT, SERIES_NORMAL_FIT, BAND_LINES_COLOR, true, false);
     addChartSeries(normalFitSeries);
     dxChartUpdateSeries(chartContainer, chartSeries);
 
-    dxChartEndUpdate(chartContainer);
-
     hideSpectraToBeHidden();
 }
 
 function showFwhm(items, leftMargin, rightMargin) {
-    dxChartBeginUpdate(chartContainer);
-
     let indexLeftMargin = items.findIndex(p => p.X == leftMargin.X);
     if (indexLeftMargin > -1)
         items[indexLeftMargin][SERIES_FWHM_POINT] = leftMargin.Y;
@@ -348,23 +342,17 @@ function showFwhm(items, leftMargin, rightMargin) {
     addChartSeries(fwhmSeries);
     dxChartUpdateSeries(chartContainer, chartSeries);
 
-    dxChartEndUpdate(chartContainer);
-
     hideSpectraToBeHidden();
     dxChartResetVisualRange(chartContainer);
 }
 
 // ONLY FOR DEVELOPMENT
 function showInvertedBand(items, xValues, invertedYValues) {
-    dxChartBeginUpdate(chartContainer);
-
     addChartSeriesItems(items, xValues, invertedYValues, SERIES_INVERTED_BAND_POINT);
 
     let invertedBandSeries = createSeriesFromSpectrumName(SERIES_INVERTED_BAND_POINT, SERIES_INVERTED_BAND, '#9933ff', true, false);
     addChartSeries(invertedBandSeries);
     dxChartUpdateSeries(chartContainer, chartSeries);
-
-    dxChartEndUpdate(chartContainer);
 
     hideSpectraToBeHidden();
 }
@@ -496,8 +484,6 @@ async function highlightBandAsync(seriesName, segmentForFitting, items) {
     /* save fitted points in memory */
     fitPoints = processingResult.Points;
 
-    dxChartBeginUpdate(chartContainer);
-
     let seriesPointsNum = seriesPoints.length;
     for (var i = 0; i < seriesPointsNum; i++) {
         let index = items.findIndex(p => p.X == xArray[i]);
@@ -520,17 +506,11 @@ async function highlightBandAsync(seriesName, segmentForFitting, items) {
     addChartSeries(bandSeries);
     dxChartUpdateSeries(chartContainer, chartSeries);
 
-    dxChartEndUpdate(chartContainer);
-
-    //hideSpectraToBeHidden();
-
     dxChartResetVisualRange(chartContainer);
 }
 
 function removeHighlightenedBand(items) {
     let pointsInRange = items.filter(p => p.X >= lastSelectedSegmentForBand.P0.P.X && p.X <= lastSelectedSegmentForBand.P1.P.X);
-
-    dxChartBeginUpdate(chartContainer);
 
     let pointsInRangeNum = pointsInRange.length;
     for (var i = 0; i < pointsInRangeNum; i++) {
@@ -542,8 +522,6 @@ function removeHighlightenedBand(items) {
     }
 
     removeChartSeriesByNameProcedure(chartContainer, SERIES_HIGHLIGHTENED_BAND);
-
-    dxChartEndUpdate(chartContainer);
 
     dxChartResetVisualRange(chartContainer);
 

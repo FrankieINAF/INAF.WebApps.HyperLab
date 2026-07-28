@@ -24,6 +24,29 @@ var enterFullScreenButtonId = 'buttonEnterFullScreen';
 var exitFullScreenButtonId = 'buttonExitFullScreen';
 var openProcessSpectraCharmsButtonId = 'buttonOpenCharms'
 
+const palette = [
+    '#3F51B5', // 1. Indigo (Primary)
+    '#E91E63', // 2. Pink (Secondary)
+    '#009688', // 3. Teal
+    '#FF9800', // 4. Orange
+    '#9C27B0', // 5. Purple
+    '#4CAF50', // 6. Green
+    '#00BCD4', // 7. Cyan
+    '#FF5722', // 8. Deep Orange
+    '#673AB7', // 9. Deep Purple
+    '#8BC34A', // 10. Light Green
+    '#2196F3', // 11. Blue
+    '#FFC107', // 12. Amber
+    '#795548', // 13. Brown
+    '#03A9F4', // 14. Light Blue
+    '#CDDC39', // 15. Lime
+    '#607D8B', // 16. Blue Grey
+    '#E040FB', // 17. Accent Purple
+    '#00E676', // 18. Accent Green
+    '#FF4081', // 19. Accent Pink
+    '#FFD740'  // 20. Accent Amber
+];
+
 /* ################################################################################ */
 /* BUTTONS */
 /* ################################################################################ */
@@ -118,7 +141,10 @@ function disposeChart() {
     if (!isChartLoaded)
         return;
 
-    chartContainer.dxChart("dispose");
+    if (chart) {
+        chart.dispose();
+        chart = null;
+    }
     $(chartContainer).empty();
     isChartLoaded = false;
 }
@@ -132,7 +158,7 @@ async function loadChartsProcedureAsync() {
             loadChartsFromCloudAsync();
         else
             loadChartsFromSessionStorage();
-    } else 
+    } else
         loadPartialViewWithAjaxGetNoModel(UrlLoadChartError, 'charts');
 }
 
@@ -163,7 +189,7 @@ async function loadChartsFromCloudAsync() {
         isOk = false;
         console.log(`${loadChartsFromCloudAsync.name} - ex: ${e}`);
     }
-    
+
     if (!isOk) {
         setLoadingCircleIsVisible(false);
         isChartLoaded = false;
@@ -204,7 +230,7 @@ function loadChartsFromSessionStorage() {
         const xValues = points.map(point => point.x);
         const minX = Math.min(...xValues);
         const maxX = Math.max(...xValues);
-        const axisRange = { Axis:1, Min: minX, Max: maxX };
+        const axisRange = { Axis: 1, Min: minX, Max: maxX };
 
         //console.log(points);
         chartSeries = createSeriesFromPoints(points);
@@ -216,152 +242,186 @@ function loadChartsFromSessionStorage() {
         addClass('charts', 'no-spectra-background');
         showSimpleDialog(ERROR_LABEL, NoSpectraFoundForSelectedIdsMessage, ALERT);
     }
-   
+
     setLoadingCircleIsVisible(false);
 }
 
 function createChart(dataSource, series, axisRange) {
     let size = calculateChartSize();
-    let lc = getLegendLocation();
 
     /* dispose existant chart, avoiding issues with zoom when recreating */
     disposeChart();
 
-    chart = chartContainer.dxChart({
-        /* data */
-        rotated: (isMobile() && isPhoneDevice()),
-        redrawOnResize: true,
-        dataSource: dataSource,
-        animation: {
-            enabled: false,
-            maxPointCountSupported: 1
-        },
-        customizePoint: function () {
-            if (this.seriesName == SERIES_FIT_POINTS || this.seriesName == SERIES_HIGHLIGHTED_SEGMENT) {
-                return { image: { url: 'images/search/red_dot.png', width: 12, height: 12 }, visible: true };
-            } else if (this.seriesName == SERIES_BAND_CENTER) {
-                return { image: { url: 'images/search/black_dot.png', width: 12, height: 12 }, visible: true };
-            }
-        },
-        commonSeriesSettings: {
-            argumentField: "X",
+    /* translate the DevExtreme series/dataSource shape into ECharts series data */
+    const echartsSeries = series.map(function (s) {
+        return {
+            name: s.name,
+            valueField: s.valueField, // kept for lookups (e.g. onPointClick, dxChart* wrappers)
             type: "line",
-            point: { visible: true, size: 6 },
-            maxLabelCount: 100,
+            showSymbol: true,
+            symbol: "circle",
+            symbolSize: 6,
+            smooth: false,
+            color: s.color,
+            lineStyle: { color: s.color },
+            itemStyle: { color: s.color },
+            emphasis: { focus: "series" },
+            data: dataSource
+                .filter(function (point) { return point[s.valueField] !== undefined && point[s.valueField] !== null; })
+                .map(function (point) { return [point.X, point[s.valueField]]; })
+        };
+    });
+
+    chart = echarts.init(chartContainer[0], null, { renderer: "canvas" });
+    chartContainer.css({ height: size.h, width: size.w });
+
+    chart.setOption({
+        animation: false,
+        grid: {
+            containLabel: true,
+            top: 30,
+            right: 70,
+            bottom: 90,
+            left: 60
         },
-        argumentAxis: {
-            name: 'argumentAxis',
-            argumentType: 'numeric',
-            type: 'continuous',
-            title: ChartWavelengthsLabel,
-            valueMarginsEnabled: true,
-            tickInterval: 200,
-            minorTickInterval: 50,
-            label: {
-                displayMode: "rotate",
-                rotationAngle: 45,
-                format: "decimal"
+        xAxis: {
+            type: "value",
+            min: function (value) {
+                return value.min - 5; // 5 unità sotto
+            },
+            max: function (value) {
+                return value.max + 5; // 5 unità sopra
+            },
+            name: ChartWavelengthsLabel,
+            nameLocation: "middle",
+            nameGap: 35,
+            splitNumber: 10,
+            minorTick: { show: true },
+            splitLine: { show: true },
+            minorSplitLine: { show: true },
+            axisLabel: {
+                rotate: 45,
+                formatter: function (value) { return parseFloat(value); }
             }
         },
-        valueAxis: {
-            name: 'valueAxis',
-            type: 'continuous',
-            showZero: false,
-            visible: true,
-            title: ChartReflectanceLabel,
-        },
-        series: series,
-        /* visualization options */
-        zoomAndPan: {
-            valueAxis: "both",
-            argumentAxis: "both",
-            dragToZoom: true,
-            allowMouseWheel: true,
-            panKey: "shift"
-        },
-        scrollBar: {
-            visible: true
-        },
-        size: {
-            height: size.h,
-            width: size.w
-        },
-        commonAxisSettings: {
-            grid: {
-                visible: true
+        yAxis: {
+            type: "value",
+            name: ChartReflectanceLabel,
+            nameLocation: "middle",
+            nameGap: 45,
+            min: function (value) {
+                return value.min * 0.98; // 2% sotto
             },
-            minorGrid: {
-                visible: true,
-                opacity: 1
+            max: function (value) {
+                return value.max * 1.02; // 2% sopra
             },
+            axisLabel: {
+                formatter: v => parseFloat(v.toFixed(6))
+            },
+            scale: true,
+            splitLine: { show: true },
+            minorSplitLine: { show: true }
         },
-        crosshair: {
-            enabled: true
+        axisPointer: {
+            show: true,
+            link: [{ xAxisIndex: "all" }]
         },
-        //margin: {
-        //    bottom: 20
-        //},
+        graphic: [
+            {
+                type: 'text',
+                left: 'center',
+                bottom: 40,
+                style: {
+                    text: `⇆ ${ZoomHorizontalScroller}`,
+                    fontSize: 16,
+                    fill: '#444'
+                }
+            },
+            {
+                type: 'text',
+                right: 40,
+                top: 'middle',
+                rotation: -Math.PI / 2,
+                style: {
+                    text: `⇆ ${ZoomVerticalScroller}`,
+                    fontSize: 16,
+                    fill: '#444',
+                }
+            }
+        ],
+        dataZoom: [
+            { type: "inside", xAxisIndex: 0, yAxisIndex: 0, filterMode: "none", zoomOnMouseWheel: true, moveOnMouseMove: "shift" },
+            { type: "slider", xAxisIndex: 0, bottom: 10 },
+            { type: "slider", yAxisIndex: 0, right: 10 }
+        ],
+        toolbox: {
+            show: true,
+            feature: {
+                saveAsImage: {}
+            }
+        },
         legend: {
-            visible: false
+            show: false
         },
         /* interactivity options */
         tooltip: {
-            enabled: true,
-            customizeTooltip: function (arg) {
-                if (arg.seriesName == SERIES_HIGHLIGHTENED_BAND)
-                    return {
-                        text: ''
-                    };
-                else
-                    return {
-                        html: getTooltip(arg.seriesName, arg.argumentText, arg.valueText)
-                    };
-            },
-            opacity: 1,
-            arrowLength: 40
-        },
-        /* export options */
-        export: {
-            enabled: true,
-        },
-        /* events */
-        onDone: function (evt) {
-            extractVisualRangesFromDataSource(axisRange);
-            initJoystickController(); // defined in joystick.js
-        },
-        onPointClick: async function (evt) {
-            if (isPointClickForFitEnabled) {
-                let x = parseInt(evt.target.argument);
-                let y = parseFloat(evt.target.value);
-                let point = createSimplePoint(x, y);
+            show: true,
+            trigger: "item",
+            confine: true,
+            formatter: function (params) {
+                if (!params) return;
 
-                let valueField = evt.target.series.getValueFields()[0];
+                // trigger: item + axisPointer link → params è array
+                const hovered = Array.isArray(params)
+                    ? params.find(p => p.dataIndex === params[0].dataIndex)
+                    : params;
 
-                let mousePosX = evt.event.clientX;
-                let mousePosY = evt.event.clientY;
-                //console.log(`onPointClick - ${evt.event.clientX}, ${evt.event.clientY}`);
+                if (!hovered) return;
 
-                addRemoveSelectedPointForFittingProcedure(valueField, point, mousePosX, mousePosY);
+                if (hovered.seriesName === SERIES_HIGHLIGHTENED_BAND)
+                    return "";
+
+                return getTooltip(
+                    hovered.seriesName,
+                    hovered.data[0],
+                    hovered.data[1]
+                );
             }
         },
-        //onPointHoverChanged: function(evt) {
-        //    if (getSpectrumTypeValueBySeriesName(evt.target.series.name) == SPECTRUM_TYPE_CONTINUUM_REMOVED) {
-        //        console.log(`${onPointHoverChanged.name} - x,y: (${evt.target.argument}, ${evt.target.value}), series: ${evt.target.series.name}`);
-        //        //highlightBandAndExecuteAnalyisProcedureAsync(evt.target.argument, evt.target.value, evt.target.series.name);
-        //    }
-        //},
-        //onSeriesClick: async function (evt) {
-        //    if (evt.target.name == HIGHLIGHTENED_BAND_SERIES)
-        //        await openCharmsBandDepthAsync();
-        //},
-        //onSeriesSelectionChanged: function (evt) {
-        //    console.log(evt);
-        //},
-        onZoomEnd: function (evt) {
-            //console.log(evt);
-            manageZoom(evt);
+        series: echartsSeries
+    });
+
+    /* events */
+    chart.on("rendered", function () {
+        extractVisualRangesFromDataSource(axisRange);
+        initJoystickController(); // defined in joystick.js
+    });
+
+    chart.on("click", function (evt) {
+        if (evt.componentType != "series")
+            return;
+
+        if (isPointClickForFitEnabled) {
+            let x = parseInt(evt.value[0]);
+            let y = parseFloat(evt.value[1]);
+            let point = createSimplePoint(x, y);
+
+            let valueField = chart.getOption().series[evt.seriesIndex].valueField;
+
+            let mousePosX = evt.event.event.clientX;
+            let mousePosY = evt.event.event.clientY;
+            //console.log(`onPointClick - ${mousePosX}, ${mousePosY}`);
+
+            addRemoveSelectedPointForFittingProcedure(valueField, point, mousePosX, mousePosY);
         }
-    }).dxChart("instance");
+    });
+
+    chart.on("dataZoom", function () {
+        const currentDataZoom = chart.getOption().dataZoom[0];
+        const zoomFactor = (currentDataZoom.end - currentDataZoom.start) / 100;
+        manageZoom({ zoomFactor: zoomFactor });
+    });
+
 
     /* free memory */
     dataSource = 0;
@@ -443,7 +503,7 @@ function createSeriesFromPoints(points) {
     let lastRawColor;
     let foundRawSpectra = 0;
 
-    const palette = DevExpress.viz.getPalette('Material');
+    //const palette = DevExpress.viz.getPalette('Material');
     let paletteCounter = 0;
 
     let pointsNum = points.length;
@@ -483,7 +543,7 @@ function createSeriesFromPoints(points) {
                     valueField: keys[j],
                     name: name,
                     axis: 'valueAxis',
-                    color: palette.simpleSet[paletteCounter],
+                    color: palette[paletteCounter],
                 });
 
                 paletteCounter++;
@@ -495,7 +555,12 @@ function createSeriesFromPoints(points) {
 }
 
 function extractVisualRangesFromDataSource(axisRange) {
-    chartContainer.dxChart("getValueAxis", "valueAxis").visualRange(axisRange.Min, axisRange.Max)
+    chart.setOption({
+        yAxis: {
+            min: axisRange.Min,
+            max: axisRange.Max
+        }
+    });
 }
 
 function getLegendLocation() {
@@ -609,6 +674,10 @@ function initChartPanel() {
 /* DOCUMENT READY */
 /* ################################################################################ */
 $(async function () {
+    echarts.registerTheme('material', {
+        color: palette
+    });
+
     navigationStatus = NAVIGATION_CREATE_CHART;
 
     await isAuthorizedAsync();

@@ -973,8 +973,6 @@ function removeSpectrumFromChart(seriesname, id) {
     /* remove from series and chart */
     let idItem = buildId(id);
 
-    dxChartBeginUpdate(chartContainer);
-
     /* remove from chart points */
     let items = dxChartGetItems(chartContainer);
     if (items && items.length > 0) {
@@ -994,8 +992,6 @@ function removeSpectrumFromChart(seriesname, id) {
         }
     }
     dxChartUpdateSeries(chartContainer, chartSeries);
-
-    dxChartEndUpdate(chartContainer);
 
     /* reset visual range to make ref whites appear in chart */
     dxChartResetVisualRange(chartContainer);

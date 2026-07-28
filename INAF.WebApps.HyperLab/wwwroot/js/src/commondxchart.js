@@ -1,16 +1,17 @@
-﻿function dxChartGetChart(container) {
-    return $(container).dxChart('instance');
-}
-
+﻿/* -------------------------------------------------------------------------------- */
+/* This file used to wrap the DevExtreme dxChart widget API.                        */
+/* The underlying chart engine is now ECharts (see chart/charts.js#createChart);     */
+/* function names/signatures below are kept unchanged so existing call sites don't   */
+/* need to be touched. The ECharts instance itself lives in the global `chart`       */
+/* variable (set by createChart); `container` is kept as a parameter for backward    */
+/* compatibility but is no longer required by most of the implementations.           */
 /* -------------------------------------------------------------------------------- */
-/* CHART UPDATE */
-/* -------------------------------------------------------------------------------- */
-function dxChartBeginUpdate(container) {
-    $(container).dxChart('instance').beginUpdate();
-}
 
-function dxChartEndUpdate(container) {
-    $(container).dxChart('instance').endUpdate();
+/* series visibility is tracked locally since ECharts does not expose a public getter */
+var dxChartHiddenSeriesNames = [];
+
+function dxChartGetChart(container) {
+    return chart;
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -36,46 +37,68 @@ function dxChartGetYValuesBoundaries(container) {
 }
 
 function dxChartGetVisualRangeX(container) {
-    return container.dxChart("getArgumentAxis", "argumentAxis").visualRange();
+    const axis = chart.getOption().xAxis[0];
+    return [axis.min, axis.max];
 }
 
 function dxChartGetVisualRangeY(container) {
-    return container.dxChart("getValueAxis", "valueAxis").visualRange();
+    const axis = chart.getOption().yAxis[0];
+    return [axis.min, axis.max];
 }
 
 function dxChartResetVisualRange(container) {
-    $(container).dxChart('instance').resetVisualRange();
+    chart.setOption({
+        xAxis: { min: null, max: null },
+        yAxis: { min: null, max: null }
+    });
+    chart.dispatchAction({ type: 'dataZoom', start: 0, end: 100 });
 }
 
 function dxChartResetZoom(container, visualRangeX, visualRangeY) {
     try {
-        container.dxChart("getValueAxis", "valueAxis").visualRange(visualRangeY[0], visualRangeY[1]);
-        container.dxChart("getArgumentAxis", "argumentAxis").visualRange(visualRangeX[0], visualRangeX[1]);
+        chart.setOption({
+            xAxis: { min: visualRangeX[0], max: visualRangeX[1] },
+            yAxis: { min: visualRangeY[0], max: visualRangeY[1] }
+        });
     } catch (e) {
         console.log(`resetZoom - ex: ${e}`);
     }
 }
 
 function dxChartSetVisualRangeY(container, visualRange) {
-    container.dxChart("getValueAxis", "valueAxis").visualRange(visualRange);
+    chart.setOption({
+        yAxis: { min: visualRange[0], max: visualRange[1] }
+    });
 }
 
 /* -------------------------------------------------------------------------------- */
 /* SERIES */
 /* -------------------------------------------------------------------------------- */
 function dxChartGetAllSeries(container) {
-    return $(container).dxChart('instance').getAllSeries();
+    return chart.getOption().series.map(function (s) {
+        return {
+            name: s.name,
+            getColor: function () { return s.color; },
+            isVisible: function () { return dxChartHiddenSeriesNames.indexOf(s.name) == -1; },
+            hide: function () { dxChartHideSeries(container, s.name); },
+            show: function () { dxChartShowSeries(container, s.name); }
+        };
+    });
 }
 
 function dxChartGetSeriesByName(container, seriesName) {
-    return $(container).dxChart('instance').getSeriesByName(seriesName);
+    return dxChartGetAllSeries(container).find(s => s.name == seriesName) ?? null;
 }
 
 function dxChartGetSeriesPoints(container, seriesName) {
     try {
-        return $(container).dxChart('instance').getSeriesByName(seriesName).getAllPoints();
+        const found = chart.getOption().series.find(s => s.name == seriesName);
+        if (!found)
+            return null;
+
+        return found.data.map(function (p) { return { argument: p[0], value: p[1] }; });
     } catch (e) {
-        return null
+        return null;
     }
 }
 
@@ -84,7 +107,9 @@ function dxChartHideSeries(container, seriesName) {
         if (dxChartGetSeriesByName(container, seriesName) == null)
             return;
 
-        container.dxChart("getSeriesByName", seriesName).hide();
+        chart.dispatchAction({ type: 'legendUnSelect', name: seriesName });
+        if (dxChartHiddenSeriesNames.indexOf(seriesName) == -1)
+            dxChartHiddenSeriesNames.push(seriesName);
 
         dxChartResetVisualRange(container);
     } catch (e) {
@@ -95,11 +120,9 @@ function dxChartHideSeries(container, seriesName) {
 function dxChartSetSeriesVisible(container, seriesName, isVisible) {
     try {
         if (isVisible)
-            container.dxChart("getSeriesByName", seriesName).show();
+            dxChartShowSeries(container, seriesName);
         else
-            container.dxChart("getSeriesByName", seriesName).hide();
-
-        dxChartResetVisualRange(container);
+            dxChartHideSeries(container, seriesName);
     } catch (e) {
         console.log(`${dxChartSetSeriesVisible.name} - seriesName: ${seriesName} - ex: ${e}`);
     }
@@ -110,7 +133,8 @@ function dxChartShowSeries(container, seriesName) {
         if (dxChartGetSeriesByName(container, seriesName) == null)
             return;
 
-        container.dxChart("getSeriesByName", seriesName).show();
+        chart.dispatchAction({ type: 'legendSelect', name: seriesName });
+        dxChartHiddenSeriesNames = dxChartHiddenSeriesNames.filter(x => x != seriesName);
 
         dxChartResetVisualRange(container);
     } catch (e) {
@@ -119,26 +143,36 @@ function dxChartShowSeries(container, seriesName) {
 }
 
 function dxChartUpdateSeries(container, chartSeries) {
-    $(container).dxChart('instance').option("series", chartSeries);
+    chart.setOption({ series: chartSeries }, { replaceMerge: 'series' });
 }
 
 function dxChartUpdateSeriesProperty(container, chartSeriesIndex, propertyName, propertyValue) {
-    $(container).dxChart('instance').option(`series[${chartSeriesIndex}].${propertyName}`, propertyValue);
+    const series = chart.getOption().series;
+    if (!series[chartSeriesIndex])
+        return;
+
+    const patch = {};
+    patch[propertyName] = propertyValue;
+    series[chartSeriesIndex] = Object.assign({}, series[chartSeriesIndex], patch);
+
+    chart.setOption({ series: series }, { replaceMerge: 'series' });
 }
 
 /* -------------------------------------------------------------------------------- */
 /* ITEMS */
 /* -------------------------------------------------------------------------------- */
 function dxChartGetItems(container) {
-    return $(container).dxChart('instance').getDataSource().items();
+    return points;
 }
 
 function dxChartRefresh(container) {
-    $(container).dxChart('instance').refresh();
+    chart.resize();
 }
 
-function dxChartUpdateOption(chart, optionName, value) {
-    chart.option(optionName, value);
+function dxChartUpdateOption(chartInstance, optionName, value) {
+    const patch = {};
+    patch[optionName] = value;
+    chartInstance.setOption(patch);
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -146,17 +180,17 @@ function dxChartUpdateOption(chart, optionName, value) {
 /* -------------------------------------------------------------------------------- */
 /* 'unofficial' for values not explicitly defined but used by chart */
 function dxChartGetUnofficialValueAxisMinorTickInterval(container) {
-    return $(container).dxChart("instance").getValueAxis()['_minorTickInterval'];
+    return chart.getOption().yAxis[0].minorTick?.splitNumber;
 }
 
 function dxChartGetUnofficialValueAxisTickInterval(container) {
-    return $(container).dxChart("instance").getValueAxis()['_tickInterval'];
+    return chart.getOption().yAxis[0].interval;
 }
 
 function dxChartGetValueAxisMinorTickInterval(container) {
-    return $(container).dxChart("instance").option('valueAxis.minorTickInterval')
+    return chart.getOption().yAxis[0].minorTick?.splitNumber;
 }
 
 function dxChartGetValueAxisTickInterval(container) {
-    return $(container).dxChart("instance").option('valueAxis.tickInterval')
+    return chart.getOption().yAxis[0].interval;
 }

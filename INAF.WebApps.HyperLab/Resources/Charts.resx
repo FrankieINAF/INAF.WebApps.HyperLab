@@ -165,6 +165,9 @@
   <data name="ErrorText" xml:space="preserve">
     <value>We encountered an issue while trying to load the requested page. Try to load the page again. If the problem persists, please reach out to the &lt;i&gt;HyperLab Team&lt;/i&gt; for assistance. We appreciate your patience!</value>
   </data>
+  <data name="ZoomHorizontalScroller" xml:space="preserve">
+    <value>Horizontal zoom scroller</value>
+  </data>
   <data name="JoystickButtonAddFitPointTitle" xml:space="preserve">
     <value>Add/remove a point for fit at current position</value>
   </data>
@@ -185,5 +188,8 @@
   </data>
   <data name="ShowMobileLegendLabel" xml:space="preserve">
     <value>Show/hide legend</value>
+  </data>
+  <data name="ZoomVerticalScroller" xml:space="preserve">
+    <value>Vertical zoom scroller</value>
   </data>
 </root>
