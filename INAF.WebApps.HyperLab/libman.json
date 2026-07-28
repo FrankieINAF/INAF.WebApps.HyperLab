@@ -23,6 +23,10 @@
     {
       "library": "Chart.js@4.5.0",
       "destination": "wwwroot/lib/chartjs/Chart.js/"
+    },
+    {
+      "library": "echarts@6.1.0",
+      "destination": "wwwroot/lib/echarts/"
     }
   ]
 }

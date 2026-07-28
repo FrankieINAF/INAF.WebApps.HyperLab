@@ -1,0 +1,83 @@
+﻿@using INAF.WebApps.HyperLab.Resources
+
+@{
+    ViewBag.Title = PublicStuff.PublicStuffPageTitle;
+}
+
+<link href="~/css/src/public/publicstuff.css" rel="stylesheet" />
+
+<div class="d-flex flex-column h-100 overflow-x-auto overflow-y-auto" style="max-width: 100%">
+    <!-- PAGE DESCRIPTION -->
+    <div class="d-flex flex-column margin-16">
+        <span class="text-medium text-just">@Html.Raw(PublicStuff.PageDescription)</span>
+   </div>
+
+    <!-- LEVELS -->
+    <div class="d-flex flex-column margin-left-8">
+        <input id="selectLevelAveragedSimple"
+               value="2"
+               type="checkbox"
+               data-role="checkbox"
+               data-caption="@Html.Raw(Search.SearchShowAveragedAcquisitionLabel)"
+               data-cls-check="bd-cyan"
+               data-style="2">
+        <input id="selectLevelSingleAcquisitionSimple"
+               value="1"
+               type="checkbox"
+               data-role="checkbox"
+               data-caption="@Html.Raw(Search.SearchShowSingleAcquisitionLabel)"
+               data-cls-check="bd-cyan"
+               data-style="2">
+    </div>
+
+    <!-- LISTS/CHARTS-->
+    <div class="d-flex flex-column-fs flex-row-lg flex-wrap">
+        <div class="d-flex flex-column margin-16">
+            <span class="text-medium text-just">@Html.Raw(PublicStuff.FileNameGroupsLabel)</span>
+            <div id="chartFileNames" class="w-100-fs w-33-lg w-25-xl"></div>
+        </div>
+
+        <div class="d-flex flex-column margin-16">
+            <span class="text-medium text-just">@Html.Raw(PublicStuff.SampleNameGroupsLabel)</span>
+            <div id="chartSampleNames" class="w-100-fs w-30-lg"></div>
+        </div>
+
+        <div class="d-flex flex-column margin-16">
+            <span class="text-medium text-just">@Html.Raw(PublicStuff.SampleTypeGroupsLabel)</span>
+            <canvas id="chartSampleTypes" class="w-100-fs w-30-lg"></canvas>
+        </div>
+
+        <div class="d-flex flex-column margin-16">
+            <span class="text-medium text-just">@Html.Raw(PublicStuff.MineralTypeGroupsLabel)</span>
+            <canvas id="chartMineralTypes" class="w-100-fs w-30-lg"></canvas>
+        </div>
+
+        <div class="d-flex flex-column margin-16">
+            <span class="text-medium text-just">@Html.Raw(PublicStuff.OriginTypeGroupsLabel)</span>
+            <canvas id="chartOriginTypes" class="w-100-fs w-30-lg"></canvas>
+        </div>
+    </div>
+
+    <!-- SEARCH RESULTS -->
+    <div id="searchResultsContainer" class="d-none overflow-x-hidden overflow-y-auto w-100 h-100 bg-white"></div>
+</div>
+
+@{
+    await Html.RenderPartialAsync("Partials/_NavigateToChart");
+
+    await Html.RenderPartialAsync("Partials/_AllJsCommon");
+    await Html.RenderPartialAsync("Partials/_HubAndPublicStuffJsCommon");
+    await Html.RenderPartialAsync("Partials/_PublicStuffJsCommon");
+}
+
+<script type="text/javascript" src="~/lib/chartjs/chartjs.min.js"></script>
+<environment names="Development">
+    <script type="text/javascript" src="~/js/src/commonall.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/src/commonallbuttons.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/src/commonhubandpublicstuff.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/src/public/publicstuff.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/src/charmsmessages.js" asp-append-version="true"></script>
+</environment>
+<environment names="Production">
+    <script type="text/javascript" src="~/js/dist/public/publicbundle.min.js" asp-append-version="true"></script>
+</environment>

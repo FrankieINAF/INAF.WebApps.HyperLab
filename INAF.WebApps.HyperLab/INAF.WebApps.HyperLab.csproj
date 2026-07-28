@@ -131,7 +131,6 @@
 
 		<ItemGroup>
 				<Folder Include="wwwroot\js\dist\" />
-				<Folder Include="wwwroot\lib\chartjs\" />
 		</ItemGroup>
 
 		<ItemGroup>

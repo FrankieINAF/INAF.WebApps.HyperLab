@@ -44,17 +44,17 @@
 
         <div class="d-flex flex-column margin-16">
             <span class="text-medium text-just">@Html.Raw(PublicStuff.SampleTypeGroupsLabel)</span>
-            <canvas id="chartSampleTypes" class="w-100-fs w-30-lg"></canvas>
+            <div id="chartSampleTypes" class="w-100-fs w-30-lg" style="width:400px; height:300px"></div>
         </div>
 
         <div class="d-flex flex-column margin-16">
             <span class="text-medium text-just">@Html.Raw(PublicStuff.MineralTypeGroupsLabel)</span>
-            <canvas id="chartMineralTypes" class="w-100-fs w-30-lg"></canvas>
+            <div id="chartMineralTypes" class="w-100-fs w-30-lg" style="width:400px; height:300px"></div>
         </div>
 
         <div class="d-flex flex-column margin-16">
             <span class="text-medium text-just">@Html.Raw(PublicStuff.OriginTypeGroupsLabel)</span>
-            <canvas id="chartOriginTypes" class="w-100-fs w-30-lg"></canvas>
+            <div id="chartOriginTypes" class="w-100-fs w-30-lg" style="width:400px; height:300px"></div>
         </div>
     </div>
 
@@ -70,7 +70,7 @@
     await Html.RenderPartialAsync("Partials/_PublicStuffJsCommon");
 }
 
-<script type="text/javascript" src="~/lib/chartjs/chartjs.min.js"></script>
+<script type="text/javascript" src="~/lib/echarts/echarts.min.js"></script>
 <environment names="Development">
     <script type="text/javascript" src="~/js/src/commonall.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/src/commonallbuttons.js" asp-append-version="true"></script>

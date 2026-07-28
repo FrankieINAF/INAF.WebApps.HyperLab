@@ -61,18 +61,6 @@
     "includeInProject": true
   },
   {
-    "outputFileName": "wwwroot/js/dist/devextreme/devextremebundle.js",
-    "inputFiles": [
-      "wwwroot/lib/devextreme/js/dx.all.js",
-      "wwwroot/lib/devextreme/js/localization/devextreme-intl.min.js",
-      "wwwroot/lib/devextreme/js/localization/dx.messages.*.js",
-      "wwwroot/lib/devextreme/js/localization/supplemental.js",
-      "wwwroot/lib/devextreme/js/dx.aspnet.mvc.js"
-    ],
-    "minify": { "enabled": true },
-    "includeInProject": true
-  },
-  {
     "outputFileName": "wwwroot/js/dist/guide/guidebundle.js",
     "inputFiles": [
       "wwwroot/js/src/guide/guide.js"
@@ -299,18 +287,6 @@
     "inputFiles": [
       "wwwroot/css/src/common.css",
       "wwwroot/css/src/home/cookiebanner.css"
-    ],
-    "includeInProject": true,
-    "minify": { "enabled": true }
-  },
-  {
-    "outputFileName": "wwwroot/css/dist/devextreme/devextremebundle.css",
-    "inputFiles": [
-      "wwwroot/lib/devextreme/css/dx.common.css",
-      "wwwroot/lib/devextreme/css/dx.light.css",
-      "wwwroot/lib/devextreme/css/icons/*.ttf",
-      "wwwroot/lib/devextreme/css/icons/*.woff",
-      "wwwroot/lib/devextreme/css/icons/*.woff2"
     ],
     "includeInProject": true,
     "minify": { "enabled": true }
