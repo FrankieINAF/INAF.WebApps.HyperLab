@@ -391,6 +391,13 @@ function createChart(dataSource, series, axisRange) {
         series: echartsSeries
     });
 
+    const resizeObserver = new ResizeObserver(() => {
+        let size = calculateChartSize();
+        chartContainer.css({ height: size.h, width: size.w });
+        chart.resize();
+    });
+    resizeObserver.observe(chartContainer[0]);
+
     /* events */
     chart.on("rendered", function () {
         extractVisualRangesFromDataSource(axisRange);
