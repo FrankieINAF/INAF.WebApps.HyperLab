@@ -45,7 +45,7 @@
       "wwwroot/js/src/chart/chartsarrays.js",
       "wwwroot/js/src/chart/chartseries.js",
       "wwwroot/js/src/chart/constantlines.js",
-      "wwwroot/js/src/chart/chartspoints.js",
+      "wwwroot/js/src/chart/chartpoints.js",
       "wwwroot/js/src/chart/chartsunauthorized.js",
       "wwwroot/js/src/charmsmessages.js"
     ],

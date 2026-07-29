@@ -3,7 +3,7 @@
 function hideSpectraToBeHidden() {
     let spectraToBeHidden = dxChartGetAllSeries().filter(x => !x.isVisible());
     spectraToBeHidden.forEach(function (item) {
-        dxChartHideSeries(chartContainer, item.name);
+        dxChartHideSeries(item.name);
     });
 
     return spectraToBeHidden.length;
@@ -89,10 +89,7 @@ function deleteChartSeriesItems(items, seriesName) {
 //     chartSeries = [];
 // }
 
-// function isChartSeriesAvailableByName(name) {
-//     let index = chartSeries.findIndex(x => x.name == name);
-//     return (index > -1);
-// }
+
 
 /* ################################################################################ */
 /* COMPLEX OPERATIONS ON CHARTS SERIES */

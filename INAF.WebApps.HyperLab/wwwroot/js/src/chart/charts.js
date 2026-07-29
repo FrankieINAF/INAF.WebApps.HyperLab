@@ -179,7 +179,7 @@ async function loadChartsFromCloudAsync() {
             //console.log(obj);
             spectraInfo = obj.SpectraInfo;
             points = obj.Points;
-            chartSeries = createSeriesFromPoints(obj.Points);
+            const chartSeries = createSeriesFromPoints(obj.Points);
             createChart(obj.Points, chartSeries, obj.AxisRange);
             isChartLoaded = true;
             setLoadingCircleIsVisible(false);
@@ -233,7 +233,7 @@ function loadChartsFromSessionStorage() {
         const axisRange = { Axis: 1, Min: minX, Max: maxX };
 
         //console.log(points);
-        chartSeries = createSeriesFromPoints(points);
+        const chartSeries = createSeriesFromPoints(points);
 
         createChart(points, chartSeries, axisRange);
         isChartLoaded = true;
@@ -377,10 +377,9 @@ function createChart(points, series, axisRange) {
 
     /* events */
     chart.on("rendered", function () {
-        extractVisualRangesFromDataSource(axisRange);
         initJoystickController(); // defined in joystick.js
         updateAxisRange(0);
-        updateAxisRange(1);
+        updateYAxisRangeForVisibleSeries();
     });
 
     chart.on("click", function (evt) {
@@ -518,7 +517,7 @@ function createEchartSeries(series, points) {
             type: "line",
             showSymbol: true,
             symbol: "circle",
-            symbolSize: 6,
+            symbolSize: 3,
             smooth: false,
             color: s.color,
             lineStyle: { color: s.color },
@@ -656,16 +655,6 @@ function createSeriesPoints(spectrumId, points) {
         X: p.X,
         [valueField]: p.Y   // ← nome dinamico del campo
     }));
-}
-
-
-function extractVisualRangesFromDataSource(axisRange) {
-    chart.setOption({
-        yAxis: {
-            min: axisRange.Min,
-            max: axisRange.Max
-        }
-    });
 }
 
 function getLegendLocation() {

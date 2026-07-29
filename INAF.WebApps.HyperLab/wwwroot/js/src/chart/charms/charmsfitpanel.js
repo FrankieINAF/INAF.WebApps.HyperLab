@@ -1255,13 +1255,13 @@ function removeFitPointsSeriesPoints() {
     removeFitPointsFromChart(xValues);
 
     /* remove from series */
-    let seriesNum = chartSeries.length;
-    for (var i = 0; i < seriesNum; i++) {
-        if (chartSeries[i].name == SERIES_FIT_POINT) {
-            removeChartSeriesAt(i);
-            break;
-        }
-    }
+    // let seriesNum = chartSeries.length;
+    // for (var i = 0; i < seriesNum; i++) {
+    //     if (chartSeries[i].name == SERIES_FIT_POINT) {
+    //         removeChartSeriesAt(i);
+    //         break;
+    //     }
+    // }
 
     /* reset visual range to make ref whites appear in chart */
     dxChartResetVisualRange();

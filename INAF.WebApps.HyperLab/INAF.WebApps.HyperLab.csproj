@@ -86,10 +86,10 @@
 				<Content Remove="wwwroot\js\src\chart\charms\charmsfitpanelpro.js" />
 				<Content Remove="wwwroot\js\src\chart\charms\charmslegend.js" />
 				<Content Remove="wwwroot\js\src\chart\charms\charmssmoothingpanel.js" />
+				<Content Remove="wwwroot\js\src\chart\chartpoints.js" />
 				<Content Remove="wwwroot\js\src\chart\charts.js" />
 				<Content Remove="wwwroot\js\src\chart\chartsarrays.js" />
 				<Content Remove="wwwroot\js\src\chart\chartsbuttons.js" />
-				<Content Remove="wwwroot\js\src\chart\chartspoints.js" />
 				<Content Remove="wwwroot\js\src\chart\chartsunauthorized.js" />
 				<Content Remove="wwwroot\js\src\chart\joystickchart.js" />
 				<Content Remove="wwwroot\js\src\chart\joystickManager.js" />
@@ -229,7 +229,7 @@
 		</ItemGroup>
 
 		<ItemGroup>
-		  <Page Include="wwwroot\js\src\chart\chartspoints.js" />
+		  <Page Include="wwwroot\js\src\chart\chartpoints.js" />
 		</ItemGroup>
 
 		<ItemGroup>

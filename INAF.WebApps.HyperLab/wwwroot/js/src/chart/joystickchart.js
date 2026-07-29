@@ -148,18 +148,18 @@ function updateVisualRangesFromDataSource(chartX, chartY) {
     setJoystickPointOnChart({ X: chartX, Y: chartY });
 }
 
-function updateChartMagnifierSeriesVisibility() {
-    const chartSeries = chartContainer.dxChart('getAllSeries');
-    const chartSeriesNum = chartSeries.length;
-    for (var i = 0; i < chartSeriesNum; i++) {
-        const chartMagnifierSeries = chartMagnifierContainer.dxChart('getAllSeries').find(x => x.name == chartSeries[i].name);
-        if (!chartMagnifierSeries)
-            continue;
-        //console.log(`chartSeries[${i}].name:'${chartSeries[i].name}', chartSeries[${i}].isVisible(): ${chartSeries[i].isVisible()}`);
-        chartSeries[i].isVisible() ? dxChartShowSeries(chartMagnifierSeries.name) : dxChartHideSeries(chartMagnifierSeries.name);
-    }
+// function updateChartMagnifierSeriesVisibility() {
+//     const chartSeries = chartContainer.dxChart('getAllSeries');
+//     const chartSeriesNum = chartSeries.length;
+//     for (var i = 0; i < chartSeriesNum; i++) {
+//         const chartMagnifierSeries = chartMagnifierContainer.dxChart('getAllSeries').find(x => x.name == chartSeries[i].name);
+//         if (!chartMagnifierSeries)
+//             continue;
+//         //console.log(`chartSeries[${i}].name:'${chartSeries[i].name}', chartSeries[${i}].isVisible(): ${chartSeries[i].isVisible()}`);
+//         chartSeries[i].isVisible() ? dxChartShowSeries(chartMagnifierSeries.name) : dxChartHideSeries(chartMagnifierSeries.name);
+//     }
 
-}
+// }
 
 function setJoystickPointOnChart(point) {
     /* define the joystick point series */

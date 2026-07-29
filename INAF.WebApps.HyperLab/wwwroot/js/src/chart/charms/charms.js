@@ -968,32 +968,32 @@ function askForRemovingSpectrum(spectrumType, checkBoxId, dialogId) {
         Metro.dialog.open(`#${dialogId}`);
 }
 
-function removeSpectrumFromChart(seriesname, id) {
-    /* remove from series and chart */
-    let idItem = buildId(id);
+// function removeSpectrumFromChart(seriesname, id) {
+//     /* remove from series and chart */
+//     let idItem = buildId(id);
 
-    /* remove from chart points */
-    let items = dxChartGetItems(chartContainer);
-    if (items && items.length > 0) {
-        let itemsNum = items.length;
-        for (var i = 0; i < itemsNum; i++) {
-            if (items[i][idItem])
-                delete items[i][idItem];
-        }
-    }
+//     /* remove from chart points */
+//     let items = dxChartGetItems(chartContainer);
+//     if (items && items.length > 0) {
+//         let itemsNum = items.length;
+//         for (var i = 0; i < itemsNum; i++) {
+//             if (items[i][idItem])
+//                 delete items[i][idItem];
+//         }
+//     }
 
-    /* remove from series */
-    let seriesNum = chartSeries.length;
-    for (var i = 0; i < seriesNum; i++) {
-        if (chartSeries[i].name == seriesname) {
-            removeChartSeriesAt(i);
-            break;
-        }
-    }
+//     /* remove from series */
+//     let seriesNum = chartSeries.length;
+//     for (var i = 0; i < seriesNum; i++) {
+//         if (chartSeries[i].name == seriesname) {
+//             removeChartSeriesAt(i);
+//             break;
+//         }
+//     }
 
-    /* reset visual range to make ref whites appear in chart */
-    dxChartResetVisualRange();
-}
+//     /* reset visual range to make ref whites appear in chart */
+//     dxChartResetVisualRange();
+// }
 
 async function removeSpectrumOnCloudAsync(id) {
     let isRemovalOk = true;

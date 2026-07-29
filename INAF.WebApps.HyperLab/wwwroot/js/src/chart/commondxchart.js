@@ -71,7 +71,7 @@ function dxChartGetAllSeries() {
             name: s.name,
             getColor: function () { return s.color; },
             isVisible: function () { return dxChartHiddenSeriesNames.indexOf(s.name) == -1; },
-            hide: function () { dxChartHideSeries(container, s.name); },
+            hide: function () { dxChartHideSeries(s.name); },
             show: function () { dxChartShowSeries(s.name); }
         };
     });
@@ -83,7 +83,7 @@ function dxChartGetSeriesByName(seriesName) {
         name: series.name,
         getColor: function () { return series.color; },
         isVisible: function () { return dxChartHiddenSeriesNames.indexOf(series.name) == -1; },
-        hide: function () { dxChartHideSeries(container, series.name); },
+        hide: function () { dxChartHideSeries(series.name); },
         show: function () { dxChartShowSeries(series.name); }
     };
 }

@@ -511,7 +511,7 @@ function setRefWhitesHidden() {
     refWhitesIds.forEach(function (id) {
         const series = findSeriesFromSpectrumId(id);
         if (series.isVisible())
-            dxChartHideSeries(chartContainer, series.name);
+            dxChartHideSeries(series.name);
     });
 }
 
@@ -527,7 +527,7 @@ async function loadWhiteSpectraForAlignmentAsync() {
         });
 
         /* create new series for ref whites and append them to current series list */
-        const whiteSeries = chartSeries = createSeriesFromPoints(obj.Points);
+        const whiteSeries = createSeriesFromPoints(obj.Points);
         /* update colors to match spectrumType-color association */
         for (var i = 0; i < whiteSeries.length; i++) {
             const color = getSpectrumTypeColor(getSpectrumTypeString(obj.SpectraInfo[i].SpectrumType));
@@ -818,7 +818,7 @@ async function alignSpectrumAsync() {
         isOk = false;
 
     /* refresh visibility of spectra */
-    hideSpectraToBeHidden();
+    //hideSpectraToBeHidden();
 
     setLoadingCircleIsVisible(false);
 

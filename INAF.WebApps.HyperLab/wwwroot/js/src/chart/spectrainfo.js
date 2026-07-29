@@ -147,7 +147,7 @@ function getSpectrumBySeriesName(seriesName) {
 }
 
 function getSpectrumBySeriesValueField(valueField) {
-    const series = chartSeries.find(x => x.valueField == valueField);
+    const series = chart.getOption().series.find(x => x.valueField == valueField);
     if (!series)
         return null;
 
@@ -283,7 +283,7 @@ function hideSpectraOtherThanTypes(spectrumTypes) {
             continue;
 
         if (!spectrumTypes.includes(spectraInfo[i].SpectrumType))
-            dxChartHideSeries(chartContainer, series.name);
+            dxChartHideSeries(series.name);
     }
 }
 

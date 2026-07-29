@@ -106,7 +106,7 @@ async function startBandAnalysisProcedureAsync(x0, x1) {
         }
     }
 
-    let series = chartSeries[seriesIndex];
+    //let series = chartSeries[seriesIndex];
 
     /* retrieve all points of all series from chart */
     let items = dxChartGetItems(chartContainer);
