@@ -312,13 +312,23 @@ function setSelectedSegmentMessage(makeVisible = true) {
 }
 
 function setStripsForMiniature() {
-    const strips = [{
-        startValue: alignmentModel.Segments[alignmentModel.SelectedSegment],
-        endValue: alignmentModel.Segments[alignmentModel.SelectedSegment + 1],
-        color: lightGreenTransparent
-    }];
+    if (!chartMiniatureChart)
+        return;
 
-    $('#chartMiniature').dxChart('instance').option('argumentAxis.strips', strips);
+    chartMiniatureChart.setOption({
+        series: [
+            {
+                markArea: {
+                    silent: true,
+                    itemStyle: { color: lightGreenTransparent },
+                    data: [[
+                        { xAxis: alignmentModel.Segments[alignmentModel.SelectedSegment] },
+                        { xAxis: alignmentModel.Segments[alignmentModel.SelectedSegment + 1] }
+                    ]]
+                }
+            }
+        ]
+    });
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -469,15 +479,7 @@ function createSeriesForWhiteSpectra(idItem, objSpectraInfo, isPointVisible = fa
     const index = objSpectraInfo.findIndex(x => x.Id == keyId);
     const name = `${objSpectraInfo[index].Name} (${getSpectrumTypeDescription(objSpectraInfo[index].SpectrumType)})`;
     const color = getSpectrumTypeColor(getSpectrumTypeString(objSpectraInfo[index].SpectrumType));
-    const series = {
-        valueField: idItem,
-        name: name,
-        axis: 'valueAxis',
-        point: { visible: isPointVisible },
-        color: color,
-    };
-
-    return series;
+    return createSeries(idItem, name, 'valueAxis', color, { visible: isPointVisible });
 }
 
 function extractSpectraIds(points) {
@@ -507,7 +509,7 @@ function getRefWhiteIds() {
 function setRefWhitesHidden() {
     const refWhitesIds = getRefWhiteIds();
     refWhitesIds.forEach(function (id) {
-        const series = getSeriesFromSpectrumId(id);
+        const series = findSeriesFromSpectrumId(id);
         if (series.isVisible())
             dxChartHideSeries(chartContainer, series.name);
     });
@@ -525,43 +527,13 @@ async function loadWhiteSpectraForAlignmentAsync() {
         });
 
         /* create new series for ref whites and append them to current series list */
-        const ids = extractSpectraIds(obj.Points);
-        ids.forEach(id => {
-            const whiteSeries = createSeriesForWhiteSpectra(id, obj.SpectraInfo);
-            addChartSeries(whiteSeries);
-        });
-
-        /* retrieve current items */
-        const items = dxChartGetItems(chartContainer);
-
-        /* add points and series to existing chart */
-        const pointsNum = obj.Points.length;
-        for (var i = 0; i < pointsNum; i++) {
-            let index = items.findIndex(x => x.X == obj.Points[i].X);
-            if (index == -1) {
-                /* a point with same X DOES NOT exist, we must add point */
-                let item = { X: obj.Points[i].X };
-                let index1 = binarySearchInsert(items, obj.Points[i]);
-                let ids = extractSpectraIds([obj.Points[i]]);
-                ids.forEach(id => {
-                    item[id] = obj.Points[i][id];
-                });
-                items.splice(index1, 0, item);
-            } else {
-                /* a point with same X exists, add ids to existing point */
-                ids.forEach(id => {
-                    if (obj.Points[i][id])
-                        items[index][id] = obj.Points[i][id];
-                });
-            }
-        }
-
-        /* update chart series */
-        dxChartUpdateSeries(chartContainer, chartSeries);
+        const whiteSeries = chartSeries = createSeriesFromPoints(obj.Points);
+        const echartsSeries = createEchartSeries(whiteSeries, obj.Points);
+        addChartSeries(echartsSeries);
 
         /* reset visual range to make ref whites appear in chart */
         if (!isCheckboxChecked('charmsSwitchAutoAlignSpectrum') && !isCheckboxChecked('charmsSwitchAutoDownloadAlignedSpectrum'))
-            dxChartResetVisualRange(chartContainer);
+            dxChartResetVisualRange();
 
         loadingCheckObj.stopLoading();
         /* enable button for alignment and change title */
@@ -624,7 +596,7 @@ function unloadWhiteSpectraForAlignment() {
 
     /* reset visual range to make ref whites disappear in chart */
     //dxChartRefresh(chartContainer);
-    dxChartResetVisualRange(chartContainer);
+    dxChartResetVisualRange();
 
     /* enable button for alignment and change title */
     setButtonAlignEnabled('alignmentButtonExecute', false, AlignmentButtonDisabledMessage);
@@ -656,80 +628,83 @@ function createChartMiniatureProcedure() {
     }
 }
 
+var chartMiniatureChart;
+
 function createChartMiniature(dataSource) {
     /* dispose existant chart, avoiding issues with zoom when recreating */
     disposeChartMiniature();
 
     const constantLines = getAlignmentConstantLines(false);
 
-    let chart = $('#chartMiniature').dxChart({
-        /* data */
-        dataSource: dataSource,
-        commonSeriesSettings: {
-            argumentField: 'X',
-            type: "line",
-            point: { visible: true },
+    $('#chartMiniature').css({ height: '150px', width: '400px' });
+
+    chartMiniatureChart = echarts.init(document.getElementById('chartMiniature'));
+
+    chartMiniatureChart.setOption({
+        animation: false,
+        grid: {
+            left: 40,
+            right: 10,
+            top: 10,
+            bottom: 30
         },
-        argumentAxis: {
-            name: 'argumentAxis',
-            argumentType: 'numeric',
-            type: 'continuous',
-            valueMarginsEnabled: true,
-            tickInterval: 500,
-            minorTickInterval: 100,
-            color: 'white',
-            label: {
-                visible: true,
-                color: 'white'
+        xAxis: {
+            type: 'value',
+            min: function (value) {
+                return value.min - 5;
             },
-            constantLines: constantLines
-        },
-        valueAxis: {
-            name: 'valueAxis',
-            showZero: false,
-            color: 'white',
-            label: {
-                visible: true,
-                color: 'white'
+            max: function (value) {
+                return value.max + 5;
             },
+            interval: 500,
+            minorTick: { show: true, splitNumber: 5 },
+            axisLine: { lineStyle: { color: 'white' } },
+            axisLabel: { color: 'white' },
+            axisTick: { lineStyle: { color: 'white' } },
+            splitLine: { show: false },
+            minorSplitLine: { show: false }
         },
-        series: [
-            { valueField: 'Y' }
-        ],
-        /* visualization options */
-        zoomAndPan: {
-            dragToZoom: false,
-            allowMouseWheel: false,
+        yAxis: {
+            type: 'value',
+            scale: true,
+            axisLine: { lineStyle: { color: 'white' } },
+            axisLabel: { color: 'white' },
+            axisTick: { lineStyle: { color: 'white' } },
+            splitLine: { show: false },
+            minorSplitLine: { show: false }
         },
-        size: {
-            height: 150,
-            width: 400
-        },
-        commonAxisSettings: {
-            grid: {
-                visible: false
-            },
-            minorGrid: {
-                visible: false,
-            },
-        },
-        crosshair: {
-            enabled: false
-        },
-        margin: {
-            bottom: 0
+        tooltip: {
+            show: false
         },
         legend: {
-            visible: false
+            show: false
         },
-        /* export options */
-        export: {
-            enabled: false,
-        },
-        onPointClick: function (evt) {
-            setSelectedSegment(evt.target.argument);
-        }
-    }).dxChart("instance");
+        series: [
+            {
+                type: 'line',
+                showSymbol: true,
+                symbolSize: 4,
+                data: dataSource.map(function (p) { return [p.X, p.Y]; }),
+                markLine: {
+                    silent: true,
+                    symbol: 'none',
+                    lineStyle: { color: lightGreen, width: 2, type: 'solid' },
+                    label: { show: true },
+                    data: constantLines.map(function (l) { return { xAxis: l.value }; })
+                },
+                markArea: {
+                    silent: true,
+                    itemStyle: { color: lightGreenTransparent },
+                    data: []
+                }
+            }
+        ]
+    });
+
+    chartMiniatureChart.on('click', function (evt) {
+        if (evt.componentType == 'series')
+            setSelectedSegment(evt.value[0]);
+    });
 
     /* highlights selected reference segment for alignment */
     setStripsForMiniature();
@@ -740,7 +715,10 @@ function createChartMiniature(dataSource) {
 
 function disposeChartMiniature() {
     try {
-        $('#chartMiniature').dxChart("dispose");
+        if (chartMiniatureChart) {
+            chartMiniatureChart.dispose();
+            chartMiniatureChart = null;
+        }
         $('#chartMiniature').empty();
     } catch (e) { }
 }
@@ -889,7 +867,7 @@ function buildAlignedSpectrumCompleted() {
     refreshCharmsLegend();
 
     /* reset visual range to make all available spectra visible */
-    //dxChartResetVisualRange(chartContainer);
+    //dxChartResetVisualRange();
 }
 
 function getRefWhiteYMax() {

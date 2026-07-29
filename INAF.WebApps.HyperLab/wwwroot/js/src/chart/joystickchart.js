@@ -105,7 +105,7 @@ function roundValue(value) {
 
 
 function updateVisualRangesFromDataSource(chartX, chartY) {
-    chartMagnifierSeries = dxChartGetAllSeries(chartContainer).filter(x => x.isVisible());
+    chartMagnifierSeries = dxChartGetAllSeries().filter(x => x.isVisible());
 
     if (!chartMagnifierSeries || chartMagnifierSeries.length == 0)
         return;

@@ -246,31 +246,14 @@ function loadChartsFromSessionStorage() {
     setLoadingCircleIsVisible(false);
 }
 
-function createChart(dataSource, series, axisRange) {
+function createChart(points, series, axisRange) {
     let size = calculateChartSize();
 
     /* dispose existant chart, avoiding issues with zoom when recreating */
     disposeChart();
 
-    /* translate the DevExtreme series/dataSource shape into ECharts series data */
-    const echartsSeries = series.map(function (s) {
-        return {
-            name: s.name,
-            valueField: s.valueField, // kept for lookups (e.g. onPointClick, dxChart* wrappers)
-            type: "line",
-            showSymbol: true,
-            symbol: "circle",
-            symbolSize: 6,
-            smooth: false,
-            color: s.color,
-            lineStyle: { color: s.color },
-            itemStyle: { color: s.color },
-            emphasis: { focus: "series" },
-            data: dataSource
-                .filter(function (point) { return point[s.valueField] !== undefined && point[s.valueField] !== null; })
-                .map(function (point) { return [point.X, point[s.valueField]]; })
-        };
-    });
+    /* translate the DevExtreme series/points shape into ECharts series data */
+    const echartsSeries = createEchartSeries(series, points);
 
     chart = echarts.init(chartContainer[0], null, { renderer: "canvas" });
     chartContainer.css({ height: size.h, width: size.w });
@@ -287,10 +270,10 @@ function createChart(dataSource, series, axisRange) {
         xAxis: {
             type: "value",
             min: function (value) {
-                return value.min - 5; // 5 unità sotto
+                return value.min - 5;
             },
             max: function (value) {
-                return value.max + 5; // 5 unità sopra
+                return value.max + 5;
             },
             name: ChartWavelengthsLabel,
             nameLocation: "middle",
@@ -431,7 +414,7 @@ function createChart(dataSource, series, axisRange) {
 
 
     /* free memory */
-    dataSource = 0;
+    points = 0;
 }
 
 function updateChartSize() {
@@ -458,6 +441,37 @@ function calculateChartSize() {
         return { h: '90%', w: '90%' };
     else
         return { h: '80%', w: '100%' };
+}
+
+function createEchartSeries(series, points) {
+    return series.map(function (s) {
+        return {
+            name: s.name,
+            valueField: s.valueField, // kept for lookups (e.g. onPointClick, dxChart* wrappers)
+            type: "line",
+            showSymbol: true,
+            symbol: "circle",
+            symbolSize: 6,
+            smooth: false,
+            color: s.color,
+            lineStyle: { color: s.color },
+            itemStyle: { color: s.color },
+            emphasis: { focus: "series" },
+            data: points
+                .filter(function (point) { return point[s.valueField] !== undefined && point[s.valueField] !== null; })
+                .map(function (point) { return [point.X, point[s.valueField]]; })
+        };
+    });
+}
+
+function createSeries(key, name, axisName, color, points, point = null) {
+    return {
+        valueField: key,
+        name: name,
+        axis: axisName,
+        color: color,
+        point: point
+    };
 }
 
 function createSeriesFromPoint(firstPoint) {
@@ -510,7 +524,6 @@ function createSeriesFromPoints(points) {
     let lastRawColor;
     let foundRawSpectra = 0;
 
-    //const palette = DevExpress.viz.getPalette('Material');
     let paletteCounter = 0;
 
     let pointsNum = points.length;
@@ -546,12 +559,7 @@ function createSeriesFromPoints(points) {
                     foundRawSpectra++;
                 }
 
-                series.push({
-                    valueField: keys[j],
-                    name: name,
-                    axis: 'valueAxis',
-                    color: palette[paletteCounter],
-                });
+                series.push(createSeries(keys[j], name, 'valueAxis', palette[paletteCounter]));
 
                 paletteCounter++;
             }
@@ -593,8 +601,8 @@ function getTooltip(seriesName, argumentText, valueText) {
 /* ---------- CHARTS ACTIONS ---------- */
 /* -------------------------------------------------------------------------------- */
 function enlargeVisualRange() {
-    const { minYValue, maxYValue } = dxChartGetYValuesBoundaries(chartContainer);
-    dxChartSetVisualRangeY(chartContainer, [minYValue, maxYValue]);
+    const { minYValue, maxYValue } = dxChartGetYValuesBoundaries();
+    dxChartSetVisualRangeY([minYValue, maxYValue]);
 }
 
 function manageZoom(evt) {
@@ -607,7 +615,7 @@ function manageZoom(evt) {
 }
 
 function resetZoom() {
-    dxChartResetVisualRange(chartContainer);
+    dxChartResetVisualRange();
 }
 
 /* ################################################################################ */

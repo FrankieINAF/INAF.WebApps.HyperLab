@@ -293,16 +293,28 @@ function restoreOldSpectraColor() {
 }
 
 function updateSpectrumColor(spectrum, color) {
-    const seriesName = createSeriesNameFromSpectrumNameAndType(spectrum.Name, spectrum.SpectrumType)
+    const seriesName = createSeriesNameFromSpectrumNameAndType(spectrum.Name, spectrum.SpectrumType);
 
-    let index = findChartSeriesIndexByName(seriesName);
-    if (index == -1)
-        return;
+    const series = findChartSeriesByName(seriesName);
+    if (series) {
 
-    dxChartUpdateSeriesProperty(chartContainer, index, 'color', color);
+        // check: color is already the desired one?
+        const currentColor =
+            series.itemStyle?.color ||
+            series.lineStyle?.color ||
+            null;
+
+        if (currentColor !== color) {
+            // update color only if different
+            series.itemStyle = {
+                color: color
+            };
+        }
+    }
 
     addMessage(CharmsSelectedSpectrumColorUpdateMessage, 3000, INFO);
 }
+
 
 /* ################################################################################ */
 /* SPECTRA TYPES PARENTS */
@@ -533,7 +545,7 @@ async function manageSelectedSpectrumAsync(selectedSpectrum, idsToBeRemoved) {
         await manageTabsForSelectedSpectrumAsync(selectedSpectrum);
 
         /* reset visual range to allow lines out of current visual range to be visualized */
-        dxChartResetVisualRange(chartContainer);
+        dxChartResetVisualRange();
 
         setLoadingCircleIsVisible(false);
     }, 250);
@@ -582,20 +594,7 @@ function updateSelectedSpectrumColorToSpectrumTypeColor(selectedSpectrum) {
     const seriesName = createSeriesNameFromSpectrumNameAndType(selectedSpectrum.Name, selectedSpectrum.SpectrumType)
     const color = getSpectrumTypeColor(getSpectrumTypeString(selectedSpectrum.SpectrumType));
 
-    let index = findChartSeriesIndexByName(seriesName);
-    if (index == -1)
-        return;
-
-    const oldColor = dxChartGetSeriesByName(chartContainer, seriesName).getColor();
-
-    if (oldColor == color)
-        return; // if color is the same, then do nothing
-
-    selectedSpectrum.oldColor = oldColor; // save old color for restoring it later, if needed
-
     updateSpectrumColor(selectedSpectrum, color);
-
-    addMessage(CharmsSelectedSpectrumColorUpdateMessage, 3000, INFO);
 }
 
 /* ################################################################################ */
@@ -900,7 +899,7 @@ async function removeSpectraProcedureSimpleAsync() {
     hideSpectraToBeHidden();
 
     dxChartRefresh(chartContainer);
-    dxChartResetVisualRange(chartContainer);
+    dxChartResetVisualRange();
 }
 
 async function removeSpectrumProcedureAsync(spectrumToBeRemoved, isRemovalOnCloudRequested = false) {
@@ -994,7 +993,7 @@ function removeSpectrumFromChart(seriesname, id) {
     dxChartUpdateSeries(chartContainer, chartSeries);
 
     /* reset visual range to make ref whites appear in chart */
-    dxChartResetVisualRange(chartContainer);
+    dxChartResetVisualRange();
 }
 
 async function removeSpectrumOnCloudAsync(id) {
@@ -1098,7 +1097,7 @@ function addProcessedSpectrum(processedSpectrum, processedPoints, spectrumType) 
     dxChartEndUpdate(chartContainer);
 
     /* reset visual range to make ref whites appear in chart */
-    dxChartResetVisualRange(chartContainer);
+    dxChartResetVisualRange();
 }
 
 function buildTempAlignedId(id) {

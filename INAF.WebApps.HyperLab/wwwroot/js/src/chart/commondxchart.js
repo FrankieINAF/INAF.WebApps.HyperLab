@@ -17,8 +17,8 @@ function dxChartGetChart(container) {
 /* -------------------------------------------------------------------------------- */
 /* VISUAL RANGE */
 /* -------------------------------------------------------------------------------- */
-function dxChartGetYValuesBoundaries(container) {
-    const items = dxChartGetItems(container);
+function dxChartGetYValuesBoundaries() {
+    const items = dxChartGetItems();
 
     const keys = Object.keys(items[0]);
     const goodKeys = keys.filter(x => x.includes('id'));
@@ -36,17 +36,17 @@ function dxChartGetYValuesBoundaries(container) {
     return { minYValue, maxYValue };
 }
 
-function dxChartGetVisualRangeX(container) {
+function dxChartGetVisualRangeX() {
     const axis = chart.getOption().xAxis[0];
     return [axis.min, axis.max];
 }
 
-function dxChartGetVisualRangeY(container) {
+function dxChartGetVisualRangeY() {
     const axis = chart.getOption().yAxis[0];
     return [axis.min, axis.max];
 }
 
-function dxChartResetVisualRange(container) {
+function dxChartResetVisualRange() {
     chart.setOption({
         xAxis: { min: null, max: null },
         yAxis: { min: null, max: null }
@@ -54,7 +54,7 @@ function dxChartResetVisualRange(container) {
     chart.dispatchAction({ type: 'dataZoom', start: 0, end: 100 });
 }
 
-function dxChartResetZoom(container, visualRangeX, visualRangeY) {
+function dxChartResetZoom(visualRangeX, visualRangeY) {
     try {
         chart.setOption({
             xAxis: { min: visualRangeX[0], max: visualRangeX[1] },
@@ -65,7 +65,7 @@ function dxChartResetZoom(container, visualRangeX, visualRangeY) {
     }
 }
 
-function dxChartSetVisualRangeY(container, visualRange) {
+function dxChartSetVisualRangeY(visualRange) {
     chart.setOption({
         yAxis: { min: visualRange[0], max: visualRange[1] }
     });
@@ -74,7 +74,7 @@ function dxChartSetVisualRangeY(container, visualRange) {
 /* -------------------------------------------------------------------------------- */
 /* SERIES */
 /* -------------------------------------------------------------------------------- */
-function dxChartGetAllSeries(container) {
+function dxChartGetAllSeries() {
     return chart.getOption().series.map(function (s) {
         return {
             name: s.name,
@@ -86,11 +86,12 @@ function dxChartGetAllSeries(container) {
     });
 }
 
-function dxChartGetSeriesByName(container, seriesName) {
-    return dxChartGetAllSeries(container).find(s => s.name == seriesName) ?? null;
+function dxChartGetSeriesByName(seriesName) {
+    const series = dxChartGetAllSeries().find(s => s.name == seriesName);
+    return series ?? null;
 }
 
-function dxChartGetSeriesPoints(container, seriesName) {
+function dxChartGetSeriesPoints(seriesName) {
     try {
         const found = chart.getOption().series.find(s => s.name == seriesName);
         if (!found)
@@ -104,7 +105,7 @@ function dxChartGetSeriesPoints(container, seriesName) {
 
 function dxChartHideSeries(container, seriesName) {
     try {
-        if (dxChartGetSeriesByName(container, seriesName) == null)
+        if (dxChartGetSeriesByName(seriesName) == null)
             return;
 
         chart.dispatchAction({ type: 'legendUnSelect', name: seriesName });
@@ -130,7 +131,7 @@ function dxChartSetSeriesVisible(container, seriesName, isVisible) {
 
 function dxChartShowSeries(container, seriesName) {
     try {
-        if (dxChartGetSeriesByName(container, seriesName) == null)
+        if (dxChartGetSeriesByName(seriesName) == null)
             return;
 
         chart.dispatchAction({ type: 'legendSelect', name: seriesName });

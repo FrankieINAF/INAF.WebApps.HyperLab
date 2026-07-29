@@ -264,7 +264,7 @@ function removeSpectrumByIndex(index) {
 function hideSpectraOtherThanType(spectrumType) {
     let spectraNum = spectraInfo.length;
     for (var i = 0; i < spectraNum; i++) {
-        let series = getSeriesFromSpectrumId(spectraInfo[i].Id);
+        let series = findSeriesFromSpectrumId(spectraInfo[i].Id);
         if (!series)
             continue;
 
@@ -278,7 +278,7 @@ function hideSpectraOtherThanType(spectrumType) {
 function hideSpectraOtherThanTypes(spectrumTypes) {
     let spectraNum = spectraInfo.length;
     for (var i = 0; i < spectraNum; i++) {
-        let series = getSeriesFromSpectrumId(spectraInfo[i].Id);
+        let series = findSeriesFromSpectrumId(spectraInfo[i].Id);
         if (!series)
             continue;
 
@@ -292,7 +292,7 @@ function setSpectrumVisibilityByIdAndSpectrumType(id, spectrumType, isVisible) {
     if (!spectrum)
         return;
 
-    let series = getSeriesFromSpectrumId(spectrum.Id);
+    let series = findSeriesFromSpectrumId(spectrum.Id);
     if (!series)
         return;
 
@@ -305,7 +305,7 @@ function setSpectrumVisibilityByIdAndSpectrumType(id, spectrumType, isVisible) {
 }
 
 function setSpectrumVisibilityByName(name, isVisible) {
-    let series = dxChartGetSeriesByName(chartContainer, name);
+    let series = dxChartGetSeriesByName(name);
     if (!series)
         return;
 

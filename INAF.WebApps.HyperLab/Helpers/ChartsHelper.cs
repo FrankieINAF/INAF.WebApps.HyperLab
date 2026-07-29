@@ -126,33 +126,39 @@ namespace INAF.WebApps.HyperLab.Helpers
             return resultObject;
         }
 
-        public ExpandoObject createRefWhitesJson(List<int> ids,
-                                                 bool isPublicSearch,
+        public ExpandoObject? createRefWhitesJson(List<int> ids,
                                                  int operationUserId)
         {
             //string json = string.Empty;
 
             int idsNum = ids.Count;
 
-            List<ISpectrumModel> spectraModels = dbHandlerHyperLabData.getSpectraByIdProcedure(ids,
-                                                                                               isPublicSearch,
-                                                                                               operationUserId);
+            List<ISpectrumModel>? spectraModels = dbHandlerHyperLabData.getSpectraByIdProcedure(ids,
+                                                                                                isPublicSearch: true,
+                                                                                                operationUserId);
+            if (!spectraModels.IsAny())
+                return null;
 
             /* extract min,max for all series and then retrieve absolute min,max */
-            (double min, double max) seriesBoundaries = getSeriesBoundaries(spectraModels);
+            (double min, double max) seriesBoundaries = getSeriesBoundaries(spectraModels!);
 
             /* retrieve x values from 1st spectrum */
-            List<double> xValues = spectraModels.First().Points.Select(x => x.X).ToList();
+            List<double>? xValues = spectraModels!.First().Points?.Select(x => x.X).ToList();
+            if (!xValues.IsAny())
+                return null;
 
             ExpandoObject resultObject = new ExpandoObject();
             resultObject.AddProperty(nameof(AxisRange), new AxisRange(Enums.Axis.Y, seriesBoundaries.min, seriesBoundaries.max));
-            resultObject.AddProperty("SpectraInfo", spectraModels.Select(x => SpectrumInfoModel.Create(x)).ToList());
+            resultObject.AddProperty("SpectraInfo", spectraModels!.Select(x => SpectrumInfoModel.Create(x)).ToList());
 
             List<ExpandoObject> Values = new List<ExpandoObject>();
-            foreach (var spectrumModel in spectraModels)
+            foreach (var spectrumModel in spectraModels!)
             {
+                if (!spectrumModel.Points.IsAny())
+                    continue;
+
                 var id = spectrumModel.Id;
-                foreach (var point in spectrumModel.Points)
+                foreach (var point in spectrumModel.Points!)
                 {
                     ExpandoObject Value = new ExpandoObject();
                     Value.AddProperty("X", point.X);
@@ -160,6 +166,9 @@ namespace INAF.WebApps.HyperLab.Helpers
                     Values.Add(Value);
                 }
             }
+
+            if (!Values.IsAny())
+                return null;
 
             Values = Values.OrderBy(x => ((IDictionary<string, object>)x)["X"]).ToList();
 

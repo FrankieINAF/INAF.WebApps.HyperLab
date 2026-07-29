@@ -470,7 +470,7 @@ function invertYValuesTopToBottom(yValues) {
 }
 
 function isSeriesAlreadyPresent(name) {
-    let series = dxChartGetAllSeries(chartContainer);
+    let series = dxChartGetAllSeries();
 
     let index = series.findIndex(x => x.name == name);
 

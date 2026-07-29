@@ -1084,7 +1084,7 @@ function lowlightSegmentForFitting(segmentId) {
             delete items[i][id];
         }
 
-        dxChartResetVisualRange(chartContainer);
+        dxChartResetVisualRange();
     } catch (e) {
         console.log(`lowlightSegment - ex: ${e}`);
     }
@@ -1145,7 +1145,7 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1, isHidingO
 
     dxChartRefresh(chartContainer); // show points and segments
     if (isBuildingUpContinuum)
-        dxChartResetVisualRange(chartContainer);
+        dxChartResetVisualRange();
 
     if (isHidingOtherSpectraRequired)
         hideSpectraOtherThanTypes([SPECTRUM_TYPE_ALIGNED, SPECTRUM_TYPE_CONTINUUM]);
@@ -1270,7 +1270,7 @@ function removeFitPointsSeriesPoints() {
     dxChartUpdateSeries(chartContainer, chartSeries);
 
     /* reset visual range to make ref whites appear in chart */
-    dxChartResetVisualRange(chartContainer);
+    dxChartResetVisualRange();
 
     /* clear 'pointsForFitting' array  */
     clearPointsForFittingArray();
@@ -1396,7 +1396,7 @@ function getNumOfPointsForMissingPoints() {
 function setMissingPointsFromDownloadedContinuumRemoved() {
     try {
         const continuumPoints = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM);
-        //let continuumPoints = getPointsFromSeriesPoints(dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromSpectrum(getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM))));
+        //let continuumPoints = getPointsFromSeriesPoints(dxChartGetSeriesPoints(getSpectrumSeriesNameFromSpectrum(getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM))));
 
         /* set missing point 0 */
         trySaveMissingPoint(createPointForFitting(createSimplePoint(continuumPoints[0].X, continuumPoints[0].Y), spectrum.Id));
@@ -1531,7 +1531,7 @@ async function tryAutoRecalculateContinuumRemovedAsync() {
         return;
 
     /* retrieve current visual range */
-    const visualRange = dxChartGetVisualRangeY(chartContainer);
+    const visualRange = dxChartGetVisualRangeY();
 
     /* retieve and remove the continuum-removed spectrum */
     let continuumRemovedSpectrum = findSpectrumByIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED);
@@ -1540,7 +1540,7 @@ async function tryAutoRecalculateContinuumRemovedAsync() {
     await removeContinuumRemovedSpectrumAsync(continuumRemovedSpectrum, false);
 
     /* restore previous visual range for a better UX during process */
-    dxChartSetVisualRangeY(chartContainer, visualRange);
+    dxChartSetVisualRangeY(visualRange);
 
     /* ensure no saved highlightened band is remaining in memory */
     initLastSelectedSegmentForBand();
@@ -1563,7 +1563,7 @@ function extractSeriesValuesForContinuumRemovedBreaks() {
         spectra.forEach(function (spectrumInfo) {
             let seriesName = getSeriesNameFromSpectrumId(spectrumInfo.Id);
 
-            let seriesPoints = dxChartGetSeriesPoints(chartContainer, seriesName);
+            let seriesPoints = dxChartGetSeriesPoints(seriesName);
             let points = getPointsFromSeriesPoints(seriesPoints);
 
             if (spectrumInfo.SpectrumType == SPECTRUM_TYPE_CONTINUUM_REMOVED) {
@@ -1586,18 +1586,18 @@ function extractSeriesValuesForContinuumRemovedBreaks() {
 }
 
 function fitHideBreaksOnValueAxis() {
-    let visualRangeY = dxChartGetVisualRangeY(chartContainer);
+    let visualRangeY = dxChartGetVisualRangeY();
 
     dxChartUpdateOption(chart, 'valueAxis.breaks', []);
     dxChartRefresh(chartContainer);
 
-    dxChartSetVisualRangeY(chartContainer, visualRangeY);
+    dxChartSetVisualRangeY(visualRangeY);
 
     hideSpectraToBeHidden();
 }
 
 function fitShowBreaksOnValueAxis() {
-    let visualRangeY = dxChartGetVisualRangeY(chartContainer);
+    let visualRangeY = dxChartGetVisualRangeY();
 
     let model = extractSeriesValuesForContinuumRemovedBreaks();
 
@@ -1607,9 +1607,9 @@ function fitShowBreaksOnValueAxis() {
 
     dxChartUpdateOption(chart, 'valueAxis.tickInterval', 0.1);
     dxChartUpdateOption(chart, 'valueAxis.breaks', [{ startValue: startValue, endValue: endValue }]);
-    dxChartRefresh(chartContainer);
+    dxChartRefresh();
 
-    dxChartSetVisualRangeY(chartContainer, visualRangeY);
+    dxChartSetVisualRangeY(visualRangeY);
 
     hideSpectraToBeHidden();
 }
@@ -1773,7 +1773,7 @@ async function saveContinuumRemovedSpectrumAsync(spectrum) {
                 /* 4) update series in chart to ensure correspondance between series and valueField of aligned spectrum */
                 updateProcessedSpectrumSeries(tempContinuumId, buildId(obj.Id), obj.Id);
 
-                dxChartResetVisualRange(chartContainer);
+                dxChartResetVisualRange();
 
                 /* mantain hidden unwanted spectra */
                 hideSpectraToBeHidden();

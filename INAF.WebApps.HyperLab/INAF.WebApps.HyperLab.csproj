@@ -180,10 +180,10 @@
 				<None Include="wwwroot\js\src\chart\chartsarrays.js" />
 				<None Include="wwwroot\js\src\chart\chartsbuttons.js" />
 				<None Include="wwwroot\js\src\chart\chartsunauthorized.js" />
+				<None Include="wwwroot\js\src\chart\commondxchart.js" />
 				<None Include="wwwroot\js\src\chart\joystickmanager.js" />
 				<None Include="wwwroot\js\src\common.js" />
 				<None Include="wwwroot\js\src\commonbuttons.js" />
-				<None Include="wwwroot\js\src\commondxchart.js" />
 				<None Include="wwwroot\js\src\commonlists.js" />
 				<None Include="wwwroot\js\src\commonhub.js" />
 				<None Include="wwwroot\js\src\commonhubandchart.js" />

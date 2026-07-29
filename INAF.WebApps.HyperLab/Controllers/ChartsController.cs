@@ -120,15 +120,21 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetWhiteSpectraForAlignment()
+        public async Task<IActionResult> GetWhiteSpectraForAlignment()
         {
             List<int>? ids = dbHandlerHyperLabData.getWhiteSpectraForAlignmentIds();
 
             if (ids == null || ids.Count == 0)
                 return new JsonResult(null);
 
+            List<ISpectrumModel>? spectra = dbHandlerHyperLabData.getSpectraByIdProcedure(ids,
+                                                                                          isPublicSearch: true,
+                                                                                          await getUserIdAsync());
+            if (!spectra.IsAny())
+                return new EmptyResult();
+
             var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
-            return new JsonResult(chartsHelper.createRefWhitesJson(ids, isPublicSearch(), 0)); // operationUserId = 0 for 'white' spectra available for everyone (not related to a specific insertUserId)
+            return new JsonResult(chartsHelper.createMultipleSpectraJson(spectra!, 0)); // operationUserId = 0 for 'white' spectra available for everyone (not related to a specific insertUserId)
         }
         #endregion
 
@@ -144,21 +150,21 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return RedirectToAction(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)));
 
             int operationUserId = await getUserIdAsync();
-            List<ISpectrumModel> spectra = dbHandlerHyperLabData.getSpectraByIdProcedure(model.Ids,
+            List<ISpectrumModel>? spectra = dbHandlerHyperLabData.getSpectraByIdProcedure(model.Ids,
                                                                                          isPublicSearch(),
                                                                                          operationUserId);
             //foreach (var spectrum in spectra)
             //{
             //    logger.LogInformation($"found spectrum: {spectrum.Id} with num of points: {spectrum.Points?.Count}");
             //}
-            if (spectra == null || spectra.Count == 0)
+            if (!spectra.IsAny())
                 return new EmptyResult();
 
             switch (getCallerContext())
             {
                 case CallerContext.Web:
                     var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
-                    return new JsonResult(chartsHelper.createMultipleSpectraJson(spectra, operationUserId));
+                    return new JsonResult(chartsHelper.createMultipleSpectraJson(spectra!, operationUserId));
 
                 case CallerContext.App:
                     return new JsonResult(spectra);

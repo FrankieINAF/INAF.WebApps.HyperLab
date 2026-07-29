@@ -33,13 +33,13 @@ var GoodSeriesPoint = {
 };
 
 function calculateNumOfPixelsFor1Unit() {
-    const visualRangeX = dxChartGetVisualRangeX(chartContainer);
+    const visualRangeX = dxChartGetVisualRangeX();
     /* Calculate the number of pixels for 1 unit based on the visual range and chart width */
-    const tempValue = $(chartContainer).width() / (visualRangeX.endValue - visualRangeX.startValue);
+    const tempValue = $(chartContainer).width() / (visualRangeX[1] - visualRangeX[0]);
     if (tempValue <= 1) 
         numOfPixelsFor1Unit = 1; // Ensure at least 1 pixel for 1 unit
     else 
-        numOfPixelsFor1Unit = Math.floor($(chartContainer).width() / (visualRangeX.endValue - visualRangeX.startValue));
+        numOfPixelsFor1Unit = Math.floor($(chartContainer).width() / (visualRangeX[1] - visualRangeX[0]));
 
     /* Multiply by 5 to increase the sensitivity of the joystick movement */
     multipliedNumOfPixelsFor1Unit = numOfPixelsFor1Unit * 5;
@@ -124,7 +124,7 @@ function checkForAlignedSeriesPointsInNearby() {
     chartX = parseInt(chartX);
 
     /* test series */
-    const series = dxChartGetAllSeries(chartContainer);
+    const series = dxChartGetAllSeries();
     const seriesNum = series.length;
     for (var i = 0; i < seriesNum; i++) {
         let spectrum = getSpectrumBySeriesName(series[i].name);
@@ -242,7 +242,7 @@ function addFitPoint() {
         return;
     }
 
-    const series = dxChartGetAllSeries(chartContainer);
+    const series = dxChartGetAllSeries();
     if (!series || series.length == 0) {
         console.warn('No series found in the chart container.');
         return;

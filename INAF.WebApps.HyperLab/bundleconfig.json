@@ -40,7 +40,11 @@
       "wwwroot/js/src/commonall.js",
       "wwwroot/js/src/chart/charts.js",
       "wwwroot/js/src/chart/chartsbuttons.js",
+      "wwwroot/js/src/chart/spectrainfo.js",
+      "wwwroot/js/src/chart/spectracolors.js",
       "wwwroot/js/src/chart/chartsarrays.js",
+      "wwwroot/js/src/chart/chartseries.js",
+      "wwwroot/js/src/chart/constantlines.js",
       "wwwroot/js/src/chart/chartspoints.js",
       "wwwroot/js/src/chart/chartsunauthorized.js",
       "wwwroot/js/src/charmsmessages.js"

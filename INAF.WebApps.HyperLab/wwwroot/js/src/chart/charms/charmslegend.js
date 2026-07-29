@@ -66,7 +66,7 @@ function createCharmsLegend() {
         let rawcolor = getSeriesColor(rawSpectrumId);
 
         let opacity = 1;
-        let series = getSeriesFromSpectrumId(rawSpectrumId);
+        let series = findSeriesFromSpectrumId(rawSpectrumId);
         if (!series)
             continue;
         if (!series.isVisible()) opacity = 0.5;
@@ -94,7 +94,7 @@ function createCharmsLegend() {
 
                 let isOpaque = true;
 
-                let series = getSeriesFromSpectrumId(childId);
+                let series = findSeriesFromSpectrumId(childId);
                 if (!series.isVisible()) {
                     opacity = 0.5;
                     isOpaque = false;
@@ -151,7 +151,7 @@ function onNodeClick(evt) {
 }
 
 function onSeriesClick(id) {
-    const series = getSeriesFromSpectrumId(id);
+    const series = findSeriesFromSpectrumId(id);
 
     const isSeriesContinuum = series.name.includes(getSpectrumTypeString(8));
 
@@ -169,18 +169,18 @@ function onSeriesClick(id) {
     }
 
     /* reset visual range to allow lines out of current visual range to be visualized */
-    //dxChartResetVisualRange(chartContainer);
+    //dxChartResetVisualRange();
 }
 
 function onSeriesMouseOut(id) {
     const seriesName = getSeriesNameFromSpectrumId(id);
-    const series = dxChartGetSeriesByName(chartContainer, seriesName);
+    const series = dxChartGetSeriesByName(seriesName);
     series.clearSelection();
 }
 
 function onSeriesMouseOver(id) {
     const seriesName = getSeriesNameFromSpectrumId(id);
-    const series = dxChartGetSeriesByName(chartContainer, seriesName);
+    const series = dxChartGetSeriesByName(seriesName);
     series.select();
 }
 
