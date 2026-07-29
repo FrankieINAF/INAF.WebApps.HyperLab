@@ -395,13 +395,13 @@ function loadSpectraToBeProcessed() {
 function manageSpectraVisibility(selectedSpectrumId) {
     /* show selected spectrum */
     let seriesName = getSpectrumSeriesNameFromIndex(getSpectrumIndexBySpectrumId(selectedSpectrumId));
-    dxChartShowSeries(chartContainer, seriesName);
+    dxChartShowSeries(seriesName);
 
     /* hide all other spectra */
     let spectraNum = spectraInfo.length;
     for (var i = 0; i < spectraNum; i++) {
         if (spectraInfo[i].Id != selectedSpectrumId) {
-            dxChartHideSeries(chartContainer, getSeriesNameFromSpectrumId(spectraInfo[i].Id));
+            dxChartHideSeries(getSeriesNameFromSpectrumId(spectraInfo[i].Id));
         }
     }
 }
@@ -990,7 +990,6 @@ function removeSpectrumFromChart(seriesname, id) {
             break;
         }
     }
-    dxChartUpdateSeries(chartContainer, chartSeries);
 
     /* reset visual range to make ref whites appear in chart */
     dxChartResetVisualRange();
@@ -1049,55 +1048,19 @@ function switchVisibilityOfChildrenSpectraRemovalMessage(id, isVisible) {
 /* COMMON */
 /* ################################################################################ */
 function addProcessedSpectrum(processedSpectrum, processedPoints, spectrumType) {
-    /* update chart with new aligned spectrum */
-    dxChartBeginUpdate(chartContainer);
-
     /* create chart series for aligned spectrum */
-    let spectrumSeriesName = createSeriesNameFromSpectrumNameAndType(processedSpectrum.Name, processedSpectrum.SpectrumType);
+    const spectrumSeriesName = createSeriesNameFromSpectrumNameAndType(processedSpectrum.Name, processedSpectrum.SpectrumType);
 
     /* create the value of 'valueField' field for chart */
-    let idItem = buildId(processedSpectrum.Id);
+    const idItem = buildId(processedSpectrum.Id);
 
-    let color = getSpectrumTypeColor(getSpectrumTypeString(spectrumType));
-    let newChartSeries = createSeriesFromSpectrumName(idItem, spectrumSeriesName, color, true);
-    addChartSeries(newChartSeries);
+    /* create series points for chart from simple points {x,y} */
+    const seriesPoints = createSeriesPoints(processedSpectrum.Id, processedPoints);
 
-    /* retrieve current items */
-    let items = dxChartGetItems(chartContainer);
-    /* get id of raw spectrum */
-    let rawId = buildId(selectedSpectrumForProcessing.Id);
-
-    /* retrieve keys of 'alignedPoint' entity and uses the right one for adding point to spectrum:
-       when adding from locally calculated aligned spectrum, the key is 'Y', while when adding
-       from downloaded aligned spectrum, the key is 'idnn' */
-    let keys = Object.keys(processedPoints[0]);
-
-    let key = 'Y';
-    const hasYKey = keys.includes('Y');
-    if (!hasYKey) {
-        let idPattern = /^id\d+$/;
-        let hasIdKey = keys.some(key => idPattern.test(key));
-        let idKeyIndex = keys.findIndex(key => idPattern.test(key));
-        key = keys[idKeyIndex];
-    }
-
-    /* loop over items to add aligned point */
-    let itemsNum = items.length;
-    let counter = 0;
-    for (var i = 0; i < itemsNum; i++) {
-        if (items[i][rawId]) {
-            items[i][idItem] = processedPoints[counter][key];
-            counter++;
-        }
-    }
-
-    /* update chart series */
-    dxChartUpdateSeries(chartContainer, chartSeries);
-
-    dxChartEndUpdate(chartContainer);
-
-    /* reset visual range to make ref whites appear in chart */
-    dxChartResetVisualRange();
+    const color = getSpectrumTypeColor(getSpectrumTypeString(spectrumType));
+    const newChartSeries = createSeriesFromSpectrumName(idItem, spectrumSeriesName, color, true);
+    const echartsSeries = createEchartSeries(newChartSeries, seriesPoints);
+    addChartSeries(echartsSeries);
 }
 
 function buildTempAlignedId(id) {
@@ -1174,9 +1137,6 @@ function updateProcessedSpectrumSeries(oldId, newId, newIdValue, isPointVisible 
     let color = getSpectrumTypeColor(getSpectrumTypeString(spectraInfo[index].SpectrumType));
     let processedSeries = createSeriesFromSpectrumName(newId, getSpectrumSeriesNameFromIndex(index), color, isPointVisible);
     addChartSeries(processedSeries);
-
-    /* update chart series */
-    dxChartUpdateSeries(chartContainer, chartSeries);
 }
 
 function updateProcessedSpectrumValueField(oldId, newId) {

@@ -600,7 +600,6 @@ function tryAddPXMinPXMaxFitPointsSeries() {
             point: { visible: true, size: 12, color: 'green' },
         };
         addPXMinPXMaxChartSeries(pMinPMaxFitSeries);
-        dxChartUpdateSeries(appendixChartContainer, pXMinPXMaxSeries);
     }
 }
 
@@ -621,7 +620,6 @@ function tryAddPXMinPXMaxMaxValuePointSeries() {
             point: { visible: true, size: 12, color: 'white' },
         };
         addPXMinPXMaxChartSeries(pMinPMaxMaxValueSeries);
-        dxChartUpdateSeries(appendixChartContainer, pXMinPXMaxSeries);
     }
 }
 
@@ -745,7 +743,6 @@ function tryRemovePXMinPXMaxMaxValueSeries() {
     /* remove series */
     const seriesIndex = findPXMinPXMaxChartSeriesIndexByName(SERIES_PXMIN_PXMAX_FIT);
     removePXMinPXMaxChartSeriesAt(seriesIndex);
-    dxChartUpdateSeries(appendixChartContainer, pXMinPXMaxSeries);
 }
 
 /* -------------------------------------------------------------------------------- */

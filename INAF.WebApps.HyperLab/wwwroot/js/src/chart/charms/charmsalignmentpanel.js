@@ -528,6 +528,11 @@ async function loadWhiteSpectraForAlignmentAsync() {
 
         /* create new series for ref whites and append them to current series list */
         const whiteSeries = chartSeries = createSeriesFromPoints(obj.Points);
+        /* update colors to match spectrumType-color association */
+        for (var i = 0; i < whiteSeries.length; i++) {
+            const color = getSpectrumTypeColor(getSpectrumTypeString(obj.SpectraInfo[i].SpectrumType));
+            whiteSeries[i].color = color;
+        }
         const echartsSeries = createEchartSeries(whiteSeries, obj.Points);
         addChartSeries(echartsSeries);
 
@@ -573,8 +578,6 @@ function unloadWhiteSpectraForAlignment() {
         removeChartSeriesAt(index2);
     }
 
-    dxChartBeginUpdate(chartContainer);
-
     /* remove points belonging to ref white spectra */
     const items = dxChartGetItems(chartContainer);
     const itemsNum = items.length;
@@ -589,10 +592,6 @@ function unloadWhiteSpectraForAlignment() {
         if (properties && properties.length == 1 && properties[0] == 'X')
             items.splice(i, 1);
     }
-
-    dxChartUpdateSeries(chartContainer, chartSeries);
-
-    dxChartEndUpdate(chartContainer);
 
     /* reset visual range to make ref whites disappear in chart */
     //dxChartRefresh(chartContainer);
@@ -636,7 +635,7 @@ function createChartMiniature(dataSource) {
 
     const constantLines = getAlignmentConstantLines(false);
 
-    $('#chartMiniature').css({ height: '150px', width: '400px' });
+    $('#chartMiniature').css({ height: '180px', width: '400px' });
 
     chartMiniatureChart = echarts.init(document.getElementById('chartMiniature'));
 
@@ -644,22 +643,25 @@ function createChartMiniature(dataSource) {
         animation: false,
         grid: {
             left: 40,
-            right: 10,
-            top: 10,
+            right: 20,
+            top: 40,
             bottom: 30
         },
         xAxis: {
             type: 'value',
             min: function (value) {
-                return value.min - 5;
+                return value.min;
             },
             max: function (value) {
-                return value.max + 5;
+                return value.max;
+            },
+            axisLabel: {
+                formatter: function (value) { return parseFloat(value); },
+                color: 'white'
             },
             interval: 500,
             minorTick: { show: true, splitNumber: 5 },
             axisLine: { lineStyle: { color: 'white' } },
-            axisLabel: { color: 'white' },
             axisTick: { lineStyle: { color: 'white' } },
             splitLine: { show: false },
             minorSplitLine: { show: false }
@@ -689,7 +691,13 @@ function createChartMiniature(dataSource) {
                     silent: true,
                     symbol: 'none',
                     lineStyle: { color: lightGreen, width: 2, type: 'solid' },
-                    label: { show: true },
+                    label: {
+                        show: true,
+                        color: lightGreen,
+                        fontSize: 12,
+                        padding: [3, 5],
+                        formatter: '{c}'
+                    },
                     data: constantLines.map(function (l) { return { xAxis: l.value }; })
                 },
                 markArea: {
@@ -799,6 +807,10 @@ async function alignSpectrumAsync() {
 
             /* hide all spectra but the aligned one */
             hideSpectraOtherThanType(SPECTRUM_TYPE_ALIGNED);
+
+            /* update y-axis range to fit the aligned spectrum */
+            updateAxisRange(0);
+            updateYAxisRangeForVisibleSeries();
         }
         else
             isOk = false

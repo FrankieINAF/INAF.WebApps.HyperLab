@@ -156,12 +156,12 @@ function onSeriesClick(id) {
     const isSeriesContinuum = series.name.includes(getSpectrumTypeString(8));
 
     if (series.isVisible()) {
-        dxChartHideSeries(chartContainer, series.name);
+        dxChartHideSeries(series.name);
         $(`#spectrum${id}`).css('background-color', 'transparent');
         if (isSeriesContinuum)
             setSpectrumVisibilityByName(SERIES_FIT_POINTS, false);
     } else {
-        dxChartShowSeries(chartContainer, series.name);
+        dxChartShowSeries(series.name);
         if (isSeriesContinuum)
             setSpectrumVisibilityByName(SERIES_FIT_POINTS, true);
         const colorValue = $(`#spectrum${id}`).css('color');
@@ -173,13 +173,13 @@ function onSeriesClick(id) {
 }
 
 function onSeriesMouseOut(id) {
-    const seriesName = getSeriesNameFromSpectrumId(id);
+    const seriesName = findSeriesNameFromSpectrumId(id);
     const series = dxChartGetSeriesByName(seriesName);
     series.clearSelection();
 }
 
 function onSeriesMouseOver(id) {
-    const seriesName = getSeriesNameFromSpectrumId(id);
+    const seriesName = findSeriesNameFromSpectrumId(id);
     const series = dxChartGetSeriesByName(seriesName);
     series.select();
 }

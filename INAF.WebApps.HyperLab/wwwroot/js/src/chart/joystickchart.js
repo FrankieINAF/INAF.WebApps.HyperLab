@@ -156,7 +156,7 @@ function updateChartMagnifierSeriesVisibility() {
         if (!chartMagnifierSeries)
             continue;
         //console.log(`chartSeries[${i}].name:'${chartSeries[i].name}', chartSeries[${i}].isVisible(): ${chartSeries[i].isVisible()}`);
-        chartSeries[i].isVisible() ? dxChartShowSeries(chartContainer, chartMagnifierSeries.name) : dxChartHideSeries(chartContainer, chartMagnifierSeries.name);
+        chartSeries[i].isVisible() ? dxChartShowSeries(chartMagnifierSeries.name) : dxChartHideSeries(chartMagnifierSeries.name);
     }
 
 }
@@ -183,8 +183,6 @@ function setJoystickPointOnChart(point) {
     setPointOnChart(items, point.X, point.Y, SERIES_JOYSTICK_POINT);
 
     chartMagnifierSeries.push(joystickPointSeries);
-
-    dxChartUpdateSeries(chartMagnifierContainer, chartMagnifierSeries);
 
     dxChartRefresh(chartMagnifierContainer);
 }

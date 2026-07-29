@@ -112,7 +112,5 @@ function updateSpectraColor(spectrumType, color) {
         chartSeries[index].color = color;
     }
 
-    dxChartUpdateSeries(chartContainer, chartSeries);
-
     dxChartRefresh(chartContainer);
 }

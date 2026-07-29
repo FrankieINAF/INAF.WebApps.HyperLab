@@ -122,7 +122,7 @@ function slideOutDown(element, distance, duration, callback) {
 
 async function waitForBooleanValueAsync(checkFunction, interval = 100) {
     while (!checkFunction()) {
-        console.log(`waiting...for ${interval}`);
+        //console.log(`waiting...for ${interval}`);
         await delay(interval);
     }
 }

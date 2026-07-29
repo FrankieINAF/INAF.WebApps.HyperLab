@@ -1,13 +1,4 @@
-﻿/* -------------------------------------------------------------------------------- */
-/* This file used to wrap the DevExtreme dxChart widget API.                        */
-/* The underlying chart engine is now ECharts (see chart/charts.js#createChart);     */
-/* function names/signatures below are kept unchanged so existing call sites don't   */
-/* need to be touched. The ECharts instance itself lives in the global `chart`       */
-/* variable (set by createChart); `container` is kept as a parameter for backward    */
-/* compatibility but is no longer required by most of the implementations.           */
-/* -------------------------------------------------------------------------------- */
-
-/* series visibility is tracked locally since ECharts does not expose a public getter */
+﻿/* series visibility is tracked locally since ECharts does not expose a public getter */
 var dxChartHiddenSeriesNames = [];
 
 function dxChartGetChart(container) {
@@ -81,14 +72,20 @@ function dxChartGetAllSeries() {
             getColor: function () { return s.color; },
             isVisible: function () { return dxChartHiddenSeriesNames.indexOf(s.name) == -1; },
             hide: function () { dxChartHideSeries(container, s.name); },
-            show: function () { dxChartShowSeries(container, s.name); }
+            show: function () { dxChartShowSeries(s.name); }
         };
     });
 }
 
 function dxChartGetSeriesByName(seriesName) {
-    const series = dxChartGetAllSeries().find(s => s.name == seriesName);
-    return series ?? null;
+    const series = chart.getOption().series.find(s => s.name == seriesName);
+    return {
+        name: series.name,
+        getColor: function () { return series.color; },
+        isVisible: function () { return dxChartHiddenSeriesNames.indexOf(series.name) == -1; },
+        hide: function () { dxChartHideSeries(container, series.name); },
+        show: function () { dxChartShowSeries(series.name); }
+    };
 }
 
 function dxChartGetSeriesPoints(seriesName) {
@@ -103,7 +100,7 @@ function dxChartGetSeriesPoints(seriesName) {
     }
 }
 
-function dxChartHideSeries(container, seriesName) {
+function dxChartHideSeries(seriesName) {
     try {
         if (dxChartGetSeriesByName(seriesName) == null)
             return;
@@ -112,7 +109,7 @@ function dxChartHideSeries(container, seriesName) {
         if (dxChartHiddenSeriesNames.indexOf(seriesName) == -1)
             dxChartHiddenSeriesNames.push(seriesName);
 
-        dxChartResetVisualRange(container);
+        dxChartResetVisualRange();
     } catch (e) {
         console.log(`${dxChartHideSeries.name} - seriesName: ${seriesName} - ex: ${e}`);
     }
@@ -121,15 +118,15 @@ function dxChartHideSeries(container, seriesName) {
 function dxChartSetSeriesVisible(container, seriesName, isVisible) {
     try {
         if (isVisible)
-            dxChartShowSeries(container, seriesName);
+            dxChartShowSeries(seriesName);
         else
-            dxChartHideSeries(container, seriesName);
+            dxChartHideSeries(seriesName);
     } catch (e) {
         console.log(`${dxChartSetSeriesVisible.name} - seriesName: ${seriesName} - ex: ${e}`);
     }
 }
 
-function dxChartShowSeries(container, seriesName) {
+function dxChartShowSeries(seriesName) {
     try {
         if (dxChartGetSeriesByName(seriesName) == null)
             return;
@@ -137,14 +134,10 @@ function dxChartShowSeries(container, seriesName) {
         chart.dispatchAction({ type: 'legendSelect', name: seriesName });
         dxChartHiddenSeriesNames = dxChartHiddenSeriesNames.filter(x => x != seriesName);
 
-        dxChartResetVisualRange(container);
+        dxChartResetVisualRange();
     } catch (e) {
         console.log(`${dxChartShowSeries.name} - seriesName: ${seriesName} - ex: ${e}`);
     }
-}
-
-function dxChartUpdateSeries(container, chartSeries) {
-    chart.setOption({ series: chartSeries }, { replaceMerge: 'series' });
 }
 
 function dxChartUpdateSeriesProperty(container, chartSeriesIndex, propertyName, propertyValue) {

@@ -625,7 +625,6 @@ function tryAddFitPointsSeries() {
         };
         addChartSeries(fitSeries);
 
-        dxChartUpdateSeries(chartContainer, chartSeries);
         isChartSeriesUpdateDone = true;
     }
 
@@ -638,7 +637,6 @@ function tryRemoveFitPointsSeries() {
         deleteChartSeriesItems(dxChartGetItems(chartContainer), SERIES_FIT_POINT);
 
         removeChartSeriesAt(index);
-        dxChartUpdateSeries(chartContainer, chartSeries);
     }
 }
 
@@ -1051,8 +1049,6 @@ function highlightSegmentForFitting(segmentId) {
             items[i][id] = seriesPoints[index].value;
         }
 
-        dxChartUpdateSeries(chartContainer, chartSeries);
-
         /* mantain hidden all not necessary spectra */
         hideSpectraToBeHidden();
         //dxChartRefresh(chartContainer);
@@ -1078,7 +1074,6 @@ function lowlightSegmentForFitting(segmentId) {
 
         let index = findChartSeriesIndexByValueFieldId(id);
         removeChartSeriesAt(index);
-        dxChartUpdateSeries(chartContainer, chartSeries);
 
         for (var i = segmentBoundaryIndexes.X0Index; i <= segmentBoundaryIndexes.X1Index; i++) {
             delete items[i][id];
@@ -1267,7 +1262,6 @@ function removeFitPointsSeriesPoints() {
             break;
         }
     }
-    dxChartUpdateSeries(chartContainer, chartSeries);
 
     /* reset visual range to make ref whites appear in chart */
     dxChartResetVisualRange();

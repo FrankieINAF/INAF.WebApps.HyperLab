@@ -134,7 +134,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new EmptyResult();
 
             var chartsHelper = serviceProvider.GetRequiredService<ChartsHelper>();
-            return new JsonResult(chartsHelper.createMultipleSpectraJson(spectra!, 0)); // operationUserId = 0 for 'white' spectra available for everyone (not related to a specific insertUserId)
+            return new JsonResult(chartsHelper.createRefWhitesJson(spectra!, 0)); // operationUserId = 0 for 'white' spectra available for everyone (not related to a specific insertUserId)
         }
         #endregion
 

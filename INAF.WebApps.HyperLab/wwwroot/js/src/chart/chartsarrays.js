@@ -68,10 +68,7 @@ function deleteChartSeriesItems(items, seriesName) {
 //     return chartSeries.findIndex(x => x.valueField == valueField);
 // }
 
-// function getSeriesNameFromSpectrumId(spectrumId) {
-//     let index = getSpectrumIndexBySpectrumId(spectrumId);
-//     return getSpectrumSeriesNameFromIndex(index);
-// }
+
 
 // function getSeriesPoints(id) {
 //     let index = getSpectrumIndexBySpectrumId(id);
@@ -108,7 +105,6 @@ function removeChartSeriesByFieldId(chartContainer, fieldId) {
     if (index > -1) {
         removeChartSeriesAt(index);
         deleteChartSeriesItems(items, fieldId);
-        dxChartUpdateSeries(chartContainer, chartSeries);
     }
 }
 
@@ -118,7 +114,6 @@ function removeChartSeriesByFieldIdProcedure(chartContainer, items, fieldId) {
     if (index > -1) {
         removeChartSeriesAt(index);
         deleteChartSeriesItems(items, fieldId);
-        dxChartUpdateSeries(chartContainer, chartSeries);
     }
 }
 
@@ -130,7 +125,6 @@ function removeChartSeriesByFieldsIdProcedure(chartContainer, fieldsId) {
         if (index > -1) {
             removeChartSeriesAt(index);
             deleteChartSeriesItems(items, fieldId);
-            dxChartUpdateSeries(chartContainer, chartSeries);
         }
     });
 }
@@ -140,7 +134,6 @@ function removeChartSeriesByNameProcedure(chartContainer, seriesName) {
     let index = findChartSeriesIndexByName(seriesName);
     if (index > -1) {
         removeChartSeriesAt(index);
-        dxChartUpdateSeries(chartContainer, chartSeries);
     }
 }
 

@@ -269,12 +269,6 @@ function createChart(points, series, axisRange) {
         },
         xAxis: {
             type: "value",
-            min: function (value) {
-                return value.min - 5;
-            },
-            max: function (value) {
-                return value.max + 5;
-            },
             name: ChartWavelengthsLabel,
             nameLocation: "middle",
             nameGap: 35,
@@ -385,6 +379,8 @@ function createChart(points, series, axisRange) {
     chart.on("rendered", function () {
         extractVisualRangesFromDataSource(axisRange);
         initJoystickController(); // defined in joystick.js
+        updateAxisRange(0);
+        updateAxisRange(1);
     });
 
     chart.on("click", function (evt) {
@@ -434,8 +430,77 @@ function updateChartSize() {
 }
 
 /* -------------------------------------------------------------------------------- */
+/* ---------- PRESERVE XAXIS RANGE ---------- */
+/* -------------------------------------------------------------------------------- */
+function computeGlobalRange(option, axisIndex) {
+    let valmin = Infinity;
+    let valmax = -Infinity;
+
+    for (const s of option.series) {
+        if (Array.isArray(s.data)) {
+            for (const point of s.data) {
+                const val = Array.isArray(point) ? point[axisIndex] : point;
+                if (typeof val === "number") {
+                    if (val < valmin) valmin = val;
+                    if (val > valmax) valmax = val;
+                }
+            }
+        }
+    }
+
+    return { valmin, valmax };
+}
+
+function updateAxisRange(axisIndex) {
+    const option = chart.getOption();
+    const { valmin, valmax } = computeGlobalRange(option, axisIndex);
+
+    if (axisIndex === 0) {
+        option.xAxis[0].min = valmin - 10;
+        option.xAxis[0].max = valmax + 10;
+    } else if (axisIndex === 1) {
+        option.yAxis[0].min = valmin * 0.98;
+        option.yAxis[0].max = valmax * 1.02;
+    }
+
+    chart.setOption(option);
+}
+
+function updateYAxisRangeForVisibleSeries() {
+    const option = chart.getOption();
+
+    const allseries = chart.getOption().series;
+    for (const s of allseries) {
+        const series = dxChartGetSeriesByName(s.name);
+        if (series && series.isVisible()) {
+            const { valmin, valmax } = computeGlobalRange({ series: [s] }, 1);
+            option.yAxis[0].min = valmin * 0.98;
+            option.yAxis[0].max = valmax * 1.02;
+        }
+    }
+    chart.setOption(option);
+}
+/* -------------------------------------------------------------------------------- */
 /* ---------- CHARTS ANCILLARY ---------- */
 /* -------------------------------------------------------------------------------- */
+function buildId(id) {
+    if (isNumber(id))
+        return `id${id}`;
+    else
+        return id;
+}
+
+function getIdValue(idItem) {
+    let idValue = idItem
+        .replace(SPECTRUM_OF_TYPE_ALIGNED_TEMP_ID, '')
+        .replace(SPECTRUM_OF_TYPE_CONTINUUM_TEMP_ID, '')
+        .replace(SPECTRUM_OF_TYPE_CONTINUUM_REMOVED_TEMP_ID, '')
+        .replace(SPECTRUM_OF_TYPE_SMOOTHED_BY_SEGMENTS_TEMP_ID, '')
+        .replace(SPECTRUM_OF_TYPE_SMOOTHED_WHOLE_SPECTRUM_TEMP_ID, '')
+        .replace('id', '');
+    return parseInt(idValue);
+}
+
 function calculateChartSize() {
     if (isMobile())
         return { h: '90%', w: '90%' };
@@ -444,7 +509,9 @@ function calculateChartSize() {
 }
 
 function createEchartSeries(series, points) {
-    return series.map(function (s) {
+    const seriesArray = Array.isArray(series) ? series : [series];
+
+    return seriesArray.map(function (s) {
         return {
             name: s.name,
             valueField: s.valueField, // kept for lookups (e.g. onPointClick, dxChart* wrappers)
@@ -568,6 +635,29 @@ function createSeriesFromPoints(points) {
 
     return series;
 }
+
+function createSeriesFromSpectrumName(idItem, spectrumName, color, isPointVisible = false, showInLegend = true) {
+    return {
+        type: 'line',
+        valueField: idItem,
+        name: spectrumName,
+        axis: 'valueAxis',
+        color: color,
+        point: { visible: isPointVisible },
+        showInLegend: showInLegend,
+        isVisible: true
+    };
+}
+
+function createSeriesPoints(spectrumId, points) {
+    const valueField = buildId(spectrumId);
+
+    return points.map(p => ({
+        X: p.X,
+        [valueField]: p.Y   // ← nome dinamico del campo
+    }));
+}
+
 
 function extractVisualRangesFromDataSource(axisRange) {
     chart.setOption({

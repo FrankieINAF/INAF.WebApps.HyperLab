@@ -408,39 +408,8 @@ function setOverflowYHidden() {
 /* ################################################################################ */
 /* OTHER */
 /* ################################################################################ */
-function buildId(id) {
-    if (isNumber(id))
-        return `id${id}`;
-    else
-        return id;
-}
-
-function createSeriesFromSpectrumName(idItem, spectrumName, color, isPointVisible = false, showInLegend = true) {
-    return {
-        type: 'line',
-        valueField: idItem,
-        name: spectrumName,
-        axis: 'valueAxis',
-        color: color,
-        point: { visible: isPointVisible },
-        showInLegend: showInLegend,
-        isVisible: true
-    };
-}
-
 function createSeriesNameFromSpectrumNameAndType(name, spectrumType) {
     return `${name} (${getSpectrumTypeDescription(spectrumType)})`;
-}
-
-function getIdValue(idItem) {
-    let idValue = idItem
-        .replace(SPECTRUM_OF_TYPE_ALIGNED_TEMP_ID, '')
-        .replace(SPECTRUM_OF_TYPE_CONTINUUM_TEMP_ID, '')
-        .replace(SPECTRUM_OF_TYPE_CONTINUUM_REMOVED_TEMP_ID, '')
-        .replace(SPECTRUM_OF_TYPE_SMOOTHED_BY_SEGMENTS_TEMP_ID, '')
-        .replace(SPECTRUM_OF_TYPE_SMOOTHED_WHOLE_SPECTRUM_TEMP_ID, '')
-        .replace('id', '');
-    return parseInt(idValue);
 }
 
 function invertYValuesBottomToTop(yValues) {

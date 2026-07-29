@@ -297,8 +297,6 @@ function showBandCenterOnChart(items, wavelength, bandCenter) {
     bandCenterSeries.point.size = 12;
     addChartSeries(bandCenterSeries);
 
-    dxChartUpdateSeries(chartContainer, chartSeries);
-
     hideSpectraToBeHidden();
 }
 
@@ -324,7 +322,6 @@ function showGaussianFit(items, xValues, yValues, fitResult) {
 
     let normalFitSeries = createSeriesFromSpectrumName(SERIES_NORMAL_FIT_POINT, SERIES_NORMAL_FIT, BAND_LINES_COLOR, true, false);
     addChartSeries(normalFitSeries);
-    dxChartUpdateSeries(chartContainer, chartSeries);
 
     hideSpectraToBeHidden();
 }
@@ -340,7 +337,6 @@ function showFwhm(items, leftMargin, rightMargin) {
 
     let fwhmSeries = createSeriesFromSpectrumName(SERIES_FWHM_POINT, SERIES_FWHM, BAND_LINES_COLOR, false, false);
     addChartSeries(fwhmSeries);
-    dxChartUpdateSeries(chartContainer, chartSeries);
 
     hideSpectraToBeHidden();
     dxChartResetVisualRange();
@@ -352,7 +348,6 @@ function showInvertedBand(items, xValues, invertedYValues) {
 
     let invertedBandSeries = createSeriesFromSpectrumName(SERIES_INVERTED_BAND_POINT, SERIES_INVERTED_BAND, '#9933ff', true, false);
     addChartSeries(invertedBandSeries);
-    dxChartUpdateSeries(chartContainer, chartSeries);
 
     hideSpectraToBeHidden();
 }
@@ -504,7 +499,6 @@ async function highlightBandAsync(seriesName, segmentForFitting, items) {
         showInLegend: false,
     };
     addChartSeries(bandSeries);
-    dxChartUpdateSeries(chartContainer, chartSeries);
 
     dxChartResetVisualRange();
 }
