@@ -69,7 +69,7 @@ async function loadFitPanelAsync(extcallback = null) {
 
     /* update constant lines visualization */
     if (isCheckboxChecked('fitChechboxShowLines')) {
-        resetShownConstantLines();
+        removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS);
         addOrUpdateConstantLines(getFitPointsConstantLines(), CHART_CONSTANT_LINES_FIT_POINTS);
         updateConstantLines();
     }
@@ -275,19 +275,12 @@ function setSwitchCoreProModeLabel(isChecked) {
 /* ---------- SHOW/HIDE CONSTANT LINES FOR FIT POINTS ---------- */
 /* -------------------------------------------------------------------------------- */
 function getFitPointsConstantLines(areLabelsVisible = true) {
-    let pointsForFittingNum = pointsForFitting.length;
-    let constantLines = [];
-    for (var i = 0; i < pointsForFittingNum; i++) {
-        constantLines.push(
-            {
-                value: parseInt(pointsForFitting[i].P.X),
-                color: red,
-                width: 1,
-                dashStyle: 'solid',
-                label: {
-                    visible: areLabelsVisible
-                }
-            });
+    const constantLines = [];
+
+    for (let i = 0; i < pointsForFitting.length; i++) {
+        const x = parseInt(pointsForFitting[i].P.X);
+
+        constantLines.push(buildConstantLinesForSeries(CHART_CONSTANT_LINES_FIT_POINTS, x, "darkRed"));
     }
 
     return constantLines;
@@ -304,10 +297,10 @@ async function initSwitchShowHideVerticalLinesForFitPointsAsync() {
         isShowChartConstantLinesForFitPointsAllowed = isChecked;
 
         if (isChecked) {
-            resetShownConstantLines();
+            removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS);
             addOrUpdateConstantLines(getFitPointsConstantLines(), CHART_CONSTANT_LINES_FIT_POINTS);
         } else {
-            removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS);
+            removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS);
         }
         updateConstantLines();
     });
@@ -562,11 +555,9 @@ function setNumOfPointsForMissingPoints(value) {
 /* ################################################################################ */
 /* MANAGE VISUALIZATION OF SERIES CONTAINING SELECTED POINTS */
 /* ################################################################################ */
-async function addFitPointToChartAsync(point, isFromUserAction = false) {
-    const items = dxChartGetItems(chartContainer);
-
+async function addFitPointToChartAsync(fitPointsEchartsSeries, point, isFromUserAction = false) {
     if (currentFitMode == FIT_MODE_CORE) {
-        setPointOnChart(items, point.P.X, point.P.Y, SERIES_FIT_POINT);
+        addPointToChartSeries(SERIES_FIT_POINTS, point.P);
     } else {
         let maxPoint;
         if (isFromUserAction)
@@ -577,7 +568,7 @@ async function addFitPointToChartAsync(point, isFromUserAction = false) {
 
         updatePointsForFittingArray(point, maxPoint);
 
-        setPointOnChart(items, maxPoint.X, maxPoint.Y, SERIES_FIT_POINT);
+        setPointOnChart(items, maxPoint.X, maxPoint.Y, SERIES_FIT_POINTS);
 
         /* in 'pro' mode, add boundary points together with the selected point */
         addBoundaryPointsPro(items, point);
@@ -588,7 +579,7 @@ async function addFitPointToChartAsync(point, isFromUserAction = false) {
     }
 
     if (isShowChartConstantLinesForFitPointsAllowed) {
-        resetShownConstantLines();
+        removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS);
         addOrUpdateConstantLines(getFitPointsConstantLines(), CHART_CONSTANT_LINES_FIT_POINTS);
         updateConstantLines();
     }
@@ -606,29 +597,30 @@ function removeFitPointsFromChart(xValues) {
 }
 
 function tryAddFitPointsSeries() {
-    let isChartSeriesUpdateDone = false;
+    let fitPointsEchartsSeries;
 
     if (!isChartSeriesAvailableByName(SERIES_FIT_POINTS)) {
         /* add series of points for fitting */
-        let fitSeries = {
-            valueField: SERIES_FIT_POINT,
-            name: SERIES_FIT_POINTS,
-            axis: 'valueAxis',
-            width: 0,
-            point: { visible: true },
-            valueErrorBar: {
-                lowValueField: MIN_Y,
-                highValueField: MAX_Y,
-                lineWidth: 1,
-                opacity: 0.8,
-            },
-        };
-        addChartSeries(fitSeries);
+        const fitPointsSeries = createSeries(SERIES_FIT_POINT, SERIES_FIT_POINTS, VALUE_AXIS, 'darkRed')
+        const echartsSeries = createEchartSeries(
+            fitPointsSeries,
+            fitPoints,
+            {
+                type: "scatter",
+                symbolSize: 12,
+                color: "darkRed",
+                itemStyle: { color: "darkRed" }
+            }
+        );
 
-        isChartSeriesUpdateDone = true;
+        addChartSeries(echartsSeries);
+
+        fitPointsEchartsSeries = echartsSeries;
+    } else {
+        fitPointsEchartsSeries = findChartSeriesByName(SERIES_FIT_POINTS);
     }
 
-    return isChartSeriesUpdateDone;
+    return fitPointsEchartsSeries;
 }
 
 function tryRemoveFitPointsSeries() {
@@ -663,35 +655,36 @@ async function addSelectedPointForFittingAsync(point, isFromUserAction = false, 
         const callback = async function () {
             /* save point in dedicated array */
             addToPointsForFittingArray(point);
-            /* add point to fit series */
-            await addFitPointToChartAsync(point, isFromUserAction);
-
-            const pointUICallback = function () {
-                switch (currentFitMode) {
-                    case FIT_MODE_CORE:
-                        /* create UI element on charms */
-                        addPointUI(point);
-                        break;
-
-                    case FIT_MODE_PRO:
-                        /* do nothing */
-                        break;
-                }
-            };
-            /* switch to 'FIT OPTIONS' tab and load fitting functions  */
-            if (!isFitPanelLoaded() && isOnlyOneItemInPointsForFittingArrayAvailable())
-                await loadFitPanelAsync(pointUICallback);
-            else
-                pointUICallback();
-
-            await manageNewPointAsync(point, isFromUserAction, isLast, isHidingOtherSpectraRequired);
 
             /* add series of points for fitting, if not already existant */
-            tryAddFitPointsSeries();
+            const fitPointsEchartsSeries = tryAddFitPointsSeries();
 
-            /* mantain hidden all not necessary spectra */
-            if (isHidingOtherSpectraRequired)
-                executeAfter(function () { hideSpectraOtherThanTypes([SPECTRUM_TYPE_ALIGNED, SPECTRUM_TYPE_CONTINUUM]); }, 100);
+            /* add point to fit series */
+            await addFitPointToChartAsync(fitPointsEchartsSeries, point, isFromUserAction);
+
+            // const pointUICallback = function () {
+            //     switch (currentFitMode) {
+            //         case FIT_MODE_CORE:
+            //             /* create UI element on charms */
+            //             addPointUI(point);
+            //             break;
+
+            //         case FIT_MODE_PRO:
+            //             /* do nothing */
+            //             break;
+            //     }
+            // };
+            // /* switch to 'FIT OPTIONS' tab and load fitting functions  */
+            // if (!isFitPanelLoaded() && isOnlyOneItemInPointsForFittingArrayAvailable())
+            //     await loadFitPanelAsync(pointUICallback);
+            // else
+            //     pointUICallback();
+
+            // await manageNewPointAsync(point, isFromUserAction, isLast, isHidingOtherSpectraRequired);
+
+            // /* mantain hidden all not necessary spectra */
+            // if (isHidingOtherSpectraRequired)
+            //     executeAfter(function () { hideSpectraOtherThanTypes([SPECTRUM_TYPE_ALIGNED, SPECTRUM_TYPE_CONTINUUM]); }, 100);
         };
 
         /* execute callback after pulse animation completed  */
@@ -713,8 +706,11 @@ function cleanPointsPanel() {
 }
 
 function isFitPointAvailableAtCurrentX(x) {
-    let items = dxChartGetItems(chartContainer);
-    return items.some(obj => obj.X == x && Object.keys(obj).includes(SERIES_FIT_POINT));
+    const fitSeries = findChartSeriesByName(SERIES_FIT_POINTS);
+    if (!fitSeries || !fitSeries.data || fitSeries.data.length === 0)
+        return false;
+
+    return fitSeries.data.some(point => point[0] == x);
 }
 
 /* for removing user selected points on chart */

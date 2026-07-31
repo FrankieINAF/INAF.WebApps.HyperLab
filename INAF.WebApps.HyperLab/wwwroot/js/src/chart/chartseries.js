@@ -22,6 +22,15 @@
 }
 
 
+function addPointToChartSeries(seriesName, point) {
+    const option = chart.getOption();
+    const series = option.series.find(s => s.name === seriesName);
+    if (series) {
+        series.data.push([point.X, point.Y]);
+        chart.setOption(option);
+    }
+}
+
 function findChartSeriesByName(name) {
     return chart.getOption().series.find(s => s.name === name) ?? null;
 }

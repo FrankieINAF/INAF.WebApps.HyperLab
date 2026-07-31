@@ -514,7 +514,7 @@ function showPXMinPXMaxFittingChart(dataSource, series) {
             }
         },
         valueAxis: {
-            name: 'valueAxis',
+            name: VALUE_AXIS,
             type: 'continuous',
             showZero: false,
             visible: true,
@@ -595,7 +595,7 @@ function tryAddPXMinPXMaxFitPointsSeries() {
         const pMinPMaxFitSeries = {
             valueField: SERIES_PXMIN_PXMAX_FIT_POINT,
             name: SERIES_PXMIN_PXMAX_FIT,
-            axis: 'valueAxis',
+            axis: VALUE_AXIS,
             color: 'green',
             point: { visible: true, size: 12, color: 'green' },
         };
@@ -615,7 +615,7 @@ function tryAddPXMinPXMaxMaxValuePointSeries() {
         const pMinPMaxMaxValueSeries = {
             valueField: SERIES_PXMIN_PXMAX_MAX_VALUE_POINT,
             name: SERIES_PXMIN_PXMAX_MAX_VALUE,
-            axis: 'valueAxis',
+            axis: VALUE_AXIS,
             width: 0,
             point: { visible: true, size: 12, color: 'white' },
         };

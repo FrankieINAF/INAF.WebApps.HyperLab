@@ -494,7 +494,7 @@ async function highlightBandAsync(seriesName, segmentForFitting, items) {
         rangeValue1Field: SERIES_HIGHLIGHTENED_BAND_MIN_VALUE_POINT,
         rangeValue2Field: SERIES_HIGHLIGHTENED_BAND_MAX_VALUE_POINT,
         name: SERIES_HIGHLIGHTENED_BAND,
-        axis: 'valueAxis',
+        axis: VALUE_AXIS,
         color: BAND_AREA_COLOR,
         showInLegend: false,
     };

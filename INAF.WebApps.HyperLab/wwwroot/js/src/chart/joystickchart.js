@@ -41,7 +41,7 @@ function createChartMagnifier(dataSource, valueAxisVisualRange) {
             minorTickInterval: 20,
         },
         valueAxis: {
-            name: 'valueAxis',
+            name: VALUE_AXIS,
             type: 'continuous',
             showZero: false,
             visible: true,
@@ -166,7 +166,7 @@ function setJoystickPointOnChart(point) {
     joystickPointSeries = {
         valueField: SERIES_JOYSTICK_POINT,
         name: SERIES_JOYSTICK_POINT,
-        axis: 'valueAxis',
+        axis: VALUE_AXIS,
         color: '#1ba1e2',
         width: 0,
         point: { visible: true },

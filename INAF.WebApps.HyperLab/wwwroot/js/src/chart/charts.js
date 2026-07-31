@@ -16,6 +16,8 @@ var isChartLoaded = false;
 var MIN_Y = 'minY';
 var MAX_Y = 'maxY';
 
+var VALUE_AXIS = VALUE_AXIS;
+
 var targetPointer;
 
 var backToSearchButtonId = 'buttonBackToSearch';
@@ -299,10 +301,6 @@ function createChart(points, series, axisRange) {
             splitLine: { show: true },
             minorSplitLine: { show: true }
         },
-        axisPointer: {
-            show: true,
-            link: [{ xAxisIndex: "all" }]
-        },
         graphic: [
             {
                 type: 'text',
@@ -326,9 +324,16 @@ function createChart(points, series, axisRange) {
                 }
             }
         ],
+        axisPointer: {
+            show: true
+        },
         dataZoom: [
-            { type: "inside", xAxisIndex: 0, yAxisIndex: 0, filterMode: "none", zoomOnMouseWheel: true, moveOnMouseMove: "shift" },
+            // X only
+            { type: "inside", xAxisIndex: 0, filterMode: "none", zoomOnMouseWheel: true, moveOnMouseMove: "shift" },
             { type: "slider", xAxisIndex: 0, bottom: 10 },
+
+            // Y only
+            { type: "inside", yAxisIndex: 0, filterMode: "none", zoomOnMouseWheel: false, moveOnMouseMove: false },
             { type: "slider", yAxisIndex: 0, right: 10 }
         ],
         toolbox: {
@@ -470,6 +475,8 @@ function updateYAxisRangeForVisibleSeries() {
 
     const allseries = chart.getOption().series;
     for (const s of allseries) {
+        if (s.name == SERIES_FIT_POINTS || s.name == SERIES_ALIGNMENT)
+            continue;
         const series = dxChartGetSeriesByName(s.name);
         if (series && series.isVisible()) {
             const { valmin, valmax } = computeGlobalRange({ series: [s] }, 1);
@@ -507,30 +514,45 @@ function calculateChartSize() {
         return { h: '80%', w: '100%' };
 }
 
-function createEchartSeries(series, points) {
+function createEchartSeries(series, points, customOptions) {
     const seriesArray = Array.isArray(series) ? series : [series];
+    const safePoints = Array.isArray(points) ? points : [];
+    const opts = customOptions || {};
 
     return seriesArray.map(function (s) {
+        const isScatter = opts.type === "scatter";
+
         return {
             name: s.name,
-            valueField: s.valueField, // kept for lookups (e.g. onPointClick, dxChart* wrappers)
-            type: "line",
+            valueField: s.valueField,
+
+            type: opts.type || "line",
             showSymbol: true,
-            symbol: "circle",
-            symbolSize: 3,
-            smooth: false,
-            color: s.color,
-            lineStyle: { color: s.color },
-            itemStyle: { color: s.color },
+            symbol: opts.symbol || "circle",
+            symbolSize: opts.symbolSize || 3,
+
+            // colore: scatter usa customOptions, line usa s.color
+            color: isScatter ? (opts.color || s.color) : s.color,
+
+            // lineStyle SOLO per line
+            lineStyle: isScatter ? undefined : { color: s.color },
+
+            // itemStyle SOLO per scatter
+            itemStyle: isScatter
+                ? (opts.itemStyle || { color: opts.color || s.color })
+                : { color: s.color },
+
             emphasis: { focus: "series" },
-            data: points
-                .filter(function (point) { return point[s.valueField] !== undefined && point[s.valueField] !== null; })
-                .map(function (point) { return [point.X, point[s.valueField]]; })
+
+            data: safePoints
+                .filter(point => point[s.valueField] !== undefined && point[s.valueField] !== null)
+                .map(point => [point.X, point[s.valueField]])
         };
     });
 }
 
-function createSeries(key, name, axisName, color, points, point = null) {
+
+function createSeries(key, name, axisName, color, point = null) {
     return {
         valueField: key,
         name: name,
@@ -574,7 +596,7 @@ function createSeriesFromPoint(firstPoint) {
         series.push({
             valueField: keys[i],
             name: name,
-            axis: 'valueAxis',
+            axis: VALUE_AXIS,
             color: color,
         });
     }
@@ -625,7 +647,7 @@ function createSeriesFromPoints(points) {
                     foundRawSpectra++;
                 }
 
-                series.push(createSeries(keys[j], name, 'valueAxis', palette[paletteCounter]));
+                series.push(createSeries(keys[j], name, VALUE_AXIS, palette[paletteCounter]));
 
                 paletteCounter++;
             }
@@ -640,7 +662,7 @@ function createSeriesFromSpectrumName(idItem, spectrumName, color, isPointVisibl
         type: 'line',
         valueField: idItem,
         name: spectrumName,
-        axis: 'valueAxis',
+        axis: VALUE_AXIS,
         color: color,
         point: { visible: isPointVisible },
         showInLegend: showInLegend,

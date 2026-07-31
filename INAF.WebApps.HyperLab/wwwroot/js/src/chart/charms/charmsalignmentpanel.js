@@ -11,6 +11,7 @@ var isSavedOnCloudFileRemovalRequested = false;
 var isHidingRefWhitesRequested = false;
 
 var PARENT_ID = 'ParentId';
+var SERIES_ALIGNMENT = 'AlignmentSeries'; 
 
 async function initAlignmentAsync() {
     spectraForProcessingIds = [];
@@ -22,6 +23,9 @@ async function initAlignmentAsync() {
         NumOfPoints: 3,
         SelectedSegment: 0
     };
+
+    /* create an invisible series to show alignment segments */
+    createAlignmentSeries();
 
     await loadSegmentsAsync();
 
@@ -109,23 +113,20 @@ function setWhitesSwitchChecked(isChecked) {
 /* -------------------------------------------------------------------------------- */
 /* ---------- ALIGNMENT LINES ---------- */
 /* -------------------------------------------------------------------------------- */
+function createAlignmentSeries() {
+    addChartSeries(createSeries(SERIES_ALIGNMENT, SERIES_ALIGNMENT, VALUE_AXIS, 'lightGreen'));
+}
+
+
 function getAlignmentConstantLines(areLabelsVisible = true) {
     const alignmentSegmentsNum = alignmentModel.Segments.length;
-    let constantLines = [];
+    let coords = [];
     for (var i = 0; i < alignmentSegmentsNum; i++) {
-        constantLines.push(
-            {
-                value: parseInt(alignmentModel.Segments[i]),
-                color: lightGreen,
-                width: 2,
-                dashStyle: 'solid',
-                label: {
-                    visible: areLabelsVisible
-                }
-            });
+        const x = parseInt(alignmentModel.Segments[i]);
+        coords.push(x);
     }
 
-    return constantLines;
+    return buildConstantLinesForSeries(CHART_CONSTANT_LINES_ALIGNMENT, coords, 'lightGreen');
 }
 
 async function tryShowAlignmentSegmentsAsync() {
@@ -148,11 +149,8 @@ function setAlignmentSegmentsVisible(isVisible = true) {
 
     if (isVisible) {
         if (alignmentModel.Segments.length > 0) {
-            /* 1) remove existing lines */
-            resetShownConstantLines();
-
             /* 2) build new lines */
-            addOrUpdateConstantLines(getAlignmentConstantLines(), CHART_CONSTANT_LINES_ALIGNMENT);
+            addOrUpdateConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, getAlignmentConstantLines(), SERIES_ALIGNMENT);
             updateConstantLines();
         }
     } else {
@@ -479,7 +477,7 @@ function createSeriesForWhiteSpectra(idItem, objSpectraInfo, isPointVisible = fa
     const index = objSpectraInfo.findIndex(x => x.Id == keyId);
     const name = `${objSpectraInfo[index].Name} (${getSpectrumTypeDescription(objSpectraInfo[index].SpectrumType)})`;
     const color = getSpectrumTypeColor(getSpectrumTypeString(objSpectraInfo[index].SpectrumType));
-    return createSeries(idItem, name, 'valueAxis', color, { visible: isPointVisible });
+    return createSeries(idItem, name, VALUE_AXIS, color, { visible: isPointVisible });
 }
 
 function extractSpectraIds(points) {
@@ -698,7 +696,7 @@ function createChartMiniature(dataSource) {
                         padding: [3, 5],
                         formatter: '{c}'
                     },
-                    data: constantLines.map(function (l) { return { xAxis: l.value }; })
+                    data: constantLines.data.map(function (l) { return { xAxis: l.xAxis }; })
                 },
                 markArea: {
                     silent: true,

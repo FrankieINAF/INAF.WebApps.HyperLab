@@ -19830,7 +19830,7 @@
         isObject$1(seriesOpt) && processSeries(seriesOpt);
       });
       var axes = ['xAxis', 'yAxis', 'radiusAxis', 'angleAxis', 'singleAxis', 'parallelAxis', 'radar'];
-      isTheme && axes.push('valueAxis', 'categoryAxis', 'logAxis', 'timeAxis');
+      isTheme && axes.push(VALUE_AXIS, 'categoryAxis', 'logAxis', 'timeAxis');
       each$2(axes, function (axisName) {
         each$2(toArr(option[axisName]), function (axisOpt) {
           if (axisOpt) {

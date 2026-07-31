@@ -5,8 +5,34 @@ function initConstantLines() {
     chartConstantLines = {};
 }
 
-function addOrUpdateConstantLines(taskConstantLines, constantLinesSpecies) {
-    chartConstantLines[constantLinesSpecies] = taskConstantLines;
+function addOrUpdateConstantLines(name, constantLines, targetSeries) {
+    removeConstantLines(name, targetSeries);
+
+    const option = chart.getOption();
+    const index = option.series.findIndex(s => s.name === targetSeries);
+    if (index < 0)
+        return;
+
+    option.series[index].markLine = constantLines;
+
+    chart.setOption(option);
+}
+
+function buildConstantLinesForSeries(name, coords, color) {
+    return {
+        silent: true,
+        symbol: 'none',
+        showSymbol: true,
+        lineStyle: { color: color, width: 2, type: 'dashed' },
+        label: {
+            show: true,
+            color: color,
+            fontSize: 12,
+            padding: [3, 5],
+            formatter: '{c}'
+        },
+        data: coords.map(function (l) { return { xAxis: l }; })
+    };
 }
 
 function getConstantLines() {
@@ -20,16 +46,23 @@ function getConstantLines() {
     return constantLines;
 }
 
-function removeConstantLines(constantLinesSpecies) {
-    delete chartConstantLines[constantLinesSpecies];
-}
+function removeConstantLines(name, targetSeries) {
+    const option = chart.getOption();
+    const series = option.series.find(s => s.name === targetSeries);
+    if (!series)
+        return;
+    if (!series.markLine || !series.markLine.data) return;
 
-function resetShownConstantLines() {
-    dxChartUpdateOption(chart, 'argumentAxis.constantLines', []);
+    // mantain only the lines that do not match the name to be removed
+    series.markLine.data = series.markLine.data.filter(line => line.name !== name);
+
+    chart.setOption(option);
 }
 
 function updateConstantLines() {
-    dxChartUpdateOption(chart, 'argumentAxis.constantLines', getConstantLines());
+    const option = chart.getOption();
+    option.xAxis[0].markLine = { data: getConstantLines() };
+    chart.setOption(option);
 }
 
 function manageConstantLinesVisualization(selectedTabId) {
@@ -38,7 +71,7 @@ function manageConstantLinesVisualization(selectedTabId) {
         if (isCheckboxChecked('alignmentCheckboxShowLines'))
             addOrUpdateConstantLines(getAlignmentConstantLines(), CHART_CONSTANT_LINES_ALIGNMENT);
 
-        removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS);
+        removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS);
     }
 
     if (selectedTabId == OPTIONS_TITLE_FIT) {

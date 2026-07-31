@@ -280,21 +280,6 @@ function setParameterSpinner(id, parameter, segmentIndex, fitFunction, onFitMeth
 }
 
 /* ################################################################################ */
-/* MANAGE POINTS ON CHART */
-/* ################################################################################ */
-function setPointOnChart(items, x, y, argumentValue) {
-    let index = items.findIndex(p => p.X == x);
-    items[index][argumentValue] = y;
-}
-
-function setPointWithErrorBarOnChart(items, pX, pY, pMinY, pMaxY, argumentValue) {
-    let index = items.findIndex(p => p.X == pX);
-    items[index][argumentValue] = pY;
-    items[index][MIN_Y] = pMinY;
-    items[index][MAX_Y] = pMaxY;
-}
-
-/* ################################################################################ */
 /* POINTS FOR FITTING */
 /* ################################################################################ */
 function addToPointsForFittingArray(point) {

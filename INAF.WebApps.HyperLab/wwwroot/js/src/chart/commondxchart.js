@@ -155,10 +155,6 @@ function dxChartUpdateSeriesProperty(container, chartSeriesIndex, propertyName, 
 /* -------------------------------------------------------------------------------- */
 /* ITEMS */
 /* -------------------------------------------------------------------------------- */
-function dxChartGetItems(container) {
-    return points;
-}
-
 function dxChartRefresh(container) {
     chart.resize();
 }
