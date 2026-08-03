@@ -9,7 +9,7 @@ var areSavedComplexSearchesAvailable = false;
 var DEFAULT_WAIT_ms = 1000;
 
 async function setListviewSearchConditionsUI() {
-    if (!isUserAuthenticated)
+    if (!isUserAuthorized)
         return;
 
     const listview = $("#listviewSearchConditions").data("listview");

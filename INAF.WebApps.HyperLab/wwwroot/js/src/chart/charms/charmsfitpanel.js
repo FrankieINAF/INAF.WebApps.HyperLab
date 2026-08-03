@@ -10,6 +10,8 @@ var isShowChartConstantLinesForFitPointsAllowed = false;
 var isAutoRecalculateContinuumRemovedAllowed = false;
 var isShowBreaksOnValueAxisForContinuumRemovedRequested = false;
 
+var isContinuumRemovalRequestedByUser = false;
+
 var missingPoints = [];
 var pointsForFitting = [];
 var fitFunctions = [];
@@ -22,6 +24,7 @@ var selectedSpectrumTypeForContinuumRemoval; //defined just to be used if change
 var SERIES_FIT_POINT = 'FitPoint';
 var SERIES_FIT_POINTS = 'FitPointsSeries';
 var SERIES_HIGHLIGHTED_SEGMENT = 'HighlightedSegmentSeries';
+var SERIES_FIT_POINTS_CONSTANT_LINES = 'FitPointsConstantLinesSeries';
 
 var FIT_NUM_OF_POINTS_FOR_MISSING_POINTS_VALUE = 'fitnumofpointsvalue'
 var FIT_SEGMENT = 'fitsegment';
@@ -68,10 +71,9 @@ async function loadFitPanelAsync(extcallback = null) {
     }
 
     /* update constant lines visualization */
-    if (isCheckboxChecked('fitChechboxShowLines')) {
-        removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS);
-        addOrUpdateConstantLines(getFitPointsConstantLines(), CHART_CONSTANT_LINES_FIT_POINTS);
-        updateConstantLines();
+    if (isCheckboxChecked('fitCheckboxShowLines')) {
+        removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS_CONSTANT_LINES);
+        addOrUpdateConstantLines(getFitPointsConstantLines(), CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS_CONSTANT_LINES);
     }
 }
 
@@ -274,35 +276,44 @@ function setSwitchCoreProModeLabel(isChecked) {
 /* -------------------------------------------------------------------------------- */
 /* ---------- SHOW/HIDE CONSTANT LINES FOR FIT POINTS ---------- */
 /* -------------------------------------------------------------------------------- */
-function getFitPointsConstantLines(areLabelsVisible = true) {
-    const constantLines = [];
+function createFitPointsConstantLinesSeries() {
+    const existantSeries = chart.getOption().series;
+    const point0 = existantSeries[0].data[0];
+    const point1 = existantSeries[0].data[existantSeries[0].data.length - 1];
 
-    for (let i = 0; i < pointsForFitting.length; i++) {
-        const x = parseInt(pointsForFitting[i].P.X);
+    const points = [
+        createPoint(point0[0], point0[1], 'fitId'),
+        createPoint(point1[0], point1[1], 'fitId')
+    ];
 
-        constantLines.push(buildConstantLinesForSeries(CHART_CONSTANT_LINES_FIT_POINTS, x, "darkRed"));
-    }
+    let series = createSeries('fitId', SERIES_FIT_POINTS_CONSTANT_LINES, VALUE_AXIS, 'darkRed');
+    let echartsSeries = createEchartSeries([series], points);
+    echartsSeries[0].lineStyle = { opacity: 0 };
+    addChartSeries(echartsSeries);
+}
 
-    return constantLines;
+function getFitPointsConstantLines() {
+    const coords = pointsForFitting.map(function (point) { return parseInt(point.P.X); });
+    return buildConstantLinesForSeries(CHART_CONSTANT_LINES_FIT_POINTS, coords, "darkRed");
 }
 
 async function initSwitchShowHideVerticalLinesForFitPointsAsync() {
     await loadShowHideVerticalLinesForFitPointsAsync();
 
-    $('#fitChechboxShowLines').on('change', async function () {
-        let isChecked = isCheckboxChecked('fitChechboxShowLines');
+    $('#fitCheckboxShowLines').on('change', async function () {
+        let isChecked = isCheckboxChecked('fitCheckboxShowLines');
 
-        tryCallEnqueueSaveSetting(FIT_SHOW_HIDE_VERTICAL_LINES_FIT_POINTS, (isChecked ? '1' : '0'));
+        if (isUserAuthorized)
+            tryCallEnqueueSaveSetting(FIT_SHOW_HIDE_VERTICAL_LINES_FIT_POINTS, (isChecked ? '1' : '0'));
 
         isShowChartConstantLinesForFitPointsAllowed = isChecked;
 
         if (isChecked) {
-            removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS);
-            addOrUpdateConstantLines(getFitPointsConstantLines(), CHART_CONSTANT_LINES_FIT_POINTS);
+            removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS_CONSTANT_LINES);
+            addOrUpdateConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, getFitPointsConstantLines(), SERIES_FIT_POINTS_CONSTANT_LINES);
         } else {
-            removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS);
+            removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS_CONSTANT_LINES);
         }
-        updateConstantLines();
     });
 }
 
@@ -317,7 +328,7 @@ async function loadShowHideVerticalLinesForFitPointsAsync() {
 }
 
 function setSwitchShowHideVerticalLinesForFitPoints(isChecked) {
-    $('#fitChechboxShowLines').prop('checked', isChecked);
+    $('#fitCheckboxShowLines').prop('checked', isChecked);
 
     isShowChartConstantLinesForFitPointsAllowed = isChecked;
 }
@@ -579,9 +590,8 @@ async function addFitPointToChartAsync(fitPointsEchartsSeries, point, isFromUser
     }
 
     if (isShowChartConstantLinesForFitPointsAllowed) {
-        removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS);
-        addOrUpdateConstantLines(getFitPointsConstantLines(), CHART_CONSTANT_LINES_FIT_POINTS);
-        updateConstantLines();
+        removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS);
+        addOrUpdateConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, getFitPointsConstantLines(), SERIES_FIT_POINTS);
     }
 }
 
@@ -589,8 +599,8 @@ function removeFitPointsFromChart(xValues) {
     removePointsFromChart(chartContainer, xValues, SERIES_FIT_POINT)
 
     if (isShowChartConstantLinesForFitPointsAllowed) {
-        removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS);
-        updateConstantLines();
+        removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS_CONSTANT_LINES);
+        addOrUpdateConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, getFitPointsConstantLines(), SERIES_FIT_POINTS_CONSTANT_LINES);
     }
 
     hideSpectraToBeHidden();
@@ -662,29 +672,29 @@ async function addSelectedPointForFittingAsync(point, isFromUserAction = false, 
             /* add point to fit series */
             await addFitPointToChartAsync(fitPointsEchartsSeries, point, isFromUserAction);
 
-            // const pointUICallback = function () {
-            //     switch (currentFitMode) {
-            //         case FIT_MODE_CORE:
-            //             /* create UI element on charms */
-            //             addPointUI(point);
-            //             break;
+            const pointUICallback = function () {
+                switch (currentFitMode) {
+                    case FIT_MODE_CORE:
+                        /* create UI element on charms */
+                        addPointUI(point);
+                        break;
 
-            //         case FIT_MODE_PRO:
-            //             /* do nothing */
-            //             break;
-            //     }
-            // };
-            // /* switch to 'FIT OPTIONS' tab and load fitting functions  */
-            // if (!isFitPanelLoaded() && isOnlyOneItemInPointsForFittingArrayAvailable())
-            //     await loadFitPanelAsync(pointUICallback);
-            // else
-            //     pointUICallback();
+                    case FIT_MODE_PRO:
+                        /* do nothing */
+                        break;
+                }
+            };
+            /* switch to 'FIT OPTIONS' tab and load fitting functions  */
+            if (!isFitPanelLoaded() && isOnlyOneItemInPointsForFittingArrayAvailable())
+                await loadFitPanelAsync(pointUICallback);
+            else
+                pointUICallback();
 
-            // await manageNewPointAsync(point, isFromUserAction, isLast, isHidingOtherSpectraRequired);
+            await manageNewPointAsync(point, isFromUserAction, isLast, isHidingOtherSpectraRequired);
 
-            // /* mantain hidden all not necessary spectra */
-            // if (isHidingOtherSpectraRequired)
-            //     executeAfter(function () { hideSpectraOtherThanTypes([SPECTRUM_TYPE_ALIGNED, SPECTRUM_TYPE_CONTINUUM]); }, 100);
+            /* mantain hidden all not necessary spectra */
+            if (isHidingOtherSpectraRequired)
+                executeAfter(function () { hideSpectraOtherThanTypes([SPECTRUM_TYPE_ALIGNED, SPECTRUM_TYPE_CONTINUUM]); }, 100);
         };
 
         /* execute callback after pulse animation completed  */
@@ -1018,68 +1028,69 @@ function getSegmentForFittingBoundaryIndexes(items, segmentId) {
     }
 }
 
-function highlightSegmentForFitting(segmentId) {
-    const tempContinuumId = buildTempContinuumId(selectedSpectrumForProcessing.Id);
-    try {
-        /* retrieve points of continuum series, in order to find points defining the selected segment */
-        let seriesPoints = getSeriesPoints(tempContinuumId);
-        if (!seriesPoints || seriesPoints.length == 0)
-            return;
+// function highlightSegmentForFitting(segmentId) {
+//     const tempContinuumId = buildTempContinuumId(selectedSpectrumForProcessing.Id);
+//     try {
+//         /* retrieve points of continuum series, in order to find points defining the selected segment */
+//         let seriesPoints = getSeriesPoints(tempContinuumId);
+//         if (!seriesPoints || seriesPoints.length == 0)
+//             return;
 
-        let items = dxChartGetItems(chartContainer);
+//         // let items = dxChartGetItems(chartContainer);
 
-        let segmentBoundaryIndexes = getSegmentForFittingBoundaryIndexes(items, segmentId);
-        if (segmentBoundaryIndexes.X0Index == 0 && segmentBoundaryIndexes.X1Index == 0)
-            return;
+//         // let segmentBoundaryIndexes = getSegmentForFittingBoundaryIndexes(items, segmentId);
+//         // if (segmentBoundaryIndexes.X0Index == 0 && segmentBoundaryIndexes.X1Index == 0)
+//         //     return;
 
-        /* create, customize and add new series for highlighted segment */
-        let id = buildTempHighlightedSegment();
+//         /* create, customize and add new series for highlighted segment */
+//         let id = buildTempHighlightedSegment();
 
-        let color = getSpectrumTypeColor(getSpectrumTypeString(SPECTRUM_TYPE_CONTINUUM));
-        let highlightedSegmentChartSeries = createSeriesFromSpectrumName(id, SERIES_HIGHLIGHTED_SEGMENT, color, true);
+//         let color = getSpectrumTypeColor(getSpectrumTypeString(SPECTRUM_TYPE_CONTINUUM));
+//         let highlightedSegmentChartSeries = createSeriesFromSpectrumName(id, SERIES_HIGHLIGHTED_SEGMENT, color, true);
 
-        addChartSeries(highlightedSegmentChartSeries);
 
-        for (var i = segmentBoundaryIndexes.X0Index; i <= segmentBoundaryIndexes.X1Index; i++) {
-            let index = seriesPoints.findIndex(p => p.argument == items[i].X);
-            items[i][id] = seriesPoints[index].value;
-        }
+//         addChartSeries(highlightedSegmentChartSeries);
 
-        /* mantain hidden all not necessary spectra */
-        hideSpectraToBeHidden();
-        //dxChartRefresh(chartContainer);
-    } catch (e) {
-        console.log(`highlightSegment - ex: ${e}`);
-    }
-}
+//         for (var i = segmentBoundaryIndexes.X0Index; i <= segmentBoundaryIndexes.X1Index; i++) {
+//             let index = seriesPoints.findIndex(p => p.argument == items[i].X);
+//             items[i][id] = seriesPoints[index].value;
+//         }
 
-function lowlightSegmentForFitting(segmentId) {
-    const tempContinuumId = buildTempContinuumId(selectedSpectrumForProcessing.Id);
-    try {
-        let seriesPoints = getSeriesPoints(tempContinuumId);
-        if (!seriesPoints || seriesPoints.length == 0)
-            return;
+//         /* mantain hidden all not necessary spectra */
+//         hideSpectraToBeHidden();
+//         //dxChartRefresh(chartContainer);
+//     } catch (e) {
+//         console.log(`highlightSegment - ex: ${e}`);
+//     }
+// }
 
-        let items = dxChartGetItems(chartContainer);
+// function lowlightSegmentForFitting(segmentId) {
+//     const tempContinuumId = buildTempContinuumId(selectedSpectrumForProcessing.Id);
+//     try {
+//         let seriesPoints = getSeriesPoints(tempContinuumId);
+//         if (!seriesPoints || seriesPoints.length == 0)
+//             return;
 
-        let segmentBoundaryIndexes = getSegmentForFittingBoundaryIndexes(items, segmentId);
-        if (segmentBoundaryIndexes.X0Index == 0 && segmentBoundaryIndexes.X1Index == 0)
-            return;
+//         let items = dxChartGetItems(chartContainer);
 
-        let id = buildTempHighlightedSegment();
+//         let segmentBoundaryIndexes = getSegmentForFittingBoundaryIndexes(items, segmentId);
+//         if (segmentBoundaryIndexes.X0Index == 0 && segmentBoundaryIndexes.X1Index == 0)
+//             return;
 
-        let index = findChartSeriesIndexByValueFieldId(id);
-        removeChartSeriesAt(index);
+//         let id = buildTempHighlightedSegment();
 
-        for (var i = segmentBoundaryIndexes.X0Index; i <= segmentBoundaryIndexes.X1Index; i++) {
-            delete items[i][id];
-        }
+//         let index = findChartSeriesIndexByValueFieldId(id);
+//         removeChartSeriesAt(index);
 
-        dxChartResetVisualRange();
-    } catch (e) {
-        console.log(`lowlightSegment - ex: ${e}`);
-    }
-}
+//         for (var i = segmentBoundaryIndexes.X0Index; i <= segmentBoundaryIndexes.X1Index; i++) {
+//             delete items[i][id];
+//         }
+
+//         dxChartResetVisualRange();
+//     } catch (e) {
+//         console.log(`lowlightSegment - ex: ${e}`);
+//     }
+// }
 
 /* MANAGE ADDING/UPDATING OF SEGMENT ON UI */
 async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1, isHidingOtherSpectraRequired = true) {
@@ -1092,6 +1103,7 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1, isHidingO
         spectrum = getSpectrumByNameAndSpectrumType(selectedSpectrumForProcessing.Name, selectedSpectrumTypeForContinuumRemoval);
     if (!spectrum)
         return;
+
     let pointsInRange = extractSpectrumRange(getPointsFromSeriesPointsProcedure(spectrum.Id, selectedSpectrumTypeForContinuumRemoval), p0.X, p1.X);
 
     if (!pointsInRange || pointsInRange.length == 0) {
@@ -1122,26 +1134,17 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1, isHidingO
         spectrumIdForContinuum = selectedSpectrumForProcessing.Id;
     const continuumSpectrum = tryAddContinuumSpectrum(spectrumIdForContinuum);
 
-    /* update chart with new aligned spectrum */
-
-    /* retrieve current items */
-    const items = dxChartGetItems(chartContainer);
-    /* add continuum-spectrum points */
-    const xValues = processingResult.Points.map(p => p.X);
-    const yValues = processingResult.Points.map(p => p.Y);
-    addChartSeriesItems(items, xValues, yValues, continuumSpectrum.Id);
+    const spectrumSeriesName = createSeriesNameFromSpectrumNameAndType(continuumSpectrum.Name, continuumSpectrum.SpectrumType);
+    if (isChartSeriesAvailableByName(spectrumSeriesName))
+        addPointsToChartSeries(spectrumSeriesName, processingResult.Points);
+    else
+        addProcessedSpectrum(continuumSpectrum, processingResult.Points, SPECTRUM_TYPE_CONTINUUM);
 
     /* add (if not already present) the continuum series */
     tryAddContinuumSpectrumSeries(continuumSpectrum);
 
-    dxChartRefresh(chartContainer); // show points and segments
-    if (isBuildingUpContinuum)
-        dxChartResetVisualRange();
-
     if (isHidingOtherSpectraRequired)
         hideSpectraOtherThanTypes([SPECTRUM_TYPE_ALIGNED, SPECTRUM_TYPE_CONTINUUM]);
-    /* mantain hidden all not necessary spectra */
-    //hideSpectraToBeHidden();
 
     /* try to start procedure for removing continuum, if conditions are satisfied */
     await tryCalculateContinuumRemovedAsync();
@@ -1250,15 +1253,6 @@ function removeFitPointsSeriesPoints() {
     /* remove all points from chart */
     removeFitPointsFromChart(xValues);
 
-    /* remove from series */
-    // let seriesNum = chartSeries.length;
-    // for (var i = 0; i < seriesNum; i++) {
-    //     if (chartSeries[i].name == SERIES_FIT_POINT) {
-    //         removeChartSeriesAt(i);
-    //         break;
-    //     }
-    // }
-
     /* reset visual range to make ref whites appear in chart */
     dxChartResetVisualRange();
 
@@ -1341,7 +1335,7 @@ function buildContinuumRemovedSpectrumCompleted(filename = null, areBreaksVisibl
     refreshCharmsLegend();
 
     /* refresh chart */
-    executeAfter(dxChartResetVisualRange(chartContainer), 200);
+    executeAfter(dxChartResetVisualRange(), 200);
 
     /* if available, showbuttons for starting band analysis */
     let bandAnalysisButtons = $(`[id$="${BandAnalysisButton}"]`);
@@ -1411,6 +1405,8 @@ async function startRemoveContinuumProcedureAsync() {
 
     setLoadingCircleIsVisible(true);
 
+    isContinuumRemovalRequestedByUser = true;
+
     /* reset array to let re-calculate them */
     resetMissingPoints();
 
@@ -1448,7 +1444,7 @@ async function tryCalculateContinuumRemovedAsync() {
     /* retrieve points of continuum for removing it from aligned */
     let continuumPoints = getSpectrumPointsByIdAndSpectrumTypeProcedure(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM);
     if (!continuumPoints) {
-        //showSimpleDialog(ERROR_LABEL, ContinuumRemovalExecutionErrorMessage, ALERT);
+        showSimpleDialog(ERROR_LABEL, ContinuumRemovalExecutionErrorMessage, ALERT);
         return;
     }
 
@@ -1503,7 +1499,9 @@ async function tryCalculateContinuumRemovedAsync() {
             addMessage(ContinuumRemovalExecutionErrorMessage, 0, ALERT, displayMessage = false);
             showSimpleDialog(ERROR_LABEL, ContinuumRemovalExecutionErrorMessage, ALERT);
         }
-    }
+
+        isContinuumRemovalRequestedByUser = false;
+    } 
 
     /* to remove loading when error occurred */
     setLoadingCircleIsVisible(false);
@@ -1551,7 +1549,7 @@ function extractSeriesValuesForContinuumRemovedBreaks() {
         let spectra = getAllSpectraHavingSameNameByRawId(selectedSpectrumForProcessing.Id);
 
         spectra.forEach(function (spectrumInfo) {
-            let seriesName = getSeriesNameFromSpectrumId(spectrumInfo.Id);
+            let seriesName = findSeriesNameFromSpectrumId(spectrumInfo.Id);
 
             let seriesPoints = dxChartGetSeriesPoints(seriesName);
             let points = getPointsFromSeriesPoints(seriesPoints);
@@ -1566,7 +1564,7 @@ function extractSeriesValuesForContinuumRemovedBreaks() {
 
         maxMax = Math.max(...maxArray);
     } catch (e) {
-        console.log(`${extractSeriesValuesForBreaks.name} - ex: ${e}`);
+        console.log(`${extractSeriesValuesForContinuumRemovedBreaks.name} - ex: ${e}`);
     }
 
     return {
@@ -1576,33 +1574,66 @@ function extractSeriesValuesForContinuumRemovedBreaks() {
 }
 
 function fitHideBreaksOnValueAxis() {
-    let visualRangeY = dxChartGetVisualRangeY();
+    const option = chart.getOption();
 
-    dxChartUpdateOption(chart, 'valueAxis.breaks', []);
-    dxChartRefresh(chartContainer);
+    // Salva il visual range Y attuale
+    const visualRangeY = {
+        start: option.yAxis[0].min,
+        end: option.yAxis[0].max
+    };
 
-    dxChartSetVisualRangeY(visualRangeY);
+    // Rimuovi il dataZoom verticale (break)
+    option.dataZoom = option.dataZoom?.filter(z => z.yAxisIndex !== 0);
+
+    chart.setOption(option);
+
+    // Ripristina il visual range Y
+    const restore = chart.getOption();
+    restore.yAxis[0].min = visualRangeY.start;
+    restore.yAxis[0].max = visualRangeY.end;
+    chart.setOption(restore);
 
     hideSpectraToBeHidden();
 }
+
 
 function fitShowBreaksOnValueAxis() {
-    let visualRangeY = dxChartGetVisualRangeY();
+    const option = chart.getOption();
 
-    let model = extractSeriesValuesForContinuumRemovedBreaks();
+    // Salva il visual range Y attuale
+    const visualRangeY = {
+        start: option.yAxis[0].min,
+        end: option.yAxis[0].max
+    };
 
-    let startValue = parseFloat(parseFloat((model.MaxMax * 1.01).toFixed(2)).toFixed(1));
-    let endValue = parseFloat(parseFloat((model.ContinuumRemovedMin / 1.01).toFixed(2)).toFixed(1));
-    //console.log(`model.MaxMax: ${model.MaxMax}, startValue: ${startValue}, model.ContinuumRemovedMin: ${model.ContinuumRemovedMin}, endValue: ${endValue}`);
+    const model = extractSeriesValuesForContinuumRemovedBreaks();
 
-    dxChartUpdateOption(chart, 'valueAxis.tickInterval', 0.1);
-    dxChartUpdateOption(chart, 'valueAxis.breaks', [{ startValue: startValue, endValue: endValue }]);
-    dxChartRefresh();
+    const startValue = parseFloat(parseFloat((model.MaxMax * 1.01).toFixed(2)).toFixed(1));
+    const endValue = parseFloat(parseFloat((model.ContinuumRemovedMin / 1.01).toFixed(2)).toFixed(1));
 
-    dxChartSetVisualRangeY(visualRangeY);
+    // Imposta tick interval
+    option.yAxis[0].interval = 0.1;
+
+    // Aggiungi un dataZoom verticale che nasconde la zona del break
+    option.dataZoom = option.dataZoom || [];
+    option.dataZoom.push({
+        type: "inside",
+        yAxisIndex: 0,
+        startValue: endValue,   // parte visibile
+        endValue: startValue    // parte visibile
+    });
+
+    chart.setOption(option);
+
+    // Ripristina il visual range Y
+    const restore = chart.getOption();
+    restore.yAxis[0].min = visualRangeY.start;
+    restore.yAxis[0].max = visualRangeY.end;
+    chart.setOption(restore);
 
     hideSpectraToBeHidden();
 }
+
 
 /* -------------------------------------------------------------------------------- */
 /* MANAGE MISSING POINTS */

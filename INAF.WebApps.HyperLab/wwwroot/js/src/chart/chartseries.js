@@ -21,7 +21,6 @@
     }
 }
 
-
 function addPointToChartSeries(seriesName, point) {
     const option = chart.getOption();
     const series = option.series.find(s => s.name === seriesName);
@@ -29,6 +28,32 @@ function addPointToChartSeries(seriesName, point) {
         series.data.push([point.X, point.Y]);
         chart.setOption(option);
     }
+}
+
+function addPointsToChartSeries(seriesName, newPoints) {
+    const option = chart.getOption();
+    const series = option.series.find(s => s.name === seriesName);
+    if (!series) return;
+
+    // Raccogli tutti gli X già presenti nella serie
+    const existingXs = new Set(
+        series.data.map(p => Array.isArray(p) ? p[0] : p.value[0])
+    );
+
+    // Aggiungi solo i punti nuovi
+    for (const p of newPoints) {
+        const x = p.X;
+        const y = p.Y;
+
+        if (!existingXs.has(x)) {
+            series.data.push([x, y]);
+        }
+    }
+
+    // Ordina la serie per X (necessario per serie line)
+    series.data.sort((a, b) => a[0] - b[0]);
+
+    chart.setOption(option);
 }
 
 function findChartSeriesByName(name) {

@@ -475,7 +475,7 @@ function updateYAxisRangeForVisibleSeries() {
 
     const allseries = chart.getOption().series;
     for (const s of allseries) {
-        if (s.name == SERIES_FIT_POINTS || s.name == SERIES_ALIGNMENT)
+        if (s.name == SERIES_FIT_POINTS || s.name == SERIES_ALIGNMENT_CONSTANT_LINES)
             continue;
         const series = dxChartGetSeriesByName(s.name);
         if (series && series.isVisible()) {

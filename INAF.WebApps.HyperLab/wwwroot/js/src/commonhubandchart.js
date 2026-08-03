@@ -21,7 +21,7 @@ var STORAGE_ITEM = "storageItem";
 
 var pageW, pageH;
 
-var isUserAuthenticated = false;
+var isUserAuthorized = false;
 
 
 var lightGreen = '#90ee90';
@@ -31,7 +31,7 @@ var red = '#a8071e';
 var usersToShare = [];
 
 function tryHideLogoutButton() {
-    if (!isUserAuthenticated)
+    if (!isUserAuthorized)
         hideByClass('logoutButton');
 }
 
@@ -42,7 +42,7 @@ function initPageDims() {
 
 async function isAuthorizedAsync() {
     const isUserAuthorizedResponse = await doAjaxGetNoModelAsync(UrlIsAuthorized);
-    isUserAuthenticated = isUserAuthorizedResponse.IsOk;
+    isUserAuthorized = isUserAuthorizedResponse.IsOk;
 }
 
 async function isPublicOrAuthorizedAsync(useLoading = true) {

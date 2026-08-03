@@ -35,7 +35,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         public async Task<IActionResult> Chart([FromForm] NavigateToChartModel model)
         {
             HttpContext.Session.SetString(Constants.LAST_PAGE, nameof(Chart));
-            (bool isUserAuthenticated, List<PermissionModel>? permissions) status = await getUserStatusAsync();
+            (bool isUserAuthorized, List<PermissionModel>? permissions) status = await getUserStatusAsync();
 
             IEnumerable<int>? Ids = model.SelectedSpectra ?? Array.Empty<int>();
             SelectedSpectraModel? selectedSpectra = null;
@@ -44,7 +44,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 selectedSpectra = new SelectedSpectraModel() { Ids = Ids };
             }
 
-            ChartPageModel chartPageModel = new ChartPageModel(status.isUserAuthenticated, status.permissions, selectedSpectra);
+            ChartPageModel chartPageModel = new ChartPageModel(status.isUserAuthorized, status.permissions, selectedSpectra);
 
             return View(chartPageModel);
         }
@@ -53,9 +53,9 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public async Task<IActionResult> LoadAlignmentPanel()
         {
-            (bool isUserAuthenticated, List<PermissionModel>? permissions) userStatus = await getUserStatusAsync();
+            (bool isUserAuthorized, List<PermissionModel>? permissions) userStatus = await getUserStatusAsync();
 
-            PartialViewModel partialViewModel = new PartialViewModel(userStatus.isUserAuthenticated);
+            PartialViewModel partialViewModel = new PartialViewModel(userStatus.isUserAuthorized);
             return PartialView("Partials/_AlignmentPanel", partialViewModel);
         }
 
@@ -68,8 +68,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public async Task<IActionResult> LoadFitPanel()
         {
-            (bool isUserAuthenticated, List<PermissionModel>? permissions) userStatus = await getUserStatusAsync();
-            PartialViewModel partialViewModel = new PartialViewModel(userStatus.isUserAuthenticated);
+            (bool isUserAuthorized, List<PermissionModel>? permissions) userStatus = await getUserStatusAsync();
+            PartialViewModel partialViewModel = new PartialViewModel(userStatus.isUserAuthorized);
 
             return PartialView("Partials/_FitPanel", partialViewModel);
         }
@@ -77,8 +77,8 @@ namespace INAF.WebApps.HyperLab.Controllers
         [HttpGet]
         public async Task<IActionResult> LoadSmoothingPanel()
         {
-            (bool isUserAuthenticated, List<PermissionModel>? permissions) userStatus = await getUserStatusAsync();
-            PartialViewModel partialViewModel = new PartialViewModel(userStatus.isUserAuthenticated);
+            (bool isUserAuthorized, List<PermissionModel>? permissions) userStatus = await getUserStatusAsync();
+            PartialViewModel partialViewModel = new PartialViewModel(userStatus.isUserAuthorized);
 
             return PartialView("Partials/_SmoothingPanel", partialViewModel);
         }

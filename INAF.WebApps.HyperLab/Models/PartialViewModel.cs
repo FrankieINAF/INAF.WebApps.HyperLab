@@ -2,9 +2,9 @@
 {
     public class PartialViewModel
     {
-        public PartialViewModel(bool isUserAuthenticated) 
+        public PartialViewModel(bool isUserAuthorized) 
         {
-            IsUserAuthenticated = isUserAuthenticated;
+            IsUserAuthenticated = isUserAuthorized;
         }
 
         public bool IsUserAuthenticated { get; private set; }

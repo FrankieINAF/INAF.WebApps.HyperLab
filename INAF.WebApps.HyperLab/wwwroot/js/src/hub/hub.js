@@ -180,7 +180,7 @@ function showSearchInfo() {
 /* ################################################################################ */
 /* ---------- SEARCH BUTTON ---------- */
 async function tryAddSearchButton() {
-    if (!isUserAuthenticated)
+    if (!isUserAuthorized)
         return;
     
     addButton(searchButtonId, ButtonSearchLabel, 'mif-search', search);

@@ -43,12 +43,12 @@ namespace INAF.WebApps.HyperLab.Controllers
             else
                 HttpContext.Session.SetString(Constants.LAST_PAGE, nameof(Hub));
 
-            (bool isUserAuthenticated, List<PermissionModel>? permissions) status = await getUserStatusAsync();
-            HttpContext.Session.SetString(IS_USER_AUTHENTICATED, status.isUserAuthenticated.ToString());
+            (bool isUserAuthorized, List<PermissionModel>? permissions) status = await getUserStatusAsync();
+            HttpContext.Session.SetString(IS_USER_AUTHENTICATED, status.isUserAuthorized.ToString());
 
             var sampleTypesHelper = serviceProvider.GetRequiredService<SampleTypesHelper>();
             SampleTypeValuesContainerExtended sampleTypeValuesContainerExtended = SampleTypeValuesContainerExtended.Create(sampleTypesHelper.getSampleTypeValuesContainer());
-            var searchPageModel = new SearchPageModel(status.isUserAuthenticated, status.permissions, sampleTypeValuesContainerExtended, lastSearch);
+            var searchPageModel = new SearchPageModel(status.isUserAuthorized, status.permissions, sampleTypeValuesContainerExtended, lastSearch);
             return View(searchPageModel);
         }
         #endregion

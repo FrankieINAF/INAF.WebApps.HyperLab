@@ -1,4 +1,11 @@
-﻿function extractSpectrumXMax(points) {
+﻿function createPoint(x, y, keyName) {
+    return {
+        X: x,
+        [keyName]: y
+    };
+}
+
+function extractSpectrumXMax(points) {
     return Math.max(...points.map(p => p.X));
 }
 
@@ -115,5 +122,5 @@ function getSpectrumPointsByIdAndSpectrumTypeProcedure(spectrumId, spectrumType)
     if (!spectrumPoints)
         spectrumPoints = getSpectrumPointsByIdAndSpectrumType(spectrumId, spectrumType);
 
-    return spectrumPoints.map(function (p) { return { X: p[0], Y: p[1] } });
+    return spectrumPoints.map(function (p) { return { X: p.X, Y: p.Y } });
 }

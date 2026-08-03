@@ -6,9 +6,9 @@
 @inject INAF.WebApps.HyperLab.Helpers.MenuHelper menuHelper
 
 @{
-	bool isUserAuthenticated = false;
+	bool isUserAuthorized = false;
 	if (Context.User.Identity != null)
-		isUserAuthenticated = Context.User.Identity.IsAuthenticated;
+		isUserAuthorized = Context.User.Identity.IsAuthenticated;
 
 	Menu? menu = menuHelper.GetMenu(Context);
 	int index = 0;
@@ -28,7 +28,7 @@
 		}
 	}
 
-	if (!isUserAuthenticated)
+	if (!isUserAuthorized)
 	{
 		<li>
 			<a class="menuitem" href="@Url.Action(nameof(AccountController.Login), GenericHelper.GetControllerName(nameof(AccountController)))">

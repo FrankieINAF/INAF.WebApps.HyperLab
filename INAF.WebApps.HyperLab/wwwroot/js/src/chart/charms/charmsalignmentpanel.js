@@ -11,7 +11,7 @@ var isSavedOnCloudFileRemovalRequested = false;
 var isHidingRefWhitesRequested = false;
 
 var PARENT_ID = 'ParentId';
-var SERIES_ALIGNMENT = 'AlignmentSeries'; 
+var SERIES_ALIGNMENT_CONSTANT_LINES = 'AlignmentConstantLinesSeries';
 
 async function initAlignmentAsync() {
     spectraForProcessingIds = [];
@@ -25,7 +25,7 @@ async function initAlignmentAsync() {
     };
 
     /* create an invisible series to show alignment segments */
-    await createAlignmentSeries();
+    createAlignmentConstantLinesSeries();
 
     await loadSegmentsAsync();
 
@@ -78,11 +78,17 @@ async function loadAlignmentValuesAsync() {
     /* automatically raise event for loading ref whites */
     setWhitesSwitchChecked(true);
 
-    /* enable event management for switch for auto-aligning spectrum */
-    await initSwitchLoadAutoAlignSpectrumAsync();
+    if (isUserAuthorized) {
+        /* enable event management for switch for auto-aligning spectrum */
+        await initSwitchLoadAutoAlignSpectrumAsync();
 
-    /* enable event management for switch for auto-loading aligned spectrum */
-    await initSwitchLoadAutoDownloadAlignedSpectrumAsync();
+        /* enable event management for switch for auto-loading aligned spectrum */
+        await initSwitchLoadAutoDownloadAlignedSpectrumAsync();
+    } else {
+        /* hide switches for unauthorized users */
+        hideMetroUIElem('charmsSwitchAutoAlignSpectrum');
+        hideMetroUIElem('charmsSwitchAutoDownloadAlignedSpectrum');
+    }
 
     /* enable event when check/uncheck checkbox for showing separator lines */
     initCheckBoxForShowingLines();
@@ -113,35 +119,25 @@ function setWhitesSwitchChecked(isChecked) {
 /* -------------------------------------------------------------------------------- */
 /* ---------- ALIGNMENT LINES ---------- */
 /* -------------------------------------------------------------------------------- */
-async function createAlignmentSeries() {
+function createAlignmentConstantLinesSeries() {
     const existantSeries = chart.getOption().series;
     const point0 = existantSeries[0].data[0];
     const point1 = existantSeries[0].data[existantSeries[0].data.length - 1];
 
-    function createPoint(x, y) {
-        return { X: x, alignmentId: y };
-    }
-
     const points = [
-        createPoint(point0[0], point0[1]),
-        createPoint(point1[0], point1[1])
+        createPoint(point0[0], point0[1], 'alignmentId'),
+        createPoint(point1[0], point1[1], 'alignmentId')
     ];
 
-    let series = createSeries('alignmentId', SERIES_ALIGNMENT, VALUE_AXIS, 'darkGreen');
+    let series = createSeries('alignmentId', SERIES_ALIGNMENT_CONSTANT_LINES, VALUE_AXIS, 'darkGreen');
     let echartsSeries = createEchartSeries([series], points);
     echartsSeries[0].lineStyle = { opacity: 0 };
     addChartSeries(echartsSeries);
-
-    await delay(200);
 }
 
-function getAlignmentConstantLines(areLabelsVisible = true) {
+function getAlignmentConstantLines() {
     const alignmentSegmentsNum = alignmentModel.Segments.length;
-    let coords = [];
-    for (var i = 0; i < alignmentSegmentsNum; i++) {
-        const x = parseInt(alignmentModel.Segments[i]);
-        coords.push(x);
-    }
+    let coords = alignmentModel.Segments.map(x => parseInt(x));
 
     return buildConstantLinesForSeries(CHART_CONSTANT_LINES_ALIGNMENT, coords, 'darkGreen');
 }
@@ -167,10 +163,10 @@ function setAlignmentSegmentsVisible(isVisible = true) {
     if (isVisible) {
         if (alignmentModel.Segments.length > 0) {
             /* 2) build new lines */
-            addOrUpdateConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, getAlignmentConstantLines(), SERIES_ALIGNMENT);
+            addOrUpdateConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, getAlignmentConstantLines(), SERIES_ALIGNMENT_CONSTANT_LINES);
         }
     } else {
-        removeConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, SERIES_ALIGNMENT);
+        removeConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, SERIES_ALIGNMENT_CONSTANT_LINES);
     }
 }
 
@@ -485,14 +481,6 @@ function binarySearchInsert(arr, newItem) {
 
     return left;
 }
-
-// function createSeriesForWhiteSpectra(idItem, objSpectraInfo, isPointVisible = false) {
-//     let keyId = getIdValue(idItem);
-//     const index = objSpectraInfo.findIndex(x => x.Id == keyId);
-//     const name = `${objSpectraInfo[index].Name} (${getSpectrumTypeDescription(objSpectraInfo[index].SpectrumType)})`;
-//     const color = getSpectrumTypeColor(getSpectrumTypeString(objSpectraInfo[index].SpectrumType));
-//     return createSeries(idItem, name, VALUE_AXIS, color, { visible: isPointVisible });
-// }
 
 function extractSpectraIds(points) {
     let ids = [];

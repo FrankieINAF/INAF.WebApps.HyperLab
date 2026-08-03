@@ -12,21 +12,21 @@ function hideSpectraToBeHidden() {
 /* ################################################################################ */
 /* CHARTS SERIES ITEMS */
 /* ################################################################################ */
-function addChartSeriesItems(items, xValues, yValues, seriesName) {
-    let xValuesNum = xValues.length;
-    for (var i = 0; i < xValuesNum; i++) {
-        let index = items.findIndex(p => p.X == xValues[i]);
-        if (index > -1) {
-            items[index][seriesName] = yValues[i];
-        }
-    }
-}
+// function addChartSeriesItems(items, xValues, yValues, seriesName) {
+//     let xValuesNum = xValues.length;
+//     for (var i = 0; i < xValuesNum; i++) {
+//         let index = items.findIndex(p => p.X == xValues[i]);
+//         if (index > -1) {
+//             items[index][seriesName] = yValues[i];
+//         }
+//     }
+// }
 
-function deleteChartSeriesItems(items, seriesName) {
-    items.forEach(function (item) {
-        delete item[seriesName];
-    });
-}
+// function deleteChartSeriesItems(items, seriesName) {
+//     items.forEach(function (item) {
+//         delete item[seriesName];
+//     });
+// }
 
 /* ################################################################################ */
 /* CHARTS SERIES */

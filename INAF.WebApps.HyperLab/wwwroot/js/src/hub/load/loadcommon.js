@@ -91,7 +91,7 @@ async function loadFilesAsync(files, source) {
             if (isXML(text)) {
                 fileExt = XML;
                 /*  check whether a SLab xml file is being loaded as external file */
-                if (source == SPECTRUM_SOURCE_EXTERNAL && isSLabXmlStructure(text) && isUserAuthenticated)
+                if (source == SPECTRUM_SOURCE_EXTERNAL && isSLabXmlStructure(text) && isUserAuthorized)
                     source = SPECTRUM_SOURCE_SLAB;
                 //console.log("XML");
                 await manageXmlProcedureAsync(text, filename, source, fileExt);
@@ -276,7 +276,7 @@ async function saveFileAsync(filename) {
     let spectrum = parsedSpectra[index];
     switch (spectrum.Source) {
         case SPECTRUM_SOURCE_EXTERNAL:
-            if (isUserAuthenticated)
+            if (isUserAuthorized)
                 await saveExternalFileAuthenticatedAsync(spectrum.Filename, spectrum.Xml);
             else
                 saveExternalFileUnauthenticated(spectrum.Filename, spectrum.Xml);
@@ -294,7 +294,7 @@ async function saveFileAsync(filename) {
 /* BUILD LIST ITEM */
 /* ################################################################################ */
 async function addFilesListItemAsync(filename, spectrumType, source, isLoaded) {
-    $('#loadedFilesList').append(getFilesListItem(filename, spectrumType, source, isLoaded, isUserAuthenticated));
+    $('#loadedFilesList').append(getFilesListItem(filename, spectrumType, source, isLoaded, isUserAuthorized));
 
     if (!isLoaded)
         return;
@@ -303,7 +303,7 @@ async function addFilesListItemAsync(filename, spectrumType, source, isLoaded) {
     //if (isLoaded) {
     //    switch (source) {
     //        case SPECTRUM_SOURCE_EXTERNAL:
-    //            if (isUserAuthenticated)
+    //            if (isUserAuthorized)
     //                checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, SPECTRUM_TYPE_ALIGNED, source);
     //            break;
 
@@ -334,7 +334,7 @@ async function checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, spect
     let obj = await doAjaxGetAsync(UrlIsSpectrumTypeSavedOnCloud, model);
     if (obj) {
         /* update list of loaded spectra */
-        updateListItem(filename, obj.IsOk, isUserAuthenticated);
+        updateListItem(filename, obj.IsOk, isUserAuthorized);
 
         if (obj.IsOk) {
             /* update the parsed spectrum id */
@@ -345,15 +345,15 @@ async function checkIsSpectrumOfTypeAndSourceIsSavedOnCloudAsync(filename, spect
     }
 }
 
-function getFilesListItem(filename, spectrumType, source, isLoaded, isUserAuthenticated) {
+function getFilesListItem(filename, spectrumType, source, isLoaded, isUserAuthorized) {
     //console.log(`isMobile, ${isMobile()}`);
     if (isMobile())
-        return getFilesListItemMobile(filename, spectrumType, source, isLoaded, isUserAuthenticated);
+        return getFilesListItemMobile(filename, spectrumType, source, isLoaded, isUserAuthorized);
     else
-        return getFilesListItemDesktop(filename, spectrumType, source, isLoaded, isUserAuthenticated);
+        return getFilesListItemDesktop(filename, spectrumType, source, isLoaded, isUserAuthorized);
 }
 
-function getFilesListItemDesktop(filename, spectrumType, source, isLoaded, isUserAuthenticated) {
+function getFilesListItemDesktop(filename, spectrumType, source, isLoaded, isUserAuthorized) {
     let html = ``;
     html += getContainerDiv(filename);
     html += getBinIconDiv(filename);
@@ -363,20 +363,20 @@ function getFilesListItemDesktop(filename, spectrumType, source, isLoaded, isUse
         html += getSpectrumTypeDiv(filename, spectrumType, '260');
     else
         html += `<div class="margin-horizontal-16" style="width: 260px">&nbsp;</div>`;
-    html += getToSaveIcon(filename, null, isUserAuthenticated);
+    html += getToSaveIcon(filename, null, isUserAuthorized);
     html += `</div>`;
 
     return html;
 }
 
-function getFilesListItemMobile(filename, spectrumType, source, isLoaded, isUserAuthenticated) {
+function getFilesListItemMobile(filename, spectrumType, source, isLoaded, isUserAuthorized) {
     let html = ``;
     html += getContainerDiv(filename);
     html += `<div id="item_${filename}" class="d-flex flex-row margin-vertical-8">`;
     html += getBinIconDiv(filename);
     html += getLoadResultIcon(isLoaded);
     html += getFilenameDiv(source, filename);
-    html += getToSaveIcon(filename, null, isUserAuthenticated);
+    html += getToSaveIcon(filename, null, isUserAuthorized);
     html += `</div>`;
     if (source == SPECTRUM_SOURCE_SLAB)
         html += getSpectrumTypeDiv(filename, spectrumType, '250');
@@ -389,8 +389,8 @@ function getFilesListItemMobile(filename, spectrumType, source, isLoaded, isUser
 /* -------------------------------------------------------------------------------- */
 /* SAVED */
 /* -------------------------------------------------------------------------------- */
-function getSavedIcon(filename, isUserAuthenticated) {
-    if (isUserAuthenticated)
+function getSavedIcon(filename, isUserAuthorized) {
+    if (isUserAuthorized)
         return getSavedOnCloudIcon(filename);
     else
         return getSavedLocallyIcon(filename);
@@ -407,8 +407,8 @@ function getSavedOnCloudIcon(filename) {
 /* -------------------------------------------------------------------------------- */
 /* TO SAVE */
 /* -------------------------------------------------------------------------------- */
-function getToSaveIcon(filename, color, isUserAuthenticated) {
-    if (isUserAuthenticated)
+function getToSaveIcon(filename, color, isUserAuthorized) {
+    if (isUserAuthorized)
         return getToSaveOnCloudIcon(filename, color);
     else
         return getToSaveLocallyIcon(filename, color);
@@ -437,13 +437,13 @@ function getToSaveOnCloudIcon(filename, color) {
 /* -------------------------------------------------------------------------------- */
 /* UPDATE */
 /* -------------------------------------------------------------------------------- */
-function updateListItem(filename, isSaved, isUserAuthenticated) {
+function updateListItem(filename, isSaved, isUserAuthorized) {
     let spectrum = getParsedSpectrum(filename);
     if (isSaved) {
-        const content = getSavedIcon(spectrum.Filename, isUserAuthenticated);
+        const content = getSavedIcon(spectrum.Filename, isUserAuthorized);
         $(`#upload_${$.escapeSelector(spectrum.Filename)}`).replaceWith(content);
     } else
-        $(`#uploaded_${$.escapeSelector(spectrum.Filename)}`).replaceWith(getToSaveIcon(spectrum.Filename, 'orange', isUserAuthenticated));
+        $(`#uploaded_${$.escapeSelector(spectrum.Filename)}`).replaceWith(getToSaveIcon(spectrum.Filename, 'orange', isUserAuthorized));
 }
 
 /* ################################################################################ */

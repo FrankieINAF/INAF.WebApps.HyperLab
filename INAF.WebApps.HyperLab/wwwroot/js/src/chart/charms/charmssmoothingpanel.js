@@ -23,8 +23,7 @@ function preparePageForSmoothingPanelVisualization() {
     selectTargetSpectrumType();
 
     /* clear constant lines from continuum-removal panel */
-    removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS);
-    updateConstantLines();
+    removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS_CONSTANT_LINES);
 }
 
 function getSrcSpectrumTypeVal() {

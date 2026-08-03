@@ -6,8 +6,6 @@ function initConstantLines() {
 }
 
 function addOrUpdateConstantLines(name, constantLines, targetSeries) {
-    //removeConstantLines(name, targetSeries);
-
     const option = chart.getOption();
     const series = option.series.find(s => s.name === targetSeries);
     if (!series)
@@ -71,15 +69,15 @@ function manageConstantLinesVisualization(selectedTabId) {
     /* manage vertical constant lines visualiztion */
     if (selectedTabId == OPTIONS_TITLE_ALIGNMENT) {
         if (isCheckboxChecked('alignmentCheckboxShowLines'))
-            addOrUpdateConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, getAlignmentConstantLines(), SERIES_ALIGNMENT);
+            addOrUpdateConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, getAlignmentConstantLines(), SERIES_ALIGNMENT_CONSTANT_LINES);
 
         removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS);
     }
 
     if (selectedTabId == OPTIONS_TITLE_FIT) {
-        if (isCheckboxChecked('fitChechboxShowLines'))
+        if (isCheckboxChecked('fitCheckboxShowLines'))
             addOrUpdateConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, getFitPointsConstantLines(), SERIES_FIT_POINTS);
 
-        removeConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, SERIES_ALIGNMENT);
+        removeConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, SERIES_ALIGNMENT_CONSTANT_LINES);
     }
 }

@@ -634,8 +634,11 @@ function hideElemMetroUIElem(id) {
 }
 
 function hideMetroUIElem(id) {
-    if (($(`#${id}`)).length > 0)
-        hide($(`#${id}`).parent()[0].id);
+    try {
+        if (($(`#${id}`)).length > 0)
+            ($(`#${id}`).parent()[0]).style.display = 'none';
+    } catch (e) {
+    }
 }
 
 function removeMetroUIElemByName(name) {
@@ -663,8 +666,12 @@ function showByClassMetroUIElem(id) {
     $(parent).removeClass('d-none');
 }
 
-function showElemMetroUIElem(id) {
-    showElem($(`#${id}`).parent()[0]);
+function showMetroUIElem(id) {
+    try {
+        if (($(`#${id}`)).length > 0)
+            ($(`#${id}`).parent()[0]).style.display = 'block';
+    } catch (e) {
+    }
 }
 
 function showFlexElemMetroUIElem(id) {

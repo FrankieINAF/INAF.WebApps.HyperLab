@@ -175,13 +175,20 @@ function onSeriesClick(id) {
 function onSeriesMouseOut(id) {
     const seriesName = findSeriesNameFromSpectrumId(id);
     const series = dxChartGetSeriesByName(seriesName);
-    series.clearSelection();
+    chart.dispatchAction({
+        type: "downplay",
+        seriesName: seriesName
+    });
 }
 
 function onSeriesMouseOver(id) {
     const seriesName = findSeriesNameFromSpectrumId(id);
     const series = dxChartGetSeriesByName(seriesName);
-    series.select();
+    chart.dispatchAction({
+        type: "highlight",
+        seriesName: seriesName
+    });
+
 }
 
 /* ---------- SPECTRA TREE ---------- */

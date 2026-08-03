@@ -132,20 +132,20 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
             }
         }
 
-        protected async Task<(bool isUserAuthenticated, List<PermissionModel>? permissions)> getUserStatusAsync()
+        protected async Task<(bool isUserAuthorized, List<PermissionModel>? permissions)> getUserStatusAsync()
         {
-            bool isUserAuthenticated = false;
+            bool isUserAuthorized = false;
             var cookieValue = HttpContext.Request.Cookies[Values.Constants.HYPERLAB_WEB_APP_COOKIES];
             if (!string.IsNullOrEmpty(cookieValue))
             {
                 if (HttpContext.User.Identity != null)
-                    isUserAuthenticated = HttpContext.User.Identity.IsAuthenticated;
+                    isUserAuthorized = HttpContext.User.Identity.IsAuthenticated;
             }
 
             var dbHandlerHyperLabUsers = serviceProvider.GetRequiredService<DbHandlerHyperLabUsers>();
             List<PermissionModel>? permissions = dbHandlerHyperLabUsers.getUserPermissions(await getUserIdAsync(), Enums.CallerContext.Web);
 
-            return (isUserAuthenticated, permissions);
+            return (isUserAuthorized, permissions);
         }
 
         protected bool isAuthorizedSearch()
