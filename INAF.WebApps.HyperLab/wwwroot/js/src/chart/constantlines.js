@@ -6,24 +6,32 @@ function initConstantLines() {
 }
 
 function addOrUpdateConstantLines(name, constantLines, targetSeries) {
-    removeConstantLines(name, targetSeries);
+    //removeConstantLines(name, targetSeries);
 
     const option = chart.getOption();
-    const index = option.series.findIndex(s => s.name === targetSeries);
-    if (index < 0)
+    const series = option.series.find(s => s.name === targetSeries);
+    if (!series)
         return;
 
-    option.series[index].markLine = constantLines;
+    if (series.markLine && series.markLine.data && series.markLine.data.length > 0)
+        return;
 
-    chart.setOption(option);
+    // merge only the affected series instead of replacing the whole option (notMerge)
+    // to avoid breaking other chart internals (axes, dataZoom, etc.) that don't
+    // round-trip correctly through getOption()/setOption(..., true)
+    chart.setOption({
+        series: [{
+            name: targetSeries,
+            markLine: constantLines
+        }]
+    });
 }
 
 function buildConstantLinesForSeries(name, coords, color) {
     return {
         silent: true,
         symbol: 'none',
-        showSymbol: true,
-        lineStyle: { color: color, width: 2, type: 'dashed' },
+        lineStyle: { color: color, width: 2, type: 'solid' },
         label: {
             show: true,
             color: color,
@@ -54,14 +62,8 @@ function removeConstantLines(name, targetSeries) {
     if (!series.markLine || !series.markLine.data) return;
 
     // mantain only the lines that do not match the name to be removed
-    series.markLine.data = series.markLine.data.filter(line => line.name !== name);
+    series.markLine.data = [];
 
-    chart.setOption(option);
-}
-
-function updateConstantLines() {
-    const option = chart.getOption();
-    option.xAxis[0].markLine = { data: getConstantLines() };
     chart.setOption(option);
 }
 
@@ -69,17 +71,15 @@ function manageConstantLinesVisualization(selectedTabId) {
     /* manage vertical constant lines visualiztion */
     if (selectedTabId == OPTIONS_TITLE_ALIGNMENT) {
         if (isCheckboxChecked('alignmentCheckboxShowLines'))
-            addOrUpdateConstantLines(getAlignmentConstantLines(), CHART_CONSTANT_LINES_ALIGNMENT);
+            addOrUpdateConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, getAlignmentConstantLines(), SERIES_ALIGNMENT);
 
         removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS);
     }
 
     if (selectedTabId == OPTIONS_TITLE_FIT) {
         if (isCheckboxChecked('fitChechboxShowLines'))
-            addOrUpdateConstantLines(getFitPointsConstantLines(), CHART_CONSTANT_LINES_FIT_POINTS);
+            addOrUpdateConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, getFitPointsConstantLines(), SERIES_FIT_POINTS);
 
-        removeConstantLines(CHART_CONSTANT_LINES_ALIGNMENT);
+        removeConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, SERIES_ALIGNMENT);
     }
-
-    updateConstantLines();
 }

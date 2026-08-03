@@ -25,7 +25,7 @@ async function initAlignmentAsync() {
     };
 
     /* create an invisible series to show alignment segments */
-    createAlignmentSeries();
+    await createAlignmentSeries();
 
     await loadSegmentsAsync();
 
@@ -113,10 +113,27 @@ function setWhitesSwitchChecked(isChecked) {
 /* -------------------------------------------------------------------------------- */
 /* ---------- ALIGNMENT LINES ---------- */
 /* -------------------------------------------------------------------------------- */
-function createAlignmentSeries() {
-    addChartSeries(createSeries(SERIES_ALIGNMENT, SERIES_ALIGNMENT, VALUE_AXIS, 'lightGreen'));
-}
+async function createAlignmentSeries() {
+    const existantSeries = chart.getOption().series;
+    const point0 = existantSeries[0].data[0];
+    const point1 = existantSeries[0].data[existantSeries[0].data.length - 1];
 
+    function createPoint(x, y) {
+        return { X: x, alignmentId: y };
+    }
+
+    const points = [
+        createPoint(point0[0], point0[1]),
+        createPoint(point1[0], point1[1])
+    ];
+
+    let series = createSeries('alignmentId', SERIES_ALIGNMENT, VALUE_AXIS, 'darkGreen');
+    let echartsSeries = createEchartSeries([series], points);
+    echartsSeries[0].lineStyle = { opacity: 0 };
+    addChartSeries(echartsSeries);
+
+    await delay(200);
+}
 
 function getAlignmentConstantLines(areLabelsVisible = true) {
     const alignmentSegmentsNum = alignmentModel.Segments.length;
@@ -126,7 +143,7 @@ function getAlignmentConstantLines(areLabelsVisible = true) {
         coords.push(x);
     }
 
-    return buildConstantLinesForSeries(CHART_CONSTANT_LINES_ALIGNMENT, coords, 'lightGreen');
+    return buildConstantLinesForSeries(CHART_CONSTANT_LINES_ALIGNMENT, coords, 'darkGreen');
 }
 
 async function tryShowAlignmentSegmentsAsync() {
@@ -151,12 +168,9 @@ function setAlignmentSegmentsVisible(isVisible = true) {
         if (alignmentModel.Segments.length > 0) {
             /* 2) build new lines */
             addOrUpdateConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, getAlignmentConstantLines(), SERIES_ALIGNMENT);
-            updateConstantLines();
         }
     } else {
-        removeConstantLines(CHART_CONSTANT_LINES_ALIGNMENT);
-        updateConstantLines();
-        //dxChartUpdateOption(chart, 'argumentAxis.constantLines', []);
+        removeConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, SERIES_ALIGNMENT);
     }
 }
 
@@ -472,13 +486,13 @@ function binarySearchInsert(arr, newItem) {
     return left;
 }
 
-function createSeriesForWhiteSpectra(idItem, objSpectraInfo, isPointVisible = false) {
-    let keyId = getIdValue(idItem);
-    const index = objSpectraInfo.findIndex(x => x.Id == keyId);
-    const name = `${objSpectraInfo[index].Name} (${getSpectrumTypeDescription(objSpectraInfo[index].SpectrumType)})`;
-    const color = getSpectrumTypeColor(getSpectrumTypeString(objSpectraInfo[index].SpectrumType));
-    return createSeries(idItem, name, VALUE_AXIS, color, { visible: isPointVisible });
-}
+// function createSeriesForWhiteSpectra(idItem, objSpectraInfo, isPointVisible = false) {
+//     let keyId = getIdValue(idItem);
+//     const index = objSpectraInfo.findIndex(x => x.Id == keyId);
+//     const name = `${objSpectraInfo[index].Name} (${getSpectrumTypeDescription(objSpectraInfo[index].SpectrumType)})`;
+//     const color = getSpectrumTypeColor(getSpectrumTypeString(objSpectraInfo[index].SpectrumType));
+//     return createSeries(idItem, name, VALUE_AXIS, color, { visible: isPointVisible });
+// }
 
 function extractSpectraIds(points) {
     let ids = [];

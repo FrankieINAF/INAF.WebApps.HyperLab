@@ -16,7 +16,7 @@ var isChartLoaded = false;
 var MIN_Y = 'minY';
 var MAX_Y = 'maxY';
 
-var VALUE_AXIS = VALUE_AXIS;
+var VALUE_AXIS = 'valueAxis';
 
 var targetPointer;
 
@@ -525,32 +525,25 @@ function createEchartSeries(series, points, customOptions) {
         return {
             name: s.name,
             valueField: s.valueField,
-
             type: opts.type || "line",
             showSymbol: true,
             symbol: opts.symbol || "circle",
             symbolSize: opts.symbolSize || 3,
-
-            // colore: scatter usa customOptions, line usa s.color
+            // color: scatter uses customOptions, line uses s.color
             color: isScatter ? (opts.color || s.color) : s.color,
-
-            // lineStyle SOLO per line
+            // lineStyle only for line
             lineStyle: isScatter ? undefined : { color: s.color },
-
-            // itemStyle SOLO per scatter
+            // itemStyle only for scatter, line uses lineStyle
             itemStyle: isScatter
                 ? (opts.itemStyle || { color: opts.color || s.color })
                 : { color: s.color },
-
             emphasis: { focus: "series" },
-
             data: safePoints
                 .filter(point => point[s.valueField] !== undefined && point[s.valueField] !== null)
-                .map(point => [point.X, point[s.valueField]])
+                .map(point => [point.X, point[s.valueField]]),
         };
     });
 }
-
 
 function createSeries(key, name, axisName, color, point = null) {
     return {

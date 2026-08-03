@@ -1,0 +1,85 @@
+﻿var CHART_CONSTANT_LINES_ALIGNMENT = 'chartconstantlinesalignment';
+var CHART_CONSTANT_LINES_FIT_POINTS = 'chartconstantlinesfitpoints';
+
+function initConstantLines() {
+    chartConstantLines = {};
+}
+
+function addOrUpdateConstantLines(name, constantLines, targetSeries) {
+    //removeConstantLines(name, targetSeries);
+
+    const option = chart.getOption();
+    const series = option.series.find(s => s.name === targetSeries);
+    if (!series)
+        return;
+
+    if (series.markLine && series.markLine.data && series.markLine.data.length > 0)
+        return;
+
+    // merge only the affected series instead of replacing the whole option (notMerge)
+    // to avoid breaking other chart internals (axes, dataZoom, etc.) that don't
+    // round-trip correctly through getOption()/setOption(..., true)
+    chart.setOption({
+        series: [{
+            name: targetSeries,
+            markLine: constantLines
+        }]
+    });
+}
+
+function buildConstantLinesForSeries(name, coords, color) {
+    return {
+        silent: true,
+        symbol: 'none',
+        lineStyle: { color: color, width: 2, type: 'solid' },
+        label: {
+            show: true,
+            color: color,
+            fontSize: 12,
+            padding: [3, 5],
+            formatter: '{c}'
+        },
+        data: coords.map(function (l) { return { xAxis: l }; })
+    };
+}
+
+function getConstantLines() {
+    let keys = Object.keys(chartConstantLines);
+
+    let constantLines = [];
+    keys.forEach(function (key) {
+        constantLines = constantLines.concat(chartConstantLines[key]);
+    });
+
+    return constantLines;
+}
+
+function removeConstantLines(name, targetSeries) {
+    const option = chart.getOption();
+    const series = option.series.find(s => s.name === targetSeries);
+    if (!series)
+        return;
+    if (!series.markLine || !series.markLine.data) return;
+
+    // mantain only the lines that do not match the name to be removed
+    series.markLine.data = series.markLine.data.filter(line => line.name !== name);
+
+    chart.setOption(option);
+}
+
+function manageConstantLinesVisualization(selectedTabId) {
+    /* manage vertical constant lines visualiztion */
+    if (selectedTabId == OPTIONS_TITLE_ALIGNMENT) {
+        if (isCheckboxChecked('alignmentCheckboxShowLines'))
+            addOrUpdateConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, getAlignmentConstantLines(), SERIES_ALIGNMENT);
+
+        removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS);
+    }
+
+    if (selectedTabId == OPTIONS_TITLE_FIT) {
+        if (isCheckboxChecked('fitChechboxShowLines'))
+            addOrUpdateConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, getFitPointsConstantLines(), SERIES_FIT_POINTS);
+
+        removeConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, SERIES_ALIGNMENT);
+    }
+}
