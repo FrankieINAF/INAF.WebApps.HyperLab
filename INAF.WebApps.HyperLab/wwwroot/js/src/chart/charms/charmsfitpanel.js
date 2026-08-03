@@ -342,7 +342,8 @@ async function initSwitchAutoRecalculateContinuumRemovedOnChangingFitPointsAsync
     $('#charmsAutoRecalculateContinuumRemovedOnChangingFitPoints').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsAutoRecalculateContinuumRemovedOnChangingFitPoints');
 
-        tryCallEnqueueSaveSetting(FIT_AUTO_RECALCULATE_ON_CHANGING_FIT_POINTS, (isChecked ? '1' : '0'));
+        if (isUserAuthorized)
+            tryCallEnqueueSaveSetting(FIT_AUTO_RECALCULATE_ON_CHANGING_FIT_POINTS, (isChecked ? '1' : '0'));
 
         isAutoRecalculateContinuumRemovedAllowed = isChecked;
     });
@@ -1501,7 +1502,7 @@ async function tryCalculateContinuumRemovedAsync() {
         }
 
         isContinuumRemovalRequestedByUser = false;
-    } 
+    }
 
     /* to remove loading when error occurred */
     setLoadingCircleIsVisible(false);
