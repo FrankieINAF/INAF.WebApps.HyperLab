@@ -529,7 +529,7 @@ function removeHighlightenedBand(items) {
 /* RETRIEVE BAND ANALYSIS DATA LIST */
 /* ################################################################################ */
 async function getBandsAnalysisDataAsync() {
-    if (!await isAuthorizedAsync())
+    if (!isUserAuthorized)
         return;
 
     let model = {

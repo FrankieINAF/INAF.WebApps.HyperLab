@@ -303,7 +303,6 @@ async function initSwitchShowHideVerticalLinesForFitPointsAsync() {
     $('#fitCheckboxShowLines').on('change', async function () {
         let isChecked = isCheckboxChecked('fitCheckboxShowLines');
 
-        if (isUserAuthorized)
             tryCallEnqueueSaveSetting(FIT_SHOW_HIDE_VERTICAL_LINES_FIT_POINTS, (isChecked ? '1' : '0'));
 
         isShowChartConstantLinesForFitPointsAllowed = isChecked;
@@ -342,7 +341,6 @@ async function initSwitchAutoRecalculateContinuumRemovedOnChangingFitPointsAsync
     $('#charmsAutoRecalculateContinuumRemovedOnChangingFitPoints').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsAutoRecalculateContinuumRemovedOnChangingFitPoints');
 
-        if (isUserAuthorized)
             tryCallEnqueueSaveSetting(FIT_AUTO_RECALCULATE_ON_CHANGING_FIT_POINTS, (isChecked ? '1' : '0'));
 
         isAutoRecalculateContinuumRemovedAllowed = isChecked;
