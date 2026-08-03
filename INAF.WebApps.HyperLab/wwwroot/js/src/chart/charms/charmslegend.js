@@ -169,7 +169,7 @@ function onSeriesClick(id) {
     }
 
     /* reset visual range to allow lines out of current visual range to be visualized */
-    //dxChartResetVisualRange();
+    dxChartResetVisualRange();
 }
 
 function onSeriesMouseOut(id) {

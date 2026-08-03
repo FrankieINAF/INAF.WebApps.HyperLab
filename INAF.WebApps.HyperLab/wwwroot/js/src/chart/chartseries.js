@@ -92,3 +92,38 @@ function getSeriesColor(spectrumId) {
 function isChartSeriesAvailableByName(name) {
     return findChartSeriesByName(name) !== null;
 }
+
+function removeSeries(seriesName) {
+    const option = chart.getOption();
+
+    option.series = option.series.filter(s => {
+        const name = Array.isArray(s.name) ? s.name[0] : s.name;
+        return name !== seriesName;
+    });
+
+    // notMerge = true per evitare che ECharts fonda con le vecchie serie
+    chart.setOption(option, true);
+}
+
+function updateSeriesColor(seriesName, newColor) {
+    const option = chart.getOption();
+    const series = option.series.find(s => s.name === seriesName);
+    if (!series) return;
+
+    // line color
+    series.lineStyle = {
+        ...series.lineStyle,
+        color: newColor
+    };
+
+    // point color
+    series.itemStyle = {
+        ...series.itemStyle,
+        color: newColor
+    };
+
+    // symbol color (scatter, line with showSymbol)
+    series.color = newColor;
+
+    chart.setOption(option);
+}

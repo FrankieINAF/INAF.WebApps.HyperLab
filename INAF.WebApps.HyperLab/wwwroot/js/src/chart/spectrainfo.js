@@ -243,14 +243,10 @@ function isSpectrumAvailableByType(spectrumType) {
 function removeSpectraById(ids) {
     ids.forEach(function (id) {
         let index = getSpectrumIndexBySpectrumId(id);
-        if (index > -1) {
-            /* retrieve id on chart series */
-            const seriesId = buildId(id);
-            /* remove chart series */
-            removeChartSeriesByFieldId(chartContainer, seriesId);
-            /* remove spectrum info */
-            removeSpectrumByIndex(index);
-        }
+        if (index < 0)
+            return;
+        /* remove spectrum info */
+        removeSpectrumByIndex(index);
     });
 }
 

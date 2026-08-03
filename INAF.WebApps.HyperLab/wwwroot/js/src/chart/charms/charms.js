@@ -315,7 +315,6 @@ function updateSpectrumColor(spectrum, color) {
     addMessage(CharmsSelectedSpectrumColorUpdateMessage, 3000, INFO);
 }
 
-
 /* ################################################################################ */
 /* SPECTRA TYPES PARENTS */
 /* ################################################################################ */
@@ -968,32 +967,16 @@ function askForRemovingSpectrum(spectrumType, checkBoxId, dialogId) {
         Metro.dialog.open(`#${dialogId}`);
 }
 
-// function removeSpectrumFromChart(seriesname, id) {
-//     /* remove from series and chart */
-//     let idItem = buildId(id);
+function removeSpectrumFromChart(seriesname, id) {
+    /* remove from spectraInfo */
+    removeSpectraById([id]);
 
-//     /* remove from chart points */
-//     let items = dxChartGetItems(chartContainer);
-//     if (items && items.length > 0) {
-//         let itemsNum = items.length;
-//         for (var i = 0; i < itemsNum; i++) {
-//             if (items[i][idItem])
-//                 delete items[i][idItem];
-//         }
-//     }
+    /* remove series from chart */
+    removeSeries(seriesname);
 
-//     /* remove from series */
-//     let seriesNum = chartSeries.length;
-//     for (var i = 0; i < seriesNum; i++) {
-//         if (chartSeries[i].name == seriesname) {
-//             removeChartSeriesAt(i);
-//             break;
-//         }
-//     }
-
-//     /* reset visual range to make ref whites appear in chart */
-//     dxChartResetVisualRange();
-// }
+    /* reset visual range to make ref whites appear in chart */
+    dxChartResetVisualRange();
+}
 
 async function removeSpectrumOnCloudAsync(id) {
     let isRemovalOk = true;
@@ -1042,6 +1025,12 @@ function switchVisibilityOfChildrenSpectraRemovalMessage(id, isVisible) {
     } else {
         $(`#${id}`).removeClass('d-flex').addClass('d-none');
     }
+}
+
+function showSpectrumParent(currentSpectrum) {
+    const parentIndex = getSpectrumIndexBySpectrumId(currentSpectrum.ParentId);
+    const parentSeriesName = getSpectrumSeriesNameFromIndex(parentIndex);
+    dxChartShowSeries(parentSeriesName);
 }
 
 /* ################################################################################ */

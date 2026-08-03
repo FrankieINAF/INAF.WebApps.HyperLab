@@ -97,20 +97,16 @@ function setSpectrumTypeSelected(spectrumType) {
     Metro.getPlugin('#colorSelector', 'color-selector').val(color);
 }
 
-// function updateSpectraColor(spectrumType, color) {
-//     let spectra = getSpectraBySpectrumType(spectrumType);
+function updateSpectraColor(spectrumType, color) {
+    let spectra = getSpectraBySpectrumType(spectrumType);
 
-//     if (!spectra || spectra.length == 0)
-//         return;
+    if (!spectra || spectra.length == 0)
+        return;
 
-//     let spectraNum = spectra.length;
-//     for (var i = 0; i < spectraNum; i++) {
-//         let index = findChartSeriesIndexByName(getSeriesNameFromSpectrumId(spectra[i].Id));
-//         if (index == -1)
-//             continue;
+    let spectraNum = spectra.length;
+    for (var i = 0; i < spectraNum; i++) {
+        updateSeriesColor(findSeriesNameFromSpectrumId(spectra[i].Id), color);
+    }
 
-//         chartSeries[index].color = color;
-//     }
-
-//     dxChartRefresh(chartContainer);
-// }
+    dxChartRefresh(chartContainer);
+}

@@ -29,7 +29,7 @@ async function initAlignmentAsync() {
 
     await loadSegmentsAsync();
 
-    await tryShowAlignmentSegmentsAsync();
+    await trySetAlignmentSegmentsVisibilityAsync();
 }
 
 function isAlignmentPanelLoaded() {
@@ -142,7 +142,7 @@ function getAlignmentConstantLines() {
     return buildConstantLinesForSeries(CHART_CONSTANT_LINES_ALIGNMENT, coords, 'darkGreen');
 }
 
-async function tryShowAlignmentSegmentsAsync() {
+async function trySetAlignmentSegmentsVisibilityAsync() {
     const obj = await getUserSettingAsync(ALIGNMENT_SHOW_LINES)
     if (obj.IsOk) {
         if (obj.Value == '1') {
@@ -1066,6 +1066,12 @@ async function removeAlignedSpectrumAsync(alignedSpectrum, isRemovalOnCloudReque
     /* disable tabs for fit and smoothing */
     setTabEnabled(1, false);
     setTabEnabled(2, false);
+
+    /* show RAW spectrum */
+    showSpectrumParent(alignedSpectrum);
+
+    /* hide constant lines, if visible */
+    setAlignmentSegmentsVisible(false);
 
     /* refresh legend, if opened */
     refreshCharmsLegend();
