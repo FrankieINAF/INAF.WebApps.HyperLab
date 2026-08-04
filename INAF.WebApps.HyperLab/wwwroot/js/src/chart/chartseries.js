@@ -98,8 +98,10 @@ function getSeries(seriesName) {
 }
 
 function getSeriesNameFromSelectedSpectrumNameAndSpectrumType(selectedSpectrumName, spectrumType) {
-    const continuum = getSpectrumByNameAndSpectrumType(selectedSpectrumName, spectrumType);
-    return createSeriesNameFromSpectrumNameAndType(continuum.Name, continuum.SpectrumType);
+    const spectrum = getSpectrumByNameAndSpectrumType(selectedSpectrumName, spectrumType);
+    if (!spectrum)
+        return null;
+    return createSeriesNameFromSpectrumNameAndType(spectrum.Name, spectrum.SpectrumType);
 }
 
 function getSeriesColor(spectrumId) {

@@ -314,7 +314,7 @@ async function initSwitchShowHideVerticalLinesForFitPointsAsync() {
     $('#fitCheckboxShowLines').on('change', async function () {
         let isChecked = isCheckboxChecked('fitCheckboxShowLines');
 
-            tryCallEnqueueSaveSetting(FIT_SHOW_HIDE_VERTICAL_LINES_FIT_POINTS, (isChecked ? '1' : '0'));
+        tryCallEnqueueSaveSetting(FIT_SHOW_HIDE_VERTICAL_LINES_FIT_POINTS, (isChecked ? '1' : '0'));
 
         isShowChartConstantLinesForFitPointsAllowed = isChecked;
 
@@ -352,7 +352,7 @@ async function initSwitchAutoRecalculateContinuumRemovedOnChangingFitPointsAsync
     $('#charmsAutoRecalculateContinuumRemovedOnChangingFitPoints').on('change', async function () {
         let isChecked = isCheckboxChecked('charmsAutoRecalculateContinuumRemovedOnChangingFitPoints');
 
-            tryCallEnqueueSaveSetting(FIT_AUTO_RECALCULATE_ON_CHANGING_FIT_POINTS, (isChecked ? '1' : '0'));
+        tryCallEnqueueSaveSetting(FIT_AUTO_RECALCULATE_ON_CHANGING_FIT_POINTS, (isChecked ? '1' : '0'));
 
         isAutoRecalculateContinuumRemovedAllowed = isChecked;
     });
@@ -467,7 +467,8 @@ function tryRemoveSeriesAndPoints() {
 
     /* remove continuum */
     const seriesName = getSeriesNameFromSelectedSpectrumNameAndSpectrumType(selectedSpectrumForProcessing.Name, SPECTRUM_TYPE_CONTINUUM)
-    removeSeries(seriesName);
+    if (seriesName && isChartSeriesAvailableByName(seriesName))
+        removeSeries(seriesName);
 
     removeFitPointsConstantLines();
 }
@@ -569,12 +570,10 @@ async function addFitPointToChartAsync(fitPointsEchartsSeries, point, isFromUser
 
         updatePointsForFittingArray(point, maxPoint);
 
-        setPointOnChart(items, maxPoint.X, maxPoint.Y, SERIES_FIT_POINTS);
+        addPointToChartSeries(SERIES_FIT_POINTS, createSimplePoint(maxPoint.X, maxPoint.Y));
 
         /* in 'pro' mode, add boundary points together with the selected point */
         addBoundaryPointsPro(items, point);
-
-        hideSpectraToBeHidden();
     }
 
     if (isShowChartConstantLinesForFitPointsAllowed) {
