@@ -19648,7 +19648,7 @@
       /**
        * Get series list before filtered by name.
        */
-      GlobalModel.prototype.getSeriesByName = function (name) {
+      GlobalModel.prototype.getSeries = function (name) {
         var nameStr = convertOptionIdName(name, null);
         return filter(this._componentsMap.get('series'), function (oneSeries) {
           return !!oneSeries && nameStr != null && oneSeries.name === nameStr;
@@ -53695,7 +53695,7 @@
     }, function (payload, ecModel) {
       var newSeriesOptList = [];
       each(payload.newOption.series, function (seriesOpt) {
-        var seriesModel = ecModel.getSeriesByName(seriesOpt.name)[0];
+        var seriesModel = ecModel.getSeries(seriesOpt.name)[0];
         if (!seriesModel) {
           // New created series
           // Geuss the series type
@@ -59139,7 +59139,7 @@
             return;
           }
           // Representitive series.
-          var seriesModel = ecModel.getSeriesByName(name)[0];
+          var seriesModel = ecModel.getSeries(name)[0];
           if (legendDrawnMap.get(name)) {
             // Have been drawn
             return;

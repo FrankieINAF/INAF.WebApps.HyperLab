@@ -105,7 +105,7 @@ function roundValue(value) {
 
 
 function updateVisualRangesFromDataSource(chartX, chartY) {
-    chartMagnifierSeries = dxChartGetAllSeries().filter(x => x.isVisible());
+    chartMagnifierSeries = getAllSeries().filter(x => x.isVisible());
 
     if (!chartMagnifierSeries || chartMagnifierSeries.length == 0)
         return;
@@ -156,7 +156,7 @@ function updateVisualRangesFromDataSource(chartX, chartY) {
 //         if (!chartMagnifierSeries)
 //             continue;
 //         //console.log(`chartSeries[${i}].name:'${chartSeries[i].name}', chartSeries[${i}].isVisible(): ${chartSeries[i].isVisible()}`);
-//         chartSeries[i].isVisible() ? dxChartShowSeries(chartMagnifierSeries.name) : dxChartHideSeries(chartMagnifierSeries.name);
+//         chartSeries[i].isVisible() ? dxChartShowSeries(chartMagnifierSeries.name) : hideSeries(chartMagnifierSeries.name);
 //     }
 
 // }
@@ -183,6 +183,4 @@ function setJoystickPointOnChart(point) {
     setPointOnChart(items, point.X, point.Y, SERIES_JOYSTICK_POINT);
 
     chartMagnifierSeries.push(joystickPointSeries);
-
-    dxChartRefresh(chartMagnifierContainer);
 }

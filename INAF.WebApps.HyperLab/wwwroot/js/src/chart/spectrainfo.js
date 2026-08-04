@@ -265,7 +265,7 @@ function hideSpectraOtherThanType(spectrumType) {
             continue;
 
         if (spectraInfo[i].SpectrumType != spectrumType)
-            dxChartHideSeries(series.name);
+            hideSeries(series.name);
     }
 
     addMessage(SpectraHiddenMessage.replace('r_v', getSpectrumTypeDescription(spectrumType)), 3000, INFO);
@@ -279,7 +279,7 @@ function hideSpectraOtherThanTypes(spectrumTypes) {
             continue;
 
         if (!spectrumTypes.includes(spectraInfo[i].SpectrumType))
-            dxChartHideSeries(series.name);
+            hideSeries(series.name);
     }
 }
 
@@ -293,7 +293,7 @@ function setSpectrumVisibilityByIdAndSpectrumType(id, spectrumType, isVisible) {
         return;
 
     if (isVisible)
-        dxChartHideSeries(series.name);
+        hideSeries(series.name);
     else {
         dxChartShowSeries(series.name);
         addMessage(AutoSetSpectrumInvisibleMessage.replace('r_v', getSpectrumTypeDescription(spectrumType)), 3000, INFO);
@@ -301,12 +301,12 @@ function setSpectrumVisibilityByIdAndSpectrumType(id, spectrumType, isVisible) {
 }
 
 function setSpectrumVisibilityByName(name, isVisible) {
-    let series = dxChartGetSeriesByName(name);
+    let series = getSeries(name);
     if (!series)
         return;
 
     if (isVisible)
         dxChartShowSeries(series.name);
     else
-        dxChartHideSeries(series.name);
+        hideSeries(series.name);
 }

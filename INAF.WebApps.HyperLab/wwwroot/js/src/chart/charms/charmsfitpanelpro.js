@@ -691,9 +691,6 @@ async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null,
         addPXMinPXMaxFitToChart(fitYValues);
     }
 
-    /* update chart */
-    dxChartRefresh(appendixChartContainer);
-
     /* update y-max-value x-coord on appendix */
     $('#yMaxValueXCoord').text(pXMinPXMaxResult.maxValuePoint.X);
 
@@ -862,7 +859,6 @@ async function updateBoundaryPointProAsync(oldPointForFitting, requestedX, PMinM
     }
 
     /* refresh chart */
-    dxChartRefresh(chartContainer);
     hideSpectraToBeHidden();
 
     /* update segment centeron charms UI */

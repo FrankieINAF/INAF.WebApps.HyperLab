@@ -19087,7 +19087,7 @@
       /**
        * Get series list before filtered by name.
        */
-      GlobalModel.prototype.getSeriesByName = function (name) {
+      GlobalModel.prototype.getSeries = function (name) {
         var nameStr = convertOptionIdName(name, null);
         return filter(this._componentsMap.get('series'), function (oneSeries) {
           return !!oneSeries && nameStr != null && oneSeries.name === nameStr;

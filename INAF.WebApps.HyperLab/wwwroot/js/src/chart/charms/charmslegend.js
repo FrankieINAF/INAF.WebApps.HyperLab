@@ -156,7 +156,7 @@ function onSeriesClick(id) {
     const isSeriesContinuum = series.name.includes(getSpectrumTypeString(8));
 
     if (series.isVisible()) {
-        dxChartHideSeries(series.name);
+        hideSeries(series.name);
         $(`#spectrum${id}`).css('background-color', 'transparent');
         if (isSeriesContinuum)
             setSpectrumVisibilityByName(SERIES_FIT_POINTS, false);
@@ -169,12 +169,12 @@ function onSeriesClick(id) {
     }
 
     /* reset visual range to allow lines out of current visual range to be visualized */
-    dxChartResetVisualRange();
+    resetVisualRange();
 }
 
 function onSeriesMouseOut(id) {
     const seriesName = findSeriesNameFromSpectrumId(id);
-    const series = dxChartGetSeriesByName(seriesName);
+    const series = getSeries(seriesName);
     chart.dispatchAction({
         type: "downplay",
         seriesName: seriesName
@@ -183,7 +183,7 @@ function onSeriesMouseOut(id) {
 
 function onSeriesMouseOver(id) {
     const seriesName = findSeriesNameFromSpectrumId(id);
-    const series = dxChartGetSeriesByName(seriesName);
+    const series = getSeries(seriesName);
     chart.dispatchAction({
         type: "highlight",
         seriesName: seriesName

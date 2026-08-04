@@ -63,7 +63,7 @@ function findChartSeriesByName(name) {
 function findSeriesFromSpectrumId(spectrumId) {
     if (chart.getOption().series.some(s => s.valueField === buildId(spectrumId))) {
         const series = chart.getOption().series.find(s => s.valueField === buildId(spectrumId));
-        return dxChartGetSeriesByName(series.name);
+        return getSeries(series.name);
     }
 
     return null;
@@ -74,6 +74,29 @@ function findSeriesNameFromSpectrumId(spectrumId) {
     return getSpectrumSeriesNameFromIndex(index);
 }
 
+function getAllSeries() {
+    return chart.getOption().series.map(function (s) {
+        return {
+            name: s.name,
+            getColor: function () { return s.color; },
+            isVisible: function () { return dxChartHiddenSeriesNames.indexOf(s.name) == -1; },
+            hide: function () { hideSeries(s.name); },
+            show: function () { dxChartShowSeries(s.name); }
+        };
+    });
+}
+
+function getSeries(seriesName) {
+    const series = chart.getOption().series.find(s => s.name == seriesName);
+    return {
+        name: series.name,
+        getColor: function () { return series.color; },
+        isVisible: function () { return dxChartHiddenSeriesNames.indexOf(series.name) == -1; },
+        hide: function () { hideSeries(series.name); },
+        show: function () { dxChartShowSeries(series.name); }
+    };
+}
+
 function getSeriesColor(spectrumId) {
     let index = getSpectrumIndexBySpectrumId(spectrumId);
     if (index < 0)
@@ -82,10 +105,37 @@ function getSeriesColor(spectrumId) {
     if (spectraInfo[index].Color)
         return spectraInfo[index].Color;
     else {
-        let index2 = dxChartGetAllSeries(chartContainer).findIndex(x => x.name == createSeriesNameFromSpectrumNameAndType(spectraInfo[index].Name, spectraInfo[index].SpectrumType));
+        let index2 = getAllSeries(chartContainer).findIndex(x => x.name == createSeriesNameFromSpectrumNameAndType(spectraInfo[index].Name, spectraInfo[index].SpectrumType));
         if (index2 < 0)
             return;
-        return dxChartGetAllSeries()[index2].getColor();
+        return getAllSeries()[index2].getColor();
+    }
+}
+
+function getSeriesPoints(seriesName) {
+    try {
+        const found = chart.getOption().series.find(s => s.name == seriesName);
+        if (!found)
+            return null;
+
+        return found.data.map(function (p) { return { argument: p[0], value: p[1] }; });
+    } catch (e) {
+        return null;
+    }
+}
+
+function hideSeries(seriesName) {
+    try {
+        if (getSeries(seriesName) == null)
+            return;
+
+        chart.dispatchAction({ type: 'legendUnSelect', name: seriesName });
+        if (dxChartHiddenSeriesNames.indexOf(seriesName) == -1)
+            dxChartHiddenSeriesNames.push(seriesName);
+
+        resetVisualRange();
+    } catch (e) {
+        console.log(`${hideSeries.name} - seriesName: ${seriesName} - ex: ${e}`);
     }
 }
 
@@ -103,6 +153,31 @@ function removeSeries(seriesName) {
 
     // notMerge = true per evitare che ECharts fonda con le vecchie serie
     chart.setOption(option, true);
+}
+
+function setSeriesVisible(container, seriesName, isVisible) {
+    try {
+        if (isVisible)
+            dxChartShowSeries(seriesName);
+        else
+            hideSeries(seriesName);
+    } catch (e) {
+        console.log(`${setSeriesVisible.name} - seriesName: ${seriesName} - ex: ${e}`);
+    }
+}
+
+function showSeries(seriesName) {
+    try {
+        if (getSeries(seriesName) == null)
+            return;
+
+        chart.dispatchAction({ type: 'legendSelect', name: seriesName });
+        dxChartHiddenSeriesNames = dxChartHiddenSeriesNames.filter(x => x != seriesName);
+
+        resetVisualRange();
+    } catch (e) {
+        console.log(`${dxChartShowSeries.name} - seriesName: ${seriesName} - ex: ${e}`);
+    }
 }
 
 function updateSeriesColor(seriesName, newColor) {

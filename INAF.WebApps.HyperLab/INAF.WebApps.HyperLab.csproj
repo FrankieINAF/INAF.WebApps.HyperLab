@@ -86,10 +86,10 @@
 				<Content Remove="wwwroot\js\src\chart\charms\charmsfitpanelpro.js" />
 				<Content Remove="wwwroot\js\src\chart\charms\charmslegend.js" />
 				<Content Remove="wwwroot\js\src\chart\charms\charmssmoothingpanel.js" />
+				<Content Remove="wwwroot\js\src\chart\chartbuttons.js" />
 				<Content Remove="wwwroot\js\src\chart\chartpoints.js" />
 				<Content Remove="wwwroot\js\src\chart\charts.js" />
 				<Content Remove="wwwroot\js\src\chart\chartsarrays.js" />
-				<Content Remove="wwwroot\js\src\chart\chartsbuttons.js" />
 				<Content Remove="wwwroot\js\src\chart\chartsunauthorized.js" />
 				<Content Remove="wwwroot\js\src\chart\joystickchart.js" />
 				<Content Remove="wwwroot\js\src\chart\joystickManager.js" />
@@ -178,9 +178,9 @@
 				<None Include="wwwroot\js\src\chart\charms\charmssmoothingpanel.js" />
 				<None Include="wwwroot\js\src\chart\charts.js" />
 				<None Include="wwwroot\js\src\chart\chartsarrays.js" />
-				<None Include="wwwroot\js\src\chart\chartsbuttons.js" />
+				<None Include="wwwroot\js\src\chart\chartbuttons.js" />
 				<None Include="wwwroot\js\src\chart\chartsunauthorized.js" />
-				<None Include="wwwroot\js\src\chart\commondxchart.js" />
+				<None Include="wwwroot\js\src\chart\chartrangeandzoom.js" />
 				<None Include="wwwroot\js\src\chart\joystickmanager.js" />
 				<None Include="wwwroot\js\src\common.js" />
 				<None Include="wwwroot\js\src\commonbuttons.js" />

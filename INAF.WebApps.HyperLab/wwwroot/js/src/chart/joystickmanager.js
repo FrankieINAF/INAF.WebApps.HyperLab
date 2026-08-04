@@ -124,7 +124,7 @@ function checkForAlignedSeriesPointsInNearby() {
     chartX = parseInt(chartX);
 
     /* test series */
-    const series = dxChartGetAllSeries();
+    const series = getAllSeries();
     const seriesNum = series.length;
     for (var i = 0; i < seriesNum; i++) {
         let spectrum = getSpectrumBySeriesName(series[i].name);
@@ -242,7 +242,7 @@ function addFitPoint() {
         return;
     }
 
-    const series = dxChartGetAllSeries();
+    const series = getAllSeries();
     if (!series || series.length == 0) {
         console.warn('No series found in the chart container.');
         return;

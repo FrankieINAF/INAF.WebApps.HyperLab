@@ -516,7 +516,7 @@ function setRefWhitesHidden() {
     refWhitesIds.forEach(function (id) {
         const series = findSeriesFromSpectrumId(id);
         if (series.isVisible())
-            dxChartHideSeries(series.name);
+            hideSeries(series.name);
     });
 }
 
@@ -543,7 +543,7 @@ async function loadWhiteSpectraForAlignmentAsync() {
 
         /* reset visual range to make ref whites appear in chart */
         if (!isCheckboxChecked('charmsSwitchAutoAlignSpectrum') && !isCheckboxChecked('charmsSwitchAutoDownloadAlignedSpectrum'))
-            dxChartResetVisualRange();
+            resetVisualRange();
 
         loadingCheckObj.stopLoading();
         /* enable button for alignment and change title */
@@ -599,8 +599,7 @@ function unloadWhiteSpectraForAlignment() {
     }
 
     /* reset visual range to make ref whites disappear in chart */
-    //dxChartRefresh(chartContainer);
-    dxChartResetVisualRange();
+    resetVisualRange();
 
     /* enable button for alignment and change title */
     setButtonAlignEnabled('alignmentButtonExecute', false, AlignmentButtonDisabledMessage);
@@ -814,8 +813,7 @@ async function alignSpectrumAsync() {
             hideSpectraOtherThanType(SPECTRUM_TYPE_ALIGNED);
 
             /* update y-axis range to fit the aligned spectrum */
-            updateAxisRange(0);
-            updateYAxisRangeForVisibleSeries();
+            resetVisualRange();
         }
         else
             isOk = false
@@ -884,7 +882,7 @@ function buildAlignedSpectrumCompleted() {
     refreshCharmsLegend();
 
     /* reset visual range to make all available spectra visible */
-    //dxChartResetVisualRange();
+    //resetVisualRange();
 }
 
 function getRefWhiteYMax() {
@@ -1078,7 +1076,7 @@ async function removeAlignedSpectrumAsync(alignedSpectrum, isRemovalOnCloudReque
     /* hide constant lines, if visible */
     setAlignmentSegmentsVisible(false);
 
-    dxChartResetVisualRange();
+    resetVisualRange();
 
     /* refresh legend, if opened */
     refreshCharmsLegend();

@@ -36,10 +36,11 @@
     "outputFileName": "wwwroot/js/dist/chart/chartbundle.js",
     "inputFiles": [
       "wwwroot/js/src/commonbuttons.js",
-      "wwwroot/js/src/commonhubandchart.js",
       "wwwroot/js/src/commonall.js",
+      "wwwroot/js/src/commonhubandchart.js",
+
       "wwwroot/js/src/chart/charts.js",
-      "wwwroot/js/src/chart/chartsbuttons.js",
+      "wwwroot/js/src/chart/chartbuttons.js",
       "wwwroot/js/src/chart/spectrainfo.js",
       "wwwroot/js/src/chart/spectracolors.js",
       "wwwroot/js/src/chart/chartsarrays.js",
@@ -47,6 +48,7 @@
       "wwwroot/js/src/chart/constantlines.js",
       "wwwroot/js/src/chart/chartpoints.js",
       "wwwroot/js/src/chart/chartsunauthorized.js",
+      "wwwroot/js/src/chart/chartrangeandzoom.js",
       "wwwroot/js/src/charmsmessages.js"
     ],
     "minify": { "enabled": true },

@@ -1,9 +1,9 @@
 ﻿var familyIds = [];
 
 function hideSpectraToBeHidden() {
-    let spectraToBeHidden = dxChartGetAllSeries().filter(x => !x.isVisible());
+    let spectraToBeHidden = getAllSeries().filter(x => !x.isVisible());
     spectraToBeHidden.forEach(function (item) {
-        dxChartHideSeries(item.name);
+        hideSeries(item.name);
     });
 
     return spectraToBeHidden.length;
@@ -52,16 +52,16 @@ function hideSpectraToBeHidden() {
 //     if (spectraInfo[index].Color)
 //         return spectraInfo[index].Color;
 //     else {
-//         let index2 = dxChartGetAllSeries(chartContainer).findIndex(x => x.name == createSeriesNameFromSpectrumNameAndType(spectraInfo[index].Name, spectraInfo[index].SpectrumType));
+//         let index2 = getAllSeries(chartContainer).findIndex(x => x.name == createSeriesNameFromSpectrumNameAndType(spectraInfo[index].Name, spectraInfo[index].SpectrumType));
 //         if (index2 < 0)
 //             return;
-//         return dxChartGetAllSeries(chartContainer)[index2].getColor();
+//         return getAllSeries(chartContainer)[index2].getColor();
 //     }
 // }
 
 // function findSeriesFromSpectrumId(spectrumId) {
 //     let seriesName = getSeriesNameFromSpectrumId(spectrumId);
-//     return dxChartGetSeriesByName(chartContainer, seriesName);
+//     return getSeries(chartContainer, seriesName);
 // }
 
 // function getSeriesIndexByValueField(valueField) {
@@ -75,7 +75,7 @@ function hideSpectraToBeHidden() {
 //     if (index < 0)
 //         return;
 
-//     return dxChartGetSeriesPoints(chartContainer, getSpectrumSeriesNameFromIndex(index));
+//     return getSeriesPoints(chartContainer, getSpectrumSeriesNameFromIndex(index));
 // }
 
 // function removeChartSeriesAt(index) {
@@ -144,5 +144,4 @@ function removePointsFromChart(chartContainer, xValues, seriesName) {
             delete items[index][seriesName];
     }
 
-    dxChartRefresh(chartContainer);
 }

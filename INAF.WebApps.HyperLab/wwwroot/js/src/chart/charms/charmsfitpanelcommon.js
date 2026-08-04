@@ -442,7 +442,7 @@ function calculateSemiErrorBarHeight() {
         /* get user-defined minor-tick-interval. if not defined, retrieve the one used by chart */
         let minorTickInterval = dxChartGetValueAxisMinorTickInterval(chartContainer);
         if (!minorTickInterval)
-            minorTickInterval = dxChartGetUnofficialValueAxisMinorTickInterval(chartContainer);
+            minorTickInterval = getYAxisMinorTickInterval(chartContainer);
 
         errorBarSemiHeight = minorTickInterval;
     }

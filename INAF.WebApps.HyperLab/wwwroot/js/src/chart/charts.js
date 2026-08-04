@@ -383,8 +383,7 @@ function createChart(points, series, axisRange) {
     /* events */
     chart.on("rendered", function () {
         initJoystickController(); // defined in joystick.js
-        updateAxisRange(0);
-        updateYAxisRangeForVisibleSeries();
+        resetVisualRange();
     });
 
     chart.on("click", function (evt) {
@@ -433,59 +432,6 @@ function updateChartSize() {
     });
 }
 
-/* -------------------------------------------------------------------------------- */
-/* ---------- PRESERVE XAXIS RANGE ---------- */
-/* -------------------------------------------------------------------------------- */
-function computeGlobalRange(option, axisIndex) {
-    let valmin = Infinity;
-    let valmax = -Infinity;
-
-    for (const s of option.series) {
-        if (Array.isArray(s.data)) {
-            for (const point of s.data) {
-                const val = Array.isArray(point) ? point[axisIndex] : point;
-                if (typeof val === "number") {
-                    if (val < valmin) valmin = val;
-                    if (val > valmax) valmax = val;
-                }
-            }
-        }
-    }
-
-    return { valmin, valmax };
-}
-
-function updateAxisRange(axisIndex) {
-    const option = chart.getOption();
-    const { valmin, valmax } = computeGlobalRange(option, axisIndex);
-
-    if (axisIndex === 0) {
-        option.xAxis[0].min = valmin - 10;
-        option.xAxis[0].max = valmax + 10;
-    } else if (axisIndex === 1) {
-        option.yAxis[0].min = valmin * 0.98;
-        option.yAxis[0].max = valmax * 1.02;
-    }
-
-    chart.setOption(option);
-}
-
-function updateYAxisRangeForVisibleSeries() {
-    const option = chart.getOption();
-
-    const allseries = chart.getOption().series;
-    for (const s of allseries) {
-        if (s.name == SERIES_FIT_POINTS || s.name == SERIES_ALIGNMENT_CONSTANT_LINES)
-            continue;
-        const series = dxChartGetSeriesByName(s.name);
-        if (series && series.isVisible()) {
-            const { valmin, valmax } = computeGlobalRange({ series: [s] }, 1);
-            option.yAxis[0].min = valmin * 0.98;
-            option.yAxis[0].max = valmax * 1.02;
-        }
-    }
-    chart.setOption(option);
-}
 /* -------------------------------------------------------------------------------- */
 /* ---------- CHARTS ANCILLARY ---------- */
 /* -------------------------------------------------------------------------------- */
@@ -695,8 +641,8 @@ function getTooltip(seriesName, argumentText, valueText) {
 /* ---------- CHARTS ACTIONS ---------- */
 /* -------------------------------------------------------------------------------- */
 function enlargeVisualRange() {
-    const { minYValue, maxYValue } = dxChartGetYValuesBoundaries();
-    dxChartSetVisualRangeY([minYValue, maxYValue]);
+    const { minYValue, maxYValue } = getYRange();
+    setVisualRange([minYValue, maxYValue]);
 }
 
 function manageZoom(evt) {
@@ -709,7 +655,7 @@ function manageZoom(evt) {
 }
 
 function resetZoom() {
-    dxChartResetVisualRange();
+    resetVisualRange();
 }
 
 /* ################################################################################ */

@@ -400,7 +400,7 @@ function manageSpectraVisibility(selectedSpectrumId) {
     let spectraNum = spectraInfo.length;
     for (var i = 0; i < spectraNum; i++) {
         if (spectraInfo[i].Id != selectedSpectrumId) {
-            dxChartHideSeries(getSeriesNameFromSpectrumId(spectraInfo[i].Id));
+            hideSeries(getSeriesNameFromSpectrumId(spectraInfo[i].Id));
         }
     }
 }
@@ -544,7 +544,7 @@ async function manageSelectedSpectrumAsync(selectedSpectrum, idsToBeRemoved) {
         await manageTabsForSelectedSpectrumAsync(selectedSpectrum);
 
         /* reset visual range to allow lines out of current visual range to be visualized */
-        dxChartResetVisualRange();
+        resetVisualRange();
 
         setLoadingCircleIsVisible(false);
     }, 250);
@@ -897,8 +897,7 @@ async function removeSpectraProcedureSimpleAsync() {
 
     hideSpectraToBeHidden();
 
-    dxChartRefresh(chartContainer);
-    dxChartResetVisualRange();
+    resetVisualRange();
 }
 
 async function removeSpectrumProcedureAsync(spectrumToBeRemoved, isRemovalOnCloudRequested = false) {
@@ -975,7 +974,7 @@ function removeSpectrumFromChart(seriesname, id) {
     removeSeries(seriesname);
 
     /* reset visual range to make ref whites appear in chart */
-    dxChartResetVisualRange();
+    resetVisualRange();
 }
 
 async function removeSpectrumOnCloudAsync(id) {

@@ -83,7 +83,7 @@ function getSeriesPointsProcedure(spectrumId, spectrumType) {
     /* retrieve series name */
     let seriesname = getSpectrumSeriesNameFromIndex(index);
     /* retrieve series points */
-    return dxChartGetSeriesPoints(seriesname);
+    return getSeriesPoints(seriesname);
 }
 
 function getSpectrumPointsById(id) {
@@ -91,7 +91,7 @@ function getSpectrumPointsById(id) {
     if (index < 0)
         return;
 
-    let seriesPoints = dxChartGetSeriesPoints(getSpectrumSeriesNameFromIndex(index));
+    let seriesPoints = getSeriesPoints(getSpectrumSeriesNameFromIndex(index));
     if (!seriesPoints)
         return null;
 
