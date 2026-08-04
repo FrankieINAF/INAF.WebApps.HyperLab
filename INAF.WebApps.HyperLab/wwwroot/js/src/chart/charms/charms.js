@@ -394,7 +394,7 @@ function loadSpectraToBeProcessed() {
 function manageSpectraVisibility(selectedSpectrumId) {
     /* show selected spectrum */
     let seriesName = getSpectrumSeriesNameFromIndex(getSpectrumIndexBySpectrumId(selectedSpectrumId));
-    dxChartShowSeries(seriesName);
+    showSeries(seriesName);
 
     /* hide all other spectra */
     let spectraNum = spectraInfo.length;
@@ -840,6 +840,51 @@ async function downloadProcessedSpectrumAsync(spectrumType, spectrumId = null, a
 }
 
 /* ################################################################################ */
+/* DELETE SPECTRUM COMMMON */
+/* ################################################################################ */
+async function removeProcessedSpectrumAsync(processedSpectrum,
+    spectrumType,
+    buttonSaveName,
+    buttonRemoveName,
+    buttonDownloadName,
+    removalSuccessMessage,
+    removalErrorMessage,
+    isRemovalOnCloudRequested = false) {
+    /* retrieve index of spectrum in spectraInfo */
+    const index = getSpectrumIndexBySpectrumId(processedSpectrum.Id);
+
+    const seriesname = getSpectrumSeriesNameFromIndex(index);
+
+    /* remove processed file from chart */
+    removeSpectrumFromChart(seriesname, processedSpectrum.Id);
+
+    /* remove processed file from spectraInfo */
+    removeSpectrumByIndex(index);
+
+    /* remove processed file from cloud, if required  */
+    if (isRemovalOnCloudRequested && Number.isInteger(processedSpectrum.Id)) {
+        await removeSpectrumOnCloudAsync(processedSpectrum.Id, removalSuccessMessage, removalErrorMessage);
+    }
+
+    /* disable buttons for saving/removing since processed spectrum is not present anymore */
+    setMetroUIButtonEnabled(buttonSaveName, false);
+    setMetroUIButtonEnabled(buttonRemoveName, false);
+    hideByClass(buttonDownloadName);
+
+    /* show RAW spectrum */
+    showSpectrumParent(processedSpectrum);
+
+    resetVisualRange();
+
+    /* refresh legend, if opened */
+    refreshCharmsLegend();
+
+    /* set text of cloud icon */
+    setCloudTextAndIconStatus(spectrumType, false);
+    callCheckIsSpectrumOfTypeSavedOnCloudForAligned(processedSpectrum.Name);
+}
+
+/* ################################################################################ */
 /* REMOVE FILE COMMMON */
 /* ################################################################################ */
 async function removeSpectraProcedureAsync(spectrumType, dialogId, checkboxId) {
@@ -1029,7 +1074,7 @@ function switchVisibilityOfChildrenSpectraRemovalMessage(id, isVisible) {
 function showSpectrumParent(currentSpectrum) {
     const parentIndex = getSpectrumIndexBySpectrumId(currentSpectrum.ParentId);
     const parentSeriesName = getSpectrumSeriesNameFromIndex(parentIndex);
-    dxChartShowSeries(parentSeriesName);
+    showSeries(parentSeriesName);
 }
 
 /* ################################################################################ */

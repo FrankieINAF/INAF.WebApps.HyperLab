@@ -125,6 +125,7 @@ function getDictionaryObject(segmentType) {
     else if (segmentType == FIT_SEGMENT_PRO)
         return 'ProSegments';
 }
+
 /* ################################################################################ */
 /* MISCELLANEA */
 /* ################################################################################ */
@@ -440,11 +441,7 @@ function calculateSemiErrorBarHeight() {
     /* error-bar semi-height is calculated only once, to have always the same height */
     if (!errorBarSemiHeight) {
         /* get user-defined minor-tick-interval. if not defined, retrieve the one used by chart */
-        let minorTickInterval = dxChartGetValueAxisMinorTickInterval(chartContainer);
-        if (!minorTickInterval)
-            minorTickInterval = getYAxisMinorTickInterval(chartContainer);
-
-        errorBarSemiHeight = minorTickInterval;
+        errorBarSemiHeight = getYAxisMinorTickInterval();
     }
 }
 

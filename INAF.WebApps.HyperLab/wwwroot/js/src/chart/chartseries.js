@@ -81,7 +81,7 @@ function getAllSeries() {
             getColor: function () { return s.color; },
             isVisible: function () { return dxChartHiddenSeriesNames.indexOf(s.name) == -1; },
             hide: function () { hideSeries(s.name); },
-            show: function () { dxChartShowSeries(s.name); }
+            show: function () { showSeries(s.name); }
         };
     });
 }
@@ -93,7 +93,7 @@ function getSeries(seriesName) {
         getColor: function () { return series.color; },
         isVisible: function () { return dxChartHiddenSeriesNames.indexOf(series.name) == -1; },
         hide: function () { hideSeries(series.name); },
-        show: function () { dxChartShowSeries(series.name); }
+        show: function () { showSeries(series.name); }
     };
 }
 
@@ -158,7 +158,7 @@ function removeSeries(seriesName) {
 function setSeriesVisible(container, seriesName, isVisible) {
     try {
         if (isVisible)
-            dxChartShowSeries(seriesName);
+            showSeries(seriesName);
         else
             hideSeries(seriesName);
     } catch (e) {
@@ -176,7 +176,7 @@ function showSeries(seriesName) {
 
         resetVisualRange();
     } catch (e) {
-        console.log(`${dxChartShowSeries.name} - seriesName: ${seriesName} - ex: ${e}`);
+        console.log(`${showSeries.name} - seriesName: ${seriesName} - ex: ${e}`);
     }
 }
 

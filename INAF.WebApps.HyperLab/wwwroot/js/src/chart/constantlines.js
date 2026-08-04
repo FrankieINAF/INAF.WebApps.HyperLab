@@ -72,15 +72,15 @@ function manageConstantLinesVisualization(selectedTabId) {
             return;
 
         if (isCheckboxChecked('alignmentCheckboxShowLines'))
-            addOrUpdateConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, getAlignmentConstantLines(), SERIES_ALIGNMENT_CONSTANT_LINES);
+            addOrUpdateAlignmentConstantLines();
 
-        removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS);
+        removeFitPointsConstantLines();
     }
 
     if (selectedTabId == OPTIONS_TITLE_FIT) {
         if (isCheckboxChecked('fitCheckboxShowLines'))
-            addOrUpdateConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, getFitPointsConstantLines(), SERIES_FIT_POINTS);
+            addOrUpdateFitPointsConstantLines();
 
-        removeConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, SERIES_ALIGNMENT_CONSTANT_LINES);
+        removeAlignmentConstantLines();
     }
 }

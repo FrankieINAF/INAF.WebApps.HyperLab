@@ -401,7 +401,7 @@ function createChart(points, series, axisRange) {
             let mousePosY = evt.event.event.clientY;
             //console.log(`onPointClick - ${mousePosX}, ${mousePosY}`);
 
-            addRemoveSelectedPointForFittingProcedure(valueField, point, mousePosX, mousePosY);
+            addOrRemoveSelectedPointForFittingProcedure(valueField, point, mousePosX, mousePosY);
         }
     });
 

@@ -156,7 +156,7 @@ function updateVisualRangesFromDataSource(chartX, chartY) {
 //         if (!chartMagnifierSeries)
 //             continue;
 //         //console.log(`chartSeries[${i}].name:'${chartSeries[i].name}', chartSeries[${i}].isVisible(): ${chartSeries[i].isVisible()}`);
-//         chartSeries[i].isVisible() ? dxChartShowSeries(chartMagnifierSeries.name) : hideSeries(chartMagnifierSeries.name);
+//         chartSeries[i].isVisible() ? showSeries(chartMagnifierSeries.name) : hideSeries(chartMagnifierSeries.name);
 //     }
 
 // }

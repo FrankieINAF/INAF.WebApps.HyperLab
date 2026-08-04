@@ -254,7 +254,7 @@ function addFitPoint() {
     }
 
     const point = createSimplePoint(GoodSeriesPoint.X, GoodSeriesPoint.Y);
-    addRemoveSelectedPointForFittingProcedure(GoodSeriesPoint.ValueField, point, GoodSeriesPoint.MousePosX, GoodSeriesPoint.MousePosY);
+    addOrRemoveSelectedPointForFittingProcedure(GoodSeriesPoint.ValueField, point, GoodSeriesPoint.MousePosX, GoodSeriesPoint.MousePosY);
     //const seriesNum = series.length;
     //for (var i = 0; i < seriesNum; i++) {
     //    if (series[i].name === goodSeriesPoint.name) {

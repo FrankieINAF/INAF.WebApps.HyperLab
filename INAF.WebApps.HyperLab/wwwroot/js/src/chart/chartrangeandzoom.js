@@ -74,10 +74,10 @@ function setVisualRange(visualRange) {
 /* AXES */
 /* -------------------------------------------------------------------------------- */
 /* 'unofficial' for values not explicitly defined but used by chart */
-function getYAxisMinorTickInterval(container) {
+function getYAxisMinorTickInterval() {
     return chart.getOption().yAxis[0].minorTick?.splitNumber;
 }
 
-function getYAxisTickInterval(container) {
+function getYAxisTickInterval() {
     return chart.getOption().yAxis[0].interval;
 }

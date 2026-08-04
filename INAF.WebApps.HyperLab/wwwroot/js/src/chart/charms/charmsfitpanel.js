@@ -72,8 +72,8 @@ async function loadFitPanelAsync(extcallback = null) {
 
     /* update constant lines visualization */
     if (isCheckboxChecked('fitCheckboxShowLines')) {
-        removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS_CONSTANT_LINES);
-        addOrUpdateConstantLines(getFitPointsConstantLines(), CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS_CONSTANT_LINES);
+        removeFitPointsConstantLines();
+        addOrUpdateFitPointsConstantLines();
     }
 }
 
@@ -161,6 +161,17 @@ function initFitArrays() {
 
 function setIsPointClickForFitEnabled(isEnabled) {
     isPointClickForFitEnabled = isEnabled;
+}
+
+/* -------------------------------------------------------------------------------- */
+/* ---------- FIT POINTS CONSTANT LINES ---------- */
+/* -------------------------------------------------------------------------------- */
+function addOrUpdateFitPointsConstantLines() {
+    addOrUpdateConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, getFitPointsConstantLines(), SERIES_FIT_POINTS);
+}
+
+function removeFitPointsConstantLines() {
+    removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS);
 }
 
 /* ################################################################################ */
@@ -308,10 +319,10 @@ async function initSwitchShowHideVerticalLinesForFitPointsAsync() {
         isShowChartConstantLinesForFitPointsAllowed = isChecked;
 
         if (isChecked) {
-            removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS_CONSTANT_LINES);
-            addOrUpdateConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, getFitPointsConstantLines(), SERIES_FIT_POINTS_CONSTANT_LINES);
+            removeFitPointsConstantLines();
+            addOrUpdateFitPointsConstantLines();
         } else {
-            removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS_CONSTANT_LINES);
+            removeFitPointsConstantLines();
         }
     });
 }
@@ -585,8 +596,8 @@ async function addFitPointToChartAsync(fitPointsEchartsSeries, point, isFromUser
     }
 
     if (isShowChartConstantLinesForFitPointsAllowed) {
-        removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS);
-        addOrUpdateConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, getFitPointsConstantLines(), SERIES_FIT_POINTS);
+        removeFitPointsConstantLines();
+        addOrUpdateFitPointsConstantLines();
     }
 }
 
@@ -594,8 +605,8 @@ function removeFitPointsFromChart(xValues) {
     removePointsFromChart(chartContainer, xValues, SERIES_FIT_POINT)
 
     if (isShowChartConstantLinesForFitPointsAllowed) {
-        removeConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, SERIES_FIT_POINTS_CONSTANT_LINES);
-        addOrUpdateConstantLines(CHART_CONSTANT_LINES_FIT_POINTS, getFitPointsConstantLines(), SERIES_FIT_POINTS_CONSTANT_LINES);
+        removeFitPointsConstantLines();
+        addOrUpdateFitPointsConstantLines();
     }
 
     hideSpectraToBeHidden();
@@ -641,7 +652,7 @@ function tryRemoveFitPointsSeries() {
 /* MANAGE SELECTED POINTS */
 /* ################################################################################ */
 /* STARTING METHOD FOR ADDING/REMOVING POINTS */
-function addRemoveSelectedPointForFittingProcedure(valueField, point, mousePosX, mousePosY) {
+function addOrRemoveSelectedPointForFittingProcedure(valueField, point, mousePosX, mousePosY) {
     /* adjusted coords for showing pulse animation */
     mousePosX -= 6;
     mousePosY -= 4;
@@ -1591,7 +1602,6 @@ function fitHideBreaksOnValueAxis() {
     hideSpectraToBeHidden();
 }
 
-
 function fitShowBreaksOnValueAxis() {
     const option = chart.getOption();
 
@@ -1628,7 +1638,6 @@ function fitShowBreaksOnValueAxis() {
 
     hideSpectraToBeHidden();
 }
-
 
 /* -------------------------------------------------------------------------------- */
 /* MANAGE MISSING POINTS */
@@ -1846,39 +1855,28 @@ function removeContinuumRemovedSpectrumProcedure() {
 }
 
 async function removeContinuumRemovedSpectrumAsync(continuumRemovedSpectrum, isRemovalOnCloudRequested = false) {
-    /* retrieve index of spectrum in spectraInfo */
-    let index = getSpectrumIndexBySpectrumId(continuumRemovedSpectrum.Id);
-
-    let seriesname = getSpectrumSeriesNameFromIndex(index);
-
-    /* remove aligned file from chart */
-    removeSpectrumFromChart(seriesname, continuumRemovedSpectrum.Id);
-
-    /* remove aligned file from spectraInfo */
-    removeSpectrumByIndex(index);
-
-    /* remove aligned file from cloud, if required  */
-    if (isRemovalOnCloudRequested && Number.isInteger(continuumRemovedSpectrum.Id)) {
-        await removeSpectrumOnCloudAsync(continuumRemovedSpectrum.Id, ContinuumRemovedRemovalSuccessMessage, ContinuumRemovedRemovalErrorMessage);
-    }
+    await removeProcessedSpectrumAsync(continuumRemovedSpectrum,
+        SPECTRUM_TYPE_CONTINUUM_REMOVED,
+        'fitButtonSave',
+        'fitButtonRemove',
+        'fitButtonDownload',
+        ContinuumRemovedRemovalSuccessMessage,
+        ContinuumRemovedRemovalErrorMessage,
+        isRemovalOnCloudRequested);
 
     /* if a band analysis is available, it is removed */
     clearBandAnalysisProcedureCaller();
 
-    /* disable buttons for saving/removing since aligned spectrum is not present anymore */
-    setMetroUIButtonEnabled('fitButtonSave', false);
-    setMetroUIButtonEnabled('fitButtonRemove', false);
-    hideByClass('fitButtonDownload');
+    switch (currentFitMode) {
+        case FIT_MODE_CORE:
+            removeAllSegmentsForFittingUICore();
+            emptyListOfSegmentsOnCharms('fitSegmentsListCore', 'fitSegmentsListContainerCore');
+            break;
 
-    /* refresh legend, if opened */
-    refreshCharmsLegend();
-
-    /* hide selected spectra for improving visualization */
-    hideSpectraToBeHidden();
-
-    /* set text of cloud icon */
-    setCloudTextAndIconStatus(continuumRemovedSpectrum.SpectrumType, false);
-    callCheckIsSpectrumOfTypeSavedOnCloudForContinuumRemovedAsync(continuumRemovedSpectrum.Name);
+        case FIT_MODE_PRO:
+            //removeAllSegmentsForFittingUIPro();
+            break;
+    }
 }
 
 /* ################################################################################ */

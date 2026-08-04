@@ -71,6 +71,17 @@ function callCheckIsSpectrumOfTypeSavedOnCloudForAligned(filename = null) {
     checkIsSpectrumOfTypeSavedOnCloudAsync(SPECTRUM_TYPE_ALIGNED, filename);
 }
 
+/* -------------------------------------------------------------------------------- */
+/* ---------- ALIGNMENT CONSTANT LINES ---------- */
+/* -------------------------------------------------------------------------------- */
+function addOrUpdateAlignmentConstantLines() {
+    addOrUpdateConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, getAlignmentConstantLines(), SERIES_ALIGNMENT_CONSTANT_LINES);
+}
+
+function removeAlignmentConstantLines() {
+    removeConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, SERIES_ALIGNMENT_CONSTANT_LINES);
+}
+
 /* ################################################################################ */
 /* RETRIEVE SETTING FOR ALIGNMENT */
 /* ################################################################################ */
@@ -1024,7 +1035,7 @@ async function saveAlignedSpectrumAsync(showLoadingAndMessage = true) {
 }
 
 /* ################################################################################ */
-/* REMOVE ALIGNED SPECTRUM */
+/* DELETE ALIGNED SPECTRUM */
 /* ################################################################################ */
 function removeAlignedSpectrumProcedure() {
     /* hide children removal warning message if it has previously been shown */
@@ -1041,49 +1052,25 @@ function removeAlignedSpectrumProcedure() {
 }
 
 async function removeAlignedSpectrumAsync(alignedSpectrum, isRemovalOnCloudRequested = false) {
-    /* retrieve index of spectrum in spectraInfo */
-    const index = getSpectrumIndexBySpectrumId(alignedSpectrum.Id);
-
-    const seriesname = getSpectrumSeriesNameFromIndex(index);
-
-    /* remove aligned file from chart */
-    removeSpectrumFromChart(seriesname, alignedSpectrum.Id);
-
-    /* remove aligned file from spectraInfo */
-    removeSpectrumByIndex(index);
+    await removeProcessedSpectrumAsync(alignedSpectrum,
+        SPECTRUM_TYPE_ALIGNED,
+        'alignmentButtonSave',
+        'alignmentButtonRemove',
+        'alignmentButtonDownload',
+        AlignmentRemovalSuccessMessage,
+        AlignmentRemovalErrorMessage,
+        isRemovalOnCloudRequested);
 
     /* disable management of clicked point on aligned spectrum for fitting */
     setIsPointClickForFitEnabled(false);
     setJoystickVisible(false);
 
-    /* remove aligned file from cloud, if required  */
-    if (isRemovalOnCloudRequested && Number.isInteger(alignedSpectrum.Id)) {
-        await removeSpectrumOnCloudAsync(alignedSpectrum.Id, AlignmentRemovalSuccessMessage, AlignmentRemovalErrorMessage);
-    }
-
-    /* disable buttons for saving/removing since aligned spectrum is not present anymore */
-    setMetroUIButtonEnabled('alignmentButtonSave', false);
-    setMetroUIButtonEnabled('alignmentButtonRemove', false);
-    hideByClass('alignmentButtonDownload');
-
     /* disable tabs for fit and smoothing */
     setTabEnabled(1, false);
     setTabEnabled(2, false);
 
-    /* show RAW spectrum */
-    showSpectrumParent(alignedSpectrum);
-
     /* hide constant lines, if visible */
     setAlignmentSegmentsVisible(false);
-
-    resetVisualRange();
-
-    /* refresh legend, if opened */
-    refreshCharmsLegend();
-
-    /* set text of cloud icon */
-    setCloudTextAndIconStatus(SPECTRUM_TYPE_ALIGNED, false);
-    callCheckIsSpectrumOfTypeSavedOnCloudForAligned(alignedSpectrum.Name);
 }
 
 /* ################################################################################ */

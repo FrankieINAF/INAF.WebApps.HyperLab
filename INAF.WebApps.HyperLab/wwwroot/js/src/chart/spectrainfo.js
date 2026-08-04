@@ -295,7 +295,7 @@ function setSpectrumVisibilityByIdAndSpectrumType(id, spectrumType, isVisible) {
     if (isVisible)
         hideSeries(series.name);
     else {
-        dxChartShowSeries(series.name);
+        showSeries(series.name);
         addMessage(AutoSetSpectrumInvisibleMessage.replace('r_v', getSpectrumTypeDescription(spectrumType)), 3000, INFO);
     }
 }
@@ -306,7 +306,7 @@ function setSpectrumVisibilityByName(name, isVisible) {
         return;
 
     if (isVisible)
-        dxChartShowSeries(series.name);
+        showSeries(series.name);
     else
         hideSeries(series.name);
 }

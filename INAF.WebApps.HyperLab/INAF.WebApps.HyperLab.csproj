@@ -26,12 +26,16 @@
 		<ItemGroup>
 				<Compile Remove="wwwroot\js\src\search\**" />
 				<Compile Remove="wwwroot\lib\joystick-controller\**" />
+				<Compile Remove="wwwroot\metro4\**" />
 				<Content Remove="wwwroot\js\src\search\**" />
 				<Content Remove="wwwroot\lib\joystick-controller\**" />
+				<Content Remove="wwwroot\metro4\**" />
 				<EmbeddedResource Remove="wwwroot\js\src\search\**" />
 				<EmbeddedResource Remove="wwwroot\lib\joystick-controller\**" />
+				<EmbeddedResource Remove="wwwroot\metro4\**" />
 				<None Remove="wwwroot\js\src\search\**" />
 				<None Remove="wwwroot\lib\joystick-controller\**" />
+				<None Remove="wwwroot\metro4\**" />
 		</ItemGroup>
 
 		<!-- added by Frankie -->

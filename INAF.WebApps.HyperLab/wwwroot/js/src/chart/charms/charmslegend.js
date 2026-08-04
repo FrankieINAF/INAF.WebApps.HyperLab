@@ -161,7 +161,7 @@ function onSeriesClick(id) {
         if (isSeriesContinuum)
             setSpectrumVisibilityByName(SERIES_FIT_POINTS, false);
     } else {
-        dxChartShowSeries(series.name);
+        showSeries(series.name);
         if (isSeriesContinuum)
             setSpectrumVisibilityByName(SERIES_FIT_POINTS, true);
         const colorValue = $(`#spectrum${id}`).css('color');

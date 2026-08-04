@@ -142,11 +142,13 @@ function removeSegmentForFittingUICore(segment) {
         return;
 
     removeSegmentFromDictionary(FIT_SEGMENT_CORE, segment.Index)
-    //$(`#${getUIElementIdWithGuid(FIT_SEGMENT_CORE, guid)}`).remove();
 
     const segmentId = getUIElementIdWithGuid(FIT_SEGMENT_CORE, guid);
     $(`#${segmentId}`).remove();
-    /* removed animation 'cause it raises error when replacing a single segment with 2 segments */
-    //let callback = function () { $(`#${segmentId}`).remove(); };
-    //animateCSS(segmentId, 'slideOutRight', FASTER, callback);
+}
+
+function removeAllSegmentsForFittingUICore() {
+    for (var i = segmentsForFitting.length - 1; i >= 0; i--) {
+        removeSegmentForFittingUICore(segmentsForFitting[i]);
+    }
 }
