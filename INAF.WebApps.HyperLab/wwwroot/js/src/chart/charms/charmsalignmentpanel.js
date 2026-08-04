@@ -1,5 +1,7 @@
 ﻿var alignmentModel;
 
+var isAlignmentPanelLoaded = false;
+
 var isCheckboxForShowSegmentsChecked = false;
 var isCheckboxForShowSegmentsValueToBeSavedOnCloud = true;
 var timeoutNumOfPoints;
@@ -46,7 +48,10 @@ async function loadAlignmentPanelAsync() {
 }
 
 async function onAlignmentPanelLoadedAsync() {
+    isAlignmentPanelLoaded = true;
+
     await loadAlignmentValuesAsync();
+
     loadingCheckObj.stopLoading();
 }
 
@@ -1072,6 +1077,8 @@ async function removeAlignedSpectrumAsync(alignedSpectrum, isRemovalOnCloudReque
 
     /* hide constant lines, if visible */
     setAlignmentSegmentsVisible(false);
+
+    dxChartResetVisualRange();
 
     /* refresh legend, if opened */
     refreshCharmsLegend();

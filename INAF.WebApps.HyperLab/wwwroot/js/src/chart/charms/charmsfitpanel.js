@@ -1226,6 +1226,7 @@ function removeContinuum() {
         /* remove fit points */
         removeFitPointsSeriesPoints();
     } catch (e) {
+        showSimpleDialog(ERROR_LABEL, e, ALERT);
         console.log(`${removeContinuum.name} - ex: ${e}`);
     }
 

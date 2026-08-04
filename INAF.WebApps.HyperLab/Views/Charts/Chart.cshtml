@@ -172,7 +172,7 @@
                 data-expand="true"
                 data-expand-point="fs"
                 data-cls-tabs="tabs-list flex-justify-center">
-                <li><a id="alignmentoptionstitle" href="#alignmentoptions">@Html.Raw(Charms.TabsAlignmentTitle)</a></li>
+                <li><a id="alignmentoptionstitle" href="#alignmentoptions" onclick="manageConstantLinesVisualization(OPTIONS_TITLE_ALIGNMENT)">@Html.Raw(Charms.TabsAlignmentTitle)</a></li>
                 <li><a id="fitoptionstitle" href="#fitoptions" onclick="loadFitPanelAsync()">@Html.Raw(Charms.TabsFitTitle)</a></li>
                 <li><a id="smoothingoptionstitle" href="#smoothingoptions" onclick="preparePageForSmoothingPanelVisualization()">@Html.Raw(Charms.TabsSmoothingTitle)</a></li>
                 <li><a id="bandanalysistitle" href="#bandanalysis" onclick="createListOfSegmentsForBandAnalysis()">@Html.Raw(Charms.TabsBandAnalysisTitle)</a></li>
@@ -332,10 +332,10 @@
 }
 
 <!-- MESSAGES LIST -->
-<div id="charmMessagesNotifications" data-role="charms" data-cls-charms="charms-messages-panel" data-position="bottom">
-    <div class="d-flex" style="height: 500px">
+<div id="charmMessagesNotifications" data-role="charms" data-cls-charms="charms-messages-panel" data-position="left">
+    <div class="d-flex">
         <div class="d-flex flex-self-end flex-column">
-            <div id="messagesNotificationsContainer" class="flex-self-center messages-notifications-container">
+            <div id="messagesNotificationsContainer" class="flex-self-center">
                 <ul id="messagesNotifications" class="items-list overflow-y-auto"></ul>
             </div>
         </div>

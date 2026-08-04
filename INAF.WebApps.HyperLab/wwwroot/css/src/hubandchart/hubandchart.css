@@ -163,9 +163,8 @@
 }
 
 .charms-messages-panel {
-    height: 400px !important;
-    background-color: transparent !important;
-    overflow-y: hidden;
+    width: 500px !important;
+    background-color: rgba(0,0,0,0.8) !important;
 }
 
 .charms-panel {
@@ -368,7 +367,6 @@
 /* MESSAGES ON CHARMS */
 .messages-notifications-container {
     width: 500px;
-    height: 500px;
     background-color: rgba(0,0,0,0.8);
 }
 

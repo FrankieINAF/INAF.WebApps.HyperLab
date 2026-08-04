@@ -68,6 +68,9 @@ function removeConstantLines(name, targetSeries) {
 function manageConstantLinesVisualization(selectedTabId) {
     /* manage vertical constant lines visualiztion */
     if (selectedTabId == OPTIONS_TITLE_ALIGNMENT) {
+        if (!isAlignmentPanelLoaded)
+            return;
+
         if (isCheckboxChecked('alignmentCheckboxShowLines'))
             addOrUpdateConstantLines(CHART_CONSTANT_LINES_ALIGNMENT, getAlignmentConstantLines(), SERIES_ALIGNMENT_CONSTANT_LINES);
 
