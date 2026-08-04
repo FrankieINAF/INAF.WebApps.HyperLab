@@ -126,4 +126,10 @@
   <data name="MessagesTitle" xml:space="preserve">
     <value>Messages</value>
   </data>
+  <data name="NotificationsTitle" xml:space="preserve">
+    <value>Last operation(s) messages</value>
+  </data>
+  <data name="SetNotificationsEnabledLabel" xml:space="preserve">
+    <value>Set messages notifications enabled/disabled</value>
+  </data>
 </root>

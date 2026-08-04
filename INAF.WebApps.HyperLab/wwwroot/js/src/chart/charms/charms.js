@@ -14,6 +14,8 @@ var isCharmsResetRequested = true;
 var isSLabSpectrumCurrentlySelected = true;
 var isSLabLowerSpectrumTypeHigherThanRaw = false;
 
+var isSetNotificationEnabled = true;
+
 var selectedSpectrumForProcessing = null;
 var oldSelectedSpectrumForProcessing = null;
 
@@ -60,6 +62,23 @@ function isSLabConditionForSpectrumTypeHigherThanRaw() {
 
 function isSLabConditionForSpectrumTypeNotHigherThanRaw() {
     return isSLabSpectrumCurrentlySelected && !isSLabLowerSpectrumTypeHigherThanRaw;
+}
+
+async function initSwitchSetNotificationEnabledOrDisabledAsync() {
+    await loadAutoAlignSpectrumAsync();
+
+    $('#charmsSetNotificationEnabledOrDisabled').on('change', async function () {
+        let isChecked = isCheckboxChecked('charmsSetNotificationEnabledOrDisabled');
+
+        tryCallEnqueueSaveSetting(MESSAGES_SET_NOTIFICATIONS_ENABLED_OR_DISABLED, (isChecked ? '1' : '0'));
+
+        setSwitchSetNotificationEnabledOrDisabledAsync(isChecked);
+    });
+}
+
+async function setSwitchSetNotificationEnabledOrDisabledAsync(isChecked) {
+    $('#charmsSetNotificationEnabledOrDisabled').prop('checked', isChecked);
+    isSetNotificationEnabled = isChecked;
 }
 
 /* ################################################################################ */

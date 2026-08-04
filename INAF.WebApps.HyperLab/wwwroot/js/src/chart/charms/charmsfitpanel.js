@@ -440,10 +440,8 @@ function switchToCommon() {
 }
 
 function switchToCoreMode() {
-    let items = dxChartGetItems(chartContainer);
-
     /* remove continuum-series and fit points */
-    tryRemoveSeriesAndPoints(items);
+    tryRemoveSeriesAndPoints();
 
     /* remove list of fit-segments on charms */
     emptyListOfSegmentsOnCharms('fitSegmentsListPro', 'fitSegmentsListContainerPro');
@@ -453,10 +451,8 @@ function switchToCoreMode() {
 }
 
 function switchToProMode() {
-    let items = dxChartGetItems(chartContainer);
-
     /* remove continuum-series and fit points */
-    tryRemoveSeriesAndPoints(items);
+    tryRemoveSeriesAndPoints();
 
     /* remove list of fit-segments on charms */
     emptyListOfSegmentsOnCharms('fitSegmentsListCore', 'fitSegmentsListContainerCore');
@@ -465,29 +461,15 @@ function switchToProMode() {
     switchToCommon();
 }
 
-function tryRemoveSeriesAndPoints(items) {
-    initFitArrays();
+function tryRemoveSeriesAndPoints() {
+    /* remove fit points */
+    removeSeries(SERIES_FIT_POINTS);
 
     /* remove continuum */
-    tryRemoveContinuumSeriesAndPoints(items);
+    const seriesName = getSeriesNameFromSelectedSpectrumNameAndSpectrumType(selectedSpectrumForProcessing.Name, SPECTRUM_TYPE_CONTINUUM)
+    removeSeries(seriesName);
 
-    /* remove user-defied fit points */
-    tryRemoveFitSeriesAndPoints(items);
-
-    hideSpectraToBeHidden();
-}
-
-function tryRemoveContinuumSeriesAndPoints(items) {
-    const tempContinuumId = buildTempContinuumId(selectedSpectrumForProcessing.Id);
-    const continuumPoints = items.filter(function (item) { return Object.keys(item).includes(tempContinuumId); });
-
-    if (!continuumPoints || (continuumPoints && continuumPoints.length == 0))
-        return;
-
-    resetShownConstantLines();
-
-    /* remove series */
-    removeChartSeriesByFieldIdProcedure(chartContainer, items, tempContinuumId);
+    removeFitPointsConstantLines();
 }
 
 function tryRemoveFitSeriesAndPoints(items) {

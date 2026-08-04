@@ -729,6 +729,9 @@ function initChartPanel() {
 /* DOCUMENT READY */
 /* ################################################################################ */
 $(async function () {
+    /* init switch to enable/disable messages notifications */
+    initSwitchSetNotificationEnabledOrDisabledAsync();
+
     echarts.registerTheme('material', {
         color: palette
     });

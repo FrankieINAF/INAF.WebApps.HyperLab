@@ -56,6 +56,8 @@ function initMessages() {
 }
 
 function showCharmsMessagesNotifications(item, duration) {
+    if (!isSetNotificationEnabled)
+        return;
 
     setTimeout(function () {
         //console.log(`Removing message ${item.Guid} after ${duration} ms`);

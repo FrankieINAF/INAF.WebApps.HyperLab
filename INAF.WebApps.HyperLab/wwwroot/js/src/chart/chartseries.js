@@ -97,6 +97,11 @@ function getSeries(seriesName) {
     };
 }
 
+function getSeriesNameFromSelectedSpectrumNameAndSpectrumType(selectedSpectrumName, spectrumType) {
+    const continuum = getSpectrumByNameAndSpectrumType(selectedSpectrumName, spectrumType);
+    return createSeriesNameFromSpectrumNameAndType(continuum.Name, continuum.SpectrumType);
+}
+
 function getSeriesColor(spectrumId) {
     let index = getSpectrumIndexBySpectrumId(spectrumId);
     if (index < 0)

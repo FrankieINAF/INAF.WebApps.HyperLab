@@ -34,16 +34,16 @@
     width: 300px;
 }
 
-.charmsSwitch .check::after {
+.charms-switch .check::after {
     background: #0a87c1 !important;
     border-color: #0a87c1 !important;
 }
 
-.charmsSwitch input[type="checkbox"]:checked ~ .check {
+.charms-switch input[type="checkbox"]:checked ~ .check {
     background: #0a87c1 !important;
 }
 
-    .charmsSwitch input[type="checkbox"]:checked ~ .check::after {
+    .charms-switch input[type="checkbox"]:checked ~ .check::after {
         border-color: #ffffff !important;
         background: #ffffff !important;
     }

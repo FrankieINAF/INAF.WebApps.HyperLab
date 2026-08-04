@@ -94,54 +94,54 @@ function hideSpectraToBeHidden() {
 /* ################################################################################ */
 /* COMPLEX OPERATIONS ON CHARTS SERIES */
 /* ################################################################################ */
-function removeChartSeriesByFieldId(chartContainer, fieldId) {
-    let items = dxChartGetItems(chartContainer);
+// function removeChartSeriesByFieldId(chartContainer, fieldId) {
+//     let items = dxChartGetItems(chartContainer);
 
-    /* remove series */
-    let index = findChartSeriesIndexByValueFieldId(fieldId);
-    if (index > -1) {
-        removeChartSeriesAt(index);
-        deleteChartSeriesItems(items, fieldId);
-    }
-}
+//     /* remove series */
+//     let index = findChartSeriesIndexByValueFieldId(fieldId);
+//     if (index > -1) {
+//         removeChartSeriesAt(index);
+//         deleteChartSeriesItems(items, fieldId);
+//     }
+// }
 
-function removeChartSeriesByFieldIdProcedure(chartContainer, items, fieldId) {
-    /* remove series */
-    let index = findChartSeriesIndexByValueFieldId(fieldId);
-    if (index > -1) {
-        removeChartSeriesAt(index);
-        deleteChartSeriesItems(items, fieldId);
-    }
-}
+// function removeChartSeriesByFieldIdProcedure(chartContainer, items, fieldId) {
+//     /* remove series */
+//     let index = findChartSeriesIndexByValueFieldId(fieldId);
+//     if (index > -1) {
+//         removeChartSeriesAt(index);
+//         deleteChartSeriesItems(items, fieldId);
+//     }
+// }
 
-function removeChartSeriesByFieldsIdProcedure(chartContainer, fieldsId) {
-    let items = dxChartGetItems(chartContainer);
-    fieldsId.forEach(function (fieldId) {
-        /* remove series */
-        let index = findChartSeriesIndexByValueFieldId(fieldId);
-        if (index > -1) {
-            removeChartSeriesAt(index);
-            deleteChartSeriesItems(items, fieldId);
-        }
-    });
-}
+// function removeChartSeriesByFieldsIdProcedure(chartContainer, fieldsId) {
+//     let items = dxChartGetItems(chartContainer);
+//     fieldsId.forEach(function (fieldId) {
+//         /* remove series */
+//         let index = findChartSeriesIndexByValueFieldId(fieldId);
+//         if (index > -1) {
+//             removeChartSeriesAt(index);
+//             deleteChartSeriesItems(items, fieldId);
+//         }
+//     });
+// }
 
-function removeChartSeriesByNameProcedure(chartContainer, seriesName) {
-    /* remove series */
-    let index = findChartSeriesIndexByName(seriesName);
-    if (index > -1) {
-        removeChartSeriesAt(index);
-    }
-}
+// function removeChartSeriesByNameProcedure(chartContainer, seriesName) {
+//     /* remove series */
+//     let index = findChartSeriesIndexByName(seriesName);
+//     if (index > -1) {
+//         removeChartSeriesAt(index);
+//     }
+// }
 
-function removePointsFromChart(chartContainer, xValues, seriesName) {
-    let items = dxChartGetItems(chartContainer);
+// function removePointsFromChart(chartContainer, xValues, seriesName) {
+//     let items = dxChartGetItems(chartContainer);
 
-    let xValuesNum = xValues.length;
-    for (var i = 0; i < xValuesNum; i++) {
-        let index = items.findIndex(p => p.X == xValues[i]);
-        if (items[index][seriesName])
-            delete items[index][seriesName];
-    }
+//     let xValuesNum = xValues.length;
+//     for (var i = 0; i < xValuesNum; i++) {
+//         let index = items.findIndex(p => p.X == xValues[i]);
+//         if (items[index][seriesName])
+//             delete items[index][seriesName];
+//     }
 
-}
+// }

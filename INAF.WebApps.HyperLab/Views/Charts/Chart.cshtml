@@ -331,9 +331,12 @@
     await Html.RenderPartialAsync("Partials/_Messages");
 }
 
-<!-- MESSAGES LIST -->
+<!-- MESSAGES NOTIFICATIONS -->
 <div id="charmMessagesNotifications" data-role="charms" data-cls-charms="charms-messages-panel" data-position="left">
-    <div class="d-flex">
+    <div class="d-flex flex-column">
+        <!-- TITLE -->
+        <div class="d-flex flex-justify-center"><p class="text-leader fg-white">@Html.Raw(CharmsMessages.NotificationsTitle)</p></div>
+        <!-- MESSAGES NOTIFICATIONS -->
         <div class="d-flex flex-self-end flex-column">
             <div id="messagesNotificationsContainer" class="flex-self-center">
                 <ul id="messagesNotifications" class="items-list overflow-y-auto"></ul>
