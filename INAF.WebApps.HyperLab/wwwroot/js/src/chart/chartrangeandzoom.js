@@ -75,8 +75,29 @@ function setVisualRange(visualRange) {
 /* -------------------------------------------------------------------------------- */
 /* 'unofficial' for values not explicitly defined but used by chart */
 function getYAxisMinorTickInterval() {
-    return chart.getOption().yAxis[0].minorTick?.splitNumber;
+    const option = chart.getOption();
+
+    let minY = Infinity;
+    let maxY = -Infinity;
+
+    for (const s of option.series) {
+        if (!s.data) continue;
+
+        for (const p of s.data) {
+            const y = Array.isArray(p) ? p[1] : p.value[1];
+            if (y < minY) minY = y;
+            if (y > maxY) maxY = y;
+        }
+    }
+
+    if (!isFinite(minY) || !isFinite(maxY)) return 0;
+
+    const range = maxY - minY;
+
+    // intervallo utile per error bar
+    return range / 20; // 5% del range
 }
+
 
 function getYAxisTickInterval() {
     return chart.getOption().yAxis[0].interval;

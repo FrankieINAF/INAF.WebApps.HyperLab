@@ -65,25 +65,15 @@ function getPointsFromSeriesPoints(seriesPoints) {
     return seriesPoints.map(x => { return { X: parseFloat(x.argument), Y: parseFloat(x.value), YStdDev: 0 }; });
 }
 
-function getPointsFromSeriesPointsProcedure(spectrumId, spectrumType) {
-    const spectrum = getSpectrumByLowerSpectrumTypeIdAndSpectrumType(spectrumId, spectrumType);
+function getPointsFromSeriesPointsProcedure(spectrumType) {
+    const seriesName = getSeriesNameFromSelectedSpectrumNameAndSpectrumType(selectedSpectrumForProcessing.Name, spectrumType);
     /* retrieve series points */
-    let seriesPoints = getSeriesPointsProcedure(spectrum.Id, spectrumType);
+    let seriesPoints = getSeriesPoints(seriesName);
     return getPointsFromSeriesPoints(seriesPoints);
 }
 
 function getPointAtFromSeriesPoints(seriesPoints, index) {
     return seriesPoints[index].map(x => { return { X: parseFloat(x.argument), Y: parseFloat(x.value) }; });
-}
-
-function getSeriesPointsProcedure(spectrumId, spectrumType) {
-    const spectrum = findSpectrumByIdAndSpectrumType(spectrumId, spectrumType);
-    /* retrieve index of spectrum in spectraInfo */
-    let index = getSpectrumIndexBySpectrumId(spectrum.Id);
-    /* retrieve series name */
-    let seriesname = getSpectrumSeriesNameFromIndex(index);
-    /* retrieve series points */
-    return getSeriesPoints(seriesname);
 }
 
 function getSpectrumPointsById(id) {

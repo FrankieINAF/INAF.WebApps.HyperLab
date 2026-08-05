@@ -23,6 +23,7 @@ var selectedSpectrumTypeForContinuumRemoval; //defined just to be used if change
 
 var SERIES_FIT_POINT = 'FitPoint';
 var SERIES_FIT_POINTS = 'FitPointsSeries';
+var SERIES_FIT_POINTS_WITH_ERROR_BARS = 'FitPointsSeriesWithErrorBars';
 var SERIES_HIGHLIGHTED_SEGMENT = 'HighlightedSegmentSeries';
 var SERIES_FIT_POINTS_CONSTANT_LINES = 'FitPointsConstantLinesSeries';
 
@@ -557,23 +558,26 @@ function setNumOfPointsForMissingPoints(value) {
 /* ################################################################################ */
 /* MANAGE VISUALIZATION OF SERIES CONTAINING SELECTED POINTS */
 /* ################################################################################ */
-async function addFitPointToChartAsync(fitPointsEchartsSeries, point, isFromUserAction = false) {
+async function addFitPointToChartAsync(point, isFromUserAction = false) {
     if (currentFitMode == FIT_MODE_CORE) {
-        addPointToChartSeries(SERIES_FIT_POINTS, point.P);
+        /* add the only selected point to fit series */
+        addFitPointToChartSeries(point.P);
     } else {
+        /* calculate points to create a 'selected point range' and add boundary points */
+
         let maxPoint;
         if (isFromUserAction)
             maxPoint = await calculateMaximumInPointRangeAsync(point.PXMin.X, point.PXMax.X);
         else
             maxPoint = point.P;
-        //let maxPoint = point.PXMax;
 
         updatePointsForFittingArray(point, maxPoint);
 
-        addPointToChartSeries(SERIES_FIT_POINTS, createSimplePoint(maxPoint.X, maxPoint.Y));
+        /* 1) add the selected point to fit series */
+        addFitPointToChartSeries(createSimplePoint(maxPoint.X, maxPoint.Y));
 
-        /* in 'pro' mode, add boundary points together with the selected point */
-        addBoundaryPointsPro(items, point);
+        /* 2) in 'pro' mode, add boundary points together with the selected point */
+        addBoundaryPointsPro(point);
     }
 
     if (isShowChartConstantLinesForFitPointsAllowed) {
@@ -594,7 +598,7 @@ function removeFitPointsFromChart(xValues) {
 }
 
 function tryAddFitPointsSeries() {
-    let fitPointsEchartsSeries;
+    let fitPointsWithEchartsSeries;
 
     if (!isChartSeriesAvailableByName(SERIES_FIT_POINTS)) {
         /* add series of points for fitting */
@@ -620,6 +624,91 @@ function tryAddFitPointsSeries() {
     return fitPointsEchartsSeries;
 }
 
+function tryAddFitPointsWithErrorBarsSeries(fitPoints) {
+    let fitPointsWithErrorBarsEchartsSeries;
+
+    if (!isChartSeriesAvailableByName(SERIES_FIT_POINTS_WITH_ERROR_BARS)) {
+        /* add series of points for fitting */
+        const fitPointsWithErrorBarsSeries = createSeries(SERIES_FIT_POINT, SERIES_FIT_POINTS_WITH_ERROR_BARS, VALUE_AXIS, 'darkRed')
+        const echartsSeries = createEchartSeries(
+            fitPointsWithErrorBarsSeries,
+            fitPoints,
+            {
+                name: SERIES_FIT_POINTS_WITH_ERROR_BARS,
+                type: "custom",
+                itemStyle: { color: "darkRed" },
+                renderItem: function (params, api) {
+                    const x = api.value(0);
+                    const yLow = api.value(1);
+                    const yHigh = api.value(2);
+
+                    const low = api.coord([x, yLow]);
+                    const high = api.coord([x, yHigh]);
+
+                    const capSize = 6;
+
+                    return {
+                        type: "group",
+                        children: [
+                            // linea verticale
+                            {
+                                type: "line",
+                                shape: {
+                                    x1: low[0],
+                                    y1: low[1],
+                                    x2: high[0],
+                                    y2: high[1]
+                                },
+                                style: {
+                                    stroke: "#000",
+                                    lineWidth: 2
+                                }
+                            },
+                            // cappuccio basso
+                            {
+                                type: "line",
+                                shape: {
+                                    x1: low[0] - capSize,
+                                    y1: low[1],
+                                    x2: low[0] + capSize,
+                                    y2: low[1]
+                                },
+                                style: {
+                                    stroke: "#000",
+                                    lineWidth: 2
+                                }
+                            },
+                            // cappuccio alto
+                            {
+                                type: "line",
+                                shape: {
+                                    x1: high[0] - capSize,
+                                    y1: high[1],
+                                    x2: high[0] + capSize,
+                                    y2: high[1]
+                                },
+                                style: {
+                                    stroke: "#000",
+                                    lineWidth: 2
+                                }
+                            }
+                        ]
+                    };
+                },
+                data: fitPoints.map(p => [p.X, p.MIN_Y, p.MAX_Y])
+            }
+        );
+
+        addChartSeries(echartsSeries);
+
+        fitPointsWithErrorBarsEchartsSeries = echartsSeries;
+    } else {
+        fitPointsWithErrorBarsEchartsSeries = findChartSeriesByName(SERIES_FIT_POINTS_WITH_ERROR_BARS);
+    }
+
+    return fitPointsWithErrorBarsEchartsSeries;
+}
+
 function tryRemoveFitPointsSeries() {
     let index = findChartSeriesIndexByName(SERIES_FIT_POINTS);
     if (index > -1) {
@@ -643,7 +732,7 @@ function addOrRemoveSelectedPointForFittingProcedure(valueField, point, mousePos
     else if (isSpectrumOfType(valueField, SPECTRUM_TYPE_ALIGNED)) {
         const spectrum = getSpectrumBySeriesValueField(valueField);
         insertPulse(mousePosX, mousePosY, 'pulse-ring-add');
-        executeAfter(function () { addSelectedPointForFittingAsync(createPointForFitting(point, spectrum.Id), true, true); }, JS_DELAY_200);
+        executeAfter(function () { addSelectedPointForFittingAsync(createPointForFitting(point), true, true); }, JS_DELAY_200);
     }
 }
 
@@ -654,10 +743,12 @@ async function addSelectedPointForFittingAsync(point, isFromUserAction = false, 
             addToPointsForFittingArray(point);
 
             /* add series of points for fitting, if not already existant */
-            const fitPointsEchartsSeries = tryAddFitPointsSeries();
+            tryAddFitPointsSeries();
+            if (currentFitMode == FIT_MODE_PRO)
+                tryAddFitPointsWithErrorBarsSeries(getPointsForFittingArray());
 
             /* add point to fit series */
-            await addFitPointToChartAsync(fitPointsEchartsSeries, point, isFromUserAction);
+            await addFitPointToChartAsync(point, isFromUserAction);
 
             const pointUICallback = function () {
                 switch (currentFitMode) {
@@ -1090,7 +1181,7 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1, isHidingO
     if (!spectrum)
         return;
 
-    let pointsInRange = extractSpectrumRange(getPointsFromSeriesPointsProcedure(spectrum.Id, selectedSpectrumTypeForContinuumRemoval), p0.X, p1.X);
+    let pointsInRange = extractSpectrumRange(getPointsFromSeriesPointsProcedure(selectedSpectrumTypeForContinuumRemoval), p0.X, p1.X);
 
     if (!pointsInRange || pointsInRange.length == 0) {
         showSimpleDialog(ERROR_LABEL, FitNoPointsFoundForSegmentErrorMessage, ALERT);
@@ -1366,7 +1457,7 @@ function getNumOfPointsForMissingPoints() {
 
 function setMissingPointsFromDownloadedContinuumRemoved() {
     try {
-        const continuumPoints = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM);
+        const continuumPoints = getPointsFromSeriesPointsProcedure(SPECTRUM_TYPE_CONTINUUM);
         //let continuumPoints = getPointsFromSeriesPoints(getSeriesPoints(getSpectrumSeriesNameFromSpectrum(getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM))));
 
         /* set missing point 0 */
@@ -1885,7 +1976,7 @@ async function downloadContinuumRemovalSettingsAsync(id, areBreaksVisible = fals
             return;
         }
         /* we need aligned spectrum to get y-coord for points defining segments */
-        const alignedPoints = getPointsFromSeriesPointsProcedure(alignedSpectrum.Id, SPECTRUM_TYPE_ALIGNED);
+        const alignedPoints = getPointsFromSeriesPointsProcedure(SPECTRUM_TYPE_ALIGNED);
 
         if (!alignedPoints) {
             showSimpleDialog(ERROR_LABEL, FitDownloadContinuumRemovalSettingsErrorMessage, ALERT);

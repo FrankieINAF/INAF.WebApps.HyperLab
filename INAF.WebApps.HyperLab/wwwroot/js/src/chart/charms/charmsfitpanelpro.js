@@ -54,7 +54,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     const segmentSelectId = buildUIElementId(FIT_SEGMENT_PRO, segment.Index, 'Select');
     const segmentContainerId = buildUIElementId(FIT_SEGMENT_PRO_VALUE, segment.Index, 'Container');
 
-    const points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
+    const points = getPointsFromSeriesPointsProcedure(selectedSpectrumTypeForContinuumRemoval);
 
     const buttonP0Id = `${segmentWithGuidResult.ElementId}_${P0Button}`;
     const buttonP1Id = `${segmentWithGuidResult.ElementId}_${P1Button}`;
@@ -402,7 +402,7 @@ function showPXMinPXMaxFitting(P0P1Val, parentId, segmentIndex, P) {
     let top = parentRect.top - appbarRect.height;
 
     /* retrieve series points */
-    let seriesPoints = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
+    let seriesPoints = getPointsFromSeriesPointsProcedure(selectedSpectrumTypeForContinuumRemoval);
     //console.log(seriesPoints);
 
     let segmentSeriesPoints = seriesPoints.filter(p => p.X >= P.PXMin.X && p.X <= P.PXMax.X);
@@ -664,7 +664,7 @@ async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null,
     removeYMaxValuePointFromChart(currentP0P1Selection.P);
 
     /* find the maximum in the segments defined by the points boundaries */
-    const points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
+    const points = getPointsFromSeriesPointsProcedure(selectedSpectrumTypeForContinuumRemoval);
     pXMinPXMaxResult = await calculateMaxValuePointAsync(points, currentP0P1Selection, selectedFitFunction.Id);
     //console.log(pXMinPXMaxResult);
 
@@ -794,22 +794,50 @@ function removeYMaxValuePointFromChart(point) {
 /* ################################################################################ */
 /* MANAGE VISUALIZATION OF SERIES CONTAINING SELECTED POINTS */
 /* ################################################################################ */
-function addBoundaryPointsPro(items, point) {
+function addBoundaryPointsPro(point) {
+    console.log(`${addBoundaryPointsPro.name} - point.P.X: ${point.P.X}, point.P.Y: ${point.P.Y}`);
     /* add left boundary */
-    setPointWithErrorBarOnChart(items, point.PXMin.X, point.PXMin.Y, point.PXMin[MIN_Y], point.PXMin[MAX_Y], SERIES_FIT_POINT);
+    setPointWithErrorBarOnChart(point.PXMin.X, point.PXMin.Y, point.PXMin[MIN_Y], point.PXMin[MAX_Y]);
 
     /* add right boundary */
-    setPointWithErrorBarOnChart(items, point.PXMax.X, point.PXMax.Y, point.PXMax[MIN_Y], point.PXMax[MAX_Y], SERIES_FIT_POINT);
+    setPointWithErrorBarOnChart(point.PXMax.X, point.PXMax.Y, point.PXMax[MIN_Y], point.PXMax[MAX_Y]);
 }
 
 async function calculateMaximumInPointRangeAsync(xMin, xMax) {
-    const points = extractSpectrumRange(getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval), xMin, xMax);
+    const points = extractSpectrumRange(getPointsFromSeriesPointsProcedure(selectedSpectrumTypeForContinuumRemoval), xMin, xMax);
 
     const maxPoint = await window.dotNetHelper.invokeMethodAsync("calculateMaximumInRange",
         points);
     //console.log(`${calculateMaximumInPointRangeAsync.name} - point_x: ${xMin}, maxPoint_x: ${maxPoint.X}`);
     return maxPoint;
 }
+
+function setPointWithErrorBarOnChart(pX, pY, pMinY, pMaxY) {
+    console.log(`${setPointWithErrorBarOnChart.name} - pX: ${pX}, pY: ${pY}, pMinY: ${pMinY}, pMaxY: ${pMaxY}`);
+    const option = chart.getOption();
+
+    const alignedSeriesName = getSeriesNameFromSelectedSpectrumNameAndSpectrumType(selectedSpectrumForProcessing.Name, SPECTRUM_TYPE_ALIGNED);
+    const alignedSeries = option.series.find(s => s.name === alignedSeriesName);
+    const mainSeries = option.series.find(s => s.name === SERIES_FIT_POINTS);
+    const errorSeries = option.series.find(s => s.name === SERIES_FIT_POINTS_WITH_ERROR_BARS);
+
+    if (!alignedSeries || !mainSeries) return;
+
+    const index = alignedSeries.data.findIndex(p => {
+        const x = Array.isArray(p) ? p[0] : p.X;
+        return x === pX;
+    });
+
+    if (index === -1)
+        return;
+
+    addPointsToChartSeries(mainSeries.name, [createSimplePoint(pX, pY)]);
+
+    // if (errorSeries) {
+    //     addPointsToChartSeries(errorSeries.name, [[pX, pMinY, pMaxY]])
+    // }
+}
+
 
 async function updateBoundaryPointProAsync(oldPointForFitting, requestedX, PMinMax, spinnerId) {
     const items = dxChartGetItems(chartContainer);
@@ -821,7 +849,7 @@ async function updateBoundaryPointProAsync(oldPointForFitting, requestedX, PMinM
     if (items[oldBoundaryIndex][SERIES_FIT_POINT])
         delete items[oldBoundaryIndex][SERIES_FIT_POINT];
 
-    const points = getPointsFromSeriesPointsProcedure(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
+    const points = getPointsFromSeriesPointsProcedure(selectedSpectrumTypeForContinuumRemoval);
 
     const spectrumPoint = points.find(p => p.X == requestedX);
     if (!spectrumPoint)

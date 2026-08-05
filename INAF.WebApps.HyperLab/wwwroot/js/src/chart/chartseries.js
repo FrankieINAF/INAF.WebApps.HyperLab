@@ -21,26 +21,17 @@
     }
 }
 
-function addPointToChartSeries(seriesName, point) {
-    const option = chart.getOption();
-    const series = option.series.find(s => s.name === seriesName);
-    if (series) {
-        series.data.push([point.X, point.Y]);
-        chart.setOption(option);
-    }
-}
-
 function addPointsToChartSeries(seriesName, newPoints) {
     const option = chart.getOption();
     const series = option.series.find(s => s.name === seriesName);
     if (!series) return;
 
-    // Raccogli tutti gli X già presenti nella serie
+    // retrieve all existant X values already present in the series
     const existingXs = new Set(
         series.data.map(p => Array.isArray(p) ? p[0] : p.value[0])
     );
 
-    // Aggiungi solo i punti nuovi
+    // Add only new points
     for (const p of newPoints) {
         const x = p.X;
         const y = p.Y;
@@ -50,7 +41,7 @@ function addPointsToChartSeries(seriesName, newPoints) {
         }
     }
 
-    // Ordina la serie per X (necessario per serie line)
+    // Sort the series by X (necessary for line series)
     series.data.sort((a, b) => a[0] - b[0]);
 
     chart.setOption(option);
@@ -208,4 +199,16 @@ function updateSeriesColor(seriesName, newColor) {
     series.color = newColor;
 
     chart.setOption(option);
+}
+
+/* -------------------------------------------------------------------------------- */
+/* ADD FIT POINT */
+/* -------------------------------------------------------------------------------- */
+function addFitPointToChartSeries(point) {
+    const option = chart.getOption();
+    const series = option.series.find(s => s.name === SERIES_FIT_POINTS);
+    if (series) {
+        series.data.push([point.X, point.Y]);
+        chart.setOption(option);
+    }
 }

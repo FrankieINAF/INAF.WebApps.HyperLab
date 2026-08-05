@@ -294,12 +294,12 @@ function clearPointsForFittingArray() {
     pointsForFitting = [];
 }
 
-function createPointForFitting(point, spectrumId, pointMinX = null, pointMaxX = null) {
+function createPointForFitting(point, pointMinX = null, pointMaxX = null) {
     let pointBoundaries;
     if (pointMinX !== null && pointMaxX !== null)
-        pointBoundaries = createPointBoundariesFromSettingsForFitting(spectrumId, pointMinX, pointMaxX);
+        pointBoundaries = createPointBoundariesFromSettingsForFitting(pointMinX, pointMaxX);
     else
-        pointBoundaries = createPointBoundariesFromSpectrumForFitting(point, spectrumId);
+        pointBoundaries = createPointBoundariesFromSpectrumForFitting(point);
 
     return {
         PXMin: pointBoundaries.MinXPoint,
@@ -362,6 +362,10 @@ function getNextItemInPointsForFittingArray(point) {
 function getPreviousItemInPointsForFittingArray(point) {
     let pointsBefore = pointsForFitting.filter(p => p.P.X < point.P.X);
     return pointsBefore[pointsBefore.length - 1];
+}
+
+function getPointsForFittingArray() {
+    return pointsForFitting;
 }
 
 function getPointsForFittingArrayMaxX() {
@@ -445,8 +449,8 @@ function calculateSemiErrorBarHeight() {
     }
 }
 
-function createPointBoundariesFromSettingsForFitting(spectrumId, xMin, xMax) {
-    const points = getPointsFromSeriesPointsProcedure(spectrumId, selectedSpectrumTypeForContinuumRemoval);
+function createPointBoundariesFromSettingsForFitting(xMin, xMax) {
+    const points = getPointsFromSeriesPointsProcedure(selectedSpectrumTypeForContinuumRemoval);
 
     let minXPoint = getPointLowerThanX(points, xMin);
     let maxXPoint = getPointHigherThanX(points, xMax);
@@ -460,8 +464,8 @@ function createPointBoundariesFromSettingsForFitting(spectrumId, xMin, xMax) {
     };
 }
 
-function createPointBoundariesFromSpectrumForFitting(point, spectrumId) {
-    const points = getPointsFromSeriesPointsProcedure(spectrumId, selectedSpectrumTypeForContinuumRemoval);
+function createPointBoundariesFromSpectrumForFitting(point) {
+    const points = getPointsFromSeriesPointsProcedure(selectedSpectrumTypeForContinuumRemoval);
 
     let minXPoint;
     if (isExistingPointByX(points, point.X - fitPointSemiRange))
