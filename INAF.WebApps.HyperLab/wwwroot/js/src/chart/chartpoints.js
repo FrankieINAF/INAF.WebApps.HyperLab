@@ -68,7 +68,7 @@ function getPointsFromSeriesPoints(seriesPoints) {
 function getPointsFromSeriesPointsProcedure(spectrumType) {
     const seriesName = getSeriesNameFromSelectedSpectrumNameAndSpectrumType(selectedSpectrumForProcessing.Name, spectrumType);
     /* retrieve series points */
-    let seriesPoints = getSeriesPoints(seriesName);
+    let seriesPoints = getSeriesPoints(chart, seriesName);
     return getPointsFromSeriesPoints(seriesPoints);
 }
 
@@ -81,7 +81,7 @@ function getSpectrumPointsById(id) {
     if (index < 0)
         return;
 
-    let seriesPoints = getSeriesPoints(getSpectrumSeriesNameFromIndex(index));
+    let seriesPoints = getSeriesPoints(chart, getSpectrumSeriesNameFromIndex(index));
     if (!seriesPoints)
         return null;
 

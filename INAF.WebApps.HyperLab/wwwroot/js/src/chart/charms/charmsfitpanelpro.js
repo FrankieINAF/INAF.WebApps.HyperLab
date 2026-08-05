@@ -12,6 +12,7 @@ var P1Button = `${P1}${Button}`;
 var currentP0P1Selection;
 var currentAppendixSelectId;
 var appendixChartContainer;
+var appendixChart;
 
 var isAppendixAlreadyAvailable = false;
 var isAppendixPinned = false;
@@ -26,6 +27,7 @@ var SERIES_PXMIN_PXMAX_FIT_POINT = 'PXMinPXMaxFitSeriesPoint';
 
 
 var pXMinPXMaxSeries = [];
+var pXMinPXMaxDataSource = [];
 
 function appendToListPro(html) {
     $('#fitSegmentsListPro').append(html);
@@ -454,7 +456,7 @@ function showPXMinPXMaxFitting(P0P1Val, parentId, segmentIndex, P) {
     html += `        </div>`;
     /* chart */
     let chartId = `${id}Chart`;
-    html += `<div id="${chartId}" class="margin-horizontal-8" style="width: 100%"></div>`;
+    html += `<div id="${chartId}" class="margin-horizontal-8" style="width: 100%; height: 300px;"></div>`;
 
     html += `</div>`;
 
@@ -479,108 +481,119 @@ function showPXMinPXMaxFitting(P0P1Val, parentId, segmentIndex, P) {
 }
 
 function showPXMinPXMaxFittingChart(dataSource, series) {
-    let chart = appendixChartContainer.dxChart({
-        /* data */
-        rotated: isMobile(),
-        dataSource: dataSource,
-        animation: {
-            enabled: false,
+    /* keep a reference to the raw data-source, mutated in place by the fit-related helpers below */
+    pXMinPXMaxDataSource = dataSource;
+
+    if (appendixChart) {
+        appendixChart.dispose();
+        appendixChart = null;
+    }
+
+    const echartsSeries = createEchartSeries(series, pXMinPXMaxDataSource, { symbolSize: 6 });
+
+    appendixChart = echarts.init(appendixChartContainer[0], null, { renderer: "canvas" });
+    appendixChartContainer.css({ height: 400, width: 380 });
+
+    appendixChart.setOption({
+        animation: false,
+        backgroundColor: 'transparent',
+        grid: {
+            containLabel: true,
+            top: 20,
+            right: 20,
+            bottom: 50,
+            left: 20
         },
-        commonSeriesSettings: {
-            argumentField: "X",
-            type: "line",
-            point: { visible: true, size: 6 },
-        },
-        argumentAxis: {
-            name: 'argumentAxis',
-            argumentType: 'numeric',
-            type: 'continuous',
-            title: {
-                text: ChartWavelengthsLabel,
-                font: {
-                    color: 'white'
-                }
-            },
-            valueMarginsEnabled: true,
-            tickInterval: 10,
-            minorTickInterval: 5,
-            label: {
-                displayMode: "rotate",
-                rotationAngle: 45,
-                format: "decimal",
-                font: {
-                    color: 'white'
-                }
-            }
-        },
-        valueAxis: {
-            name: VALUE_AXIS,
-            type: 'continuous',
-            showZero: false,
-            visible: true,
-            title: {
-                text: ChartReflectanceLabel,
-                font: {
-                    color: 'white'
-                }
-            },
-            label: {
-                font: {
-                    color: 'white'
-                }
-            },
-            font: {
-                color: 'white'
-            }
-        },
-        series: series,
-        /* visualization options */
-        scrollBar: {
-            visible: false
-        },
-        size: {
-            height: 400,
-            width: 380
-        },
-        commonAxisSettings: {
-            color: 'white',
-            grid: {
-                visible: true,
-                color: 'white'
-            },
-            minorGrid: {
-                visible: false,
+        xAxis: {
+            type: 'value',
+            name: ChartWavelengthsLabel,
+            nameLocation: 'middle',
+            nameGap: 35,
+            nameTextStyle: { color: 'white' },
+            splitNumber: 10,
+            minorTick: { show: true },
+            splitLine: { show: true, lineStyle: { color: 'white' } },
+            minorSplitLine: { show: false },
+            axisLine: { lineStyle: { color: 'white' } },
+            axisLabel: {
+                rotate: 45,
                 color: 'white',
-            },
+                formatter: function (value) { return parseFloat(value); }
+            }
         },
-        crosshair: {
-            enabled: true
+        yAxis: {
+            type: 'value',
+            name: ChartReflectanceLabel,
+            nameLocation: 'middle',
+            nameGap: 45,
+            nameTextStyle: { color: 'white' },
+            scale: true,
+            axisLine: { lineStyle: { color: 'white' } },
+            min: function (value) {
+                return value.min * 0.99; // 1% sotto
+            },
+            max: function (value) {
+                return value.max * 1.01; // 1% sopra
+            },
+            axisLabel: {
+                formatter: v => parseFloat(v.toFixed(4)),
+                color: 'white'
+            },
+            splitLine: { show: true, lineStyle: { color: 'white' } },
+            minorSplitLine: { show: false }
+        },
+        axisPointer: {
+            show: true
         },
         legend: {
-            visible: false
+            show: false
         },
         /* interactivity options */
         tooltip: {
-            enabled: true,
-            customizeTooltip: function (arg) {
-                return {
-                    html: getTooltip(arg.seriesName, arg.argumentText, arg.valueText)
-                };
-            },
-            opacity: 1,
+            show: true,
+            trigger: 'item',
+            confine: true,
+            formatter: function (params) {
+                if (!params) return '';
+
+                const hovered = Array.isArray(params) ? params[0] : params;
+                if (!hovered) return '';
+
+                return getTooltip(hovered.seriesName, hovered.data[0], hovered.data[1]);
+            }
         },
-        /* export options */
-        export: {
-            enabled: false,
-        }
-    }).dxChart("instance");
+        series: echartsSeries
+    });
+
+    /* events */
+    appendixChart.on("rendered", function () {
+        executeAfter(() => {
+            resetVisualRange(appendixChart, false);
+        }, 200);
+    });
+}
+
+function refreshPXMinPXMaxChart() {
+    if (!appendixChart)
+        return;
+
+    const echartsSeries = createEchartSeries(pXMinPXMaxSeries, pXMinPXMaxDataSource, { symbolSize: 6 });
+    appendixChart.setOption({ series: echartsSeries }, { replaceMerge: ['series'] });
+}
+
+function setPointOnPXMinPXMaxChart(items, x, y, keyName) {
+    const index = items.findIndex(p => p.X == x);
+    if (index < 0)
+        return;
+
+    items[index][keyName] = y;
 }
 
 /* -------------------------------------------------------------------------------- */
 /* PMIN-PMAX FIT FUNCTION MANAGEMENT */
 /* -------------------------------------------------------------------------------- */
 function addPXMinPXMaxFitToChart(yValues) {
-    let items = dxChartGetItems(appendixChartContainer);
+    let items = pXMinPXMaxDataSource;
 
     let yValuesNum = yValues.length;
     for (var i = 0; i < yValuesNum; i++) {
@@ -588,6 +601,7 @@ function addPXMinPXMaxFitToChart(yValues) {
     }
 
     tryAddPXMinPXMaxFitPointsSeries();
+    refreshPXMinPXMaxChart();
 }
 
 function tryAddPXMinPXMaxFitPointsSeries() {
@@ -604,10 +618,12 @@ function tryAddPXMinPXMaxFitPointsSeries() {
 }
 
 function addPXMinPXMaxMaxValuePointToChart() {
-    const items = dxChartGetItems(appendixChartContainer);
+    const items = pXMinPXMaxDataSource;
 
     //console.log(`${addPMinPMaxMaxValuePoint.name} - adding ${currentP0P1Selection.P.X}, ${currentP0P1Selection.P.Y}...`);
-    setPointOnChart(items, currentP0P1Selection.P.X, currentP0P1Selection.P.Y, SERIES_PXMIN_PXMAX_MAX_VALUE_POINT);
+    setPointOnPXMinPXMaxChart(items, currentP0P1Selection.P.X, currentP0P1Selection.P.Y, SERIES_PXMIN_PXMAX_MAX_VALUE_POINT);
+
+    refreshPXMinPXMaxChart();
 }
 
 function tryAddPXMinPXMaxMaxValuePointSeries() {
@@ -729,7 +745,7 @@ function tryRemovePXMinPXMaxMaxValueSeries() {
         return;
 
     /* remove points */
-    const items = dxChartGetItems(appendixChartContainer);
+    const items = pXMinPXMaxDataSource;
 
     const itemsNum = items.length;
     for (var i = 0; i < itemsNum; i++) {
@@ -740,6 +756,8 @@ function tryRemovePXMinPXMaxMaxValueSeries() {
     /* remove series */
     const seriesIndex = findPXMinPXMaxChartSeriesIndexByName(SERIES_PXMIN_PXMAX_FIT);
     removePXMinPXMaxChartSeriesAt(seriesIndex);
+
+    refreshPXMinPXMaxChart();
 }
 
 /* -------------------------------------------------------------------------------- */
@@ -781,7 +799,7 @@ function removePXMinPXMaxChartSeriesAt(index) {
 }
 
 function removeYMaxValuePointFromChart(point) {
-    const items = dxChartGetItems(appendixChartContainer);
+    const items = pXMinPXMaxDataSource;
 
     const index = items.findIndex(p => p.X == point.X);
     if (index < 0)
@@ -789,13 +807,15 @@ function removeYMaxValuePointFromChart(point) {
     if (items[index][SERIES_PXMIN_PXMAX_MAX_VALUE_POINT]) {
         delete items[index][SERIES_PXMIN_PXMAX_MAX_VALUE_POINT];
     }
+
+    refreshPXMinPXMaxChart();
 }
 
 /* ################################################################################ */
 /* MANAGE VISUALIZATION OF SERIES CONTAINING SELECTED POINTS */
 /* ################################################################################ */
 function addBoundaryPointsPro(point) {
-    console.log(`${addBoundaryPointsPro.name} - point.P.X: ${point.P.X}, point.P.Y: ${point.P.Y}`);
+    //console.log(`${addBoundaryPointsPro.name} - point.P.X: ${point.P.X}, point.P.Y: ${point.P.Y}`);
     /* add left boundary */
     setPointWithErrorBarOnChart(point.PXMin.X, point.PXMin.Y, point.PXMin[MIN_Y], point.PXMin[MAX_Y]);
 
@@ -813,13 +833,12 @@ async function calculateMaximumInPointRangeAsync(xMin, xMax) {
 }
 
 function setPointWithErrorBarOnChart(pX, pY, pMinY, pMaxY) {
-    console.log(`${setPointWithErrorBarOnChart.name} - pX: ${pX}, pY: ${pY}, pMinY: ${pMinY}, pMaxY: ${pMaxY}`);
+    //console.log(`${setPointWithErrorBarOnChart.name} - pX: ${pX}, pY: ${pY}, pMinY: ${pMinY}, pMaxY: ${pMaxY}`);
     const option = chart.getOption();
 
     const alignedSeriesName = getSeriesNameFromSelectedSpectrumNameAndSpectrumType(selectedSpectrumForProcessing.Name, SPECTRUM_TYPE_ALIGNED);
     const alignedSeries = option.series.find(s => s.name === alignedSeriesName);
     const mainSeries = option.series.find(s => s.name === SERIES_FIT_POINTS);
-    const errorSeries = option.series.find(s => s.name === SERIES_FIT_POINTS_WITH_ERROR_BARS);
 
     if (!alignedSeries || !mainSeries) return;
 
@@ -831,11 +850,7 @@ function setPointWithErrorBarOnChart(pX, pY, pMinY, pMaxY) {
     if (index === -1)
         return;
 
-    addPointsToChartSeries(mainSeries.name, [createSimplePoint(pX, pY)]);
-
-    // if (errorSeries) {
-    //     addPointsToChartSeries(errorSeries.name, [[pX, pMinY, pMaxY]])
-    // }
+    addPointsToChartSeries(chart, mainSeries.name, [createSimplePoint(pX, pY)]);
 }
 
 
@@ -887,7 +902,7 @@ async function updateBoundaryPointProAsync(oldPointForFitting, requestedX, PMinM
     }
 
     /* refresh chart */
-    hideSpectraToBeHidden();
+    //hideSpectraToBeHidden();
 
     /* update segment centeron charms UI */
     const targetId = spinnerId.replace(PMinMax, spinnerId);

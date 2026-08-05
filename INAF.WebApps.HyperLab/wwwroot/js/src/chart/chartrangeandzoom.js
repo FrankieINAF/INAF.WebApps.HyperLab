@@ -4,17 +4,12 @@ var dxChartHiddenSeriesNames = [];
 /* -------------------------------------------------------------------------------- */
 /* VISUAL RANGE */
 /* -------------------------------------------------------------------------------- */
-function getYRange() {
-    const option = chart.getOption();
-    return computeGlobalRange(option, 1);
-}
-
-function computeGlobalRange(option, axisIndex) {
+function computeGlobalRange(targetChart, option, axisIndex) {
     let valmin = Infinity;
     let valmax = -Infinity;
 
     for (const s of option.series) {
-        const series = getSeries(s.name);
+        const series = getSeries(targetChart, s.name);
         if (series.name == SERIES_FIT_POINTS || series.name == SERIES_ALIGNMENT_CONSTANT_LINES || !series.isVisible())
             continue;
 
@@ -33,24 +28,39 @@ function computeGlobalRange(option, axisIndex) {
     return { valmin, valmax };
 }
 
-function updateAxisRange(axisIndex) {
-    const option = chart.getOption();
-    const { valmin, valmax } = computeGlobalRange(option, axisIndex);
-
-    if (axisIndex === 0) {
-        option.xAxis[0].min = valmin - 10;
-        option.xAxis[0].max = valmax + 10;
-    } else if (axisIndex === 1) {
-        option.yAxis[0].min = valmin * 0.98;
-        option.yAxis[0].max = valmax * 1.02;
-    }
-
-    chart.setOption(option);
+function getYRange(targetChart) {
+    const option = targetChart.getOption();
+    return computeGlobalRange(targetChart, option, 1);
 }
 
-function resetVisualRange() {
-    updateAxisRange(0);
-    updateAxisRange(1);
+function updateAxisRange(targetchart, axisIndex, extendRange = true) {
+    const option = targetchart.getOption();
+    const { valmin, valmax } = computeGlobalRange(targetchart, option, axisIndex);
+
+    if (axisIndex === 0) {
+        if (extendRange) {
+            option.xAxis[0].min = valmin - 10;
+            option.xAxis[0].max = valmax + 10;
+        } else {
+            option.xAxis[0].min = valmin;
+            option.xAxis[0].max = valmax;
+        }
+    } else if (axisIndex === 1) {
+        if (extendRange) {
+            option.yAxis[0].min = valmin * 0.98;
+            option.yAxis[0].max = valmax * 1.02;
+        } else {
+            option.yAxis[0].min = valmin;
+            option.yAxis[0].max = valmax;
+        }
+    }
+
+    targetchart.setOption(option);
+}
+
+function resetVisualRange(targetchart, extendRange = true) {
+    updateAxisRange(targetchart, 0, extendRange);
+    updateAxisRange(targetchart, 1, extendRange);
 }
 
 function resetZoom(visualRangeX, visualRangeY) {

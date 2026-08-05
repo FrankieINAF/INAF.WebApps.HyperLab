@@ -23,7 +23,6 @@ var selectedSpectrumTypeForContinuumRemoval; //defined just to be used if change
 
 var SERIES_FIT_POINT = 'FitPoint';
 var SERIES_FIT_POINTS = 'FitPointsSeries';
-var SERIES_FIT_POINTS_WITH_ERROR_BARS = 'FitPointsSeriesWithErrorBars';
 var SERIES_HIGHLIGHTED_SEGMENT = 'HighlightedSegmentSeries';
 var SERIES_FIT_POINTS_CONSTANT_LINES = 'FitPointsConstantLinesSeries';
 
@@ -301,7 +300,7 @@ function createFitPointsConstantLinesSeries() {
     let series = createSeries('fitId', SERIES_FIT_POINTS_CONSTANT_LINES, VALUE_AXIS, 'darkRed');
     let echartsSeries = createEchartSeries([series], points);
     echartsSeries[0].lineStyle = { opacity: 0 };
-    addChartSeries(echartsSeries);
+    addChartSeries(chart, echartsSeries);
 }
 
 function getFitPointsConstantLines() {
@@ -464,12 +463,12 @@ function switchToProMode() {
 
 function tryRemoveSeriesAndPoints() {
     /* remove fit points */
-    removeSeries(SERIES_FIT_POINTS);
+    removeSeries(chart, SERIES_FIT_POINTS);
 
     /* remove continuum */
     const seriesName = getSeriesNameFromSelectedSpectrumNameAndSpectrumType(selectedSpectrumForProcessing.Name, SPECTRUM_TYPE_CONTINUUM)
-    if (seriesName && isChartSeriesAvailableByName(seriesName))
-        removeSeries(seriesName);
+    if (seriesName && isChartSeriesAvailableByName(chart, seriesName))
+        removeSeries(chart, seriesName);
 
     removeFitPointsConstantLines();
 }
@@ -561,7 +560,7 @@ function setNumOfPointsForMissingPoints(value) {
 async function addFitPointToChartAsync(point, isFromUserAction = false) {
     if (currentFitMode == FIT_MODE_CORE) {
         /* add the only selected point to fit series */
-        addFitPointToChartSeries(point.P);
+        addFitPointToChartSeries(chart, point.P);
     } else {
         /* calculate points to create a 'selected point range' and add boundary points */
 
@@ -574,7 +573,7 @@ async function addFitPointToChartAsync(point, isFromUserAction = false) {
         updatePointsForFittingArray(point, maxPoint);
 
         /* 1) add the selected point to fit series */
-        addFitPointToChartSeries(createSimplePoint(maxPoint.X, maxPoint.Y));
+        addFitPointToChartSeries(chart, createSimplePoint(maxPoint.X, maxPoint.Y));
 
         /* 2) in 'pro' mode, add boundary points together with the selected point */
         addBoundaryPointsPro(point);
@@ -600,7 +599,7 @@ function removeFitPointsFromChart(xValues) {
 function tryAddFitPointsSeries() {
     let fitPointsWithEchartsSeries;
 
-    if (!isChartSeriesAvailableByName(SERIES_FIT_POINTS)) {
+    if (!isChartSeriesAvailableByName(chart, SERIES_FIT_POINTS)) {
         /* add series of points for fitting */
         const fitPointsSeries = createSeries(SERIES_FIT_POINT, SERIES_FIT_POINTS, VALUE_AXIS, 'darkRed')
         const echartsSeries = createEchartSeries(
@@ -614,99 +613,14 @@ function tryAddFitPointsSeries() {
             }
         );
 
-        addChartSeries(echartsSeries);
+        addChartSeries(chart, echartsSeries);
 
         fitPointsEchartsSeries = echartsSeries;
     } else {
-        fitPointsEchartsSeries = findChartSeriesByName(SERIES_FIT_POINTS);
+        fitPointsEchartsSeries = findChartSeriesByName(chart, SERIES_FIT_POINTS);
     }
 
     return fitPointsEchartsSeries;
-}
-
-function tryAddFitPointsWithErrorBarsSeries(fitPoints) {
-    let fitPointsWithErrorBarsEchartsSeries;
-
-    if (!isChartSeriesAvailableByName(SERIES_FIT_POINTS_WITH_ERROR_BARS)) {
-        /* add series of points for fitting */
-        const fitPointsWithErrorBarsSeries = createSeries(SERIES_FIT_POINT, SERIES_FIT_POINTS_WITH_ERROR_BARS, VALUE_AXIS, 'darkRed')
-        const echartsSeries = createEchartSeries(
-            fitPointsWithErrorBarsSeries,
-            fitPoints,
-            {
-                name: SERIES_FIT_POINTS_WITH_ERROR_BARS,
-                type: "custom",
-                itemStyle: { color: "darkRed" },
-                renderItem: function (params, api) {
-                    const x = api.value(0);
-                    const yLow = api.value(1);
-                    const yHigh = api.value(2);
-
-                    const low = api.coord([x, yLow]);
-                    const high = api.coord([x, yHigh]);
-
-                    const capSize = 6;
-
-                    return {
-                        type: "group",
-                        children: [
-                            // linea verticale
-                            {
-                                type: "line",
-                                shape: {
-                                    x1: low[0],
-                                    y1: low[1],
-                                    x2: high[0],
-                                    y2: high[1]
-                                },
-                                style: {
-                                    stroke: "#000",
-                                    lineWidth: 2
-                                }
-                            },
-                            // cappuccio basso
-                            {
-                                type: "line",
-                                shape: {
-                                    x1: low[0] - capSize,
-                                    y1: low[1],
-                                    x2: low[0] + capSize,
-                                    y2: low[1]
-                                },
-                                style: {
-                                    stroke: "#000",
-                                    lineWidth: 2
-                                }
-                            },
-                            // cappuccio alto
-                            {
-                                type: "line",
-                                shape: {
-                                    x1: high[0] - capSize,
-                                    y1: high[1],
-                                    x2: high[0] + capSize,
-                                    y2: high[1]
-                                },
-                                style: {
-                                    stroke: "#000",
-                                    lineWidth: 2
-                                }
-                            }
-                        ]
-                    };
-                },
-                data: fitPoints.map(p => [p.X, p.MIN_Y, p.MAX_Y])
-            }
-        );
-
-        addChartSeries(echartsSeries);
-
-        fitPointsWithErrorBarsEchartsSeries = echartsSeries;
-    } else {
-        fitPointsWithErrorBarsEchartsSeries = findChartSeriesByName(SERIES_FIT_POINTS_WITH_ERROR_BARS);
-    }
-
-    return fitPointsWithErrorBarsEchartsSeries;
 }
 
 function tryRemoveFitPointsSeries() {
@@ -744,8 +658,7 @@ async function addSelectedPointForFittingAsync(point, isFromUserAction = false, 
 
             /* add series of points for fitting, if not already existant */
             tryAddFitPointsSeries();
-            if (currentFitMode == FIT_MODE_PRO)
-                tryAddFitPointsWithErrorBarsSeries(getPointsForFittingArray());
+
 
             /* add point to fit series */
             await addFitPointToChartAsync(point, isFromUserAction);
@@ -794,7 +707,7 @@ function cleanPointsPanel() {
 }
 
 function isFitPointAvailableAtCurrentX(x) {
-    const fitSeries = findChartSeriesByName(SERIES_FIT_POINTS);
+    const fitSeries = findChartSeriesByName(chart, SERIES_FIT_POINTS);
     if (!fitSeries || !fitSeries.data || fitSeries.data.length === 0)
         return false;
 
@@ -1212,8 +1125,8 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1, isHidingO
     const continuumSpectrum = tryAddContinuumSpectrum(spectrumIdForContinuum);
 
     const spectrumSeriesName = createSeriesNameFromSpectrumNameAndType(continuumSpectrum.Name, continuumSpectrum.SpectrumType);
-    if (isChartSeriesAvailableByName(spectrumSeriesName))
-        addPointsToChartSeries(spectrumSeriesName, processingResult.Points);
+    if (isChartSeriesAvailableByName(chart, spectrumSeriesName))
+        addPointsToChartSeries(chart, spectrumSeriesName, processingResult.Points);
     else
         addProcessedSpectrum(continuumSpectrum, processingResult.Points, SPECTRUM_TYPE_CONTINUUM);
 
@@ -1270,7 +1183,7 @@ function tryAddContinuumSpectrumSeries(continuumSpectrum) {
     let spectrumSeriesName = createSeriesNameFromSpectrumNameAndType(continuumSpectrum.Name, continuumSpectrum.SpectrumType);
 
     /* check whether series is already present or not */
-    if (isSeriesAlreadyPresent(spectrumSeriesName))
+    if (isChartSeriesAvailableByName(chart, spectrumSeriesName))
         return;
 
     /* add new series */
@@ -1332,7 +1245,7 @@ function removeFitPointsSeriesPoints() {
     removeFitPointsFromChart(xValues);
 
     /* reset visual range to make ref whites appear in chart */
-    resetVisualRange();
+    resetVisualRange(chart);
 
     /* clear 'pointsForFitting' array  */
     clearPointsForFittingArray();
@@ -1413,7 +1326,7 @@ function buildContinuumRemovedSpectrumCompleted(filename = null, areBreaksVisibl
     refreshCharmsLegend();
 
     /* refresh chart */
-    executeAfter(resetVisualRange(), 200);
+    executeAfter(resetVisualRange(chart), 200);
 
     /* if available, showbuttons for starting band analysis */
     let bandAnalysisButtons = $(`[id$="${BandAnalysisButton}"]`);
@@ -1870,10 +1783,10 @@ async function saveContinuumRemovedSpectrumAsync(spectrum) {
                 /* 4) update series in chart to ensure correspondance between series and valueField of aligned spectrum */
                 updateProcessedSpectrumSeries(tempContinuumId, buildId(obj.Id), obj.Id);
 
-                resetVisualRange();
+                resetVisualRange(chart);
 
                 /* mantain hidden unwanted spectra */
-                hideSpectraToBeHidden();
+                //hideSpectraToBeHidden();
 
                 /* call method for checking whether a version of aligned file is already saved on cloud or not */
                 callCheckIsSpectrumOfTypeSavedOnCloudForContinuumRemovedAsync(spectraInfo[index].Name);

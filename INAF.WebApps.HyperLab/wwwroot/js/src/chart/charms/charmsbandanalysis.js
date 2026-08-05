@@ -138,7 +138,7 @@ async function executeBandAnalysisAsync(series, items) {
     clearBandAnalysisProcedure(items);
 
     /* find points in range selected by the highlightened band */
-    const seriesPoints = getSeriesPoints(getSpectrumSeriesNameFromSpectrum(getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED)));
+    const seriesPoints = getSeriesPoints(chart, getSpectrumSeriesNameFromSpectrum(getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED)));
     const pointsInRange = extractSpectrumRange(getPointsFromSeriesPoints(seriesPoints), lastSelectedSegmentForBand.P0.P.X, lastSelectedSegmentForBand.P1.P.X);
 
     /* extract y values from points */
@@ -199,7 +199,7 @@ async function executeBandAnalysisAsync(series, items) {
     evaluateFwhmAsync(items, pointsInRangeXValues, pointsInRangeYValues, bandCenter.X, bandDepth);
 
     /* reset visual range to make ref whites appear in chart */
-    resetVisualRange();
+    resetVisualRange(chart);
 
     enableByClassElem('bandAnalysisDataButtonSave');
     showByClass('bandAnalysisButtonDownload');
@@ -295,7 +295,7 @@ function showBandCenterOnChart(items, wavelength, bandCenter) {
 
     let bandCenterSeries = createSeriesFromSpectrumName(SERIES_BAND_CENTER_POINT, SERIES_BAND_CENTER, '#9933ff', true, true);
     bandCenterSeries.point.size = 12;
-    addChartSeries(bandCenterSeries);
+    addChartSeries(chart, bandCenterSeries);
 
     hideSpectraToBeHidden();
 }
@@ -321,7 +321,7 @@ function showGaussianFit(items, xValues, yValues, fitResult) {
     addChartSeriesItems(items, xValues, invertedFitResultYValues, SERIES_NORMAL_FIT_POINT);
 
     let normalFitSeries = createSeriesFromSpectrumName(SERIES_NORMAL_FIT_POINT, SERIES_NORMAL_FIT, BAND_LINES_COLOR, true, false);
-    addChartSeries(normalFitSeries);
+    addChartSeries(chart, normalFitSeries);
 
     hideSpectraToBeHidden();
 }
@@ -336,10 +336,10 @@ function showFwhm(items, leftMargin, rightMargin) {
         items[indexRightMargin][SERIES_FWHM_POINT] = rightMargin.Y;
 
     let fwhmSeries = createSeriesFromSpectrumName(SERIES_FWHM_POINT, SERIES_FWHM, BAND_LINES_COLOR, false, false);
-    addChartSeries(fwhmSeries);
+    addChartSeries(chart, fwhmSeries);
 
     hideSpectraToBeHidden();
-    resetVisualRange();
+    resetVisualRange(chart);
 }
 
 // ONLY FOR DEVELOPMENT
@@ -347,7 +347,7 @@ function showInvertedBand(items, xValues, invertedYValues) {
     addChartSeriesItems(items, xValues, invertedYValues, SERIES_INVERTED_BAND_POINT);
 
     let invertedBandSeries = createSeriesFromSpectrumName(SERIES_INVERTED_BAND_POINT, SERIES_INVERTED_BAND, '#9933ff', true, false);
-    addChartSeries(invertedBandSeries);
+    addChartSeries(chart, invertedBandSeries);
 
     hideSpectraToBeHidden();
 }
@@ -461,7 +461,7 @@ function initLastSelectedSegmentForBand() {
 
 async function highlightBandAsync(seriesName, segmentForFitting, items) {
     /* retrieve (continuum-removed) series points between the 2 points which define the band  */
-    let seriesPoints = getSeriesPoints(seriesName);
+    let seriesPoints = getSeriesPoints(chart, seriesName);
     let pointsInRange = extractSpectrumRange(getPointsFromSeriesPoints(seriesPoints), segmentForFitting.P0.P.X, segmentForFitting.P1.P.X);
 
     /* extract the x values */
@@ -498,9 +498,9 @@ async function highlightBandAsync(seriesName, segmentForFitting, items) {
         color: BAND_AREA_COLOR,
         showInLegend: false,
     };
-    addChartSeries(bandSeries);
+    addChartSeries(chart, bandSeries);
 
-    resetVisualRange();
+    resetVisualRange(chart);
 }
 
 function removeHighlightenedBand(items) {
@@ -517,12 +517,9 @@ function removeHighlightenedBand(items) {
 
     removeChartSeriesByNameProcedure(chartContainer, SERIES_HIGHLIGHTENED_BAND);
 
-    resetVisualRange();
+    resetVisualRange(chart);
 
-    hideSpectraToBeHidden();
-
-    /* reset visual range to make ref whites appear in chart */
-    //resetVisualRange();
+    //hideSpectraToBeHidden();
 }
 
 /* ################################################################################ */
@@ -595,7 +592,7 @@ async function downloadBandAnalysisDataAsync(id) {
     let items = dxChartGetItems(chartContainer);
     clearBandAnalysisProcedure(items);
 
-    resetVisualRange();
+    resetVisualRange(chart);
 
     let model = {
         Id: id
@@ -609,7 +606,7 @@ async function downloadBandAnalysisDataAsync(id) {
         setBandArea(obj.ResponseObject[0].BandArea);
 
         /* find points in range selected by the highlightened band */
-        let seriesPoints = getSeriesPoints(getSpectrumSeriesNameFromSpectrum(getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED)));
+        let seriesPoints = getSeriesPoints(chart, getSpectrumSeriesNameFromSpectrum(getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM_REMOVED)));
         let pointsInRange = extractSpectrumRange(getPointsFromSeriesPoints(seriesPoints), obj.ResponseObject[0].LeftBoundary, obj.ResponseObject[0].RightBoundary);
 
         /* extract y values from points */
@@ -622,7 +619,7 @@ async function downloadBandAnalysisDataAsync(id) {
             pointsInRangeYValues);
         showGaussianFit(items, pointsInRangeXValues, pointsInRangeYValues, fitResult);
 
-        resetVisualRange();
+        resetVisualRange(chart);
 
         /* build-up fwhm starting from retrieved data */
         await rebuildFwhmAsync(items,
@@ -639,9 +636,9 @@ async function downloadBandAnalysisDataAsync(id) {
         /* show band center */
         showBandCenterOnChart(items, wavelength, bandCenter);
 
-        resetVisualRange();
+        resetVisualRange(chart);
 
-        hideSpectraToBeHidden();
+        //hideSpectraToBeHidden();
 
         setLoadingCircleIsVisible(false);
     }

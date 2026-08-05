@@ -148,7 +148,7 @@ function createAlignmentConstantLinesSeries() {
     let series = createSeries('alignmentId', SERIES_ALIGNMENT_CONSTANT_LINES, VALUE_AXIS, 'darkGreen');
     let echartsSeries = createEchartSeries([series], points);
     echartsSeries[0].lineStyle = { opacity: 0 };
-    addChartSeries(echartsSeries);
+    addChartSeries(chart, echartsSeries);
 }
 
 function getAlignmentConstantLines() {
@@ -525,9 +525,9 @@ function getRefWhiteIds() {
 function setRefWhitesHidden() {
     const refWhitesIds = getRefWhiteIds();
     refWhitesIds.forEach(function (id) {
-        const series = findSeriesFromSpectrumId(id);
+        const series = findSeriesFromSpectrumId(chart, id);
         if (series.isVisible())
-            hideSeries(series.name);
+            hideSeries(chart, series.name);
     });
 }
 
@@ -550,11 +550,11 @@ async function loadWhiteSpectraForAlignmentAsync() {
             whiteSeries[i].color = color;
         }
         const echartsSeries = createEchartSeries(whiteSeries, obj.Points);
-        addChartSeries(echartsSeries);
+        addChartSeries(chart, echartsSeries);
 
         /* reset visual range to make ref whites appear in chart */
         if (!isCheckboxChecked('charmsSwitchAutoAlignSpectrum') && !isCheckboxChecked('charmsSwitchAutoDownloadAlignedSpectrum'))
-            resetVisualRange();
+            resetVisualRange(chart);
 
         loadingCheckObj.stopLoading();
         /* enable button for alignment and change title */
@@ -610,7 +610,7 @@ function unloadWhiteSpectraForAlignment() {
     }
 
     /* reset visual range to make ref whites disappear in chart */
-    resetVisualRange();
+    resetVisualRange(chart);
 
     /* enable button for alignment and change title */
     setButtonAlignEnabled('alignmentButtonExecute', false, AlignmentButtonDisabledMessage);
@@ -824,7 +824,7 @@ async function alignSpectrumAsync() {
             hideSpectraOtherThanType(SPECTRUM_TYPE_ALIGNED);
 
             /* update y-axis range to fit the aligned spectrum */
-            resetVisualRange();
+            resetVisualRange(chart);
         }
         else
             isOk = false
@@ -893,7 +893,7 @@ function buildAlignedSpectrumCompleted() {
     refreshCharmsLegend();
 
     /* reset visual range to make all available spectra visible */
-    //resetVisualRange();
+    //resetVisualRange(chart);
 }
 
 function getRefWhiteYMax() {

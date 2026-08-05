@@ -63,10 +63,10 @@ function createCharmsLegend() {
         if (name == SERIES_HIGHLIGHTED_SEGMENT)
             continue;
 
-        let rawcolor = getSeriesColor(rawSpectrumId);
+        let rawcolor = getSeriesColor(chart, rawSpectrumId);
 
         let opacity = 1;
-        let series = findSeriesFromSpectrumId(rawSpectrumId);
+        let series = findSeriesFromSpectrumId(chart, rawSpectrumId);
         if (!series)
             continue;
         if (!series.isVisible()) opacity = 0.5;
@@ -90,11 +90,11 @@ function createCharmsLegend() {
             for (var j = 0; j < childrenNum; j++) {
                 let childId = spectraTree[i].Children[j];
 
-                let childcolor = getSeriesColor(childId);
+                let childcolor = getSeriesColor(chart, childId);
 
                 let isOpaque = true;
 
-                let series = findSeriesFromSpectrumId(childId);
+                let series = findSeriesFromSpectrumId(chart, childId);
                 if (!series.isVisible()) {
                     opacity = 0.5;
                     isOpaque = false;
@@ -151,17 +151,17 @@ function onNodeClick(evt) {
 }
 
 function onSeriesClick(id) {
-    const series = findSeriesFromSpectrumId(id);
+    const series = findSeriesFromSpectrumId(chart, id);
 
     const isSeriesContinuum = series.name.includes(getSpectrumTypeString(8));
 
     if (series.isVisible()) {
-        hideSeries(series.name);
+        hideSeries(chart, series.name);
         $(`#spectrum${id}`).css('background-color', 'transparent');
         if (isSeriesContinuum)
             setSpectrumVisibilityByName(SERIES_FIT_POINTS, false);
     } else {
-        showSeries(series.name);
+        showSeries(chart, series.name);
         if (isSeriesContinuum)
             setSpectrumVisibilityByName(SERIES_FIT_POINTS, true);
         const colorValue = $(`#spectrum${id}`).css('color');
@@ -169,12 +169,12 @@ function onSeriesClick(id) {
     }
 
     /* reset visual range to allow lines out of current visual range to be visualized */
-    resetVisualRange();
+    resetVisualRange(chart);
 }
 
 function onSeriesMouseOut(id) {
     const seriesName = findSeriesNameFromSpectrumId(id);
-    const series = getSeries(seriesName);
+    const series = getSeries(chart, seriesName);
     chart.dispatchAction({
         type: "downplay",
         seriesName: seriesName
@@ -183,7 +183,7 @@ function onSeriesMouseOut(id) {
 
 function onSeriesMouseOver(id) {
     const seriesName = findSeriesNameFromSpectrumId(id);
-    const series = getSeries(seriesName);
+    const series = getSeries(chart, seriesName);
     chart.dispatchAction({
         type: "highlight",
         seriesName: seriesName

@@ -383,7 +383,7 @@ function createChart(points, series, axisRange) {
     /* events */
     chart.on("rendered", function () {
         initJoystickController(); // defined in joystick.js
-        resetVisualRange();
+        resetVisualRange(chart);
     });
 
     chart.on("click", function (evt) {

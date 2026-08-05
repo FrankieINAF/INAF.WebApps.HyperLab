@@ -3,7 +3,7 @@
 function hideSpectraToBeHidden() {
     let spectraToBeHidden = getAllSeries().filter(x => !x.isVisible());
     spectraToBeHidden.forEach(function (item) {
-        hideSeries(item.name);
+        hideSeries(chart, item.name);
     });
 
     return spectraToBeHidden.length;

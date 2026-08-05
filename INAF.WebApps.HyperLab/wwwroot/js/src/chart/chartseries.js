@@ -1,5 +1,5 @@
-﻿function addChartSeries(newseries) {
-    const option = chart.getOption();
+﻿function addChartSeries(targetChart, newseries) {
+    const option = targetChart.getOption();
 
     // Normalizza: se non è array, lo trasformo in array
     const seriesToAdd = Array.isArray(newseries) ? newseries : [newseries];
@@ -15,14 +15,14 @@
     }
 
     if (updated) {
-        chart.setOption(option);
-        updateAxisRange(0);
-        updateAxisRange(1);
+        targetChart.setOption(option);
+        updateAxisRange(targetChart, 0);
+        updateAxisRange(targetChart, 1);
     }
 }
 
-function addPointsToChartSeries(seriesName, newPoints) {
-    const option = chart.getOption();
+function addPointsToChartSeries(targetChart, seriesName, newPoints) {
+    const option = targetChart.getOption();
     const series = option.series.find(s => s.name === seriesName);
     if (!series) return;
 
@@ -44,17 +44,17 @@ function addPointsToChartSeries(seriesName, newPoints) {
     // Sort the series by X (necessary for line series)
     series.data.sort((a, b) => a[0] - b[0]);
 
-    chart.setOption(option);
+    targetChart.setOption(option);
 }
 
-function findChartSeriesByName(name) {
-    return chart.getOption().series.find(s => s.name === name) ?? null;
+function findChartSeriesByName(targetChart, name) {
+    return targetChart.getOption().series.find(s => s.name === name) ?? null;
 }
 
-function findSeriesFromSpectrumId(spectrumId) {
-    if (chart.getOption().series.some(s => s.valueField === buildId(spectrumId))) {
-        const series = chart.getOption().series.find(s => s.valueField === buildId(spectrumId));
-        return getSeries(series.name);
+function findSeriesFromSpectrumId(targetChart, spectrumId) {
+    if (targetChart.getOption().series.some(s => s.valueField === buildId(spectrumId))) {
+        const series = targetChart.getOption().series.find(s => s.valueField === buildId(spectrumId));
+        return getSeries(targetChart, series.name);
     }
 
     return null;
@@ -65,26 +65,26 @@ function findSeriesNameFromSpectrumId(spectrumId) {
     return getSpectrumSeriesNameFromIndex(index);
 }
 
-function getAllSeries() {
-    return chart.getOption().series.map(function (s) {
+function getAllSeries(targetChart) {
+    return targetChart.getOption().series.map(function (s) {
         return {
             name: s.name,
             getColor: function () { return s.color; },
             isVisible: function () { return dxChartHiddenSeriesNames.indexOf(s.name) == -1; },
-            hide: function () { hideSeries(s.name); },
-            show: function () { showSeries(s.name); }
+            hide: function () { hideSeries(targetChart, s.name); },
+            show: function () { showSeries(targetChart, s.name); }
         };
     });
 }
 
-function getSeries(seriesName) {
-    const series = chart.getOption().series.find(s => s.name == seriesName);
+function getSeries(targetChart, seriesName) {
+    const series = targetChart.getOption().series.find(s => s.name == seriesName);
     return {
         name: series.name,
         getColor: function () { return series.color; },
         isVisible: function () { return dxChartHiddenSeriesNames.indexOf(series.name) == -1; },
-        hide: function () { hideSeries(series.name); },
-        show: function () { showSeries(series.name); }
+        hide: function () { hideSeries(targetChart, series.name); },
+        show: function () { showSeries(targetChart, series.name); }
     };
 }
 
@@ -95,7 +95,7 @@ function getSeriesNameFromSelectedSpectrumNameAndSpectrumType(selectedSpectrumNa
     return createSeriesNameFromSpectrumNameAndType(spectrum.Name, spectrum.SpectrumType);
 }
 
-function getSeriesColor(spectrumId) {
+function getSeriesColor(targetChart, spectrumId) {
     let index = getSpectrumIndexBySpectrumId(spectrumId);
     if (index < 0)
         return;
@@ -103,16 +103,16 @@ function getSeriesColor(spectrumId) {
     if (spectraInfo[index].Color)
         return spectraInfo[index].Color;
     else {
-        let index2 = getAllSeries(chartContainer).findIndex(x => x.name == createSeriesNameFromSpectrumNameAndType(spectraInfo[index].Name, spectraInfo[index].SpectrumType));
+        let index2 = getAllSeries(targetChart).findIndex(x => x.name == createSeriesNameFromSpectrumNameAndType(spectraInfo[index].Name, spectraInfo[index].SpectrumType));
         if (index2 < 0)
             return;
-        return getAllSeries()[index2].getColor();
+        return getAllSeries(targetChart)[index2].getColor();
     }
 }
 
-function getSeriesPoints(seriesName) {
+function getSeriesPoints(targetChart, seriesName) {
     try {
-        const found = chart.getOption().series.find(s => s.name == seriesName);
+        const found = targetChart.getOption().series.find(s => s.name == seriesName);
         if (!found)
             return null;
 
@@ -122,27 +122,27 @@ function getSeriesPoints(seriesName) {
     }
 }
 
-function hideSeries(seriesName) {
+function hideSeries(targetChart, seriesName) {
     try {
-        if (getSeries(seriesName) == null)
+        if (getSeries(targetChart, seriesName) == null)
             return;
 
-        chart.dispatchAction({ type: 'legendUnSelect', name: seriesName });
+        targetChart.dispatchAction({ type: 'legendUnSelect', name: seriesName });
         if (dxChartHiddenSeriesNames.indexOf(seriesName) == -1)
             dxChartHiddenSeriesNames.push(seriesName);
 
-        resetVisualRange();
+        resetVisualRange(targetChart);
     } catch (e) {
         console.log(`${hideSeries.name} - seriesName: ${seriesName} - ex: ${e}`);
     }
 }
 
-function isChartSeriesAvailableByName(name) {
-    return findChartSeriesByName(name) !== null;
+function isChartSeriesAvailableByName(targetChart, name) {
+    return findChartSeriesByName(targetChart, name) !== null;
 }
 
-function removeSeries(seriesName) {
-    const option = chart.getOption();
+function removeSeries(targetChart, seriesName) {
+    const option = targetChart.getOption();
 
     option.series = option.series.filter(s => {
         const name = Array.isArray(s.name) ? s.name[0] : s.name;
@@ -150,36 +150,36 @@ function removeSeries(seriesName) {
     });
 
     // notMerge = true per evitare che ECharts fonda con le vecchie serie
-    chart.setOption(option, true);
+    targetChart.setOption(option, true);
 }
 
-function setSeriesVisible(container, seriesName, isVisible) {
+function setSeriesVisible(targetChart, seriesName, isVisible) {
     try {
         if (isVisible)
-            showSeries(seriesName);
+            showSeries(targetChart, seriesName);
         else
-            hideSeries(seriesName);
+            hideSeries(targetChart, seriesName);
     } catch (e) {
         console.log(`${setSeriesVisible.name} - seriesName: ${seriesName} - ex: ${e}`);
     }
 }
 
-function showSeries(seriesName) {
+function showSeries(targetChart, seriesName) {
     try {
-        if (getSeries(seriesName) == null)
+        if (getSeries(targetChart, seriesName) == null)
             return;
 
-        chart.dispatchAction({ type: 'legendSelect', name: seriesName });
+        targetChart.dispatchAction({ type: 'legendSelect', name: seriesName });
         dxChartHiddenSeriesNames = dxChartHiddenSeriesNames.filter(x => x != seriesName);
 
-        resetVisualRange();
+        resetVisualRange(targetChart);
     } catch (e) {
         console.log(`${showSeries.name} - seriesName: ${seriesName} - ex: ${e}`);
     }
 }
 
-function updateSeriesColor(seriesName, newColor) {
-    const option = chart.getOption();
+function updateSeriesColor(targetChart, seriesName, newColor) {
+    const option = targetChart.getOption();
     const series = option.series.find(s => s.name === seriesName);
     if (!series) return;
 
@@ -198,17 +198,17 @@ function updateSeriesColor(seriesName, newColor) {
     // symbol color (scatter, line with showSymbol)
     series.color = newColor;
 
-    chart.setOption(option);
+    targetChart.setOption(option);
 }
 
 /* -------------------------------------------------------------------------------- */
 /* ADD FIT POINT */
 /* -------------------------------------------------------------------------------- */
-function addFitPointToChartSeries(point) {
-    const option = chart.getOption();
+function addFitPointToChartSeries(targetChart, point) {
+    const option = targetChart.getOption();
     const series = option.series.find(s => s.name === SERIES_FIT_POINTS);
     if (series) {
         series.data.push([point.X, point.Y]);
-        chart.setOption(option);
+        targetChart.setOption(option);
     }
 }

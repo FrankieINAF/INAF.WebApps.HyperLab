@@ -314,7 +314,7 @@ function restoreOldSpectraColor() {
 function updateSpectrumColor(spectrum, color) {
     const seriesName = createSeriesNameFromSpectrumNameAndType(spectrum.Name, spectrum.SpectrumType);
 
-    const series = findChartSeriesByName(seriesName);
+    const series = findChartSeriesByName(chart, seriesName);
     if (series) {
 
         // check: color is already the desired one?
@@ -413,13 +413,13 @@ function loadSpectraToBeProcessed() {
 function manageSpectraVisibility(selectedSpectrumId) {
     /* show selected spectrum */
     let seriesName = getSpectrumSeriesNameFromIndex(getSpectrumIndexBySpectrumId(selectedSpectrumId));
-    showSeries(seriesName);
+    showSeries(chart, seriesName);
 
     /* hide all other spectra */
     let spectraNum = spectraInfo.length;
     for (var i = 0; i < spectraNum; i++) {
         if (spectraInfo[i].Id != selectedSpectrumId) {
-            hideSeries(getSeriesNameFromSpectrumId(spectraInfo[i].Id));
+            hideSeries(chart, getSeriesNameFromSpectrumId(spectraInfo[i].Id));
         }
     }
 }
@@ -563,7 +563,7 @@ async function manageSelectedSpectrumAsync(selectedSpectrum, idsToBeRemoved) {
         await manageTabsForSelectedSpectrumAsync(selectedSpectrum);
 
         /* reset visual range to allow lines out of current visual range to be visualized */
-        resetVisualRange();
+        resetVisualRange(chart);
 
         setLoadingCircleIsVisible(false);
     }, 250);
@@ -893,7 +893,7 @@ async function removeProcessedSpectrumAsync(processedSpectrum,
     /* show RAW spectrum */
     showSpectrumParent(processedSpectrum);
 
-    resetVisualRange();
+    resetVisualRange(chart);
 
     /* refresh legend, if opened */
     refreshCharmsLegend();
@@ -959,9 +959,9 @@ async function removeSpectraProcedureSimpleAsync() {
         await removeSpectrumProcedureAsync(spectrumToBeRemoved);
     });
 
-    hideSpectraToBeHidden();
+    //hideSpectraToBeHidden();
 
-    resetVisualRange();
+    resetVisualRange(chart);
 }
 
 async function removeSpectrumProcedureAsync(spectrumToBeRemoved, isRemovalOnCloudRequested = false) {
@@ -1035,10 +1035,10 @@ function removeSpectrumFromChart(seriesname, id) {
     removeSpectraById([id]);
 
     /* remove series from chart */
-    removeSeries(seriesname);
+    removeSeries(chart, seriesname);
 
     /* reset visual range to make ref whites appear in chart */
-    resetVisualRange();
+    resetVisualRange(chart);
 }
 
 async function removeSpectrumOnCloudAsync(id) {
@@ -1093,7 +1093,7 @@ function switchVisibilityOfChildrenSpectraRemovalMessage(id, isVisible) {
 function showSpectrumParent(currentSpectrum) {
     const parentIndex = getSpectrumIndexBySpectrumId(currentSpectrum.ParentId);
     const parentSeriesName = getSpectrumSeriesNameFromIndex(parentIndex);
-    showSeries(parentSeriesName);
+    showSeries(chart, parentSeriesName);
 }
 
 /* ################################################################################ */
@@ -1112,7 +1112,7 @@ function addProcessedSpectrum(processedSpectrum, processedPoints, spectrumType) 
     const color = getSpectrumTypeColor(getSpectrumTypeString(spectrumType));
     const newChartSeries = createSeriesFromSpectrumName(idItem, spectrumSeriesName, color, true);
     const echartsSeries = createEchartSeries(newChartSeries, seriesPoints);
-    addChartSeries(echartsSeries);
+    addChartSeries(chart, echartsSeries);
 }
 
 function buildTempAlignedId(id) {

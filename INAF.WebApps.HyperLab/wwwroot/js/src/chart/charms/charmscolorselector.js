@@ -105,7 +105,7 @@ function updateSpectraColor(spectrumType, color) {
 
     let spectraNum = spectra.length;
     for (var i = 0; i < spectraNum; i++) {
-        updateSeriesColor(findSeriesNameFromSpectrumId(spectra[i].Id), color);
+        updateSeriesColor(chart, findSeriesNameFromSpectrumId(spectra[i].Id), color);
     }
 
     dxChartRefresh(chartContainer);

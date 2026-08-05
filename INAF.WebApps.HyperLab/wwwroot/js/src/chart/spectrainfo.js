@@ -260,12 +260,12 @@ function removeSpectrumByIndex(index) {
 function hideSpectraOtherThanType(spectrumType) {
     let spectraNum = spectraInfo.length;
     for (var i = 0; i < spectraNum; i++) {
-        let series = findSeriesFromSpectrumId(spectraInfo[i].Id);
+        let series = findSeriesFromSpectrumId(chart, spectraInfo[i].Id);
         if (!series)
             continue;
 
         if (spectraInfo[i].SpectrumType != spectrumType)
-            hideSeries(series.name);
+            hideSeries(chart, series.name);
     }
 
     addMessage(SpectraHiddenMessage.replace('r_v', getSpectrumTypeDescription(spectrumType)), 3000, INFO);
@@ -274,12 +274,12 @@ function hideSpectraOtherThanType(spectrumType) {
 function hideSpectraOtherThanTypes(spectrumTypes) {
     let spectraNum = spectraInfo.length;
     for (var i = 0; i < spectraNum; i++) {
-        let series = findSeriesFromSpectrumId(spectraInfo[i].Id);
+        let series = findSeriesFromSpectrumId(chart, spectraInfo[i].Id);
         if (!series)
             continue;
 
         if (!spectrumTypes.includes(spectraInfo[i].SpectrumType))
-            hideSeries(series.name);
+            hideSeries(chart, series.name);
     }
 }
 
@@ -288,25 +288,25 @@ function setSpectrumVisibilityByIdAndSpectrumType(id, spectrumType, isVisible) {
     if (!spectrum)
         return;
 
-    let series = findSeriesFromSpectrumId(spectrum.Id);
+    let series = findSeriesFromSpectrumId(chart, spectrum.Id);
     if (!series)
         return;
 
     if (isVisible)
-        hideSeries(series.name);
+        hideSeries(chart, series.name);
     else {
-        showSeries(series.name);
+        showSeries(chart, series.name);
         addMessage(AutoSetSpectrumInvisibleMessage.replace('r_v', getSpectrumTypeDescription(spectrumType)), 3000, INFO);
     }
 }
 
 function setSpectrumVisibilityByName(name, isVisible) {
-    let series = getSeries(name);
+    let series = getSeries(chart, name);
     if (!series)
         return;
 
     if (isVisible)
-        showSeries(series.name);
+        showSeries(chart, series.name);
     else
-        hideSeries(series.name);
+        hideSeries(chart, series.name);
 }
