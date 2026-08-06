@@ -34,17 +34,21 @@ function appendToListPro(html) {
 }
 
 async function calculateMaxValuePointAsync(points, pointForFitting, pMinPMaxMaxValueFunctionId) {
-    let pMinPMaxMaxValueFunction = pXMinPXMaxMaxValueFunctions.find(x => x.Id == pMinPMaxMaxValueFunctionId);
+    const pMinPMaxMaxValueFunction = pXMinPXMaxMaxValueFunctions.find(x => x.Id == pMinPMaxMaxValueFunctionId);
 
-    let range = extractSpectrumRange(points, pointForFitting.PXMin.X, pointForFitting.PXMax.X);
+    const range = extractSpectrumRange(points, pointForFitting.PXMin.X, pointForFitting.PXMax.X);
 
-    let xs = range.map(p => { return p.X });
-    let ys = range.map(p => { return p.Y });
+    const xs = range.map(p => { return p.X });
+    const ys = range.map(p => { return p.Y });
 
-    return await window.dotNetHelper.invokeMethodAsync("getPMinPMaxMaxValueAsync",
-        xs,
-        ys,
-        pMinPMaxMaxValueFunction);
+    const model = {
+        Xs: xs,
+        Ys: ys,
+        FitMethod: pMinPMaxMaxValueFunction
+    };
+
+    const obj = await doAjaxPostAsync(UrlGetPMinPMaxMaxValue, model);
+    return obj;
 }
 
 async function createSegmentFittingUIProAsync(segment, isFromUserAction = false, isLast = false, isHidingOtherSpectraRequired = true) {
@@ -56,7 +60,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     const segmentSelectId = buildUIElementId(FIT_SEGMENT_PRO, segment.Index, 'Select');
     const segmentContainerId = buildUIElementId(FIT_SEGMENT_PRO_VALUE, segment.Index, 'Container');
 
-    const points = getPointsFromSeriesPointsProcedure(selectedSpectrumTypeForContinuumRemoval);
+    const points = getPointsFromSeriesPointsProcedure(chart, selectedSpectrumTypeForContinuumRemoval);
 
     const buttonP0Id = `${segmentWithGuidResult.ElementId}_${P0Button}`;
     const buttonP1Id = `${segmentWithGuidResult.ElementId}_${P1Button}`;
@@ -75,7 +79,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
         topPMinPMaxResult = await calculateMaxValuePointAsync(points, segment.P0, segment.P0.SelectedPXMinPXMaxFitFunctionId);
         /* save the max-y-val point as P for P0 */
         if (topPMinPMaxResult)
-            segment.P0.P = topPMinPMaxResult.maxValuePoint;
+            segment.P0.P = topPMinPMaxResult.MaxValuePoint;
     }
     /* top spinners */
     html += `<div class="d-flex flex-row">`;
@@ -95,7 +99,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
 
     let topSpinnerTextElem;
     if (topPMinPMaxResult)
-        topSpinnerTextElem = `<p class="text-secondary">${FitProModeCenterLabel}<span id="${segmentWithGuidResult.ElementId}${P0}Text" class="margin-left-4 text-secondary">${(topPMinPMaxResult.maxValuePoint.X)}</span></p>`;
+        topSpinnerTextElem = `<p class="text-secondary">${FitProModeCenterLabel}<span id="${segmentWithGuidResult.ElementId}${P0}Text" class="margin-left-4 text-secondary">${(topPMinPMaxResult.MaxValuePoint.X)}</span></p>`;
     else
         topSpinnerTextElem = `<p class="text-secondary">${FitBoundaryLabel}</p>`;
     html += topSpinnerTextElem;
@@ -132,7 +136,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
         bottomPMinPMaxResult = await calculateMaxValuePointAsync(points, segment.P1, segment.P0.SelectedPXMinPXMaxFitFunctionId);
         /* save the max-y-val point as P for P1 */
         if (bottomPMinPMaxResult)
-            segment.P1.P = bottomPMinPMaxResult.maxValuePoint;
+            segment.P1.P = bottomPMinPMaxResult.MaxValuePoint;
     }
     /* bottom spinners */
     html += `<div class="d-flex flex-row margin-bottom-4">`;
@@ -149,7 +153,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
 
     let bottomSpinnerTextElem;
     if (bottomPMinPMaxResult)
-        bottomSpinnerTextElem = `<p class="text-secondary">${FitProModeCenterLabel}<span id="${segmentWithGuidResult.ElementId}${P1}Text" class="margin-left-4 text-secondary">${(bottomPMinPMaxResult.maxValuePoint.X)}</span></p>`;
+        bottomSpinnerTextElem = `<p class="text-secondary">${FitProModeCenterLabel}<span id="${segmentWithGuidResult.ElementId}${P1}Text" class="margin-left-4 text-secondary">${(bottomPMinPMaxResult.MaxValuePoint.X)}</span></p>`;
     else
         bottomSpinnerTextElem = `<p class="text-secondary">${FitBoundaryLabel}</p>`;
     html += bottomSpinnerTextElem;
@@ -404,10 +408,10 @@ function showPXMinPXMaxFitting(P0P1Val, parentId, segmentIndex, P) {
     let top = parentRect.top - appbarRect.height;
 
     /* retrieve series points */
-    let seriesPoints = getPointsFromSeriesPointsProcedure(selectedSpectrumTypeForContinuumRemoval);
+    let seriesPoints = getPointsFromSeriesPointsProcedure(chart, selectedSpectrumTypeForContinuumRemoval);
     //console.log(seriesPoints);
 
-    let segmentSeriesPoints = seriesPoints.filter(p => p.X >= P.PXMin.X && p.X <= P.PXMax.X);
+    let segmentSeriesPoints = extractSpectrumRange(seriesPoints, P.PXMin.X, P.PXMax.X);
     //console.log(segmentSeriesPoints);
 
     let spectrumInfo = getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, selectedSpectrumTypeForContinuumRemoval);
@@ -529,12 +533,6 @@ function showPXMinPXMaxFittingChart(dataSource, series) {
             nameTextStyle: { color: 'white' },
             scale: true,
             axisLine: { lineStyle: { color: 'white' } },
-            min: function (value) {
-                return value.min * 0.99; // 1% sotto
-            },
-            max: function (value) {
-                return value.max * 1.01; // 1% sopra
-            },
             axisLabel: {
                 formatter: v => parseFloat(v.toFixed(4)),
                 color: 'white'
@@ -581,64 +579,17 @@ function refreshPXMinPXMaxChart() {
     appendixChart.setOption({ series: echartsSeries }, { replaceMerge: ['series'] });
 }
 
-function setPointOnPXMinPXMaxChart(items, x, y, keyName) {
-    const index = items.findIndex(p => p.X == x);
-    if (index < 0)
-        return;
+// function setPointOnPXMinPXMaxChart(items, x, y, keyName) {
+//     const index = items.findIndex(p => p.X == x);
+//     if (index < 0)
+//         return;
 
-    items[index][keyName] = y;
-}
+//     items[index][keyName] = y;
+// }
 
 /* -------------------------------------------------------------------------------- */
 /* PMIN-PMAX FIT FUNCTION MANAGEMENT */
 /* -------------------------------------------------------------------------------- */
-function addPXMinPXMaxFitToChart(yValues) {
-    let items = pXMinPXMaxDataSource;
-
-    let yValuesNum = yValues.length;
-    for (var i = 0; i < yValuesNum; i++) {
-        items[i][SERIES_PXMIN_PXMAX_FIT_POINT] = yValues[i];
-    }
-
-    tryAddPXMinPXMaxFitPointsSeries();
-    refreshPXMinPXMaxChart();
-}
-
-function tryAddPXMinPXMaxFitPointsSeries() {
-    if (!isPXMinPXMaxChartSeriesAvailableByName(SERIES_PXMIN_PXMAX_FIT)) {
-        const pMinPMaxFitSeries = {
-            valueField: SERIES_PXMIN_PXMAX_FIT_POINT,
-            name: SERIES_PXMIN_PXMAX_FIT,
-            axis: VALUE_AXIS,
-            color: 'green',
-            point: { visible: true, size: 12, color: 'green' },
-        };
-        addPXMinPXMaxChartSeries(pMinPMaxFitSeries);
-    }
-}
-
-function addPXMinPXMaxMaxValuePointToChart() {
-    const items = pXMinPXMaxDataSource;
-
-    //console.log(`${addPMinPMaxMaxValuePoint.name} - adding ${currentP0P1Selection.P.X}, ${currentP0P1Selection.P.Y}...`);
-    setPointOnPXMinPXMaxChart(items, currentP0P1Selection.P.X, currentP0P1Selection.P.Y, SERIES_PXMIN_PXMAX_MAX_VALUE_POINT);
-
-    refreshPXMinPXMaxChart();
-}
-
-function tryAddPXMinPXMaxMaxValuePointSeries() {
-    if (!isPXMinPXMaxChartSeriesAvailableByName(SERIES_PXMIN_PXMAX_MAX_VALUE)) {
-        const pMinPMaxMaxValueSeries = {
-            valueField: SERIES_PXMIN_PXMAX_MAX_VALUE_POINT,
-            name: SERIES_PXMIN_PXMAX_MAX_VALUE,
-            axis: VALUE_AXIS,
-            width: 0,
-            point: { visible: true, size: 12, color: 'white' },
-        };
-        addPXMinPXMaxChartSeries(pMinPMaxMaxValueSeries);
-    }
-}
-
 async function onPXMinPXMaxFitFunctionSelectProAsync(val, option, item) {
     //console.log(val);
     const value = Metro.getPlugin(`#${this.id}`, 'select').val();
@@ -648,7 +599,8 @@ async function onPXMinPXMaxFitFunctionSelectProAsync(val, option, item) {
 
 async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null, isNextSegmentUpdateRequired = true) {
     /* remove fit-series */
-    tryRemovePXMinPXMaxMaxValueSeries();
+    removeSeries(appendixChart, SERIES_PXMIN_PXMAX_FIT);
+    removeSeries(appendixChart, SERIES_PXMIN_PXMAX_MAX_VALUE);
 
     /* retrieve the function value */
     const numbers = val.replace(FIT_SEGMENT_PRO, '');
@@ -676,42 +628,43 @@ async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null,
     /* save used pXMinPXMaxMaxValueFunctionId for P0/P1 */
     segmentsForFitting[segmentIndex][P0P1Val].SelectedPXMinPXMaxFitFunctionId = selectedFitFunction.Id;
 
-    /* remove old y-max-value point from appendix-chart */
-    removeYMaxValuePointFromChart(currentP0P1Selection.P);
-
     /* find the maximum in the segments defined by the points boundaries */
-    const points = getPointsFromSeriesPointsProcedure(selectedSpectrumTypeForContinuumRemoval);
-    pXMinPXMaxResult = await calculateMaxValuePointAsync(points, currentP0P1Selection, selectedFitFunction.Id);
+
+    const points = getSeriesPointsXY(appendixChart, pXMinPXMaxSeries[0].name);
+    const pXMinPXMaxResult = await calculateMaxValuePointAsync(points, currentP0P1Selection, selectedFitFunction.Id);
     //console.log(pXMinPXMaxResult);
 
     /* retrieve the yvalue on chart from the y-max-value x-coord */
-    const point = points.find(p => p.X == pXMinPXMaxResult.maxValuePoint.X);
+    const point = points.find(p => p.X == pXMinPXMaxResult.MaxValuePoint.X);
 
     /* update y-max-value x-coord */
-    currentP0P1Selection.P = pXMinPXMaxResult.maxValuePoint;
-    pXMinPXMaxResult.maxValuePoint.Y = point.Y;
+    currentP0P1Selection.P = pXMinPXMaxResult.MaxValuePoint;
+    pXMinPXMaxResult.MaxValuePoint.Y = point.Y;
 
     /* re-add the new y-max-value on appendix chart */
-    addPXMinPXMaxMaxValuePointToChart();
-    tryAddPXMinPXMaxMaxValuePointSeries();
+    const maxValuePointSeries = createSeries(SERIES_PXMIN_PXMAX_MAX_VALUE_POINT, SERIES_PXMIN_PXMAX_MAX_VALUE, VALUE_AXIS, 'white');
+    const maxValuePointEChartSeries = createEchartSeries(maxValuePointSeries, [pXMinPXMaxResult.MaxValuePoint], { symbolSize: 12 });
+    addChartSeries(appendixChart, maxValuePointEChartSeries);
 
     /* when fit function values are available, then add them to chart */
-    if (pXMinPXMaxResult.yValues && pXMinPXMaxResult.yValues.length > 0) {
+    if (pXMinPXMaxResult.YValues && pXMinPXMaxResult.YValues.length > 0) {
         /* extract points in range defined by P0/P1 XMin-XMax */
         const range = extractSpectrumRange(points, segmentsForFitting[segmentIndex][P0P1Val].PXMin.X, segmentsForFitting[segmentIndex][P0P1Val].PXMax.X);
 
         /* extract min-max for yvalues in range */
         const rangeYValues = range.map(p => { return p.Y });
-        const fitYValues = updateSegmentYRange(rangeYValues, pXMinPXMaxResult.yValues);
+        const fitYValues = updateSegmentYRange(rangeYValues, pXMinPXMaxResult.YValues);
 
-        addPXMinPXMaxFitToChart(fitYValues);
+        const fitPointSeries = createSeries(SERIES_PXMIN_PXMAX_FIT_POINT, SERIES_PXMIN_PXMAX_FIT, VALUE_AXIS, 'white');
+        const fitPointEChartSeries = createEchartSeries(fitPointSeries, [pXMinPXMaxResult.MaxValuePoint]);
+        addChartSeries(appendixChart, fitPointEChartSeries);
     }
 
     /* update y-max-value x-coord on appendix */
-    $('#yMaxValueXCoord').text(pXMinPXMaxResult.maxValuePoint.X);
+    $('#yMaxValueXCoord').text(pXMinPXMaxResult.MaxValuePoint.X);
 
     if (textId)
-        $(`#${textId}`).text(pXMinPXMaxResult.maxValuePoint.X);
+        $(`#${textId}`).text(pXMinPXMaxResult.MaxValuePoint.X);
 
     /* update next/previous segment, if existant and if current point is P1 */
     if (!isNextSegmentUpdateRequired)
@@ -740,25 +693,25 @@ async function pXMinPXMaxFitFunctionSelectProManagementAsync(val, textId = null,
     pXMinPXMaxFitFunctionSelectProManagementAsync(nextVal, nextTextId, false);
 }
 
-function tryRemovePXMinPXMaxMaxValueSeries() {
-    if (!isPXMinPXMaxChartSeriesAvailableByName(SERIES_PXMIN_PXMAX_FIT))
-        return;
+// function tryRemovePXMinPXMaxMaxValueSeries() {
+//     if (!isPXMinPXMaxChartSeriesAvailableByName(SERIES_PXMIN_PXMAX_FIT))
+//         return;
 
-    /* remove points */
-    const items = pXMinPXMaxDataSource;
+//     /* remove points */
+//     const items = pXMinPXMaxDataSource;
 
-    const itemsNum = items.length;
-    for (var i = 0; i < itemsNum; i++) {
-        if (items[i][SERIES_PXMIN_PXMAX_FIT_POINT])
-            delete items[i][SERIES_PXMIN_PXMAX_FIT_POINT];
-    }
+//     const itemsNum = items.length;
+//     for (var i = 0; i < itemsNum; i++) {
+//         if (items[i][SERIES_PXMIN_PXMAX_FIT_POINT])
+//             delete items[i][SERIES_PXMIN_PXMAX_FIT_POINT];
+//     }
 
-    /* remove series */
-    const seriesIndex = findPXMinPXMaxChartSeriesIndexByName(SERIES_PXMIN_PXMAX_FIT);
-    removePXMinPXMaxChartSeriesAt(seriesIndex);
+//     /* remove series */
+//     const seriesIndex = findPXMinPXMaxChartSeriesIndexByName(SERIES_PXMIN_PXMAX_FIT);
+//     removePXMinPXMaxChartSeriesAt(seriesIndex);
 
-    refreshPXMinPXMaxChart();
-}
+//     refreshPXMinPXMaxChart();
+// }
 
 /* -------------------------------------------------------------------------------- */
 /* PMIN-PMAX APPENDIX VISUALIZATION */
@@ -798,19 +751,6 @@ function removePXMinPXMaxChartSeriesAt(index) {
     pXMinPXMaxSeries.splice(index, 1);
 }
 
-function removeYMaxValuePointFromChart(point) {
-    const items = pXMinPXMaxDataSource;
-
-    const index = items.findIndex(p => p.X == point.X);
-    if (index < 0)
-        return;
-    if (items[index][SERIES_PXMIN_PXMAX_MAX_VALUE_POINT]) {
-        delete items[index][SERIES_PXMIN_PXMAX_MAX_VALUE_POINT];
-    }
-
-    refreshPXMinPXMaxChart();
-}
-
 /* ################################################################################ */
 /* MANAGE VISUALIZATION OF SERIES CONTAINING SELECTED POINTS */
 /* ################################################################################ */
@@ -824,7 +764,7 @@ function addBoundaryPointsPro(point) {
 }
 
 async function calculateMaximumInPointRangeAsync(xMin, xMax) {
-    const points = extractSpectrumRange(getPointsFromSeriesPointsProcedure(selectedSpectrumTypeForContinuumRemoval), xMin, xMax);
+    const points = extractSpectrumRange(getPointsFromSeriesPointsProcedure(chart, selectedSpectrumTypeForContinuumRemoval), xMin, xMax);
 
     const maxPoint = await window.dotNetHelper.invokeMethodAsync("calculateMaximumInRange",
         points);
@@ -855,6 +795,7 @@ function setPointWithErrorBarOnChart(pX, pY, pMinY, pMaxY) {
 
 
 async function updateBoundaryPointProAsync(oldPointForFitting, requestedX, PMinMax, spinnerId) {
+    return;
     const items = dxChartGetItems(chartContainer);
 
     /* find index of boundary in items array */
@@ -864,7 +805,7 @@ async function updateBoundaryPointProAsync(oldPointForFitting, requestedX, PMinM
     if (items[oldBoundaryIndex][SERIES_FIT_POINT])
         delete items[oldBoundaryIndex][SERIES_FIT_POINT];
 
-    const points = getPointsFromSeriesPointsProcedure(selectedSpectrumTypeForContinuumRemoval);
+    const points = getPointsFromSeriesPointsProcedure(chart, selectedSpectrumTypeForContinuumRemoval);
 
     const spectrumPoint = points.find(p => p.X == requestedX);
     if (!spectrumPoint)

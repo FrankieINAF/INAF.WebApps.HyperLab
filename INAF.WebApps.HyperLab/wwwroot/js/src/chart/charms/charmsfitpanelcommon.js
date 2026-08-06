@@ -450,7 +450,7 @@ function calculateSemiErrorBarHeight() {
 }
 
 function createPointBoundariesFromSettingsForFitting(xMin, xMax) {
-    const points = getPointsFromSeriesPointsProcedure(selectedSpectrumTypeForContinuumRemoval);
+    const points = getPointsFromSeriesPointsProcedure(chart, selectedSpectrumTypeForContinuumRemoval);
 
     let minXPoint = getPointLowerThanX(points, xMin);
     let maxXPoint = getPointHigherThanX(points, xMax);
@@ -465,7 +465,7 @@ function createPointBoundariesFromSettingsForFitting(xMin, xMax) {
 }
 
 function createPointBoundariesFromSpectrumForFitting(point) {
-    const points = getPointsFromSeriesPointsProcedure(selectedSpectrumTypeForContinuumRemoval);
+    const points = getPointsFromSeriesPointsProcedure(chart, selectedSpectrumTypeForContinuumRemoval);
 
     let minXPoint;
     if (isExistingPointByX(points, point.X - fitPointSemiRange))

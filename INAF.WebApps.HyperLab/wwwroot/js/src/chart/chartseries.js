@@ -70,7 +70,7 @@ function getAllSeries(targetChart) {
         return {
             name: s.name,
             getColor: function () { return s.color; },
-            isVisible: function () { return dxChartHiddenSeriesNames.indexOf(s.name) == -1; },
+            isVisible: function () { return isSeriesVisible(targetChart, s.name); },
             hide: function () { hideSeries(targetChart, s.name); },
             show: function () { showSeries(targetChart, s.name); }
         };
@@ -82,10 +82,21 @@ function getSeries(targetChart, seriesName) {
     return {
         name: series.name,
         getColor: function () { return series.color; },
-        isVisible: function () { return dxChartHiddenSeriesNames.indexOf(series.name) == -1; },
+        isVisible: function () { return isSeriesVisible(targetChart, series.name); },
         hide: function () { hideSeries(targetChart, series.name); },
         show: function () { showSeries(targetChart, series.name); }
     };
+}
+
+function isSeriesVisible(targetChart, seriesName) {
+    try {
+        const legend = targetChart.getOption().legend;
+        const selected = legend && legend[0] && legend[0].selected;
+        return !selected || selected[seriesName] !== false;
+    } catch (e) {
+        console.log(`${isSeriesVisible.name} - seriesName: ${seriesName} - ex: ${e}`);
+        return true;
+    }
 }
 
 function getSeriesNameFromSelectedSpectrumNameAndSpectrumType(selectedSpectrumName, spectrumType) {
@@ -122,14 +133,24 @@ function getSeriesPoints(targetChart, seriesName) {
     }
 }
 
+function getSeriesPointsXY(targetChart, seriesName) {
+    try {
+        const found = targetChart.getOption().series.find(s => s.name == seriesName);
+        if (!found)
+            return null;
+
+        return found.data.map(function (p) { return { X: p[0], Y: p[1] }; });
+    } catch (e) {
+        return null;
+    }
+}
+
 function hideSeries(targetChart, seriesName) {
     try {
         if (getSeries(targetChart, seriesName) == null)
             return;
 
         targetChart.dispatchAction({ type: 'legendUnSelect', name: seriesName });
-        if (dxChartHiddenSeriesNames.indexOf(seriesName) == -1)
-            dxChartHiddenSeriesNames.push(seriesName);
 
         resetVisualRange(targetChart);
     } catch (e) {
@@ -170,7 +191,6 @@ function showSeries(targetChart, seriesName) {
             return;
 
         targetChart.dispatchAction({ type: 'legendSelect', name: seriesName });
-        dxChartHiddenSeriesNames = dxChartHiddenSeriesNames.filter(x => x != seriesName);
 
         resetVisualRange(targetChart);
     } catch (e) {

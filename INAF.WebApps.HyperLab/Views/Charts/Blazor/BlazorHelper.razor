@@ -1,24 +1,22 @@
 ﻿@using INAF.Libraries.Net.HyperLab.CommonHelpers
-@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.BandAnalysis
-@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.Smoothing
-@using INAF.Libraries.Net.HyperLabCommonHelpers
-@using INAF.Libraries.Net.HyperLabCommonHelpers.ProcessingHelpers
+@using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
 @using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum
+@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.BandAnalysis
 @using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo
 @using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment
 @using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.ContinuumRemoval
+@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.Smoothing
+@using INAF.Libraries.Net.HyperLabCommonHelpers
 @using INAF.Libraries.Net.Math.Fit.LinerAlgebra;
 @using INAF.Libraries.Net.Math.Fit.LinerAlgebra.Models;
 @using INAF.Libraries.Net.Math.Models;
-@using INAF.Libraries.Net.Math.Simple;
-@using INAF.Libraries.Net.Math.Fit.Spline;
 @using Microsoft.Extensions.DependencyInjection
 @using Microsoft.JSInterop
 @using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums
 @using static INAF.Libraries.Net.Math.Values.Enums;
-@using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
 
 @inject IServiceProvider serviceProvider
+@inject ILogger<BlazorHelper> logger
 @inject IJSRuntime jsruntime;
 
 @implements IDisposable
@@ -197,11 +195,11 @@
         try
         {
             var pMinPMaxHelper = serviceProvider.GetRequiredService<PMinPMaxHelper>();
-            return await pMinPMaxHelper.getPMinPMaxMaxValueAsync(xs, ys, fitMethod);
+            return await Task.Run(async () => await pMinPMaxHelper.getPMinPMaxMaxValueAsync(xs, ys, fitMethod));
         }
         catch (global::System.Exception ex)
         {
-            System.Console.WriteLine($"Error in getPMinPMaxMaxValueAsync {ex.Message}");
+            logger.LogError($"{nameof(getPMinPMaxMaxValueAsync)} - ex: {ex.Message}");
             return new PMinPMaxResultModel();
         }
     }

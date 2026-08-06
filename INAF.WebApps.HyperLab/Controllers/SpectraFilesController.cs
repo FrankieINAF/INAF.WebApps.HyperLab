@@ -2,6 +2,7 @@
 using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
+using INAF.Libraries.Net.HyperLab.CommonHelpers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Files;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum;
@@ -9,6 +10,7 @@ using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.BandAnalysis;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.ContinuumRemoval;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.Smoothing;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.Processing;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.SpectrumVersions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests.SaveSpectrum;

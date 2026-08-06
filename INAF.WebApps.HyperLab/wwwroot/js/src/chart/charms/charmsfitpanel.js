@@ -432,6 +432,9 @@ function emptyListOfSegmentsOnCharms(divId, containerDivId) {
 }
 
 function switchToCommon() {
+    clearSegmentsForFitting();
+    clearPointsForFittingArray();
+
     /* show message for 'no segments defined' */
     showByClass('noSegmentsMessageContainer');
 
@@ -1094,7 +1097,7 @@ async function buildContinuumSegmentAsync(selectedFitFunction, p0, p1, isHidingO
     if (!spectrum)
         return;
 
-    let pointsInRange = extractSpectrumRange(getPointsFromSeriesPointsProcedure(selectedSpectrumTypeForContinuumRemoval), p0.X, p1.X);
+    let pointsInRange = extractSpectrumRange(getPointsFromSeriesPointsProcedure(chart, selectedSpectrumTypeForContinuumRemoval), p0.X, p1.X);
 
     if (!pointsInRange || pointsInRange.length == 0) {
         showSimpleDialog(ERROR_LABEL, FitNoPointsFoundForSegmentErrorMessage, ALERT);
@@ -1370,7 +1373,7 @@ function getNumOfPointsForMissingPoints() {
 
 function setMissingPointsFromDownloadedContinuumRemoved() {
     try {
-        const continuumPoints = getPointsFromSeriesPointsProcedure(SPECTRUM_TYPE_CONTINUUM);
+        const continuumPoints = getPointsFromSeriesPointsProcedure(chart, SPECTRUM_TYPE_CONTINUUM);
         //let continuumPoints = getPointsFromSeriesPoints(getSeriesPoints(getSpectrumSeriesNameFromSpectrum(getSpectrumByLowerSpectrumTypeIdAndSpectrumType(selectedSpectrumForProcessing.Id, SPECTRUM_TYPE_CONTINUUM))));
 
         /* set missing point 0 */
@@ -1889,7 +1892,7 @@ async function downloadContinuumRemovalSettingsAsync(id, areBreaksVisible = fals
             return;
         }
         /* we need aligned spectrum to get y-coord for points defining segments */
-        const alignedPoints = getPointsFromSeriesPointsProcedure(SPECTRUM_TYPE_ALIGNED);
+        const alignedPoints = getPointsFromSeriesPointsProcedure(chart, SPECTRUM_TYPE_ALIGNED);
 
         if (!alignedPoints) {
             showSimpleDialog(ERROR_LABEL, FitDownloadContinuumRemovalSettingsErrorMessage, ALERT);

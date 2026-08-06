@@ -65,10 +65,10 @@ function getPointsFromSeriesPoints(seriesPoints) {
     return seriesPoints.map(x => { return { X: parseFloat(x.argument), Y: parseFloat(x.value), YStdDev: 0 }; });
 }
 
-function getPointsFromSeriesPointsProcedure(spectrumType) {
+function getPointsFromSeriesPointsProcedure(targetChart, spectrumType) {
     const seriesName = getSeriesNameFromSelectedSpectrumNameAndSpectrumType(selectedSpectrumForProcessing.Name, spectrumType);
     /* retrieve series points */
-    let seriesPoints = getSeriesPoints(chart, seriesName);
+    let seriesPoints = getSeriesPoints(targetChart, seriesName);
     return getPointsFromSeriesPoints(seriesPoints);
 }
 

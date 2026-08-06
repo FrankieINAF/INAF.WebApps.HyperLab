@@ -22,7 +22,7 @@ namespace INAF.WebApps.HyperLab.Controllers
             }
 
             var pMinPMaxHelper = serviceProvider.GetRequiredService<PMinPMaxHelper>();
-            PMinPMaxResultModel result = await pMinPMaxHelper.getPMinPMaxMaxValueAsync(model.Xs, model.Ys, model.FitMethod);
+            PMinPMaxResultModel result = await Task.Run(() => pMinPMaxHelper.getPMinPMaxMaxValueAsync(model.Xs, model.Ys, model.FitMethod));
 
             return new JsonResult(result);
         }
