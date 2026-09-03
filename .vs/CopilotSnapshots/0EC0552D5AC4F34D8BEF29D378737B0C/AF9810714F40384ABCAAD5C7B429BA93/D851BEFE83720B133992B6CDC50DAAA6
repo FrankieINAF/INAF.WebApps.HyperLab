@@ -1,0 +1,1635 @@
+﻿using INAF.Libraries.Net.CommonWebAppModels.Models.DbValues;
+using INAF.Libraries.Net.DB.HyperLab.Data.Tables;
+using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData;
+using INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData.Interfaces;
+using INAF.Libraries.Net.HyperLab.CommonModels.Values;
+using Microsoft.EntityFrameworkCore;
+using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
+
+namespace INAF.Libraries.Net.DB.HyperLabData
+{
+    public partial class DbHandlerHyperLabData
+    {
+        #region GET
+        public List<MineralTypeModel>? getMineralTypeValues()
+        {
+            List<MineralTypeModel>? mineralTypeValues = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    mineralTypeValues = (from x in context.ReadOnlySampleMineralTypeValues
+                                         join st in context.ReadOnlySelectionTypes on x.RequiredSelectionTypeId equals st.Id into xst
+                                         from xstelem in xst.DefaultIfEmpty()
+                                         select new MineralTypeModel()
+                                         {
+                                             Id = x.Id,
+                                             Value = x.Value,
+                                             RequiresSelection = x.RequiresSelection,
+                                             SelectionType = (x.RequiresSelection ? xstelem.Value.ToSelectionType() : Enums.SelectionType.None)
+                                         })
+                                         .AsNoTracking()
+                                         .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getMineralTypeValues), ex);
+            }
+
+            return mineralTypeValues;
+        }
+
+        public List<DbStringValue>? getOriginTypeValues()
+        {
+            List<DbStringValue>? originValues = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    originValues = (from x in context.ReadOnlySampleOriginTypeValues.AsNoTracking()
+                                    select new DbStringValue()
+                                    {
+                                        Id = x.Id,
+                                        StringValue = x.Value,
+                                    })
+                                    .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getOriginTypeValues), ex);
+            }
+
+            return originValues;
+        }
+
+        public List<DbStringValue>? getSampleTypeGrainSizeTypeValues()
+        {
+            List<DbStringValue>? sampleTypeValues = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    sampleTypeValues = (from x in context.ReadOnlyGrainSizeTypeValues.AsNoTracking()
+                                        select new DbStringValue()
+                                        {
+                                            Id = x.Id,
+                                            StringValue = x.Value,
+                                        })
+                                        .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getSampleTypeGrainSizeTypeValues), ex);
+            }
+
+            return sampleTypeValues;
+        }
+
+        public List<DbIntDoubleValue>? getSampleTypeGrainSizeValues()
+        {
+            List<DbIntDoubleValue>? sampleTypeGrainSizeValues = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    sampleTypeGrainSizeValues = (from x in context.ReadOnlyLinkSampleTypeGrainSizeValues
+                                                 join y in context.ReadOnlySampleTypes on x.SampleTypeId equals y.Id
+                                                 select new DbIntDoubleValue()
+                                                 {
+                                                     Id = x.Id,
+                                                     DoubleValue = (double)x.Value,
+                                                     RefId = y.Id
+                                                 })
+                                                 .AsNoTracking()
+                                                 .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getSampleTypeGrainSizeValues), ex);
+            }
+
+            return sampleTypeGrainSizeValues;
+        }
+
+        public List<DbStringValue>? getSampleTypeValues()
+        {
+            List<DbStringValue>? sampleTypeValues = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    sampleTypeValues = (from x in context.ReadOnlySampleTypes.AsNoTracking()
+                                        select new DbStringValue()
+                                        {
+                                            Id = x.Id,
+                                            StringValue = x.Value,
+                                        })
+                                        .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getSampleTypeValues), ex);
+            }
+
+            return sampleTypeValues;
+        }
+
+        public List<SampleTypeModel>? getSampleTypeValuesWithGrainSizeValues()
+        {
+            List<SampleTypeModel>? sampleTypeValues = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    sampleTypeValues = (from x in context.ReadOnlySampleTypes
+                                        select new SampleTypeModel()
+                                        {
+                                            Id = x.Id,
+                                            Value = x.Value,
+                                            GrainSizeValues = (from y in context.ReadOnlyLinkSampleTypeGrainSizeValues
+                                                               where y.SampleTypeId == x.Id
+                                                               orderby y.Value
+                                                               select new GrainSizeModel()
+                                                               {
+                                                                   Id = y.Id,
+                                                                   Value = (double)y.Value
+                                                               })
+                                                               .ToList()
+                                        })
+                                        .AsNoTracking()
+                                        .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getSampleTypeValues), ex);
+            }
+
+            return sampleTypeValues;
+        }
+
+        public SampleDataSelectedValues? getSpectrumFileSampleData(int fileId,
+                                                                   bool isPublicSearch,
+                                                                   int operationUserId)
+        {
+            SampleDataSelectedValues? spectrumFileSampleDataValues = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    spectrumFileSampleDataValues = (from sf in context.SpectraFiles
+                                                    join sn in context.SampleName on sf.Id equals sn.SpectrumFileId
+                                                    join lsfst in context.LinkSpectrumFileSampleType on sf.Id equals lsfst.SpectrumFileId
+                                                    join lsfsmt in context.LinkSpectrumFileSampleMineralType on sf.Id equals lsfsmt.SpectrumFileId
+                                                    join lsfsot in context.LinkSpectrumFileSampleOriginType on sf.Id equals lsfsot.SpectrumFileId
+                                                    where sf.Id == fileId
+                                                    && !lsfst.IsDeleted
+                                                    && !lsfsmt.IsDeleted
+                                                    && !lsfsot.IsDeleted
+                                                    select new { sf, sn, lsfst, lsfsmt, lsfsot })
+                                                    .AsNoTracking()
+                                                    .Select(x => new SampleDataSelectedValues()
+                                                    {
+                                                        Name = x.sn.Name,
+                                                        SampleTypeId = x.lsfst.SampleTypeId,
+                                                        GrainSizeTypeId = (from rogstv in context.ReadOnlyGrainSizeTypeValues
+                                                                           join lsfgst in context.LinkSpectrumFileGrainSizeType on rogstv.Id equals lsfgst.SampleGrainSizeTypeId
+                                                                           where lsfgst.SpectrumFileId == fileId
+                                                                           && !lsfgst.IsDeleted
+                                                                           select rogstv.Id)
+                                                                           .FirstOrDefault(),
+                                                        OriginTypeId = x.lsfsot.OriginTypeId,
+                                                        MineralTypeId = x.lsfsmt.SampleMineralTypeId,
+                                                        Minerals = (from lsfim in context.LinkSpectrumFileImaminerals
+                                                                    join roim in context.ReadOnlyImaminerals on lsfim.MineralId equals roim.Id into g
+                                                                    from gelem in g.DefaultIfEmpty()
+                                                                    where lsfim.SpectrumId == x.sf.Id
+                                                                    && !lsfim.IsDeleted
+                                                                    orderby gelem.Name
+                                                                    select new MaterialBaseModel()
+                                                                    {
+                                                                        Id = gelem.Id,
+                                                                        Name = gelem.Name,
+                                                                        Percentage = lsfim.Percentage.HasValue ? (double)lsfim.Percentage : 0,
+                                                                    })
+                                                                    .ToList(),
+                                                        Rock = (from ror in context.ReadOnlyRocks
+                                                                join lsfr in context.LinkSpectrumFileRock on ror.Id equals lsfr.RockId into g
+                                                                from gelem in g.DefaultIfEmpty()
+                                                                where gelem.SpectrumId == x.sf.Id
+                                                                && !gelem.IsDeleted
+                                                                orderby ror.Name
+                                                                select new MaterialBaseModel()
+                                                                {
+                                                                    Id = ror.Id,
+                                                                    Name = ror.Name
+                                                                })
+                                                                                       .FirstOrDefault(),
+                                                        MeteoriteClass = (from mc in context.ReadOnlyMeteoriteClasses
+                                                                          join lsfmc in context.LinkSpectrumFileMeteoriteClass on mc.Id equals lsfmc.MeteoriteClassId into g
+                                                                          from gelem in g.DefaultIfEmpty()
+                                                                          where gelem.SpectrumId == x.sf.Id
+                                                                          && !gelem.IsDeleted
+                                                                          orderby mc.Name
+                                                                          select new MaterialBaseModel()
+                                                                          {
+                                                                              Id = gelem.Id,
+                                                                              Name = mc.Name,
+                                                                          })
+                                                                          .FirstOrDefault()
+                                                    })
+                                                    .FirstOrDefault();
+
+                    if (spectrumFileSampleDataValues != null && 
+                        (spectrumFileSampleDataValues.GrainSizeTypeId == (int)GrainSizeType.LowerLimit || spectrumFileSampleDataValues.GrainSizeTypeId == (int)GrainSizeType.Range))
+                        spectrumFileSampleDataValues.GrainSizeLowerValueId = (int)(from x in context.ReadOnlyLinkSampleTypeGrainSizeValues
+                                                                                   where x.Id == ((
+                                                                                     from y in context.LinkGrainSizeTypeGrainSizeValues
+                                                                                     where y.LinkSpectrumFileGrainSizeTypeId == ((
+                                                                                         from z in context.LinkSpectrumFileGrainSizeType
+                                                                                         where z.SpectrumFileId == fileId
+                                                                                         && !z.IsDeleted
+                                                                                         select z.Id
+                                                                                     ).FirstOrDefault())
+                                                                                     && !y.IsDeleted
+                                                                                     select y.GrainSizeLowerValueId
+                                                                                     ).FirstOrDefault())
+                                                                                   select x.Id)
+                                                                                   .FirstOrDefault();
+
+                    if (spectrumFileSampleDataValues != null &&
+                        (spectrumFileSampleDataValues.GrainSizeTypeId == (int)GrainSizeType.UpperLimit || spectrumFileSampleDataValues.GrainSizeTypeId == (int)GrainSizeType.Range))
+                        spectrumFileSampleDataValues.GrainSizeUpperValueId = (int)(from x in context.ReadOnlyLinkSampleTypeGrainSizeValues
+                                                                                   where x.Id == ((
+                                                                                     from y in context.LinkGrainSizeTypeGrainSizeValues
+                                                                                     where y.LinkSpectrumFileGrainSizeTypeId == ((
+                                                                                         from z in context.LinkSpectrumFileGrainSizeType
+                                                                                         where z.SpectrumFileId == fileId
+                                                                                         && !z.IsDeleted
+                                                                                         select z.Id
+                                                                                     ).FirstOrDefault())
+                                                                                     && !y.IsDeleted
+                                                                                     select y.GrainSizeUpperValueId
+                                                                                     ).FirstOrDefault())
+                                                                                   select x.Id)
+                                                                                   .FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getSpectrumFileSampleData), ex);
+            }
+
+            return spectrumFileSampleDataValues;
+        }
+
+        #region GET FIXED NAME FROM NAME
+        public MaterialBaseModel? getMeteoriteClassByName(string name)
+        {
+            MaterialBaseModel? meteoriteClass = null;
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    var candidates = (from m in context.ReadOnlyMeteoriteClasses
+                                      where (EF.Functions.Like(m.Name, $"%{name}%")
+                                      || EF.Functions.Like(name, $"%{m.Name}%"))
+                                      select new MaterialBaseModel()
+                                      {
+                                          Id = m.Id,
+                                          Name = m.Name
+                                      })
+                                      .AsNoTracking()
+                                      .ToList();
+
+                    if (!candidates.Any())
+                        return null;
+
+                    // fuzzy: scegli quello con distanza minore
+                    return candidates
+                            .OrderBy(m =>
+                                m.Name!.Equals(name, StringComparison.OrdinalIgnoreCase) ? 0 :
+                                m.Name!.StartsWith(name, StringComparison.OrdinalIgnoreCase) ? 1 :
+                                Levenshtein(name.ToLower(), m.Name!.ToLower()))
+                            .ThenBy(m => m.Name!.Length)
+                            .First();
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getMeteoriteClassByName), ex);
+            }
+            return meteoriteClass;
+        }
+
+        public MaterialBaseModel? getMineralByName(string name)
+        {
+            try
+            {
+                using var context = getDataContext();
+                {
+                    var candidates = (from m in context.ReadOnlyImaminerals
+                                      where (EF.Functions.Like(m.Name, $"%{name}%")
+                                      || EF.Functions.Like(name, $"%{m.Name}%"))
+                                      && !m.IsDeleted
+                                      select new MaterialBaseModel
+                                      {
+                                          Id = m.Id,
+                                          Name = m.Name
+                        })
+                        .AsNoTracking()
+                        .ToList();
+
+                    if (!candidates.Any())
+                        return null;
+
+                    // fuzzy: scegli quello con distanza minore
+                    return candidates
+                            .OrderBy(m =>
+                                m.Name!.Equals(name, StringComparison.OrdinalIgnoreCase) ? 0 :
+                                m.Name!.StartsWith(name, StringComparison.OrdinalIgnoreCase) ? 1 :
+                                Levenshtein(name.ToLower(), m.Name!.ToLower()))
+                            .ThenBy(m => m.Name!.Length)
+                            .First();
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getMineralByName), ex);
+                return null;
+            }
+        }
+
+
+        public MaterialBaseModel? getRockByName(string name)
+        {
+            MaterialBaseModel? rock = null;
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    var candidates = (from m in context.ReadOnlyRocks
+                                      where (EF.Functions.Like(m.Name, $"%{name}%")
+                                      || EF.Functions.Like(name, $"%{m.Name}%"))
+                                      select new MaterialBaseModel()
+                                      {
+                                          Id = m.Id,
+                                          Name = m.Name
+                            })
+                            .AsNoTracking()
+                            .ToList();
+
+                    if (!candidates.Any())
+                        return null;
+
+                    // fuzzy: scegli quello con distanza minore
+                    return candidates
+                            .OrderBy(m =>
+                                m.Name!.Equals(name, StringComparison.OrdinalIgnoreCase) ? 0 :
+                                m.Name!.StartsWith(name, StringComparison.OrdinalIgnoreCase) ? 1 :
+                                Levenshtein(name.ToLower(), m.Name!.ToLower()))
+                            .ThenBy(m => m.Name!.Length)
+                            .First();
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getRockByName), ex);
+            }
+            return rock;
+        }
+        #endregion
+
+        #region SUGGESTIONS
+        public List<MaterialBaseModel>? getMeteoriteClasses(string text)
+        {
+            List<MaterialBaseModel>? minerals = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    minerals = (from m in context.ReadOnlyMeteoriteClasses
+                                where EF.Functions.Like(m.Name, $"{text}%")
+                                orderby m.Name
+                                select new MaterialBaseModel()
+                                {
+                                    Id = m.Id,
+                                    Name = m.Name
+                                })
+                                .AsNoTracking()
+                                .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getMeteoriteClasses), ex);
+            }
+
+            return minerals;
+        }
+
+        public List<MaterialBaseModel>? getMinerals(string text)
+        {
+            List<MaterialBaseModel>? minerals = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    minerals = (from m in context.ReadOnlyImaminerals
+                                where EF.Functions.Like(m.Name, $"{text}%")
+                                && !m.IsDeleted
+                                orderby m.Name
+                                select new MaterialBaseModel()
+                                {
+                                    Id = m.Id,
+                                    Name = m.Name
+                                })
+                                .AsNoTracking()
+                                .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getMinerals), ex);
+            }
+
+            return minerals;
+        }
+
+        public List<MaterialBaseModel>? getRocks(string text)
+        {
+            List<MaterialBaseModel>? rocks = null;
+
+            try
+            {
+                using (var context = getDataContext())
+                {
+                    rocks = (from m in context.ReadOnlyRocks
+                             where EF.Functions.Like(m.Name, $"{text}%")
+                             select new MaterialBaseModel()
+                             {
+                                 Id = m.Id,
+                                 Name = m.Name,
+                             })
+                             .AsNoTracking()
+                             .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                logError(nameof(getRocks), ex);
+            }
+
+            return rocks;
+        }
+        #endregion
+        #endregion
+
+        #region SAVE
+        private async Task<bool> upsertSampleDataAsync(int fileId,
+                                                       string sampleName,
+                                                       int sampleTypeId,
+                                                       int grainSizeTypeId,
+                                                       int? grainSizeLowerValueId,
+                                                       int? grainSizeUpperValueId,
+                                                       int originTypeId,
+                                                       int mineralTypeId,
+                                                       List<MaterialBaseModel>? minerals,
+                                                       MaterialBaseModel rock,
+                                                       MaterialBaseModel meteorClass,
+                                                       int operationUserId,
+                                                       HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                if (!await upsertNameAsync(fileId,
+                                           sampleName,
+                                           operationUserId,
+                                           extcontext))
+                    return false;
+
+                /* save selected grain size type */
+                int grainSizeTypeResultId = 0;
+                if (grainSizeTypeId > 0)
+                {
+                    (bool isOk, int id) grainSizeTypeResult = await upsertLinkSpectrumFileGrainSizeTypeAsync(fileId,
+                                                                                                             grainSizeTypeId,
+                                                                                                             operationUserId,
+                                                                                                             context);
+
+                    if (!grainSizeTypeResult.isOk)
+                        return false;
+
+                    grainSizeTypeResultId = grainSizeTypeResult.id;
+                }
+
+                /* save sample type */
+                if (!await upsertSampleTypeLinkAsync(fileId,
+                                                     sampleTypeId,
+                                                     operationUserId,
+                                                     context))
+                    return false;
+
+                // se grainSizeTypeId è 3,4 allora si salva questo, altrimenti si mette isdeleted = 1
+                SampleType sampleType = sampleTypeId.ToSampleType();
+                switch (sampleType)
+                {
+                    case SampleType.None:
+                    case SampleType.Slab:
+                    case SampleType.Chip:
+                        if (!await deleteLinkSpectrumFileGrainSizeTypeAsync(fileId,
+                                                                            operationUserId,
+                                                                            context))
+                            return false;
+
+                        if (!await deleteLinkGrainSizeTypeGrainSizeValuesAsync(grainSizeTypeResultId,
+                                                                               operationUserId,
+                                                                               context))
+                            return false;
+                        break;
+                    case SampleType.Pellet:
+                    case SampleType.Particulate:
+                        /* save grain size type - related - grain size */
+                        if (!await upsertLinkGrainSizeTypeGrainSizeValuesAsync(fileId,
+                                                                               grainSizeTypeResultId,
+                                                                               grainSizeTypeId,
+                                                                               grainSizeLowerValueId,
+                                                                               grainSizeUpperValueId,
+                                                                               operationUserId,
+                                                                               context))
+                            return false;
+                        break;
+                }
+
+                /* save related meteor class (if present) */
+                if (!await upsertMeteoriteClassLinkAsync(fileId,
+                                                      meteorClass,
+                                                      operationUserId,
+                                                      context))
+                    return false;
+
+                /* save mineral type */
+                if (!await upsertMineralTypeLinkAsync(fileId,
+                                                      mineralTypeId,
+                                                      operationUserId,
+                                                      context))
+                    return false;
+
+                /* save related mineral(s) (if present) */
+                if (!await upsertMineralLinksAsync(fileId,
+                                                   minerals,
+                                                   operationUserId,
+                                                   context))
+                    return false;
+
+                /* save related rock (if present) */
+                if (!await upsertRockLinkAsync(fileId,
+                                               rock,
+                                               operationUserId,
+                                               context))
+                    return false;
+
+                /* save origin type */
+                if (!await upsertOriginTypeLinkAsync(fileId,
+                                                     originTypeId,
+                                                     operationUserId,
+                                                     context))
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(upsertSampleDataAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        private async Task<(bool isOk, int id)> upsertLinkSpectrumFileGrainSizeTypeAsync(int fileId,
+                                                                                         int grainSizeTypeId,
+                                                                                         int operationUserId,
+                                                                                         HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+            int id = int.MinValue;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                LinkSpectrumFileGrainSizeType? item = null;
+
+                var query = (from lsfgst in context.LinkSpectrumFileGrainSizeType
+                             join sf in context.SpectraFiles on lsfgst.SpectrumFileId equals sf.Id
+                             where lsfgst.SpectrumFileId == fileId
+                             && !lsfgst.IsDeleted
+                             && !sf.IsDeleted
+                             select new { sf, lsfgst })
+                             .AsEnumerable()
+                             .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId));
+
+                if (query.Any())
+                {
+                    /* if a relation for current file already exists, then update it... */
+                    item = query.First().lsfgst;
+
+                    if (grainSizeTypeId == 0)
+                    {
+                        item.IsDeleted = true;
+
+                        item.DeleteDateTime = DateTime.UtcNow;
+                        item.DeleteUserId = operationUserId;
+                    }
+                    else
+                    {
+                        item.SampleGrainSizeTypeId = (int)grainSizeTypeId!;
+
+                        item.EditDateTime = DateTime.UtcNow;
+                        item.EditUserId = operationUserId;
+                    }
+                }
+                else
+                {
+                    if (grainSizeTypeId > 0)
+                    {
+                        /* ...otherwise add a new one */
+                        item = new LinkSpectrumFileGrainSizeType()
+                        {
+                            SpectrumFileId = fileId,
+                            SampleGrainSizeTypeId = (int)grainSizeTypeId!,
+
+                            InsertDateTime = DateTime.UtcNow,
+                            InsertUserId = operationUserId,
+                        };
+
+                        context.LinkSpectrumFileGrainSizeType.Add(item);
+                    }
+                }
+
+                if (item != null)
+                {
+                    await context.SaveChangesAsync();
+                    id = item.Id;
+                }
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(upsertLinkSpectrumFileGrainSizeTypeAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return (isOk, id);
+        }
+
+        private async Task<bool> upsertMeteoriteClassLinkAsync(int fileId,
+                                                               IMaterialModel meteorClass,
+                                                               int operationUserId,
+                                                               HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                /* if no meteorite class is related to current spectrum, then check whether
+                 * a rock was previously related and, if so, remove relationship */
+                if (MaterialBaseModel.IsEmpty(meteorClass))
+                    return await deleteMeteoriteClassLinkAsync(fileId,
+                                                               operationUserId,
+                                                               context);
+
+                var query = (from lsfmc in context.LinkSpectrumFileMeteoriteClass
+                             join sf in context.SpectraFiles on lsfmc.SpectrumId equals sf.Id
+                             where lsfmc.SpectrumId == fileId
+                             && !lsfmc.IsDeleted
+                             && !sf.IsDeleted
+                             select new { sf, lsfmc })
+                             .AsEnumerable()
+                             .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId));
+
+                if (query.Any())
+                {
+                    /* if a relation for current file already exists, then update it... */
+                    var item = query.FirstOrDefault();
+
+                    if (item != null)
+                    {
+                        item.lsfmc.EditDateTime = DateTime.UtcNow;
+                        item.lsfmc.EditUserId = operationUserId;
+                    }
+                }
+                else
+                {
+                    var item = new LinkSpectrumFileMeteoriteClass()
+                    {
+                        SpectrumId = fileId,
+                        MeteoriteClassId = meteorClass.Id,
+
+                        InsertDateTime = DateTime.UtcNow,
+                        InsertUserId = operationUserId,
+                    };
+
+                    context.LinkSpectrumFileMeteoriteClass.Add(item);
+                }
+
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(upsertMeteoriteClassLinkAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        private async Task<bool> upsertMineralLinksAsync(int fileId,
+                                                         List<MaterialBaseModel>? minerals,
+                                                         int operationUserId,
+                                                         HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            //string currentOperation = string.Empty;
+            int currentMineralId = 0;
+
+            try
+            {
+                /* if no minerals are related to current spectrum,
+                 * then check whether any mineral was previously related and, 
+                 * if so, delete the relationship(s) */
+                if (minerals == null || minerals.Count == 0)
+                    return await deleteMineralLinksAsync(fileId,
+                                                         operationUserId,
+                                                         context);
+
+                var existantMinerals = (from lsfim in context.LinkSpectrumFileImaminerals
+                                        join sf in context.SpectraFiles on lsfim.SpectrumId equals sf.Id
+                                        join m in context.ReadOnlyImaminerals on lsfim.MineralId equals m.Id
+                                        where lsfim.SpectrumId == fileId
+                                        && !lsfim.IsDeleted
+                                        && !m.IsDeleted
+                                        && !sf.IsDeleted
+                                        select new { sf, lsfim, m })
+                                        .AsEnumerable()
+                                        .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId))
+                                        .Select(m => new MaterialModel()
+                                        {
+                                            Id = m.m.Id,
+                                            Name = m.m.Name,
+                                            Percentage = m.lsfim.Percentage.HasValue ? (double)m.lsfim.Percentage.Value : 0
+                                        })
+                                        .ToList();
+
+
+                var materialBaseModelComparer = new IMaterialModelComparer();
+
+                var newMinerals = minerals.Except(existantMinerals, materialBaseModelComparer).ToList();
+
+                var removedMinerals = existantMinerals.Except(minerals, materialBaseModelComparer).ToList();
+
+                /* add new minerals */
+                foreach (var mineral in newMinerals)
+                {
+                    //currentOperation = "Add";
+                    currentMineralId = mineral.Id;
+
+                    var item = new LinkSpectrumFileImaminerals()
+                    {
+                        SpectrumId = fileId,
+                        MineralId = mineral.Id,
+                        Percentage = (decimal)mineral.Percentage,
+
+                        InsertDateTime = DateTime.UtcNow,
+                        InsertUserId = operationUserId,
+                    };
+
+                    context.LinkSpectrumFileImaminerals.Add(item);
+                }
+
+                await context.SaveChangesAsync();
+
+                /* remove minerals not present anymore */
+                foreach (var mineral in removedMinerals)
+                {
+                    //currentOperation = "Remove";
+                    currentMineralId = mineral.Id;
+
+                    var removedMineral = (from lsfim in context.LinkSpectrumFileImaminerals
+                                          join sf in context.SpectraFiles on lsfim.SpectrumId equals sf.Id
+                                          where lsfim.SpectrumId == fileId
+                                          && lsfim.MineralId == mineral.Id
+                                          && !lsfim.IsDeleted
+                                          && !sf.IsDeleted
+                                          select new { sf, lsfim })
+                                          .AsEnumerable()
+                                          .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId))
+                                          .FirstOrDefault();
+
+                    if (removedMineral == null)
+                        continue;
+
+                    removedMineral.lsfim.IsDeleted = true;
+
+                    removedMineral.lsfim.DeleteDateTime = DateTime.UtcNow;
+                    removedMineral.lsfim.DeleteUserId = operationUserId;
+                }
+
+                await context.SaveChangesAsync();
+
+                /* update percentage of already existing minerals */
+                foreach (var existingMineral in existantMinerals)
+                {
+                    //currentOperation = "Update";
+                    currentMineralId = existingMineral.Id;
+
+                    var incomingExistingMineral = minerals.FirstOrDefault(x => x.Id == existingMineral.Id);
+                    if (incomingExistingMineral == null)
+                        continue;
+
+                    var existingMineralInDb = (from lsfim in context.LinkSpectrumFileImaminerals
+                                               join sf in context.SpectraFiles on lsfim.SpectrumId equals sf.Id
+                                               where lsfim.SpectrumId == fileId
+                                               && lsfim.MineralId == incomingExistingMineral.Id
+                                               && !lsfim.IsDeleted
+                                               && !sf.IsDeleted
+                                               select new { sf, lsfim })
+                                               .AsEnumerable()
+                                               .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId))
+                                               .FirstOrDefault();
+
+                    if (existingMineralInDb == null)
+                        continue;
+
+                    existingMineralInDb.lsfim.Percentage = (decimal)incomingExistingMineral.Percentage;
+                    existingMineralInDb.lsfim.EditDateTime = DateTime.UtcNow;
+                    existingMineralInDb.lsfim.EditUserId = operationUserId;
+                }
+
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(upsertMineralLinksAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        private async Task<bool> upsertMineralTypeLinkAsync(int fileId,
+                                                            int mineralTypeId,
+                                                            int operationUserId,
+                                                            HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var query = (from lsfsmt in context.LinkSpectrumFileSampleMineralType
+                             join sf in context.SpectraFiles on lsfsmt.SpectrumFileId equals sf.Id
+                             where lsfsmt.SpectrumFileId == fileId
+                             && !lsfsmt.IsDeleted
+                             && !sf.IsDeleted
+                             select new { sf, lsfsmt })
+                             .AsEnumerable()
+                             .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId));
+
+                if (query.Any())
+                {
+                    /* if a relation for current file already exists, then update it... */
+                    var item = query.FirstOrDefault();
+
+                    if (item != null)
+                    {
+                        item.lsfsmt.SampleMineralTypeId = mineralTypeId;
+
+                        item.lsfsmt.EditDateTime = DateTime.UtcNow;
+                        item.lsfsmt.EditUserId = operationUserId;
+                    }
+                }
+                else
+                {
+                    /* ...otherwise add a new one */
+                    var item = new LinkSpectrumFileSampleMineralType()
+                    {
+                        SpectrumFileId = fileId,
+                        SampleMineralTypeId = mineralTypeId,
+
+                        InsertDateTime = DateTime.UtcNow,
+                        InsertUserId = operationUserId,
+                    };
+
+                    context.LinkSpectrumFileSampleMineralType.Add(item);
+                }
+
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(upsertMineralTypeLinkAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        private async Task<bool> upsertNameAsync(int fileId,
+                                                 string name,
+                                                 int operationUserId,
+                                                 HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var query = (from sn in context.SampleName
+                             join sf in context.SpectraFiles on sn.SpectrumFileId equals sf.Id
+                             where sn.SpectrumFileId == fileId
+                             && !sn.IsDeleted
+                             && !sf.IsDeleted
+                             select new { sf, sn })
+                             .AsEnumerable()
+                             .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId));
+
+                if (query.Any())
+                {
+                    /* if a relation for current file already exists, then update it... */
+                    var item = query.FirstOrDefault();
+
+                    if (item != null)
+                    {
+                        item.sn.Name = name;
+
+                        item.sn.EditDateTime = DateTime.UtcNow;
+                        item.sn.EditUserId = operationUserId;
+                    }
+                }
+                else
+                {
+                    /* ...otherwise add a new one */
+                    var item = new SampleName()
+                    {
+                        SpectrumFileId = fileId,
+                        Name = name,
+
+                        InsertDateTime = DateTime.UtcNow,
+                        InsertUserId = operationUserId,
+                    };
+
+                    context.SampleName.Add(item);
+                }
+
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(upsertNameAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        private async Task<bool> upsertOriginTypeLinkAsync(int fileId,
+                                                           int originTypeId,
+                                                           int operationUserId,
+                                                           HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var query = (from lsfsot in context.LinkSpectrumFileSampleOriginType
+                             join sf in context.SpectraFiles on lsfsot.SpectrumFileId equals sf.Id
+                             where lsfsot.SpectrumFileId == fileId
+                             && !lsfsot.IsDeleted
+                             && !sf.IsDeleted
+                             select new { sf, lsfsot })
+                             .AsEnumerable()
+                             .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId));
+
+                if (query.Any())
+                {
+                    /* if a relation for current file already exists, then update it... */
+                    var item = query.FirstOrDefault();
+
+                    if (item != null)
+                    {
+                        item.lsfsot.OriginTypeId = originTypeId;
+
+                        item.lsfsot.EditDateTime = DateTime.UtcNow;
+                        item.lsfsot.EditUserId = operationUserId;
+                    }
+                }
+                else
+                {
+                    /* ...otherwise add a new one */
+                    var item = new LinkSpectrumFileSampleOriginType()
+                    {
+                        SpectrumFileId = fileId,
+                        OriginTypeId = originTypeId,
+
+                        InsertDateTime = DateTime.UtcNow,
+                        InsertUserId = operationUserId,
+                    };
+
+                    context.LinkSpectrumFileSampleOriginType.Add(item);
+                }
+
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(upsertOriginTypeLinkAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        private async Task<bool> upsertRockLinkAsync(int fileId,
+                                                     IMaterialModel rock,
+                                                     int operationUserId,
+                                                     HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                /* if no rock is related to current spectrum, then check whether
+                 * a rock was previously related and, if so, remove relationship */
+                if (MaterialBaseModel.IsEmpty(rock))
+                    return await deleteRockLinkAsync(fileId,
+                                                     operationUserId,
+                                                     context);
+
+                var query = (from lsfrx in context.LinkSpectrumFileRock
+                             join sf in context.SpectraFiles on lsfrx.SpectrumId equals sf.Id
+                             where lsfrx.SpectrumId == fileId
+                             && !lsfrx.IsDeleted
+                             && !sf.IsDeleted
+                             select new { sf, lsfrx })
+                             .AsEnumerable()
+                             .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId));
+
+                if (query.Any())
+                {
+                    /* if a relation for current file already exists, then update it... */
+                    var item = query.FirstOrDefault();
+
+                    if (item != null)
+                    {
+                        item.lsfrx.RockId = (int)rock.Id;
+
+                        item.lsfrx.EditDateTime = DateTime.UtcNow;
+                        item.lsfrx.EditUserId = operationUserId;
+                    }
+                }
+                else
+                {
+                    /* ...otherwise add a new one */
+                    var item = new LinkSpectrumFileRock()
+                    {
+                        SpectrumId = fileId,
+                        RockId = (int)rock.Id,
+
+                        InsertDateTime = DateTime.UtcNow,
+                        InsertUserId = operationUserId,
+                    };
+
+                    context.LinkSpectrumFileRock.Add(item);
+                }
+
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(upsertRockLinkAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        private async Task<bool> upsertLinkGrainSizeTypeGrainSizeValuesAsync(int fileId,
+                                                                             int linkSpectrumFileGrainSizeTypeId,
+                                                                             int grainSizeTypeId,
+                                                                             int? grainSizeLowerValueId,
+                                                                             int? grainSizeUpperValueId,
+                                                                             int operationUserId,
+                                                                             HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var query = (from x in context.LinkGrainSizeTypeGrainSizeValues
+                             where x.LinkSpectrumFileGrainSizeTypeId == linkSpectrumFileGrainSizeTypeId
+                             && !x.IsDeleted
+                             select x);
+
+                if (query.Any())
+                {
+                    /* if a relation for current file already exists, then update it... */
+                    var item = query.First();
+
+                    item.GrainSizeLowerValueId = grainSizeLowerValueId;
+                    item.GrainSizeUpperValueId = grainSizeUpperValueId;
+
+                    item.EditDateTime = DateTime.UtcNow;
+                    item.EditUserId = operationUserId;
+                }
+                else
+                {
+                    /* ...otherwise add a new one */
+                    var item = new LinkGrainSizeTypeGrainSizeValues()
+                    {
+                        LinkSpectrumFileGrainSizeTypeId = linkSpectrumFileGrainSizeTypeId,
+                        GrainSizeLowerValueId = grainSizeLowerValueId,
+                        GrainSizeUpperValueId = grainSizeUpperValueId,
+
+                        InsertDateTime = DateTime.UtcNow,
+                        InsertUserId = operationUserId,
+                    };
+                    context.LinkGrainSizeTypeGrainSizeValues.Add(item);
+                }
+
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(upsertLinkGrainSizeTypeGrainSizeValuesAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        private async Task<bool> upsertSampleTypeLinkAsync(int fileId,
+                                                           int sampleTypeId,
+                                                           int operationUserId,
+                                                           HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var query = (from lsfst in context.LinkSpectrumFileSampleType
+                             join sf in context.SpectraFiles on lsfst.SpectrumFileId equals sf.Id
+                             where lsfst.SpectrumFileId == fileId
+                             && !lsfst.IsDeleted
+                             && !sf.IsDeleted
+                             select new { sf, lsfst })
+                             .AsEnumerable()
+                             .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId));
+
+                if (query.Any())
+                {
+                    var item = query.FirstOrDefault();
+
+                    if (item != null)
+                    {
+                        item.lsfst.SampleTypeId = sampleTypeId;
+
+                        item.lsfst.EditDateTime = DateTime.UtcNow;
+                        item.lsfst.EditUserId = operationUserId;
+                    }
+                }
+                else
+                {
+                    var item = new LinkSpectrumFileSampleType()
+                    {
+                        SpectrumFileId = fileId,
+                        SampleTypeId = sampleTypeId,
+
+                        InsertDateTime = DateTime.UtcNow,
+                        InsertUserId = operationUserId,
+                    };
+
+                    context.LinkSpectrumFileSampleType.Add(item);
+                }
+
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(upsertSampleTypeLinkAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+        #endregion
+
+        #region DELETE
+        private async Task<bool> deleteSampleDataAsync(int id,
+                                                       int operationUserId,
+                                                       HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                /* SampleName */
+                var item0 = (from sn in context.SampleName
+                             join sf in context.SpectraFiles on sn.SpectrumFileId equals sf.Id
+                             where sn.SpectrumFileId == id
+                             && !sn.IsDeleted
+                             && !sf.IsDeleted
+                             select new { sf, sn })
+                             .AsEnumerable()
+                             .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId))
+                             .FirstOrDefault();
+                if (item0 != null)
+                {
+                    item0.sn.IsDeleted = true;
+
+                    item0.sn.DeleteDateTime = DateTime.UtcNow;
+                    item0.sn.DeleteUserId = operationUserId;
+                }
+
+                /* LinkSpectrumFileGrainSizeType */
+                if (!await deleteLinkSpectrumFileGrainSizeTypeAsync(id, operationUserId, context))
+                {
+                    closeDataContext(context);
+                    return false;
+                }
+
+                /* LinkSpectrumFileSampleMineralType */
+                var item1 = (from lsfsmt in context.LinkSpectrumFileSampleMineralType
+                             join sf in context.SpectraFiles on lsfsmt.SpectrumFileId equals sf.Id
+                             where lsfsmt.SpectrumFileId == id
+                             && !lsfsmt.IsDeleted
+                             && !sf.IsDeleted
+                             select new { sf, lsfsmt })
+                             .AsEnumerable()
+                             .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId))
+                             .FirstOrDefault();
+                if (item1 != null)
+                {
+                    item1.lsfsmt.IsDeleted = true;
+
+                    item1.lsfsmt.DeleteDateTime = DateTime.UtcNow;
+                    item1.lsfsmt.DeleteUserId = operationUserId;
+                }
+
+                /* LinkSpectrumFileImaminerals */
+                await deleteMineralLinksAsync(id,
+                                              operationUserId,
+                                              context);
+
+                /* LinkSpectrumFileSampleOriginType */
+                var item2 = (from lsfsot in context.LinkSpectrumFileSampleOriginType
+                             join sf in context.SpectraFiles on lsfsot.SpectrumFileId equals sf.Id
+                             where lsfsot.SpectrumFileId == id
+                             && !lsfsot.IsDeleted
+                             && !sf.IsDeleted
+                             select new { sf, lsfsot })
+                             .AsEnumerable()
+                             .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId))
+                             .FirstOrDefault();
+                if (item2 != null)
+                {
+                    item2.lsfsot.IsDeleted = true;
+
+                    item2.lsfsot.DeleteDateTime = DateTime.UtcNow;
+                    item2.lsfsot.DeleteUserId = operationUserId;
+                }
+
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(deleteSampleDataAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        private async Task<bool> deleteLinkGrainSizeTypeGrainSizeValuesAsync(int linkId,
+                                                                             int operationUserId,
+                                                                             HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var item = (from x in context.LinkGrainSizeTypeGrainSizeValues
+                            where x.LinkSpectrumFileGrainSizeTypeId == linkId
+                            && !x.IsDeleted
+                            select x)
+                            .FirstOrDefault();
+
+                if (item != null)
+                {
+                    item.IsDeleted = true;
+
+                    item.DeleteDateTime = DateTime.UtcNow;
+                    item.DeleteUserId = operationUserId;
+
+                    if (extcontext == null)
+                        await context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(deleteLinkGrainSizeTypeGrainSizeValuesAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        private async Task<bool> deleteLinkSpectrumFileGrainSizeTypeAsync(int fileId,
+                                                                         int operationUserId,
+                                                                         HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var item1 = (from lsfgst in context.LinkSpectrumFileGrainSizeType
+                             join sf in context.SpectraFiles on lsfgst.SpectrumFileId equals sf.Id
+                             where lsfgst.SpectrumFileId == fileId
+                             && !lsfgst.IsDeleted
+                             && !sf.IsDeleted
+                             select new { sf, lsfgst })
+                             .AsEnumerable()
+                             .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId))
+                            .FirstOrDefault();
+                if (item1 != null)
+                {
+                    item1.lsfgst.IsDeleted = true;
+
+                    item1.lsfgst.DeleteDateTime = DateTime.UtcNow;
+                    item1.lsfgst.DeleteUserId = operationUserId;
+
+                    if (extcontext == null)
+                        await context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(deleteLinkSpectrumFileGrainSizeTypeAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        private async Task<bool> deleteMeteoriteClassLinkAsync(int fileId,
+                                                               int operationUserId,
+                                                               HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var items = (from x in context.LinkSpectrumFileMeteoriteClass
+                             where x.SpectrumId == fileId
+                             && x.InsertUserId == operationUserId
+                             && !x.IsDeleted
+                             select x)
+                             .ToList();
+
+                if (items?.Count > 0)
+                {
+                    foreach (var item in items)
+                    {
+                        item.IsDeleted = true;
+
+                        item.DeleteDateTime = DateTime.UtcNow;
+                        item.DeleteUserId = operationUserId;
+                    }
+                    await context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(deleteMeteoriteClassLinkAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        public async Task<bool> deleteMineralLinkAsync(int fileId,
+                                                       int mineralId,
+                                                       int operationUserId,
+                                                       HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var item = (from lsfim in context.LinkSpectrumFileImaminerals
+                            join sf in context.SpectraFiles on lsfim.SpectrumId equals sf.Id
+                            where lsfim.SpectrumId == fileId
+                            && lsfim.MineralId == mineralId
+                            && !lsfim.IsDeleted
+                            && !sf.IsDeleted
+                            select new { sf, lsfim })
+                            .AsEnumerable()
+                            .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId))
+                            .FirstOrDefault();
+
+                if (item != null)
+                {
+                    item.lsfim.IsDeleted = true;
+
+                    item.lsfim.DeleteDateTime = DateTime.UtcNow;
+                    item.lsfim.DeleteUserId = operationUserId;
+
+                    await context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(deleteMineralLinkAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        private async Task<bool> deleteMineralLinksAsync(int fileId,
+                                                         int operationUserId,
+                                                         HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var items = (from lsfim in context.LinkSpectrumFileImaminerals
+                             join sf in context.SpectraFiles on lsfim.SpectrumId equals sf.Id
+                             where lsfim.SpectrumId == fileId
+                             && !lsfim.IsDeleted
+                             && !sf.IsDeleted
+                             select new { sf, lsfim })
+                            .AsEnumerable()
+                            .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId))
+                            .ToList();
+
+                if (items?.Count > 0)
+                {
+                    foreach (var item in items)
+                    {
+                        item.lsfim.IsDeleted = true;
+
+                        item.lsfim.DeleteDateTime = DateTime.UtcNow;
+                        item.lsfim.DeleteUserId = operationUserId;
+                    }
+                    await context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(deleteMineralLinksAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+
+        private async Task<bool> deleteRockLinkAsync(int fileId,
+                                                     int operationUserId,
+                                                     HyperLabDataContext? extcontext = null)
+        {
+            bool isOk = true;
+
+            HyperLabDataContext context = getDataContext(extcontext);
+
+            try
+            {
+                var items = (from lsfr in context.LinkSpectrumFileRock
+                             join sf in context.SpectraFiles on lsfr.SpectrumId equals sf.Id
+                             where lsfr.SpectrumId == fileId
+                             && !lsfr.IsDeleted
+                             && !sf.IsDeleted
+                             select new { sf, lsfr })
+                             .AsEnumerable()
+                             .Where(x => isUserStrictlyAuthorized(x.sf, operationUserId))
+                             .ToList();
+
+                if (items?.Count > 0)
+                {
+                    foreach (var item in items)
+                    {
+                        item.lsfr.IsDeleted = true;
+
+                        item.lsfr.DeleteDateTime = DateTime.UtcNow;
+                        item.lsfr.DeleteUserId = operationUserId;
+                    }
+                    await context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                isOk = false;
+                logError(nameof(deleteRockLinkAsync), ex);
+            }
+
+            if (extcontext == null)
+                closeDataContext(context);
+
+            return isOk;
+        }
+        #endregion
+    }
+}

@@ -1,0 +1,176 @@
+﻿## PROCESSES
+Currently debugging:
+- INAF.WebApps.HyperLab.exe (PID: 13540)
+
+## EXCEPTION
+Exception Type: System.InvalidOperationException
+Exception Message: The LINQ expression 'DbSet<ReadOnlyMeteoriteClasses>()
+    .Where(r => @Functions
+        .Like(
+            matchExpression: r.Name, 
+            pattern: @Format) || @Functions
+        .Like(
+            matchExpression: @name, 
+            pattern: string.Format(
+                format: "%{0}%", 
+                arg0: r.Name)))' could not be translated. Additional information: Translation of method 'string.Format' failed. If this method can be mapped to your custom function, see https://go.microsoft.com/fwlink/?linkid=2132413 for more information. Either rewrite the query in a form that can be translated, or switch to client evaluation explicitly by inserting a call to 'AsEnumerable', 'AsAsyncEnumerable', 'ToList', or 'ToListAsync'. See https://go.microsoft.com/fwlink/?linkid=2101038 for more information.
+Piece of code that has the exception:
+```csharp G:\Projects\INAF\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLab.Data\INAF.Libraries.Net.DB.HyperLab.Data\DbHandlerHyperLabDataSampleData.cs
+300:         public MaterialBaseModel? getMeteoriteClassByName(string name)
+301:         {
+302:             MaterialBaseModel? meteoriteClass = null;
+303:             try
+304:             {
+305:                 using (var context = getDataContext())
+306:                 {
+307:                     var candidates = (from m in context.ReadOnlyMeteoriteClasses
+308:                                       where (EF.Functions.Like(m.Name, $"%{name}%")
+309:                                       || EF.Functions.Like(name, $"%{m.Name}%"))
+310:                                       select new MaterialBaseModel()
+311:                                       {
+312:                                           Id = m.Id,
+313:                                           Name = m.Name
+314:                                       })
+315:                                       .AsNoTracking()
+316:                                       .ToList();
+317: 
+318:                     if (!candidates.Any())
+319:                         return null;
+320: 
+321:                     // fuzzy: scegli quello con distanza minore
+322:                     return candidates
+323:                             .OrderBy(m =>
+324:                                 m.Name!.Equals(name, StringComparison.OrdinalIgnoreCase) ? 0 :
+325:                                 m.Name!.StartsWith(name, StringComparison.OrdinalIgnoreCase) ? 1 :
+326:                                 Levenshtein(name.ToLower(), m.Name!.ToLower()))
+327:                             .ThenBy(m => m.Name!.Length)
+328:                             .First();
+329:                 }
+330:             }
+331:             catch (Exception ex)
+332:             {
+333:                 logError(nameof(getMeteoriteClassByName), ex);
+334:             }
+335:             return meteoriteClass;
+336:         }
+```
+Exception is on line 331
+This exception was originally thrown at this call stack:
+[1] Microsoft.EntityFrameworkCore.Query.QueryableMethodTranslatingExpressionVisitor.Translate(System.Linq.Expressions.Expression)
+[2] Microsoft.EntityFrameworkCore.Query.QueryCompilationContext.CreateQueryExecutorExpression<TResult>(System.Linq.Expressions.Expression)
+[3] Microsoft.EntityFrameworkCore.Query.QueryCompilationContext.CreateQueryExecutor<TResult>(System.Linq.Expressions.Expression)
+[4] Microsoft.EntityFrameworkCore.Storage.Database.CompileQuery<TResult>(System.Linq.Expressions.Expression, bool)
+[5] Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.CompileQueryCore<TResult>(Microsoft.EntityFrameworkCore.Storage.IDatabase, System.Linq.Expressions.Expression, Microsoft.EntityFrameworkCore.Metadata.IModel, bool)
+[6] Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.ExecuteCore.AnonymousMethod__0()
+[7] Microsoft.EntityFrameworkCore.Query.Internal.CompiledQueryCache.GetOrAddQuery<TResult>(object, System.Func<System.Func<Microsoft.EntityFrameworkCore.Query.QueryContext, TResult>>)
+[8] Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.ExecuteCore<TResult>(System.Linq.Expressions.Expression, bool, System.Threading.CancellationToken)
+[9] Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.Execute<TResult>(System.Linq.Expressions.Expression)
+[10] Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.Execute<TResult>(System.Linq.Expressions.Expression)
+........1 more stack frames omitted.
+The callstack context, if included, corresponds to the thread where this exception occurred. There is no need to identify this thread by other means.
+The top most frame in the callstack context should correspond to the place the exception message was thrown from. Code may or may not have been provided for it but can be requested.
+
+## CALLSTACK
+Thread ID: 26460
+[1] INAF.Libraries.Net.DB.HyperLab.Data.dll!INAF.Libraries.Net.DB.HyperLabData.DbHandlerHyperLabData.getMeteoriteClassByName
+This is the current user focused stack frame. The provided locals context corresponds to this stack frame, but you may evaluate expressions and retrieve code for any frame.
+Code for the stack frame:
+```csharp ..\..\Libraries\Net\DB\INAF.Libraries.Net.DB.HyperLab.Data\INAF.Libraries.Net.DB.HyperLab.Data\DbHandlerHyperLabDataSampleData.cs
+300:         public MaterialBaseModel? getMeteoriteClassByName(string name)
+301:         {
+302:             MaterialBaseModel? meteoriteClass = null;
+303:             try
+304:             {
+305:                 using (var context = getDataContext())
+306:                 {
+307:                     var candidates = (from m in context.ReadOnlyMeteoriteClasses
+308:                                       where (EF.Functions.Like(m.Name, $"%{name}%")
+309:                                       || EF.Functions.Like(name, $"%{m.Name}%"))
+310:                                       select new MaterialBaseModel()
+311:                                       {
+312:                                           Id = m.Id,
+313:                                           Name = m.Name
+314:                                       })
+315:                                       .AsNoTracking()
+316:                                       .ToList();
+317: 
+318:                     if (!candidates.Any())
+319:                         return null;
+320: 
+321:                     // fuzzy: scegli quello con distanza minore
+322:                     return candidates
+323:                             .OrderBy(m =>
+324:                                 m.Name!.Equals(name, StringComparison.OrdinalIgnoreCase) ? 0 :
+325:                                 m.Name!.StartsWith(name, StringComparison.OrdinalIgnoreCase) ? 1 :
+326:                                 Levenshtein(name.ToLower(), m.Name!.ToLower()))
+327:                             .ThenBy(m => m.Name!.Length)
+328:                             .First();
+329:                 }
+330:             }
+331:             catch (Exception ex)
+332:             {
+333:                 logError(nameof(getMeteoriteClassByName), ex);
+334:             }
+335:             return meteoriteClass;
+336:         }
+```
+Current statement: line 331
+[2] INAF.WebApps.HyperLab.dll!INAF.WebApps.HyperLab.Controllers.MaterialsController.GetMeteoriteClassByName
+Code for the stack frame:
+```csharp INAF.WebApps.HyperLab\Controllers\MaterialsController.cs
+152:         [HttpGet]
+153:         public async Task<IActionResult> GetMeteoriteClassByName(GenericRequestByTextModel model)
+154:         {
+155:             if (string.IsNullOrWhiteSpace(model.Text))
+156:                 return new JsonResult(GenericValueStringResponseModel.CreateErrorResponse());
+157: 
+158:             MaterialBaseModel? materialBaseModel = dbHandlerHyperLabData.getMeteoriteClassByName(model.Text);
+159: 
+160:             if (materialBaseModel != null && !string.IsNullOrEmpty(materialBaseModel.Name))
+161:                 return new JsonResult(materialBaseModel);
+162:             else
+163:                 return new JsonResult(null);
+164:         }
+```
+Current statement: line 158
+[3] [Lightweight Function]
+[4] Microsoft.AspNetCore.Mvc.Core.dll!Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute
+[5] Microsoft.AspNetCore.Mvc.Core.dll!Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeActionMethodAsync
+[6] Microsoft.AspNetCore.Mvc.Core.dll!Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next
+[7] Microsoft.AspNetCore.Mvc.Core.dll!Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeNextActionFilterAsync
+[8] Microsoft.AspNetCore.Mvc.Core.dll!Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeNextActionFilterAwaitedAsync
+[9] INAF.WebApps.HyperLab.dll!INAF.WebApps.HyperLab.Attributes.IsLoginValidAttribute.OnActionExecutionAsync
+Code for the stack frame:
+```csharp INAF.WebApps.HyperLab\Attributes\IsLoginValidAttribute.cs
+11:         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+12:         {
+13:             var isLoginValidHelper = context.HttpContext.RequestServices.GetRequiredService<IsLoginValidHelper>();
+14:             if (isLoginValidHelper == null)
+15:                 throw new InvalidOperationException("IsLoginValidHelper service is not registered.");
+16: 
+17:             var response = await isLoginValidHelper.isLoginValidAsync(context.HttpContext);
+18:             if (response == null)
+19:                 throw new InvalidOperationException("IsLoginValidHelper returned null response.");
+20: 
+21:             if (response.IsOk)
+22:             {
+23:                 await next();
+24:                 return;
+25:             }
+26:             else
+27:             {
+28:                 handleUnauthorizedAccess(context, context.HttpContext.RequestServices.GetRequiredService<ILogger<IsLoginValidAttribute>>(), response.Value ?? "Login is not valid. Redirecting to login page.");
+29:                 return;
+30:             }
+31:         }
+```
+Current statement: line 23
+[10] [Resuming Async Method]
+........113 more stack frames omitted.
+
+## LOCALS
+Variable: 'this' of type 'INAF.Libraries.Net.DB.HyperLabData.DbHandlerHyperLabData' is a complex object with child properties and has value: {INAF.Libraries.Net.DB.HyperLabData.DbHandlerHyperLabData}
+Variable: 'name' of type 'string' has value: "ol-diogenite"
+Variable: 'meteoriteClass' of type 'INAF.Libraries.Net.HyperLab.CommonModels.Models.SampleData.MaterialBaseModel' has value: null
+Variable: 'ex' of type 'System.Exception' is a complex object with child properties and has value: null
+
