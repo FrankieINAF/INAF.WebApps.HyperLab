@@ -46,6 +46,7 @@
         <script type="text/javascript" src="~/js/src/queue/queue.js" asp-append-version="true"></script>
         <script type="text/javascript" src="~/js/src/queue/commonsaveusersettings.js" asp-append-version="true"></script>
         <script type="text/javascript" src="~/js/dist/metro/metrobundle.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Detect.js/2.2.2/detect.min.js"></script>
     </environment>
     <environment names="Production">
         <script type="text/javascript" src="~/js/dist/metro/metrobundle.min.js"></script>
@@ -161,18 +162,18 @@
         <script type="text/javascript" src="~/js/dist/commonbundle.min.js" asp-append-version="true"></script>
     </environment>
     <script type="text/javascript">
-
-        $(document).ready(function () {
-            $('.pull-button').on(Metro.events.click, function () {
-                console.log('resize!');
-                setTimeout(function() {
-                    if ($('#mainContainer').hasClass('compacted'))
-                        setLogoHidden();
-                    else
-                        setLogoVisible();
-                }, 200);
+            var ua = detect.parse(navigator.userAgent);
+            $(document).ready(function () {
+                $('.pull-button').on(Metro.events.click, function () {
+                    //console.log('resize!');
+                    setTimeout(function () {
+                        if ($('#mainContainer').hasClass('compacted'))
+                            setLogoHidden();
+                        else
+                            setLogoVisible();
+                    }, 200);
+                });
             });
-        });
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -19,7 +19,7 @@ namespace INAF.WebApps.HyperLab.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Apps {
@@ -93,6 +93,33 @@ namespace INAF.WebApps.HyperLab.Resources {
         public static string AppFeatureRich {
             get {
                 return ResourceManager.GetString("AppFeatureRich", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;BulkInsert&lt;/b&gt; is a console‑based automation utility designed to streamline the ingestion of spectral data into the SLab database. It scans a designated input folder, detects all acquired spectra, and inserts them into the system in bulk, eliminating manual upload steps..
+        /// </summary>
+        public static string BulkInsertAppDescription1 {
+            get {
+                return ResourceManager.GetString("BulkInsertAppDescription1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The application also reads the ancillary text file contained in the same folder and uses a &lt;u&gt;local LLM&lt;/u&gt; model to automatically extract the metadata needed for database registration. These extracted attributes are then uniformly applied to every spectrum found in the folder, ensuring consistent and fully automated data ingestion within the &lt;b&gt;SLab&lt;/b&gt; environment..
+        /// </summary>
+        public static string BulkInsertAppDescription2 {
+            get {
+                return ResourceManager.GetString("BulkInsertAppDescription2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HyperLabBulkInsert.
+        /// </summary>
+        public static string BulkInsertAppTitle {
+            get {
+                return ResourceManager.GetString("BulkInsertAppTitle", resourceCulture);
             }
         }
         

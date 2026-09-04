@@ -1,5 +1,42 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model INAF.WebApps.HyperLab.Models.AppPageModel
+
+@using INAF.WebApps.HyperLab.Resources
+
+
 @{
+    ViewData["Title"] = Model.PageTitle;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string appName = $"{Model.AppName}";
 }
+
+<link rel="stylesheet" href="~/css/dist/commonbundle.min.css" />
+<link rel="stylesheet" href="~/css/dist/apps/appsbundle.min.css" />
+
+<div class="h-vh-100 w-100 page-background d-flex flex-align-center flex-column overflow-y-auto">
+    <div class="content-container d-flex flex-column overflow-y-auto">
+        <!-- BANNER -->
+        <div class="banner d-flex flex-justify-center">
+            <div class="d-flex flex-row">
+                <div class="d-flex flex-align-center"><p class="title fg-white">@Html.Raw(Model.AppName)</p></div>
+                <img class="image d-flex flex-self-center margin-horizontal-16" src="~/images/apps/console_app.jpg" />
+            </div>
+        </div>
+        @{
+            await Html.RenderPartialAsync("Partials/_AppPageBody");
+        }
+    </div>
+</div>
+
+<environment names="Development">
+    <script type="text/javascript" src="~/js/src/commonapps.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/src/slabmanager/bulkinsert.js" asp-append-version="true"></script>
+</environment>
+<environment names="Production">
+    <script type="text/javascript" src="~/js/dist/slabmanager/bulkinsertbundle.min.js" asp-append-version="true"></script>
+</environment>
+
+<script type="text/javascript">
+    var appName = "@appName";
+    var TemporaryOnlyWindowsSupportedMessage = "@Html.Raw(Apps.TemporaryOnlyWindowsSupportedMessage)";
+</script>

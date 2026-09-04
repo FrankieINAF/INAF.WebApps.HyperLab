@@ -130,6 +130,7 @@
 		</ItemGroup>
 
 		<ItemGroup>
+				<Folder Include="wwwroot\css\dist\apps\" />
 				<Folder Include="wwwroot\js\dist\" />
 				<Folder Include="wwwroot\lib\chartjs\" />
 		</ItemGroup>

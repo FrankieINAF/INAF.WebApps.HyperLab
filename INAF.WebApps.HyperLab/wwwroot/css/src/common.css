@@ -310,6 +310,11 @@ div.mandatory {
     padding-right: 4px;
 }
 
+.padding-horizontal-8 {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
 .padding-horizontal-16 {
     padding-left: 16px;
     padding-right: 16px;

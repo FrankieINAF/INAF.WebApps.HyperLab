@@ -129,6 +129,15 @@
   <data name="AppFeatureRich" xml:space="preserve">
     <value>Powerful, yet light and fast</value>
   </data>
+  <data name="BulkInsertAppDescription1" xml:space="preserve">
+    <value>&lt;b&gt;BulkInsert&lt;/b&gt; is a console‑based automation utility designed to streamline the ingestion of spectral data into the SLab database. It scans a designated input folder, detects all acquired spectra, and inserts them into the system in bulk, eliminating manual upload steps.</value>
+  </data>
+  <data name="BulkInsertAppDescription2" xml:space="preserve">
+    <value>The application also reads the ancillary text file contained in the same folder and uses a &lt;u&gt;local LLM&lt;/u&gt; model to automatically extract the metadata needed for database registration. These extracted attributes are then uniformly applied to every spectrum found in the folder, ensuring consistent and fully automated data ingestion within the &lt;b&gt;SLab&lt;/b&gt; environment.</value>
+  </data>
+  <data name="BulkInsertAppTitle" xml:space="preserve">
+    <value>HyperLabBulkInsert</value>
+  </data>
   <data name="GModeAppAcknowledgments" xml:space="preserve">
     <value>The &lt;i&gt;G-mode&lt;/i&gt; method was developed by &lt;u&gt;Anatoly I. Gavrishin&lt;/u&gt; and &lt;u&gt;Angioletta Coradini&lt;/u&gt; (&lt;i&gt;Coradini et al., 1977&lt;/i&gt;; &lt;i&gt;Gavrishin et al., 1980&lt;/i&gt;; &lt;i&gt;Gavrishin et al., 1992&lt;/i&gt;) to explore very different datasets (e.g., &lt;i&gt;Carusi and Massaro, 1978&lt;/i&gt;; &lt;i&gt;Bianchi et al., 1980&lt;/i&gt;; &lt;i&gt;Poscolieri, 1980&lt;/i&gt;; &lt;i&gt;Coradini et al., 1981&lt;/i&gt;; &lt;i&gt;Barucci et al., 1987&lt;/i&gt;; &lt;i&gt;Tosi et al., 2005&lt;/i&gt;; &lt;i&gt;Coradini et al., 2008&lt;/i&gt;; &lt;i&gt;Tosi et al., 2010a; 2010b&lt;/i&gt;).
 We acknowledge &lt;u&gt;Anatoly Gavrishin&lt;/u&gt; as the author of the method, and &lt;u&gt;Angioletta Coradini&lt;/u&gt; (1946-2011) and &lt;u&gt;Marcello Fulchignoni&lt;/u&gt; for translating it into the Fortran programming language, later improved by &lt;u&gt;Maria Teresa Capria&lt;/u&gt; (1954-2022).</value>

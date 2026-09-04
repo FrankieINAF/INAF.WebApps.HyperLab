@@ -135,6 +135,9 @@
   <data name="HomeLabel" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="HyperLabLabel" xml:space="preserve">
+    <value>HyperLab</value>
+  </data>
   <data name="TileGModeAppDescription" xml:space="preserve">
     <value>GModeApp is a multi-platform console application based on an advanced algorithm for unsupervised clusterization and developed to explore a wide variety of datasets</value>
   </data>

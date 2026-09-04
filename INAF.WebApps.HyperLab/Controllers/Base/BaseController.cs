@@ -43,6 +43,21 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
 
         protected string? appPrefixForUserSecrets { get; set; }
 
+        #region ACTIONS
+        [HttpGet]
+        public IActionResult Download([FromQuery] string appName, [FromQuery] string osName)
+        {
+            string downloadRoot = configuration!.GetSection("AppSettings:DownloadRootPath").Value ?? string.Empty;
+            if (string.IsNullOrEmpty(downloadRoot) || !Directory.Exists(downloadRoot))
+                return NotFound();
+
+            string downloadPath = Path.Combine(downloadRoot, appName);
+
+            string downloadAppName = $"{appName}_{osName}.zip";
+            return PhysicalFile(Path.Combine(downloadPath, downloadAppName), "application/octet-stream", downloadAppName);
+        }
+        #endregion
+
         #region METHODS
         protected void clearErrorsForKey(string key)
         {

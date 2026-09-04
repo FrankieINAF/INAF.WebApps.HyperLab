@@ -2,6 +2,7 @@
   {
     "outputFileName": "wwwroot/js/dist/apps/appsbundle.js",
     "inputFiles": [
+      "wwwroot/js/src/commonapps.js",
       "wwwroot/js/src/apps/apps.js"
     ],
     "minify": { "enabled": true },
@@ -11,6 +12,15 @@
     "outputFileName": "wwwroot/js/dist/blazorglobalbundle.js",
     "inputFiles": [
       "wwwroot/js/src/blazorglobal.js"
+    ],
+    "minify": { "enabled": true },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/js/dist/slabmanager/bulkinsertbundle.js",
+    "inputFiles": [
+      "wwwroot/js/src/commonapps.js",
+      "wwwroot/js/src/slabmanager/bulkinsert.js"
     ],
     "minify": { "enabled": true },
     "includeInProject": true

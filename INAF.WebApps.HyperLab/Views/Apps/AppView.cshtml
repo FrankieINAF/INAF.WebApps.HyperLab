@@ -17,87 +17,23 @@
     <div class="content-container d-flex flex-self-center flex-column">
         <!-- BANNER -->
         <div class="banner flex-self-center">
-            <div class="row">
-                <div class="cell-fs-12 cell-sm-6">
-                    <div class="row">
-                        <div class="cell-fs-4 cell-lg-3 d-flex align-items-center">
-                            <div class="banner-hyperlab-image">
-                                <img src="~/images/app_logo.png" width="36px" height="36px" />
-                            </div>
-                        </div>
-                        <div class="cell-fs-8 cell-lg-9 d-flex align-items-center">
-                            <p class="text-leader fg-white">HyperLab</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="cell-12 d-flex align-items-center">
-                            <p class="title fg-white">@Html.Raw(Model.AppName)</p>
-                        </div>
-                    </div>
+            <div class="d-flex flex-column">
+                <!-- HyperLab + icon-->
+                <div class="d-flex flex-row">
+                    <img src="~/images/app_logo.png" width="36" height="36" />
+                    <p class="margin-left-16 text-leader fg-white">@Html.Raw(Home.HyperLabLabel)</p>
                 </div>
-                <div class="d-none-fs cell-sm-6 d-flex-sm justify-content-center">
-                    <img class="banner-hyperlab-image image" src="~/images/apps/console_app.jpg" />
+                <!-- app title-->
+                <div class="d-flex flex-row flex-justify-center">
+                    <p class="title fg-white">@Html.Raw(Model.AppName)</p>
+                    <img class="image2 d-flex flex-self-center margin-horizontal-16" src="~/images/apps/console_app.jpg" />
                 </div>
             </div>
         </div>
-        <!-- DESCRIPTION -->
+
         @{
-            int descriptionsCount = Model.Descriptions.Count;
-            if (descriptionsCount > 0)
-            {
-                <div class="description-container">
-                    <div class="description-grid d-flex flex-column">
-                        @for (int i = 0; i < descriptionsCount; i++)
-                        {
-                            <div class="description-item">
-                                <div class="description-item-text">
-                                    <p class="text-just padding-16 fg-white">@Html.Raw(Model.Descriptions[i])</p>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-            }
+            await Html.RenderPartialAsync("Partials/_AppPageBody");
         }
-
-        <!-- DOWNLOAD -->
-        <button id="buttonDownload" class="download-button command-button primary rounded m-1" onclick="downloadApp()">
-            <span class="mif-download icon"></span>
-            <span class="caption">
-                Download
-                <small id="downloadCaption">Use this option for home or work</small>
-            </span>
-        </button>
-
-        <!-- FEATURES -->
-        <div class="features-container">
-            <div class="d-flex flex-column-fs flex-row-sm">
-                <div class="feature-item d-flex flex-row-fs flex-column-sm">
-                    <div class="feature-item-imag d-flex flex-justify-start-fs flex-justify-center-sm">
-                        <img height="100px" src="~/images/apps/reach.png" />
-                    </div>
-                    <div class="feature-item-text">
-                        <p class="text-just padding-16 fg-white">@Html.Raw(Apps.AppFeatureRich)</p>
-                    </div>
-                </div>
-                <div class="feature-item d-flex flex-row-fs flex-column-sm">
-                    <div class="feature-item-image d-flex flex-justify-start-fs flex-justify-center-sm">
-                        <img height="100px" src="~/images/apps/cross_platform.png" />
-                    </div>
-                    <div class="feature-item-text">
-                        <p class="text-just padding-16 fg-white">@Html.Raw(Apps.AppFeatureCrossPlatform)</p>
-                    </div>
-                </div>
-                <div class="feature-item d-flex flex-row-fs flex-column-sm">
-                    <div class="feature-item-image d-flex flex-justify-start-fs flex-justify-center-sm">
-                        <img height="100px" src="~/images/apps/portable.png" />
-                    </div>
-                    <div class="feature-item-text">
-                        <p class="text-just padding-16 fg-white">@Html.Raw(Apps.AppFeaturePortable)</p>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         @if (!string.IsNullOrEmpty(Model.Acknowledgments))
         {
@@ -113,6 +49,7 @@
 </div>
 
 <environment names="Development">
+    <script type="text/javascript" src="~/js/src/commonapps.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/src/apps/apps.js" asp-append-version="true"></script>
 </environment>
 <environment names="Production">
@@ -120,6 +57,6 @@
 </environment>
 
 <script type="text/javascript">
-	var appName = "@appName";
+    var appName = "@appName";
     var TemporaryOnlyWindowsSupportedMessage = "@Html.Raw(Apps.TemporaryOnlyWindowsSupportedMessage)";
 </script>
