@@ -127,22 +127,29 @@ namespace INAF.WebApps.HyperLab.Helpers
         }
 
         public ExpandoObject createRefWhitesJson(List<int> ids,
-                                                 bool isPublicSearch,
                                                  int operationUserId)
         {
             //string json = string.Empty;
 
             int idsNum = ids.Count;
 
-            List<ISpectrumModel> spectraModels = dbHandlerHyperLabData.getSpectraByIdProcedure(ids,
-                                                                                               isPublicSearch,
-                                                                                               operationUserId);
+            List<ISpectrumModel>? spectraModels = dbHandlerHyperLabData.getSpectraByIdProcedure(ids,
+                                                                                                isPublicSearch: true,
+                                                                                                operationUserId);
+            if (spectraModels == null || spectraModels.Count == 0)
+                return new ExpandoObject();
 
             /* extract min,max for all series and then retrieve absolute min,max */
             (double min, double max) seriesBoundaries = getSeriesBoundaries(spectraModels);
 
             /* retrieve x values from 1st spectrum */
-            List<double> xValues = spectraModels.First().Points.Select(x => x.X).ToList();
+            var firstSpectrum = spectraModels.First();
+            if (firstSpectrum == null)
+                return new ExpandoObject();
+
+            if (firstSpectrum.Points == null || firstSpectrum.Points.Count == 0)
+                return new ExpandoObject();
+            List<double> xValues = firstSpectrum.Points.Select(x => x.X).ToList();
 
             ExpandoObject resultObject = new ExpandoObject();
             resultObject.AddProperty(nameof(AxisRange), new AxisRange(Enums.Axis.Y, seriesBoundaries.min, seriesBoundaries.max));
@@ -151,6 +158,9 @@ namespace INAF.WebApps.HyperLab.Helpers
             List<ExpandoObject> Values = new List<ExpandoObject>();
             foreach (var spectrumModel in spectraModels)
             {
+                if (spectrumModel == null || spectrumModel.Points == null || spectrumModel.Points.Count == 0)
+                    continue;
+
                 var id = spectrumModel.Id;
                 foreach (var point in spectrumModel.Points)
                 {
@@ -174,6 +184,8 @@ namespace INAF.WebApps.HyperLab.Helpers
             List<AxisRange> axisRanges = new List<AxisRange>(spectraModels.Count);
             foreach (var spectrumModel in spectraModels)
             {
+                if (spectrumModel.Points == null || spectrumModel.Points.Count == 0)
+                    continue;
                 var min = spectrumModel.Points.Min(x => x.Y);
                 var max = spectrumModel.Points.Max(x => x.Y);
                 axisRanges.Add(new AxisRange(Enums.Axis.Y, min, max));
