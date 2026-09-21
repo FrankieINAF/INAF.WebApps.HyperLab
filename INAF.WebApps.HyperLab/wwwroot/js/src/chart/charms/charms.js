@@ -384,7 +384,7 @@ function loadSpectraToBeProcessed() {
         spectraForProcessingIds.push(...spectraExternalType);
 
     if (spectraForProcessingIds && spectraForProcessingIds.length > 0) {
-        let html = ``;
+        let html = '';
         html += `<select id="charmsSpectrumSelector" data-role="select" `
         html += `data-cls-select="charms-select" `;
         html += `data-on-item-select="${onSelectSpectrum.name}">`;

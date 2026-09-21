@@ -29,7 +29,7 @@
       "wwwroot/js/src/chart/charms/charmssmoothingpanel.js",
       "wwwroot/js/src/chart/charms/charmsbandanalysis.js"
     ],
-    "minify": { "enabled": true },
+    "minify": { "enabled": false },
     "includeInProject": true
   },
   {
@@ -38,7 +38,6 @@
       "wwwroot/js/src/commonbuttons.js",
       "wwwroot/js/src/commonall.js",
       "wwwroot/js/src/commonhubandchart.js",
-
       "wwwroot/js/src/chart/charts.js",
       "wwwroot/js/src/chart/chartbuttons.js",
       "wwwroot/js/src/chart/spectrainfo.js",
@@ -51,7 +50,7 @@
       "wwwroot/js/src/chart/chartrangeandzoom.js",
       "wwwroot/js/src/charmsmessages.js"
     ],
-    "minify": { "enabled": true },
+    "minify": { "enabled": false },
     "includeInProject": true
   },
   {
@@ -98,7 +97,7 @@
       "wwwroot/js/src/chart/charms/charms.js",
       "wwwroot/js/src/charmsmessages.js"
     ],
-    "minify": { "enabled": true },
+    "minify": { "enabled": false },
     "includeInProject": true
   },
   {
@@ -246,9 +245,7 @@
     "minify": { "enabled": true },
     "includeInProject": true
   },
-  /* ################################################################################ */
-  /* CSS */
-  /* ################################################################################ */
+
   {
     "outputFileName": "wwwroot/css/dist/account/accounterrorbundle.css",
     "inputFiles": [

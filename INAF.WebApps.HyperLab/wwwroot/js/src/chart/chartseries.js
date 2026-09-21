@@ -21,6 +21,25 @@
     }
 }
 
+function addPointToChartSeries(targetChart, seriesName, newPoint) {
+    const option = targetChart.getOption();
+    const series = option.series.find(s => s.name === seriesName);
+    if (!series) return;
+
+    // retrieve all existant X values already present in the series
+    const existingXs = new Set(
+        series.data.map(p => Array.isArray(p) ? p[0] : p.value[0])
+    );
+
+    if (!existingXs.has(x)) {
+        series.data.push([x, y]);
+    }
+    // Sort the series by X (necessary for line series)
+    series.data.sort((a, b) => a[0] - b[0]);
+
+    targetChart.setOption(option);
+}
+
 function addPointsToChartSeries(targetChart, seriesName, newPoints) {
     const option = targetChart.getOption();
     const series = option.series.find(s => s.name === seriesName);
@@ -97,6 +116,14 @@ function isSeriesVisible(targetChart, seriesName) {
         console.log(`${isSeriesVisible.name} - seriesName: ${seriesName} - ex: ${e}`);
         return true;
     }
+}
+
+function findChartSeriesByValueFieldId(targetChart, valueField) {
+    return targetChart.getOption().series.find(x => x.valueField == valueField);
+}
+
+function findChartSeriesIndexByValueFieldId(targetChart, valueField) {
+    return targetChart.getOption().series.findIndex(x => x.valueField == valueField);
 }
 
 function getSeriesNameFromSelectedSpectrumNameAndSpectrumType(selectedSpectrumName, spectrumType) {

@@ -32,7 +32,7 @@ async function createSpectraTypesColorList() {
 }
 
 function createSpectraTypesColorListItem(spectrumType, color) {
-    let html = ``;
+    let html = '';
 
     html += `<div id="spectrumType${spectrumType}" class="d-flex flex-justify-start pointer charms-color-select-list-item" onclick="setSpectrumTypeSelected(${spectrumType})">`;
     html += `   <div id="spectrumType${spectrumType}Color" class="dot margin-top-8" style="background-color: ${color}"></div>`;

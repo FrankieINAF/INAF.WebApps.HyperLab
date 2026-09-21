@@ -65,7 +65,7 @@ async function createSegmentFittingUIProAsync(segment, isFromUserAction = false,
     const buttonP0Id = `${segmentWithGuidResult.ElementId}_${P0Button}`;
     const buttonP1Id = `${segmentWithGuidResult.ElementId}_${P1Button}`;
 
-    let html = ``;
+    let html = '';
 
     /* segment info */
     html += `<div id="${segmentWithGuidResult.ElementId}" class="d-flex flex-row margin-bottom-8 border-bottom">`;

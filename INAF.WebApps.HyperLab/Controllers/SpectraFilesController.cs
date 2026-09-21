@@ -510,7 +510,7 @@ namespace INAF.WebApps.HyperLab.Controllers
 
         #region BAND ANALYSIS
         [HttpGet]
-        public async Task<IActionResult> GetBandAnalysisDataAsync(BandAnalysisModel model)
+        public async Task<IActionResult> GetBandAnalysisData(BandAnalysisModel model)
         {
             var bandAnalysisModel = dbHandlerHyperLabData.getBandAnalysisData(model.Id,
                                                                               await getUserIdAsync());
@@ -521,7 +521,7 @@ namespace INAF.WebApps.HyperLab.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBandsAnalysisDataAsync(BandAnalysisModel model)
+        public async Task<IActionResult> GetBandsAnalysisData(BandAnalysisModel model)
         {
             var bandsAnalysisModel = dbHandlerHyperLabData.getBandsAnalysisData(model.FileId,
                                                                                 await getUserIdAsync());

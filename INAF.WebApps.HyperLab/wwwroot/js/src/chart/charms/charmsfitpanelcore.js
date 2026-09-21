@@ -11,7 +11,7 @@ function addPointUI(point) {
 
     let wl = parseInt(point.P.X);
     let pointUIId = buildUIElementId(FIT_POINT_CORE, wl);
-    let html = ``;
+    let html = '';
     html += `<div id="${pointUIId}" class="d-flex padding-bottom-8 margin-top-8 border-bottom">`;
     html += `<div class="pointer"><span class="mif mif-bin" title="${FitPointAtRemoveLabel}" onclick="${removePointUICore.name}(${index})"></span></div>`;
     let pointLabel = FitPointAtLabel.replace('r_v', wl);
@@ -77,7 +77,7 @@ function createSegmentFittingUICore(segment, isFromUserAction = false, isLast = 
     const rangeLabelId = buildUIElementId(FIT_SEGMENT_CORE, segment.Index, 'RangeLabel');
     const segmentSelectId = buildUIElementId(FIT_SEGMENT_CORE, segment.Index, 'Select');
     const segmentContainerId = buildUIElementId(FIT_SEGMENT_CORE_VALUE, segment.Index, 'Container');
-    let html = ``;
+    let html = '';
     html += `<div id="${segmentWithGuidResult.ElementId}" class="d-flex flex-column padding-bottom-8 margin-top-16 border-bottom">`;
     html += `    <div><span id="${rangeLabelId}">${rangeLabel}</span></div>`;
     html += `    <div class="d-flex flex-row">`;

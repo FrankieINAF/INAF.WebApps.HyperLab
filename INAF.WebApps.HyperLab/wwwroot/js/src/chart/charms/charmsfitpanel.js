@@ -1183,16 +1183,16 @@ function tryAddContinuumSpectrum(spectrumId) {
 
 function tryAddContinuumSpectrumSeries(continuumSpectrum) {
     /* create chart series for aligned spectrum */
-    let spectrumSeriesName = createSeriesNameFromSpectrumNameAndType(continuumSpectrum.Name, continuumSpectrum.SpectrumType);
+    const spectrumSeriesName = createSeriesNameFromSpectrumNameAndType(continuumSpectrum.Name, continuumSpectrum.SpectrumType);
 
     /* check whether series is already present or not */
     if (isChartSeriesAvailableByName(chart, spectrumSeriesName))
         return;
 
     /* add new series */
-    let color = getSpectrumTypeColor(getSpectrumTypeString(SPECTRUM_TYPE_CONTINUUM));
-    let continuumChartSeries = createSeriesFromSpectrumName(continuumSpectrum.Id, spectrumSeriesName, color, true);
-    addChartSeries(continuumChartSeries);
+    const color = getSpectrumTypeColor(getSpectrumTypeString(SPECTRUM_TYPE_CONTINUUM));
+    const continuumChartSeries = createSeriesFromSpectrumName(continuumSpectrum.Id, spectrumSeriesName, color, true);
+    addChartSeries(chart, continuumChartSeries);
 }
 
 /* ################################################################################ */
@@ -1545,7 +1545,7 @@ function extractSeriesValuesForContinuumRemovedBreaks() {
         spectra.forEach(function (spectrumInfo) {
             let seriesName = findSeriesNameFromSpectrumId(spectrumInfo.Id);
 
-            let seriesPoints = getSeriesPoints(seriesName);
+            let seriesPoints = getSeriesPoints(chart, seriesName);
             let points = getPointsFromSeriesPoints(seriesPoints);
 
             if (spectrumInfo.SpectrumType == SPECTRUM_TYPE_CONTINUUM_REMOVED) {

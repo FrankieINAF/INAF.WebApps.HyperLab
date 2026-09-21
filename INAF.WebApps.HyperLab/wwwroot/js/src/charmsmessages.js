@@ -39,7 +39,7 @@ function buildMessageItem(content) {
 function buildMessageUIItem(message, type) {
     const guid = generateShortGUID();
 
-    let html = ``;
+    let html = '';
     html += `<div id="${guid}" class="remark ${type}" style="padding:0.5rem">`;
     html += `   <div class="row cell-fs-12"><span class="text-small fg-black">${message.Time}</span><div>`;
     html += `   <div class="row cell-fs-12"><span class="text-secondary fg-black">${message.Content}</span></div>`;

@@ -246,7 +246,7 @@ function buildSlider(value, index) {
 
     const id = `slider${index}Container`;
 
-    let html = ``;
+    let html = '';
     html += `<input type="number" id="slider${index}Target" class="slider-target">`;
     html += `<input id="slider${index}" `;
     html += `data-role="slider" `;
@@ -590,7 +590,7 @@ function unloadWhiteSpectraForAlignment() {
         removeSpectrumByIndex(index1);
 
         /* remove from chartSeries */
-        let index2 = findChartSeriesIndexByValueFieldId(buildId(refWhitesIds[i]));
+        let index2 = findChartSeriesIndexByValueFieldId(chart, buildId(refWhitesIds[i]));
         removeChartSeriesAt(index2);
     }
 

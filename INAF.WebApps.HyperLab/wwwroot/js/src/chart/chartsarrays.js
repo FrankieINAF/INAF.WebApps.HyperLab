@@ -1,7 +1,7 @@
 ﻿var familyIds = [];
 
 function hideSpectraToBeHidden() {
-    let spectraToBeHidden = getAllSeries().filter(x => !x.isVisible());
+    let spectraToBeHidden = getAllSeries(chart).filter(x => !x.isVisible());
     spectraToBeHidden.forEach(function (item) {
         hideSeries(chart, item.name);
     });
