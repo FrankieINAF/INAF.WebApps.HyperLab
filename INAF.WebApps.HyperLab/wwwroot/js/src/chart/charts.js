@@ -596,11 +596,11 @@ function createSeriesFromPoints(points) {
     return series;
 }
 
-function createSeriesFromSpectrumName(idItem, spectrumName, color, isPointVisible = false, showInLegend = true) {
+function createSeriesFromSpectrumName(idItem, seriesName, color, isPointVisible = false, showInLegend = true) {
     return {
         type: 'line',
         valueField: idItem,
-        name: spectrumName,
+        name: seriesName,
         axis: VALUE_AXIS,
         color: color,
         point: { visible: isPointVisible },

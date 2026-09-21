@@ -67,6 +67,8 @@ function createListOfSegmentsForBandAnalysis() {
 /* START BAND ANALYSIS */
 /* ################################################################################ */
 async function startBandAnalysisProcedureAsync(x0, x1) {
+    clearBandAnalysisProcedure();
+
     /* retrieve available analysis data, if present */
     getBandsAnalysisDataAsync();
 
@@ -365,16 +367,16 @@ function clearBandAnalysisProcedure() {
     hideByClass('bandAnalysisButtonDownload');
 
     /* remove highlitened band */
-    removeHighlightenedBand(items);
+    removeHighlightenedBand();
 
     /* remove band center */
-    clearBandCenter(items);
+    clearBandCenter();
 
     /* remove gaussian fit */
-    clearBandAnalysisNormalFit(items);
+    clearBandAnalysisNormalFit();
 
     /* remove fwhm fit */
-    clearFwhm(items);
+    clearFwhm();
 
     clearTextFields();
 
@@ -383,28 +385,19 @@ function clearBandAnalysisProcedure() {
     isBandAnalysisAvailable = false;
 }
 
-function clearBandAnalysisNormalFit(items) {
-    if (items.length == 0)
-        return;
-
+function clearBandAnalysisNormalFit() {
     /* remove chart series */
-    removeChartSeriesByFieldIdProcedure(chartContainer, items, SERIES_NORMAL_FIT_POINT);
+    removeSeries(chart, SERIES_NORMAL_FIT);
 }
 
-function clearBandCenter(items) {
-    if (items.length == 0)
-        return;
-
+function clearBandCenter() {
     /* remove chart series */
-    removeChartSeriesByFieldIdProcedure(chartContainer, items, SERIES_BAND_CENTER_POINT);
+    removeSeries(chart, SERIES_BAND_CENTER_POINT);
 }
 
-function clearFwhm(items) {
-    if (items.length == 0)
-        return;
-
+function clearFwhm() {
     /* remove chart series */
-    removeChartSeriesByFieldIdProcedure(chartContainer, items, SERIES_FWHM_POINT);
+    removeSeries(chart, SERIES_FWHM);
 }
 
 function clearTextFields() {
@@ -591,7 +584,7 @@ async function downloadBandAnalysisDataAsync(id) {
 
     /* retrieve all points of all series from chart */
     let items = dxChartGetItems(chartContainer);
-    clearBandAnalysisProcedure(items);
+    clearBandAnalysisProcedure();
 
     resetVisualRange(chart);
 
