@@ -18,13 +18,21 @@
 }
 
 <!-- DOWNLOAD -->
-<button id="buttonDownload" class="download-button command-button primary rounded d-flex- flex-self-center" onclick="downloadApp()">
-    <span class="mif-download icon"></span>
-    <span class="caption">
-        Download
-        <small id="downloadCaption">Use this option for home or work</small>
-    </span>
-</button>
+<div class="d-flex flex-justify-around">
+    <!-- DOWNLOAD APP -->
+    <button id="buttonDownloadApp" class="download-button command-button primary rounded d-flex" onclick="downloadApp()">
+        <span class="mif-download icon"></span>
+        <span class="caption">
+            Download app
+            <small id="downloadCaption">Use this option for home or work</small>
+        </span>
+    </button>
+    <!-- DOWNLOAD MANUAL -->
+    <button id="buttonDownloadUserManual" class="shortcut primary" onclick="downloadUserManual()">
+        <span class="mif-open-book icon"></span>
+        <span class="caption">User manual</span>
+    </button>
+</div>
 
 <!-- FEATURES -->
 <div class="features-container">

@@ -3,7 +3,12 @@
 function downloadApp() {
     if (osName != 'Windows')
         return;
-    const url = `/Apps/Download?appName=${encodeURIComponent(appName)}&osName=${encodeURIComponent(osName)}`;
+    const url = `/Apps/DownloadApp?appName=${encodeURIComponent(appName)}&osName=${encodeURIComponent(osName)}`;
+    window.location.href = url;
+}
+
+function downloadUserManual() {
+    const url = `/Apps/DownloadUserManual?appName=${encodeURIComponent(appName)}`;
     window.location.href = url;
 }
 

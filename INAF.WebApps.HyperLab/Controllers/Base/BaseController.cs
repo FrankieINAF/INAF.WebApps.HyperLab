@@ -45,7 +45,7 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
 
         #region ACTIONS
         [HttpGet]
-        public IActionResult Download([FromQuery] string appName, [FromQuery] string osName)
+        public IActionResult DownloadApp([FromQuery] string appName, [FromQuery] string osName)
         {
             string downloadRoot = configuration!.GetSection("AppSettings:DownloadRootPath").Value ?? string.Empty;
             if (string.IsNullOrEmpty(downloadRoot) || !Directory.Exists(downloadRoot))
@@ -54,6 +54,19 @@ namespace INAF.WebApps.HyperLab.Controllers.Base
             string downloadPath = Path.Combine(downloadRoot, appName);
 
             string downloadAppName = $"{appName}_{osName}.zip";
+            return PhysicalFile(Path.Combine(downloadPath, downloadAppName), "application/octet-stream", downloadAppName);
+        }
+
+        [HttpGet]
+        public IActionResult DownloadUserManual([FromQuery] string appName)
+        {
+            string downloadRoot = configuration!.GetSection("AppSettings:DownloadRootPath").Value ?? string.Empty;
+            if (string.IsNullOrEmpty(downloadRoot) || !Directory.Exists(downloadRoot))
+                return NotFound();
+
+            string downloadPath = Path.Combine(downloadRoot, appName);
+
+            string downloadAppName = $"{appName}_User_Manual.pdf";
             return PhysicalFile(Path.Combine(downloadPath, downloadAppName), "application/octet-stream", downloadAppName);
         }
         #endregion
