@@ -11,6 +11,7 @@ using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static INAF.Libraries.Net.ScienceModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {
@@ -38,7 +39,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new EmptyResult();
 
             int spectrumId = model.Id;
-            if (generalInfo.Type != Enums.SpectrumType.Raw)
+            if (generalInfo.Type != SpectrumType.Raw)
                 spectrumId = dbHandlerHyperLabData.getParentRawSpectrumId(model.Id, isPublicSearch(), await getUserIdAsync());
 
             var measurementInfo = dbHandlerHyperLabData.getSpectrumFileMeasurementInfo(spectrumId,
@@ -68,7 +69,7 @@ namespace INAF.WebApps.HyperLab.Controllers
                 return new EmptyResult();
 
             int spectrumId = model.Id;
-            if (generalInfo.Type != Enums.SpectrumType.Raw)
+            if (generalInfo.Type != SpectrumType.Raw)
                 spectrumId = dbHandlerHyperLabData.getParentRawSpectrumId(model.Id, isPublicSearch(), await getUserIdAsync());
 
             var sampleDataSelectedValues = dbHandlerHyperLabData.getSpectrumFileSampleData(spectrumId, isPublicSearch(), await getUserIdAsync());

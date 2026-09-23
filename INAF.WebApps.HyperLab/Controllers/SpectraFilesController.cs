@@ -3,23 +3,24 @@ using INAF.Libraries.Net.CommonWebAppModels.Models.Responses;
 using INAF.Libraries.Net.DB.HyperLabData;
 using INAF.Libraries.Net.DB.HyperLabUsers;
 using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.Files;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.BandAnalysis;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.ContinuumRemoval;
-using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.Smoothing;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.SpectrumVersions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests.SaveSpectrum;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Responses;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
 using INAF.Libraries.Net.Math.Models;
+using INAF.Libraries.Net.ScienceModels.Models.Files;
+using INAF.Libraries.Net.ScienceModels.Spectra;
+using INAF.Libraries.Net.ScienceModels.Spectra.Interfaces;
+using INAF.Libraries.Net.ScienceModels.Spectra.ProcessedSpectraInfo.Alignment;
+using INAF.Libraries.Net.ScienceModels.Spectra.ProcessedSpectraInfo.ContinuumRemoval;
+using INAF.Libraries.Net.ScienceModels.Spectra.ProcessedSpectraInfo.Smoothing;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
+using static INAF.Libraries.Net.ScienceModels.Values.Enums;
 
 namespace INAF.WebApps.HyperLab.Controllers
 {

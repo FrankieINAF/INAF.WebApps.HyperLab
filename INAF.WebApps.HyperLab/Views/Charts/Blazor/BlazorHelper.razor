@@ -1,22 +1,21 @@
 ﻿@using INAF.Libraries.Net.HyperLab.CommonHelpers
-@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.BandAnalysis
-@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.Smoothing
-@using INAF.Libraries.Net.HyperLabCommonHelpers
-@using INAF.Libraries.Net.HyperLabCommonHelpers.ProcessingHelpers
+@using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
 @using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum
-@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo
-@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.Alignment
-@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.ProcessedSpectraInfo.ContinuumRemoval
+@using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum.BandAnalysis
+@using INAF.Libraries.Net.HyperLabCommonHelpers
 @using INAF.Libraries.Net.Math.Fit.LinerAlgebra;
 @using INAF.Libraries.Net.Math.Fit.LinerAlgebra.Models;
 @using INAF.Libraries.Net.Math.Models;
-@using INAF.Libraries.Net.Math.Simple;
-@using INAF.Libraries.Net.Math.Fit.Spline;
+@using INAF.Libraries.Net.ScienceModels.Spectra
+@using INAF.Libraries.Net.ScienceModels.Spectra.ProcessedSpectraInfo
+@using INAF.Libraries.Net.ScienceModels.Spectra.ProcessedSpectraInfo.Alignment
+@using INAF.Libraries.Net.ScienceModels.Spectra.ProcessedSpectraInfo.ContinuumRemoval
+@using INAF.Libraries.Net.ScienceModels.Spectra.ProcessedSpectraInfo.Smoothing
 @using Microsoft.Extensions.DependencyInjection
 @using Microsoft.JSInterop
 @using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums
 @using static INAF.Libraries.Net.Math.Values.Enums;
-@using INAF.Libraries.Net.HyperLab.CommonModels.Extensions;
+@using static INAF.Libraries.Net.ScienceModels.Values.Enums
 
 @inject IServiceProvider serviceProvider
 @inject IJSRuntime jsruntime;

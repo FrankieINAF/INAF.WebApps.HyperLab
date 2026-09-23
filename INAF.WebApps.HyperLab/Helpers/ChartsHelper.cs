@@ -3,6 +3,7 @@ using INAF.Libraries.Net.Extensions;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum;
 using INAF.Libraries.Net.HyperLab.CommonModels.Values;
+using INAF.Libraries.Net.ScienceModels.Spectra.Interfaces;
 using INAF.WebApps.HyperLab.Extensions;
 using System.Dynamic;
 using static INAF.Libraries.Net.HyperLab.CommonModels.Values.Enums;
