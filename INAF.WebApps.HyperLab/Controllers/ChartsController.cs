@@ -7,6 +7,7 @@ using INAF.Libraries.Net.HyperLab.CommonModels.Models.Pages;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Searches;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.Spectrum;
 using INAF.Libraries.Net.HyperLab.CommonModels.Models.WebApp.Requests;
+using INAF.Libraries.Net.ScienceModels.Spectra.Interfaces;
 using INAF.WebApps.HyperLab.Attributes;
 using INAF.WebApps.HyperLab.Controllers.Base;
 using INAF.WebApps.HyperLab.Helpers;

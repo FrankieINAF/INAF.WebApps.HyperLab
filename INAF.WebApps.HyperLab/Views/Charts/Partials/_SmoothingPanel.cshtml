@@ -1,5 +1,5 @@
 ﻿@using INAF.WebApps.HyperLab.Resources
-@using Enums = INAF.Libraries.Net.HyperLab.CommonModels.Values;
+@using static INAF.Libraries.Net.ScienceModels.Values.Enums
 
 
 <!-- CONTAINER FOR SMOOTHING SETTINGS -->
@@ -43,8 +43,8 @@
 		<p class="text-secondary">@Html.Raw(Charms.SmoothingSrcSpectrumTypeLabel)</p>
 		<div id="srcSpectrumTypeListContainer" class="d-none">
 			<select id="srcSpectrumTypeList" data-role="select" data-on-change="onSrcSpectrumTypeSelected">
-				<option value="@{@((int)Enums.Enums.SpectrumType.Aligned);}">@Enums.Enums.SpectrumType.Aligned.ToString()</option>
-				<option value="@{@((int)Enums.Enums.SpectrumType.ContinuumRemoved);}">@Enums.Enums.SpectrumType.ContinuumRemoved.ToString()</option>
+				<option value="@{@((int)SpectrumType.Aligned);}">@SpectrumType.Aligned.ToString()</option>
+				<option value="@{@((int)SpectrumType.ContinuumRemoved);}">@SpectrumType.ContinuumRemoved.ToString()</option>
 			</select>
 		</div>
 		<p id="smoothingSrcSpectrumType" class="text-bold d-none"></p>
